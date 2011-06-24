@@ -115,7 +115,7 @@ public class Triangle {
 	
 	//TODO : A TESTER !!
 	public boolean estNormalA(Vector3d normal, double error) {
-		return(this.normale.dot(normal) < error);
+		return((this.normale.dot(normal) < error) && (this.normale.dot(normal) > -error));
 	}
 
 	public boolean contains(Point p) {

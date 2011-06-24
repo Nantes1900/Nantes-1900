@@ -29,6 +29,16 @@ public class Tuilage {
 		this.addEnsembleFaces(e);
 	}
 	
+	public void clear() {
+		for(int i = 0; i < _nbX; i ++) {
+			for(int j = 0; j < _nbY; j ++) {
+				for(int k = 0; k < _nbZ; k ++) {
+					_quad[i][j][k].clear();
+				}
+			}
+		}
+	}
+	
 	public void addEnsembleFaces(EnsembleFaces e) {
 		for(Triangle f : e) {
 			addFace(f);

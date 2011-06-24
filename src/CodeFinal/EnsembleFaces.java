@@ -29,7 +29,7 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		return ret;
 	}
 	
-	public EnsembleFaces orientesPerpendiculairesA(Vector3d normal, double error) {
+	public EnsembleFaces orientesNormalA(Vector3d normal, double error) {
 		EnsembleFaces ret = new EnsembleFaces();
 		for(Triangle f : this) {
 			if(f.estNormalA(normal, error))
@@ -177,6 +177,10 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		else
 			return ZMinFace();
 	}
+	
+	public Triangle getOne() {
+		return this.iterator().next();
+	}
 
 	public EnsembleFaces changeBase(double[][] matrix) {
 		EnsembleFaces ens = new EnsembleFaces();
@@ -196,6 +200,24 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		EnsembleFaces ens = new EnsembleFaces();
 		for(Triangle t : this) {
 			if(t.zMax() < max && t.zMin() > min)
+				ens.add(t);
+		}
+		return ens;
+	}
+	
+	public EnsembleFaces xBetween(double min, double max) {
+		EnsembleFaces ens = new EnsembleFaces();
+		for(Triangle t : this) {
+			if(t.xMax() < max && t.xMin() > min)
+				ens.add(t);
+		}
+		return ens;
+	}
+	
+	public EnsembleFaces yBetween(double min, double max) {
+		EnsembleFaces ens = new EnsembleFaces();
+		for(Triangle t : this) {
+			if(t.yMax() < max && t.yMin() > min)
 				ens.add(t);
 		}
 		return ens;
@@ -230,7 +252,7 @@ public class EnsembleFaces extends HashSet<Triangle>{
 				compteur ++;
 		}
 		if(compteur == e.size())
-			vrai ++;
+			vrai ++;	
 
 		if(vrai == 2)
 			return true;
@@ -238,13 +260,10 @@ public class EnsembleFaces extends HashSet<Triangle>{
 			return false;
 	}
 	
-	public boolean detectMuret(Triangle t, Vector3d normalSol, double errorNormalSol) {
-		EnsembleFaces orientes = this.orientesPerpendiculairesA(normalSol, 20*errorNormalSol);
+	public boolean detectMuret(Vector3d normalSol, double errorNormalSol) {
+		EnsembleFaces orientes = this.orientesNormalA(normalSol, 0.2);
 		
-		Tuilage quad = new Tuilage(orientes, 10, 10, 10);
-		quad.findNeighbours();
-		
-//		Writer.ecrireSurfaceA(new File("testdetectMuret.stl"), orientes);
+		new Tuilage(orientes, 5, 5, 5).findNeighbours();
 		
 		//Extraction batiments
 		int taille = orientes.size();
@@ -252,26 +271,28 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		while(!orientes.isEmpty())
 		{
 			EnsembleFaces e = new EnsembleFaces();
-			orientes.iterator().next().returnNeighbours(e);
-			if(e.size() > 1)
+			orientes.getOne().returnNeighbours(e);
+			//TODO : Attention à la taille... Ca empêche peut-être...
+			if(e.size() > taille/3)
 				blocs.add(e);
 			orientes.suppress(e);
 		}
 		
 		//On compte le nombre de triangles par blocs
 		//Si l'un des blocs fait 1/3 de la taille, on le retient
-		ArrayList<EnsembleFaces> blocsGros = new ArrayList<EnsembleFaces>();
-		for(EnsembleFaces e : blocs) {
-			if(e.size() > taille/3)
-				blocsGros.add(e);
-		}
-		if(blocsGros.size() >= 2) {
-			Vector3d a = blocsGros.get(0).averageNormal();
-			Vector3d b = blocsGros.get(1).averageNormal();
-			b.negate();
-			if(a.epsilonEquals(b, 0.1)) {
-				return true;
-				//Rajouter ici d'autres tests : e.g. : vérifier que la distance entre les murs est la distance caractéristique.
+		
+		if(blocs.size() == 2) {
+			//Si les triangles sont tous orientés dans le même sens
+			EnsembleFaces temp0 = blocs.get(0).orientesSelon(blocs.get(0).averageNormal(), 0.5);
+			EnsembleFaces temp1 = blocs.get(1).orientesSelon(blocs.get(1).averageNormal(), 0.5);
+			if(temp0.size() > 75*blocs.get(0).size()/100 && temp1.size() > 75*blocs.get(1).size()/100) {
+				Vector3d a = blocs.get(0).averageNormal();
+				Vector3d b = blocs.get(1).averageNormal();
+				b.negate();
+				if(a.epsilonEquals(b, 0.2)) {
+					return true;
+					//Rajouter ici d'autres tests : e.g. : vérifier que la distance entre les murs est la distance caractéristique.
+				}
 			}
 			//Sinon, ce n'est pas un muret
 		}
@@ -279,13 +300,12 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		return false;
 	}
 	
-	public EnsembleFaces extractMuret(Triangle t, EnsembleFaces boule, Vector3d normalSol, double errorNormalSol) {
+	public EnsembleFaces extractMuret(EnsembleFaces boule, Vector3d normalSol, double errorNormalSol) {
 		EnsembleFaces muret = new EnsembleFaces();
 		
-		EnsembleFaces orientes = boule.orientesPerpendiculairesA(normalSol, 20*errorNormalSol);
+		EnsembleFaces orientes = boule.orientesNormalA(normalSol, 0.2);
 		
-		Tuilage quad = new Tuilage(orientes, 10, 10, 10);
-		quad.findNeighbours();
+		new Tuilage(orientes, 5, 5, 5).findNeighbours();
 		
 		//Extraction batiments
 		int taille = orientes.size();
@@ -293,39 +313,37 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		while(!orientes.isEmpty())
 		{
 			EnsembleFaces e = new EnsembleFaces();
-			orientes.iterator().next().returnNeighbours(e);
-			if(e.size() > 1)
+			orientes.getOne().returnNeighbours(e);
+			if(e.size() > taille/3)
 				blocs.add(e);
 			orientes.suppress(e);
 		}
-		ArrayList<EnsembleFaces> blocsGros = new ArrayList<EnsembleFaces>();
-		for(EnsembleFaces e : blocs) {
-			if(e.size() > taille/3)
-				blocsGros.add(e);
-		}
+	
+		Vector3d vector = new Vector3d();
+		vector.cross(normalSol, blocs.get(0).averageNormal());
 		
-		EnsembleFaces ore0 = this.orientesSelon(blocs.get(0).averageNormal(), 10*errorNormalSol);
-		EnsembleFaces ore1 = this.orientesSelon(blocs.get(1).averageNormal(), 10*errorNormalSol);
-		Tuilage quad2 = new Tuilage(ore0, 1, 1, 1);
-		quad2.findNeighbours();
-		Tuilage quad3 = new Tuilage(ore1, 1, 1, 1);
-		quad3.findNeighbours();
+		double[][] matrix = MatrixMethod.createOrthoBase(blocs.get(0).averageNormal(), vector, normalSol);
+		EnsembleFaces ore = this.changeBase(matrix);
 		
-		EnsembleFaces neighbours0 = new EnsembleFaces();
-		EnsembleFaces neighbours1 = new EnsembleFaces();
-		ore0.iterator().next().returnNeighbours(neighbours0);
-		ore1.iterator().next().returnNeighbours(neighbours1);
+		EnsembleFaces muretMalOriente = ore.xBetween(blocs.get(0).xMin(), blocs.get(0).xMax());
 		
-		muret.addAll(neighbours0);
-		muret.addAll(neighbours1);
+		double[][] matrixInv = MatrixMethod.getInversMatrix(matrix);
+		muret = muretMalOriente.changeBase(matrixInv);
+		
+//		Writer.ecrireSurfaceA(new File("re0.stl"), blocs.get(0));
+//		Writer.ecrireSurfaceA(new File("re1.stl"), blocs.get(1));
+		
+//		EnsembleFaces mesh = this.orientesNormalA(vector, 0.3);
+//		new Tuilage(mesh, 50, 50, 50).findNeighbours();
+//		blocs.get(0).getOne().returnNeighbours(muret);
+//		blocs.get(1).getOne().returnNeighbours(muret);
 		
 		return muret;
 	}
 	
-	public EnsembleFaces getInBounds(Triangle t, double tailleBoule) {
+	public EnsembleFaces getInBounds(Point p, double tailleBoule) {
 		EnsembleFaces ens = new EnsembleFaces();
 		for(Triangle tri : this) {
-			Point p = t.getCentroid();
 			if(p.distance3D(tri.getCentroid()) < tailleBoule)
 				ens.add(tri);
 		}
