@@ -349,23 +349,23 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		return ens;
 	}
 	
-	public Triangle getOutOfIndex(HashSet<Point> index, double tailleBoule) {
-		boolean tag = true;
-		for(Triangle t : this) {
-			Point p = t.getCentroid();
-			if(index.isEmpty())
-				return t;
-			for(Point point : index) {
-				if(p.distance3D(point) < tailleBoule/(double)2) {
-					tag = false;
-					break;
-				}
-			}
-			if(tag)
-				return t;
-			else
-				tag = true;
-		}
-		return null;
-	}
+//	public Triangle getOutOfIndex(HashSet<Point> index, double tailleBoule) {
+//		boolean tag = true;
+//		for(Triangle t : this) {
+//			Point p = t.getCentroid();
+//			if(index.isEmpty())
+//				return t;
+//			for(Point point : index) {
+//				if(p.distance3D(point) < tailleBoule/(double)2) {
+//					tag = false;
+//					break;
+//				}
+//			}
+//			if(tag)
+//				return t;
+//			else
+//				tag = true;
+//		}
+//		return null;
+//	}
 }
