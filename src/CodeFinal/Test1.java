@@ -9,9 +9,9 @@ public class Test1 {
 	public static void main(String[] args) {
 		try
 		{
-			double facteurErreurAltitude = 0.05;
+			double facteurErreurAltitude = 0.005;
 			double facteurErreurNormalSol = 30;
-			String nomFichier = "batiments 1 - binary.stl";
+			String nomFichier = "batiments 3 - binary.stl";
 			
 			long timeGlobal = System.nanoTime();
 			
@@ -78,7 +78,7 @@ public class Test1 {
 			}
 			System.out.println("Temps écoulé durant l'algo : " + (System.nanoTime() - time));
 			
-			//Ecriture du sol	
+			//Ecriture du sol
 			System.out.println("Extraction du sol ...");
 			System.out.println("Taille du sol : " + surfaceSol.size());
 			Writer.ecrireSurfaceA(new File("solMesh.stl"), surfaceSol);	

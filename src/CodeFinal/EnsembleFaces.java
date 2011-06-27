@@ -1,6 +1,5 @@
 package CodeFinal;
 
-import java.io.File;
 import java.util.*;
 
 import javax.vecmath.Vector3d;

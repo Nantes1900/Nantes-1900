@@ -23,13 +23,13 @@ public class Test2 {
 			
 			//Indexation
 			System.out.println("Indexation des voisins ...");
-			Tuilage quad = new Tuilage(batiments, 100, 100, 100);
-			quad.findNeighbours();
+			new Tuilage(batiments, 100, 100, 100).findNeighbours();
 			System.out.println("Indexation des voisins terminée !");
 			
 			//Extraction batiments
 			System.out.println("Extraction des batiments ...");
 			ArrayList<EnsembleFaces> vectBatiments = new ArrayList<EnsembleFaces>();
+			EnsembleFaces bruit = new EnsembleFaces();
 			
 			int taille = batiments.size();
 			
@@ -43,7 +43,9 @@ public class Test2 {
 				
 				if(e.size() > 1)
 					vectBatiments.add(e);
-				
+				else
+					bruit.addAll(e);
+					
 				batiments.suppress(e);
 			}
 
@@ -56,16 +58,21 @@ public class Test2 {
 
 			double erreurNombreBlocs = (double)nombre/(double)vectBatiments.size();
 			
-			int compteur = 0;
+			int compteurBat = 1;
 			
 			System.out.println("Ecriture des différents batiments ...");
 			for(EnsembleFaces ens : vectBatiments) {
 				if(ens.size() > erreurNombreBlocs) {
-					compteur ++;
-					Writer.ecrireSurfaceA(new File("batiment" + compteur + ".stl"), ens);
+					Writer.ecrireSurfaceA(new File("batiment - " + compteurBat + ".stl"), ens);
+					compteurBat ++;
+				}
+				else {
+					bruit.addAll(ens);
 				}
 			}
-			System.out.println(compteur);
+			
+			Writer.ecrireSurfaceA(new File("bruit - petits.stl"), bruit);
+			
 			System.out.println("Ecriture des différents batiments terminée !");
 			
 			System.out.println("Programme terminé !");
