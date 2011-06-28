@@ -79,8 +79,8 @@ public class Frontiere {
 		return distance;
 	}
 	
-	public EnsembleFaces returnMesh() {
-		EnsembleFaces ens = new EnsembleFaces();
+	public Mesh returnMesh() {
+		Mesh ens = new Mesh();
 		for(Edge e : edgeSet) {
 			ens.add(e.t1);
 		}

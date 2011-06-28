@@ -1,102 +1,159 @@
 package algos;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import javax.vecmath.Vector3d;
 
 import utils.MatrixMethod;
 import utils.Parser;
-import utils.Writer;
 
-import modeles.EnsembleFaces;
+import modeles.Mesh;
+import modeles.Grid;
 import modeles.Triangle;
-import modeles.Tuilage;
-
 
 public class Test1 {
-
 	public static void main(String[] args) {
 		try
 		{
-			double facteurErreurAltitude = 0.005;
-			double facteurErreurNormalSol = 30;
-			String nomFichier = "batiments 3 - binary.stl";
-			
-			System.out.println("Parsing ...");
+			double altitudeErrorFactor = 10;
+			double angleNormalErrorFactor = 0.6;
+			String townFileName = "Files\\batiments 2 - binary.stl";
+			String floorFileName = "Files\\floor.stl";
 
-			EnsembleFaces meshBrut = new EnsembleFaces(Parser.readSTLB(new File(nomFichier)));
-			System.out.println("Lecture du fichier batiments terminée !");
-			System.out.println("Nombre de triangles : " + meshBrut.size());
+			Mesh floors = new Mesh();
+			Mesh buildings = new Mesh();
 			
-			EnsembleFaces sol = new EnsembleFaces(Parser.readSTLA(new File("sol.stl")));
-			System.out.println("Lecture du fichier sol terminée !");
-			System.out.println("Nombre de triangles : " + sol.size());
-			
-			//Normale sol
-			Vector3d normalSolMalOrientee = sol.averageNormal();
-			double _errorNormalSol = sol.quadricNormalError();
-			
-			//Changement de repère
-			System.out.println("Changement de repère ...");
-			double[][] matrix = MatrixMethod.createOrthoBase(normalSolMalOrientee);
-			Vector3d _normalSol = MatrixMethod.changeBase(normalSolMalOrientee, matrix);
+			ArrayList<Mesh> buildingList = new ArrayList<Mesh>();
+			Mesh noise = new Mesh();
 
-			EnsembleFaces mesh = meshBrut.changeBase(matrix);
-			
-			System.out.println("Changement de repère terminé !");
-			
-			//Calcul de l'erreur
-			double erreurAltitude = (mesh.zMax() - mesh.zMin()) * facteurErreurAltitude;
-
-			//Calcul des orientés sol
-			System.out.println("Calcul des orientes ...");
-			EnsembleFaces meshOrientes = mesh.orientesSelon(_normalSol, facteurErreurNormalSol * _errorNormalSol);
-			System.out.println("Taille des orientés : " + meshOrientes.size());
-			System.out.println("Calcul des orientés terminé !");
-
-			//Création d'un pseudo-index : assignation de voisins à chaque triangle
-			//FIXME : bien régler les paramètres de tuilage: cela crée des pbs parfois.
-			System.out.println("Calcul des index ...");
-			Tuilage quad = new Tuilage(meshOrientes, 50, 50, 50);
-			quad.findNeighbours();
-			System.out.println("Calcul des index terminé !");
-
-			//Début de l'algorithme
-			Triangle plusBasTriangle = meshOrientes.ZMinFace();
-			double plusBasZ = plusBasTriangle.zMin();
-			
-			int taille = meshOrientes.size();
-			
-			EnsembleFaces e = new EnsembleFaces();
-			EnsembleFaces surfaceSol = new EnsembleFaces();
-			
-			long time = System.nanoTime();
-			while(plusBasTriangle.zMin() < plusBasZ + erreurAltitude)
 			{
-				System.out.println("Nombre de triangles restant : " + meshOrientes.size() + " sur : " + taille);
-				e.clear();
-							
-				plusBasTriangle.returnNeighbours(e);
-				surfaceSol.addAll(e);
+				//First part !
+				//Parsing
+				System.out.println("Parsing ...");
+				Mesh meshBrut = new Mesh(Parser.readSTLB(new File(townFileName)));
+				Mesh floorBrut = new Mesh(Parser.readSTLA(new File(floorFileName)));
+
+				//Extract of the normal of the floor
+				Vector3d normalFloorBadOriented = floorBrut.averageNormal();
+
+				//Base change
+				double[][] matrix = MatrixMethod.createOrthoBase(normalFloorBadOriented);
+				Vector3d normalFloor = MatrixMethod.changeBase(normalFloorBadOriented, matrix);
+				Mesh mesh = meshBrut.changeBase(matrix);
+				System.out.println("Base changed finished !");
+
+				//Searching for floor-oriented triangles with an error : angleNormalErrorFactor
+				//TODO : convertir l'erreur de radians en degrÃ©s
+				System.out.println("Searching for floor-oriented triangles...");
+				Mesh meshOriented = mesh.orientedAs(normalFloor, angleNormalErrorFactor);
+				System.out.println("Searching finished !");
+
+				//Index creation
+				//FIXME : bien rÃ©gler les paramÃ©tres de tuilage: cela crÃ©e des pbs parfois.
+				new Grid(meshOriented, 100, 100, 100).findNeighbours();
+
+				//Floor-search algorithm
+				//Select the lowest Triangle : it belongs to the floor
+				//Take all of its neighbours
+				//Select another Triangle which is not too high and repeat the above step			
+				int size = meshOriented.size();
+				Mesh temp = new Mesh();
+
+				Triangle lowestTriangle = meshOriented.zMinFace();
+				double lowestZ = lowestTriangle.zMin();
+
+				while(lowestTriangle.zMin() < lowestZ + altitudeErrorFactor)
+				{
+					System.out.println("Number of triangles left : " + meshOriented.size() + " on : " + size);
+					temp.clear();
+
+					lowestTriangle.returnNeighbours(temp);
+					floors.addAll(temp);
+
+					meshOriented.remove(temp);
+					mesh.remove(temp);
+					lowestTriangle = meshOriented.zMinFace(lowestZ + altitudeErrorFactor);
+				}
 				
-				meshOrientes.suppress(e);
-				mesh.suppress(e);
-				plusBasTriangle = meshOrientes.ZMinFace(plusBasZ + erreurAltitude);
+				mesh.clearNeighbours();
+
+				buildings = mesh;
 			}
-			System.out.println("Temps écoulé durant l'algo : " + (System.nanoTime() - time));
+
+			//Floor writing
+			floors.write("Files\\floorMesh.stl");
+			System.out.println("Floor written !");
+
+			//Building writing
+			buildings.write("Files\\buildingMesh.stl");
+			System.out.println("Building written !");	
+
+
+			{
+				//Second part !
+				//Neighbours index creation
+				//TODO : gÃ©rer tout seul les coeff
+				new Grid(buildings, 100, 100, 100).findNeighbours();
+
+				//Extraction of the buildings
+				System.out.println("Extracting building ...");
+				ArrayList<Mesh> formsList = Algos.blockExtract(buildings);
+				
+				//Separation of the little noises				
+				for(Mesh m : formsList) {
+					if(m.size() > 1)
+						buildingList.add(m);
+					else
+						noise.addAll(m);
+				}
+				
+				//Algorithm : detection of buildings considering their size
+				int number = 0;
+				for(Mesh m : buildingList) {
+					number += m.size();
+				}
+
+				double numberBlocksError = (double)number/(double)buildingList.size();
+
+				int buildingCounter = 1;
+
+				System.out.println("Building writing ...");
+				for(Mesh m : buildingList) {
+					if(m.size() > numberBlocksError) {
+						m.write("Files\\building - " + buildingCounter + ".stl");
+						buildingCounter ++;
+					}
+					else {
+						noise.addAll(m);
+					}
+				}
+
+				noise.write("Files\\noise.stl");
+			}
 			
-			//Ecriture du sol
-			System.out.println("Extraction du sol ...");
-			System.out.println("Taille du sol : " + surfaceSol.size());
-			Writer.ecrireSurfaceA(new File("solMesh.stl"), surfaceSol);	
-			System.out.println("Extraction du sol terminée !");
-			
-			System.out.println("Extraction des batiments ...");
-			System.out.println("Taille de batiments : " + mesh.size());
-			Writer.ecrireSurfaceA(new File("batimentsMesh.stl"), mesh);
-			System.out.println("Extraction des batiments terminée !");
-			
-			System.out.println("Programme terminé !");
+			{
+				//Third part !
+				Mesh floorsAndNoise = new Mesh(floors);
+				floorsAndNoise.addAll(noise);
+				
+				ArrayList<Mesh> floorsList = new ArrayList<Mesh>();
+				floorsAndNoise.clearNeighbours();
+				new Grid(floorsAndNoise, 100, 100, 100).findNeighbours();
+				
+				floorsList = Algos.blockExtract(floors);
+
+				//If a noise block is a neighbour of a the real floor, it's added to the real floor
+				new Grid(floorsAndNoise, 100, 100, 100).findNeighbours();
+				
+				floors.clear();
+				
+				for(Mesh e : floorsList) {
+					e.getOne().returnNeighbours(floors);
+				}
+				
+				floors.write("Files\\wholeFloors.stl");
+			}
 		}
 		catch (Exception e)
 		{

@@ -31,69 +31,6 @@ public class MatrixMethod {
 		return matrix1;
 	}
 
-	//	public static double[][] createOrthoBase3Dfrom2D(Vector3d vect1, Vector3d vect2) {
-	//		double[][] matrix1 = new double[3][3];
-	//		
-	//		Vector3d b = new Vector3d(vect1), c = new Vector3d(vect2);
-	//		b.normalize();
-	//		c.normalize();
-	//			
-	//		matrix1[0][0]=b.x;
-	//		matrix1[1][0]=b.y;
-	//		matrix1[0][1]=c.x;
-	//		matrix1[1][1]=c.y;
-	//		matrix1[2][2] = 1;
-	//		matrix1[0][2] = 0;
-	//		matrix1[1][2] = 0;
-	//		matrix1[2][0] = 0;
-	//		matrix1[2][1] = 0;
-	//		
-	//		return matrix1;
-	//	}
-	//	
-	//	public static double[][] getInversOrthoBase3Dfrom2D(double[][] matrix) {
-	//		double[][] matrix1 = new double[3][3];
-	//		
-	//		matrix1[0][0]=matrix[1][1];
-	//		matrix1[0][1]=-matrix[0][1];
-	//		matrix1[1][0]=-matrix[1][0];
-	//		matrix1[1][1]=matrix[0][0];
-	//		matrix1[2][2] = 1;
-	//		matrix1[0][2] = 0;
-	//		matrix1[1][2] = 0;
-	//		matrix1[2][0] = 0;
-	//		matrix1[2][1] = 0;
-	//		
-	//		return matrix1;
-	//	}
-	//	
-	//	public static double[][] createOrthoBase2D(Vector3d vect1, Vector3d vect2){
-	//		Vector3d b = new Vector3d(vect1), c = new Vector3d(vect2);
-	//		b.normalize();
-	//		c.normalize();
-	//	
-	//		//Gram-Schmidt
-	//		double[][]matrix1= new double[2][2];
-	//		
-	//		matrix1[0][0]=b.x;
-	//		matrix1[1][0]=b.y;
-	//		matrix1[0][1]=c.x;
-	//		matrix1[1][1]=c.y;
-	//	
-	//		return matrix1;
-	//	}
-	//	
-	//	public static double[][] getInverseOrthoBase2D(double[][] matrix) {
-	//		double[][] matrix1 = new double[2][2];
-	//		
-	//		matrix1[0][0]=matrix[1][1];
-	//		matrix1[0][1]=-matrix[0][1];
-	//		matrix1[1][0]=-matrix[1][0];
-	//		matrix1[1][1]=matrix[0][0];
-	//		
-	//		return matrix1;
-	//	}
-
 	public static double[][] getInversMatrix(double[][] matrix) {
 		double[][] matrix1 = new double[3][3];
 		
@@ -128,16 +65,6 @@ public class MatrixMethod {
 
 		//Gram-Schmidt
 		double[][]matrix1= new double[3][3];
-
-//		matrix1[0][0]=b.x;
-//		matrix1[1][0]=b.y;
-//		matrix1[2][0]=b.z;
-//		matrix1[0][1]=c.x;
-//		matrix1[1][1]=c.y;
-//		matrix1[2][1]=c.z;
-//		matrix1[0][2]=d.x;
-//		matrix1[1][2]=d.y;
-//		matrix1[2][2]=d.z;
 		
 		matrix1[0][0]=b.x;
 		matrix1[0][1]=b.y;

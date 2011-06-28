@@ -9,52 +9,52 @@ import utils.MatrixMethod;
 import utils.Parser;
 import utils.Writer;
 
-import modeles.EnsembleFaces;
+import modeles.Mesh;
 import modeles.Triangle;
-import modeles.Tuilage;
+import modeles.Grid;
 
 
 public class Test5 {
 	public static void main(String[] args) {
 		try
 		{
-			EnsembleFaces sol = new EnsembleFaces(Parser.readSTLA(new File("sol.stl")));
-			System.out.println("Lecture du fichier sol terminée !");
+			Mesh sol = new Mesh(Parser.readSTLA(new File("sol.stl")));
+			System.out.println("Lecture du fichier sol terminï¿½e !");
 			System.out.println("Nombre de triangles : " + sol.size());
 			
 			//Normale sol
 			Vector3d normalSolMalOrientee = sol.averageNormal();
 			double errorNormalSol = sol.quadricNormalError();
 			
-			//Changement de repère
+			//Changement de repï¿½re
 			double[][] matrix = MatrixMethod.createOrthoBase(normalSolMalOrientee);
 			Vector3d normalSol = MatrixMethod.changeBase(normalSolMalOrientee, matrix);
 			
 			//Parser
 			int compt = 1;
-			ArrayList<EnsembleFaces> vectBatiment = new ArrayList<EnsembleFaces>();
+			ArrayList<Mesh> vectBatiment = new ArrayList<Mesh>();
 			
 			while(new File("batiment - " + compt + ".stl").exists()) {
-				EnsembleFaces batiment = new EnsembleFaces(Parser.readSTLA(new File("batiment - " + compt + ".stl")));
+				Mesh batiment = new Mesh(Parser.readSTLA(new File("batiment - " + compt + ".stl")));
 				vectBatiment.add(batiment);
-				System.out.println("Lecture du fichier batiment - " + compt + " terminée !");
+				System.out.println("Lecture du fichier batiment - " + compt + " terminï¿½e !");
 				System.out.println("Nombre de triangles : " + batiment.size());
 				
-				EnsembleFaces orientes = batiment.orientesNormalA(normalSol, 50*errorNormalSol);
-				ArrayList<EnsembleFaces> vectMorceaux = new ArrayList<EnsembleFaces>();
-				ArrayList<EnsembleFaces> vectMurs = new ArrayList<EnsembleFaces>();
+				Mesh orientes = batiment.orientesNormalA(normalSol, 50*errorNormalSol);
+				ArrayList<Mesh> vectMorceaux = new ArrayList<Mesh>();
+				ArrayList<Mesh> vectMurs = new ArrayList<Mesh>();
 				
-				//On découpe les murs
+				//On dï¿½coupe les murs
 				int taille = 0;
 				
 				while(!orientes.isEmpty()) {
 					Triangle tri = orientes.getOne();
-					EnsembleFaces mur = orientes.orientesSelon(tri.normale, 1);
-					new Tuilage(mur, 10, 10, 10).findNeighbours();
-					EnsembleFaces temp = new EnsembleFaces();
+					Mesh mur = orientes.orientedAs(tri.normale, 1);
+					new Grid(mur, 10, 10, 10).findNeighbours();
+					Mesh temp = new Mesh();
 					tri.returnNeighbours(temp);
-					orientes.suppress(temp);
-					batiment.suppress(temp);
+					orientes.remove(temp);
+					batiment.remove(temp);
 					vectMorceaux.add(temp);
 					taille += temp.size();
 				}
@@ -64,7 +64,7 @@ public class Test5 {
 				int compteur = 0;
 				
 				//On ne garde que les gros
-				for(EnsembleFaces e : vectMorceaux) {
+				for(Mesh e : vectMorceaux) {
 					if(e.size() > 15*moyenne) {
 						vectMurs.add(e);
 						compteur++;
@@ -72,19 +72,19 @@ public class Test5 {
 					}
 				}
 				
-				System.out.println("Murs triés !");
+				System.out.println("Murs triï¿½s !");
 				
-				//On découpe ce qui reste : les toits
+				//On dï¿½coupe ce qui reste : les toits
 				vectMorceaux.clear();
-				ArrayList<EnsembleFaces> vectToits = new ArrayList<EnsembleFaces>();
+				ArrayList<Mesh> vectToits = new ArrayList<Mesh>();
 				
 				while(!batiment.isEmpty()) {
 					Triangle tri = batiment.getOne();
-					EnsembleFaces mur = batiment.orientesSelon(tri.normale, 0.3);
-					new Tuilage(mur, 10, 10, 10).findNeighbours();
-					EnsembleFaces temp = new EnsembleFaces();
+					Mesh mur = batiment.orientedAs(tri.normale, 0.3);
+					new Grid(mur, 10, 10, 10).findNeighbours();
+					Mesh temp = new Mesh();
 					tri.returnNeighbours(temp);
-					batiment.suppress(temp);
+					batiment.remove(temp);
 					vectMorceaux.add(temp);
 					taille += temp.size();
 				}
@@ -93,7 +93,7 @@ public class Test5 {
 				
 				compteur = 0;
 				
-				for(EnsembleFaces e : vectMorceaux) {
+				for(Mesh e : vectMorceaux) {
 					if(e.size() > 15*moyenne) {
 						vectToits.add(e);
 						compteur++;
@@ -101,7 +101,7 @@ public class Test5 {
 					}
 				}
 				
-				System.out.println("Toits triés !");
+				System.out.println("Toits triï¿½s !");
 
 				compt ++;
 			}

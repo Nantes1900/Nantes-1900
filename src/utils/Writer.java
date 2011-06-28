@@ -7,7 +7,7 @@ import java.io.FileWriter;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import modeles.EnsembleFaces;
+import modeles.Mesh;
 import modeles.Triangle;
 
 /**
@@ -48,7 +48,7 @@ public class Writer {
 	 * @param fw The file we want to write in
 	 * @param surface The list of faces to be written.
 	 */
-	public static void ecrireSurfaceA(File file, EnsembleFaces surface) {
+	public static void ecrireSurfaceA(File file, Mesh surface) {
 		try {
 			FileWriter fw = new FileWriter(file);
 		    fw.write("solid");
@@ -90,7 +90,7 @@ public class Writer {
 		writer.write(new byte[2]);
 	}
 		
-	public static void ecrireSurfaceB(File file,  EnsembleFaces surface) throws Exception {
+	public static void ecrireSurfaceB(File file,  Mesh surface) throws Exception {
 		DataOutputStream stream = new DataOutputStream(new FileOutputStream(file));
 		
 		byte[] header = new byte[80];

@@ -1,14 +1,14 @@
 package modeles;
 
 
-public class Tuilage {
+public class Grid {
 
 	protected Case[][][] _quad;
 
 	protected double _minX, _maxX, _minY, _maxY, _minZ, _maxZ;
 	protected int _nbX, _nbY, _nbZ;
 	
-	public Tuilage(double minX, double maxX, double minY, double maxY, double minZ, double maxZ, 
+	public Grid(double minX, double maxX, double minY, double maxY, double minZ, double maxZ, 
 							int nbX, int nbY, int nbZ) {
 		_minX = minX;		_maxX = maxX;
 		_minY = minY;		_maxY = maxY;
@@ -25,7 +25,7 @@ public class Tuilage {
 		}
 	}
 	
-	public Tuilage(EnsembleFaces e, int nbX, int nbY, int nbZ) {
+	public Grid(Mesh e, int nbX, int nbY, int nbZ) {
 		this(e.xMin(), e.xMax(), e.yMin(), e.yMax(), e.zMin(), e.zMax(), nbX, nbY, nbZ);
 		this.addEnsembleFaces(e);
 	}
@@ -40,7 +40,7 @@ public class Tuilage {
 		}
 	}
 	
-	public void addEnsembleFaces(EnsembleFaces e) {
+	public void addEnsembleFaces(Mesh e) {
 		for(Triangle f : e) {
 			addFace(f);
 		}
@@ -71,6 +71,7 @@ public class Tuilage {
 	}
 	
 	public void findNeighbours() {
+		System.out.println("Searching for neighbours...");
 		for(int i = 0; i < _nbX; i ++) {
 			for(int j = 0; j < _nbY; j ++) {
 				for(int k = 0; k < _nbZ; k ++) {
@@ -78,5 +79,6 @@ public class Tuilage {
 				}
 			}
 		}
+		System.out.println("Searching finished !");
 	}
 }

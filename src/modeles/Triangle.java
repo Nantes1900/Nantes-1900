@@ -160,7 +160,7 @@ public class Triangle {
 			   );
 	}
 	
-	public void returnNeighbours(EnsembleFaces ret) {
+	public void returnNeighbours(Mesh ret) {
 		ret.add(this);
 		
 		if(this.voisin1 != null && !ret.contains(this.voisin1))
@@ -318,7 +318,7 @@ public class Triangle {
 		}
 		else if(this.getNumVoisins() == 1) {
 			ArrayList<Edge> l = new ArrayList<Edge>();
-			//TODO : normalement, il y aurait juste besoin de regarder voisin1, vu comment sont ajoutés les voisins...
+			//TODO : normalement, il y aurait juste besoin de regarder voisin1, vu comment sont ajoutï¿½s les voisins...
 			if(voisin1 != null && voisin1.contains(p0) && voisin1.contains(p1)) {
 				l.add(new Edge(p0, p2, this));
 				l.add(new Edge(p1, p2, this));

@@ -1,29 +1,31 @@
 package modeles;
 
+import java.io.File;
 import java.util.*;
 
 import javax.vecmath.Vector3d;
 
 import utils.MatrixMethod;
+import utils.Writer;
 
 
 /**
  * An ensemble of Triangle with a defined type
  */
-public class EnsembleFaces extends HashSet<Triangle>{
+public class Mesh extends HashSet<Triangle>{
 
 	private static final long serialVersionUID = 1L;
 	
-	public EnsembleFaces() {
+	public Mesh() {
 		super();
 	}
 
-	public EnsembleFaces(Collection<? extends Triangle> c) {
+	public Mesh(Collection<? extends Triangle> c) {
 		super(c);
 	}
 	
-	public EnsembleFaces orientesSelon(Vector3d normal, double error) {
-		EnsembleFaces ret = new EnsembleFaces();
+	public Mesh orientedAs(Vector3d normal, double error) {
+		Mesh ret = new Mesh();
 		for(Triangle f : this) {
 			if(f.angularTolerance(normal, error))
 				ret.add(f);
@@ -31,8 +33,8 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		return ret;
 	}
 	
-	public EnsembleFaces orientesNormalA(Vector3d normal, double error) {
-		EnsembleFaces ret = new EnsembleFaces();
+	public Mesh orientesNormalA(Vector3d normal, double error) {
+		Mesh ret = new Mesh();
 		for(Triangle f : this) {
 			if(f.estNormalA(normal, error))
 				ret.add(f);
@@ -151,7 +153,7 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		return zMini;
 	}
 	
-	public Triangle ZMinFace() {
+	public Triangle zMinFace() {
 		Triangle triangle = null;
 		double zMini = Double.MAX_VALUE;
 		for (Triangle face : this){
@@ -199,7 +201,7 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		return p;
 	}
 	
-	public Triangle ZMinFace(double ZMax) {
+	public Triangle zMinFace(double ZMax) {
 		Triangle triangle = null;
 		for (Triangle face : this){
 			if (face.zMin() < ZMax) {
@@ -210,29 +212,35 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		if(triangle != null)
 			return triangle;
 		else
-			return ZMinFace();
+			return zMinFace();
 	}
 	
 	public Triangle getOne() {
 		return this.iterator().next();
 	}
+	
+	public void remove(Mesh aSuppr) {
+		for(Triangle f : aSuppr) {
+			this.remove(f);
+		}
+	}
 
-	public EnsembleFaces changeBase(double[][] matrix) {
-		EnsembleFaces ens = new EnsembleFaces();
+	public Mesh changeBase(double[][] matrix) {
+		Mesh ens = new Mesh();
 		for(Triangle f : this) {
 			ens.add(f.changeBase(matrix));
 		}
 		return ens;
 	}
 	
-	public void suppress(EnsembleFaces aSuppr) {
+	public void lowest(Mesh aSuppr) {
 		for(Triangle f : aSuppr) {
 			this.remove(f);
 		}
 	}
 	
-	public EnsembleFaces zBetween(double min, double max) {
-		EnsembleFaces ens = new EnsembleFaces();
+	public Mesh zBetween(double min, double max) {
+		Mesh ens = new Mesh();
 		for(Triangle t : this) {
 			if(t.zMax() < max && t.zMin() > min)
 				ens.add(t);
@@ -240,8 +248,8 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		return ens;
 	}
 	
-	public EnsembleFaces xBetween(double min, double max) {
-		EnsembleFaces ens = new EnsembleFaces();
+	public Mesh xBetween(double min, double max) {
+		Mesh ens = new Mesh();
 		for(Triangle t : this) {
 			if(t.xMax() < max && t.xMin() > min)
 				ens.add(t);
@@ -249,8 +257,8 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		return ens;
 	}
 	
-	public EnsembleFaces yBetween(double min, double max) {
-		EnsembleFaces ens = new EnsembleFaces();
+	public Mesh yBetween(double min, double max) {
+		Mesh ens = new Mesh();
 		for(Triangle t : this) {
 			if(t.yMax() < max && t.yMin() > min)
 				ens.add(t);
@@ -259,10 +267,10 @@ public class EnsembleFaces extends HashSet<Triangle>{
 	}
 	
 	public boolean detectChimney(Triangle t, Vector3d normalSol, double errorNormalSol, double error) {
-		EnsembleFaces memeHauteur = this.zBetween(t.zMin() - (t.zMin() + t.zMax()/2), t.zMax() + (t.zMin() + t.zMax()/2));
-		Tuilage quad = new Tuilage(memeHauteur, 10, 10, 10);
+		Mesh memeHauteur = this.zBetween(t.zMin() - (t.zMin() + t.zMax()/2), t.zMax() + (t.zMin() + t.zMax()/2));
+		Grid quad = new Grid(memeHauteur, 10, 10, 10);
 		quad.findNeighbours();
-		EnsembleFaces e = new EnsembleFaces();
+		Mesh e = new Mesh();
 		t.returnNeighbours(e);
 		
 		int vrai = 0;
@@ -296,37 +304,37 @@ public class EnsembleFaces extends HashSet<Triangle>{
 	}
 	
 	public boolean detectMuret(Vector3d normalSol, double errorNormalSol) {
-		EnsembleFaces orientes = this.orientesNormalA(normalSol, 0.2);
+		Mesh orientes = this.orientesNormalA(normalSol, 0.2);
 		
-		new Tuilage(orientes, 5, 5, 5).findNeighbours();
+		new Grid(orientes, 5, 5, 5).findNeighbours();
 		
 		//Extraction batiments
 		int taille = orientes.size();
-		ArrayList<EnsembleFaces> blocs = new ArrayList<EnsembleFaces>();
+		ArrayList<Mesh> blocs = new ArrayList<Mesh>();
 		while(!orientes.isEmpty())
 		{
-			EnsembleFaces e = new EnsembleFaces();
+			Mesh e = new Mesh();
 			orientes.getOne().returnNeighbours(e);
-			//TODO : Attention à la taille... Ca empêche peut-être...
+			//TODO : Attention ï¿½ la taille... Ca empï¿½che peut-ï¿½tre...
 			if(e.size() > taille/3)
 				blocs.add(e);
-			orientes.suppress(e);
+			orientes.remove(e);
 		}
 		
 		//On compte le nombre de triangles par blocs
 		//Si l'un des blocs fait 1/3 de la taille, on le retient
 		
 		if(blocs.size() == 2) {
-			//Si les triangles sont tous orientés dans le même sens
-			EnsembleFaces temp0 = blocs.get(0).orientesSelon(blocs.get(0).averageNormal(), 0.5);
-			EnsembleFaces temp1 = blocs.get(1).orientesSelon(blocs.get(1).averageNormal(), 0.5);
+			//Si les triangles sont tous orientï¿½s dans le mï¿½me sens
+			Mesh temp0 = blocs.get(0).orientedAs(blocs.get(0).averageNormal(), 0.5);
+			Mesh temp1 = blocs.get(1).orientedAs(blocs.get(1).averageNormal(), 0.5);
 			if(temp0.size() > 75*blocs.get(0).size()/100 && temp1.size() > 75*blocs.get(1).size()/100) {
 				Vector3d a = blocs.get(0).averageNormal();
 				Vector3d b = blocs.get(1).averageNormal();
 				b.negate();
 				if(a.epsilonEquals(b, 0.2)) {
 					return true;
-					//Rajouter ici d'autres tests : e.g. : vérifier que la distance entre les murs est la distance caractéristique.
+					//Rajouter ici d'autres tests : e.g. : vï¿½rifier que la distance entre les murs est la distance caractï¿½ristique.
 				}
 			}
 			//Sinon, ce n'est pas un muret
@@ -335,32 +343,32 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		return false;
 	}
 	
-	public EnsembleFaces extractMuret(EnsembleFaces boule, Vector3d normalSol, double errorNormalSol) {
-		EnsembleFaces muret = new EnsembleFaces();
+	public Mesh extractMuret(Mesh boule, Vector3d normalSol, double errorNormalSol) {
+		Mesh muret = new Mesh();
 		
-		EnsembleFaces orientes = boule.orientesNormalA(normalSol, 0.2);
+		Mesh orientes = boule.orientesNormalA(normalSol, 0.2);
 		
-		new Tuilage(orientes, 5, 5, 5).findNeighbours();
+		new Grid(orientes, 5, 5, 5).findNeighbours();
 		
 		//Extraction batiments
 		int taille = orientes.size();
-		ArrayList<EnsembleFaces> blocs = new ArrayList<EnsembleFaces>();
+		ArrayList<Mesh> blocs = new ArrayList<Mesh>();
 		while(!orientes.isEmpty())
 		{
-			EnsembleFaces e = new EnsembleFaces();
+			Mesh e = new Mesh();
 			orientes.getOne().returnNeighbours(e);
 			if(e.size() > taille/3)
 				blocs.add(e);
-			orientes.suppress(e);
+			orientes.remove(e);
 		}
 	
 		Vector3d vector = new Vector3d();
 		vector.cross(normalSol, blocs.get(0).averageNormal());
 		
 		double[][] matrix = MatrixMethod.createOrthoBase(blocs.get(0).averageNormal(), vector, normalSol);
-		EnsembleFaces ore = this.changeBase(matrix);
+		Mesh ore = this.changeBase(matrix);
 		
-		EnsembleFaces muretMalOriente = ore.xBetween(blocs.get(0).xMin(), blocs.get(0).xMax());
+		Mesh muretMalOriente = ore.xBetween(blocs.get(0).xMin(), blocs.get(0).xMax());
 		
 		double[][] matrixInv = MatrixMethod.getInversMatrix(matrix);
 		muret = muretMalOriente.changeBase(matrixInv);
@@ -376,8 +384,8 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		return muret;
 	}
 	
-	public EnsembleFaces getInBounds(Point p, double tailleBoule) {
-		EnsembleFaces ens = new EnsembleFaces();
+	public Mesh getInBounds(Point p, double tailleBoule) {
+		Mesh ens = new Mesh();
 		for(Triangle tri : this) {
 			if(p.distance3D(tri.getCentroid()) < tailleBoule)
 				ens.add(tri);
@@ -405,16 +413,16 @@ public class EnsembleFaces extends HashSet<Triangle>{
 //		return null;
 //	}
 	
-	public EnsembleFaces zProjection(double z) {
-		EnsembleFaces e = new EnsembleFaces();
+	public Mesh zProjection(double z) {
+		Mesh e = new Mesh();
 		for(Triangle t : this) {
 			e.add(t.zProjection(z));
 		}
 		return e;
 	}
 	
-	public EnsembleFaces xProjection(double x) {
-		EnsembleFaces e = new EnsembleFaces();
+	public Mesh xProjection(double x) {
+		Mesh e = new Mesh();
 		for(Triangle t : this) {
 			e.add(t.xProjection(x));
 		}
@@ -459,9 +467,14 @@ public class EnsembleFaces extends HashSet<Triangle>{
 		return e;
 	}
 	
-	public void clearVoisins() {
+	public void clearNeighbours() {
 		for(Triangle t : this) {
 			t.clearVoisins();
 		}
+	}
+	
+	public void write(String fileName) {
+		Writer.ecrireSurfaceA(new File(fileName), this);
+		System.out.println(fileName + " written !");
 	}
 }
