@@ -1,8 +1,11 @@
-package CodeFinal;
+package modeles;
 
 import java.util.*;
 
 import javax.vecmath.Vector3d;
+
+import utils.MatrixMethod;
+
 
 /**
  * An ensemble of Triangle with a defined type
@@ -66,33 +69,30 @@ public class EnsembleFaces extends HashSet<Triangle>{
 	 */
 	public double zAverage(){
 		double zAverage = 0;
-		int n = 0;
 		for(Triangle face : this){
 			zAverage += face.zAverage();
 		}
-		return zAverage/n;
+		return zAverage/this.size();
 	}
 	
 	public double xAverage(){
 		double xAverage = 0;
-		int n = 0;
 		for(Triangle face : this){
 			xAverage += face.xAverage();
 		}
-		return xAverage/n;
+		return xAverage/this.size();
 	}
 	
 	public double yAverage(){
 		double yAverage = 0;
-		int n = 0;
 		for(Triangle face : this){
 			yAverage += face.yAverage();
 		}
-		return yAverage/n;
+		return yAverage/this.size();
 	}
 	
 	public double xMax() {
-		double xMaxi = Double.MIN_VALUE;
+		double xMaxi = Double.NEGATIVE_INFINITY;
 		for (Triangle face : this){
 			if (face.xMax() > xMaxi){
 				xMaxi = face.xMax();
@@ -112,7 +112,7 @@ public class EnsembleFaces extends HashSet<Triangle>{
 	}
 	
 	public double yMax() {
-		double yMaxi = Double.MIN_VALUE;
+		double yMaxi = Double.NEGATIVE_INFINITY;
 		for (Triangle face : this){
 			if (face.yMax() > yMaxi){
 				yMaxi = face.yMax();
@@ -132,7 +132,7 @@ public class EnsembleFaces extends HashSet<Triangle>{
 	}
 	
 	public double zMax() {
-		double zMaxi = Double.MIN_VALUE;
+		double zMaxi = Double.NEGATIVE_INFINITY;
 		for (Triangle face : this){
 			if (face.zMax() > zMaxi){
 				zMaxi = face.zMax();
@@ -144,7 +144,7 @@ public class EnsembleFaces extends HashSet<Triangle>{
 	public double zMin() {
 		double zMini = Double.MAX_VALUE;
 		for (Triangle face : this){
-			if (face.zMin()<zMini){
+			if (face.zMin() < zMini){
 				zMini = face.zMin();
 			}
 		}
@@ -161,6 +161,42 @@ public class EnsembleFaces extends HashSet<Triangle>{
 			}
 		}
 		return triangle;
+	}
+	
+	public Point yMaxPoint() {
+		Point p = null;
+		double yMax = Double.NEGATIVE_INFINITY;
+		for (Triangle face : this){
+			if (face.yMax() > yMax){
+				yMax = face.yMax();
+				p = face.yMaxPoint();
+			}
+		}
+		return p;
+	}
+	
+	public Point yMinPoint() {
+		Point p = null;
+		double yMin = Double.POSITIVE_INFINITY;
+		for (Triangle face : this){
+			if (face.yMin() < yMin){
+				yMin = face.yMin();
+				p = face.yMinPoint();
+			}
+		}
+		return p;
+	}
+	
+	public Point zMaxPoint() {
+		Point p = null;
+		double zMax = Double.NEGATIVE_INFINITY;
+		for (Triangle face : this){
+			if (face.zMax() > zMax){
+				zMax = face.zMax();
+				p = face.zMaxPoint();
+			}
+		}
+		return p;
 	}
 	
 	public Triangle ZMinFace(double ZMax) {
@@ -368,4 +404,64 @@ public class EnsembleFaces extends HashSet<Triangle>{
 //		}
 //		return null;
 //	}
+	
+	public EnsembleFaces zProjection(double z) {
+		EnsembleFaces e = new EnsembleFaces();
+		for(Triangle t : this) {
+			e.add(t.zProjection(z));
+		}
+		return e;
+	}
+	
+	public EnsembleFaces xProjection(double x) {
+		EnsembleFaces e = new EnsembleFaces();
+		for(Triangle t : this) {
+			e.add(t.xProjection(x));
+		}
+		return e;
+	}
+	
+	public ArrayList<Frontiere> determinerFrontieres() {
+		ArrayList<Frontiere> e = new ArrayList<Frontiere>();
+//		boolean tag = true;
+
+		Frontiere front = new Frontiere();
+		for(Triangle tri : this) {
+			if(tri.getNumVoisins() < 3)
+				front.addAll(tri.getFront());
+		}
+
+//		Writer.ecrireSurfaceA(new File("front.stl"), front.returnMesh());
+		
+		while(!front.edgeSet.isEmpty()) {
+			Edge arete = front.edgeSet.iterator().next();
+			Frontiere ret = new Frontiere();
+			front.returnNeighbours(ret, arete);
+			e.add(ret);
+			front.suppress(ret);
+//			for(Frontiere f : e) {
+//				if(f.containsPoint(arete.p1) || f.containsPoint(arete.p2)) {
+//					f.add(arete);
+//					tag = false;
+//					break;
+//				}
+//			}
+//			if(tag == true) {
+//				Frontiere f2 = new Frontiere();
+//				f2.add(arete);
+//				e.add(f2);
+//			}
+//			tag = true;
+		}
+//		
+//		System.out.println(e.size());
+		
+		return e;
+	}
+	
+	public void clearVoisins() {
+		for(Triangle t : this) {
+			t.clearVoisins();
+		}
+	}
 }

@@ -1,4 +1,6 @@
-package CodeFinal;
+package modeles;
+
+import utils.MatrixMethod;
 
 public class Point {
 	

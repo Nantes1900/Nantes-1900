@@ -1,4 +1,5 @@
-package CodeFinal;
+package modeles;
+
 
 public class Tuilage {
 

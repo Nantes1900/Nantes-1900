@@ -1,4 +1,4 @@
-package CodeFinal;
+package utils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,6 +13,10 @@ import java.util.Scanner;
 import java.util.StringTokenizer;
 
 import javax.vecmath.Vector3d;
+
+import modeles.Point;
+import modeles.Triangle;
+
 
 public class Parser {
 	

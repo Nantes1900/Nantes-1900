@@ -1,4 +1,4 @@
-package CodeFinal;
+package utils;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -6,6 +6,10 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+
+import modeles.EnsembleFaces;
+import modeles.Triangle;
+
 /**
  * Write a STL file containing the faces, list of faces or buildings.
  *
@@ -23,14 +27,14 @@ public class Writer {
 			fw.write("\nfacet normal");
 		    String s1 = new String();
 		    double[] t = new double[3];
-		    face.normale.get(t);
+		    face.getNormale().get(t);
 		    for (int j=0;j<3;j++) {
 			   s1 += " "+t[j];				
 		    }
 		    fw.write(s1+"\nouter loop");
-		    fw.write("\nvertex"+" "+face.p0._x+" "+face.p0._y+" "+face.p0._z);
-		    fw.write("\nvertex"+" "+face.p1._x+" "+face.p1._y+" "+face.p1._z);
-		    fw.write("\nvertex"+" "+face.p2._x+" "+face.p2._y+" "+face.p2._z);
+		    fw.write("\nvertex"+" "+face.getP0().getX()+" "+face.getP0().getY()+" "+face.getP0().getZ());
+		    fw.write("\nvertex"+" "+face.getP1().getX()+" "+face.getP1().getY()+" "+face.getP1().getZ());
+		    fw.write("\nvertex"+" "+face.getP2().getX()+" "+face.getP2().getY()+" "+face.getP2().getZ());
 		    fw.write("\nendloop\nendfacet");
 		}
 		catch (java.io.IOException ee){
@@ -67,21 +71,21 @@ public class Writer {
 	}
 	
 	public static void ecrireFaceB(DataOutputStream writer, Triangle face) throws Exception {
-		writeInGoodOrder(writer, face.getNormale().x);
-		writeInGoodOrder(writer, face.getNormale().y);
-		writeInGoodOrder(writer, face.getNormale().z);
+		writeInGoodOrder(writer, face.getNormale().getX());
+		writeInGoodOrder(writer, face.getNormale().getY());
+		writeInGoodOrder(writer, face.getNormale().getZ());
 
-		writeInGoodOrder(writer, face.p1._x);
-		writeInGoodOrder(writer, face.p1._y);
-		writeInGoodOrder(writer, face.p1._z);
+		writeInGoodOrder(writer, face.getP0().getX());
+		writeInGoodOrder(writer, face.getP0().getY());
+		writeInGoodOrder(writer, face.getP0().getZ());
 
-		writeInGoodOrder(writer, face.p2._x);
-		writeInGoodOrder(writer, face.p2._y);
-		writeInGoodOrder(writer, face.p2._z);
+		writeInGoodOrder(writer, face.getP1().getX());
+		writeInGoodOrder(writer, face.getP1().getY());
+		writeInGoodOrder(writer, face.getP1().getZ());
 
-		writeInGoodOrder(writer, face.p2._x);
-		writeInGoodOrder(writer, face.p2._y);
-		writeInGoodOrder(writer, face.p2._z);
+		writeInGoodOrder(writer, face.getP2().getX());
+		writeInGoodOrder(writer, face.getP2().getY());
+		writeInGoodOrder(writer, face.getP2().getZ());
 		
 		writer.write(new byte[2]);
 	}

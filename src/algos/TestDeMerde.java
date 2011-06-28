@@ -1,8 +1,15 @@
-package CodeFinal;
+package algos;
 
 import java.io.File;
 
 import javax.vecmath.Vector3d;
+
+import utils.MatrixMethod;
+import utils.Parser;
+import utils.Writer;
+
+import modeles.EnsembleFaces;
+
 
 public class TestDeMerde {
 	public static void main(String[] args) {

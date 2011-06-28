@@ -1,8 +1,17 @@
-package CodeFinal;
+package algos;
 
 import java.io.File;
 
 import javax.vecmath.Vector3d;
+
+import utils.MatrixMethod;
+import utils.Parser;
+import utils.Writer;
+
+import modeles.EnsembleFaces;
+import modeles.Triangle;
+import modeles.Tuilage;
+
 
 public class Test1 {
 
@@ -12,8 +21,6 @@ public class Test1 {
 			double facteurErreurAltitude = 0.005;
 			double facteurErreurNormalSol = 30;
 			String nomFichier = "batiments 3 - binary.stl";
-			
-			long timeGlobal = System.nanoTime();
 			
 			System.out.println("Parsing ...");
 
@@ -90,8 +97,6 @@ public class Test1 {
 			System.out.println("Extraction des batiments terminée !");
 			
 			System.out.println("Programme terminé !");
-			
-			System.out.println("Temps écoulé : " + (System.nanoTime() - timeGlobal));
 		}
 		catch (Exception e)
 		{

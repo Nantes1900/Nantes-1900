@@ -1,7 +1,14 @@
-package CodeFinal;
+package algos;
 
 import java.io.File;
 import java.util.ArrayList;
+
+import utils.Parser;
+import utils.Writer;
+
+import modeles.EnsembleFaces;
+import modeles.Tuilage;
+
 
 public class Test3 {
 	public static void main(String[] args) {

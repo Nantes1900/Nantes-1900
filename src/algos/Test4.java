@@ -1,9 +1,18 @@
-package CodeFinal;
+package algos;
 
 import java.io.File;
 import java.util.ArrayList;
 
 import javax.vecmath.Vector3d;
+
+import utils.MatrixMethod;
+import utils.Parser;
+import utils.Writer;
+
+import modeles.EnsembleFaces;
+import modeles.Triangle;
+import modeles.Tuilage;
+
 
 public class Test4 {
 	public static void main(String[] args) {
