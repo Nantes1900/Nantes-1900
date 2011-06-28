@@ -1,6 +1,5 @@
 package utils;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileInputStream;
@@ -17,15 +16,14 @@ import javax.vecmath.Vector3d;
 import modeles.Point;
 import modeles.Triangle;
 
-
 public class Parser {
 	
 	private static Vector3d currentVector;
 	private static ArrayList<Point> currentPoints;
 	
 	
-	public static HashSet<Triangle> readSTLB(File file) throws Exception {
-	    FileInputStream stream = new FileInputStream(file);
+	public static HashSet<Triangle> readSTLB(String fileName) throws Exception {
+	    FileInputStream stream = new FileInputStream(fileName);
 	    
 		byte[] header = new byte[80];
 		stream.read(header, 0, 80);
@@ -62,8 +60,8 @@ public class Parser {
 		return new Triangle(p1, p2, p3, norm);
 	}
 	
-	public static HashSet<Triangle> readSTLA(File file) throws FileNotFoundException {
-		Scanner scanner = new Scanner(new FileReader(file));
+	public static HashSet<Triangle> readSTLA(String fileName) throws FileNotFoundException {
+		Scanner scanner = new Scanner(new FileReader(fileName));
 		LinkedList<Triangle> facesFromSTL = new LinkedList<Triangle>();
 		
 		//Reading the file

@@ -1,13 +1,15 @@
-package modeles;
+package utils;
 
+import modeles.Mesh;
+import modeles.Triangle;
 
 public class Grid {
 
-	protected Case[][][] _quad;
+	private Case[][][] quad;
 
-	protected double _minX, _maxX, _minY, _maxY, _minZ, _maxZ;
-	protected int _nbX, _nbY, _nbZ;
-	
+	private double _minX, _maxX, _minY, _maxY, _minZ, _maxZ;
+	private int _nbX, _nbY, _nbZ;
+
 	public Grid(double minX, double maxX, double minY, double maxY, double minZ, double maxZ, 
 							int nbX, int nbY, int nbZ) {
 		_minX = minX;		_maxX = maxX;
@@ -15,14 +17,22 @@ public class Grid {
 		_minZ = minZ;		_maxZ = maxZ;
 		_nbX = nbX;			_nbY = nbY;			_nbZ = nbZ;
 		
-		_quad = new Case[_nbX][_nbY][_nbZ];
+		quad = new Case[_nbX][_nbY][_nbZ];
 		for(int i = 0; i < _nbX; i ++) {
 			for(int j = 0; j < _nbY; j ++) {
 				for(int k = 0; k < _nbZ; k ++) {
-					_quad[i][j][k] = new Case();
+					quad[i][j][k] = new Case();
 				}
 			}
 		}
+	}
+	
+	public Case[][][] getQuad() {
+		return quad;
+	}
+
+	public void setQuad(Case[][][] quad) {
+		this.quad = quad;
 	}
 	
 	public Grid(Mesh e, int nbX, int nbY, int nbZ) {
@@ -34,7 +44,7 @@ public class Grid {
 		for(int i = 0; i < _nbX; i ++) {
 			for(int j = 0; j < _nbY; j ++) {
 				for(int k = 0; k < _nbZ; k ++) {
-					_quad[i][j][k].clear();
+					quad[i][j][k].clear();
 				}
 			}
 		}
@@ -48,9 +58,9 @@ public class Grid {
 	
 	//TODO : A tester !
 	public void addFace(Triangle f) {
-		addFace(f, caseX(f.p0._x), caseY(f.p0._y), caseZ(f.p0._z));
-		addFace(f, caseX(f.p1._x), caseY(f.p1._y), caseZ(f.p1._z));
-		addFace(f, caseX(f.p2._x), caseY(f.p2._y), caseZ(f.p2._z));
+		addFace(f, caseX(f.getP0().getX()), caseY(f.getP0().getY()), caseZ(f.getP0().getZ()));
+		addFace(f, caseX(f.getP1().getX()), caseY(f.getP1().getY()), caseZ(f.getP1().getZ()));
+		addFace(f, caseX(f.getP2().getX()), caseY(f.getP2().getY()), caseZ(f.getP2().getZ()));
 	}
 	
 	//TODO : A TESTER ! ENLEVER LES DIVISIONS ET LES FAIRE DANS LE CONSTRUCTEUR !
@@ -67,7 +77,7 @@ public class Grid {
 	}
 	
 	public void addFace(Triangle f, int x, int y, int z) {
-		_quad[x][y][z].addFace(f);
+		quad[x][y][z].addFace(f);
 	}
 	
 	public void findNeighbours() {
@@ -75,7 +85,7 @@ public class Grid {
 		for(int i = 0; i < _nbX; i ++) {
 			for(int j = 0; j < _nbY; j ++) {
 				for(int k = 0; k < _nbZ; k ++) {
-					_quad[i][j][k].findNeighbours();
+					quad[i][j][k].findNeighbours();
 				}
 			}
 		}

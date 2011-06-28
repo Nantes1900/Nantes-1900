@@ -1,6 +1,8 @@
-package modeles;
+package utils;
 
 import java.util.ArrayList;
+
+import modeles.Triangle;
 
 public class Case extends ArrayList<Triangle>{
 
@@ -12,6 +14,7 @@ public class Case extends ArrayList<Triangle>{
 		f.addBelongedCase(this);
 	}
 	
+	//TODO : à revoir !
 	public void findNeighbours() {
 		Triangle f, a;
 		for(int k = 0; k < this.size(); k ++) 
@@ -24,8 +27,8 @@ public class Case extends ArrayList<Triangle>{
 					a = this.get(l);
 					if((a.getNumVoisins() < 3) && (f.getNumVoisins() < 3) && (f.hasTwoEqualVertices(a)) && !(f == a))
 					{
-						f.addVoisin(a);
-						a.addVoisin(f);
+						f.addNeighbour(a);
+						a.addNeighbour(f);
 					}
 				}
 			}

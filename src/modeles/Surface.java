@@ -4,14 +4,16 @@ import java.util.ArrayList;
 
 import javax.vecmath.Vector3d;
 
+//TODO : enlever cette merde de SuppressWarnings
+@SuppressWarnings("unused")
 
 public class Surface{
-	protected Polyline points;
-	protected String topologie;
-	protected String type;
-	protected Vector3d normale;
-	protected int ID;
-	protected ArrayList<Surface> voisins;
+	private Polyline points;
+	private String topologie;
+	private String type;
+	private Vector3d normale;
+	private int ID;
+	private ArrayList<Surface> voisins;
 	
 	protected static int ID_current = 0;
 

@@ -1,29 +1,32 @@
 package algos;
 
-import java.io.File;
 import java.util.ArrayList;
 
 import javax.vecmath.Vector3d;
 
+import utils.Grid;
 import utils.MatrixMethod;
 import utils.Parser;
 
 import modeles.Mesh;
-import modeles.Grid;
 import modeles.Triangle;
 
 public class Test1 {
+	public static boolean DEBUG = false;
+	
 	public static void main(String[] args) {
 		try
 		{
 			double altitudeErrorFactor = 10;
 			double angleNormalErrorFactor = 0.6;
+			double blockSizeBuildingError = 1;
+			
 			String townFileName = "Files\\batiments 2 - binary.stl";
 			String floorFileName = "Files\\floor.stl";
 
 			Mesh floors = new Mesh();
 			Mesh buildings = new Mesh();
-			
+
 			ArrayList<Mesh> buildingList = new ArrayList<Mesh>();
 			Mesh noise = new Mesh();
 
@@ -31,8 +34,8 @@ public class Test1 {
 				//First part !
 				//Parsing
 				System.out.println("Parsing ...");
-				Mesh meshBrut = new Mesh(Parser.readSTLB(new File(townFileName)));
-				Mesh floorBrut = new Mesh(Parser.readSTLA(new File(floorFileName)));
+				Mesh meshBrut = new Mesh(Parser.readSTLB(townFileName));
+				Mesh floorBrut = new Mesh(Parser.readSTLA(floorFileName));
 
 				//Extract of the normal of the floor
 				Vector3d normalFloorBadOriented = floorBrut.averageNormal();
@@ -73,21 +76,23 @@ public class Test1 {
 
 					meshOriented.remove(temp);
 					mesh.remove(temp);
-					lowestTriangle = meshOriented.zMinFace(lowestZ + altitudeErrorFactor);
+					lowestTriangle = meshOriented.zMinFaceUnder(lowestZ + altitudeErrorFactor);
 				}
-				
+
 				mesh.clearNeighbours();
 
 				buildings = mesh;
 			}
 
-			//Floor writing
-			floors.write("Files\\floorMesh.stl");
-			System.out.println("Floor written !");
+			if(DEBUG) {
+				//Floor writing
+				floors.writeA("Files\\floorMesh.stl");
+				System.out.println("Floor written !");
 
-			//Building writing
-			buildings.write("Files\\buildingMesh.stl");
-			System.out.println("Building written !");	
+				//Building writing
+				buildings.writeA("Files\\buildingMesh.stl");
+				System.out.println("Building written !");
+			}
 
 
 			{
@@ -99,7 +104,7 @@ public class Test1 {
 				//Extraction of the buildings
 				System.out.println("Extracting building ...");
 				ArrayList<Mesh> formsList = Algos.blockExtract(buildings);
-				
+
 				//Separation of the little noises				
 				for(Mesh m : formsList) {
 					if(m.size() > 1)
@@ -107,21 +112,19 @@ public class Test1 {
 					else
 						noise.addAll(m);
 				}
-				
+
 				//Algorithm : detection of buildings considering their size
 				int number = 0;
 				for(Mesh m : buildingList) {
 					number += m.size();
 				}
 
-				double numberBlocksError = (double)number/(double)buildingList.size();
-
 				int buildingCounter = 1;
 
 				System.out.println("Building writing ...");
 				for(Mesh m : buildingList) {
-					if(m.size() > numberBlocksError) {
-						m.write("Files\\building - " + buildingCounter + ".stl");
+					if(m.size() > blockSizeBuildingError * (double)number/(double)buildingList.size()) {
+						m.writeA("Files\\building - " + buildingCounter + ".stl");
 						buildingCounter ++;
 					}
 					else {
@@ -129,30 +132,32 @@ public class Test1 {
 					}
 				}
 
-				noise.write("Files\\noise.stl");
+				noise.writeA("Files\\noise.stl");
 			}
-			
+
 			{
 				//Third part !
 				Mesh floorsAndNoise = new Mesh(floors);
 				floorsAndNoise.addAll(noise);
-				
+
 				ArrayList<Mesh> floorsList = new ArrayList<Mesh>();
 				floorsAndNoise.clearNeighbours();
 				new Grid(floorsAndNoise, 100, 100, 100).findNeighbours();
-				
+
 				floorsList = Algos.blockExtract(floors);
 
 				//If a noise block is a neighbour of a the real floor, it's added to the real floor
 				new Grid(floorsAndNoise, 100, 100, 100).findNeighbours();
-				
+
 				floors.clear();
-				
+
 				for(Mesh e : floorsList) {
 					e.getOne().returnNeighbours(floors);
 				}
 				
-				floors.write("Files\\wholeFloors.stl");
+				//TODO : remettre le reste des bruits dans un autre fichier
+
+				floors.writeA("Files\\wholeFloors.stl");
 			}
 		}
 		catch (Exception e)

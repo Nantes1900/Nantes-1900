@@ -2,11 +2,7 @@ package utils;
 
 import javax.vecmath.Vector3d;
 
-/**
- * A set of untested methods designed to handle basis change
- * 
- *
- */
+//TODO : classe à bien refaire !
 
 public class MatrixMethod {
 

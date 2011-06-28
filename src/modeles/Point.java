@@ -4,9 +4,9 @@ import utils.MatrixMethod;
 
 public class Point {
 	
-	protected double _x;
-	protected double _y;
-	protected double _z;
+	private double _x;
+	private double _y;
+	private double _z;
 	
 	public Point() {
 		this._x = 0;
@@ -42,7 +42,7 @@ public class Point {
 	public String toString() {
 		return new String("(" + _x + ", " + _y + ", " + _z + ")");
 	}
-	public double distance3D(Point p) {
+	public double distance(Point p) {
 		return Math.pow(Math.pow(p._x - _x, 2) + Math.pow(p._y - _y, 2) + Math.pow(p._z - _z, 2), 0.5);
 	}
 	
