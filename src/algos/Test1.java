@@ -141,9 +141,8 @@ public class Test1 {
 				floorsAndNoise.addAll(noise);
 
 				ArrayList<Mesh> floorsList = new ArrayList<Mesh>();
-				floorsAndNoise.clearNeighbours();
-				new Grid(floorsAndNoise, 100, 100, 100).findNeighbours();
 
+				//TODO : faire le blockExtract(floorsAndNoise) plutôt !
 				floorsList = Algos.blockExtract(floors);
 
 				//If a noise block is a neighbour of a the real floor, it's added to the real floor

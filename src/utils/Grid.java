@@ -35,9 +35,19 @@ public class Grid {
 		this.quad = quad;
 	}
 	
+	//FIXME : put it private to see how many calls u've got to change : see the next constructor... : more automatic !
 	public Grid(Mesh e, int nbX, int nbY, int nbZ) {
 		this(e.xMin(), e.xMax(), e.yMin(), e.yMax(), e.zMin(), e.zMax(), nbX, nbY, nbZ);
 		this.addEnsembleFaces(e);
+		e.clearNeighbours();
+	}
+	
+	public Grid(Mesh e) {
+		this(e, (int) ((e.xMax() - e.xMin())/e.xLengthAverage()/10), 
+				(int) ((e.yMax() - e.yMin())/e.yLengthAverage()/10), 
+				(int) ((e.zMax() - e.zMin())/e.zLengthAverage()/10));
+		this.addEnsembleFaces(e);
+		e.clearNeighbours();
 	}
 	
 	public void clear() {
@@ -81,7 +91,7 @@ public class Grid {
 	}
 	
 	public void findNeighbours() {
-		System.out.println("Searching for neighbours...");
+//		System.out.println("Searching for neighbours...");
 		for(int i = 0; i < _nbX; i ++) {
 			for(int j = 0; j < _nbY; j ++) {
 				for(int k = 0; k < _nbZ; k ++) {
@@ -89,6 +99,6 @@ public class Grid {
 				}
 			}
 		}
-		System.out.println("Searching finished !");
+//		System.out.println("Searching finished !");
 	}
 }

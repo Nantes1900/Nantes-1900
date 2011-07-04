@@ -2,7 +2,10 @@ package algos;
 
 import java.util.ArrayList;
 
+import utils.Grid;
+
 import modeles.Mesh;
+import modeles.Triangle;
 
 public class Algos {
 
@@ -10,11 +13,9 @@ public class Algos {
 		ArrayList<Mesh> buildingList = new ArrayList<Mesh>();
 		Mesh buildings = new Mesh(m);
 		
-		int originalSize = buildings.size();
-		
 		while(!buildings.isEmpty())
 		{
-			System.out.println("Number of triangles left : " + buildings.size() + " sur : " + originalSize);
+			new Grid(buildings).findNeighbours();
 			Mesh e = new Mesh();
 			buildings.getOne().returnNeighbours(e);			
 			buildings.remove(e);
@@ -22,6 +23,23 @@ public class Algos {
 		}
 		
 		return buildingList;
+	}
+	
+	
+	public static ArrayList<Mesh> blockOrientedExtract(Mesh m, double angleNormalErrorFactor) {
+		ArrayList<Mesh> thingsList = new ArrayList<Mesh>();
+		
+		while(!m.isEmpty()) {
+			Triangle tri = m.getOne();
+			Mesh wall = m.orientedAs(tri.getNormal(), angleNormalErrorFactor);
+			new Grid(wall).findNeighbours();
+			Mesh temp = new Mesh();
+			tri.returnNeighbours(temp);
+			m.remove(temp);
+			thingsList.add(temp);
+		}
+		
+		return thingsList;
 	}
 	
 //	public boolean detectChimney(Triangle t, Vector3d normalSol, double errorNormalSol, double error) {

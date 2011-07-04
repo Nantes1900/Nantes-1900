@@ -43,7 +43,7 @@ public class Parser {
 			mesh.add(processLineB(bBuf));
 		}
 		
-		System.out.println("Lecture du fichier terminée !");
+		System.out.println("Lecture du fichier " + fileName + " terminée !");
 		System.out.println("Nombre de triangles : " + mesh.size());
 		
 		return mesh;
@@ -74,7 +74,7 @@ public class Parser {
 	        scanner.close();
 	      }
 	    
-		System.out.println("Lecture du fichier terminée !");
+		System.out.println("Lecture du fichier " + fileName + " terminée !");
 		System.out.println("Nombre de triangles : " + facesFromSTL.size());
 	    
 	    return new HashSet<Triangle>(facesFromSTL);
