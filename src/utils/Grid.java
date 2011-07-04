@@ -1,5 +1,7 @@
 package utils;
 
+import java.security.InvalidParameterException;
+
 import modeles.Mesh;
 import modeles.Triangle;
 
@@ -11,12 +13,16 @@ public class Grid {
 	private int _nbX, _nbY, _nbZ;
 
 	public Grid(double minX, double maxX, double minY, double maxY, double minZ, double maxZ, 
-							int nbX, int nbY, int nbZ) {
+			int nbX, int nbY, int nbZ) {
+
+		if(nbX == 0 || nbY == 0 || nbZ == 0)
+			throw new InvalidParameterException("0-sized array !");
+
 		_minX = minX;		_maxX = maxX;
 		_minY = minY;		_maxY = maxY;
 		_minZ = minZ;		_maxZ = maxZ;
 		_nbX = nbX;			_nbY = nbY;			_nbZ = nbZ;
-		
+
 		quad = new Case[_nbX][_nbY][_nbZ];
 		for(int i = 0; i < _nbX; i ++) {
 			for(int j = 0; j < _nbY; j ++) {
@@ -26,7 +32,7 @@ public class Grid {
 			}
 		}
 	}
-	
+
 	public Case[][][] getQuad() {
 		return quad;
 	}
@@ -34,22 +40,22 @@ public class Grid {
 	public void setQuad(Case[][][] quad) {
 		this.quad = quad;
 	}
-	
+
 	//FIXME : put it private to see how many calls u've got to change : see the next constructor... : more automatic !
 	public Grid(Mesh e, int nbX, int nbY, int nbZ) {
 		this(e.xMin(), e.xMax(), e.yMin(), e.yMax(), e.zMin(), e.zMax(), nbX, nbY, nbZ);
 		this.addEnsembleFaces(e);
 		e.clearNeighbours();
 	}
-	
+
 	public Grid(Mesh e) {
-		this(e, (int) ((e.xMax() - e.xMin())/e.xLengthAverage()/10), 
-				(int) ((e.yMax() - e.yMin())/e.yLengthAverage()/10), 
-				(int) ((e.zMax() - e.zMin())/e.zLengthAverage()/10));
+		this(e, ((int)((e.xMax() - e.xMin())/e.xLengthAverage()/10) + 1), 
+				((int)((e.yMax() - e.yMin())/e.yLengthAverage()/10) + 1), 
+				((int)((e.zMax() - e.zMin())/e.zLengthAverage()/10) + 1));
 		this.addEnsembleFaces(e);
 		e.clearNeighbours();
 	}
-	
+
 	public void clear() {
 		for(int i = 0; i < _nbX; i ++) {
 			for(int j = 0; j < _nbY; j ++) {
@@ -59,39 +65,39 @@ public class Grid {
 			}
 		}
 	}
-	
+
 	public void addEnsembleFaces(Mesh e) {
 		for(Triangle f : e) {
 			addFace(f);
 		}
 	}
-	
+
 	//TODO : A tester !
 	public void addFace(Triangle f) {
 		addFace(f, caseX(f.getP0().getX()), caseY(f.getP0().getY()), caseZ(f.getP0().getZ()));
 		addFace(f, caseX(f.getP1().getX()), caseY(f.getP1().getY()), caseZ(f.getP1().getZ()));
 		addFace(f, caseX(f.getP2().getX()), caseY(f.getP2().getY()), caseZ(f.getP2().getZ()));
 	}
-	
+
 	//TODO : A TESTER ! ENLEVER LES DIVISIONS ET LES FAIRE DANS LE CONSTRUCTEUR !
 	public int caseX(double x) {
 		return (int)Math.abs((x - _minX) * (double)_nbX / (_maxX + 1 - _minX));
 	}
-	
+
 	public int caseY(double y) {
 		return (int)Math.abs((y - _minY) * (double)_nbY / (_maxY + 1 - _minY));
 	}
-	
+
 	public int caseZ(double z) {
 		return (int)Math.abs((z - _minZ) * (double)_nbZ / (_maxZ + 1 - _minZ));
 	}
-	
+
 	public void addFace(Triangle f, int x, int y, int z) {
 		quad[x][y][z].addFace(f);
 	}
-	
+
 	public void findNeighbours() {
-//		System.out.println("Searching for neighbours...");
+		//		System.out.println("Searching for neighbours...");
 		for(int i = 0; i < _nbX; i ++) {
 			for(int j = 0; j < _nbY; j ++) {
 				for(int k = 0; k < _nbZ; k ++) {
@@ -99,6 +105,6 @@ public class Grid {
 				}
 			}
 		}
-//		System.out.println("Searching finished !");
+		//		System.out.println("Searching finished !");
 	}
 }

@@ -50,7 +50,7 @@ public class Mesh extends HashSet<Triangle>{
 			average.add(face.getNormal());
 		}
 		average.scale(1/(double)n);
-		
+
 		return average;
 	}
 
@@ -90,30 +90,6 @@ public class Mesh extends HashSet<Triangle>{
 			}
 		}
 		return xMaxi;
-	}
-	
-	public double xLengthAverage() {
-		double xLengthAve = 0;
-		for(Triangle t : this) {
-			xLengthAve += (t.xMax() - t.xMin());
-		}
-		return xLengthAve/(double)this.size();
-	}
-	
-	public double yLengthAverage() {
-		double yLengthAve = 0;
-		for(Triangle t : this) {
-			yLengthAve += (t.yMax() - t.yMin());
-		}
-		return yLengthAve/(double)this.size();
-	}
-	
-	public double zLengthAverage() {
-		double zLengthAve = 0;
-		for(Triangle t : this) {
-			zLengthAve += (t.zMax() - t.zMin());
-		}
-		return zLengthAve/(double)this.size();
 	}
 
 	public double xMin() {
@@ -164,7 +140,32 @@ public class Mesh extends HashSet<Triangle>{
 			}
 		}
 		return zMini;
+	}	
+
+	public double xLengthAverage() {
+		double xLengthAve = 0;
+		for(Triangle t : this) {
+			xLengthAve += (t.xMax() - t.xMin());
+		}
+		return xLengthAve/(double)this.size();
 	}
+
+	public double yLengthAverage() {
+		double yLengthAve = 0;
+		for(Triangle t : this) {
+			yLengthAve += (t.yMax() - t.yMin());
+		}
+		return yLengthAve/(double)this.size();
+	}
+
+	public double zLengthAverage() {
+		double zLengthAve = 0;
+		for(Triangle t : this) {
+			zLengthAve += (t.zMax() - t.zMin());
+		}
+		return zLengthAve/(double)this.size();
+	}
+
 
 	public Triangle zMinFace() {
 		Triangle triangle = null;
@@ -325,7 +326,7 @@ public class Mesh extends HashSet<Triangle>{
 	}
 
 	//TODO : à refaire !
-	public ArrayList<Border> determinerFrontieres() {
+	public ArrayList<Border> returnBounds() {
 		ArrayList<Border> e = new ArrayList<Border>();
 
 		Border front = new Border();

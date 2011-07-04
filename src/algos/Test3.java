@@ -9,22 +9,26 @@ import utils.Grid;
 import utils.MatrixMethod;
 import utils.Parser;
 
+import modeles.Border;
 import modeles.Mesh;
+import modeles.Point;
+
+//FIXME : à suppr
+@SuppressWarnings("unused")
 
 public class Test3 {
 
 	public static boolean DEBUG = true;
 
 	public static void main(String[] args) {
-		try
-		{
+		try {
 			double angleNormalErrorFactor = 0.6;
-			double errorNumberTrianglesWall = 10;
+			double errorNumberTrianglesWall = 15;
 			double errorNumberTrianglesRoof = 3;
 
 			//Floor parser
 			System.out.println("Parsing ...");
-			Mesh floor = new Mesh(Parser.readSTLA("Files\\floor.stl"));
+			Mesh floor = new Mesh(Parser.readSTLA("Files/floor.stl"));
 
 			//Floor normal
 			Vector3d normalFloorBadOriented = floor.averageNormal();
@@ -34,106 +38,158 @@ public class Test3 {
 			Vector3d normalFloor = MatrixMethod.changeBase(normalFloorBadOriented, matrix);
 
 			//Buildings parser
-			int counterBuilding = 4;
+			int counterBuilding = 5;
 			ArrayList<Mesh> buildingList = new ArrayList<Mesh>();
 
-			while(new File("Files\\building - " + counterBuilding + ".stl").exists()) {
-				Mesh building = new Mesh(Parser.readSTLA("Files\\building - " + counterBuilding + ".stl"));
+//			while(new File("Files/building - " + counterBuilding + ".stl").exists()) {
+				Mesh building = new Mesh(Parser.readSTLA("Files/building - " + counterBuilding + ".stl"));
 				buildingList.add(building);
 
-				//Wall sorting
-				Mesh wallOriented = building.orientedNormalTo(normalFloor, angleNormalErrorFactor);
-				ArrayList<Mesh> thingsList = new ArrayList<Mesh>();
 				ArrayList<Mesh> wallList = new ArrayList<Mesh>();
-				Mesh noise = new Mesh();
-
-				thingsList = Algos.blockOrientedExtract(wallOriented, angleNormalErrorFactor);
-
-				int size = 0;
-
-				for (Mesh e : thingsList) {
-					building.remove(e);
-					size += e.size();
-				}
-
-				for(Mesh e : thingsList) {
-					if(e.size() > errorNumberTrianglesWall*(double)size/(double)thingsList.size()) {
-						wallList.add(e);
-					}
-					else
-						noise.addAll(e);
-				}
-
-				System.out.println("Walls sorted !");
-				Mesh wholeWall = new Mesh();
-				for(Mesh w : wallList) {
-					wholeWall.addAll(w);
-				}
-
-				if(DEBUG) {
-					wholeWall.writeA("Files\\wall.stl");
-					System.out.println("Wall written !");
-				}
-
-
-				//Roof sorting
 				ArrayList<Mesh> roofList = new ArrayList<Mesh>();
+				ArrayList<Border> borderList = new ArrayList<Border>();
+				Mesh noise = new Mesh();
+				Mesh wholeWall = new Mesh();
 
-				thingsList = Algos.blockOrientedExtract(building, angleNormalErrorFactor);
+				{
+					//Wall sorting
+					Mesh wallOriented = building.orientedNormalTo(normalFloor, angleNormalErrorFactor);
+					ArrayList<Mesh> thingsList = new ArrayList<Mesh>();
 
-				size = 0;
+					thingsList = Algos.blockOrientedExtract(wallOriented, angleNormalErrorFactor);
 
-				for (Mesh e : thingsList) {
-					size += e.size();
-				}
+					int size = 0;
 
-				for(Mesh e : thingsList) {
-					if((e.size() > errorNumberTrianglesRoof*(double)size/(double)thingsList.size()) && (e.averageNormal().dot(normalFloor) > 0)) {
-						roofList.add(e);
+					for (Mesh e : thingsList) {
+						building.remove(e);
+						size += e.size();
 					}
-					else
-						noise.addAll(e);
-				}
 
-				System.out.println("Roofs sorted !");
-
-				if(DEBUG) {				
-					Mesh wholeRoof = new Mesh();
-					for(Mesh r : roofList) {
-						wholeRoof.addAll(r);
+					for(Mesh e : thingsList) {
+						if(e.size() > errorNumberTrianglesWall*(double)size/(double)thingsList.size()) {
+							wallList.add(e);
+						}
+						else
+							noise.addAll(e);
 					}
-					wholeRoof.writeA("Files\\roof.stl");
-					System.out.println("Roof written !");
-				}
 
-				//Noise treatment
-				Mesh wallsAndNoise = new Mesh(wholeWall);
-				wallsAndNoise.addAll(noise);
-
-				new Grid(wallsAndNoise).findNeighbours();
-
-				ArrayList<Mesh> m = new ArrayList<Mesh>();
-
-				for(Mesh e : wallList) {
-					Mesh me = new Mesh();
-					e.getOne().returnNeighbours(me);
-					m.add(me);
-				}
-
-				System.out.println("Noise treated !");
-				
-				if(DEBUG) {
-					wholeWall = new Mesh();
-					for(Mesh w : m) {
+					System.out.println("Walls sorted !");
+					for(Mesh w : wallList) {
 						wholeWall.addAll(w);
 					}
-					wholeWall.writeA("Files\\entireWall.stl");
+
+					if(DEBUG) {
+						wholeWall.writeA("Files/wall.stl");
+					}
 				}
 
-				counterBuilding ++;
-			}
-		}
-		catch(Exception e) {
+				{
+					//Roof sorting
+					ArrayList<Mesh> thingsList = Algos.blockOrientedExtract(building, angleNormalErrorFactor);
+
+					int size = 0;
+
+					for (Mesh e : thingsList) {
+						size += e.size();
+					}
+
+					for(Mesh e : thingsList) {
+						if((e.size() > errorNumberTrianglesRoof*(double)size/(double)thingsList.size()) && (e.averageNormal().dot(normalFloor) > 0)) {
+							roofList.add(e);
+						}
+						else
+							noise.addAll(e);
+					}
+
+					System.out.println("Roofs sorted !");
+
+					if(DEBUG) {				
+						Mesh wholeRoof = new Mesh();
+						for(Mesh r : roofList) {
+							wholeRoof.addAll(r);
+						}
+						wholeRoof.writeA("Files/roof.stl");
+					}
+				}
+
+				{
+					//Noise treatment
+
+					ArrayList<Mesh> m = new ArrayList<Mesh>();
+
+					for(Mesh e : wallList) {
+						Mesh wallAndNoise = new Mesh(e);
+						Mesh noiseOriented = noise.orientedAs(e.averageNormal(), 1.2);
+						wallAndNoise.addAll(noiseOriented);
+						new Grid(wallAndNoise).findNeighbours();
+						Mesh mes = new Mesh();
+						e.getOne().returnNeighbours(mes);
+						m.add(mes);
+						noise.remove(mes);
+					}
+
+					wallList = m;
+
+					System.out.println("Noise treated !");
+
+					if(DEBUG) {
+						wholeWall = new Mesh();
+						for(Mesh w : wallList) {
+							wholeWall.addAll(w);
+						}
+						wholeWall.writeA("Files/entireWall.stl");
+					}
+				}
+				int counterWall = 1;
+
+				for(Mesh wall : wallList) {
+
+					Border bound = new Border();
+					
+					{
+						Vector3d vector = new Vector3d();
+						Mesh wallWellOriented = wall.orientedNormalTo(normalFloor, 0.2);
+						Vector3d normalWallBadOriented = wallWellOriented.averageNormal();
+						vector.cross(normalFloor, normalWallBadOriented);
+
+						double[][] matrixWall = MatrixMethod.createOrthoBase(normalWallBadOriented, vector, normalFloor);
+						double[][] matrixInv = MatrixMethod.getInversMatrix(matrixWall);
+
+						Mesh surface = wall.changeBase(matrixWall);
+						Mesh projectedSurface = surface.xProjection(surface.xAverage());
+
+						new Grid(projectedSurface).findNeighbours();
+						ArrayList<Border> boundsList = projectedSurface.returnBounds();
+
+						double max = Double.MIN_VALUE;
+						Border longestBorder = new Border();
+
+						for(Border f : boundsList) {
+							if(f.distance() > max) {
+								max = f.distance();
+								longestBorder = f;
+							}
+						}
+
+						//When projectedSurface base is changed, then longestBorder points are base changed too, because it's a list
+						//of references.
+						projectedSurface.changeBase(matrixInv);
+						bound = longestBorder;
+						borderList.add(bound);
+
+					}				
+
+					{
+						//Treatment of each border to convert it to simple Polylines
+						Border b = new Border();
+						Point downLeft = new Point(bound.xAverage(), bound.yMin(), bound.zMin());
+						Point downRight = new Point(bound.xAverage(), bound.yMax(), bound.zMin());
+					}
+					counterWall ++;
+				}
+//				counterBuilding ++;
+//			}
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}

@@ -8,8 +8,8 @@ public class UselessTest {
 	public static void main(String[] args) {
 		try
 		{
-			Mesh mesh = new Mesh(Parser.readSTLA("Files\\building - 5.stl"));
-			mesh.writeB("Files\\test.stl");
+			Mesh mesh = new Mesh(Parser.readSTLA("Files/building - 1.stl"));
+			mesh.writeB("test - essai.stl");
 		}
 		catch (Exception e)
 		{

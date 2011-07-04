@@ -60,7 +60,7 @@ public class Test4 {
 
 				new Grid(surfaceProj, 100, 100, 100).findNeighbours();
 
-				ArrayList<Border> listeFrontieres = surfaceProj.determinerFrontieres();
+				ArrayList<Border> listeFrontieres = surfaceProj.returnBounds();
 				double max = Double.MIN_VALUE;
 				Border laPlusLongue = new Border();
 

@@ -64,9 +64,9 @@ public class Writer {
 
 	private static void writeInGoodOrder(DataOutputStream writer, double a) throws Exception {
 		ByteBuffer bBuf = ByteBuffer.allocate(Float.SIZE);
-		bBuf.putFloat((float)a);
 		bBuf.order(ByteOrder.LITTLE_ENDIAN);
-		writer.writeFloat(bBuf.getFloat(0));
+		bBuf.putFloat((float)a);
+		writer.write(bBuf.array(), 0, Float.SIZE/8);
 	}
 
 	public static void writeBinaryFace(DataOutputStream writer, Triangle face) throws Exception {

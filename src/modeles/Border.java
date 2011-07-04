@@ -3,10 +3,15 @@ package modeles;
 import java.util.HashSet;
 import java.util.List;
 
+//TODO : suppress @SuppressWarnings
+@SuppressWarnings("unused")
+
 public class Border {
 	
 	private HashSet<Edge> edgeSet;
 	private HashSet<Point> pointSet;
+	private int ID;
+	private static int ID_current = 0;
 	private static final long serialVersionUID = 1L;
 	
 	public Border(List<Edge> a) {
@@ -16,11 +21,13 @@ public class Border {
 			pointSet.add(e.getP2());
 		}
 		pointSet = new HashSet<Point>();
+		this.ID = ++ID_current;
 	}
 	
 	public Border() {
 		edgeSet = new HashSet<Edge>();
 		pointSet = new HashSet<Point>();
+		this.ID = ++ID_current;
 	}
 	
 
@@ -80,7 +87,7 @@ public class Border {
 		return false;
 	}
 
-	public int size() {
+	public int edgeSize() {
 		return edgeSet.size();
 	}
 	
@@ -116,5 +123,89 @@ public class Border {
 					this.returnNeighbours(f, edg);
 			}
 		}	
+	}
+	
+	public double zAverage(){
+		double zAverage = 0;
+		for(Point p : pointSet){
+			zAverage += p.getZ();
+		}
+		return zAverage/pointSet.size();
+	}
+
+	public double xAverage(){
+		double xAverage = 0;
+		for(Point p : pointSet){
+			xAverage += p.getX();
+		}
+		return xAverage/pointSet.size();
+	}
+
+	public double yAverage(){
+		double yAverage = 0;
+		for(Point p : pointSet){
+			yAverage += p.getY();
+		}
+		return yAverage/pointSet.size();
+	}
+
+	public double xMax() {
+		double xMaxi = Double.NEGATIVE_INFINITY;
+		for (Point p : pointSet){
+			if (p.getX() > xMaxi){
+				xMaxi = p.getX();
+			}
+		}
+		return xMaxi;
+	}
+
+	public double xMin() {
+		double xMini = Double.POSITIVE_INFINITY;
+		for (Point p : pointSet){
+			if (p.getX() < xMini){
+				xMini = p.getX();
+			}
+		}
+		return xMini;
+	}
+	
+	public double yMax() {
+		double yMaxi = Double.NEGATIVE_INFINITY;
+		for (Point p : pointSet){
+			if (p.getY() > yMaxi){
+				yMaxi = p.getY();
+			}
+		}
+		return yMaxi;
+	}
+
+	public double yMin() {
+		double yMini = Double.POSITIVE_INFINITY;
+		for (Point p : pointSet){
+			if (p.getY() < yMini){
+				yMini = p.getY();
+			}
+		}
+		return yMini;
+	}
+	
+	public double zMax() {
+		double zMaxi = Double.NEGATIVE_INFINITY;
+		for (Point p : pointSet){
+			if (p.getZ() > zMaxi){
+				zMaxi = p.getZ();
+			}
+		}
+		return zMaxi;
+	}
+
+	public double zMin() {
+		double zMini = Double.POSITIVE_INFINITY;
+		for (Point p : pointSet){
+			if (p.getZ() < zMini){
+				zMini = p.getZ();
+			}
+		}
+		return zMini;
 	}
 }
