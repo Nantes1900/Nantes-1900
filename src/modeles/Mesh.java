@@ -166,7 +166,6 @@ public class Mesh extends HashSet<Triangle>{
 		return zLengthAve/(double)this.size();
 	}
 
-
 	public Triangle zMinFace() {
 		Triangle triangle = null;
 		double zMini = Double.POSITIVE_INFINITY;
@@ -354,11 +353,11 @@ public class Mesh extends HashSet<Triangle>{
 
 	public void writeA(String fileName) {
 		Writer.writeSTLA(fileName, this);
-		System.out.println(fileName + " written in STL ASCII!");
+//		System.out.println(fileName + " written in STL ASCII!");
 	}
 
 	public void writeB(String fileName) {
 		Writer.writeSTLB(fileName, this);
-		System.out.println(fileName + " written in STL binary!");
+//		System.out.println(fileName + " written in STL binary!");
 	}
 }
