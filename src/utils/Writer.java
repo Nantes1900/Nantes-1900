@@ -16,6 +16,34 @@ import modeles.Triangle;
 
 public class Writer {
 
+	public static final int ASCII_MODE = 1;
+	public static final int BINARY_MODE = 2;
+	
+	private static int MODE = ASCII_MODE;
+	
+	public static void write(String fileName, Mesh m) {
+		if(MODE == ASCII_MODE)
+			writeA(fileName, m);
+		else if(MODE == BINARY_MODE)
+			writeB(fileName, m);
+		else
+			System.err.println("Erreur !");
+	}
+	
+	public static void setWriteMode(int mode) {
+		MODE = mode;
+	}
+	
+	private static void writeA(String fileName, Mesh m) {
+		Writer.writeSTLA(fileName, m);
+		System.out.println(fileName + " written in STL ASCII!");
+	}
+
+	private static void writeB(String fileName, Mesh m) {
+		Writer.writeSTLB(fileName, m);
+		System.out.println(fileName + " written in STL binary!");
+	}
+	
 	/**
 	 * 
 	 * @param fw The file we want to write in.

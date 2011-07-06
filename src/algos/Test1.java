@@ -4,12 +4,10 @@ import java.util.ArrayList;
 
 import javax.vecmath.Vector3d;
 
-import utils.Grid;
-import utils.MatrixMethod;
-import utils.Parser;
-
 import modeles.Mesh;
 import modeles.Triangle;
+import utils.MatrixMethod;
+import utils.Parser;
 
 public class Test1 {
 	public static boolean DEBUG = false;
@@ -21,8 +19,8 @@ public class Test1 {
 			double angleNormalErrorFactor = 0.6;
 			double blockSizeBuildingError = 1;
 			
-			String townFileName = "Files\\batiments 2 - binary.stl";
-			String floorFileName = "Files\\floor.stl";
+			String townFileName = "Files/batiments 2 - binary.stl";
+			String floorFileName = "Files/floor.stl";
 
 			Mesh floors = new Mesh();
 			Mesh buildings = new Mesh();
@@ -34,8 +32,8 @@ public class Test1 {
 				//First part !
 				//Parsing
 				System.out.println("Parsing ...");
-				Mesh meshBrut = new Mesh(Parser.readSTLB(townFileName));
-				Mesh floorBrut = new Mesh(Parser.readSTLA(floorFileName));
+				Mesh mesh = new Mesh(Parser.readSTL(townFileName));
+				Mesh floorBrut = new Mesh(Parser.readSTL(floorFileName));
 
 				//Extract of the normal of the floor
 				Vector3d normalFloorBadOriented = floorBrut.averageNormal();
@@ -43,7 +41,7 @@ public class Test1 {
 				//Base change
 				double[][] matrix = MatrixMethod.createOrthoBase(normalFloorBadOriented);
 				Vector3d normalFloor = MatrixMethod.changeBase(normalFloorBadOriented, matrix);
-				Mesh mesh = meshBrut.changeBase(matrix);
+				mesh.changeBase(matrix);
 				System.out.println("Base changed finished !");
 
 				//Searching for floor-oriented triangles with an error : angleNormalErrorFactor
@@ -54,7 +52,8 @@ public class Test1 {
 
 				//Index creation
 				//FIXME : bien régler les paramétres de tuilage: cela crée des pbs parfois.
-				new Grid(meshOriented, 100, 100, 100).findNeighbours();
+//				new Grid(meshOriented).findNeighbours();
+				meshOriented.findNeighbours();
 
 				//Floor-search algorithm
 				//Select the lowest Triangle : it belongs to the floor
@@ -66,7 +65,8 @@ public class Test1 {
 				Triangle lowestTriangle = meshOriented.zMinFace();
 				double lowestZ = lowestTriangle.zMin();
 
-				while(lowestTriangle.zMin() < lowestZ + altitudeErrorFactor)
+				//TODO : on peut même enlever le lowestTriangle.sMin() < lowestZ, etc... parce que c'est au fond de la boucle...
+				while(lowestTriangle != null && lowestTriangle.zMin() < lowestZ + altitudeErrorFactor)
 				{
 					System.out.println("Number of triangles left : " + meshOriented.size() + " on : " + size);
 					temp.clear();
@@ -86,11 +86,11 @@ public class Test1 {
 
 			if(DEBUG) {
 				//Floor writing
-				floors.writeA("Files\\floorMesh.stl");
+				floors.write("Files/floorMesh.stl");
 				System.out.println("Floor written !");
 
 				//Building writing
-				buildings.writeA("Files\\buildingMesh.stl");
+				buildings.write("Files/buildingMesh.stl");
 				System.out.println("Building written !");
 			}
 
@@ -99,7 +99,7 @@ public class Test1 {
 				//Second part !
 				//Neighbours index creation
 				//TODO : gérer tout seul les coeff
-				new Grid(buildings, 100, 100, 100).findNeighbours();
+				buildings.findNeighbours();
 
 				//Extraction of the buildings
 				System.out.println("Extracting building ...");
@@ -124,7 +124,7 @@ public class Test1 {
 				System.out.println("Building writing ...");
 				for(Mesh m : buildingList) {
 					if(m.size() > blockSizeBuildingError * (double)number/(double)buildingList.size()) {
-						m.writeA("Files\\building - " + buildingCounter + ".stl");
+						m.write("Files/building - " + buildingCounter + ".stl");
 						buildingCounter ++;
 					}
 					else {
@@ -132,7 +132,7 @@ public class Test1 {
 					}
 				}
 
-				noise.writeA("Files\\noise.stl");
+				noise.write("Files/noise.stl");
 			}
 
 			{
@@ -146,7 +146,7 @@ public class Test1 {
 				floorsList = Algos.blockExtract(floors);
 
 				//If a noise block is a neighbour of a the real floor, it's added to the real floor
-				new Grid(floorsAndNoise, 100, 100, 100).findNeighbours();
+				floorsAndNoise.findNeighbours();
 
 				floors.clear();
 
@@ -156,7 +156,7 @@ public class Test1 {
 				
 				//TODO : remettre le reste des bruits dans un autre fichier
 
-				floors.writeA("Files\\wholeFloors.stl");
+				floors.write("Files/wholeFloors.stl");
 			}
 		}
 		catch (Exception e)

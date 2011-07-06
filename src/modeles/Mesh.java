@@ -1,6 +1,9 @@
 package modeles;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
 
 import javax.vecmath.Vector3d;
 
@@ -19,6 +22,11 @@ public class Mesh extends HashSet<Triangle>{
 
 	public Mesh(Collection<? extends Triangle> c) {
 		super(c);
+//		long time = System.nanoTime();
+//		Grid g = new Grid(this);
+//		g.updatePoints();
+//		g.updateEdges();
+//		System.err.println((System.nanoTime() - time));
 	}
 
 	public Mesh orientedAs(Vector3d normal, double error) {
@@ -236,12 +244,16 @@ public class Mesh extends HashSet<Triangle>{
 		}
 	}
 
-	public Mesh changeBase(double[][] matrix) {
-		Mesh ens = new Mesh();
+	public void changeBase(double[][] matrix) {
+		HashSet<Point> set = new HashSet<Point>();
 		for(Triangle f : this) {
-			ens.add(f.changeBase(matrix));
+			set.add(f.getP0());
+			set.add(f.getP1());
+			set.add(f.getP2());
 		}
-		return ens;
+		for(Point p : set) {
+			p.changeBase(matrix);
+		}
 	}
 
 	public Mesh zBetween(double m1, double m2) {
@@ -327,20 +339,29 @@ public class Mesh extends HashSet<Triangle>{
 	//TODO : à refaire !
 	public ArrayList<Border> returnBounds() {
 		ArrayList<Border> e = new ArrayList<Border>();
+//		ArrayList<Border> eFin = new ArrayList<Border>();
 
 		Border front = new Border();
 		for(Triangle tri : this) {
-			if(tri.getNumVoisins() < 3)
+			if(tri.getNumVoisins() < 3 && tri.getNumVoisins() > 0)
 				front.addAll(tri.getFront());
 		}
 
-		while(!front.getEdgeSet().isEmpty()) {
-			Edge arete = front.getEdgeSet().iterator().next();
+		while(!front.getEdgeList().isEmpty()) {
+			Edge arete = front.getEdgeList().iterator().next();
 			Border ret = new Border();
 			front.returnNeighbours(ret, arete);
 			e.add(ret);
-			front.suppress(ret);	
+			front.remove(ret);
 		}
+		
+//		//Si certains possède des frontières doubles, il faut créer deux frontières
+//		for(Border b : e) {
+////			System.out.println(b.edgeSize());
+//			Border bFin = Algos.orderBorder(b);
+////			System.out.println(bFin.edgeSize());
+//			eFin.add(bFin);
+//		}
 
 		return e;
 	}
@@ -351,13 +372,23 @@ public class Mesh extends HashSet<Triangle>{
 		}
 	}
 
-	public void writeA(String fileName) {
-		Writer.writeSTLA(fileName, this);
-//		System.out.println(fileName + " written in STL ASCII!");
+	public void write(String fileName) {
+		Writer.write(fileName, this);
 	}
 
-	public void writeB(String fileName) {
-		Writer.writeSTLB(fileName, this);
-//		System.out.println(fileName + " written in STL binary!");
+	public void findNeighbours() {
+		long time = System.nanoTime();
+		ArrayList<Triangle> neighbours = new ArrayList<Triangle>();
+		for(Triangle t : this) {
+			neighbours.clear();
+			neighbours.addAll(t.getEdge1().getTriangleList());
+			neighbours.addAll(t.getEdge2().getTriangleList());
+			neighbours.addAll(t.getEdge3().getTriangleList());
+			for(Triangle neigh : neighbours) {
+				if(this.contains(neigh))
+					t.addNeighbour(neigh);
+			}
+		}
+		System.out.println("Temps de calcul des voisins (nouvelle méthode) + " + (System.nanoTime() - time));
 	}
 }

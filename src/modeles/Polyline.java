@@ -3,6 +3,7 @@ package modeles;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.media.j3d.PointSound;
 import javax.vecmath.Vector3d;
 
 import utils.Writer;
@@ -35,7 +36,7 @@ public class Polyline {
 	}
 	
 	//FIXME : A refaire !
-	public Mesh buildMesh() {
+	public Mesh buildWallMesh() {
 		Mesh surface = new Mesh();
 		Point downRight = pointList.get(0);
 		Point downLeft = pointList.get(1);
@@ -66,5 +67,13 @@ public class Polyline {
 			line.add(p.changeBase(matrix));
 		}
 		return line;
+	}
+
+	public Point get(int i) {
+		return pointList.get(i);
+	}
+
+	public int size() {
+		return this.pointList.size();
 	}
 }

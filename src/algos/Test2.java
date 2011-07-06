@@ -19,11 +19,11 @@ public class Test2 {
 
 			ArrayList<Mesh> buildingList = new ArrayList<Mesh>();
 			while(new File("building - " + buildingCounter + ".stl").exists()) {
-				buildingList.add(new Mesh(Parser.readSTLA("building - " + buildingCounter + ".stl")));
+				buildingList.add(new Mesh(Parser.readSTL("building - " + buildingCounter + ".stl")));
 				buildingCounter ++;
 			}
 
-			Mesh floors = new Mesh(Parser.readSTLA("sol.stl"));
+			Mesh floors = new Mesh(Parser.readSTL("sol.stl"));
 
 			//Floor normal
 			Vector3d normalFloorBadOriented = floors.averageNormal();

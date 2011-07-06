@@ -12,7 +12,7 @@ public class Grid {
 	private double _minX, _maxX, _minY, _maxY, _minZ, _maxZ;
 	private int _nbX, _nbY, _nbZ;
 
-	public Grid(double minX, double maxX, double minY, double maxY, double minZ, double maxZ, 
+	private Grid(double minX, double maxX, double minY, double maxY, double minZ, double maxZ, 
 			int nbX, int nbY, int nbZ) {
 
 		if(nbX == 0 || nbY == 0 || nbZ == 0)
@@ -31,18 +31,9 @@ public class Grid {
 				}
 			}
 		}
-	}
-
-	public Case[][][] getQuad() {
-		return quad;
-	}
-
-	public void setQuad(Case[][][] quad) {
-		this.quad = quad;
-	}
-
-	//FIXME : put it private to see how many calls u've got to change : see the next constructor... : more automatic !
-	public Grid(Mesh e, int nbX, int nbY, int nbZ) {
+	}	
+	
+	private Grid(Mesh e, int nbX, int nbY, int nbZ) {
 		this(e.xMin(), e.xMax(), e.yMin(), e.yMax(), e.zMin(), e.zMax(), nbX, nbY, nbZ);
 		this.addEnsembleFaces(e);
 		e.clearNeighbours();
@@ -54,6 +45,14 @@ public class Grid {
 				((int)((e.zMax() - e.zMin())/e.zLengthAverage()/10) + 1));
 		this.addEnsembleFaces(e);
 		e.clearNeighbours();
+	}
+
+	public Case[][][] getQuad() {
+		return quad;
+	}
+
+	public void setQuad(Case[][][] quad) {
+		this.quad = quad;
 	}
 
 	public void clear() {
@@ -96,15 +95,45 @@ public class Grid {
 		quad[x][y][z].addFace(f);
 	}
 
-	public void findNeighbours() {
-		//		System.out.println("Searching for neighbours...");
-		for(int i = 0; i < _nbX; i ++) {
-			for(int j = 0; j < _nbY; j ++) {
-				for(int k = 0; k < _nbZ; k ++) {
-					quad[i][j][k].findNeighbours();
-				}
-			}
-		}
-		//		System.out.println("Searching finished !");
-	}
+//	public void findNeighbours() {
+//		//		System.out.println("Searching for neighbours...");
+//		for(int i = 0; i < _nbX; i ++) {
+//			for(int j = 0; j < _nbY; j ++) {
+//				for(int k = 0; k < _nbZ; k ++) {
+//					quad[i][j][k].findNeighbours();
+//				}
+//			}
+//		}
+//		//		System.out.println("Searching finished !");
+//	}
+//	
+////	public void updatePoints() {
+////		for(int i = 0; i < _nbX; i ++) {
+////			for(int j = 0; j < _nbY; j ++) {
+////				for(int k = 0; k < _nbZ; k ++) {
+////					quad[i][j][k].updatePoints();
+////				}
+////			}
+////		}
+////	}
+//
+//	public void updateEdges() {
+//		for(int i = 0; i < _nbX; i ++) {
+//			for(int j = 0; j < _nbY; j ++) {
+//				for(int k = 0; k < _nbZ; k ++) {
+//					quad[i][j][k].updateEdges();
+//				}
+//			}
+//		}
+//	}
+//
+//	public void createEdges() {
+//		for(int i = 0; i < _nbX; i ++) {
+//			for(int j = 0; j < _nbY; j ++) {
+//				for(int k = 0; k < _nbZ; k ++) {
+//					quad[i][j][k].createEdges();
+//				}
+//			}
+//		}
+//	}
 }

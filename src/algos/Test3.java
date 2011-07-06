@@ -1,35 +1,36 @@
 package algos;
 
-import java.awt.Polygon;
-import java.io.File;
 import java.util.ArrayList;
 
 import javax.vecmath.Vector3d;
 
-import utils.Grid;
-import utils.MatrixMethod;
-import utils.Parser;
-
 import modeles.Border;
-import modeles.Edge;
 import modeles.Mesh;
 import modeles.Point;
 import modeles.Polyline;
+import utils.Grid;
+import utils.MatrixMethod;
+import utils.Parser;
+import utils.Writer;
 
-@SuppressWarnings("unused")
 public class Test3 {
 
 	public static boolean DEBUG = false;
+	public static boolean WALLS = true;
+	public static boolean ROOFS = true;	
 
 	public static void main(String[] args) {
 		try {
 			double angleNormalErrorFactor = 0.6;
 			double errorNumberTrianglesWall = 15;
 			double errorNumberTrianglesRoof = 3;
+			
+			//Options set
+			Writer.setWriteMode(Writer.ASCII_MODE);
 
 			//Floor parser
 			System.out.println("Parsing ...");
-			Mesh floor = new Mesh(Parser.readSTLA("Files/floor.stl"));
+			Mesh floor = new Mesh(Parser.readSTL("Files/floor.stl"));
 
 			//Floor normal
 			Vector3d normalFloorBadOriented = floor.averageNormal();
@@ -43,16 +44,20 @@ public class Test3 {
 			ArrayList<Mesh> buildingList = new ArrayList<Mesh>();
 
 			//			while(new File("Files/building - " + counterBuilding + ".stl").exists()) {
-			Mesh building = new Mesh(Parser.readSTLA("Files/building - " + counterBuilding + ".stl"));
+			Mesh building = new Mesh(Parser.readSTL("Files/building - " + counterBuilding + ".stl"));
 			buildingList.add(building);
 
 			ArrayList<Mesh> wallList = new ArrayList<Mesh>();
 			ArrayList<Mesh> roofList = new ArrayList<Mesh>();
-			ArrayList<Border> contourList = new ArrayList<Border>();
+
+//			ArrayList<Polyline> wallComputedList = new ArrayList<Polyline>();
+//			ArrayList<Polyline> roofComputedList = new ArrayList<Polyline>();
+
 			Mesh noise = new Mesh();
 			Mesh wholeWall = new Mesh();
 
 			{
+				
 				//Wall sorting
 				Mesh wallOriented = building.orientedNormalTo(normalFloor, angleNormalErrorFactor);
 				ArrayList<Mesh> thingsList = new ArrayList<Mesh>();
@@ -80,7 +85,7 @@ public class Test3 {
 				}
 
 				if(DEBUG) {
-					wholeWall.writeA("Files/wall.stl");
+					wholeWall.write("Files/wall.stl");
 				}
 			}
 
@@ -109,26 +114,48 @@ public class Test3 {
 					for(Mesh r : roofList) {
 						wholeRoof.addAll(r);
 					}
-					wholeRoof.writeA("Files/roof.stl");
+					wholeRoof.write("Files/roof.stl");
 				}
 			}
 
 			{
 				//Noise treatment
-				ArrayList<Mesh> m = new ArrayList<Mesh>();
+				{
+					//Add to the walls
+					ArrayList<Mesh> m = new ArrayList<Mesh>();
 
-				for(Mesh e : wallList) {
-					Mesh wallAndNoise = new Mesh(e);
-					Mesh noiseOriented = noise.orientedAs(e.averageNormal(), 1.2);
-					wallAndNoise.addAll(noiseOriented);
-					new Grid(wallAndNoise).findNeighbours();
-					Mesh mes = new Mesh();
-					e.getOne().returnNeighbours(mes);
-					m.add(mes);
-					noise.remove(mes);
+					for(Mesh e : wallList) {
+						Mesh wallAndNoise = new Mesh(e);
+						Mesh noiseOriented = noise.orientedAs(e.averageNormal(), 1.2);
+						wallAndNoise.addAll(noiseOriented);
+						new Grid(wallAndNoise).findNeighbours();
+						Mesh mes = new Mesh();
+						e.getOne().returnNeighbours(mes);
+						m.add(mes);
+						noise.remove(mes);
+					}
+
+					wallList = m;
 				}
 
-				wallList = m;
+				{
+					//Add to the roofs
+					ArrayList<Mesh> m = new ArrayList<Mesh>();
+
+					for(Mesh e : roofList) {
+						Mesh roofAndNoise = new Mesh(e);
+						//TODO : put this factor in the header !
+						Mesh noiseOriented = noise.orientedAs(e.averageNormal(), 1.2);
+						roofAndNoise.addAll(noiseOriented);
+						new Grid(roofAndNoise).findNeighbours();
+						Mesh mes = new Mesh();
+						e.getOne().returnNeighbours(mes);
+						m.add(mes);
+						noise.remove(mes);
+					}
+
+					roofList = m;
+				}
 
 				System.out.println("Noise treated !");
 
@@ -137,93 +164,142 @@ public class Test3 {
 					for(Mesh w : wallList) {
 						wholeWall.addAll(w);
 					}
-					wholeWall.writeA("Files/entireWall.stl");
+					wholeWall.write("Files/entireWall.stl");
 				}
 			}
 
+			if(WALLS)
 			{
 				//Wall treatment
 				int counterWall = 1;
+				ArrayList<Border> contourList = new ArrayList<Border>();
 
 				for(Mesh wall : wallList) {
 
 					Border bound = new Border();
 
-					{
-						Vector3d vector = new Vector3d();
-						Mesh wallWellNormalToTheFloor = wall.orientedNormalTo(normalFloor, 0.2);
-						
-						//To get a wall normal correctly oriented normal to the floor, we select the good part of the wall.
-						Vector3d normalWallBadOriented = wallWellNormalToTheFloor.averageNormal();
-						vector.cross(normalFloor, normalWallBadOriented);
+					Vector3d vector = new Vector3d();
+					Mesh wallWellNormalToTheFloor = wall.orientedNormalTo(normalFloor, 0.2);
 
-						double[][] matrixWall = MatrixMethod.createOrthoBase(normalWallBadOriented, vector, normalFloor);
-						double[][] matrixInv = MatrixMethod.getInversMatrix(matrixWall);
+					//To get a wall normal correctly oriented normal to the floor, we select the good part of the wall.
+					Vector3d normalWallBadOriented = wallWellNormalToTheFloor.averageNormal();
+					vector.cross(normalFloor, normalWallBadOriented);
 
-						Mesh surface = wall.changeBase(matrixWall);
-						Mesh surfaceWellNormalToTheFloor = wallWellNormalToTheFloor.changeBase(matrixWall);
+					double[][] matrixWall = MatrixMethod.createOrthoBase(normalWallBadOriented, vector, normalFloor);
+					double[][] matrixInv = MatrixMethod.getInversMatrix(matrixWall);
 
-						//We project on the plane at the x coordinate of the majority of triangle of the wall.
-						Mesh projectedSurface = surface.xProjection(surfaceWellNormalToTheFloor.xAverage());
+					Mesh surface = wall.changeBase(matrixWall);
+					Mesh surfaceWellNormalToTheFloor = wallWellNormalToTheFloor.changeBase(matrixWall);
 
-						new Grid(projectedSurface).findNeighbours();
-						ArrayList<Border> boundsList = projectedSurface.returnBounds();
+					//We project on the plane at the x coordinate of the majority of triangle of the wall.
+					Mesh projectedSurface = surface.xProjection(surfaceWellNormalToTheFloor.xAverage());
 
-						double max = Double.MIN_VALUE;
+					Grid grid = new Grid(projectedSurface);
+					
+//					grid.updatePoints();
+					grid.createEdges();
+					grid.findNeighbours();
+					grid.updateEdges();
+					
+					ArrayList<Border> boundList = projectedSurface.returnBounds();
+					bound = Algos.returnLongestBorder(boundList);
 
-						for(Border f : boundsList) {
-							if(f.distance() > max) {
-								max = f.distance();
-								bound = f;
-							}
+					//TODO : traiter les autres contour intérieurs : fenêtres, portes, etc...
+
+					contourList.add(bound);
+
+					//Treatment of each border to convert it into simple Polylines
+					Polyline p = new Polyline();
+					Point downLeft = new Point(bound.xAverage(), bound.yMin(), bound.zMin());
+					Point downRight = new Point(bound.xAverage(), bound.yMax(), bound.zMin());
+
+					p.add(downRight);
+					p.add(downLeft);
+
+					double pace = bound.yLengthAverage()*10;
+
+					//FIXME : supprimer la partie basse du contour, pour éviter que celle-ci soit sélectionnée.
+					//Ou alors bien augmenter la taille du pas.
+
+					double leftLimit = bound.yMin();
+					double rightLimit = leftLimit + pace;
+
+					while(rightLimit < bound.yMax() - pace) {
+						Border part = bound.yBetween(leftLimit, rightLimit);
+						rightLimit += pace;
+						if(!part.isEmpty()) {
+							leftLimit = rightLimit;
+							p.add(part.zMaxPoint());
 						}
-
-						contourList.add(bound);
-
-						//Treatment of each border to convert it into simple Polylines
-						Polyline p = new Polyline();
-						Point downLeft = new Point(bound.xAverage(), bound.yMin(), bound.zMin());
-						Point downRight = new Point(bound.xAverage(), bound.yMax(), bound.zMin());
-
-						p.add(downRight);
-						p.add(downLeft);
-
-						double pace = bound.yLengthAverage()*10;
-
-						//FIXME : supprimer la partie basse du contour, pour éviter que celle-ci soit sélectionnée.
-						//Ou alors bien augmenter la taille du pas.
-
-						double leftLimit = bound.yMin();
-						double rightLimit = leftLimit + pace;
-
-						while(rightLimit < bound.yMax() - pace) {
-							Border part = bound.yBetween(leftLimit, rightLimit);
-							rightLimit += pace;
-							if(!part.isEmpty()) {
-								leftLimit = rightLimit;
-								p.add(part.zMaxPoint());
-							}
-						}
-
-						//When projectedSurface base is changed, then longestBorder points are base changed too, because it's a list
-						//of references.
-						Mesh m = p.buildMesh();
-						Mesh mWellOriented = m.changeBase(matrixInv);
-
-						mWellOriented.writeA("wallComputed - " + counterWall + ".stl");
-
-						System.out.println("Files/Wall - " + counterWall + " of building - " + counterBuilding + " computed !");
 					}
+
+					//When projectedSurface base is changed, then longestBorder points are base changed too, because it's a list
+					//of references.
+					Mesh m = p.buildWallMesh();
+					Mesh mWellOriented = m.changeBase(matrixInv);
+
+					//FIXME : on doit changeBase après être passé par le mesh seulement...
+//					wallComputedList.add(p.changeBase(matrixInv));
+
+					mWellOriented.write("Files/wallComputed - " + counterWall + " of building - " + counterBuilding + ".stl");
+
 					counterWall ++;
 				}
 			}
 
+			if(ROOFS)
 			{
 				//Roof treatment
 
 				int counterRoof = 1;
+				ArrayList<Border> contourList = new ArrayList<Border>();
+				
+				for(Mesh roof : roofList) {
 
+					Border bound = new Border();
 
+					Vector3d normalRoofBadOriented = roof.averageNormal();
+
+					double[][] matrixRoof = MatrixMethod.createOrthoBase(normalRoofBadOriented);
+					double[][] matrixInv = MatrixMethod.getInversMatrix(matrixRoof);
+
+					Mesh surface = roof.changeBase(matrixRoof);
+
+					//We project on the plane at the z coordinate of the majority of triangle of the roof.
+					Mesh projectedSurface = surface.zProjection(surface.zAverage());
+
+					
+					Grid grid = new Grid(projectedSurface);
+					
+//					grid.updatePoints();
+					grid.createEdges();
+					grid.findNeighbours();
+					grid.updateEdges();
+					
+					ArrayList<Border> boundList = projectedSurface.returnBounds();
+					bound = Algos.returnLongestBorder(boundList);
+
+					contourList.add(bound);
+
+					Mesh toWrite = bound.returnMesh().changeBase(matrixInv);
+					toWrite.write("toit - " + counterRoof + ".stl");
+
+					//TODO : traiter les autres contours : cheminées, etc...
+
+					Border orderedBound = Algos.orderBorder(bound);
+
+					Mesh toWrite2 = orderedBound.returnMesh().changeBase(matrixInv);
+					toWrite2.write("toitOrdered - " + counterRoof + ".stl");
+
+					int numberOfReduction = 10;
+
+					Border reducedLine = Algos.reduce(orderedBound, numberOfReduction);
+
+					Mesh mWellOriented = reducedLine.buildRoofMesh().changeBase(matrixInv);
+					mWellOriented.write("roofComputed - " + counterRoof + " of building - " + counterBuilding + ".stl");
+
+					counterRoof ++;
+				}
 			}
 			//				counterBuilding ++;
 			//			}
