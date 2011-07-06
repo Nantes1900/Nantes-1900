@@ -6,9 +6,6 @@ import javax.vecmath.Vector3d;
 
 import modeles.Border;
 import modeles.Mesh;
-import modeles.Point;
-import modeles.Polyline;
-import utils.Grid;
 import utils.MatrixMethod;
 import utils.Parser;
 import utils.Writer;
@@ -128,7 +125,7 @@ public class Test3 {
 						Mesh wallAndNoise = new Mesh(e);
 						Mesh noiseOriented = noise.orientedAs(e.averageNormal(), 1.2);
 						wallAndNoise.addAll(noiseOriented);
-						new Grid(wallAndNoise).findNeighbours();
+						wallAndNoise.findNeighbours();
 						Mesh mes = new Mesh();
 						e.getOne().returnNeighbours(mes);
 						m.add(mes);
@@ -147,7 +144,7 @@ public class Test3 {
 						//TODO : put this factor in the header !
 						Mesh noiseOriented = noise.orientedAs(e.averageNormal(), 1.2);
 						roofAndNoise.addAll(noiseOriented);
-						new Grid(roofAndNoise).findNeighbours();
+						roofAndNoise.findNeighbours();
 						Mesh mes = new Mesh();
 						e.getOne().returnNeighbours(mes);
 						m.add(mes);
@@ -186,20 +183,15 @@ public class Test3 {
 					vector.cross(normalFloor, normalWallBadOriented);
 
 					double[][] matrixWall = MatrixMethod.createOrthoBase(normalWallBadOriented, vector, normalFloor);
-					double[][] matrixInv = MatrixMethod.getInversMatrix(matrixWall);
+//					double[][] matrixInv = MatrixMethod.getInversMatrix(matrixWall);
 
-					Mesh surface = wall.changeBase(matrixWall);
-					Mesh surfaceWellNormalToTheFloor = wallWellNormalToTheFloor.changeBase(matrixWall);
+					wall.changeBase(matrixWall);
+					wallWellNormalToTheFloor.changeBase(matrixWall);
 
 					//We project on the plane at the x coordinate of the majority of triangle of the wall.
-					Mesh projectedSurface = surface.xProjection(surfaceWellNormalToTheFloor.xAverage());
+					Mesh projectedSurface = wall.xProjection(wallWellNormalToTheFloor.xAverage());
 
-					Grid grid = new Grid(projectedSurface);
-					
-//					grid.updatePoints();
-					grid.createEdges();
-					grid.findNeighbours();
-					grid.updateEdges();
+					projectedSurface.findNeighbours();
 					
 					ArrayList<Border> boundList = projectedSurface.returnBounds();
 					bound = Algos.returnLongestBorder(boundList);
@@ -209,39 +201,39 @@ public class Test3 {
 					contourList.add(bound);
 
 					//Treatment of each border to convert it into simple Polylines
-					Polyline p = new Polyline();
-					Point downLeft = new Point(bound.xAverage(), bound.yMin(), bound.zMin());
-					Point downRight = new Point(bound.xAverage(), bound.yMax(), bound.zMin());
-
-					p.add(downRight);
-					p.add(downLeft);
-
-					double pace = bound.yLengthAverage()*10;
-
-					//FIXME : supprimer la partie basse du contour, pour éviter que celle-ci soit sélectionnée.
-					//Ou alors bien augmenter la taille du pas.
-
-					double leftLimit = bound.yMin();
-					double rightLimit = leftLimit + pace;
-
-					while(rightLimit < bound.yMax() - pace) {
-						Border part = bound.yBetween(leftLimit, rightLimit);
-						rightLimit += pace;
-						if(!part.isEmpty()) {
-							leftLimit = rightLimit;
-							p.add(part.zMaxPoint());
-						}
-					}
-
-					//When projectedSurface base is changed, then longestBorder points are base changed too, because it's a list
-					//of references.
-					Mesh m = p.buildWallMesh();
-					Mesh mWellOriented = m.changeBase(matrixInv);
+//					Border p = new Border();
+//					Point downLeft = new Point(bound.xAverage(), bound.yMin(), bound.zMin());
+//					Point downRight = new Point(bound.xAverage(), bound.yMax(), bound.zMin());
+//
+//					p.add(downRight);
+//					p.add(downLeft);
+//
+//					double pace = bound.yLengthAverage()*10;
+//
+//					//FIXME : supprimer la partie basse du contour, pour éviter que celle-ci soit sélectionnée.
+//					//Ou alors bien augmenter la taille du pas.
+//
+//					double leftLimit = bound.yMin();
+//					double rightLimit = leftLimit + pace;
+//
+//					while(rightLimit < bound.yMax() - pace) {
+//						Border part = bound.yBetween(leftLimit, rightLimit);
+//						rightLimit += pace;
+//						if(!part.isEmpty()) {
+//							leftLimit = rightLimit;
+//							p.add(part.zMaxPoint());
+//						}
+//					}
+//
+//					//When projectedSurface base is changed, then longestBorder points are base changed too, because it's a list
+//					//of references.
+//					Mesh m = p.buildWallMesh();
+//					Mesh mWellOriented = m.changeBase(matrixInv);
 
 					//FIXME : on doit changeBase après être passé par le mesh seulement...
-//					wallComputedList.add(p.changeBase(matrixInv));
-
-					mWellOriented.write("Files/wallComputed - " + counterWall + " of building - " + counterBuilding + ".stl");
+////					wallComputedList.add(p.changeBase(matrixInv));
+//
+//					mWellOriented.write("Files/wallComputed - " + counterWall + " of building - " + counterBuilding + ".stl");
 
 					counterWall ++;
 				}
@@ -261,42 +253,37 @@ public class Test3 {
 					Vector3d normalRoofBadOriented = roof.averageNormal();
 
 					double[][] matrixRoof = MatrixMethod.createOrthoBase(normalRoofBadOriented);
-					double[][] matrixInv = MatrixMethod.getInversMatrix(matrixRoof);
+//					double[][] matrixInv = MatrixMethod.getInversMatrix(matrixRoof);
 
-					Mesh surface = roof.changeBase(matrixRoof);
+					roof.changeBase(matrixRoof);
 
 					//We project on the plane at the z coordinate of the majority of triangle of the roof.
-					Mesh projectedSurface = surface.zProjection(surface.zAverage());
+					Mesh projectedSurface = roof.zProjection(roof.zAverage());
 
 					
-					Grid grid = new Grid(projectedSurface);
-					
-//					grid.updatePoints();
-					grid.createEdges();
-					grid.findNeighbours();
-					grid.updateEdges();
+					projectedSurface.findNeighbours();
 					
 					ArrayList<Border> boundList = projectedSurface.returnBounds();
 					bound = Algos.returnLongestBorder(boundList);
 
 					contourList.add(bound);
 
-					Mesh toWrite = bound.returnMesh().changeBase(matrixInv);
-					toWrite.write("toit - " + counterRoof + ".stl");
+//					Mesh toWrite = bound.returnMesh().changeBase(matrixInv);
+//					toWrite.write("toit - " + counterRoof + ".stl");
 
 					//TODO : traiter les autres contours : cheminées, etc...
 
-					Border orderedBound = Algos.orderBorder(bound);
+//					Border orderedBound = Algos.orderBorder(bound);
 
-					Mesh toWrite2 = orderedBound.returnMesh().changeBase(matrixInv);
-					toWrite2.write("toitOrdered - " + counterRoof + ".stl");
+//					Mesh toWrite2 = orderedBound.returnMesh().changeBase(matrixInv);
+//					toWrite2.write("toitOrdered - " + counterRoof + ".stl");
 
-					int numberOfReduction = 10;
+//					int numberOfReduction = 10;
 
-					Border reducedLine = Algos.reduce(orderedBound, numberOfReduction);
+//					Border reducedLine = Algos.reduce(orderedBound, numberOfReduction);
 
-					Mesh mWellOriented = reducedLine.buildRoofMesh().changeBase(matrixInv);
-					mWellOriented.write("roofComputed - " + counterRoof + " of building - " + counterBuilding + ".stl");
+//					Mesh mWellOriented = reducedLine.buildRoofMesh().changeBase(matrixInv);
+//					mWellOriented.write("roofComputed - " + counterRoof + " of building - " + counterBuilding + ".stl");
 
 					counterRoof ++;
 				}

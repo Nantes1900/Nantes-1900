@@ -279,22 +279,48 @@ public class Border {
 		return pointList.isEmpty();
 	}
 
-	public Border changeBase(double[][] matrix) {
-		Border line = new Border();
-		for(Point p : pointList) {
-			line.getPointList().add(p.changeBase(matrix));
-			//FIXME : ajouter les Edges
-		}
-		return line;
-	}
+//	public Border changeBase(double[][] matrix) {
+//		Border line = new Border();
+//		for(Point p : pointList) {
+//			line.getPointList().add(p.changeBase(matrix));
+//			//FIXME : ajouter les Edges
+//		}
+//		return line;
+//	}
 
 	//FIXME : au plus tôt !
-	public Mesh buildRoofMesh() {
-		Mesh m = new Mesh();
-		Point p = new Point(this.xAverage(), this.yAverage(), this.zAverage());
-		for(int i = 0; i < pointList.size() - 2; i ++) {
-			m.add(new Triangle(pointList.get(i), pointList.get(i + 1), p, new Vector3d(1, 0, 0)));
-		}
-		return m;
-	}
+//	public Mesh buildRoofMesh() {
+//		Mesh m = new Mesh();
+//		Point p = new Point(this.xAverage(), this.yAverage(), this.zAverage());
+//		for(int i = 0; i < pointList.size() - 2; i ++) {
+//			m.add(new Triangle(pointList.get(i), pointList.get(i + 1), p, new Vector3d(1, 0, 0)));
+//		}
+//		return m;
+//	}
+//	
+//	//FIXME : A refaire !
+//	public Mesh buildWallMesh() {
+//		Mesh surface = new Mesh();
+//		Point downRight = pointList.get(0);
+//		Point downLeft = pointList.get(1);
+//		for(int i = 2; i < pointList.size() - 1; i ++) {
+//			Point p1 = pointList.get(i);
+//			Point p2 = pointList.get(i+1);
+//			Point p3, p4, p5;
+//			p4 = new Point(p1.getX(), p1.getY(), downRight.getZ());
+//			p5 = new Point(p1.getX(), p2.getY(), downRight.getZ());
+//			if(p1.getZ() < p2.getZ()) {
+//				p3 = new Point(p1.getX(), p2.getY(), p1.getZ());
+//				surface.add(new Triangle(p1, p4, p5, new Vector3d(1, 0, 0)));
+//				surface.add(new Triangle(p1, p5, p3, new Vector3d(1, 0, 0)));
+//			}
+//			else {
+//				p3 = new Point(p1.getX(), p1.getY(), p2.getZ());
+//				surface.add(new Triangle(p3, p4, p5, new Vector3d(1, 0, 0)));
+//				surface.add(new Triangle(p3, p5, p2, new Vector3d(1, 0, 0)));
+//			}
+//			surface.add(new Triangle(p1, p3, p2, new Vector3d(1, 0, 0)));
+//		}
+//		return surface;
+//	}
 }
