@@ -1,8 +1,10 @@
 package utils;
 
-import java.io.DataOutputStream;
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
@@ -49,7 +51,7 @@ public class Writer {
 	 * @param fw The file we want to write in.
 	 * @param face The face to be written.
 	 */
-	public static void writeASCIIFace(FileWriter fw, Triangle face) {
+	public static void writeASCIIFace(BufferedWriter fw, Triangle face) {
 		try {
 			fw.write("\nfacet normal");
 			String s1 = new String();
@@ -77,7 +79,7 @@ public class Writer {
 	 */
 	public static void writeSTLA(String fileName, Mesh surface) {
 		try {
-			FileWriter fw = new FileWriter(fileName);
+			BufferedWriter fw = new BufferedWriter(new FileWriter(fileName));
 			fw.write("solid");
 			for (Triangle f : surface) {
 				writeASCIIFace(fw,f);
@@ -90,14 +92,14 @@ public class Writer {
 		}
 	}
 
-	private static void writeInGoodOrder(DataOutputStream writer, double a) throws Exception {
+	private static void writeInGoodOrder(OutputStream writer, double a) throws Exception {
 		ByteBuffer bBuf = ByteBuffer.allocate(Float.SIZE);
 		bBuf.order(ByteOrder.LITTLE_ENDIAN);
 		bBuf.putFloat((float)a);
 		writer.write(bBuf.array(), 0, Float.SIZE/8);
 	}
 
-	public static void writeBinaryFace(DataOutputStream writer, Triangle face) throws Exception {
+	public static void writeBinaryFace(OutputStream writer, Triangle face) throws Exception {
 		writeInGoodOrder(writer, face.getNormal().getX());
 		writeInGoodOrder(writer, face.getNormal().getY());
 		writeInGoodOrder(writer, face.getNormal().getZ());
@@ -119,64 +121,24 @@ public class Writer {
 
 	public static void writeSTLB(String fileName,  Mesh surface) {
 		try {
-			DataOutputStream stream = new DataOutputStream(new FileOutputStream(fileName));
+			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(fileName));
 
 			byte[] header = new byte[80];
 			stream.write(header);
+			
 			ByteBuffer bBuf = ByteBuffer.allocate(Integer.SIZE);
-			bBuf.putInt(surface.size());
 			bBuf.order(ByteOrder.LITTLE_ENDIAN);
-			stream.writeInt(bBuf.getInt(0));
+			bBuf.putInt(surface.size());
+			stream.write(bBuf.array(), 0, Integer.SIZE/8);
 
 			for(Triangle t : surface) {
 				writeBinaryFace(stream, t);
 			}
+			
+			stream.flush();
 		}
 		catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-
-	/* //Methode pour ecrire un CityGML
-    public Element enteteCityGML(String name, ArrayList<NeoBatiment> quartier) {
-		Namespace ns = Namespace.getNamespace("http://www.citygml.org/citygml/profiles/base/1.0");
-		Namespace nsCore = Namespace.getNamespace("core", "http://www.opengis.net/citygml/1.0");
-		Namespace nsGml = Namespace.getNamespace("gml", "http://www.opengis.net/gml");
-		Namespace nsBldg = Namespace.getNamespace("bldg", "http://www.opengis.net/citygml/building/1.0");
-		Namespace nsXal = Namespace.getNamespace("xAL", "urn:oasis:names:tc:ciq:xsdschema:xAL:2.0");
-		Namespace nsTex = Namespace.getNamespace("tex", "http://www.opengis.net/citygml/texturedsurface/1.0");
-		Namespace nsGrp = Namespace.getNamespace("grp", "http://www.opengis.net/citygml/cityobjectgroup/1.0");
-		Namespace nsXsi = Namespace.getNamespace("xsi", "http://www.w3.org/2001/XMLSchema-instance");
-
-		Element racine = new Element("CityModel", nsCore);
-		racine.addNamespaceDeclaration(ns);
-		racine.addNamespaceDeclaration(nsGml);
-		racine.addNamespaceDeclaration(nsBldg);
-		racine.addNamespaceDeclaration(nsCore);
-		racine.addNamespaceDeclaration(nsBldg);
-		racine.addNamespaceDeclaration(nsXal);
-		racine.addNamespaceDeclaration(nsTex);
-		racine.addNamespaceDeclaration(nsGrp);
-		racine.addNamespaceDeclaration(nsXsi);
-		racine.setAttribute("schemaLocation", "http://www.opengis.net/citygml/landuse/1.0 http://schemas.opengis.net/citygml/landuse/1.0/landUse.xsd http://www.opengis.net/citygml/cityfurniture/1.0 http://schemas.opengis.net/citygml/cityfurniture/1.0/cityFurniture.xsd http://www.opengis.net/citygml/appearance/1.0 http://schemas.opengis.net/citygml/appearance/1.0/appearance.xsd http://www.opengis.net/citygml/texturedsurface/1.0 http://schemas.opengis.net/citygml/texturedsurface/1.0/texturedSurface.xsd http://www.opengis.net/citygml/transportation/1.0 http://schemas.opengis.net/citygml/transportation/1.0/transportation.xsd http://www.opengis.net/citygml/waterbody/1.0 http://schemas.opengis.net/citygml/waterbody/1.0/waterBody.xsd http://www.opengis.net/citygml/building/1.0 http://schemas.opengis.net/citygml/building/1.0/building.xsd http://www.opengis.net/citygml/relief/1.0 http://schemas.opengis.net/citygml/relief/1.0/relief.xsd http://www.opengis.net/citygml/vegetation/1.0 http://schemas.opengis.net/citygml/vegetation/1.0/vegetation.xsd http://www.opengis.net/citygml/cityobjectgroup/1.0 http://schemas.opengis.net/citygml/cityobjectgroup/1.0/cityObjectGroup.xsd http://www.opengis.net/citygml/generics/1.0 http://schemas.opengis.net/citygml/generics/1.0/generics.xsd", nsXsi);
-
-		Element description = new Element("description", nsGml);
-		Element nom = new Element("name", nsGml);
-		Element cityObjectMember = new Element("cityObjectMember", nsCore);
-
-		description.addContent("Description du fichier CityGML");
-		racine.addContent(description);
-		racine.addContent(nom);
-		racine.addContent(cityObjectMember);
-		nom.addContent(name);
-
-		// Pour chaque batiment de quartier :
-		for (int i=0;i<quartier.size();i++) {
-			ecrireBatiment(racine, quartier.get(i));
-		}
-
-		return racine;
-	}*/
-
 }

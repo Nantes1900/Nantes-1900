@@ -8,19 +8,22 @@ import modeles.Mesh;
 import modeles.Triangle;
 import utils.MatrixMethod;
 import utils.Parser;
+import utils.Writer;
 
 public class Test1 {
-	public static boolean DEBUG = false;
+	public static boolean DEBUG = true;
 	
 	public static void main(String[] args) {
 		try
 		{
 			double altitudeErrorFactor = 10;
-			double angleNormalErrorFactor = 0.6;
+			double angleNormalErrorFactor = 60;
 			double blockSizeBuildingError = 1;
 			
-			String townFileName = "Files/batiments 2 - binary.stl";
-			String floorFileName = "Files/floor.stl";
+			String townFileName = "Originals/batiments 2 - binary.stl";
+			String floorFileName = "Originals/floor.stl";
+			
+			Writer.setWriteMode(Writer.BINARY_MODE);
 
 			Mesh floors = new Mesh();
 			Mesh buildings = new Mesh();
@@ -36,12 +39,12 @@ public class Test1 {
 				Mesh floorBrut = new Mesh(Parser.readSTL(floorFileName));
 
 				//Extract of the normal of the floor
-				Vector3d normalFloorBadOriented = floorBrut.averageNormal();
+				Vector3d normalFloor = floorBrut.averageNormal();
 
 				//Base change
-				double[][] matrix = MatrixMethod.createOrthoBase(normalFloorBadOriented);
-				Vector3d normalFloor = MatrixMethod.changeBase(normalFloorBadOriented, matrix);
-				mesh.changeBase(matrix);
+				double[][] matrix = MatrixMethod.createOrthoBase(normalFloor);
+				MatrixMethod.changeBase(normalFloor, matrix);
+				mesh = mesh.changeBase(matrix);
 				System.out.println("Base changed finished !");
 
 				//Searching for floor-oriented triangles with an error : angleNormalErrorFactor
@@ -50,37 +53,32 @@ public class Test1 {
 				Mesh meshOriented = mesh.orientedAs(normalFloor, angleNormalErrorFactor);
 				System.out.println("Searching finished !");
 
-				//Index creation
-				//FIXME : bien régler les paramétres de tuilage: cela crée des pbs parfois.
-//				new Grid(meshOriented).findNeighbours();
-				meshOriented.findNeighbours();
-
 				//Floor-search algorithm
 				//Select the lowest Triangle : it belongs to the floor
 				//Take all of its neighbours
 				//Select another Triangle which is not too high and repeat the above step			
-//				int size = meshOriented.size();
+				int size = meshOriented.size();
 				Mesh temp = new Mesh();
 
 				Triangle lowestTriangle = meshOriented.zMinFace();
 				double lowestZ = lowestTriangle.zMin();
 
-				//TODO : on peut même enlever le lowestTriangle.sMin() < lowestZ, etc... parce que c'est au fond de la boucle...
-				while(lowestTriangle != null && lowestTriangle.zMin() < lowestZ + altitudeErrorFactor)
+				while(lowestTriangle != null)
 				{
-//					System.out.println("Number of triangles left : " + meshOriented.size() + " on : " + size);
+					System.out.println("Number of triangles left : " + meshOriented.size() + " on " + size);
+
 					temp.clear();
-
-					lowestTriangle.returnNeighbours(temp);
+					lowestTriangle.returnNeighbours(temp, meshOriented);
+					
 					floors.addAll(temp);
-
+					
 					meshOriented.remove(temp);
-					mesh.remove(temp);
+					
 					lowestTriangle = meshOriented.zMinFaceUnder(lowestZ + altitudeErrorFactor);
 				}
-
-				mesh.clearNeighbours();
-
+				
+				mesh.remove(floors);
+				
 				buildings = mesh;
 			}
 
@@ -97,15 +95,11 @@ public class Test1 {
 
 			{
 				//Second part !
-				//Neighbours index creation
-				//TODO : gérer tout seul les coeff
-				buildings.findNeighbours();
-
 				//Extraction of the buildings
 				System.out.println("Extracting building ...");
 				ArrayList<Mesh> formsList = Algos.blockExtract(buildings);
 
-				//Separation of the little noises				
+				//Separation of the little noises
 				for(Mesh m : formsList) {
 					if(m.size() > 1)
 						buildingList.add(m);
@@ -137,26 +131,26 @@ public class Test1 {
 
 			{
 				//Third part !
-				Mesh floorsAndNoise = new Mesh(floors);
-				floorsAndNoise.addAll(noise);
-
-				ArrayList<Mesh> floorsList = new ArrayList<Mesh>();
-
-				//TODO : faire le blockExtract(floorsAndNoise) plutôt !
-				floorsList = Algos.blockExtract(floors);
-
-				//If a noise block is a neighbour of a the real floor, it's added to the real floor
-				floorsAndNoise.findNeighbours();
-
-				floors.clear();
-
-				for(Mesh e : floorsList) {
-					e.getOne().returnNeighbours(floors);
-				}
-				
-				//TODO : remettre le reste des bruits dans un autre fichier
-
-				floors.write("Files/wholeFloors.stl");
+//				Mesh floorsAndNoise = new Mesh(floors);
+//				floorsAndNoise.addAll(noise);
+//
+//				ArrayList<Mesh> floorsList = new ArrayList<Mesh>();
+//
+//				//TODO : faire le blockExtract(floorsAndNoise) plutôt !
+//				floorsList = Algos.blockExtract(floors);
+//
+//				//If a noise block is a neighbour of a the real floor, it's added to the real floor
+////				floorsAndNoise.findNeighbours();
+//
+//				floors.clear();
+//
+//				for(Mesh e : floorsList) {
+//					e.getOne().returnNeighbours(floors);
+//				}
+//				
+//				//TODO : remettre le reste des bruits dans un autre fichier
+//
+//				floors.write("Files/wholeFloors.stl");
 			}
 		}
 		catch (Exception e)

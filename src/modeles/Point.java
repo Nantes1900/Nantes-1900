@@ -94,8 +94,7 @@ public class Point {
 	}
 
 	public void changeBase(double[][] matrix){
-		double[] coords = new double[3];
-		coords[0] = this.x; coords[1] = this.y; coords[2] = this.z;
+		double[] coords = {this.x, this.y, this.z};
 		double[] goodCoords = MatrixMethod.changeBase(coords, matrix);
 		this.x = goodCoords[0];
 		this.y = goodCoords[1];

@@ -2,6 +2,7 @@ package algos;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
 import modeles.Border;
@@ -13,33 +14,40 @@ import modeles.Triangle;
 public class Algos {
 
 	public static ArrayList<Mesh> blockExtract(Mesh m) {
-		ArrayList<Mesh> buildingList = new ArrayList<Mesh>();
-		Mesh buildings = new Mesh(m);
+		LinkedList<Mesh> thingsList = new LinkedList<Mesh>();
+		Mesh mesh = new Mesh(m);
+		
+		int size = mesh.size();
 
-		while(!buildings.isEmpty())
+		while(!mesh.isEmpty())
 		{
-			buildings.findNeighbours();
+			System.out.println("Number of triangles left : " + mesh.size() + " on " + size);
 			Mesh e = new Mesh();
-			buildings.getOne().returnNeighbours(e);			
-			buildings.remove(e);
-			buildingList.add(e);
+			mesh.getOne().returnNeighbours(e, mesh);
+			mesh.remove(e);
+			if(e.size()>1)
+				System.err.println("Yeah !");
+			thingsList.add(e);
 		}
 
-		return buildingList;
+		return new ArrayList<Mesh>(thingsList);
 	}
 
 
 	public static ArrayList<Mesh> blockOrientedExtract(Mesh m, double angleNormalErrorFactor) {
 		ArrayList<Mesh> thingsList = new ArrayList<Mesh>();
+		Mesh mesh = new Mesh(m);
+		
+		int size = mesh.size();
 
-		while(!m.isEmpty()) {
-			Triangle tri = m.getOne();
-			Mesh wall = m.orientedAs(tri.getNormal(), angleNormalErrorFactor);
-			wall.findNeighbours();
-			Mesh temp = new Mesh();
-			tri.returnNeighbours(temp);
-			m.remove(temp);
-			thingsList.add(temp);
+		while(!mesh.isEmpty()) {
+			System.out.println("Number of triangles left : " + mesh.size() + " on " + size);
+			Mesh e = new Mesh();
+			Triangle tri = mesh.getOne();
+			Mesh oriented = mesh.orientedAs(tri.getNormal(), angleNormalErrorFactor);
+			tri.returnNeighbours(e, oriented);
+			mesh.remove(e);
+			thingsList.add(e);
 		}
 
 		return thingsList;

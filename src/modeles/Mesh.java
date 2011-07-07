@@ -1,12 +1,11 @@
 package modeles;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 import javax.vecmath.Vector3d;
 
+import utils.MatrixMethod;
 import utils.Writer;
 
 /**
@@ -22,11 +21,6 @@ public class Mesh extends HashSet<Triangle>{
 
 	public Mesh(Collection<? extends Triangle> c) {
 		super(c);
-//		long time = System.nanoTime();
-//		Grid g = new Grid(this);
-//		g.updatePoints();
-//		g.updateEdges();
-//		System.err.println((System.nanoTime() - time));
 	}
 
 	public Mesh orientedAs(Vector3d normal, double error) {
@@ -223,15 +217,12 @@ public class Mesh extends HashSet<Triangle>{
 	}
 
 	public Triangle zMinFaceUnder(double zMax) {
-		Triangle t = null, temp;
-		Iterator<Triangle> i = this.iterator();
-		while(t == null && i.hasNext()) {
-			temp = i.next();
-			if (temp.zMin() < zMax) {
-				t = temp;
+		for (Triangle t : this) {
+			if (t.zMax() < zMax) {
+				return t;
 			}
 		}
-		return t;
+		return null;
 	}
 
 	public Triangle getOne() {
@@ -239,21 +230,23 @@ public class Mesh extends HashSet<Triangle>{
 	}
 
 	public void remove(Mesh aSuppr) {
-		for(Triangle f : aSuppr) {
-			this.remove(f);
-		}
+		this.removeAll(aSuppr);
 	}
 
-	public void changeBase(double[][] matrix) {
+	//FIXME : supprimer l'ancienne version, car elle est foutue.
+	//FIXME : prévoir de faire une copie de l'ancienne version...
+	public Mesh changeBase(double[][] matrix) {
 		HashSet<Point> set = new HashSet<Point>();
+		
 		for(Triangle f : this) {
-			set.add(f.getP0());
-			set.add(f.getP1());
-			set.add(f.getP2());
+			set.addAll(f.getPoints());
+			MatrixMethod.changeBase(f.getNormal(), matrix);
 		}
-		for(Point p : set) {
+
+		for(Point p : set)
 			p.changeBase(matrix);
-		}
+
+		return new Mesh(this);
 	}
 
 	public Mesh zBetween(double m1, double m2) {
@@ -337,59 +330,59 @@ public class Mesh extends HashSet<Triangle>{
 	}
 
 	//TODO : à refaire !
-	public ArrayList<Border> returnBounds() {
-		ArrayList<Border> e = new ArrayList<Border>();
-//		ArrayList<Border> eFin = new ArrayList<Border>();
-
-		Border front = new Border();
-		for(Triangle tri : this) {
-			if(tri.getNumVoisins() < 3 && tri.getNumVoisins() > 0)
-				front.addAll(tri.getFront());
-		}
-
-		while(!front.getEdgeList().isEmpty()) {
-			Edge arete = front.getEdgeList().iterator().next();
-			Border ret = new Border();
-			front.returnNeighbours(ret, arete);
-			e.add(ret);
-			front.remove(ret);
-		}
-		
-//		//Si certains possède des frontières doubles, il faut créer deux frontières
-//		for(Border b : e) {
-////			System.out.println(b.edgeSize());
-//			Border bFin = Algos.orderBorder(b);
-////			System.out.println(bFin.edgeSize());
-//			eFin.add(bFin);
+//	public ArrayList<Border> returnBounds() {
+//		ArrayList<Border> e = new ArrayList<Border>();
+//		//		ArrayList<Border> eFin = new ArrayList<Border>();
+//
+//		Border front = new Border();
+//		for(Triangle tri : this) {
+//			if(tri.getNumVoisins() < 3 && tri.getNumVoisins() > 0)
+//				front.addAll(tri.getFront());
 //		}
-
-		return e;
-	}
-
-	public void clearNeighbours() {
-		for(Triangle t : this) {
-			t.clearVoisins();
-		}
-	}
+//
+//		while(!front.getEdgeList().isEmpty()) {
+//			Edge arete = front.getEdgeList().iterator().next();
+//			Border ret = new Border();
+//			front.returnNeighbours(ret, arete);
+//			e.add(ret);
+//			front.remove(ret);
+//		}
+//
+//		//		//Si certains possède des frontières doubles, il faut créer deux frontières
+//		//		for(Border b : e) {
+//		////			System.out.println(b.edgeSize());
+//		//			Border bFin = Algos.orderBorder(b);
+//		////			System.out.println(bFin.edgeSize());
+//		//			eFin.add(bFin);
+//		//		}
+//
+//		return e;
+//	}
 
 	public void write(String fileName) {
 		Writer.write(fileName, this);
 	}
 
-	//FIXME : A refaire !
-	public void findNeighbours() {
-		long time = System.nanoTime();
-		ArrayList<Triangle> neighbours = new ArrayList<Triangle>();
-		for(Triangle t : this) {
-			neighbours.clear();
-			neighbours.addAll(t.getEdge1().getTriangleList());
-			neighbours.addAll(t.getEdge2().getTriangleList());
-			neighbours.addAll(t.getEdge3().getTriangleList());
-			for(Triangle neigh : neighbours) {
-				if(this.contains(neigh))
-					t.addNeighbour(neigh);
-			}
-		}
-		System.out.println("Temps de calcul des voisins : " + (System.nanoTime() - time));
-	}
+	//TODO : à ne pas utiliser : trop longue !
+	//	public void findNeighbours() {
+	//		
+	//		Triangle n;
+	//		
+	//		for(Triangle t : this) {
+	//			
+	//			t.clearVoisins();
+	//			
+	//			n = t.getEdge1().returnOther(t);
+	//			if(n != null && this.contains(n))
+	//				t.addNeighbour(n);
+	//			
+	//			n = t.getEdge2().returnOther(t);
+	//			if(n != null && this.contains(n))
+	//				t.addNeighbour(n);
+	//			
+	//			n = t.getEdge3().returnOther(t);
+	//			if(n != null && this.contains(n))				
+	//				t.addNeighbour(n);
+	//		}
+	//	}
 }

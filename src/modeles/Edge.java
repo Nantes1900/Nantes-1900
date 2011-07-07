@@ -9,13 +9,13 @@ public class Edge {
 	private Point p2;
 
 	public Edge(Point p1, Point p2) {
-		triangleList = new ArrayList<Triangle>();
+		triangleList = new ArrayList<Triangle>(2);
 		this.p1 = p1;
 		this.p2 = p2;
 	}
 
 	public Edge() {
-		triangleList = new ArrayList<Triangle>();
+		triangleList = new ArrayList<Triangle>(2);
 		p1 = null;
 		p2 = null;
 	}
@@ -26,6 +26,17 @@ public class Edge {
 
 	public void setTriangleList(ArrayList<Triangle> triangleList) {
 		this.triangleList = triangleList;
+	}
+	
+	public Triangle returnOther(Triangle t) {
+		if(triangleList.size() > 2)
+			System.err.println("Error : more than two triangles per edge !");
+		if(triangleList.size() < 2)
+			return null;
+		if(triangleList.get(0) == t)
+			return triangleList.get(1);
+		else
+			return triangleList.get(1);
 	}
 
 	public Point getP1() {
@@ -56,7 +67,7 @@ public class Edge {
 		if(!triangleList.contains(t)) {
 			triangleList.add(t);
 			if(triangleList.size() > 2) {
-				System.err.println("Error : more than two triangles for one edge !");
+				System.err.println("Problem in the mesh : more than two triangles for one edge !");
 			}
 		}
 	}

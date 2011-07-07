@@ -81,15 +81,15 @@ public class MatrixMethod {
 		for(int i=0;i<n;i++){
 			sol[i]=0;
 			for(int j=0;j<n;j++){
-				sol[i]=sol[i]+matrix[i][j]*coord[j];
+				sol[i] += matrix[i][j]*coord[j];
 			}
 		}
 		return sol;
 	}
 
-	public static Vector3d changeBase(Vector3d vect, double[][] matrix){
+	public static void changeBase(Vector3d vect, double[][] matrix){
 		double[] coord = new double[3];
 		coord[0]=vect.x;coord[1]=vect.y;coord[2]=vect.z;
-		return new Vector3d(MatrixMethod.changeBase(coord, matrix));
+		vect.set(MatrixMethod.changeBase(coord, matrix));
 	}
 }

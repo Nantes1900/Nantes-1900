@@ -1,7 +1,9 @@
 package modeles;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
 
 import javax.vecmath.Vector3d;
 
@@ -9,64 +11,47 @@ import utils.MatrixMethod;
 
 
 public class Triangle {
-	private Point p0;
-	private Point p1;
-	private Point p2;
-
+	
+	private Point[] points = new Point[3];
 	private Vector3d normal;
-
-	private ArrayList<Triangle> neighbours;
-
-	private Edge edge1 = null;
-	private Edge edge2 = null;
-	private Edge edge3 = null;
+	private Edge[] edges = new Edge[3];
 
 	public Triangle(Point p0, Point p1, Point p2, Edge e1, Edge e2, Edge e3, Vector3d normale) {
-		this.p0 = p0;
-		this.p1 = p1;
-		this.p2 = p2;
+		this.points[0] = p0;
+		this.points[1] = p1;
+		this.points[2] = p2;
 		this.normal = normale;
-		this.edge1 = e1;
-		this.edge2 = e2;
-		this.edge3 = e3;
+		this.edges[0] = e1;
+		this.edges[1] = e2;
+		this.edges[2] = e3;
 		e1.addTriangle(this);
 		e2.addTriangle(this);
 		e3.addTriangle(this);
-		neighbours = new ArrayList<Triangle>();
 	}
-
-	public Triangle() {
-		p0 = new Point();
-		p1 = new Point();
-		p2 = new Point();
-		this.normal = new Vector3d();
-		neighbours = new ArrayList<Triangle>();
-	}	
-
+	
 	public Triangle(Triangle t) {
-		this.p0 = t.p0;
-		this.p1 = t.p1;
-		this.p2 = t.p2;
+		this.points[0] = t.points[0];
+		this.points[1] = t.points[1];
+		this.points[2] = t.points[2];
 		this.normal = t.normal;
-		this.neighbours = new ArrayList<Triangle>(t.neighbours);
-		this.edge1 = t.edge1;
-		this.edge2 = t.edge2;
-		this.edge3 = t.edge3;
-		edge1.addTriangle(this);
-		edge2.addTriangle(this);
-		edge3.addTriangle(this);
+		this.edges[0] = t.edges[0];
+		this.edges[1] = t.edges[1];
+		this.edges[2] = t.edges[2];
+		this.edges[0].addTriangle(this);
+		this.edges[1].addTriangle(this);
+		this.edges[2].addTriangle(this);
 	}
 
 	public Point getP0() {
-		return p0;
+		return points[0];
 	}
 
 	public Point getP1() {
-		return p1;
+		return points[1];
 	}
 
 	public Point getP2() {
-		return p2;
+		return points[2];
 	}
 
 	public Vector3d getNormal() {
@@ -74,58 +59,43 @@ public class Triangle {
 	}
 
 	public Edge getEdge1() {
-		return edge1;
+		return edges[0];
 	}
 
-	public void setEdge1(Edge edge1) {
-		this.edge1 = edge1;
+	public void setEdge1(Edge e) {
+		this.edges[0] = e;
 	}
 
 	public Edge getEdge2() {
-		return edge2;
+		return edges[1];
 	}
 
-	public void setEdge2(Edge edge2) {
-		this.edge2 = edge2;
+	public void setEdge2(Edge e) {
+		this.edges[1] = e;
 	}
 
 	public Edge getEdge3() {
-		return edge3;
+		return edges[2];
 	}
 
-	public void setEdge3(Edge edge3) {
-		this.edge3 = edge3;
+	public void setEdge3(Edge e) {
+		this.edges[2] = e;
 	}
 
 	public ArrayList<Triangle> getNeighbours() {
-		return neighbours;
-	}
-
-	public void setNeighbours(ArrayList<Triangle> neighbours) {
-		this.neighbours = neighbours;
-	}
-
-	public void addNeighbour(Triangle f) {
-		if(this != f && !this.isNeighboor(f)) {
-			this.neighbours.add(f);
-			if(this.neighbours.size() > 3) {
-				System.err.println("Error : more than trois voisins...");
-			}
+		ArrayList<Triangle> l = new ArrayList<Triangle>();
+		for(Edge e : this.edges) {
+			l.addAll(e.getTriangleList());
 		}
-	}
-
-	public void addNeighbours(List<Triangle> l) {
 		for(Triangle t : l) {
-			addNeighbour(t);
+			if(t == this)
+				l.remove(t);
 		}
+		return l;
 	}
 
 	public String toString() {
-		return p0.toString() + "\n" + p1.toString() + "\n" + p2.toString() + "\n" + normal.toString() ;
-	}
-
-	public int getNumVoisins() {
-		return neighbours.size();
+		return points[0].toString() + "\n" + points[1].toString() + "\n" + points[2].toString() + "\n" + normal.toString() ;
 	}
 
 	/**
@@ -134,9 +104,8 @@ public class Triangle {
 	 * @param erreur The double containing the tolerance.
 	 * @return boolean if true or not
 	 */
-	//TODO : passer ça en degrés !
 	public boolean angularTolerance(Vector3d vector, double error) {
-		return(this.normal.angle(vector) < error);
+		return(this.normal.angle(vector)*180/Math.PI < error);
 	}
 
 	/**
@@ -155,17 +124,15 @@ public class Triangle {
 	}
 
 	public boolean contains(Point p) {
-		return(p0.equals(p) || p1.equals(p) || p2.equals(p));
+		return (points[0].equals(p) || points[1].equals(p) || points[2].equals(p));
 	}
 
 	@Override
 	public int hashCode() {
-//		final int prime = 31;
 		int result = 1;
-//		result = prime * result + ((normal == null) ? 0 : normal.hashCode());
-		result = result + ((p0 == null) ? 0 : p0.hashCode());
-		result = result + ((p1 == null) ? 0 : p1.hashCode());
-		result = result + ((p2 == null) ? 0 : p2.hashCode());
+		result = result + ((points[0] == null) ? 0 : points[0].hashCode());
+		result = result + ((points[1] == null) ? 0 : points[1].hashCode());
+		result = result + ((points[2] == null) ? 0 : points[2].hashCode());
 		return result;
 	}
 
@@ -178,28 +145,22 @@ public class Triangle {
 		if (getClass() != obj.getClass())
 			return false;
 		Triangle other = (Triangle) obj;
-		if (normal == null) {
-			if (other.normal != null)
-				return false;
-		} 
-		else if (!normal.equals(other.normal))
-			return false;
 		
-		if(this.contains(other.p0) && this.contains(other.p1) && this.contains(other.p2))
+		if (this.contains(other.points[0]) && this.contains(other.points[1]) && this.contains(other.points[2]))
 			return true;
 		else
 			return false;
 	}
 
 	public boolean isNeighboor(Triangle f) {
-		return(neighbours.contains(f));
+		return(this.getNeighbours().contains(f));
 	}
 
 	//TODO : créer une deuxième méthode qui compare les références et non les points : plus rapide !
 	public boolean hasTwoEqualVerticesWith(Triangle f) {
-		return(		(this.contains(f.p0) && this.contains(f.p1)) 
-				|| 	(this.contains(f.p1) && this.contains(f.p2)) 
-				|| 	(this.contains(f.p0) && this.contains(f.p2))
+		return(		(this.contains(f.points[0]) && this.contains(f.points[1])) 
+				|| 	(this.contains(f.points[1]) && this.contains(f.points[2])) 
+				|| 	(this.contains(f.points[0]) && this.contains(f.points[2]))
 		);
 	}
 
@@ -208,123 +169,130 @@ public class Triangle {
 	 * @return the average z-coordinate of the points of this face
 	 */
 	public double zAverage(){
-		double zAverage = p0.getZ() + p1.getZ() + p2.getZ();
+		double zAverage = points[0].getZ() + points[1].getZ() + points[2].getZ();
 		return zAverage/3;
 	}
 
 	public double xAverage(){
-		double xAverage = p0.getX() + p1.getX() + p2.getX();
+		double xAverage = points[0].getX() + points[1].getX() + points[2].getX();
 		return xAverage/3;
 	}
 
 	public double yAverage(){
-		double yAverage = p0.getY() + p1.getY() + p2.getY();
+		double yAverage = points[0].getY() + points[1].getY() + points[2].getY();
 		return yAverage/3;
 	}
 
 	public double xMin(){
-		return Math.min(p0.getX(), Math.min(p1.getX(), p2.getX()));
+		return Math.min(points[0].getX(), Math.min(points[1].getX(), points[2].getX()));
 	}
 
 	public double xMax(){
-		return Math.max(p0.getX(), Math.max(p1.getX(), p2.getX()));
+		return Math.max(points[0].getX(), Math.max(points[1].getX(), points[2].getX()));
 	}
 
 	public double yMin(){
-		return Math.min(p0.getY(), Math.min(p1.getY(), p2.getY()));
+		return Math.min(points[0].getY(), Math.min(points[1].getY(), points[2].getY()));
 	}
 
 	public double yMax(){
-		return Math.max(p0.getY(), Math.max(p1.getY(), p2.getY()));
+		return Math.max(points[0].getY(), Math.max(points[1].getY(), points[2].getY()));
 	}
 
 	public double zMin(){
-		return Math.min(p0.getZ(), Math.min(p1.getZ(), p2.getZ()));
+		return Math.min(points[0].getZ(), Math.min(points[1].getZ(), points[2].getZ()));
 	}
 
 	public double zMax(){
-		return Math.max(p0.getZ(), Math.max(p1.getZ(), p2.getZ()));
+		return Math.max(points[0].getZ(), Math.max(points[1].getZ(), points[2].getZ()));
 	}
 
 	public Point getCentroid() {
-		Point mid = new Point((p0.getX() + p1.getX())/(double)2, (p0.getY() + p1.getY())/(double)2, (p0.getZ() + p1.getZ())/(double)2);
-		return new Point((mid.getX() + 2*p2.getX())/(double)3, (mid.getY() + 2*p2.getY())/(double)3, (mid.getZ() + 2*p2.getZ())/(double)3);
+		Point mid = new Point((points[0].getX() + points[1].getX())/(double)2, (points[0].getY() + points[1].getY())/(double)2, (points[0].getZ() + points[1].getZ())/(double)2);
+		return new Point((mid.getX() + 2*points[2].getX())/(double)3, (mid.getY() + 2*points[2].getY())/(double)3, (mid.getZ() + 2*points[2].getZ())/(double)3);
 	}
 
 	public Point yMaxPoint() {
-		if(p0.getY() == this.yMax())
-			return p0;
-		else if(p1.getY() == this.yMax())
-			return p1;
+		if(points[0].getY() == this.yMax())
+			return points[0];
+		else if(points[1].getY() == this.yMax())
+			return points[1];
 		else
-			return p2;
+			return points[2];
 	}
 
 	public Point yMinPoint() {
-		if(p0.getY() == this.yMin())
-			return p0;
-		else if(p1.getY() == this.yMin())
-			return p1;
+		if(points[0].getY() == this.yMin())
+			return points[0];
+		else if(points[1].getY() == this.yMin())
+			return points[1];
 		else
-			return p2;
+			return points[2];
 	}
 
 	public Point zMaxPoint() {
-		if(p0.getZ() == this.zMax())
-			return p0;
-		else if(p1.getZ() == this.zMax())
-			return p1;
+		if(points[0].getZ() == this.zMax())
+			return points[0];
+		else if(points[1].getZ() == this.zMax())
+			return points[1];
 		else
-			return p2;
+			return points[2];
 	}
 
 	//Attention en l'utilisant, à ce qu'elle n'ait pas déjà été effectuée !
 	public void changeBase(double[][] base){
-		normal = MatrixMethod.changeBase(this.getNormal(), base);
-		this.p0.changeBase(base);
-		this.p1.changeBase(base);
-		this.p2.changeBase(base);
+		MatrixMethod.changeBase(this.getNormal(), base);
+		this.points[0].changeBase(base);
+		this.points[1].changeBase(base);
+		this.points[2].changeBase(base);
 	}
 
 	public Triangle zProjection(double z) {
 		Triangle t = new Triangle(this);
-		t.p0.setZ(z);
-		t.p1.setZ(z);
-		t.p2.setZ(z);
+		t.points[0].setZ(z);
+		t.points[1].setZ(z);
+		t.points[2].setZ(z);
 		return t;
 	}
 
 	public Triangle xProjection(double x) {
 		Triangle t = new Triangle(this);
-		t.p0.setX(x);
-		t.p1.setX(x);
-		t.p2.setX(x);
+		t.points[0].setX(x);
+		t.points[1].setX(x);
+		t.points[2].setX(x);
 		return t;
 	}
 
-	public void returnNeighbours(Mesh ret) {
+	
+	//Returns int ret the neighbours of this which belongs to m
+	public void returnNeighbours(Mesh ret, Mesh m) {
 		ret.add(this);
-
-		Triangle t;
-		for(int i = 0; i < neighbours.size(); i ++) {
-			t = neighbours.get(i);
-			if(!ret.contains(t))
-				t.returnNeighbours(ret);
+		
+		HashSet<Triangle> neighbours = new HashSet<Triangle>();
+		
+		neighbours.addAll(this.getEdge1().getTriangleList());
+		neighbours.addAll(this.getEdge2().getTriangleList());
+		neighbours.addAll(this.getEdge3().getTriangleList());
+		
+		for(Triangle t : neighbours) {
+			if(t != this && m.contains(t) && !ret.contains(t))
+				t.returnNeighbours(ret, m);
 		}
 	}
 
+	//FIXME !
 	public ArrayList<Edge> getFront() {
 		ArrayList<Edge> list = new ArrayList<Edge>();
-		if(this.edge1.getTriangleList().size() == 1)
-			list.add(this.edge1);
-		if(this.edge2.getTriangleList().size() == 1)
-			list.add(this.edge2);
-		if(this.edge3.getTriangleList().size() == 1)
-			list.add(this.edge3);
+		
+		for(Edge e : this.edges) {
+			if(e.getTriangleList().size() == 1)
+				list.add(e);
+		}
+		
 		return list;
 	}
 
-	public void clearVoisins() {
-		neighbours.clear();
+	public Collection<Point> getPoints() {
+		return Arrays.asList(this.points);
 	}
 }

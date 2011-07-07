@@ -1,8 +1,10 @@
 package utils;
 
+import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -25,7 +27,7 @@ public class Parser {
 	private static ArrayList<Point> currentPoints;
 
 	private static HashSet<Triangle> readSTLB(String fileName) throws Exception {
-		FileInputStream stream = new FileInputStream(fileName);
+		InputStream stream = new BufferedInputStream(new FileInputStream(fileName));
 
 		HashMap<Point, Point> pointMap = new HashMap<Point, Point>();
 		HashMap<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
@@ -96,6 +98,7 @@ public class Parser {
 			p3 = p;
 
 		if(p1 == p2 || p2 == p3 || p1 == p3)
+			//FIXME : créer une exception !
 			throw new InvalidActivityException();
 		
 		Edge e1 = new Edge(p1, p2);
