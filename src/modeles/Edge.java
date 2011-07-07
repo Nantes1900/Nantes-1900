@@ -56,7 +56,7 @@ public class Edge {
 		if(!triangleList.contains(t)) {
 			triangleList.add(t);
 			if(triangleList.size() > 2) {
-				System.err.println("Error : more than 2 Triangles !");
+				System.err.println("Error : more than two triangles for one edge !");
 			}
 		}
 	}

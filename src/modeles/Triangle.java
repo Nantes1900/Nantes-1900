@@ -106,13 +106,14 @@ public class Triangle {
 	}
 
 	public void addNeighbour(Triangle f) {
-		if(!this.isNeighboor(f)) {
-			neighbours.add(f);
-			if(neighbours.size() > 3)
+		if(this != f && !this.isNeighboor(f)) {
+			this.neighbours.add(f);
+			if(this.neighbours.size() > 3) {
 				System.err.println("Error : more than trois voisins...");
+			}
 		}
 	}
-	
+
 	public void addNeighbours(List<Triangle> l) {
 		for(Triangle t : l) {
 			addNeighbour(t);
@@ -155,6 +156,39 @@ public class Triangle {
 
 	public boolean contains(Point p) {
 		return(p0.equals(p) || p1.equals(p) || p2.equals(p));
+	}
+
+	@Override
+	public int hashCode() {
+//		final int prime = 31;
+		int result = 1;
+//		result = prime * result + ((normal == null) ? 0 : normal.hashCode());
+		result = result + ((p0 == null) ? 0 : p0.hashCode());
+		result = result + ((p1 == null) ? 0 : p1.hashCode());
+		result = result + ((p2 == null) ? 0 : p2.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Triangle other = (Triangle) obj;
+		if (normal == null) {
+			if (other.normal != null)
+				return false;
+		} 
+		else if (!normal.equals(other.normal))
+			return false;
+		
+		if(this.contains(other.p0) && this.contains(other.p1) && this.contains(other.p2))
+			return true;
+		else
+			return false;
 	}
 
 	public boolean isNeighboor(Triangle f) {
@@ -271,9 +305,11 @@ public class Triangle {
 	public void returnNeighbours(Mesh ret) {
 		ret.add(this);
 
+		Triangle t;
 		for(int i = 0; i < neighbours.size(); i ++) {
-			if(!ret.contains(neighbours.get(i)))
-				neighbours.get(i).returnNeighbours(ret);
+			t = neighbours.get(i);
+			if(!ret.contains(t))
+				t.returnNeighbours(ret);
 		}
 	}
 

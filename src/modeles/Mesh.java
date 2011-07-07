@@ -376,6 +376,7 @@ public class Mesh extends HashSet<Triangle>{
 		Writer.write(fileName, this);
 	}
 
+	//FIXME : A refaire !
 	public void findNeighbours() {
 		long time = System.nanoTime();
 		ArrayList<Triangle> neighbours = new ArrayList<Triangle>();
@@ -389,6 +390,6 @@ public class Mesh extends HashSet<Triangle>{
 					t.addNeighbour(neigh);
 			}
 		}
-		System.out.println("Temps de calcul des voisins (nouvelle méthode) + " + (System.nanoTime() - time));
+		System.out.println("Temps de calcul des voisins : " + (System.nanoTime() - time));
 	}
 }

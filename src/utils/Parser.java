@@ -1,8 +1,8 @@
 package utils;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileInputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
@@ -29,6 +29,7 @@ public class Parser {
 
 		HashMap<Point, Point> pointMap = new HashMap<Point, Point>();
 		HashMap<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
+		HashSet<Triangle> mesh = new HashSet<Triangle>();
 
 		byte[] header = new byte[80];
 		stream.read(header, 0, 80);
@@ -43,9 +44,10 @@ public class Parser {
 		bBuf = ByteBuffer.wrap(fileContent);
 		bBuf.order(ByteOrder.nativeOrder());
 
-		HashSet<Triangle> mesh = new HashSet<Triangle>();
 		for(int i = 0; i < size; i ++) {
 			try {
+				//Si le triangle existe déjà : la méthode hashCode renvoie la même valeur, et il ne l'ajoute pas ...  !
+				//FIXME : attention : revoir les hashCode de Edge et de Triangle !
 				mesh.add(processLineB(bBuf, pointMap, edgeMap));
 			} catch (InvalidActivityException e) {
 				//C'est un triangle plat, donc on ne l'ajoute pas !

@@ -59,7 +59,7 @@ public class Test1 {
 				//Select the lowest Triangle : it belongs to the floor
 				//Take all of its neighbours
 				//Select another Triangle which is not too high and repeat the above step			
-				int size = meshOriented.size();
+//				int size = meshOriented.size();
 				Mesh temp = new Mesh();
 
 				Triangle lowestTriangle = meshOriented.zMinFace();
@@ -68,7 +68,7 @@ public class Test1 {
 				//TODO : on peut même enlever le lowestTriangle.sMin() < lowestZ, etc... parce que c'est au fond de la boucle...
 				while(lowestTriangle != null && lowestTriangle.zMin() < lowestZ + altitudeErrorFactor)
 				{
-					System.out.println("Number of triangles left : " + meshOriented.size() + " on : " + size);
+//					System.out.println("Number of triangles left : " + meshOriented.size() + " on : " + size);
 					temp.clear();
 
 					lowestTriangle.returnNeighbours(temp);
