@@ -2,38 +2,42 @@ package modeles;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
-import javax.vecmath.Vector3d;
+public class Polyline {
 
-import utils.Writer;
-
-//TODO : suppress @SuppressWarnings
-@SuppressWarnings("unused")
-
-public class Border {
-
-	private ArrayList<Edge> edgeList;
 	private ArrayList<Point> pointList;
+	private ArrayList<Edge> edgeList;
+
 	private int ID;
 	private static int ID_current = 0;
 	private static final long serialVersionUID = 1L;
 
-	public Border(List<Edge> a) {
-		edgeList = new ArrayList<Edge>(a);
+	public Polyline(List<Edge> a) {
+
+		this.edgeList = new ArrayList<Edge>(a);
+		this.pointList = new ArrayList<Point>();
+
 		for(Edge e : a) {
-			pointList.add(e.getP1());
-			pointList.add(e.getP2());
+			this.add(e.getP1());
+			this.add(e.getP2());
 		}
-		pointList = new ArrayList<Point>();
+
 		this.ID = ++ID_current;
 	}
 
-	public Border() {
+	public Polyline() {
 		edgeList = new ArrayList<Edge>();
 		pointList = new ArrayList<Point>();
 		this.ID = ++ID_current;
 	}
+
+	public void add(Point p) {
+		if(!this.pointList.contains(p))
+			this.pointList.add(p);
+	}
+
 
 	public ArrayList<Edge> getEdgeList() {
 		return edgeList;
@@ -41,6 +45,14 @@ public class Border {
 
 	public void setEdgeList(ArrayList<Edge> edgeList) {
 		this.edgeList = edgeList;
+	}
+
+	public int getID() {
+		return ID;
+	}
+
+	public void setID(int iD) {
+		ID = iD;
 	}
 
 	public ArrayList<Point> getPointList() {
@@ -61,25 +73,10 @@ public class Border {
 
 	//FIXME : A refaire sans doublons...
 	public void add(Edge e) {
-		edgeList.add(e);
+		this.edgeList.add(e);
 
-		if(returnIfExists(e.getP1()) == null)
-			pointList.add(e.getP1());
-		else
-			e.setP1(returnIfExists(e.getP1()));		
-
-		if(returnIfExists(e.getP2()) == null)
-			pointList.add(e.getP2());
-		else
-			e.setP2(returnIfExists(e.getP2()));
-	}
-
-	public Point returnIfExists(Point p) {
-		for(Point point : pointList) {
-			if(point.equals(p))
-				return point;
-		}
-		return null;
+		this.add(e.getP1());
+		this.add(e.getP2());
 	}
 
 	public void addAll(List<Edge> l) {
@@ -108,7 +105,7 @@ public class Border {
 		return ens;
 	}
 
-	public void remove(Border aSuppr) {
+	public void remove(Polyline aSuppr) {
 		for(Edge e : aSuppr.edgeList) {
 			this.edgeList.remove(e);
 			this.pointList.remove(e.getP1());
@@ -122,10 +119,10 @@ public class Border {
 		this.pointList.remove(e.getP2());
 	}
 
-	public void returnNeighbours(Border f, Edge e) {
+	public void returnNeighbours(Polyline f, Edge e) {
 		if(!f.edgeList.contains(e)) {
 			f.add(e);
-			
+
 			for(Edge edg : this.edgeList) {
 				if(edg.isNeighboor(e)) {
 					this.returnNeighbours(f, edg);
@@ -249,10 +246,10 @@ public class Border {
 				, 0.5);
 	}
 
-	public Border yBetween(double m1, double m2) {
+	public Polyline yBetween(double m1, double m2) {
 		double min = Math.min(m1, m2);
 		double max = Math.max(m1, m2);
-		Border b = new Border();
+		Polyline b = new Polyline();
 		for(Edge e : edgeList) {
 			if(			e.getP1().getY() < max && e.getP1().getY() < max
 					&& 	e.getP1().getY() > min && e.getP1().getY() > min)
@@ -279,48 +276,140 @@ public class Border {
 		return pointList.isEmpty();
 	}
 
-//	public Border changeBase(double[][] matrix) {
-//		Border line = new Border();
-//		for(Point p : pointList) {
-//			line.getPointList().add(p.changeBase(matrix));
-//			//FIXME : ajouter les Edges
-//		}
-//		return line;
-//	}
+	//	public Border changeBase(double[][] matrix) {
+	//		Border line = new Border();
+	//		for(Point p : pointList) {
+	//			line.getPointList().add(p.changeBase(matrix));
+	//			//FIXME : ajouter les Edges
+	//		}
+	//		return line;
+	//	}
 
 	//FIXME : au plus tôt !
-//	public Mesh buildRoofMesh() {
-//		Mesh m = new Mesh();
-//		Point p = new Point(this.xAverage(), this.yAverage(), this.zAverage());
-//		for(int i = 0; i < pointList.size() - 2; i ++) {
-//			m.add(new Triangle(pointList.get(i), pointList.get(i + 1), p, new Vector3d(1, 0, 0)));
-//		}
-//		return m;
-//	}
-//	
-//	//FIXME : A refaire !
-//	public Mesh buildWallMesh() {
-//		Mesh surface = new Mesh();
-//		Point downRight = pointList.get(0);
-//		Point downLeft = pointList.get(1);
-//		for(int i = 2; i < pointList.size() - 1; i ++) {
-//			Point p1 = pointList.get(i);
-//			Point p2 = pointList.get(i+1);
-//			Point p3, p4, p5;
-//			p4 = new Point(p1.getX(), p1.getY(), downRight.getZ());
-//			p5 = new Point(p1.getX(), p2.getY(), downRight.getZ());
-//			if(p1.getZ() < p2.getZ()) {
-//				p3 = new Point(p1.getX(), p2.getY(), p1.getZ());
-//				surface.add(new Triangle(p1, p4, p5, new Vector3d(1, 0, 0)));
-//				surface.add(new Triangle(p1, p5, p3, new Vector3d(1, 0, 0)));
-//			}
-//			else {
-//				p3 = new Point(p1.getX(), p1.getY(), p2.getZ());
-//				surface.add(new Triangle(p3, p4, p5, new Vector3d(1, 0, 0)));
-//				surface.add(new Triangle(p3, p5, p2, new Vector3d(1, 0, 0)));
-//			}
-//			surface.add(new Triangle(p1, p3, p2, new Vector3d(1, 0, 0)));
-//		}
-//		return surface;
-//	}
+	//	public Mesh buildRoofMesh() {
+	//		Mesh m = new Mesh();
+	//		Point p = new Point(this.xAverage(), this.yAverage(), this.zAverage());
+	//		for(int i = 0; i < pointList.size() - 2; i ++) {
+	//			m.add(new Triangle(pointList.get(i), pointList.get(i + 1), p, new Vector3d(1, 0, 0)));
+	//		}
+	//		return m;
+	//	}
+	//	
+	//	//FIXME : A refaire !
+	//	public Mesh buildWallMesh() {
+	//		Mesh surface = new Mesh();
+	//		Point downRight = pointList.get(0);
+	//		Point downLeft = pointList.get(1);
+	//		for(int i = 2; i < pointList.size() - 1; i ++) {
+	//			Point p1 = pointList.get(i);
+	//			Point p2 = pointList.get(i+1);
+	//			Point p3, p4, p5;
+	//			p4 = new Point(p1.getX(), p1.getY(), downRight.getZ());
+	//			p5 = new Point(p1.getX(), p2.getY(), downRight.getZ());
+	//			if(p1.getZ() < p2.getZ()) {
+	//				p3 = new Point(p1.getX(), p2.getY(), p1.getZ());
+	//				surface.add(new Triangle(p1, p4, p5, new Vector3d(1, 0, 0)));
+	//				surface.add(new Triangle(p1, p5, p3, new Vector3d(1, 0, 0)));
+	//			}
+	//			else {
+	//				p3 = new Point(p1.getX(), p1.getY(), p2.getZ());
+	//				surface.add(new Triangle(p3, p4, p5, new Vector3d(1, 0, 0)));
+	//				surface.add(new Triangle(p3, p5, p2, new Vector3d(1, 0, 0)));
+	//			}
+	//			surface.add(new Triangle(p1, p3, p2, new Vector3d(1, 0, 0)));
+	//		}
+	//		return surface;
+	//	}
+
+
+	public static Polyline reduce(Polyline line, int numberOfReduction) {
+		Polyline ret = new Polyline();
+		ArrayList<Point> pointList = line.getPointList();
+		int position = 0;
+
+		while(position < pointList.size() - numberOfReduction) {
+			//On en prend 1 sur numberOfReduction
+			ret.getPointList().add(pointList.get(position));
+			position += numberOfReduction;
+			//Mettre à jour les Edge
+		}
+
+		//		while(position < pointList.size() - numberOfReduction) {
+		//			ArrayList<Point> l = new ArrayList<Point>();
+		//			for(int i = 0; i < numberOfReduction; i ++) {
+		//				l.add(pointList.get(position + i));
+		//			}
+		//
+		//			position += numberOfReduction;
+		//
+		//			ret.getPointList().add(Algos.average(l));
+		//		}
+
+		//		while(position < pointList.size() - 1) {
+		//			ArrayList<Point> l = new ArrayList<Point>();
+		//			l.add(pointList.get(position));
+		//			double length = 0;
+		//			
+		//			while(length < pace && position < pointList.size() - 1) {
+		//				l.add(pointList.get(position + 1));
+		//				length += pointList.get(position + 1).distance(pointList.get(position));
+		//				position ++;
+		//			}
+		//			
+		//			ret.getPointList().add(Algos.average(l));
+		//			//FIXME : ajouter l'edge aussi !
+		//		}
+
+		return ret;
+	}
+
+
+	public static Polyline orderBorder(Polyline bound) {
+		Polyline oriented = new Polyline();
+
+		//		if(bound.edgeSize() < 2)
+		//			throw new InvalidParameterException("Border too short !");
+
+		if(bound.edgeSize() > 1)
+		{
+			Edge e = bound.getEdgeList().get(0);
+			Point first = e.getP1();
+			oriented.getEdgeList().add(e);
+			oriented.getPointList().add(e.getP1());
+			oriented.getPointList().add(e.getP2());
+			bound.remove(e);
+
+			Point p = e.getP2();
+
+			int counter = 0;
+
+			do {
+				Iterator<Edge> i = bound.getEdgeList().iterator();
+				do { e = i.next(); }
+				while(i.hasNext() && !e.contains(p));
+				//FIXME : si on arrive à la fin de la liste sans avoir trouvé ?
+				if(e.getP1() != p) {
+					p = e.getP1();
+				}
+				else {
+					p = e.getP2();
+				}
+				oriented.getEdgeList().add(e);
+				oriented.getPointList().add(p);
+
+				counter ++;
+			}
+			while(p != first && counter <= bound.getPointList().size());
+
+			if(counter == bound.getPointList().size()) {
+				System.err.println("Erreur : boucle infinie");
+				return null;
+			}
+
+			return oriented;
+		}
+		else
+			return bound;
+	}
+
 }

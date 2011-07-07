@@ -8,20 +8,10 @@ public class Point {
 	private double y;
 	private double z;
 	
-//	private ArrayList<Edge> edgeList;
-	
-	public Point() {
-		this.x = 0;
-		this.y = 0;
-		this.z = 0;
-//		edgeList = new ArrayList<Edge>();
-	}
-	
 	public Point(Point p) {
 		this.x = p.x;
 		this.y = p.y;
 		this.z = p.z;
-//		edgeList = new ArrayList<Edge>(p.edgeList);
 	}
 	
 	public Point(double x, double y, double z) {
@@ -48,16 +38,18 @@ public class Point {
 	public void setZ(double z) {
 		this.z = z;
 	}
-
-//	public void addEdge(Edge e) {
-//		if(!edgeList.contains(e))
-//			edgeList.add(e);
-//	}
+	
+	public void set(double[] coords) {
+		this.setX(coords[0]);
+		this.setY(coords[1]);
+		this.setZ(coords[2]);
+	}
 	
 	public String toString() {
 		return new String("(" + x + ", " + y + ", " + z + ")");
 	}
-	public double distance(Point p) {
+	
+public double distance(Point p) {
 		return Math.pow(Math.pow(p.x - x, 2) + Math.pow(p.y - y, 2) + Math.pow(p.z - z, 2), 0.5);
 	}	
 	
@@ -95,9 +87,6 @@ public class Point {
 
 	public void changeBase(double[][] matrix){
 		double[] coords = {this.x, this.y, this.z};
-		double[] goodCoords = MatrixMethod.changeBase(coords, matrix);
-		this.x = goodCoords[0];
-		this.y = goodCoords[1];
-		this.z = goodCoords[2];
+		this.set(MatrixMethod.changeBase(coords, matrix));
 	}
 }

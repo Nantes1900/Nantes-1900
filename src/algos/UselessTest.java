@@ -2,11 +2,10 @@ package algos;
 
 import javax.vecmath.Vector3d;
 
+import modeles.Mesh;
 import utils.MatrixMethod;
 import utils.Parser;
 import utils.Writer;
-
-import modeles.Mesh;
 
 public class UselessTest {
 	public static void main(String[] args) {

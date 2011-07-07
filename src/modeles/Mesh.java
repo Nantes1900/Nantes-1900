@@ -8,9 +8,6 @@ import javax.vecmath.Vector3d;
 import utils.MatrixMethod;
 import utils.Writer;
 
-/**
- * An ensemble of Triangle with a defined type
- */
 public class Mesh extends HashSet<Triangle>{
 
 	private static final long serialVersionUID = 1L;
@@ -169,56 +166,20 @@ public class Mesh extends HashSet<Triangle>{
 	}
 
 	public Triangle zMinFace() {
-		Triangle triangle = null;
+		Triangle t = null;
 		double zMini = Double.POSITIVE_INFINITY;
 		for (Triangle face : this){
 			if (face.zMin() < zMini){
+				t = face;
 				zMini = face.zMin();
-				triangle = face;
 			}
 		}
-		return triangle;
+		return t;
 	}
-
-	public Point yMaxPoint() {
-		Point p = null;
-		double yMax = Double.NEGATIVE_INFINITY;
-		for (Triangle face : this){
-			if (face.yMax() > yMax){
-				yMax = face.yMax();
-				p = face.yMaxPoint();
-			}
-		}
-		return p;
-	}
-
-	public Point yMinPoint() {
-		Point p = null;
-		double yMin = Double.POSITIVE_INFINITY;
-		for (Triangle face : this){
-			if (face.yMin() < yMin){
-				yMin = face.yMin();
-				p = face.yMinPoint();
-			}
-		}
-		return p;
-	}
-
-	public Point zMaxPoint() {
-		Point p = null;
-		double zMax = Double.NEGATIVE_INFINITY;
-		for (Triangle face : this){
-			if (face.zMax() > zMax){
-				zMax = face.zMax();
-				p = face.zMaxPoint();
-			}
-		}
-		return p;
-	}
-
-	public Triangle zMinFaceUnder(double zMax) {
+	
+	public Triangle faceUnderZ(double zMax) {
 		for (Triangle t : this) {
-			if (t.zMax() < zMax) {
+			if (t.zMin() < zMax) {
 				return t;
 			}
 		}
@@ -250,68 +211,31 @@ public class Mesh extends HashSet<Triangle>{
 	}
 
 	public Mesh zBetween(double m1, double m2) {
-		double min = Math.min(m1, m2);
-		double max = Math.max(m1, m2);
 		Mesh ens = new Mesh();
 		for(Triangle t : this) {
-			if(t.zMax() < max && t.zMin() > min)
+			if(t.zMax() < Math.max(m1, m2) && t.zMin() > Math.min(m1, m2))
 				ens.add(t);
 		}
 		return ens;
 	}
 
 	public Mesh xBetween(double m1, double m2) {
-		double min = Math.min(m1, m2);
-		double max = Math.max(m1, m2);
 		Mesh ens = new Mesh();
 		for(Triangle t : this) {
-			if(t.xMax() < max && t.xMin() > min)
+			if(t.xMax() < Math.max(m1, m2) && t.xMin() > Math.min(m1, m2))
 				ens.add(t);
 		}
 		return ens;
 	}
 
 	public Mesh yBetween(double m1, double m2) {
-		double min = Math.min(m1, m2);
-		double max = Math.max(m1, m2);
 		Mesh ens = new Mesh();
 		for(Triangle t : this) {
-			if(t.yMax() < max && t.yMin() > min)
+			if(t.yMax() < Math.max(m1, m2) && t.yMin() > Math.min(m1, m2))
 				ens.add(t);
 		}
 		return ens;
 	}
-
-
-
-	public Mesh getInBounds(Point p, double tailleBoule) {
-		Mesh ens = new Mesh();
-		for(Triangle tri : this) {
-			if(p.distance(tri.getCentroid()) < tailleBoule)
-				ens.add(tri);
-		}
-		return ens;
-	}
-
-	//	public Triangle getOutOfIndex(HashSet<Point> index, double tailleBoule) {
-	//		boolean tag = true;
-	//		for(Triangle t : this) {
-	//			Point p = t.getCentroid();
-	//			if(index.isEmpty())
-	//				return t;
-	//			for(Point point : index) {
-	//				if(p.distance3D(point) < tailleBoule/(double)2) {
-	//					tag = false;
-	//					break;
-	//				}
-	//			}
-	//			if(tag)
-	//				return t;
-	//			else
-	//				tag = true;
-	//		}
-	//		return null;
-	//	}
 
 	public Mesh zProjection(double z) {
 		Mesh e = new Mesh();
@@ -362,27 +286,4 @@ public class Mesh extends HashSet<Triangle>{
 	public void write(String fileName) {
 		Writer.write(fileName, this);
 	}
-
-	//TODO : à ne pas utiliser : trop longue !
-	//	public void findNeighbours() {
-	//		
-	//		Triangle n;
-	//		
-	//		for(Triangle t : this) {
-	//			
-	//			t.clearVoisins();
-	//			
-	//			n = t.getEdge1().returnOther(t);
-	//			if(n != null && this.contains(n))
-	//				t.addNeighbour(n);
-	//			
-	//			n = t.getEdge2().returnOther(t);
-	//			if(n != null && this.contains(n))
-	//				t.addNeighbour(n);
-	//			
-	//			n = t.getEdge3().returnOther(t);
-	//			if(n != null && this.contains(n))				
-	//				t.addNeighbour(n);
-	//		}
-	//	}
 }

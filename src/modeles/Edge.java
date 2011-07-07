@@ -14,18 +14,8 @@ public class Edge {
 		this.p2 = p2;
 	}
 
-	public Edge() {
-		triangleList = new ArrayList<Triangle>(2);
-		p1 = null;
-		p2 = null;
-	}
-
 	public ArrayList<Triangle> getTriangleList() {
 		return triangleList;
-	}
-
-	public void setTriangleList(ArrayList<Triangle> triangleList) {
-		this.triangleList = triangleList;
 	}
 	
 	public Triangle returnOther(Triangle t) {
@@ -43,16 +33,8 @@ public class Edge {
 		return p1;
 	}
 
-	public void setP1(Point p1) {
-		this.p1 = p1;
-	}
-
 	public Point getP2() {
 		return p2;
-	}
-
-	public void setP2(Point p2) {
-		this.p2 = p2;
 	}
 
 	public double distance() {
@@ -60,23 +42,25 @@ public class Edge {
 	}
 
 	public boolean contains(Point p) {
-		return (this.p1.equals(p) || this.p2.equals(p));
+		return (this.p1 == p || this.p2 == p);
 	}
 
 	public void addTriangle(Triangle t) {
 		if(!triangleList.contains(t)) {
 			triangleList.add(t);
 			if(triangleList.size() > 2) {
+				//TODO : throw Exception and treat it !
 				System.err.println("Problem in the mesh : more than two triangles for one edge !");
 			}
 		}
 	}
 
 	public boolean isNeighboor(Edge e) {
-		return(this.contains(e.getP1()) || this.contains(e.getP2()));
+		return(this.contains(e.p1) || this.contains(e.p2));
 	}
 
 	@Override
+	//FIXME : revoir le hashCode !
 	public int hashCode() {
 		int result = 1;
 		result = result + ((p1 == null) ? 0 : p1.hashCode());

@@ -4,17 +4,16 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
-import javax.activity.InvalidActivityException;
 import javax.vecmath.Vector3d;
 
 import modeles.Edge;
@@ -26,7 +25,7 @@ public class Parser {
 	private static Vector3d currentVector;
 	private static ArrayList<Point> currentPoints;
 
-	private static HashSet<Triangle> readSTLB(String fileName) throws Exception {
+	private static HashSet<Triangle> readSTLB(String fileName) throws IOException {
 		InputStream stream = new BufferedInputStream(new FileInputStream(fileName));
 
 		HashMap<Point, Point> pointMap = new HashMap<Point, Point>();
@@ -48,29 +47,29 @@ public class Parser {
 
 		for(int i = 0; i < size; i ++) {
 			try {
-				//Si le triangle existe déjà : la méthode hashCode renvoie la même valeur, et il ne l'ajoute pas ...  !
-				//FIXME : attention : revoir les hashCode de Edge et de Triangle !
+				//If a Triangle exists already, and if the Parser read another Triangle with the same values,
+				//only one of those Triangles will be added to the Mesh.
 				mesh.add(processLineB(bBuf, pointMap, edgeMap));
-			} catch (InvalidActivityException e) {
-				//C'est un triangle plat, donc on ne l'ajoute pas !
+			} catch (FlatTriangleException e) {
+				//If it is a flat Triangle : 2 identical Points, then 2 identical Edge, it is not added to the Mesh.
 			} catch (OutOfBoundsPointException e) {
-				//Les coordonnées du triangle sont démesurées !
+				//The coordinates of the Point are unbounded, then the Triangle is not added to the Mesh.
 			}
 		}
 
-		System.out.println("Lecture du fichier " + fileName + " terminée !");
-		System.out.println("Nombre de triangles : " + mesh.size());
+		System.out.println("File : " + fileName + " read !");
+		System.out.println("Number of triangles : " + mesh.size());
 
 		return mesh;
 	}
 
-	public static Triangle processLineB(ByteBuffer bBuf, HashMap<Point, Point> pointMap, HashMap<Edge, Edge> edgeMap) throws Exception {
+	public static Triangle processLineB(ByteBuffer bBuf, HashMap<Point, Point> pointMap, HashMap<Edge, Edge> edgeMap) throws FlatTriangleException, OutOfBoundsPointException {
 		Vector3d norm = new Vector3d(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
 		Point p1 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
 		Point p2 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
 		Point p3 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
-		
-		double maxLimit = 1e5;
+
+		double maxLimit = OutOfBoundsPointException.boundLimit;
 		if(p1.getX() > maxLimit || p1.getY() > maxLimit || p1.getZ() > maxLimit)
 			throw new OutOfBoundsPointException();
 		if(p2.getX() > maxLimit || p2.getY() > maxLimit || p2.getZ() > maxLimit)
@@ -98,8 +97,7 @@ public class Parser {
 			p3 = p;
 
 		if(p1 == p2 || p2 == p3 || p1 == p3)
-			//FIXME : créer une exception !
-			throw new InvalidActivityException();
+			throw new FlatTriangleException();
 		
 		Edge e1 = new Edge(p1, p2);
 		Edge e2 = new Edge(p2, p3);
@@ -129,7 +127,7 @@ public class Parser {
 		return new Triangle(p1, p2, p3, e1, e2, e3, norm);
 	}
 
-	public static HashSet<Triangle> readSTL(String fileName) throws Exception {
+	public static HashSet<Triangle> readSTL(String fileName) throws BadFormedFileException, IOException {
 		Scanner scanner = new Scanner(new FileReader(fileName));
 
 		//Reading the file		
@@ -137,6 +135,8 @@ public class Parser {
 			if(scanner.hasNextLine()) {
 				StringTokenizer brokenLine = new StringTokenizer(scanner.nextLine(), " ");
 				String openingWord = brokenLine.nextToken();
+				//If the first word is solid, this means it's an ASCII file
+				//If it's a binary file, it will not be found
 				if(openingWord.equals("solid"))
 					return readSTLA(fileName);
 				else
@@ -149,9 +149,9 @@ public class Parser {
 		}
 	}
 
-	private static HashSet<Triangle> readSTLA(String fileName) throws FileNotFoundException {
+	private static HashSet<Triangle> readSTLA(String fileName) throws FileNotFoundException, BadFormedFileException {
 		Scanner scanner = new Scanner(new FileReader(fileName));
-		LinkedList<Triangle> facesFromSTL = new LinkedList<Triangle>();
+		HashSet<Triangle> facesFromSTL = new HashSet<Triangle>();
 
 		HashMap<Point, Point> pointMap = new HashMap<Point, Point>();
 		HashMap<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
@@ -159,15 +159,16 @@ public class Parser {
 		//Reading the file
 		try {
 			while (scanner.hasNextLine()){
-				//Reacting to the line			
-//				try {
-				processLineA(facesFromSTL, scanner.nextLine(), pointMap, edgeMap);
-				//FIXME : gérer les triangles plats !
-//				} catch (InvalidActivityException e) {
-//					//C'est un triangle plat, donc on ne l'ajoute pas !
-//				} catch (Point.OutOfBoundsPointException e) {
-//					//Les coordonnées du triangle sont démesurées !
-//				}
+				//Reacting to the line	
+				try {
+					//If a Triangle exists already, and if the Parser read another Triangle with the same values,
+					//only one of those Triangles will be added to the Mesh.
+					processLineA(facesFromSTL, scanner.nextLine(), pointMap, edgeMap);
+				} catch (FlatTriangleException e) {
+					//If it is a flat Triangle : 2 identical Points, then 2 identical Edge, it is not added to the Mesh.
+				} catch (OutOfBoundsPointException e) {
+					//The coordinates of the Point are unbounded, then the Triangle is not added to the Mesh.
+				}
 			}
 		} finally {
 			scanner.close();
@@ -180,9 +181,9 @@ public class Parser {
 	}
 
 	//To improve : no verification whatsoever, if the stl is badly formed, explosion !
-	public static void processLineA(LinkedList<Triangle> facesFromSTL, String line, HashMap<Point, Point> pointMap, HashMap<Edge, Edge> edgeMap) {
+	public static void processLineA(HashSet<Triangle> facesFromSTL, String line, HashMap<Point, Point> pointMap, HashMap<Edge, Edge> edgeMap) throws FlatTriangleException, OutOfBoundsPointException, BadFormedFileException {
 		if (line.isEmpty()){
-			//TODO Generate an exception
+			throw new BadFormedFileException();
 		} else {
 			StringTokenizer brokenLine = new StringTokenizer(line, " ");
 			String openingWord = brokenLine.nextToken();
@@ -192,19 +193,23 @@ public class Parser {
 				if (brokenLine.nextToken().equals("normal")) {
 					currentVector = new Vector3d(Double.parseDouble(brokenLine.nextToken()),Double.parseDouble(brokenLine.nextToken()),Double.parseDouble(brokenLine.nextToken()));
 				} else {
-					//TODO Exception. Should be normal
+					throw new BadFormedFileException();
 				}
 			} else {
 				//Vertex
 				if(openingWord.equals("vertex")) {
 					Point p = new Point(Double.parseDouble(brokenLine.nextToken()), Double.parseDouble(brokenLine.nextToken()), Double.parseDouble(brokenLine.nextToken()));
 
-					Point pp = pointMap.get(p);
+					double maxLimit = OutOfBoundsPointException.boundLimit;
+					if(p.getX() > maxLimit || p.getY() > maxLimit || p.getZ() > maxLimit)
+						throw new OutOfBoundsPointException();
+					
+					Point mapP = pointMap.get(p);
 
-					if(pp == null)
+					if(mapP == null)
 						pointMap.put(p, p);
 					else
-						p = pp;
+						p = mapP;
 
 					currentPoints.add(p);
 				} else {
@@ -231,6 +236,9 @@ public class Parser {
 							edgeMap.put(e3, e3);
 						else
 							e3 = e;
+						
+						if(e1 == e2 || e2 == e3 || e1 == e3)
+							throw new FlatTriangleException();
 
 						facesFromSTL.add(new Triangle(currentPoints.get(0), currentPoints.get(1), currentPoints.get(2), e1, e2, e3, currentVector));
 					} else {
@@ -247,6 +255,15 @@ public class Parser {
 	}
 
 	private static class OutOfBoundsPointException extends Exception {
-		private static final long serialVersionUID = -7976248317048367730L;
+		private static final long serialVersionUID = 1L;
+		private static final double boundLimit = 1e5;
+	}
+
+	private static class FlatTriangleException extends Exception {
+		private static final long serialVersionUID = 1L;
+	}
+
+	public static class BadFormedFileException extends Exception {
+		private static final long serialVersionUID = 1L;
 	}
 }

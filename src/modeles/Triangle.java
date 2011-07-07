@@ -7,8 +7,6 @@ import java.util.HashSet;
 
 import javax.vecmath.Vector3d;
 
-import utils.MatrixMethod;
-
 
 public class Triangle {
 	
@@ -62,26 +60,16 @@ public class Triangle {
 		return edges[0];
 	}
 
-	public void setEdge1(Edge e) {
-		this.edges[0] = e;
-	}
-
 	public Edge getEdge2() {
 		return edges[1];
-	}
-
-	public void setEdge2(Edge e) {
-		this.edges[1] = e;
 	}
 
 	public Edge getEdge3() {
 		return edges[2];
 	}
 
-	public void setEdge3(Edge e) {
-		this.edges[2] = e;
-	}
-
+	
+	//FIXME : oh oh !
 	public ArrayList<Triangle> getNeighbours() {
 		ArrayList<Triangle> l = new ArrayList<Triangle>();
 		for(Edge e : this.edges) {
@@ -94,6 +82,10 @@ public class Triangle {
 		return l;
 	}
 
+	public boolean isNeighboor(Triangle f) {
+		return(this.getNeighbours().contains(f));
+	}
+	
 	public String toString() {
 		return points[0].toString() + "\n" + points[1].toString() + "\n" + points[2].toString() + "\n" + normal.toString() ;
 	}
@@ -118,16 +110,20 @@ public class Triangle {
 		return(this.angularTolerance(face.normal, error));
 	}
 
-	//TODO : A TESTER !!
 	public boolean isNormalTo(Vector3d normal, double error) {
 		return((this.normal.dot(normal) < error) && (this.normal.dot(normal) > -error));
 	}
 
 	public boolean contains(Point p) {
-		return (points[0].equals(p) || points[1].equals(p) || points[2].equals(p));
+		for(Point point : points) {
+			if(point.equals(p))
+				return true;
+		}
+		return false;
 	}
 
 	@Override
+	//FIXME : revoir le hashCode !
 	public int hashCode() {
 		int result = 1;
 		result = result + ((points[0] == null) ? 0 : points[0].hashCode());
@@ -150,18 +146,6 @@ public class Triangle {
 			return true;
 		else
 			return false;
-	}
-
-	public boolean isNeighboor(Triangle f) {
-		return(this.getNeighbours().contains(f));
-	}
-
-	//TODO : créer une deuxième méthode qui compare les références et non les points : plus rapide !
-	public boolean hasTwoEqualVerticesWith(Triangle f) {
-		return(		(this.contains(f.points[0]) && this.contains(f.points[1])) 
-				|| 	(this.contains(f.points[1]) && this.contains(f.points[2])) 
-				|| 	(this.contains(f.points[0]) && this.contains(f.points[2]))
-		);
 	}
 
 	/**
@@ -207,44 +191,13 @@ public class Triangle {
 		return Math.max(points[0].getZ(), Math.max(points[1].getZ(), points[2].getZ()));
 	}
 
-	public Point getCentroid() {
-		Point mid = new Point((points[0].getX() + points[1].getX())/(double)2, (points[0].getY() + points[1].getY())/(double)2, (points[0].getZ() + points[1].getZ())/(double)2);
-		return new Point((mid.getX() + 2*points[2].getX())/(double)3, (mid.getY() + 2*points[2].getY())/(double)3, (mid.getZ() + 2*points[2].getZ())/(double)3);
-	}
-
 	public Point yMaxPoint() {
-		if(points[0].getY() == this.yMax())
-			return points[0];
-		else if(points[1].getY() == this.yMax())
-			return points[1];
-		else
-			return points[2];
-	}
-
-	public Point yMinPoint() {
-		if(points[0].getY() == this.yMin())
-			return points[0];
-		else if(points[1].getY() == this.yMin())
-			return points[1];
-		else
-			return points[2];
-	}
-
-	public Point zMaxPoint() {
-		if(points[0].getZ() == this.zMax())
-			return points[0];
-		else if(points[1].getZ() == this.zMax())
-			return points[1];
-		else
-			return points[2];
-	}
-
-	//Attention en l'utilisant, à ce qu'elle n'ait pas déjà été effectuée !
-	public void changeBase(double[][] base){
-		MatrixMethod.changeBase(this.getNormal(), base);
-		this.points[0].changeBase(base);
-		this.points[1].changeBase(base);
-		this.points[2].changeBase(base);
+		double yMax = this.yMax();
+		for(Point p : points) {
+			if(p.getY() == yMax)
+				return p;
+		}
+		return null;
 	}
 
 	public Triangle zProjection(double z) {
@@ -263,8 +216,9 @@ public class Triangle {
 		return t;
 	}
 
-	
-	//Returns int ret the neighbours of this which belongs to m
+	//Returns in ret the neighbours of this which belongs to m
+	//TODO : essayer de remettre 3 Triangle neighbour1, 2, et 3.
+	//Ici, on aurait plus besoin de la HashSet...
 	public void returnNeighbours(Mesh ret, Mesh m) {
 		ret.add(this);
 		
@@ -280,17 +234,17 @@ public class Triangle {
 		}
 	}
 
-	//FIXME !
-	public ArrayList<Edge> getFront() {
-		ArrayList<Edge> list = new ArrayList<Edge>();
-		
-		for(Edge e : this.edges) {
-			if(e.getTriangleList().size() == 1)
-				list.add(e);
-		}
-		
-		return list;
-	}
+//	//FIXME !
+//	public ArrayList<Edge> getFront() {
+//		ArrayList<Edge> list = new ArrayList<Edge>();
+//		
+//		for(Edge e : this.edges) {
+//			if(e.getTriangleList().size() == 1)
+//				list.add(e);
+//		}
+//		
+//		return list;
+//	}
 
 	public Collection<Point> getPoints() {
 		return Arrays.asList(this.points);
