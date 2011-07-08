@@ -1,5 +1,6 @@
 package modeles;
 
+import java.security.InvalidParameterException;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -167,6 +168,8 @@ public class Mesh extends HashSet<Triangle>{
 
 	public Triangle zMinFace() {
 		Triangle t = null;
+		if(this.isEmpty())
+			throw new InvalidParameterException("Empty mesh !");
 		double zMini = Double.POSITIVE_INFINITY;
 		for (Triangle face : this){
 			if (face.zMin() < zMini){
@@ -176,7 +179,7 @@ public class Mesh extends HashSet<Triangle>{
 		}
 		return t;
 	}
-	
+
 	public Triangle faceUnderZ(double zMax) {
 		for (Triangle t : this) {
 			if (t.zMin() < zMax) {
@@ -196,18 +199,21 @@ public class Mesh extends HashSet<Triangle>{
 
 	//FIXME : supprimer l'ancienne version, car elle est foutue.
 	//FIXME : prévoir de faire une copie de l'ancienne version...
-	public Mesh changeBase(double[][] matrix) {
+	public void changeBase(double[][] matrix) {
 		HashSet<Point> set = new HashSet<Point>();
-		
+		HashSet<Triangle> mesh = new HashSet<Triangle>();
+
 		for(Triangle f : this) {
 			set.addAll(f.getPoints());
 			MatrixMethod.changeBase(f.getNormal(), matrix);
+			mesh.add(f);
 		}
 
 		for(Point p : set)
 			p.changeBase(matrix);
 
-		return new Mesh(this);
+		this.clear();
+		this.addAll(mesh);
 	}
 
 	public Mesh zBetween(double m1, double m2) {
@@ -254,34 +260,34 @@ public class Mesh extends HashSet<Triangle>{
 	}
 
 	//TODO : à refaire !
-//	public ArrayList<Border> returnBounds() {
-//		ArrayList<Border> e = new ArrayList<Border>();
-//		//		ArrayList<Border> eFin = new ArrayList<Border>();
-//
-//		Border front = new Border();
-//		for(Triangle tri : this) {
-//			if(tri.getNumVoisins() < 3 && tri.getNumVoisins() > 0)
-//				front.addAll(tri.getFront());
-//		}
-//
-//		while(!front.getEdgeList().isEmpty()) {
-//			Edge arete = front.getEdgeList().iterator().next();
-//			Border ret = new Border();
-//			front.returnNeighbours(ret, arete);
-//			e.add(ret);
-//			front.remove(ret);
-//		}
-//
-//		//		//Si certains possède des frontières doubles, il faut créer deux frontières
-//		//		for(Border b : e) {
-//		////			System.out.println(b.edgeSize());
-//		//			Border bFin = Algos.orderBorder(b);
-//		////			System.out.println(bFin.edgeSize());
-//		//			eFin.add(bFin);
-//		//		}
-//
-//		return e;
-//	}
+	//	public ArrayList<Border> returnBounds() {
+	//		ArrayList<Border> e = new ArrayList<Border>();
+	//		//		ArrayList<Border> eFin = new ArrayList<Border>();
+	//
+	//		Border front = new Border();
+	//		for(Triangle tri : this) {
+	//			if(tri.getNumVoisins() < 3 && tri.getNumVoisins() > 0)
+	//				front.addAll(tri.getFront());
+	//		}
+	//
+	//		while(!front.getEdgeList().isEmpty()) {
+	//			Edge arete = front.getEdgeList().iterator().next();
+	//			Border ret = new Border();
+	//			front.returnNeighbours(ret, arete);
+	//			e.add(ret);
+	//			front.remove(ret);
+	//		}
+	//
+	//		//		//Si certains possède des frontières doubles, il faut créer deux frontières
+	//		//		for(Border b : e) {
+	//		////			System.out.println(b.edgeSize());
+	//		//			Border bFin = Algos.orderBorder(b);
+	//		////			System.out.println(bFin.edgeSize());
+	//		//			eFin.add(bFin);
+	//		//		}
+	//
+	//		return e;
+	//	}
 
 	public void write(String fileName) {
 		Writer.write(fileName, this);

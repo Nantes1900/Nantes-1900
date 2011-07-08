@@ -2,10 +2,7 @@ package tests;
 
 import junit.framework.TestCase;
 
-
 public class EdgeTest extends TestCase {
-
-	
 	
 	@Override
 	protected void setUp() throws Exception {
@@ -18,5 +15,4 @@ public class EdgeTest extends TestCase {
 		// TODO Auto-generated method stub
 		super.tearDown();
 	}
-
 }

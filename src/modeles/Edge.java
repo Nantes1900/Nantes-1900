@@ -3,52 +3,51 @@ package modeles;
 import java.util.ArrayList;
 
 public class Edge {
-	private ArrayList<Triangle> triangleList;
+	
+	private ArrayList<Triangle> triangleList = new ArrayList<Triangle>(2);
 
-	private Point p1;
-	private Point p2;
+	private Point[] points = new Point[3];
 
 	public Edge(Point p1, Point p2) {
-		triangleList = new ArrayList<Triangle>(2);
-		this.p1 = p1;
-		this.p2 = p2;
+		this.points[0] = p1;
+		this.points[1] = p2;
 	}
 
 	public ArrayList<Triangle> getTriangleList() {
-		return triangleList;
+		return this.triangleList;
 	}
-	
+
 	public Triangle returnOther(Triangle t) {
-		if(triangleList.size() > 2)
+		if(this.triangleList.size() > 2)
 			System.err.println("Error : more than two triangles per edge !");
-		if(triangleList.size() < 2)
+		if(this.triangleList.size() < 2)
 			return null;
-		if(triangleList.get(0) == t)
-			return triangleList.get(1);
+		if(this.triangleList.get(0) == t)
+			return this.triangleList.get(1);
 		else
-			return triangleList.get(1);
+			return this.triangleList.get(1);
 	}
 
 	public Point getP1() {
-		return p1;
+		return this.points[0];
 	}
 
 	public Point getP2() {
-		return p2;
+		return this.points[1];
 	}
 
 	public double distance() {
-		return this.p1.distance(this.p2);
+		return this.points[0].distance(this.points[1]);
 	}
 
 	public boolean contains(Point p) {
-		return (this.p1 == p || this.p2 == p);
+		return (this.points[0] == p || this.points[1] == p);
 	}
 
 	public void addTriangle(Triangle t) {
-		if(!triangleList.contains(t)) {
-			triangleList.add(t);
-			if(triangleList.size() > 2) {
+		if(!this.triangleList.contains(t)) {
+			this.triangleList.add(t);
+			if(this.triangleList.size() > 2) {
 				//TODO : throw Exception and treat it !
 				System.err.println("Problem in the mesh : more than two triangles for one edge !");
 			}
@@ -56,15 +55,15 @@ public class Edge {
 	}
 
 	public boolean isNeighboor(Edge e) {
-		return(this.contains(e.p1) || this.contains(e.p2));
+		return(this.contains(e.points[0]) || this.contains(e.points[1]));
 	}
 
 	@Override
 	//FIXME : revoir le hashCode !
 	public int hashCode() {
 		int result = 1;
-		result = result + ((p1 == null) ? 0 : p1.hashCode());
-		result = result + ((p2 == null) ? 0 : p2.hashCode());
+		result = result + ((this.points[0] == null) ? 0 : this.points[0].hashCode());
+		result = result + ((this.points[1] == null) ? 0 : this.points[1].hashCode());
 		return result;
 	}
 
@@ -77,6 +76,16 @@ public class Edge {
 		if (getClass() != obj.getClass())
 			return false;
 		Edge e = (Edge) obj;
-		return (e.contains(this.p1) && e.contains(this.p2));
+		return (e.contains(this.points[0]) && e.contains(this.points[1]));
+	}
+
+	//FIXME !
+	public void returnNeighbours(Polyline ret, Polyline p) {
+		//		ret.add(this);
+		//		
+		//		Edge e;
+		//		for(Point p : this.) {
+		//			
+		//		}
 	}
 }

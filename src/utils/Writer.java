@@ -20,9 +20,9 @@ public class Writer {
 
 	public static final int ASCII_MODE = 1;
 	public static final int BINARY_MODE = 2;
-	
+
 	private static int MODE = ASCII_MODE;
-	
+
 	public static void write(String fileName, Mesh m) {
 		if(MODE == ASCII_MODE)
 			writeA(fileName, m);
@@ -31,11 +31,11 @@ public class Writer {
 		else
 			System.err.println("Erreur !");
 	}
-	
+
 	public static void setWriteMode(int mode) {
 		MODE = mode;
 	}
-	
+
 	private static void writeA(String fileName, Mesh m) {
 		Writer.writeSTLA(fileName, m);
 		System.out.println(fileName + " written in STL ASCII!");
@@ -45,7 +45,7 @@ public class Writer {
 		Writer.writeSTLB(fileName, m);
 		System.out.println(fileName + " written in STL binary!");
 	}
-	
+
 	/**
 	 * 
 	 * @param fw The file we want to write in.
@@ -125,7 +125,7 @@ public class Writer {
 
 			byte[] header = new byte[80];
 			stream.write(header);
-			
+
 			ByteBuffer bBuf = ByteBuffer.allocate(Integer.SIZE);
 			bBuf.order(ByteOrder.LITTLE_ENDIAN);
 			bBuf.putInt(surface.size());
@@ -134,7 +134,7 @@ public class Writer {
 			for(Triangle t : surface) {
 				writeBinaryFace(stream, t);
 			}
-			
+
 			stream.flush();
 		}
 		catch(Exception e) {

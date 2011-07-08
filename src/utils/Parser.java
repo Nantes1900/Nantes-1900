@@ -76,7 +76,7 @@ public class Parser {
 			throw new OutOfBoundsPointException();
 		if(p3.getX() > maxLimit || p3.getY() > maxLimit || p3.getZ() > maxLimit)
 			throw new OutOfBoundsPointException();
-		
+
 		//FIXME : essayer de trier les points pour que le hashCode de Edge soit mieux codé.
 		Point p = pointMap.get(p1);
 		if(p == null)
@@ -98,7 +98,7 @@ public class Parser {
 
 		if(p1 == p2 || p2 == p3 || p1 == p3)
 			throw new FlatTriangleException();
-		
+
 		Edge e1 = new Edge(p1, p2);
 		Edge e2 = new Edge(p2, p3);
 		Edge e3 = new Edge(p3, p1);
@@ -203,7 +203,7 @@ public class Parser {
 					double maxLimit = OutOfBoundsPointException.boundLimit;
 					if(p.getX() > maxLimit || p.getY() > maxLimit || p.getZ() > maxLimit)
 						throw new OutOfBoundsPointException();
-					
+
 					Point mapP = pointMap.get(p);
 
 					if(mapP == null)
@@ -236,7 +236,7 @@ public class Parser {
 							edgeMap.put(e3, e3);
 						else
 							e3 = e;
-						
+
 						if(e1 == e2 || e2 == e3 || e1 == e3)
 							throw new FlatTriangleException();
 

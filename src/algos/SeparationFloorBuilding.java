@@ -36,7 +36,7 @@ public class SeparationFloorBuilding {
 
 	private Logger log = Logger.getLogger("logger");
 
-	Vector3d normalFloor = new Vector3d();
+	private Vector3d normalFloor = new Vector3d();
 
 	public SeparationFloorBuilding(String fileName) {
 
@@ -112,7 +112,7 @@ public class SeparationFloorBuilding {
 			double[][] matrix = MatrixMethod.createOrthoBase(normalFloor);
 			MatrixMethod.changeBase(normalFloor, matrix);
 
-			this.mesh = this.mesh.changeBase(matrix);
+			this.mesh.changeBase(matrix);
 
 			log.info("Base changed finished !");
 
@@ -124,9 +124,9 @@ public class SeparationFloorBuilding {
 	}
 
 	private void floorExtraction() {
-		
+
 		log.info("Floor extraction...");
-		
+
 		//Searching for floor-oriented triangles with an error : angleNormalErrorFactor
 		log.info("Searching for floor-oriented triangles...");
 		Mesh meshOriented = mesh.orientedAs(normalFloor, angleNormalErrorFactor);
@@ -160,12 +160,12 @@ public class SeparationFloorBuilding {
 		mesh.remove(floors);
 
 		buildings = mesh;
-		
+
 		log.info("Floor extracted !");
 	}
 
 	private void buildingsExtraction() {
-		
+
 		//Extraction of the buildings
 		log.info("Extracting building ...");
 		ArrayList<Mesh> formsList = Algos.blockExtract(buildings);
@@ -199,12 +199,12 @@ public class SeparationFloorBuilding {
 
 		if(log.getLevel() == Level.FINEST)
 			noise.write("Files/noise.stl");
-		
+
 		log.info("Buildings extracted !");
 	}
 
 	public void noiseTreatment() {
-		
+
 		Mesh floorsAndNoise = new Mesh(floors);
 		floorsAndNoise.addAll(noise);
 

@@ -58,6 +58,23 @@ public class Algos {
 
 		return thingsList;
 	}
+	
+	public static ArrayList<Mesh> blockTreatNoise(ArrayList<Mesh> list, Mesh noise, double largeAngleNormalErrorFactor) {
+				
+		ArrayList<Mesh> m = new ArrayList<Mesh>();
+
+		for(Mesh e : list) {
+			Mesh meshAndNoise = new Mesh(e);
+			Mesh noiseOriented = noise.orientedAs(e.averageNormal(), largeAngleNormalErrorFactor);
+			meshAndNoise.addAll(noiseOriented);
+			Mesh mes = new Mesh();
+			e.getOne().returnNeighbours(mes, meshAndNoise);
+			m.add(mes);
+			noise.remove(mes);
+		}
+
+		return m;
+	}
 
 //	public static Point average(List<Point> points) {
 //		double xAverage = 0, yAverage = 0, zAverage = 0;

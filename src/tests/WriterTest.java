@@ -4,8 +4,6 @@ import junit.framework.TestCase;
 
 
 public class WriterTest extends TestCase {
-
-	
 	
 	@Override
 	protected void setUp() throws Exception {

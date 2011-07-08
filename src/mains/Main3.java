@@ -8,6 +8,6 @@ public class Main3 {
 
 		SeparationTraitementMursToits algo = new SeparationTraitementMursToits();
 		algo.apply();
-		
+
 	}
 }
