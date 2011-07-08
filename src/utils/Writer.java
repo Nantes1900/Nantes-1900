@@ -61,9 +61,9 @@ public class Writer {
 				s1 += " "+t[j];				
 			}
 			fw.write(s1+"\nouter loop");
-			fw.write("\nvertex"+" "+face.getP0().getX()+" "+face.getP0().getY()+" "+face.getP0().getZ());
 			fw.write("\nvertex"+" "+face.getP1().getX()+" "+face.getP1().getY()+" "+face.getP1().getZ());
 			fw.write("\nvertex"+" "+face.getP2().getX()+" "+face.getP2().getY()+" "+face.getP2().getZ());
+			fw.write("\nvertex"+" "+face.getP3().getX()+" "+face.getP3().getY()+" "+face.getP3().getZ());
 			fw.write("\nendloop\nendfacet");
 		}
 		catch (java.io.IOException ee){
@@ -104,10 +104,6 @@ public class Writer {
 		writeInGoodOrder(writer, face.getNormal().getY());
 		writeInGoodOrder(writer, face.getNormal().getZ());
 
-		writeInGoodOrder(writer, face.getP0().getX());
-		writeInGoodOrder(writer, face.getP0().getY());
-		writeInGoodOrder(writer, face.getP0().getZ());
-
 		writeInGoodOrder(writer, face.getP1().getX());
 		writeInGoodOrder(writer, face.getP1().getY());
 		writeInGoodOrder(writer, face.getP1().getZ());
@@ -115,6 +111,10 @@ public class Writer {
 		writeInGoodOrder(writer, face.getP2().getX());
 		writeInGoodOrder(writer, face.getP2().getY());
 		writeInGoodOrder(writer, face.getP2().getZ());
+
+		writeInGoodOrder(writer, face.getP3().getX());
+		writeInGoodOrder(writer, face.getP3().getY());
+		writeInGoodOrder(writer, face.getP3().getZ());
 
 		writer.write(new byte[2]);
 	}

@@ -3,30 +3,30 @@ package modeles;
 import utils.MatrixMethod;
 
 public class Point {
-	
+
 	private double x;
 	private double y;
 	private double z;
-	
+
+	//To use very cautiously : it can create two Points with equal Values and different references in the Mesh !
 	public Point(Point p) {
 		this.x = p.x;
 		this.y = p.y;
 		this.z = p.z;
 	}
-	
+
 	public Point(double x, double y, double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
-//		edgeList = new ArrayList<Edge>();
 	}
-	
+
 	public double getX() {return x;}
-	
+
 	public double getY() {return y;}
-	
+
 	public double getZ() {return z;}
-		
+
 	public void setX(double x) {
 		this.x = x;
 	}
@@ -38,21 +38,21 @@ public class Point {
 	public void setZ(double z) {
 		this.z = z;
 	}
-	
+
 	public void set(double[] coords) {
 		this.setX(coords[0]);
 		this.setY(coords[1]);
 		this.setZ(coords[2]);
 	}
-	
+
 	public String toString() {
 		return new String("(" + x + ", " + y + ", " + z + ")");
 	}
-	
-public double distance(Point p) {
+
+	public double distance(Point p) {
 		return Math.pow(Math.pow(p.x - x, 2) + Math.pow(p.y - y, 2) + Math.pow(p.z - z, 2), 0.5);
 	}	
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

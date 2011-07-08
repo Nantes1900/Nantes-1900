@@ -116,6 +116,7 @@ public class MatrixMethod {
 		vect.set(MatrixMethod.changeBase(coord, matrix));
 	}
 	
+	//FIXME : changer de nom : elle existe déjà dans Vecmath !
 	public static class SingularMatrixException extends Exception {
 		private static final long serialVersionUID = 1L;
 	}

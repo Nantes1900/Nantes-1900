@@ -40,15 +40,15 @@ public class Triangle {
 		this.edges[2].addTriangle(this);
 	}
 
-	public Point getP0() {
+	public Point getP1() {
 		return points[0];
 	}
 
-	public Point getP1() {
+	public Point getP2() {
 		return points[1];
 	}
 
-	public Point getP2() {
+	public Point getP3() {
 		return points[2];
 	}
 
@@ -56,15 +56,15 @@ public class Triangle {
 		return normal;
 	}
 
-	public Edge getEdge1() {
+	public Edge getE1() {
 		return edges[0];
 	}
 
-	public Edge getEdge2() {
+	public Edge getE2() {
 		return edges[1];
 	}
 
-	public Edge getEdge3() {
+	public Edge getE3() {
 		return edges[2];
 	}
 
@@ -224,9 +224,9 @@ public class Triangle {
 		
 		HashSet<Triangle> neighbours = new HashSet<Triangle>();
 		
-		neighbours.addAll(this.getEdge1().getTriangleList());
-		neighbours.addAll(this.getEdge2().getTriangleList());
-		neighbours.addAll(this.getEdge3().getTriangleList());
+		neighbours.addAll(this.getE1().getTriangleList());
+		neighbours.addAll(this.getE2().getTriangleList());
+		neighbours.addAll(this.getE3().getTriangleList());
 		
 		for(Triangle t : neighbours) {
 			if(t != this && m.contains(t) && !ret.contains(t))
