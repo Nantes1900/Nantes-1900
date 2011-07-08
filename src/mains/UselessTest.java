@@ -1,4 +1,4 @@
-package algos;
+package mains;
 
 import javax.vecmath.Vector3d;
 
