@@ -1,4 +1,4 @@
-package Mains;
+package mains;
 
 import java.io.File;
 import java.util.ArrayList;

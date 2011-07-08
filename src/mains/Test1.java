@@ -1,4 +1,4 @@
-package Mains;
+package mains;
 
 import algos.SeparationFloorBuilding;
 
