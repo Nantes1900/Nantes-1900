@@ -3,7 +3,6 @@ package modeles;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 
 import javax.vecmath.Vector3d;
 
@@ -52,6 +51,10 @@ public class Triangle {
 		return points[2];
 	}
 
+	public Collection<Point> getPoints() {
+		return Arrays.asList(this.points);
+	}
+
 	public Vector3d getNormal() {
 		return normal;
 	}
@@ -67,51 +70,9 @@ public class Triangle {
 	public Edge getE3() {
 		return edges[2];
 	}
-
-	
-	//FIXME : oh oh !
-	public ArrayList<Triangle> getNeighbours() {
-		ArrayList<Triangle> l = new ArrayList<Triangle>();
-		for(Edge e : this.edges) {
-			l.addAll(e.getTriangleList());
-		}
-		for(Triangle t : l) {
-			if(t == this)
-				l.remove(t);
-		}
-		return l;
-	}
-
-	public boolean isNeighboor(Triangle f) {
-		return(this.getNeighbours().contains(f));
-	}
 	
 	public String toString() {
-		return points[0].toString() + "\n" + points[1].toString() + "\n" + points[2].toString() + "\n" + normal.toString() ;
-	}
-
-	/**
-	 * Check if the angle between the normal of this face and a vector is less or equal than the error
-	 * @param face The Vector3d we want to compare to.
-	 * @param erreur The double containing the tolerance.
-	 * @return boolean if true or not
-	 */
-	public boolean angularTolerance(Vector3d vector, double error) {
-		return(this.normal.angle(vector)*180/Math.PI < error);
-	}
-
-	/**
-	 * Check if the angle between two face's normale is less than erreur.
-	 * @param face The face we want to compare to.
-	 * @param erreur The double containing the tolerance.
-	 * @return boolean if true or not
-	 */
-	public boolean angularTolerance(Triangle face, double error) {
-		return(this.angularTolerance(face.normal, error));
-	}
-
-	public boolean isNormalTo(Vector3d normal, double error) {
-		return((this.normal.dot(normal) < error) && (this.normal.dot(normal) > -error));
+		return points[0].toString() + "\n" + points[1].toString() + "\n" + points[2].toString() + "\n" + normal.toString();
 	}
 
 	public boolean contains(Point p) {
@@ -133,6 +94,8 @@ public class Triangle {
 	}
 
 	@Override
+	//TODO : do not depends on the normal : fix it !
+	//Do not depend on the edges !
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -148,18 +111,14 @@ public class Triangle {
 			return false;
 	}
 
-	/**
-	 * Compute the average z-coordinate of the points of this face
-	 * @return the average z-coordinate of the points of this face
-	 */
-	public double zAverage(){
-		double zAverage = points[0].getZ() + points[1].getZ() + points[2].getZ();
-		return zAverage/3;
-	}
-
 	public double xAverage(){
 		double xAverage = points[0].getX() + points[1].getX() + points[2].getX();
 		return xAverage/3;
+	}
+	
+	public double zAverage(){
+		double zAverage = points[0].getZ() + points[1].getZ() + points[2].getZ();
+		return zAverage/3;
 	}
 
 	public double yAverage(){
@@ -191,46 +150,109 @@ public class Triangle {
 		return Math.max(points[0].getZ(), Math.max(points[1].getZ(), points[2].getZ()));
 	}
 
-	public Point yMaxPoint() {
-		double yMax = this.yMax();
+	public Point xMinPoint() {
+		double xMin = this.xMin();
 		for(Point p : points) {
-			if(p.getY() == yMax)
+			if(p.getX() == xMin)
 				return p;
 		}
 		return null;
 	}
 
+	public Point xMaxPoint() {
+		double xMax = this.xMax();
+		for(Point p : points) {
+			if(p.getX() == xMax)
+				return p;
+		}
+		return null;
+	}
+
+	public Point yMinPoint() {
+		double yMin = this.yMin();
+		for(Point p : points) {
+			if(p.getY() == yMin)
+				return p;
+		}
+		return null;
+	}
+
+	public Point yMaxPoint() {
+		double yMay = this.yMax();
+		for(Point p : points) {
+			if(p.getY() == yMay)
+				return p;
+		}
+		return null;
+	}
+
+	public Point zMinPoint() {
+		double zMin = this.zMin();
+		for(Point p : points) {
+			if(p.getZ() == zMin)
+				return p;
+		}
+		return null;
+	}
+
+	public Point zMaxPoint() {
+		double zMax = this.zMax();
+		for(Point p : points) {
+			if(p.getZ() == zMax)
+				return p;
+		}
+		return null;
+	}	
+	
+	public Triangle xProjection(double x) {
+		Triangle t = new Triangle(this);
+		
+		for(Point p : t.points)
+			p.setX(x);
+		
+		return t;
+	}	
+	
+	public Triangle yProjection(double y) {
+		Triangle t = new Triangle(this);
+		
+		for(Point p : t.points)
+			p.setY(y);
+		
+		return t;
+	}	
+	
 	public Triangle zProjection(double z) {
 		Triangle t = new Triangle(this);
-		t.points[0].setZ(z);
-		t.points[1].setZ(z);
-		t.points[2].setZ(z);
+		
+		for(Point p : t.points)
+			p.setZ(z);
+		
 		return t;
 	}
 
-	public Triangle xProjection(double x) {
-		Triangle t = new Triangle(this);
-		t.points[0].setX(x);
-		t.points[1].setX(x);
-		t.points[2].setX(x);
-		return t;
+	public boolean angularTolerance(Vector3d vector, double error) {
+		return(this.normal.angle(vector)*180/Math.PI < error);
+	}
+	
+	public boolean angularTolerance(Triangle face, double error) {
+		return(this.angularTolerance(face.normal, error));
+	}
+
+	public boolean isNormalTo(Vector3d normal, double error) {
+		return((this.normal.dot(normal) < error) && (this.normal.dot(normal) > -error));
 	}
 
 	//Returns in ret the neighbours of this which belongs to m
-	//TODO : essayer de remettre 3 Triangle neighbour1, 2, et 3.
-	//Ici, on aurait plus besoin de la HashSet...
 	public void returnNeighbours(Mesh ret, Mesh m) {
 		ret.add(this);
 		
-		HashSet<Triangle> neighbours = new HashSet<Triangle>();
+		Triangle other;
 		
-		neighbours.addAll(this.getE1().getTriangleList());
-		neighbours.addAll(this.getE2().getTriangleList());
-		neighbours.addAll(this.getE3().getTriangleList());
-		
-		for(Triangle t : neighbours) {
-			if(t != this && m.contains(t) && !ret.contains(t))
-				t.returnNeighbours(ret, m);
+		for(Edge e : this.edges) {
+			other = e.returnOther(this);
+			if(other != null && m.contains(other) && !ret.contains(other))
+				other.returnNeighbours(ret, m);
 		}
 	}
 
@@ -246,7 +268,20 @@ public class Triangle {
 //		return list;
 //	}
 
-	public Collection<Point> getPoints() {
-		return Arrays.asList(this.points);
+	public ArrayList<Triangle> getNeighbours() {
+		ArrayList<Triangle> l = new ArrayList<Triangle>();
+		Triangle other;
+		
+		for(Edge e : this.edges) {
+			other = e.returnOther(this);
+			if(other != null)
+				l.add(other);
+		}
+		
+		return l;
+	}
+
+	public boolean isNeighboor(Triangle f) {
+		return(this.getNeighbours().contains(f));
 	}
 }

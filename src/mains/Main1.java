@@ -9,6 +9,6 @@ public class Main1 {
 		
 		SeparationFloorBuilding algo = new SeparationFloorBuilding("Originals/batiments 1 - binary.stl");
 		algo.apply();
-			
+		
 	}
 }

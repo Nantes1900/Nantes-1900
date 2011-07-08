@@ -57,7 +57,7 @@ public class SeparationFloorBuilding {
 	}
 
 	public void setModeDebug() {
-		this.WRITING_MODE = Writer.BINARY_MODE;
+		this.WRITING_MODE = Writer.ASCII_MODE;
 		Writer.setWriteMode(WRITING_MODE);
 
 		this.log.setLevel(Level.FINEST);
@@ -117,7 +117,7 @@ public class SeparationFloorBuilding {
 			log.info("Base changed finished !");
 
 		} catch (SingularMatrixException e) {
-			System.err.println("Error : the matrix is badly formed !");
+			log.severe("Error : the matrix is badly formed !");
 			//FIXME : les exit sont pas géniaux...
 			System.exit(1);
 		}
