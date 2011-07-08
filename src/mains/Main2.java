@@ -9,7 +9,7 @@ import modeles.Mesh;
 import utils.MatrixMethod;
 import utils.Parser;
 
-public class Test2 {
+public class Main2 {
 	public static void main(String[] args) {
 		try
 		{

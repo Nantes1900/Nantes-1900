@@ -42,6 +42,7 @@ public class SeparationTraitementMursToits {
 	Mesh currentBuilding = new Mesh();
 
 	public SeparationTraitementMursToits() {
+		//TODO : rajouter des options.
 
 		//Options set
 		Writer.setWriteMode(WRITING_MODE);
@@ -183,7 +184,7 @@ public class SeparationTraitementMursToits {
 
 		wallList = m;
 	}
-	
+
 	private void treatNoiseRoofs() {
 		//Add to the roofs
 		ArrayList<Mesh> m = new ArrayList<Mesh>();
@@ -231,11 +232,11 @@ public class SeparationTraitementMursToits {
 			}
 			//				double[][] matrixInv = MatrixMethod.getInversMatrix(matrixWall);
 
-//			wall.changeBase(matrixWall);
-//			wallWellNormalToTheFloor.changeBase(matrixWall);
+			//			wall.changeBase(matrixWall);
+			//			wallWellNormalToTheFloor.changeBase(matrixWall);
 
 			//We project on the plane at the x coordinate of the majority of triangle of the wall.
-//			Mesh projectedSurface = wall.xProjection(wallWellNormalToTheFloor.xAverage());
+			//			Mesh projectedSurface = wall.xProjection(wallWellNormalToTheFloor.xAverage());
 
 			//				projectedSurface.findNeighbours();
 			//				
@@ -305,10 +306,10 @@ public class SeparationTraitementMursToits {
 			}
 			//				double[][] matrixInv = MatrixMethod.getInversMatrix(matrixRoof);
 
-//			roof.changeBase(matrixRoof);
-//
-//			//We project on the plane at the z coordinate of the majority of triangle of the roof.
-//			Mesh projectedSurface = roof.zProjection(roof.zAverage());
+			//			roof.changeBase(matrixRoof);
+			//
+			//			//We project on the plane at the z coordinate of the majority of triangle of the roof.
+			//			Mesh projectedSurface = roof.zProjection(roof.zAverage());
 
 
 			//				projectedSurface.findNeighbours();

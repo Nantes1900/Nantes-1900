@@ -7,7 +7,7 @@ import utils.MatrixMethod;
 import utils.Parser;
 import utils.Writer;
 
-public class UselessTest {
+public class UselessMain {
 	public static void main(String[] args) {
 		try
 		{

@@ -3,11 +3,11 @@ package mains;
 import algos.SeparationFloorBuilding;
 
 
-public class Test1 {
+public class Main1 {
 	
 	public static void main(String[] args) {
 		
-		SeparationFloorBuilding algo = new SeparationFloorBuilding();
+		SeparationFloorBuilding algo = new SeparationFloorBuilding("Originals/batiments 1 - binary.stl");
 		algo.apply();
 			
 	}

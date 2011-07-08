@@ -2,6 +2,8 @@ package algos;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.vecmath.Vector3d;
 
@@ -26,25 +28,39 @@ public class SeparationFloorBuilding {
 
 	private Mesh floors = new Mesh();
 	private Mesh buildings = new Mesh();
+	private Mesh noise = new Mesh();
+	private Mesh mesh = new Mesh();
+	private Mesh floorBrut = new Mesh();
 
 	private ArrayList<Mesh> buildingList = new ArrayList<Mesh>();
-	private Mesh noise = new Mesh();
 
-	public SeparationFloorBuilding() {
-		altitudeErrorFactor = 10;
-		angleNormalErrorFactor = 60;
-		blockSizeBuildingError = 1;
+	private Logger log = Logger.getLogger("logger");
 
-		townFileName = "Originals/batiments 3 - binary.stl";
-		floorFileName = "Originals/floor.stl";
+	Vector3d normalFloor = new Vector3d();
 
+	public SeparationFloorBuilding(String fileName) {
+
+		this.townFileName = fileName;
+
+		//Writing option set
 		Writer.setWriteMode(WRITING_MODE);
 
-		floors = new Mesh();
-		buildings = new Mesh();
+		this.log.setLevel(Level.INFO);
+	}
 
-		buildingList = new ArrayList<Mesh>();
-		noise = new Mesh();
+	public SeparationFloorBuilding() {
+
+		//Writing option set
+		Writer.setWriteMode(WRITING_MODE);
+
+		this.log.setLevel(Level.INFO);
+	}
+
+	public void setModeDebug() {
+		this.WRITING_MODE = Writer.BINARY_MODE;
+		Writer.setWriteMode(WRITING_MODE);
+
+		this.log.setLevel(Level.FINEST);
 	}
 
 	public void apply() {
@@ -55,124 +71,140 @@ public class SeparationFloorBuilding {
 		this.buildingsExtraction();
 		this.noiseTreatment();
 	}
-	
+
 	private void parseFiles() {
-		
+		//Parsing
+		log.info("Parsing...");
+
+		try {
+
+			this.mesh = new Mesh(Parser.readSTL(townFileName));
+			this.floorBrut = new Mesh(Parser.readSTL(floorFileName));
+
+		} catch (BadFormedFileException e) {
+
+			log.severe("Error : the file is badly formed !");
+			//FIXME : les exit sont pas géniaux...
+			System.exit(1);
+
+		} catch (IOException e) {
+
+			log.severe("Error : file not found or inreadible !");
+			//FIXME : les exit sont pas géniaux...
+			System.exit(1);
+
+		}
+
+		log.info("Parsing ended !");
 	}
-	
+
 	private void extractFloorNormal() {
-		
+		//Extract of the normal of the floor
+		this.normalFloor = this.floorBrut.averageNormal();
 	}
-	
+
 	private void changeBase() {
-		
+		try {
+
+			log.info("Base change...");
+
+			//Base change
+			double[][] matrix = MatrixMethod.createOrthoBase(normalFloor);
+			MatrixMethod.changeBase(normalFloor, matrix);
+
+			this.mesh = this.mesh.changeBase(matrix);
+
+			log.info("Base changed finished !");
+
+		} catch (SingularMatrixException e) {
+			System.err.println("Error : the matrix is badly formed !");
+			//FIXME : les exit sont pas géniaux...
+			System.exit(1);
+		}
 	}
 
 	private void floorExtraction() {
+		
+		log.info("Floor extraction...");
+		
+		//Searching for floor-oriented triangles with an error : angleNormalErrorFactor
+		log.info("Searching for floor-oriented triangles...");
+		Mesh meshOriented = mesh.orientedAs(normalFloor, angleNormalErrorFactor);
+		log.info("Searching finished !");
+
+		//Floor-search algorithm
+		//Select the lowest Triangle : it belongs to the floor
+		//Take all of its neighbours
+		//Select another Triangle which is not too high and repeat the above step			
+		int size = meshOriented.size();
+		Mesh temp = new Mesh();
+
+		Triangle lowestTriangle = meshOriented.zMinFace();
+		double lowestZ = lowestTriangle.zMin();
+
+		while(lowestTriangle != null)
 		{
-			//First part !
-			//Parsing
-			System.out.println("Parsing ...");
-			try {
-				Mesh mesh = new Mesh(Parser.readSTL(townFileName));
-				Mesh floorBrut = new Mesh(Parser.readSTL(floorFileName));
+			log.info("Number of triangles left : " + meshOriented.size() + " on " + size);
 
-				//Extract of the normal of the floor
-				Vector3d normalFloor = floorBrut.averageNormal();
+			temp.clear();
 
-				//Base change
-				double[][] matrix = MatrixMethod.createOrthoBase(normalFloor);
-				MatrixMethod.changeBase(normalFloor, matrix);
-				mesh = mesh.changeBase(matrix);
-				System.out.println("Base changed finished !");
+			lowestTriangle.returnNeighbours(temp, meshOriented);
 
-				//Searching for floor-oriented triangles with an error : angleNormalErrorFactor
-				System.out.println("Searching for floor-oriented triangles...");
-				Mesh meshOriented = mesh.orientedAs(normalFloor, angleNormalErrorFactor);
-				System.out.println("Searching finished !");
+			floors.addAll(temp);
 
-				//Floor-search algorithm
-				//Select the lowest Triangle : it belongs to the floor
-				//Take all of its neighbours
-				//Select another Triangle which is not too high and repeat the above step			
-				int size = meshOriented.size();
-				Mesh temp = new Mesh();
+			meshOriented.remove(temp);
 
-				Triangle lowestTriangle = meshOriented.zMinFace();
-				double lowestZ = lowestTriangle.zMin();
-
-				while(lowestTriangle != null)
-				{
-					System.out.println("Number of triangles left : " + meshOriented.size() + " on " + size);
-
-					temp.clear();
-
-					lowestTriangle.returnNeighbours(temp, meshOriented);
-
-					floors.addAll(temp);
-
-					meshOriented.remove(temp);
-
-					lowestTriangle = meshOriented.faceUnderZ(lowestZ + altitudeErrorFactor);
-				}
-
-				mesh.remove(floors);
-
-				buildings = mesh;
-
-			} catch (BadFormedFileException e) {
-				System.err.println("Error : the file is badly formed !");
-				System.exit(1);
-			} catch (IOException e) {
-				System.err.println("Error : file not found or inreadible !");
-				System.exit(1);
-			} catch (SingularMatrixException e) {
-				System.err.println("Error : the matrix is badly formed !");
-				System.exit(1);
-			}
+			lowestTriangle = meshOriented.faceUnderZ(lowestZ + altitudeErrorFactor);
 		}
+
+		mesh.remove(floors);
+
+		buildings = mesh;
+		
+		log.info("Floor extracted !");
 	}
 
 	private void buildingsExtraction() {
-		{
-			//Second part !
-			//Extraction of the buildings
-			System.out.println("Extracting building ...");
-			ArrayList<Mesh> formsList = Algos.blockExtract(buildings);
+		
+		//Extraction of the buildings
+		log.info("Extracting building ...");
+		ArrayList<Mesh> formsList = Algos.blockExtract(buildings);
 
-			//Separation of the little noises
-			for(Mesh m : formsList) {
-				if(m.size() > 1)
-					buildingList.add(m);
-				else
-					noise.addAll(m);
-			}
-
-			//Algorithm : detection of buildings considering their size
-			int number = 0;
-			for(Mesh m : buildingList) {
-				number += m.size();
-			}
-
-			int buildingCounter = 1;
-
-			System.out.println("Building writing ...");
-			for(Mesh m : buildingList) {
-				if(m.size() > blockSizeBuildingError * (double)number/(double)buildingList.size()) {
-					m.write("Files/building - " + buildingCounter + ".stl");
-					buildingCounter ++;
-				}
-				else {
-					noise.addAll(m);
-				}
-			}
-
-			noise.write("Files/noise.stl");
+		//Separation of the little noises
+		for(Mesh m : formsList) {
+			if(m.size() > 1)
+				buildingList.add(m);
+			else
+				noise.addAll(m);
 		}
+
+		//Algorithm : detection of buildings considering their size
+		int number = 0;
+		for(Mesh m : buildingList) {
+			number += m.size();
+		}
+
+		int buildingCounter = 1;
+
+		log.info("Building writing ...");
+		for(Mesh m : buildingList) {
+			if(m.size() > blockSizeBuildingError * (double)number/(double)buildingList.size()) {
+				m.write("Files/building - " + buildingCounter + ".stl");
+				buildingCounter ++;
+			}
+			else {
+				noise.addAll(m);
+			}
+		}
+
+		if(log.getLevel() == Level.FINEST)
+			noise.write("Files/noise.stl");
+		
+		log.info("Buildings extracted !");
 	}
 
 	public void noiseTreatment() {
-		//Third part !
+		
 		Mesh floorsAndNoise = new Mesh(floors);
 		floorsAndNoise.addAll(noise);
 
@@ -182,7 +214,6 @@ public class SeparationFloorBuilding {
 		floorsList = Algos.blockExtract(floors);
 
 		//If a noise block is a neighbour of a the real floor, it's added to the real floor
-
 		floors.clear();
 
 		for(Mesh e : floorsList) {

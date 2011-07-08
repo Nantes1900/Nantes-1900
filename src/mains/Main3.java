@@ -2,7 +2,7 @@ package mains;
 
 import algos.SeparationTraitementMursToits;
 
-public class Test3 {
+public class Main3 {
 
 	public static void main(String[] args) {
 
