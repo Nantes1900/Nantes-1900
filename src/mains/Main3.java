@@ -7,6 +7,7 @@ public class Main3 {
 	public static void main(String[] args) {
 
 		SeparationTraitementMursToits algo = new SeparationTraitementMursToits();
+		algo.setDebugMode();
 		algo.apply();
 
 	}

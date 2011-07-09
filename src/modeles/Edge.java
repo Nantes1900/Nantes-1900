@@ -19,6 +19,7 @@ public class Edge {
 
 	public Triangle returnOther(Triangle t) {
 		if(this.triangleList.size() > 2)
+			//TODO : renvoyer une exception
 			System.err.println("Error : more than two triangles per edge !");
 		if(this.triangleList.size() < 2)
 			return null;

@@ -14,7 +14,7 @@ import utils.MatrixMethod.SingularMatrixException;
 
 public class PointTest {
 
-
+	//LOOK : Doc !
 	@Test
 	public void testDistance() {
 		Point p1 = new Point(0, 0, 0);

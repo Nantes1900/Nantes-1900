@@ -1,18 +1,18 @@
 package tests;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
 
 import javax.vecmath.Vector3d;
-
-import org.junit.Test;
 
 import modeles.Edge;
 import modeles.Mesh;
 import modeles.Point;
 import modeles.Triangle;
 
-import static junit.framework.Assert.*;
-
+import org.junit.Test;
 
 public class TriangleTest {
 
@@ -125,25 +125,25 @@ public class TriangleTest {
 	@Test
 	public void testXProjection() {
 		Triangle tProj = t.xProjection(7.0);
-		assertEquals(tProj.getP1().getX(), 7.0);
-		assertEquals(tProj.getP2().getX(), 7.0);
-		assertEquals(tProj.getP3().getX(), 7.0);
+		assertTrue(tProj.getP1().getX() == 7.0);
+		assertTrue(tProj.getP2().getX() == 7.0);
+		assertTrue(tProj.getP3().getX() == 7.0);
 	}
 
 	@Test
 	public void testYProjection() {
 		Triangle tProj = t.yProjection(7.0);
-		assertEquals(tProj.getP1().getY(), 7.0);
-		assertEquals(tProj.getP2().getY(), 7.0);
-		assertEquals(tProj.getP3().getY(), 7.0);
+		assertTrue(tProj.getP1().getY() == 7.0);
+		assertTrue(tProj.getP2().getY() == 7.0);
+		assertTrue(tProj.getP3().getY() == 7.0);
 	}
 
 	@Test
 	public void testzProjection() {
 		Triangle tProj = t.zProjection(7.0);
-		assertEquals(tProj.getP1().getZ(), 7.0);
-		assertEquals(tProj.getP2().getZ(), 7.0);
-		assertEquals(tProj.getP3().getZ(), 7.0);
+		assertTrue(tProj.getP1().getZ() == 7.0);
+		assertTrue(tProj.getP2().getZ() == 7.0);
+		assertTrue(tProj.getP3().getZ() == 7.0);
 	}
 
 	@Test

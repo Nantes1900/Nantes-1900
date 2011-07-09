@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.StringTokenizer;
+import java.util.logging.Logger;
 
 import javax.vecmath.Vector3d;
 
@@ -24,6 +25,8 @@ public class Parser {
 
 	private static Vector3d currentVector;
 	private static ArrayList<Point> currentPoints;
+
+	static Logger log = Logger.getLogger("logger");
 
 	private static HashSet<Triangle> readSTLB(String fileName) throws IOException {
 		InputStream stream = new BufferedInputStream(new FileInputStream(fileName));
@@ -57,8 +60,8 @@ public class Parser {
 			}
 		}
 
-		System.out.println("File : " + fileName + " read !");
-		System.out.println("Number of triangles : " + mesh.size());
+		log.info("File : " + fileName + " read !");
+		log.info("Number of triangles : " + mesh.size());
 
 		return mesh;
 	}
@@ -151,7 +154,7 @@ public class Parser {
 
 	private static HashSet<Triangle> readSTLA(String fileName) throws FileNotFoundException, BadFormedFileException {
 		Scanner scanner = new Scanner(new FileReader(fileName));
-		HashSet<Triangle> facesFromSTL = new HashSet<Triangle>();
+		HashSet<Triangle> mesh = new HashSet<Triangle>();
 
 		HashMap<Point, Point> pointMap = new HashMap<Point, Point>();
 		HashMap<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
@@ -163,7 +166,7 @@ public class Parser {
 				try {
 					//If a Triangle exists already, and if the Parser read another Triangle with the same values,
 					//only one of those Triangles will be added to the Mesh.
-					processLineA(facesFromSTL, scanner.nextLine(), pointMap, edgeMap);
+					processLineA(mesh, scanner.nextLine(), pointMap, edgeMap);
 				} catch (FlatTriangleException e) {
 					//If it is a flat Triangle : 2 identical Points, then 2 identical Edge, it is not added to the Mesh.
 				} catch (OutOfBoundsPointException e) {
@@ -174,10 +177,10 @@ public class Parser {
 			scanner.close();
 		}
 
-		System.out.println("Lecture du fichier " + fileName + " terminée !");
-		System.out.println("Nombre de triangles : " + facesFromSTL.size());
+		log.info("File : " + fileName + " read !");
+		log.info("Number of triangles : " + mesh.size());
 
-		return new HashSet<Triangle>(facesFromSTL);
+		return new HashSet<Triangle>(mesh);
 	}
 
 	//To improve : no verification whatsoever, if the stl is badly formed, explosion !

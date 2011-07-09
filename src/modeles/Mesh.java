@@ -1,6 +1,7 @@
 package modeles;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -9,6 +10,7 @@ import javax.vecmath.Vector3d;
 import utils.MatrixMethod;
 import utils.Writer;
 
+//TODO : doc !
 public class Mesh extends HashSet<Triangle>{
 
 	private static final long serialVersionUID = 1L;
@@ -19,24 +21,6 @@ public class Mesh extends HashSet<Triangle>{
 
 	public Mesh(Collection<? extends Triangle> c) {
 		super(c);
-	}
-
-	public Mesh orientedAs(Vector3d normal, double error) {
-		Mesh ret = new Mesh();
-		for(Triangle f : this) {
-			if(f.angularTolerance(normal, error))
-				ret.add(f);
-		}
-		return ret;
-	}
-
-	public Mesh orientedNormalTo(Vector3d normal, double error) {
-		Mesh ret = new Mesh();
-		for(Triangle f : this) {
-			if(f.isNormalTo(normal, error))
-				ret.add(f);
-		}
-		return ret;
 	}
 
 	/**
@@ -54,18 +38,6 @@ public class Mesh extends HashSet<Triangle>{
 		return average;
 	}
 
-	/**
-	 * Compute the average z-coordinate of all points of all faces from this Ensemble
-	 * @return the average z-coordinate of all points
-	 */
-	public double zAverage(){
-		double zAverage = 0;
-		for(Triangle face : this){
-			zAverage += face.zAverage();
-		}
-		return zAverage/this.size();
-	}
-
 	public double xAverage(){
 		double xAverage = 0;
 		for(Triangle face : this){
@@ -80,6 +52,18 @@ public class Mesh extends HashSet<Triangle>{
 			yAverage += face.yAverage();
 		}
 		return yAverage/this.size();
+	}
+
+	/**
+	 * Compute the average z-coordinate of all points of all faces from this Ensemble
+	 * @return the average z-coordinate of all points
+	 */
+	public double zAverage(){
+		double zAverage = 0;
+		for(Triangle face : this){
+			zAverage += face.zAverage();
+		}
+		return zAverage/this.size();
 	}
 
 	public double xMax() {
@@ -166,56 +150,6 @@ public class Mesh extends HashSet<Triangle>{
 		return zLengthAve/(double)this.size();
 	}
 
-	public Triangle zMinFace() {
-		Triangle t = null;
-		if(this.isEmpty())
-			throw new InvalidParameterException("Empty mesh !");
-		double zMini = Double.POSITIVE_INFINITY;
-		for (Triangle face : this){
-			if (face.zMin() < zMini){
-				t = face;
-				zMini = face.zMin();
-			}
-		}
-		return t;
-	}
-
-	public Triangle faceUnderZ(double zMax) {
-		for (Triangle t : this) {
-			if (t.zMin() < zMax) {
-				return t;
-			}
-		}
-		return null;
-	}
-
-	public Triangle getOne() {
-		return this.iterator().next();
-	}
-
-	public void remove(Mesh aSuppr) {
-		this.removeAll(aSuppr);
-	}
-
-	//FIXME : supprimer l'ancienne version, car elle est foutue.
-	//FIXME : prévoir de faire une copie de l'ancienne version...
-	public void changeBase(double[][] matrix) {
-		HashSet<Point> set = new HashSet<Point>();
-		HashSet<Triangle> mesh = new HashSet<Triangle>();
-
-		for(Triangle f : this) {
-			set.addAll(f.getPoints());
-			MatrixMethod.changeBase(f.getNormal(), matrix);
-			mesh.add(f);
-		}
-
-		for(Point p : set)
-			p.changeBase(matrix);
-
-		this.clear();
-		this.addAll(mesh);
-	}
-
 	public Mesh zBetween(double m1, double m2) {
 		Mesh ens = new Mesh();
 		for(Triangle t : this) {
@@ -259,37 +193,104 @@ public class Mesh extends HashSet<Triangle>{
 		return e;
 	}
 
-	//TODO : à refaire !
-	//	public ArrayList<Border> returnBounds() {
-	//		ArrayList<Border> e = new ArrayList<Border>();
-	//		//		ArrayList<Border> eFin = new ArrayList<Border>();
-	//
-	//		Border front = new Border();
-	//		for(Triangle tri : this) {
-	//			if(tri.getNumVoisins() < 3 && tri.getNumVoisins() > 0)
-	//				front.addAll(tri.getFront());
-	//		}
-	//
-	//		while(!front.getEdgeList().isEmpty()) {
-	//			Edge arete = front.getEdgeList().iterator().next();
-	//			Border ret = new Border();
-	//			front.returnNeighbours(ret, arete);
-	//			e.add(ret);
-	//			front.remove(ret);
-	//		}
-	//
-	//		//		//Si certains possède des frontières doubles, il faut créer deux frontières
-	//		//		for(Border b : e) {
-	//		////			System.out.println(b.edgeSize());
-	//		//			Border bFin = Algos.orderBorder(b);
-	//		////			System.out.println(bFin.edgeSize());
-	//		//			eFin.add(bFin);
-	//		//		}
-	//
-	//		return e;
-	//	}
+	public Triangle zMinFace() {
+		Triangle t = null;
+		if(this.isEmpty())
+			throw new InvalidParameterException("Empty mesh !");
+		double zMini = Double.POSITIVE_INFINITY;
+		for (Triangle face : this){
+			if (face.zMin() < zMini){
+				t = face;
+				zMini = face.zMin();
+			}
+		}
+		return t;
+	}
+
+	//TODO : improve the velocity of this method !
+	public Triangle faceUnderZ(double zMax) {
+		for (Triangle t : this) {
+			if (t.zMin() < zMax) {
+				return t;
+			}
+		}
+		return null;
+	}
+
+	public Triangle getOne() {
+		return this.iterator().next();
+	}
+
+	public void remove(Mesh m) {
+		this.removeAll(m);
+	}
 
 	public void write(String fileName) {
 		Writer.write(fileName, this);
+	}
+
+	public Mesh orientedAs(Vector3d normal, double error) {
+		Mesh ret = new Mesh();
+		for(Triangle f : this) {
+			if(f.angularTolerance(normal, error))
+				ret.add(f);
+		}
+		return ret;
+	}
+
+	public Mesh orientedNormalTo(Vector3d normal, double error) {
+		Mesh ret = new Mesh();
+		for(Triangle f : this) {
+			if(f.isNormalTo(normal, error))
+				ret.add(f);
+		}
+		return ret;
+	}
+
+	public void changeBase(double[][] matrix) {
+		HashSet<Point> set = new HashSet<Point>();
+		HashSet<Triangle> mesh = new HashSet<Triangle>();
+
+		for(Triangle f : this) {
+			set.addAll(f.getPoints());
+			MatrixMethod.changeBase(f.getNormal(), matrix);
+			mesh.add(f);
+		}
+
+		for(Point p : set)
+			p.changeBase(matrix);
+
+		this.clear();
+		this.addAll(mesh);
+	}
+
+	//FIXME : à refaire !
+	public ArrayList<Polyline> returnBounds() {
+		ArrayList<Polyline> e = new ArrayList<Polyline>();
+		//		ArrayList<Border> eFin = new ArrayList<Border>();
+
+		//		Polyline front = new Polyline();
+		//		for(Triangle tri : this) {
+		//			if(tri.getNumVoisins() < 3 && tri.getNumVoisins() > 0)
+		//				front.addAll(tri.getFront());
+		//		}
+		//
+		//		while(!front.getEdgeList().isEmpty()) {
+		//			Edge arete = front.getEdgeList().iterator().next();
+		//			Border ret = new Polyline();
+		//			front.returnNeighbours(ret, arete);
+		//			e.add(ret);
+		//			front.remove(ret);
+		//		}
+
+		//		//Si certains possède des frontières doubles, il faut créer deux frontières
+		//		for(Border b : e) {
+		////			System.out.println(b.edgeSize());
+		//			Border bFin = Algos.orderBorder(b);
+		////			System.out.println(bFin.edgeSize());
+		//			eFin.add(bFin);
+		//		}
+
+		return e;
 	}
 }
