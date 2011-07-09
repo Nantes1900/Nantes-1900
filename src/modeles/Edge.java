@@ -1,9 +1,10 @@
 package modeles;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 public class Edge {
-	
+
 	private ArrayList<Triangle> triangleList = new ArrayList<Triangle>(2);
 
 	private Point[] points = new Point[3];
@@ -21,12 +22,15 @@ public class Edge {
 		if(this.triangleList.size() > 2)
 			//TODO : renvoyer une exception
 			System.err.println("Error : more than two triangles per edge !");
+		if(!this.triangleList.contains(t))		
+			throw new InvalidParameterException("t is not part of the Edge !");
 		if(this.triangleList.size() < 2)
 			return null;
 		if(this.triangleList.get(0) == t)
 			return this.triangleList.get(1);
-		else
-			return this.triangleList.get(1);
+		else if(this.triangleList.get(1) == t)
+			return this.triangleList.get(0);
+		else return null;
 	}
 
 	public Point getP1() {

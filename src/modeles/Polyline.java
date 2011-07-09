@@ -52,10 +52,12 @@ public class Polyline {
 
 
 	public void add(Edge e) {
-		this.edgeList.add(e);
+		if(!this.edgeList.contains(e)) {
+			this.edgeList.add(e);
 
-		this.add(e.getP1());
-		this.add(e.getP2());
+			this.add(e.getP1());
+			this.add(e.getP2());
+		}
 	}
 
 	public void add(Point p) {
@@ -69,6 +71,9 @@ public class Polyline {
 		}
 	}
 
+	//Caution : it removes maybe shared points...
+	//FIXME !
+	//Maybe create a method refresh to be sure that all Points in the Polyline belongs to an Edge and suppress other ones.
 	public void remove(Polyline aSuppr) {
 		for(Edge e : aSuppr.edgeList) {
 			this.edgeList.remove(e);
@@ -77,6 +82,7 @@ public class Polyline {
 		}
 	}
 
+	//FIXME !
 	public void remove(Edge e) {
 		this.edgeList.remove(e);
 		this.pointList.remove(e.getP1());
@@ -196,7 +202,7 @@ public class Polyline {
 		for(Edge e : this.edgeList) {
 			xLengthAve += Math.abs(e.getP1().getX() - e.getP2().getX());
 		}
-		return xLengthAve/((double)this.edgeList.size()*2);
+		return xLengthAve/(double)this.edgeList.size();
 	}
 
 	public double yLengthAverage() {
@@ -204,7 +210,7 @@ public class Polyline {
 		for(Edge e : this.edgeList) {
 			yLengthAve += Math.abs(e.getP1().getY() - e.getP2().getY());
 		}
-		return yLengthAve/((double)this.edgeList.size()*2);
+		return yLengthAve/(double)this.edgeList.size();
 	}	
 
 	public double zLengthAverage() {
@@ -212,7 +218,7 @@ public class Polyline {
 		for(Edge e : this.edgeList) {
 			zLengthAve += Math.abs(e.getP1().getZ() - e.getP2().getZ());
 		}
-		return zLengthAve/((double)this.edgeList.size()*2);
+		return zLengthAve/(double)this.edgeList.size();
 	}
 
 	public double lengthAverage() {

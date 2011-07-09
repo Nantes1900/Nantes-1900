@@ -7,12 +7,12 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses(value={
 		//		AlgosTest.class,
-		//		EdgeTest.class,
+		EdgeTest.class,
 		//		MatrixMethodTest.class,
 		MeshTest.class,
 		//		ParserTest.class,
 		PointTest.class,
-		//		PolylineTest.class,
+		PolylineTest.class,
 		//		SeparationFloorBuildingTest.class,
 		//		SeparationTraitementMursToitsTest.class,
 		TriangleTest.class,
