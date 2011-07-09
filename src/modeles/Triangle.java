@@ -21,19 +21,21 @@ public class Triangle {
 		this.edges[0] = e1;
 		this.edges[1] = e2;
 		this.edges[2] = e3;
-		e1.addTriangle(this);
-		e2.addTriangle(this);
-		e3.addTriangle(this);
+		this.edges[0].addTriangle(this);
+		this.edges[1].addTriangle(this);
+		this.edges[2].addTriangle(this);
 	}
 	
-	public Triangle(Triangle t) {
-		this.points[0] = t.points[0];
-		this.points[1] = t.points[1];
-		this.points[2] = t.points[2];
-		this.normal = t.normal;
-		this.edges[0] = t.edges[0];
-		this.edges[1] = t.edges[1];
-		this.edges[2] = t.edges[2];
+	//Caution : do not use this constructor to create double Trianglewith equal values and different references !
+	//This method create new Points not to modify the old ones
+		private Triangle(Triangle t) {
+		this.points[0] = new Point(t.points[0]);
+		this.points[1] = new Point(t.points[1]);
+		this.points[2] = new Point(t.points[2]);
+		this.normal = new Vector3d(t.normal);
+		this.edges[0] = new Edge(this.points[0], this.points[1]);
+		this.edges[1] = new Edge(this.points[1], this.points[2]);
+		this.edges[2] = new Edge(this.points[2], this.points[0]);
 		this.edges[0].addTriangle(this);
 		this.edges[1].addTriangle(this);
 		this.edges[2].addTriangle(this);
@@ -232,15 +234,18 @@ public class Triangle {
 	}
 
 	public boolean angularTolerance(Vector3d vector, double error) {
-		return(this.normal.angle(vector)*180/Math.PI < error);
+		return(this.normal.angle(vector)*180.0/Math.PI < error);
 	}
 	
 	public boolean angularTolerance(Triangle face, double error) {
 		return(this.angularTolerance(face.normal, error));
 	}
 
+	//LOOK : Caution : this is not in degrees !
+	//The factor is between 0 and 1.
+	//TODO : normalize the vector before the compute.
 	public boolean isNormalTo(Vector3d normal, double error) {
-		return((this.normal.dot(normal) < error) && (this.normal.dot(normal) > -error));
+		return(this.normal.dot(normal) < error && this.normal.dot(normal) > - error);
 	}
 
 	//Returns in ret the neighbours of this which belongs to m

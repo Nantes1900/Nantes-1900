@@ -1,5 +1,6 @@
 package tests;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import javax.vecmath.Vector3d;
@@ -43,64 +44,131 @@ public class MeshTest {
 	public void testAverageNormal() {
 		assertTrue(this.m.averageNormal().equals(new Vector3d(0.5, 0, 0.5)));
 	}
-	
+
 	@Test
 	public void testxAverage() {
 		assertTrue(this.m.xAverage() == 2.0/3.0);
 	}
-	
+
 	@Test
 	public void testyAverage() {
-		assertTrue(this.m.yAverage() == 1);
+		assertTrue(this.m.yAverage() == 3.0/2.0);
 	}
-	
+
 	@Test
 	public void testzAverage() {
 		assertTrue(this.m.zAverage() == -2.0/3.0);
 	}
-	
+
 	@Test
 	public void testxMax() {
 		assertTrue(this.m.xMax() == 4);
 	}
-	
+
 	@Test
 	public void testxMin() {
 		assertTrue(this.m.xMin() == -2);
 	}
-	
+
 	@Test
 	public void testyMax() {
 		assertTrue(this.m.yMax() == 5);
 	}
-	
+
 	@Test
 	public void testyMin() {
 		assertTrue(this.m.yMin() == -3);
 	}
-	
+
 	@Test
 	public void testzMax() {
 		assertTrue(this.m.zMax() == 4);
 	}
-	
+
 	@Test
 	public void testzMin() {
 		assertTrue(this.m.zMin() == -5);
 	}
-	
+
 	@Test
 	public void testxLengthAverage() {
-		assertTrue(this.m.xLengthAverage() == 4.0/6.0);
+		assertTrue(this.m.xLengthAverage() == 4);
 	}
-	
+
 	@Test
 	public void testyLengthAverage() {
-		assertTrue(this.m.yLengthAverage() == 1.5);
+		assertTrue(this.m.yLengthAverage() == 5);
 	}
-	
+
 	@Test
 	public void testzLengthAverage() {
-		assertTrue(this.m.zLengthAverage() == -4.0/6.0);
+		assertTrue(this.m.zLengthAverage() == 5.5);
+	}
+
+	@Test
+	//LOOK : complete this test with other Triangles
+	public void testXBetween() {
+		Mesh xBet = m.xBetween(10, -10);
+		assertTrue(xBet.contains(t1));
+		assertTrue(xBet.contains(t2));
+	}
+
+	@Test
+	//LOOK : complete this test with other Triangles
+	public void testYBetween() {
+		Mesh yBet = m.yBetween(10, -10);
+		assertTrue(yBet.contains(t1));
+		assertTrue(yBet.contains(t2));
+	}
+
+	@Test
+	//LOOK : complete this test with other Triangles
+	public void testZBetween() {
+		Mesh zBet = m.zBetween(10, -10);
+		assertTrue(zBet.contains(t1));
+		assertTrue(zBet.contains(t2));
+	}
+
+	//LOOK : don't use xAverage() ?
+	@Test
+	public void testXProjection() {
+		Mesh mProj = m.xProjection(1.2);
+		assertTrue(mProj.xAverage() == 1.2);
+	}
+
+	@Test
+	public void testYProjection() {
+		Mesh mProj = m.yProjection(1.2);
+		assertTrue(mProj.yAverage() == 1.2);
+	}
+
+	@Test
+	public void testZProjection() {
+		Mesh mProj = m.zProjection(1.2);
+		assertTrue(mProj.zAverage() == 1.2);
+	}
+
+	@Test
+	public void testZMinFace() {
+		assertTrue(m.zMinFace() == t2);
+	}
+
+	@Test
+	public void testFaceUnderZ() {
+		assertTrue(m.faceUnderZ(2) == t1);
+	}
+
+	@Test
+	public void testOrientedAs() {
+		Mesh oriented = m.orientedAs(new Vector3d(0.1, 0.1, 0.9), 15);
+		assertTrue(oriented.contains(t1));
+		assertFalse(oriented.contains(t2));
+	}
+
+	@Test
+	public void testOrientedNormalTo() {
+		Mesh oriented = m.orientedNormalTo(new Vector3d(0.1, 0.1, 0.9), 0.2);
+		assertTrue(oriented.contains(t2));
+		assertFalse(oriented.contains(t1));
 	}
 }

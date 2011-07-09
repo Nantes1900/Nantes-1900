@@ -150,15 +150,6 @@ public class Mesh extends HashSet<Triangle>{
 		return zLengthAve/(double)this.size();
 	}
 
-	public Mesh zBetween(double m1, double m2) {
-		Mesh ens = new Mesh();
-		for(Triangle t : this) {
-			if(t.zMax() < Math.max(m1, m2) && t.zMin() > Math.min(m1, m2))
-				ens.add(t);
-		}
-		return ens;
-	}
-
 	public Mesh xBetween(double m1, double m2) {
 		Mesh ens = new Mesh();
 		for(Triangle t : this) {
@@ -177,6 +168,34 @@ public class Mesh extends HashSet<Triangle>{
 		return ens;
 	}
 
+	public Mesh zBetween(double m1, double m2) {
+		Mesh ens = new Mesh();
+		for(Triangle t : this) {
+			if(t.zMax() < Math.max(m1, m2) && t.zMin() > Math.min(m1, m2))
+				ens.add(t);
+		}
+		return ens;
+	}
+
+	//TODO : take care of the fact that new Triangle without order, and without neighbours are created !
+	//Caution !
+	public Mesh xProjection(double x) {
+		Mesh e = new Mesh();
+		for(Triangle t : this) {
+			e.add(t.xProjection(x));
+		}
+		return e;
+	}
+
+	public Mesh yProjection(double y) {
+		Mesh e = new Mesh();
+		for(Triangle t : this) {
+			e.add(t.yProjection(y));
+		}
+		return e;
+	}
+
+
 	public Mesh zProjection(double z) {
 		Mesh e = new Mesh();
 		for(Triangle t : this) {
@@ -185,13 +204,6 @@ public class Mesh extends HashSet<Triangle>{
 		return e;
 	}
 
-	public Mesh xProjection(double x) {
-		Mesh e = new Mesh();
-		for(Triangle t : this) {
-			e.add(t.xProjection(x));
-		}
-		return e;
-	}
 
 	public Triangle zMinFace() {
 		Triangle t = null;
@@ -208,26 +220,31 @@ public class Mesh extends HashSet<Triangle>{
 	}
 
 	//TODO : improve the velocity of this method !
+
 	public Triangle faceUnderZ(double zMax) {
 		for (Triangle t : this) {
-			if (t.zMin() < zMax) {
+			if (t.zMax() < zMax) {
 				return t;
 			}
 		}
 		return null;
 	}
 
+
 	public Triangle getOne() {
 		return this.iterator().next();
 	}
+
 
 	public void remove(Mesh m) {
 		this.removeAll(m);
 	}
 
+
 	public void write(String fileName) {
 		Writer.write(fileName, this);
 	}
+
 
 	public Mesh orientedAs(Vector3d normal, double error) {
 		Mesh ret = new Mesh();
@@ -238,6 +255,9 @@ public class Mesh extends HashSet<Triangle>{
 		return ret;
 	}
 
+
+	//Caution : this is not in degrees
+	//The factor is between 0 and 1.
 	public Mesh orientedNormalTo(Vector3d normal, double error) {
 		Mesh ret = new Mesh();
 		for(Triangle f : this) {
@@ -246,6 +266,7 @@ public class Mesh extends HashSet<Triangle>{
 		}
 		return ret;
 	}
+
 
 	public void changeBase(double[][] matrix) {
 		HashSet<Point> set = new HashSet<Point>();
@@ -265,6 +286,7 @@ public class Mesh extends HashSet<Triangle>{
 	}
 
 	//FIXME : à refaire !
+
 	public ArrayList<Polyline> returnBounds() {
 		ArrayList<Polyline> e = new ArrayList<Polyline>();
 		//		ArrayList<Border> eFin = new ArrayList<Border>();

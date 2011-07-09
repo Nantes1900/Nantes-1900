@@ -9,7 +9,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		//		AlgosTest.class,
 		//		EdgeTest.class,
 		//		MatrixMethodTest.class,
-		//		MeshTest.class,
+		MeshTest.class,
 		//		ParserTest.class,
 		PointTest.class,
 		//		PolylineTest.class,
