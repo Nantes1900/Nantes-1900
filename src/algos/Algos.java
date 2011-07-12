@@ -17,27 +17,14 @@ public class Algos {
 
 		int size = mesh.size();
 
-		long time;
-
 		while(!mesh.isEmpty())
 		{
+			//LOOK : redo this syso : the numbers are false !
 			System.out.println("Number of triangles left : " + mesh.size() + " on " + size);
-
-			time = System.nanoTime();
 			Mesh e = new Mesh();
-			System.out.println("Temps pour le new Mesh : " + (System.nanoTime() - time));
-
-			time = System.nanoTime();
 			mesh.getOne().returnNeighbours(e, mesh);
-			System.out.println("Temps pour le returnNeighbours : " + (System.nanoTime() - time));
-
-			time = System.nanoTime();
 			mesh.remove(e);
-			System.out.println("Temps pour le remove : " + (System.nanoTime() - time));
-
-			time = System.nanoTime();
 			thingsList.add(e);
-			System.out.println("Temps pour le add : " + (System.nanoTime() - time));
 		}
 
 		return new ArrayList<Mesh>(thingsList);
@@ -50,6 +37,7 @@ public class Algos {
 		int size = mesh.size();
 
 		while(!mesh.isEmpty()) {
+			//LOOK : redo this syso : the numbers are false !
 			System.out.println("Number of triangles left : " + mesh.size() + " on " + size);
 			Mesh e = new Mesh();
 			Triangle tri = mesh.getOne();
@@ -62,7 +50,7 @@ public class Algos {
 		return thingsList;
 	}
 
-	public static ArrayList<Mesh> blockTreatNoise(ArrayList<Mesh> list, Mesh noise, double largeAngleNormalErrorFactor) {
+	public static ArrayList<Mesh> blockTreatOrientedNoise(ArrayList<Mesh> list, Mesh noise, double largeAngleNormalErrorFactor) {
 
 		ArrayList<Mesh> m = new ArrayList<Mesh>();
 
@@ -85,40 +73,21 @@ public class Algos {
 		Triangle lowestTriangle = meshOriented.zMinFace();
 		double lowestZ = lowestTriangle.zMin();
 		
-		Mesh temp = meshOriented.zBetween(lowestZ, lowestZ + altitudeErrorFactor);
-		int size = temp.size();
-
-		long time;
+		Mesh stripe = meshOriented.zBetween(lowestZ, lowestZ + altitudeErrorFactor);
+		int size = meshOriented.size();
 		
-		int taillemoyennedesbouts = 0;
-		int counter = 0;
+		Mesh temp = new Mesh();
 
-		while(lowestTriangle != null)
+		while(!stripe.isEmpty())
 		{
+			lowestTriangle = stripe.getOne();
+			//LOOK : redo this syso : the numbers are false !
 			System.out.println("Number of triangles left : " + meshOriented.size() + " on " + size);
-			time = System.nanoTime();
 			temp.clear();
-			System.out.println("Temps pour le clear : " + (System.nanoTime() - time));
-
-			time = System.nanoTime();
 			lowestTriangle.returnNeighbours(temp, meshOriented);
-			System.out.println("Temps pour le returnNeighbours : " + (System.nanoTime() - time));
-
-			counter ++;
-			taillemoyennedesbouts += temp.size();
-			System.out.println("Taille moyenne des bouts : " + taillemoyennedesbouts/counter);
-			
-			time = System.nanoTime();
 			floors.addAll(temp);
-			System.out.println("Temps pour le addAll : " + (System.nanoTime() - time));
-
-			time = System.nanoTime();
 			meshOriented.remove(temp);
-			System.out.println("Temps pour le remove : " + (System.nanoTime() - time));
-
-			time = System.nanoTime();
-			lowestTriangle = meshOriented.faceUnderZ(lowestZ + altitudeErrorFactor);
-			System.out.println("Temps pour le faceUnderZ : " + (System.nanoTime() - time));
+			stripe.remove(temp);
 		}
 
 		return floors;

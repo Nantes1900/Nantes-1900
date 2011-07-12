@@ -2,8 +2,9 @@ package modeles;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+
+import javax.vecmath.Vector3d;
 
 public class Polyline {
 
@@ -13,6 +14,9 @@ public class Polyline {
 	private int ID;
 	private static int ID_current = 0;
 	private static final long serialVersionUID = 1L;
+
+	//FIXME : :)
+	public Point toDelete;
 
 	public Polyline(List<Edge> a) {
 
@@ -54,10 +58,9 @@ public class Polyline {
 	public void add(Edge e) {
 		if(!this.edgeList.contains(e)) {
 			this.edgeList.add(e);
-
-			this.add(e.getP1());
-			this.add(e.getP2());
 		}
+		this.add(e.getP1());
+		this.add(e.getP2());
 	}
 
 	public void add(Point p) {
@@ -71,22 +74,20 @@ public class Polyline {
 		}
 	}
 
-	//Caution : it removes maybe shared points...
-	//FIXME !
-	//Maybe create a method refresh to be sure that all Points in the Polyline belongs to an Edge and suppress other ones.
+	public Edge getOne() {
+		return this.edgeList.iterator().next();
+	}
+
+	//FIXME : it doesn't remove the points !
 	public void remove(Polyline aSuppr) {
 		for(Edge e : aSuppr.edgeList) {
 			this.edgeList.remove(e);
-			this.pointList.remove(e.getP1());
-			this.pointList.remove(e.getP2());
 		}
 	}
 
-	//FIXME !
+	//FIXME : it doesn't remove the points !
 	public void remove(Edge e) {
 		this.edgeList.remove(e);
-		this.pointList.remove(e.getP1());
-		this.pointList.remove(e.getP2());
 	}
 
 
@@ -107,7 +108,7 @@ public class Polyline {
 	}
 
 	public boolean isEmpty() {
-		return pointList.isEmpty();
+		return edgeList.isEmpty();
 	}
 
 
@@ -285,6 +286,7 @@ public class Polyline {
 
 
 	public Mesh returnMesh() {
+		//FIXME : si tous les Edge n'ont pas de triangles associés, renvoyer vers l'autre méthode.
 		Mesh ens = new Mesh();
 		for(Edge e : this.edgeList) {
 			if(!e.getTriangleList().isEmpty())
@@ -293,140 +295,183 @@ public class Polyline {
 		return ens;
 	}
 
-	//	public Border changeBase(double[][] matrix) {
-	//		Border line = new Border();
-	//		for(Point p : pointList) {
-	//			line.getPointList().add(p.changeBase(matrix));
-	//			//FIXME : ajouter les Edges
-	//		}
-	//		return line;
-	//	}
+	//TODO : delete this shit method !
+	public Mesh returnMeshPoints() {
+		Mesh ens = new Mesh();
 
-	//FIXME : au plus tôt !
-	//	public Mesh buildRoofMesh() {
-	//		Mesh m = new Mesh();
-	//		Point p = new Point(this.xAverage(), this.yAverage(), this.zAverage());
-	//		for(int i = 0; i < pointList.size() - 2; i ++) {
-	//			m.add(new Triangle(pointList.get(i), pointList.get(i + 1), p, new Vector3d(1, 0, 0)));
-	//		}
-	//		return m;
-	//	}
-	//	
-	//	//FIXME : A refaire !
-	//	public Mesh buildWallMesh() {
-	//		Mesh surface = new Mesh();
-	//		Point downRight = pointList.get(0);
-	//		Point downLeft = pointList.get(1);
-	//		for(int i = 2; i < pointList.size() - 1; i ++) {
-	//			Point p1 = pointList.get(i);
-	//			Point p2 = pointList.get(i+1);
-	//			Point p3, p4, p5;
-	//			p4 = new Point(p1.getX(), p1.getY(), downRight.getZ());
-	//			p5 = new Point(p1.getX(), p2.getY(), downRight.getZ());
-	//			if(p1.getZ() < p2.getZ()) {
-	//				p3 = new Point(p1.getX(), p2.getY(), p1.getZ());
-	//				surface.add(new Triangle(p1, p4, p5, new Vector3d(1, 0, 0)));
-	//				surface.add(new Triangle(p1, p5, p3, new Vector3d(1, 0, 0)));
-	//			}
-	//			else {
-	//				p3 = new Point(p1.getX(), p1.getY(), p2.getZ());
-	//				surface.add(new Triangle(p3, p4, p5, new Vector3d(1, 0, 0)));
-	//				surface.add(new Triangle(p3, p5, p2, new Vector3d(1, 0, 0)));
-	//			}
-	//			surface.add(new Triangle(p1, p3, p2, new Vector3d(1, 0, 0)));
-	//		}
-	//		return surface;
-	//	}
+		Point centroid = new Point(this.xAverage(), this.yAverage(), this.zAverage());
+		Vector3d normal = new Vector3d(0, 0, 1);
 
+		//		Point before = this.pointList.get(this.pointSize() - 1);
 
-	public static Polyline reduce(Polyline line, int numberOfReduction) {
-		Polyline ret = new Polyline();
-		ArrayList<Point> pointList = line.getPointList();
-		int position = 0;
-
-		while(position < pointList.size() - numberOfReduction) {
-			//On en prend 1 sur numberOfReduction
-			ret.getPointList().add(pointList.get(position));
-			position += numberOfReduction;
-			//Mettre à jour les Edge
+		for(Point p : this.pointList) {
+			Point before = p;
+			ens.add(new Triangle(centroid, before, p, new Edge(centroid, before), new Edge(before, p), new Edge(p, centroid), normal));
+			//			before = p;
 		}
 
-		//		while(position < pointList.size() - numberOfReduction) {
-		//			ArrayList<Point> l = new ArrayList<Point>();
-		//			for(int i = 0; i < numberOfReduction; i ++) {
-		//				l.add(pointList.get(position + i));
-		//			}
-		//
-		//			position += numberOfReduction;
-		//
-		//			ret.getPointList().add(Algos.average(l));
-		//		}
-
-		//		while(position < pointList.size() - 1) {
-		//			ArrayList<Point> l = new ArrayList<Point>();
-		//			l.add(pointList.get(position));
-		//			double length = 0;
-		//			
-		//			while(length < pace && position < pointList.size() - 1) {
-		//				l.add(pointList.get(position + 1));
-		//				length += pointList.get(position + 1).distance(pointList.get(position));
-		//				position ++;
-		//			}
-		//			
-		//			ret.getPointList().add(Algos.average(l));
-		//			//FIXME : ajouter l'edge aussi !
-		//		}
-
-		return ret;
+		return ens;
 	}
 
+	//FIXME : make a better method
+	public Mesh returnMeshShit() {
+		Mesh ens = new Mesh();
 
-	public static Polyline orderBorder(Polyline bound) {
-		Polyline oriented = new Polyline();
+		Point centroid = new Point(this.xAverage(), this.yAverage(), this.zAverage());
+		Vector3d normal = new Vector3d(0, 0, 1);
 
-		//		if(bound.edgeSize() < 2)
-		//			throw new InvalidParameterException("Border too short !");
+		Point before = this.pointList.get(this.pointSize() - 1);
 
-		if(bound.edgeSize() > 1)
-		{
-			Edge e = bound.getEdgeList().get(0);
-			Point first = e.getP1();
-			oriented.getEdgeList().add(e);
-			oriented.getPointList().add(e.getP1());
-			oriented.getPointList().add(e.getP2());
-			bound.remove(e);
+		for(Point p : this.pointList) {
+			ens.add(new Triangle(centroid, before, p, new Edge(centroid, before), new Edge(before, p), new Edge(p, centroid), normal));
+			before = p;
+		}
 
-			Point p = e.getP2();
+		return ens;
+	}
 
-			int counter = 0;
+	public void changeBase(double[][] matrix) {
+		if(matrix == null) {
+			throw new InvalidParameterException();
+		}
 
-			do {
-				Iterator<Edge> i = bound.getEdgeList().iterator();
-				do { e = i.next(); }
-				while(i.hasNext() && !e.contains(p));
-				//FIXME : si on arrive à la fin de la liste sans avoir trouvé ?
-				if(e.getP1() != p) {
-					p = e.getP1();
-				}
-				else {
-					p = e.getP2();
-				}
-				oriented.getEdgeList().add(e);
-				oriented.getPointList().add(p);
+		Polyline line = new Polyline(this.edgeList);
+		for(Point p : line.pointList) {
+			p.changeBase(matrix);
+		}
 
+		this.edgeList.clear();
+		this.pointList.clear();
+		this.addAll(line.edgeList);
+	}
+
+	public int getNumNeighbours(Point p) {
+		int counter = 0;
+		for(Edge e : this.edgeList) {
+			if(e.contains(p)) {
 				counter ++;
 			}
-			while(p != first && counter <= bound.getPointList().size());
-
-			if(counter == bound.getPointList().size()) {
-				System.err.println("Erreur : boucle infinie");
-				return null;
-			}
-
-			return oriented;
 		}
-		else
-			return bound;
+		return counter;
 	}
 
+	public ArrayList<Edge> getNeighbours(Point p) {
+		if(p == null) {
+			throw new InvalidParameterException();
+		}
+		ArrayList<Edge> list = new ArrayList<Edge>();
+		for(Edge e : this.edgeList) {
+			if(e.contains(p)) {
+				list.add(e);
+			}
+		}
+		return list;
+	}
+
+	//FIXME : @Test
+	public void order() {
+		//TODO : vérification que chq Edge a bien 2 voisins : ni plus, ni moins !
+		Polyline ret = new Polyline();
+
+		Edge first = this.getOne();
+		Point p = first.getP1();
+		Edge e = first.returnNeighbour(p, this);
+		p = e.returnOther(p);
+
+		while(e!= first) {
+			ret.add(e);
+			e = e.returnNeighbour(p, this);
+			p = e.returnOther(p);
+		}
+		ret.add(e);
+
+		this.edgeList.clear();
+		this.pointList.clear();
+		this.addAll(ret.getEdgeList());
+	}
+
+	//FIXME : it destroys the former Polyline and all the Points...
+	public Polyline zProjection(double z) {
+		Polyline line = new Polyline();
+		line.addAll(this.edgeList);
+
+		for(Point p : line.pointList) {
+			p.setZ(z);
+		}
+
+		return line;
+	}	
+
+	//We still consider that we are in the plane (x,y)
+	public Polyline determinateSingularPoints(double error) {
+		Polyline singularPoints = new Polyline();
+
+		//We take a point, and we follow the line until we find a segment with angle change.
+		Edge first = this.getOne();
+		first = followTheFramedLine(first, first.getP2(), error, first);
+		singularPoints.add(first);
+		Edge e = first;
+
+		//Then we record all the points where there is a angle change.
+		do {
+			//We determinate the point to know the direction to take...
+			e = followTheFramedLine(e, this.toDelete, error, first);
+			singularPoints.add(e);
+		}
+		while(e != first);
+
+		return singularPoints;
+	}
+
+	//We still consider that we are in the plane (x,y)
+	//Almost static method... Maybe to put in Edge ?
+	public boolean areWeInTheTwoLinesOrNot(Point p1, Point p2, Point p3, double error) {
+		double a, b, c, cPlus, cMinus;
+
+		//We calculate the equation of the segment, and of the two lines parallels to it and which frame the line
+		if(p1.getY() == p2.getY()) {
+			a = 0;
+			b = 1;
+			c = - p1.getX();
+		}
+		else {
+			a = 1;
+			b = (p1.getX() - p2.getX())/(p2.getY() - p1.getY());
+			c = (- p1.getX() * p2.getY() + p2.getX() * p1.getY())/(p2.getY() - p1.getY());
+		}
+
+		cPlus = -c + error;
+		cMinus = -c - error;
+
+		return (a * p3.getX() + b * p3.getY() < cPlus 
+				&& a * p3.getX() + b * p3.getY() > cMinus);
+	}
+
+	//We still consider that we are in the plane (x,y)
+	//FIXME : delete the Edge stop
+	public Edge followTheFramedLine(Edge first, Point p2, double error, Edge stop) {
+
+		Point p1 = first.returnOther(p2);
+
+		//LOOK : We can take the second segment in the list : it's supposed to be ordered !
+		Edge e2 = first.returnNeighbour(p2, this);
+		Point p3 = e2.returnOther(p2);
+
+		Edge eMain = first;
+		Edge eNext = e2;
+
+		while(areWeInTheTwoLinesOrNot(p1, p2, p3, error) && eNext != stop) {
+			//Then the point p3 is almost aligned with the other points...
+			//We add the two segments, and we do that with a third segment...
+			eMain = eMain.compose(eNext, p2);
+			eNext = eNext.returnNeighbour(p3, this);
+			p1 = eMain.returnOther(p3);
+			p2 = p3;
+			p3 = eNext.returnOther(p2);
+		}
+		//When we're here, it means we found some Point which was not in the frame...
+
+		this.toDelete = p3;
+		return eNext;
+	}
 }

@@ -18,13 +18,13 @@ import utils.Parser;
 import utils.Parser.BadFormedFileException;
 import utils.Writer;
 
-@SuppressWarnings("unused")
 public class SeparationTraitementMursToits {
 
-	private double angleNormalErrorFactor = 60;
+	private double angleNormalErrorFactor = 40;
 	private double largeAngleNormalErrorFactor = 80;
-	private double errorNumberTrianglesWall = 15;
-	private double errorNumberTrianglesRoof = 3;
+	private double errorNormalToFactor = 0.2;
+	private double errorNumberTrianglesWall = 5;
+	private double errorNumberTrianglesRoof = 5;
 
 
 	private Mesh floorBrut = new Mesh();
@@ -40,8 +40,8 @@ public class SeparationTraitementMursToits {
 
 	private Mesh noise = new Mesh();
 
-	private ArrayList<Polyline> wallComputedList = new ArrayList<Polyline>();
-	private ArrayList<Polyline> roofComputedList = new ArrayList<Polyline>();
+	//	private ArrayList<Polyline> wallComputedList = new ArrayList<Polyline>();
+	//	private ArrayList<Polyline> roofComputedList = new ArrayList<Polyline>();
 
 
 	private int counterBuilding = 1;
@@ -50,7 +50,6 @@ public class SeparationTraitementMursToits {
 
 
 	private int WRITING_MODE = Writer.BINARY_MODE;
-	private boolean DEBUG_MODE = false;
 
 	private Logger log = Logger.getLogger("logger");
 
@@ -68,7 +67,7 @@ public class SeparationTraitementMursToits {
 
 	public void setDebugMode() {
 		log.setLevel(Level.FINEST);
-		this.DEBUG_MODE = true;
+		//		this.DEBUG_MODE = true;
 
 		this.WRITING_MODE = Writer.ASCII_MODE;
 		Writer.setWriteMode(WRITING_MODE);
@@ -89,14 +88,27 @@ public class SeparationTraitementMursToits {
 			this.treatNoiseWalls();
 			this.treatNoiseRoofs();
 
-			for(Mesh wall : wallList) {
-				wallComputedList.add(this.treatWall(wall));
-				counterWall ++;
-			}
-			for(Mesh roof : roofList) {
-				roofComputedList.add(this.treatRoof(roof));
-				counterRoof ++;
-			}
+			//			this.wallList.get(0).write("wall1.stl");
+			//			this.wallList.get(1).write("wall2.stl");
+			//			this.wallList.get(2).write("wall3.stl");
+			//			this.wallList.get(3).write("wall4.stl");
+
+			this.treatWall();
+
+			//			for(int i = 0; i < 1; i ++) {
+			//				this.wallList.get(i).write("wallsse.stl");
+			//				Mesh w = this.wallList.get(i);
+			//				w.write("waladfafal.stl");
+			//				this.treatWall(w);
+			//			}
+			
+			this.treatRoof();
+
+			//			for(Mesh roof : this.roofList) {
+			//				roof.write("roof avant - " + counterRoof + ".stl");
+			//				Polyline p = this.treatRoof(roof);
+			//				p.returnMeshShit().write(counterWall + "wall-shit.stl");
+			//			}
 
 			this.counterBuilding ++;
 		}
@@ -104,7 +116,7 @@ public class SeparationTraitementMursToits {
 
 	private void parseFloor() {
 		try {
-			this.floorBrut = new Mesh(Parser.readSTL("Files/floor.stl"));
+			this.floorBrut = new Mesh(Parser.readSTL("Originals/floor.stl"));
 		} catch (BadFormedFileException e) {
 			log.severe("Error in the file !");
 		} catch (IOException e) {
@@ -129,11 +141,13 @@ public class SeparationTraitementMursToits {
 		//The floor normal is the average of all the normals fo the triangles in the brut floor file
 		normalFloor = floorBrut.averageNormal();
 
-		//Try a base change if the matrix is not singular
+		//Try a base creation if the matrix is not singular
 		try {
 			double[][] matrix;
 
 			matrix = MatrixMethod.createOrthoBase(normalFloor);
+
+			//Change the normalFloor : now it is z-oriented : (0, 0, 1)
 			MatrixMethod.changeBase(normalFloor, matrix);
 
 		} catch (SingularMatrixException e) {
@@ -145,10 +159,9 @@ public class SeparationTraitementMursToits {
 
 	private void sortWalls() {
 
-		Mesh wallOriented = this.currentBuilding.orientedNormalTo(this.normalFloor, this.angleNormalErrorFactor);
-		ArrayList<Mesh> thingsList = new ArrayList<Mesh>();
+		Mesh wallOriented = this.currentBuilding.orientedNormalTo(this.normalFloor, this.errorNormalToFactor);
 
-		thingsList = Algos.blockOrientedExtract(wallOriented, this.angleNormalErrorFactor);
+		ArrayList<Mesh> thingsList = Algos.blockOrientedExtract(wallOriented, this.angleNormalErrorFactor);
 
 		int size = 0;
 
@@ -167,10 +180,6 @@ public class SeparationTraitementMursToits {
 
 		for(Mesh w : this.wallList) {
 			this.wholeWall.addAll(w);
-		}
-
-		if(DEBUG_MODE) {
-			this.wholeWall.write("Files/wall.stl");
 		}
 	}
 
@@ -196,138 +205,119 @@ public class SeparationTraitementMursToits {
 		for(Mesh r : this.roofList) {
 			this.wholeRoof.addAll(r);
 		}
-
-		if(DEBUG_MODE) {
-			this.wholeRoof.write("Files/roof.stl");
-		}
 	}
 
 	private void treatNoiseWalls() {
 
-		//Add to the walls
-		wallList = Algos.blockTreatNoise(wallList, noise, largeAngleNormalErrorFactor);
+		this.wallList = Algos.blockTreatOrientedNoise(this.wallList, this.noise, this.largeAngleNormalErrorFactor);
 
-		wholeWall = new Mesh();
-		for(Mesh w : wallList) {
-			wholeWall.addAll(w);
+		this.wholeWall = new Mesh();
+		for(Mesh w : this.wallList) {
+			this.wholeWall.addAll(w);
 		}
 	}
 
 	private void treatNoiseRoofs() {
 
-		//Add to the roofs
-		roofList = Algos.blockTreatNoise(roofList, noise, largeAngleNormalErrorFactor);
+		this.roofList = Algos.blockTreatOrientedNoise(this.roofList, this.noise, this.largeAngleNormalErrorFactor);
 
-		wholeRoof = new Mesh();
-		for(Mesh w : roofList) {
-			wholeRoof.addAll(w);
+		this.wholeRoof = new Mesh();
+		for(Mesh w : this.roofList) {
+			this.wholeRoof.addAll(w);
 		}
 	}
 
-	private Polyline treatWall(Mesh wall) {
+	private void treatWall() {
 
-//		ArrayList<Polyline> contourList = new ArrayList<Polyline>();
-//
-		Polyline bound = new Polyline();
-//
-//		Vector3d vector = new Vector3d();
-//		Mesh wallWellNormalToTheFloor = wall.orientedNormalTo(normalFloor, 0.2);
-//
-//		//To get a wall normal correctly oriented normal to the floor, we select the good part of the wall.
-//		Vector3d normalWallBadOriented = wallWellNormalToTheFloor.averageNormal();
-//		vector.cross(normalFloor, normalWallBadOriented);
-//
-//		double[][] matrixWall = null;
-//		try {
-//			matrixWall = MatrixMethod.createOrthoBase(normalWallBadOriented, vector, normalFloor);
-//		} catch (SingularMatrixException e) {
-//			System.err.println("Error in the matrix !");
-//		}
-//		//				double[][] matrixInv = MatrixMethod.getInversMatrix(matrixWall);
-//
-//		//			wall.changeBase(matrixWall);
-//		//			wallWellNormalToTheFloor.changeBase(matrixWall);
-//
-//		//We project on the plane at the x coordinate of the majority of triangle of the wall.
-//		//			Mesh projectedSurface = wall.xProjection(wallWellNormalToTheFloor.xAverage());
-//
-//		//				projectedSurface.findNeighbours();
-//		//				
-//		//				ArrayList<Border> boundList = projectedSurface.returnBounds();
-//		//				bound = Algos.returnLongestBorder(boundList);
-//
-//		//TODO : traiter les autres contour intérieurs : fenêtres, portes, etc...
-//
-//		//				contourList.add(bound);
-//
-//		//Treatment of each border to convert it into simple Polylines
-//		//				Border p = new Border();
-//		//				Point downLeft = new Point(bound.xAverage(), bound.yMin(), bound.zMin());
-//		//				Point downRight = new Point(bound.xAverage(), bound.yMax(), bound.zMin());
-//		//
-//		//				p.add(downRight);
-//		//				p.add(downLeft);
-//		//
-//		//				double pace = bound.yLengthAverage()*10;
-//		//
-//		//				//FIXME : supprimer la partie basse du contour, pour éviter que celle-ci soit sélectionnée.
-//		//				//Ou alors bien augmenter la taille du pas.
-//		//
-//		//				double leftLimit = bound.yMin();
-//		//				double rightLimit = leftLimit + pace;
-//		//
-//		//				while(rightLimit < bound.yMax() - pace) {
-//		//					Border part = bound.yBetween(leftLimit, rightLimit);
-//		//					rightLimit += pace;
-//		//					if(!part.isEmpty()) {
-//		//						leftLimit = rightLimit;
-//		//						p.add(part.zMaxPoint());
-//		//					}
-//		//				}
-//		//
-//		//				//When projectedSurface base is changed, then longestBorder points are base changed too, because it's a list
-//		//				//of references.
-//		//				Mesh m = p.buildWallMesh();
-//		//				Mesh mWellOriented = m.changeBase(matrixInv);
-//
-//		//FIXME : on doit changeBase après être passé par le mesh seulement...
-//		////				wallComputedList.add(p.changeBase(matrixInv));
-//		//
-//		//				mWellOriented.write("Files/wallComputed - " + counterWall + " of building - " + counterBuilding + ".stl");
-		return bound;
-	}
+		counterWall = 0;
 
-	private Polyline treatRoof(Mesh roof) {
+		while(counterWall < wallList.size()) {
 
-		Polyline bound = new Polyline();
+			Mesh wall = wallList.get(counterWall);
 
-		Vector3d normalRoofBadOriented = roof.averageNormal();
-		double[][] matrixRoof = null, matrixRoofInv;
+			wall.write("wallBrut - " + counterWall + ".stl");
 
-		try {
-			matrixRoof = MatrixMethod.createOrthoBase(normalRoofBadOriented);
-			matrixRoofInv = MatrixMethod.getInversMatrix(matrixRoof);
-		} catch (SingularMatrixException e) {
-			System.err.println("Error in the matrix !");
-			System.exit(1);
+			//			Vector3d normalWall = wall.averageNormal();
+
+			//			double[][] matrixWall = null, matrixWallInv = null;
+			//			try {
+			//				matrixWall = MatrixMethod.createOrthoBase(normalWall);
+			//				matrixWallInv = MatrixMethod.getInversMatrix(matrixWall);
+			//			} catch (SingularMatrixException e) {
+			//				System.err.println("Error in the matrix !");
+			//				System.exit(1);
+			//			}
+
+			Polyline unsortedBounds = wall.returnUnsortedBounds();
+			unsortedBounds.returnMesh().write("wallUnsortedBounds - " + counterWall + ".stl");
+			
+			Polyline longestBound = wall.returnLongestBound();
+			longestBound.returnMeshShit().write("wallLongestBound - " + counterWall + ".stl");
+
+			//			bound.order();
+
+			//Projection on the plane at the z coordinate of the z average of all triangles of the roof.
+			//			bound.changeBase(matrixWall);
+			//			bound = bound.zProjection(wall.zAverage());
+			//			bound.changeBase(matrixWallInv);
+			//			bound.returnMesh().write("wallUnsortedBounds - " + counterWall + ".stl");
+
+			//FIXME : put error in the header
+			//			double error = 0.1;
+			//			Polyline singularPoints = bound.determinateSingularPoints(error);
+
+			//			singularPoints.changeBase(matrixWallInv);
+
+			counterWall ++;
 		}
 
-		roof.changeBase(matrixRoof);
+		//		return singularPoints;
+	}
 
-		//Projection on the plane at the z coordinate of the z average of all triangles of the roof.
-		Mesh projectedSurface = roof.zProjection(roof.zAverage());
+	private void treatRoof() {
 
-//		ArrayList<Polyline> boundList = projectedSurface.returnBounds();
-//		bound = Algos.returnLongestBorder(boundList);
-//
-//		contourList.add(bound);
-//
-//		//TODO : traiter les autres contours : cheminées, etc...
-//		Polyline orderedBound = Algos.orderBorder(bound);
-//
-//		int numberOfReduction = 10;
-//
-//		Polyline reducedLine = Algos.reduce(orderedBound, numberOfReduction);
-		return bound;
+		counterRoof = 0;
+
+		while(counterRoof < roofList.size()) {
+
+			Mesh roof = roofList.get(counterRoof);
+
+			roof.write("roofBrut - " + counterRoof + ".stl");
+
+			//		Vector3d normalRoofBadOriented = roof.averageNormal();
+			//		double[][] matrixRoof = null, matrixRoofInv = null;
+			//
+			//		try {
+			//			matrixRoof = MatrixMethod.createOrthoBase(normalRoofBadOriented);
+			//			matrixRoofInv = MatrixMethod.getInversMatrix(matrixRoof);
+			//		} catch (SingularMatrixException e) {
+			//			System.err.println("Error in the matrix !");
+			//			System.exit(1);
+			//		}
+			//
+			//		roof.changeBase(matrixRoof);
+			
+			Polyline unsortedBounds = roof.returnUnsortedBounds();
+			unsortedBounds.returnMesh().write("roofUnsortedBounds - " + counterRoof + ".stl");
+			
+			Polyline longestBound = roof.returnLongestBound();
+			longestBound.returnMeshShit().write("roofLongestBound - " + counterRoof + ".stl");
+					
+			//		//TODO : traiter les autres contours : cheminées, etc...
+			//		bound.order();
+			//
+			//		//Projection on the plane at the z coordinate of the z average of all triangles of the roof.
+			//		bound = bound.zProjection(roof.zAverage());
+			//
+			//		//FIXME : put error in the header
+			//		double error = 0.1;
+			//		Polyline singularPoints = bound.determinateSingularPoints(error);
+			//
+			//		singularPoints.changeBase(matrixRoofInv);
+			//
+			//		return singularPoints;
+			//	}
+			counterRoof ++;
+		}
 	}
 }

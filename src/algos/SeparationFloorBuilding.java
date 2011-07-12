@@ -18,23 +18,24 @@ import utils.Writer;
 
 public class SeparationFloorBuilding {
 
-	private double altitudeErrorFactor = 10;
-	private double angleNormalErrorFactor = 2;
+	private double altitudeErrorFactor = 30;
+	private double angleNormalErrorFactor = 15;
 	private double blockSizeBuildingError = 1;
 
 	private String townFileName = "Originals/batiments 1 - binary.stl";
 	private String floorFileName = "Originals/floor.stl";
 
-
-	private Mesh floors = new Mesh();
+	private Mesh floorBrut = new Mesh();
 	private Vector3d normalFloor = new Vector3d();
 
-	private Mesh buildings = new Mesh();
-	private Mesh noise = new Mesh();
 	private Mesh mesh = new Mesh();
-	private Mesh floorBrut = new Mesh();
+	
+	private Mesh buildings = new Mesh();
+	private Mesh floors = new Mesh();
+	private Mesh noise = new Mesh();
 
 	private ArrayList<Mesh> buildingList = new ArrayList<Mesh>();
+	private ArrayList<Mesh> floorsList = new ArrayList<Mesh>();
 
 
 	private int WRITING_MODE = Writer.BINARY_MODE;
@@ -77,6 +78,7 @@ public class SeparationFloorBuilding {
 		this.buildingsExtraction();
 		this.noiseTreatment();
 
+		//TODO : remettre le reste des bruits dans un autre fichier
 	}
 
 
@@ -131,9 +133,8 @@ public class SeparationFloorBuilding {
 		log.info("Floor extraction...");
 
 		//Searching for floor-oriented triangles with an error : angleNormalErrorFactor
-		log.info("Searching for floor-oriented triangles...");
 		Mesh meshOriented = mesh.orientedAs(normalFloor, angleNormalErrorFactor);
-		log.info("Searching finished !");
+		meshOriented.write("test.stl");
 
 		//Floor-search algorithm
 		//Select the lowest Triangle : it belongs to the floor
@@ -192,21 +193,11 @@ public class SeparationFloorBuilding {
 
 		Mesh floorsAndNoise = new Mesh(floors);
 		floorsAndNoise.addAll(noise);
-
-		ArrayList<Mesh> floorsList = new ArrayList<Mesh>();
-
-		//TODO : faire le blockExtract(floorsAndNoise) plutôt !
-		floorsList = Algos.blockExtract(floors);
-
-		//If a noise block is a neighbour of a the real floor, it's added to the real floor
+		floorsList = Algos.blockExtract(floorsAndNoise);
+		
 		floors.clear();
-
 		for(Mesh e : floorsList) {
-			e.getOne().returnNeighbours(floors, floorsAndNoise);
+			floors.addAll(e);
 		}
-
-		//TODO : remettre le reste des bruits dans un autre fichier
-
-		floors.write("Files/wholeFloors.stl");
 	}
 }

@@ -10,6 +10,7 @@ import javax.vecmath.Vector3d;
 
 import modeles.Edge;
 import modeles.Point;
+import modeles.Polyline;
 import modeles.Triangle;
 
 import org.junit.Test;
@@ -24,14 +25,24 @@ public class EdgeTest {
 	private Edge e2 = new Edge(p2, p3);
 	private Edge e3 = new Edge(p3, p1);
 	private Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect);
-	
+
 	private Point p4 = new Point(2, 2, 2);
 	private Edge e4 = new Edge(p1, p4);
 	private Edge e5 = new Edge(p2, p4);
 	private Triangle t2 = new Triangle(p1, p2, p4, e1, e4, e5, vect);
-	
+
+	private Edge e6 = new Edge(p3, p4);
+	private Polyline line = new Polyline();
+
+	public EdgeTest() {
+		line.add(e1);
+		line.add(e2);
+		line.add(e4);
+		line.add(e6);
+	}
+
 	@Test
-	public final void testReturnOther() {
+	public void testReturnOtherTriangle() {
 		assertTrue(e1.returnOther(t1) == t2);
 		assertTrue(e1.returnOther(t2) == t1);
 		assertTrue(e2.returnOther(t1) == null);
@@ -44,40 +55,68 @@ public class EdgeTest {
 	}
 
 	@Test
-	public final void testDistance() {
+	public void testDistance() {
 		assertTrue(e5.distance() == 3);
 	}
 
 	@Test
-	public final void testContains() {
+	public void testContains() {
 		assertTrue(e5.contains(p2));
 		assertFalse(e5.contains(p1));
 	}
 
-//	@Test
-//	TODO
-//	public final void testAddTriangle() {
-//		
-//	}
+	//	@Test
+	//	TODO
+	//	public final void testAddTriangle() {
+	//		
+	//	}
 
 	@Test
-	public final void testIsNeighboor() {
+	public void testIsNeighboor() {
 		assertTrue(e1.isNeighboor(e2));
 		assertFalse(e3.isNeighboor(e5));
 	}
 
 	@Test
-	public final void testEqualsObject() {
+	public void testEqualsObject() {
 		Edge eTest = new Edge(p1, p2);
 		assertFalse(e1.equals(e2));
 		assertTrue(e1.equals(e1));
 		assertTrue(e1.equals(eTest));
 	}
 
-//	@Test 
-//	TODO
-//	public final void testReturnNeighbours() {
-//		fail("Not yet implemented");
-//	}
+	//	@Test 
+	//	TODO
+	//	public final void testReturnNeighbours() {
+	//		fail("Not yet implemented");
+	//	}
 
+	@Test
+	public void testGetNumNeighbours() {
+		Polyline p = new Polyline();
+		p.add(e1);
+		p.add(e2);
+		p.add(e3);
+		p.add(e4);
+		assertTrue(e1.getNumNeighbours(p) == 3);
+		assertTrue(e2.getNumNeighbours(p) == 2);
+		try {
+			assertTrue(e5.getNumNeighbours(p) == 0);
+			fail();
+		} catch(InvalidParameterException e) {}
+	}
+
+	@Test
+	public void testReturnOtherPoint() {
+		assertTrue(e1.returnOther(p1) == p2);
+		assertTrue(e3.returnOther(p3) == p1);
+		assertTrue(e5.returnOther(p4) == p2);
+	}
+
+	@Test
+	public void testReturnNeighbour() {
+		assertTrue(e1.returnNeighbour(p1, line) == e4);
+		assertTrue(e2.returnNeighbour(p2, line) == e1);
+		assertTrue(e6.returnNeighbour(p3, line) == e2);
+	}
 }

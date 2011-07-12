@@ -72,6 +72,10 @@ public class Triangle {
 	public Edge getE3() {
 		return edges[2];
 	}
+
+	public Collection<Edge> getEdges() {
+		return Arrays.asList(this.edges);
+	}
 	
 	public String toString() {
 		return points[0].toString() + "\n" + points[1].toString() + "\n" + points[2].toString() + "\n" + normal.toString();
@@ -224,6 +228,8 @@ public class Triangle {
 		return t;
 	}	
 	
+	//FIXME : caution to the Edges ..
+	//FIXME : it destroy the former Triangle... and all the Points...
 	public Triangle zProjection(double z) {
 		Triangle t = new Triangle(this);
 		
@@ -288,5 +294,9 @@ public class Triangle {
 
 	public boolean isNeighboor(Triangle f) {
 		return(this.getNeighbours().contains(f));
+	}
+
+	public int getNumNeighbours() {
+		return this.getNeighbours().size();
 	}
 }

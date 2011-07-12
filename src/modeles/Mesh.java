@@ -179,6 +179,7 @@ public class Mesh extends HashSet<Triangle>{
 
 	//TODO : take care of the fact that new Triangle without order, and without neighbours are created !
 	//Caution !
+	//FIXME : the actual key table is destroyed :)
 	public Mesh xProjection(double x) {
 		Mesh e = new Mesh();
 		for(Triangle t : this) {
@@ -194,7 +195,6 @@ public class Mesh extends HashSet<Triangle>{
 		}
 		return e;
 	}
-
 
 	public Mesh zProjection(double z) {
 		Mesh e = new Mesh();
@@ -269,6 +269,9 @@ public class Mesh extends HashSet<Triangle>{
 
 
 	public void changeBase(double[][] matrix) {
+		if(matrix == null)
+			throw new InvalidParameterException();
+
 		HashSet<Point> set = new HashSet<Point>();
 		HashSet<Triangle> mesh = new HashSet<Triangle>();
 
@@ -285,34 +288,129 @@ public class Mesh extends HashSet<Triangle>{
 		this.addAll(mesh);
 	}
 
-	//FIXME : à refaire !
+	//FIXME !
+	public Polyline returnUnsortedBounds() {
+		Polyline bounds = new Polyline();
+		for(Triangle tri : this) {
+			ArrayList<Edge> edges = new ArrayList<Edge>(tri.getEdges());
+			for(Edge e : edges) {
+				int counter = 0;
+				for(Triangle t : e.getTriangleList()) {
+					if(this.contains(t))
+						counter ++;
+				}
+				if(counter == 1)
+					bounds.add(e);
+			}
+		}
+		return bounds;
+	}
+
+	public ArrayList<Polyline> returnSortedBounds(Polyline bounds) {
+		ArrayList<Polyline> boundList = new ArrayList<Polyline>();
+
+		while(!bounds.isEmpty()) {
+			Edge arete = bounds.getOne();
+			Polyline p = new Polyline();
+
+			arete.returnNeighbours(p, bounds);
+
+			boundList.add(p);
+			//FIXME : la méthode remove ne supprime pas les Points, seulement les Edges.
+			bounds.remove(p);
+		}
+
+		return boundList;
+	}
+
+	public ArrayList<Polyline> separateBounds(ArrayList<Polyline> boundList) {
+		ArrayList<Polyline> toAddList = new ArrayList<Polyline>();
+
+		int counter = 0;
+		Point weirdPoint = null;
+
+		for(Polyline border : boundList) {
+			for(Point p : border.getPointList()) {
+				if(border.getNumNeighbours(p) != 2) {
+					if(border.getNumNeighbours(p) == 4) {
+						counter ++;
+						weirdPoint = p;
+					}
+					else {
+						System.err.println("Error !");
+						//TODO : throw new Exception !
+					}
+				}
+			}
+
+			if (counter > 0) {
+				if(counter > 1) {				
+					System.err.println("Too much weird points !");
+					//TODO : throw new Exception();
+				}
+				else {
+					//Here are separated the two different Polylines : they still share one Point : caution !
+					toAddList.add(this.treatWeirdCase(border, weirdPoint));
+				}
+			}
+		}
+
+		toAddList.addAll(boundList);
+
+		return toAddList;
+	}
+
+	public Polyline treatWeirdCase(Polyline border, Point weirdPoint) {
+		Polyline otherOne = new Polyline();
+
+		ArrayList<Edge> weirdEdges = border.getNeighbours(weirdPoint);
+		Edge weirdEdge = weirdEdges.get(0);
+
+		Point p = weirdEdge.returnOther(weirdPoint);
+		Edge e = weirdEdge.returnNeighbour(p, border);
+
+		Edge temp;
+
+		while(!weirdEdges.contains(e)) {
+			temp = e;
+			otherOne.add(temp);
+			p = e.returnOther(p);
+			e = e.returnNeighbour(p, border);
+			border.remove(temp);
+		}
+
+		otherOne.add(e);
+		border.remove(e);
+
+		otherOne.add(weirdEdge);
+		border.remove(weirdEdge);
+
+		return otherOne;
+	}
 
 	public ArrayList<Polyline> returnBounds() {
-		ArrayList<Polyline> e = new ArrayList<Polyline>();
-		//		ArrayList<Border> eFin = new ArrayList<Border>();
 
-		//		Polyline front = new Polyline();
-		//		for(Triangle tri : this) {
-		//			if(tri.getNumVoisins() < 3 && tri.getNumVoisins() > 0)
-		//				front.addAll(tri.getFront());
-		//		}
-		//
-		//		while(!front.getEdgeList().isEmpty()) {
-		//			Edge arete = front.getEdgeList().iterator().next();
-		//			Border ret = new Polyline();
-		//			front.returnNeighbours(ret, arete);
-		//			e.add(ret);
-		//			front.remove(ret);
-		//		}
+		Polyline bounds = this.returnUnsortedBounds();
 
-		//		//Si certains possède des frontières doubles, il faut créer deux frontières
-		//		for(Border b : e) {
-		////			System.out.println(b.edgeSize());
-		//			Border bFin = Algos.orderBorder(b);
-		////			System.out.println(bFin.edgeSize());
-		//			eFin.add(bFin);
-		//		}
+		ArrayList<Polyline> boundList = this.returnSortedBounds(bounds);
 
-		return e;
+		boundList = this.separateBounds(boundList);
+
+		return boundList;
+	}
+
+	public Polyline returnLongestBound() {
+		ArrayList<Polyline> boundList = this.returnBounds();
+		Polyline ret = new Polyline();
+
+		double max = Double.MIN_VALUE;
+		for(Polyline p : boundList) {
+			if(p.distance() > max){
+				max = p.distance();
+				ret = p;
+			}
+		}
+
+		return ret;
 	}
 }
