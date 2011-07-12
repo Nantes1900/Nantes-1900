@@ -15,6 +15,10 @@ import modeles.Triangle;
 
 import org.junit.Test;
 
+/**
+ * @author CFV
+ *
+ */
 public class EdgeTest {
 
 	private Point p1 = new Point(1, 0, -1);
@@ -34,6 +38,9 @@ public class EdgeTest {
 	private Edge e6 = new Edge(p3, p4);
 	private Polyline line = new Polyline();
 
+	/**
+	 * 
+	 */
 	public EdgeTest() {
 		line.add(e1);
 		line.add(e2);
@@ -41,6 +48,9 @@ public class EdgeTest {
 		line.add(e6);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testReturnOtherTriangle() {
 		assertTrue(e1.returnOther(t1) == t2);
@@ -54,11 +64,17 @@ public class EdgeTest {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testDistance() {
-		assertTrue(e5.distance() == 3);
+		assertTrue(e5.length() == 3);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testContains() {
 		assertTrue(e5.contains(p2));
@@ -71,12 +87,18 @@ public class EdgeTest {
 	//		
 	//	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testIsNeighboor() {
 		assertTrue(e1.isNeighboor(e2));
 		assertFalse(e3.isNeighboor(e5));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testEqualsObject() {
 		Edge eTest = new Edge(p1, p2);
@@ -91,6 +113,9 @@ public class EdgeTest {
 	//		fail("Not yet implemented");
 	//	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testGetNumNeighbours() {
 		Polyline p = new Polyline();
@@ -106,6 +131,9 @@ public class EdgeTest {
 		} catch(InvalidParameterException e) {}
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testReturnOtherPoint() {
 		assertTrue(e1.returnOther(p1) == p2);
@@ -113,6 +141,9 @@ public class EdgeTest {
 		assertTrue(e5.returnOther(p4) == p2);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testReturnNeighbour() {
 		assertTrue(e1.returnNeighbour(p1, line) == e4);

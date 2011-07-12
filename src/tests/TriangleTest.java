@@ -14,6 +14,10 @@ import modeles.Triangle;
 
 import org.junit.Test;
 
+/**
+ * @author CFV
+ *
+ */
 public class TriangleTest {
 
 	private Point p1 = new Point(1, 0, -1);
@@ -25,6 +29,9 @@ public class TriangleTest {
 	private Edge e3 = new Edge(p3, p1);
 	Triangle t = new Triangle(p1, p2, p3, e1, e2, e3, vect);
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testGetPoints() {
 		ArrayList<Point> pointList = new ArrayList<Point>(t.getPoints());
@@ -33,6 +40,9 @@ public class TriangleTest {
 		assertTrue(pointList.get(2) == p3);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testContains() {
 		assertTrue(t.contains(p1));
@@ -40,6 +50,9 @@ public class TriangleTest {
 		assertTrue(t.contains(p3));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testEquals() {
 		Triangle tBis = new Triangle(p1, p2, p3, e1, e2, e3, vect);
@@ -47,81 +60,129 @@ public class TriangleTest {
 		assertTrue(tBis.equals(t));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testXAverage() {
 		assertTrue(t.xAverage() == 0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testYAverage() {
 		assertTrue(t.yAverage() == 1);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testZAverage() {
 		assertTrue(t.zAverage() == 0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testXMin() {
 		assertTrue(t.xMin() == -1);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testXMax() {
 		assertTrue(t.xMax() == 1);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testYMin() {
 		assertTrue(t.yMin() == 0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testYMax() {
 		assertTrue(t.yMax() == 2);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testZMin() {
 		assertTrue(t.zMin() == -1);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testZMax() {
 		assertTrue(t.zMax() == 1);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testXMinPoint() {
 		assertTrue(t.xMinPoint() == p3);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testXMaxPoint() {
 		assertTrue(t.xMaxPoint() == p1);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testYMinPoint() {
 		assertTrue(t.yMinPoint() == p1);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testYMaxPoint() {
 		assertTrue(t.yMaxPoint() == p3);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testZMinPoint() {
 		assertTrue(t.zMinPoint() == p1);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testZMaxPoint() {
 		assertTrue(t.zMaxPoint() == p3);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testXProjection() {
 		Triangle tProj = t.xProjection(7.0);
@@ -130,6 +191,9 @@ public class TriangleTest {
 		assertTrue(tProj.getP3().getX() == 7.0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testYProjection() {
 		Triangle tProj = t.yProjection(7.0);
@@ -138,6 +202,9 @@ public class TriangleTest {
 		assertTrue(tProj.getP3().getY() == 7.0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testzProjection() {
 		Triangle tProj = t.zProjection(7.0);
@@ -146,6 +213,9 @@ public class TriangleTest {
 		assertTrue(tProj.getP3().getZ() == 7.0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testAngularTolerance() {
 		Vector3d vector = new Vector3d(0, 1, 0);
@@ -158,6 +228,9 @@ public class TriangleTest {
 		assertTrue(t.angularTolerance(tBis, 100));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testIsNormalTo() {
 		Vector3d vector = new Vector3d(0, 1, 0);
@@ -167,6 +240,9 @@ public class TriangleTest {
 		assertFalse(t.isNormalTo(vector2, 0.2));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testReturnNeighbours() {
 		Point p4 = new Point(3, 4, 5);
@@ -203,6 +279,9 @@ public class TriangleTest {
 		assertTrue(ret.contains(t5));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testGetNeighbours() {
 		Point p4 = new Point(3, 4, 5);
@@ -232,6 +311,9 @@ public class TriangleTest {
 		assertTrue(l.contains(t4));
 	}
 	
+	/**
+	 * 
+	 */
 	public void testIsNeighboor() {
 
 		Point p4 = new Point(3, 4, 5);

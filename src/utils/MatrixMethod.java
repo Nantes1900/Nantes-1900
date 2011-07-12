@@ -2,8 +2,21 @@ package utils;
 
 import javax.vecmath.Vector3d;
 
+/**
+ * @author Eric Berthe, Valentin Roger, Daniel Lefèvre
+ *
+ */
+/**
+ * @author CFV
+ *
+ */
 public class MatrixMethod {
 
+	/**
+	 * @param baseVector
+	 * @return
+	 * @throws SingularMatrixException
+	 */
 	public static double[][] createOrthoBase(Vector3d baseVector) throws SingularMatrixException{
 		Vector3d b = new Vector3d(baseVector);
 		b.normalize();
@@ -28,6 +41,10 @@ public class MatrixMethod {
 		return matrix1;
 	}
 
+	/**
+	 * @param matrix
+	 * @return
+	 */
 	public static double determinant(double[][] matrix) {
 		double a = matrix[0][0];
 		double d = matrix[1][0];
@@ -42,6 +59,11 @@ public class MatrixMethod {
 		return a*e*i + b*f*g + c*d*h - c*e*g - f*h*a - i*b*d;
 	}
 
+	/**
+	 * @param matrix
+	 * @return
+	 * @throws SingularMatrixException
+	 */
 	public static double[][] getInversMatrix(double[][] matrix) throws SingularMatrixException {
 		double[][] matrix1 = new double[3][3];
 
@@ -72,6 +94,13 @@ public class MatrixMethod {
 		return matrix1;
 	}
 
+	/**
+	 * @param vect1
+	 * @param vect2
+	 * @param vect3
+	 * @return
+	 * @throws SingularMatrixException
+	 */
 	public static double[][] createOrthoBase(Vector3d vect1, Vector3d vect2, Vector3d vect3) throws SingularMatrixException{
 		Vector3d b = new Vector3d(vect1), c = new Vector3d(vect2), d  = new Vector3d(vect3);
 		b.normalize();
@@ -98,6 +127,11 @@ public class MatrixMethod {
 		return matrix1;
 	}
 
+	/**
+	 * @param coord
+	 * @param matrix
+	 * @return
+	 */
 	public static double[] changeBase(double[] coord, double[][]matrix){
 		int n = coord.length;
 		double[] sol = new double[n];
@@ -111,12 +145,20 @@ public class MatrixMethod {
 		return sol;
 	}
 
+	/**
+	 * @param vect
+	 * @param matrix
+	 */
 	public static void changeBase(Vector3d vect, double[][] matrix){
 		double[] coord = {vect.x, vect.y, vect.z};
 		vect.set(MatrixMethod.changeBase(coord, matrix));
 	}
 
 	//FIXME : changer de nom : elle existe déjà dans Vecmath !
+	/**
+	 * @author CFV
+	 *
+	 */
 	public static class SingularMatrixException extends Exception {
 		private static final long serialVersionUID = 1L;
 	}

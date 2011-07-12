@@ -10,15 +10,28 @@ import javax.vecmath.Vector3d;
 import utils.MatrixMethod;
 import utils.Writer;
 
-//TODO : doc !
+/**
+ * @author Daniel Lefevre, Eric Berthe, Valentin Roger, Elsa Arroud-Vignod
+ *
+ */
+/**
+ * @author CFV
+ *
+ */
 public class Mesh extends HashSet<Triangle>{
 
 	private static final long serialVersionUID = 1L;
 
+	/**
+	 * 
+	 */
 	public Mesh() {
 		super();
 	}
 
+	/**
+	 * @param c
+	 */
 	public Mesh(Collection<? extends Triangle> c) {
 		super(c);
 	}
@@ -26,6 +39,9 @@ public class Mesh extends HashSet<Triangle>{
 	/**
 	 * Compute the average normal of all Faces composing this Ensemble
 	 * @return average The average Vector3d normal.
+	 */
+	/**
+	 * @return
 	 */
 	public Vector3d averageNormal(){
 		int n = this.size();
@@ -38,6 +54,9 @@ public class Mesh extends HashSet<Triangle>{
 		return average;
 	}
 
+	/**
+	 * @return
+	 */
 	public double xAverage(){
 		double xAverage = 0;
 		for(Triangle face : this){
@@ -46,6 +65,9 @@ public class Mesh extends HashSet<Triangle>{
 		return xAverage/this.size();
 	}
 
+	/**
+	 * @return
+	 */
 	public double yAverage(){
 		double yAverage = 0;
 		for(Triangle face : this){
@@ -58,6 +80,9 @@ public class Mesh extends HashSet<Triangle>{
 	 * Compute the average z-coordinate of all points of all faces from this Ensemble
 	 * @return the average z-coordinate of all points
 	 */
+	/**
+	 * @return
+	 */
 	public double zAverage(){
 		double zAverage = 0;
 		for(Triangle face : this){
@@ -66,6 +91,9 @@ public class Mesh extends HashSet<Triangle>{
 		return zAverage/this.size();
 	}
 
+	/**
+	 * @return
+	 */
 	public double xMax() {
 		double xMaxi = Double.NEGATIVE_INFINITY;
 		for (Triangle face : this){
@@ -76,6 +104,9 @@ public class Mesh extends HashSet<Triangle>{
 		return xMaxi;
 	}
 
+	/**
+	 * @return
+	 */
 	public double xMin() {
 		double xMini = Double.POSITIVE_INFINITY;
 		for (Triangle face : this){
@@ -86,6 +117,9 @@ public class Mesh extends HashSet<Triangle>{
 		return xMini;
 	}
 
+	/**
+	 * @return
+	 */
 	public double yMax() {
 		double yMaxi = Double.NEGATIVE_INFINITY;
 		for (Triangle face : this){
@@ -96,6 +130,9 @@ public class Mesh extends HashSet<Triangle>{
 		return yMaxi;
 	}
 
+	/**
+	 * @return
+	 */
 	public double yMin() {
 		double yMini = Double.POSITIVE_INFINITY;
 		for (Triangle face : this){
@@ -106,6 +143,9 @@ public class Mesh extends HashSet<Triangle>{
 		return yMini;
 	}
 
+	/**
+	 * @return
+	 */
 	public double zMax() {
 		double zMaxi = Double.NEGATIVE_INFINITY;
 		for (Triangle face : this){
@@ -116,6 +156,9 @@ public class Mesh extends HashSet<Triangle>{
 		return zMaxi;
 	}
 
+	/**
+	 * @return
+	 */
 	public double zMin() {
 		double zMini = Double.POSITIVE_INFINITY;
 		for (Triangle face : this){
@@ -126,6 +169,9 @@ public class Mesh extends HashSet<Triangle>{
 		return zMini;
 	}	
 
+	/**
+	 * @return
+	 */
 	public double xLengthAverage() {
 		double xLengthAve = 0;
 		for(Triangle t : this) {
@@ -134,6 +180,9 @@ public class Mesh extends HashSet<Triangle>{
 		return xLengthAve/(double)this.size();
 	}
 
+	/**
+	 * @return
+	 */
 	public double yLengthAverage() {
 		double yLengthAve = 0;
 		for(Triangle t : this) {
@@ -142,6 +191,9 @@ public class Mesh extends HashSet<Triangle>{
 		return yLengthAve/(double)this.size();
 	}
 
+	/**
+	 * @return
+	 */
 	public double zLengthAverage() {
 		double zLengthAve = 0;
 		for(Triangle t : this) {
@@ -150,6 +202,11 @@ public class Mesh extends HashSet<Triangle>{
 		return zLengthAve/(double)this.size();
 	}
 
+	/**
+	 * @param m1
+	 * @param m2
+	 * @return
+	 */
 	public Mesh xBetween(double m1, double m2) {
 		Mesh ens = new Mesh();
 		for(Triangle t : this) {
@@ -159,6 +216,11 @@ public class Mesh extends HashSet<Triangle>{
 		return ens;
 	}
 
+	/**
+	 * @param m1
+	 * @param m2
+	 * @return
+	 */
 	public Mesh yBetween(double m1, double m2) {
 		Mesh ens = new Mesh();
 		for(Triangle t : this) {
@@ -168,6 +230,11 @@ public class Mesh extends HashSet<Triangle>{
 		return ens;
 	}
 
+	/**
+	 * @param m1
+	 * @param m2
+	 * @return
+	 */
 	public Mesh zBetween(double m1, double m2) {
 		Mesh ens = new Mesh();
 		for(Triangle t : this) {
@@ -180,6 +247,10 @@ public class Mesh extends HashSet<Triangle>{
 	//TODO : take care of the fact that new Triangle without order, and without neighbours are created !
 	//Caution !
 	//FIXME : the actual key table is destroyed :)
+	/**
+	 * @param x
+	 * @return
+	 */
 	public Mesh xProjection(double x) {
 		Mesh e = new Mesh();
 		for(Triangle t : this) {
@@ -188,6 +259,10 @@ public class Mesh extends HashSet<Triangle>{
 		return e;
 	}
 
+	/**
+	 * @param y
+	 * @return
+	 */
 	public Mesh yProjection(double y) {
 		Mesh e = new Mesh();
 		for(Triangle t : this) {
@@ -196,6 +271,10 @@ public class Mesh extends HashSet<Triangle>{
 		return e;
 	}
 
+	/**
+	 * @param z
+	 * @return
+	 */
 	public Mesh zProjection(double z) {
 		Mesh e = new Mesh();
 		for(Triangle t : this) {
@@ -205,6 +284,9 @@ public class Mesh extends HashSet<Triangle>{
 	}
 
 
+	/**
+	 * @return
+	 */
 	public Triangle zMinFace() {
 		Triangle t = null;
 		if(this.isEmpty())
@@ -221,6 +303,10 @@ public class Mesh extends HashSet<Triangle>{
 
 	//TODO : improve the velocity of this method !
 
+	/**
+	 * @param zMax
+	 * @return
+	 */
 	public Triangle faceUnderZ(double zMax) {
 		for (Triangle t : this) {
 			if (t.zMax() < zMax) {
@@ -231,21 +317,35 @@ public class Mesh extends HashSet<Triangle>{
 	}
 
 
+	/**
+	 * @return
+	 */
 	public Triangle getOne() {
 		return this.iterator().next();
 	}
 
 
+	/**
+	 * @param m
+	 */
 	public void remove(Mesh m) {
 		this.removeAll(m);
 	}
 
 
+	/**
+	 * @param fileName
+	 */
 	public void write(String fileName) {
 		Writer.write(fileName, this);
 	}
 
 
+	/**
+	 * @param normal
+	 * @param error
+	 * @return
+	 */
 	public Mesh orientedAs(Vector3d normal, double error) {
 		Mesh ret = new Mesh();
 		for(Triangle f : this) {
@@ -258,6 +358,11 @@ public class Mesh extends HashSet<Triangle>{
 
 	//Caution : this is not in degrees
 	//The factor is between 0 and 1.
+	/**
+	 * @param normal
+	 * @param error
+	 * @return
+	 */
 	public Mesh orientedNormalTo(Vector3d normal, double error) {
 		Mesh ret = new Mesh();
 		for(Triangle f : this) {
@@ -268,6 +373,9 @@ public class Mesh extends HashSet<Triangle>{
 	}
 
 
+	/**
+	 * @param matrix
+	 */
 	public void changeBase(double[][] matrix) {
 		if(matrix == null)
 			throw new InvalidParameterException();
@@ -289,6 +397,9 @@ public class Mesh extends HashSet<Triangle>{
 	}
 
 	//FIXME !
+	/**
+	 * @return
+	 */
 	public Polyline returnUnsortedBounds() {
 		Polyline bounds = new Polyline();
 		for(Triangle tri : this) {
@@ -306,6 +417,10 @@ public class Mesh extends HashSet<Triangle>{
 		return bounds;
 	}
 
+	/**
+	 * @param bounds
+	 * @return
+	 */
 	public ArrayList<Polyline> returnSortedBounds(Polyline bounds) {
 		ArrayList<Polyline> boundList = new ArrayList<Polyline>();
 
@@ -323,6 +438,10 @@ public class Mesh extends HashSet<Triangle>{
 		return boundList;
 	}
 
+	/**
+	 * @param boundList
+	 * @return
+	 */
 	public ArrayList<Polyline> separateBounds(ArrayList<Polyline> boundList) {
 		ArrayList<Polyline> toAddList = new ArrayList<Polyline>();
 
@@ -360,6 +479,11 @@ public class Mesh extends HashSet<Triangle>{
 		return toAddList;
 	}
 
+	/**
+	 * @param border
+	 * @param weirdPoint
+	 * @return
+	 */
 	public Polyline treatWeirdCase(Polyline border, Point weirdPoint) {
 		Polyline otherOne = new Polyline();
 
@@ -388,6 +512,9 @@ public class Mesh extends HashSet<Triangle>{
 		return otherOne;
 	}
 
+	/**
+	 * @return
+	 */
 	public ArrayList<Polyline> returnBounds() {
 
 		Polyline bounds = this.returnUnsortedBounds();
@@ -399,14 +526,17 @@ public class Mesh extends HashSet<Triangle>{
 		return boundList;
 	}
 
+	/**
+	 * @return
+	 */
 	public Polyline returnLongestBound() {
 		ArrayList<Polyline> boundList = this.returnBounds();
 		Polyline ret = new Polyline();
 
 		double max = Double.MIN_VALUE;
 		for(Polyline p : boundList) {
-			if(p.distance() > max){
-				max = p.distance();
+			if(p.length() > max){
+				max = p.length();
 				ret = p;
 			}
 		}

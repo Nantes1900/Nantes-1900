@@ -7,10 +7,18 @@ import java.util.logging.Logger;
 import modeles.Mesh;
 import modeles.Triangle;
 
+/**
+ * @author CFV
+ *
+ */
 public class Algos {
 
 	static Logger log = Logger.getLogger("logger");
 
+	/**
+	 * @param m
+	 * @return
+	 */
 	public static ArrayList<Mesh> blockExtract(Mesh m) {
 		HashSet<Mesh> thingsList = new HashSet<Mesh>();
 		Mesh mesh = new Mesh(m);
@@ -30,6 +38,11 @@ public class Algos {
 		return new ArrayList<Mesh>(thingsList);
 	}
 
+	/**
+	 * @param m
+	 * @param angleNormalErrorFactor
+	 * @return
+	 */
 	public static ArrayList<Mesh> blockOrientedExtract(Mesh m, double angleNormalErrorFactor) {
 		ArrayList<Mesh> thingsList = new ArrayList<Mesh>();
 		Mesh mesh = new Mesh(m);
@@ -50,6 +63,12 @@ public class Algos {
 		return thingsList;
 	}
 
+	/**
+	 * @param list
+	 * @param noise
+	 * @param largeAngleNormalErrorFactor
+	 * @return
+	 */
 	public static ArrayList<Mesh> blockTreatOrientedNoise(ArrayList<Mesh> list, Mesh noise, double largeAngleNormalErrorFactor) {
 
 		ArrayList<Mesh> m = new ArrayList<Mesh>();
@@ -67,6 +86,11 @@ public class Algos {
 		return m;
 	}
 
+	/**
+	 * @param meshOriented
+	 * @param altitudeErrorFactor
+	 * @return
+	 */
 	public static Mesh floorExtract(Mesh meshOriented, double altitudeErrorFactor) {
 		Mesh floors = new Mesh();
 

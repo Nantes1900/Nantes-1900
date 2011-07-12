@@ -21,6 +21,18 @@ import modeles.Edge;
 import modeles.Point;
 import modeles.Triangle;
 
+/**
+ * @author Eric Berthe, Valentin Roger, Daniel Lefèvre
+ *
+ * Parse a STL file : detect if it is a ASCII or a binary file, and parse it.
+ * During the parsing, it builds the Mesh, giving to the same points the same references (and to the edges),
+ * and avoiding the bad-formed triangles to be used and to create errors further.
+ */
+
+/**
+ * @author CFV
+ *
+ */
 public class Parser {
 
 	private static Vector3d currentVector;
@@ -28,6 +40,11 @@ public class Parser {
 
 	static Logger log = Logger.getLogger("logger");
 
+	/**
+	 * @param fileName
+	 * @return
+	 * @throws IOException
+	 */
 	private static HashSet<Triangle> readSTLB(String fileName) throws IOException {
 		InputStream stream = new BufferedInputStream(new FileInputStream(fileName));
 
@@ -66,6 +83,14 @@ public class Parser {
 		return mesh;
 	}
 
+	/**
+	 * @param bBuf
+	 * @param pointMap
+	 * @param edgeMap
+	 * @return
+	 * @throws FlatTriangleException
+	 * @throws OutOfBoundsPointException
+	 */
 	public static Triangle processLineB(ByteBuffer bBuf, HashMap<Point, Point> pointMap, HashMap<Edge, Edge> edgeMap) throws FlatTriangleException, OutOfBoundsPointException {
 		Vector3d norm = new Vector3d(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
 		Point p1 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
@@ -130,6 +155,12 @@ public class Parser {
 		return new Triangle(p1, p2, p3, e1, e2, e3, norm);
 	}
 
+	/**
+	 * @param fileName
+	 * @return
+	 * @throws BadFormedFileException
+	 * @throws IOException
+	 */
 	public static HashSet<Triangle> readSTL(String fileName) throws BadFormedFileException, IOException {
 		Scanner scanner = new Scanner(new FileReader(fileName));
 
@@ -152,6 +183,12 @@ public class Parser {
 		}
 	}
 
+	/**
+	 * @param fileName
+	 * @return
+	 * @throws FileNotFoundException
+	 * @throws BadFormedFileException
+	 */
 	private static HashSet<Triangle> readSTLA(String fileName) throws FileNotFoundException, BadFormedFileException {
 		Scanner scanner = new Scanner(new FileReader(fileName));
 		HashSet<Triangle> mesh = new HashSet<Triangle>();
@@ -184,6 +221,15 @@ public class Parser {
 	}
 
 	//To improve : no verification whatsoever, if the stl is badly formed, explosion !
+	/**
+	 * @param facesFromSTL
+	 * @param line
+	 * @param pointMap
+	 * @param edgeMap
+	 * @throws FlatTriangleException
+	 * @throws OutOfBoundsPointException
+	 * @throws BadFormedFileException
+	 */
 	public static void processLineA(HashSet<Triangle> facesFromSTL, String line, HashMap<Point, Point> pointMap, HashMap<Edge, Edge> edgeMap) throws FlatTriangleException, OutOfBoundsPointException, BadFormedFileException {
 		if (line.isEmpty()){
 			throw new BadFormedFileException();
@@ -257,15 +303,27 @@ public class Parser {
 		}
 	}
 
+	/**
+	 * @author CFV
+	 *
+	 */
 	private static class OutOfBoundsPointException extends Exception {
 		private static final long serialVersionUID = 1L;
 		private static final double boundLimit = 1e5;
 	}
 
+	/**
+	 * @author CFV
+	 *
+	 */
 	private static class FlatTriangleException extends Exception {
 		private static final long serialVersionUID = 1L;
 	}
 
+	/**
+	 * @author CFV
+	 *
+	 */
 	public static class BadFormedFileException extends Exception {
 		private static final long serialVersionUID = 1L;
 	}

@@ -8,6 +8,10 @@ import modeles.Polyline;
 
 import org.junit.Test;
 
+/**
+ * @author CFV
+ *
+ */
 public class PolylineTest {
 
 	private Point p1 = new Point(1, 0, -1);
@@ -23,88 +27,139 @@ public class PolylineTest {
 	
 	private Polyline p = new Polyline();
 	
+	/**
+	 * 
+	 */
 	public PolylineTest() {
 		p.add(e1);
 		p.add(e2);
 		p.add(e3);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testEdgeSize() {
 		assertTrue(p.edgeSize() == 3);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testPointSize() {
 		assertTrue(p.pointSize() == 3);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testXAverage() {
 		assertTrue(p.xAverage() == 0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testYAverage() {
 		assertTrue(p.yAverage() == 1);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testZAverage() {
 		assertTrue(p.zAverage() == 0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testXMax() {
 		assertTrue(p.xMax() == 1);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testXMin() {
 		assertTrue(p.xMin() == -1);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testYMax() {
 		assertTrue(p.yMax() == 2);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testYMin() {
 		assertTrue(p.yMin() == 0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testZMax() {
 		assertTrue(p.zMax() == 1);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testZMin() {
 		assertTrue(p.zMin() == -1);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testXLengthAverage() {
 		assertTrue(p.xLengthAverage() == 4.0/3.0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testYLengthAverage() {
 		assertTrue(p.yLengthAverage() == 4.0/3.0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testZLengthAverage() {
 		assertTrue(p.zLengthAverage() == 4.0/3.0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testLengthAverage() {
 		double d = Math.pow(4.0/3.0, 2) * 3.0;
 		assertTrue(p.lengthAverage() == Math.pow(d, 0.5));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testXBetween() {
 		Polyline p2 = new Polyline();
@@ -121,6 +176,9 @@ public class PolylineTest {
 		assertFalse(p3.contains(e5));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testYBetween() {
 		Polyline p2 = new Polyline();
@@ -137,6 +195,9 @@ public class PolylineTest {
 		assertFalse(p3.contains(e5));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testZBetween() {
 		Polyline p2 = new Polyline();
@@ -153,16 +214,25 @@ public class PolylineTest {
 		assertFalse(p3.contains(e5));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testZMaxPoint() {
 		assertTrue(p.zMaxPoint() == p3);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testDistance() {
-		assertTrue(p.distance() == 4.0 * Math.pow(3.0, 0.5));
+		assertTrue(p.length() == 4.0 * Math.pow(3.0, 0.5));
 	}
 	
+	/**
+	 * 
+	 */
 	@Test
 	public void testRemove() {
 		Polyline pol2 = new Polyline();
@@ -185,6 +255,9 @@ public class PolylineTest {
 		assertTrue(pol2.contains(p4));
 	}
 	
+	/**
+	 * 
+	 */
 	@Test
 	public void testAreWeInTheTwoLinesOrNot() {
 		Point p1 = new Point(0, 0, 0);
@@ -197,6 +270,9 @@ public class PolylineTest {
 		assertFalse(p.areWeInTheTwoLinesOrNot(p1, p2, p3, error));
 	}
 	
+	/**
+	 * 
+	 */
 	@Test
 	public void testFollowTheFramedLine() {
 		Point p0 = new Point(-1, -1, 0);

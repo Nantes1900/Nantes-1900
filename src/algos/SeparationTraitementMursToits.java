@@ -18,13 +18,21 @@ import utils.Parser;
 import utils.Parser.BadFormedFileException;
 import utils.Writer;
 
+/**
+ * @author Daniel Lefèvre
+ *
+ */
+/**
+ * @author CFV
+ *
+ */
 public class SeparationTraitementMursToits {
 
-	private double angleNormalErrorFactor = 40;
-	private double largeAngleNormalErrorFactor = 80;
+	private double angleNormalErrorFactor = 20;
+	private double largeAngleNormalErrorFactor = 40;
 	private double errorNormalToFactor = 0.2;
-	private double errorNumberTrianglesWall = 5;
-	private double errorNumberTrianglesRoof = 5;
+	private double errorNumberTrianglesWall = 4;
+	private double errorNumberTrianglesRoof = 6;
 
 
 	private Mesh floorBrut = new Mesh();
@@ -40,10 +48,6 @@ public class SeparationTraitementMursToits {
 
 	private Mesh noise = new Mesh();
 
-	//	private ArrayList<Polyline> wallComputedList = new ArrayList<Polyline>();
-	//	private ArrayList<Polyline> roofComputedList = new ArrayList<Polyline>();
-
-
 	private int counterBuilding = 1;
 	private int counterWall = 1;
 	private int counterRoof = 1;
@@ -54,9 +58,11 @@ public class SeparationTraitementMursToits {
 	private Logger log = Logger.getLogger("logger");
 
 
+	/**
+	 * 
+	 */
 	public SeparationTraitementMursToits() {
-		//TODO : rajouter des options.
-
+		
 		//Options set
 		Writer.setWriteMode(WRITING_MODE);
 
@@ -65,21 +71,33 @@ public class SeparationTraitementMursToits {
 		log.addHandler(new StreamHandler(System.out, new SimpleFormatter()));
 	}
 
+	/**
+	 * 
+	 */
 	public void setDebugMode() {
 		log.setLevel(Level.FINEST);
-		//		this.DEBUG_MODE = true;
 
 		this.WRITING_MODE = Writer.ASCII_MODE;
 		Writer.setWriteMode(WRITING_MODE);
 	}
+	
+	/**
+	 * 
+	 */
+	public void setOptions() {
+		
+	}
 
+	/**
+	 * 
+	 */
 	public void apply() {
 
 		this.parseFloor();
 
-		while(new File("Files/building - " + this.counterBuilding + ".stl").exists()) {
+		while(new File("Originals/building - " + this.counterBuilding + ".stl").exists()) {
 
-			this.parseBuilding("Files/building - " + this.counterBuilding + ".stl");
+			this.parseBuilding("Originals/building - " + this.counterBuilding + ".stl");
 			this.extractFloorNormal();
 
 			this.sortWalls();
@@ -88,32 +106,16 @@ public class SeparationTraitementMursToits {
 			this.treatNoiseWalls();
 			this.treatNoiseRoofs();
 
-			//			this.wallList.get(0).write("wall1.stl");
-			//			this.wallList.get(1).write("wall2.stl");
-			//			this.wallList.get(2).write("wall3.stl");
-			//			this.wallList.get(3).write("wall4.stl");
-
 			this.treatWall();
-
-			//			for(int i = 0; i < 1; i ++) {
-			//				this.wallList.get(i).write("wallsse.stl");
-			//				Mesh w = this.wallList.get(i);
-			//				w.write("waladfafal.stl");
-			//				this.treatWall(w);
-			//			}
-			
 			this.treatRoof();
-
-			//			for(Mesh roof : this.roofList) {
-			//				roof.write("roof avant - " + counterRoof + ".stl");
-			//				Polyline p = this.treatRoof(roof);
-			//				p.returnMeshShit().write(counterWall + "wall-shit.stl");
-			//			}
 
 			this.counterBuilding ++;
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void parseFloor() {
 		try {
 			this.floorBrut = new Mesh(Parser.readSTL("Originals/floor.stl"));
@@ -124,6 +126,9 @@ public class SeparationTraitementMursToits {
 		}
 	}
 
+	/**
+	 * @param fileName
+	 */
 	private void parseBuilding(String fileName) {
 		try {
 			this.currentBuilding = new Mesh(Parser.readSTL(fileName));
@@ -137,6 +142,9 @@ public class SeparationTraitementMursToits {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void extractFloorNormal() {
 		//The floor normal is the average of all the normals fo the triangles in the brut floor file
 		normalFloor = floorBrut.averageNormal();
@@ -157,6 +165,9 @@ public class SeparationTraitementMursToits {
 	}
 
 
+	/**
+	 * 
+	 */
 	private void sortWalls() {
 
 		Mesh wallOriented = this.currentBuilding.orientedNormalTo(this.normalFloor, this.errorNormalToFactor);
@@ -171,7 +182,7 @@ public class SeparationTraitementMursToits {
 		}
 
 		for(Mesh e : thingsList) {
-			if(e.size() > this.errorNumberTrianglesWall*(double)size/(double)thingsList.size()) {
+			if(e.size() >= this.errorNumberTrianglesWall*(double)size/(double)thingsList.size()) {
 				this.wallList.add(e);
 			}
 			else
@@ -183,6 +194,9 @@ public class SeparationTraitementMursToits {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void sortRoofs()	{
 
 		ArrayList<Mesh> thingsList = Algos.blockOrientedExtract(this.currentBuilding, this.angleNormalErrorFactor);
@@ -194,7 +208,7 @@ public class SeparationTraitementMursToits {
 		}
 
 		for(Mesh e : thingsList) {
-			if((e.size() > this.errorNumberTrianglesRoof*(double)size/(double)thingsList.size()) 
+			if((e.size() >= this.errorNumberTrianglesRoof*(double)size/(double)thingsList.size()) 
 					&& (e.averageNormal().dot(this.normalFloor) > 0)) {
 				this.roofList.add(e);
 			}
@@ -207,6 +221,9 @@ public class SeparationTraitementMursToits {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void treatNoiseWalls() {
 
 		this.wallList = Algos.blockTreatOrientedNoise(this.wallList, this.noise, this.largeAngleNormalErrorFactor);
@@ -217,6 +234,9 @@ public class SeparationTraitementMursToits {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void treatNoiseRoofs() {
 
 		this.roofList = Algos.blockTreatOrientedNoise(this.roofList, this.noise, this.largeAngleNormalErrorFactor);
@@ -227,6 +247,9 @@ public class SeparationTraitementMursToits {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void treatWall() {
 
 		counterWall = 0;
@@ -235,8 +258,15 @@ public class SeparationTraitementMursToits {
 
 			Mesh wall = wallList.get(counterWall);
 
-			wall.write("wallBrut - " + counterWall + ".stl");
+			wall.write("Files/wallBrut - " + counterWall + ".stl");
 
+			Polyline unsortedBounds = wall.returnUnsortedBounds();
+			unsortedBounds.returnMesh().write("Files/wallUnsortedBounds - " + counterWall + ".stl");
+
+			Polyline longestBound = wall.returnLongestBound();
+			longestBound.returnCentroidMesh().write("wallLongestBound - " + counterWall + ".stl");
+
+			//			bound.order();
 			//			Vector3d normalWall = wall.averageNormal();
 
 			//			double[][] matrixWall = null, matrixWallInv = null;
@@ -247,14 +277,6 @@ public class SeparationTraitementMursToits {
 			//				System.err.println("Error in the matrix !");
 			//				System.exit(1);
 			//			}
-
-			Polyline unsortedBounds = wall.returnUnsortedBounds();
-			unsortedBounds.returnMesh().write("wallUnsortedBounds - " + counterWall + ".stl");
-			
-			Polyline longestBound = wall.returnLongestBound();
-			longestBound.returnMeshShit().write("wallLongestBound - " + counterWall + ".stl");
-
-			//			bound.order();
 
 			//Projection on the plane at the z coordinate of the z average of all triangles of the roof.
 			//			bound.changeBase(matrixWall);
@@ -274,6 +296,9 @@ public class SeparationTraitementMursToits {
 		//		return singularPoints;
 	}
 
+	/**
+	 * 
+	 */
 	private void treatRoof() {
 
 		counterRoof = 0;
@@ -282,7 +307,13 @@ public class SeparationTraitementMursToits {
 
 			Mesh roof = roofList.get(counterRoof);
 
-			roof.write("roofBrut - " + counterRoof + ".stl");
+			roof.write("Files/roofBrut - " + counterRoof + ".stl");
+
+			Polyline unsortedBounds = roof.returnUnsortedBounds();
+			unsortedBounds.returnMesh().write("Files/roofUnsortedBounds - " + counterRoof + ".stl");
+
+			Polyline longestBound = roof.returnLongestBound();
+			longestBound.returnCentroidMesh().write("roofLongestBound - " + counterRoof + ".stl");
 
 			//		Vector3d normalRoofBadOriented = roof.averageNormal();
 			//		double[][] matrixRoof = null, matrixRoofInv = null;
@@ -296,13 +327,7 @@ public class SeparationTraitementMursToits {
 			//		}
 			//
 			//		roof.changeBase(matrixRoof);
-			
-			Polyline unsortedBounds = roof.returnUnsortedBounds();
-			unsortedBounds.returnMesh().write("roofUnsortedBounds - " + counterRoof + ".stl");
-			
-			Polyline longestBound = roof.returnLongestBound();
-			longestBound.returnMeshShit().write("roofLongestBound - " + counterRoof + ".stl");
-					
+
 			//		//TODO : traiter les autres contours : cheminées, etc...
 			//		bound.order();
 			//

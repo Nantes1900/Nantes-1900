@@ -12,17 +12,29 @@ import modeles.Mesh;
 import modeles.Triangle;
 
 /**
+ * @author Eric Berthe, Valentin Roger, Daniel Lefèvre
+ * 
  * Write a STL file containing the faces, list of faces or buildings.
+ * This writer use the ASCII or the binary format, depending on the static attribute MODE.
+ */
+/**
+ * @author CFV
  *
  */
-
 public class Writer {
 
 	public static final int ASCII_MODE = 1;
 	public static final int BINARY_MODE = 2;
 
+	/**
+	 * 
+	 */
 	private static int MODE = ASCII_MODE;
 
+	/**
+	 * @param fileName
+	 * @param m
+	 */
 	public static void write(String fileName, Mesh m) {
 		if(MODE == ASCII_MODE)
 			writeA(fileName, m);
@@ -32,15 +44,26 @@ public class Writer {
 			System.err.println("Erreur !");
 	}
 
+	/**
+	 * @param mode
+	 */
 	public static void setWriteMode(int mode) {
 		MODE = mode;
 	}
 
+	/**
+	 * @param fileName
+	 * @param m
+	 */
 	private static void writeA(String fileName, Mesh m) {
 		Writer.writeSTLA(fileName, m);
 		System.out.println(fileName + " written in STL ASCII!");
 	}
 
+	/**
+	 * @param fileName
+	 * @param m
+	 */
 	private static void writeB(String fileName, Mesh m) {
 		Writer.writeSTLB(fileName, m);
 		System.out.println(fileName + " written in STL binary!");
@@ -50,6 +73,10 @@ public class Writer {
 	 * 
 	 * @param fw The file we want to write in.
 	 * @param face The face to be written.
+	 */
+	/**
+	 * @param fw
+	 * @param face
 	 */
 	public static void writeASCIIFace(BufferedWriter fw, Triangle face) {
 		try {
@@ -77,6 +104,10 @@ public class Writer {
 	 * @param fw The file we want to write in
 	 * @param surface The list of faces to be written.
 	 */
+	/**
+	 * @param fileName
+	 * @param surface
+	 */
 	public static void writeSTLA(String fileName, Mesh surface) {
 		try {
 			BufferedWriter fw = new BufferedWriter(new FileWriter(fileName));
@@ -92,6 +123,11 @@ public class Writer {
 		}
 	}
 
+	/**
+	 * @param writer
+	 * @param a
+	 * @throws Exception
+	 */
 	private static void writeInGoodOrder(OutputStream writer, double a) throws Exception {
 		ByteBuffer bBuf = ByteBuffer.allocate(Float.SIZE);
 		bBuf.order(ByteOrder.LITTLE_ENDIAN);
@@ -99,6 +135,11 @@ public class Writer {
 		writer.write(bBuf.array(), 0, Float.SIZE/8);
 	}
 
+	/**
+	 * @param writer
+	 * @param face
+	 * @throws Exception
+	 */
 	public static void writeBinaryFace(OutputStream writer, Triangle face) throws Exception {
 		writeInGoodOrder(writer, face.getNormal().getX());
 		writeInGoodOrder(writer, face.getNormal().getY());
@@ -119,6 +160,10 @@ public class Writer {
 		writer.write(new byte[2]);
 	}
 
+	/**
+	 * @param fileName
+	 * @param surface
+	 */
 	public static void writeSTLB(String fileName,  Mesh surface) {
 		try {
 			BufferedOutputStream stream = new BufferedOutputStream(new FileOutputStream(fileName));

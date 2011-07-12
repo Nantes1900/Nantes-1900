@@ -15,6 +15,10 @@ import modeles.Triangle;
 
 import org.junit.Test;
 
+/**
+ * @author CFV
+ *
+ */
 public class MeshTest {
 
 	//LOOK : doc !
@@ -38,76 +42,121 @@ public class MeshTest {
 
 	private Mesh m = new Mesh();
 
+	/**
+	 * 
+	 */
 	public MeshTest() {
 		this.m.add(this.t1);
 		this.m.add(this.t2);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testAverageNormal() {
 		assertTrue(this.m.averageNormal().equals(new Vector3d(0.5, 0, 0.5)));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testxAverage() {
 		assertTrue(this.m.xAverage() == 2.0/3.0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testyAverage() {
 		assertTrue(this.m.yAverage() == 3.0/2.0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testzAverage() {
 		assertTrue(this.m.zAverage() == -2.0/3.0);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testxMax() {
 		assertTrue(this.m.xMax() == 4);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testxMin() {
 		assertTrue(this.m.xMin() == -2);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testyMax() {
 		assertTrue(this.m.yMax() == 5);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testyMin() {
 		assertTrue(this.m.yMin() == -3);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testzMax() {
 		assertTrue(this.m.zMax() == 4);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testzMin() {
 		assertTrue(this.m.zMin() == -5);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testxLengthAverage() {
 		assertTrue(this.m.xLengthAverage() == 4);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testyLengthAverage() {
 		assertTrue(this.m.yLengthAverage() == 5);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testzLengthAverage() {
 		assertTrue(this.m.zLengthAverage() == 5.5);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	//LOOK : complete this test with other Triangles
 	public void testXBetween() {
@@ -116,6 +165,9 @@ public class MeshTest {
 		assertTrue(xBet.contains(t2));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	//LOOK : complete this test with other Triangles
 	public void testYBetween() {
@@ -124,6 +176,9 @@ public class MeshTest {
 		assertTrue(yBet.contains(t2));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	//LOOK : complete this test with other Triangles
 	public void testZBetween() {
@@ -133,34 +188,52 @@ public class MeshTest {
 	}
 
 	//LOOK : don't use xAverage() ?
+	/**
+	 * 
+	 */
 	@Test
 	public void testXProjection() {
 		Mesh mProj = m.xProjection(1.2);
 		assertTrue(mProj.xAverage() == 1.2);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testYProjection() {
 		Mesh mProj = m.yProjection(1.2);
 		assertTrue(mProj.yAverage() == 1.2);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testZProjection() {
 		Mesh mProj = m.zProjection(1.2);
 		assertTrue(mProj.zAverage() == 1.2);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testZMinFace() {
 		assertTrue(m.zMinFace() == t2);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testFaceUnderZ() {
 		assertTrue(m.faceUnderZ(2) == t1);
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testOrientedAs() {
 		Mesh oriented = m.orientedAs(new Vector3d(0.1, 0.1, 0.9), 15);
@@ -168,6 +241,9 @@ public class MeshTest {
 		assertFalse(oriented.contains(t2));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testOrientedNormalTo() {
 		Mesh oriented = m.orientedNormalTo(new Vector3d(0.1, 0.1, 0.9), 0.2);
@@ -175,6 +251,9 @@ public class MeshTest {
 		assertFalse(oriented.contains(t1));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testReturnUnsortedBounds() {	
 		//We create points, but no matter their coordinates, if they are not equals.
@@ -258,6 +337,9 @@ public class MeshTest {
 		assertTrue(bounds.contains(e17));
 	}	
 	
+	/**
+	 * 
+	 */
 	@Test
 	public void testReturnSortedBounds() {	
 		//We create points, but no matter their coordinates, if they are not equals.
@@ -318,6 +400,9 @@ public class MeshTest {
 		assertTrue(boundList.get(0).pointSize() == 9);
 	}
 	
+	/**
+	 * 
+	 */
 	@Test
 	public void testSeparateBounds() {
 		
@@ -405,6 +490,9 @@ public class MeshTest {
 		}
 	}
 	
+	/**
+	 * 
+	 */
 	@Test
 	public void testReturnLongestBound() {
 		

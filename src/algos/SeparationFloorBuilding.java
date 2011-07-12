@@ -16,10 +16,14 @@ import utils.Parser;
 import utils.Parser.BadFormedFileException;
 import utils.Writer;
 
+/**
+ * @author CFV
+ *
+ */
 public class SeparationFloorBuilding {
 
-	private double altitudeErrorFactor = 30;
-	private double angleNormalErrorFactor = 15;
+	private double altitudeErrorFactor = 10;
+	private double angleNormalErrorFactor = 20;
 	private double blockSizeBuildingError = 1;
 
 	private String townFileName = "Originals/batiments 1 - binary.stl";
@@ -29,7 +33,7 @@ public class SeparationFloorBuilding {
 	private Vector3d normalFloor = new Vector3d();
 
 	private Mesh mesh = new Mesh();
-	
+
 	private Mesh buildings = new Mesh();
 	private Mesh floors = new Mesh();
 	private Mesh noise = new Mesh();
@@ -44,12 +48,18 @@ public class SeparationFloorBuilding {
 	private Logger log = Logger.getLogger("logger");
 
 
+	/**
+	 * @param fileName
+	 */
 	public SeparationFloorBuilding(String fileName) {
 
 		this();
 		this.townFileName = fileName;
 	}
 
+	/**
+	 * 
+	 */
 	public SeparationFloorBuilding() {
 
 		//Writing option set
@@ -60,6 +70,9 @@ public class SeparationFloorBuilding {
 		this.log.addHandler(new StreamHandler(System.out, new SimpleFormatter()));
 	}
 
+	/**
+	 * 
+	 */
 	public void setDebugMode() {
 		this.log.setLevel(Level.INFO);
 		this.DEBUG_MODE = true;
@@ -69,6 +82,9 @@ public class SeparationFloorBuilding {
 	}
 
 
+	/**
+	 * 
+	 */
 	public void apply() {
 
 		this.parseFiles();
@@ -78,10 +94,19 @@ public class SeparationFloorBuilding {
 		this.buildingsExtraction();
 		this.noiseTreatment();
 
-		//TODO : remettre le reste des bruits dans un autre fichier
+		//FIXME : implement those methods !
+		//		this.writeBuildings(); 
+		//		this.writeFloor(); 
+
+		//TODO : remettre le reste des bruits dans un autre fichier		
+		if(DEBUG_MODE)
+			noise.write("Files/noise.stl");
 	}
 
 
+	/**
+	 * 
+	 */
 	private void parseFiles() {
 
 		//Parsing
@@ -103,12 +128,18 @@ public class SeparationFloorBuilding {
 		log.info("Parsing ended !");
 	}
 
+	/**
+	 * 
+	 */
 	private void extractFloorNormal() {
 
 		//Extract of the normal of the floor
 		this.normalFloor = this.floorBrut.averageNormal();
 	}
 
+	/**
+	 * 
+	 */
 	private void changeBase() {
 
 		try {
@@ -128,13 +159,15 @@ public class SeparationFloorBuilding {
 		}
 	}
 
+	/**
+	 * 
+	 */
 	private void floorExtraction() {
 
 		log.info("Floor extraction...");
 
 		//Searching for floor-oriented triangles with an error : angleNormalErrorFactor
 		Mesh meshOriented = mesh.orientedAs(normalFloor, angleNormalErrorFactor);
-		meshOriented.write("test.stl");
 
 		//Floor-search algorithm
 		//Select the lowest Triangle : it belongs to the floor
@@ -149,6 +182,9 @@ public class SeparationFloorBuilding {
 		log.info("Floor extracted !");
 	}
 
+	/**
+	 * 
+	 */
 	private void buildingsExtraction() {
 
 		//Extraction of the buildings
@@ -171,9 +207,10 @@ public class SeparationFloorBuilding {
 
 		int buildingCounter = 1;
 
-		log.info("Building writing ...");
+		log.info("Building extraction ...");
+
 		for(Mesh m : this.buildingList) {
-			if(m.size() > this.blockSizeBuildingError * (double)number/(double)this.buildingList.size()) {
+			if(m.size() >= this.blockSizeBuildingError * (double)number/(double)this.buildingList.size()) {
 				//FIXME : faire une autre méthode private pour l'écriture.
 				m.write("Files/building - " + buildingCounter + ".stl");
 				buildingCounter ++;
@@ -183,21 +220,25 @@ public class SeparationFloorBuilding {
 			}
 		}
 
-		if(DEBUG_MODE)
-			noise.write("Files/noise.stl");
+		if(buildingCounter == 0)
+			log.severe("Error !");
 
 		log.info("Buildings extracted !");
 	}
 
+	/**
+	 * 
+	 */
 	public void noiseTreatment() {
 
-		Mesh floorsAndNoise = new Mesh(floors);
-		floorsAndNoise.addAll(noise);
-		floorsList = Algos.blockExtract(floorsAndNoise);
-		
-		floors.clear();
-		for(Mesh e : floorsList) {
-			floors.addAll(e);
+		Mesh floorsAndNoise = new Mesh(this.floors);
+		floorsAndNoise.addAll(this.noise);
+		this.floorsList = Algos.blockExtract(floorsAndNoise);
+
+		this.floors.clear();
+		for(Mesh e : this.floorsList) {
+			this.floors.addAll(e);
+			this.noise.remove(e);
 		}
 	}
 }

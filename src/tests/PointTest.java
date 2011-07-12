@@ -12,9 +12,16 @@ import org.junit.Test;
 import utils.MatrixMethod;
 import utils.MatrixMethod.SingularMatrixException;
 
+/**
+ * @author CFV
+ *
+ */
 public class PointTest {
 
 	//LOOK : Doc !
+	/**
+	 * 
+	 */
 	@Test
 	public void testDistance() {
 		Point p1 = new Point(0, 0, 0);
@@ -25,6 +32,9 @@ public class PointTest {
 		assertTrue(p1.distance(p2) == Math.pow(Math.pow(p2.getX() - p1.getX(), 2) + Math.pow(p2.getY() - p1.getY(), 2) + Math.pow(p2.getZ() - p1.getZ(), 2), 0.5));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testEquals() {
 		Point p1 = new Point(0, 0, 0);
@@ -38,6 +48,9 @@ public class PointTest {
 		assertFalse(p2.equals(p1));
 	}
 
+	/**
+	 * 
+	 */
 	@Test
 	public void testChangeBase() {
 		Vector3d vect = new Vector3d(0, 0, 1);
