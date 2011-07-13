@@ -9,7 +9,7 @@ import modeles.Polyline;
 import org.junit.Test;
 
 /**
- * @author CFV
+ * @author Daniel Lefevre
  *
  */
 public class PolylineTest {
@@ -28,7 +28,7 @@ public class PolylineTest {
 	private Polyline p = new Polyline();
 	
 	/**
-	 * 
+	 * Constructor of the PolylineTest object : create a polyline by adding 3 edges.
 	 */
 	public PolylineTest() {
 		p.add(e1);
@@ -37,7 +37,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method edgeSize.
 	 */
 	@Test
 	public void testEdgeSize() {
@@ -45,7 +45,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method pointSize.
 	 */
 	@Test
 	public void testPointSize() {
@@ -53,7 +53,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xAverage.
 	 */
 	@Test
 	public void testXAverage() {
@@ -61,7 +61,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yAverage.
 	 */
 	@Test
 	public void testYAverage() {
@@ -69,7 +69,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zAverage.
 	 */
 	@Test
 	public void testZAverage() {
@@ -77,7 +77,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xMax.
 	 */
 	@Test
 	public void testXMax() {
@@ -85,7 +85,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xMin.
 	 */
 	@Test
 	public void testXMin() {
@@ -93,7 +93,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yMax.
 	 */
 	@Test
 	public void testYMax() {
@@ -101,7 +101,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yMin.
 	 */
 	@Test
 	public void testYMin() {
@@ -109,7 +109,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zMax.
 	 */
 	@Test
 	public void testZMax() {
@@ -117,7 +117,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zMin.
 	 */
 	@Test
 	public void testZMin() {
@@ -125,7 +125,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xLengthAverage.
 	 */
 	@Test
 	public void testXLengthAverage() {
@@ -133,7 +133,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yLengthAverage.
 	 */
 	@Test
 	public void testYLengthAverage() {
@@ -141,7 +141,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zLengthAverage.
 	 */
 	@Test
 	public void testZLengthAverage() {
@@ -149,7 +149,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method lengthAverage.
 	 */
 	@Test
 	public void testLengthAverage() {
@@ -158,7 +158,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xBetween.
 	 */
 	@Test
 	public void testXBetween() {
@@ -177,7 +177,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yBetween.
 	 */
 	@Test
 	public void testYBetween() {
@@ -196,7 +196,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zBetween.
 	 */
 	@Test
 	public void testZBetween() {
@@ -215,7 +215,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zMaxPoint.
 	 */
 	@Test
 	public void testZMaxPoint() {
@@ -223,15 +223,15 @@ public class PolylineTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method length.
 	 */
 	@Test
-	public void testDistance() {
+	public void testLength() {
 		assertTrue(p.length() == 4.0 * Math.pow(3.0, 0.5));
 	}
 	
 	/**
-	 * 
+	 * Test of the method remove.
 	 */
 	@Test
 	public void testRemove() {
@@ -256,7 +256,7 @@ public class PolylineTest {
 	}
 	
 	/**
-	 * 
+	 * Test of the method areWeInTheTwoLinesOrNot.
 	 */
 	@Test
 	public void testAreWeInTheTwoLinesOrNot() {
@@ -271,7 +271,7 @@ public class PolylineTest {
 	}
 	
 	/**
-	 * 
+	 * Test of the method followTheFramedLine.
 	 */
 	@Test
 	public void testFollowTheFramedLine() {
@@ -301,15 +301,20 @@ public class PolylineTest {
 		
 		assertTrue(line.followTheFramedLine(e1, p1, 0.4, e0) == e5);
 	}
-
+	
+	/**
+	 * Test of the method returnMesh.
+	 */
 //	@Test
 //	TODO
 //	public void testReturnMesh() {
 //	
 //	}
-//
+	/**
+	 * Test of the method order.
+	 */
 //	@Test
 //	TODO
-//	public void testOrderBorder() {
+//	public void testOrder() {
 //	}
 }
