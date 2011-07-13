@@ -39,7 +39,7 @@ public class EdgeTest {
 	private Polyline line = new Polyline();
 
 	/**
-	 * 
+	 * Constructor of the EdgeTest class : create a polyline for the following tests.
 	 */
 	public EdgeTest() {
 		line.add(e1);
@@ -49,7 +49,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method returnOtherTriangle.
 	 */
 	@Test
 	public void testReturnOtherTriangle() {
@@ -65,15 +65,15 @@ public class EdgeTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method length.
 	 */
 	@Test
-	public void testDistance() {
+	public void testLength() {
 		assertTrue(e5.length() == 3);
 	}
 
 	/**
-	 * 
+	 * Test of the method contains.
 	 */
 	@Test
 	public void testContains() {
@@ -81,6 +81,9 @@ public class EdgeTest {
 		assertFalse(e5.contains(p1));
 	}
 
+	/**
+	 * Test of the method addTriangle.
+	 */
 	//	@Test
 	//	TODO
 	//	public final void testAddTriangle() {
@@ -88,7 +91,7 @@ public class EdgeTest {
 	//	}
 
 	/**
-	 * 
+	 * Test of the method isNeighboor.
 	 */
 	@Test
 	public void testIsNeighboor() {
@@ -97,16 +100,19 @@ public class EdgeTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method equals.
 	 */
 	@Test
-	public void testEqualsObject() {
+	public void testEquals() {
 		Edge eTest = new Edge(p1, p2);
 		assertFalse(e1.equals(e2));
 		assertTrue(e1.equals(e1));
 		assertTrue(e1.equals(eTest));
 	}
 
+	/**
+	 * Test of the method returnNeighbours.
+	 */
 	//	@Test 
 	//	TODO
 	//	public final void testReturnNeighbours() {
@@ -114,7 +120,7 @@ public class EdgeTest {
 	//	}
 
 	/**
-	 * 
+	 * Test of the method getNumNeighbours.
 	 */
 	@Test
 	public void testGetNumNeighbours() {
@@ -132,7 +138,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method returnOtherPoint.
 	 */
 	@Test
 	public void testReturnOtherPoint() {
@@ -142,7 +148,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method returnNeighbour.
 	 */
 	@Test
 	public void testReturnNeighbour() {
