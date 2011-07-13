@@ -16,12 +16,11 @@ import modeles.Triangle;
 import org.junit.Test;
 
 /**
- * @author CFV
+ * @author Daniel Lefevre
  *
  */
 public class MeshTest {
 
-	//LOOK : doc !
 	private Point p1 = new Point(1, 0, -1);
 	private Point p2 = new Point(0, 1, 0);
 	private Point p3 = new Point(-1, 2, 1);
@@ -43,7 +42,7 @@ public class MeshTest {
 	private Mesh m = new Mesh();
 
 	/**
-	 * 
+	 * Constructor of the MeshTest class : creating the mesh which will be an example.
 	 */
 	public MeshTest() {
 		this.m.add(this.t1);
@@ -51,7 +50,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method averageNormal.
 	 */
 	@Test
 	public void testAverageNormal() {
@@ -59,7 +58,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xAverage.
 	 */
 	@Test
 	public void testxAverage() {
@@ -67,7 +66,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yAverage.
 	 */
 	@Test
 	public void testyAverage() {
@@ -75,7 +74,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zAverage.
 	 */
 	@Test
 	public void testzAverage() {
@@ -83,7 +82,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xMax.
 	 */
 	@Test
 	public void testxMax() {
@@ -91,7 +90,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xMin.
 	 */
 	@Test
 	public void testxMin() {
@@ -99,7 +98,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yMax.
 	 */
 	@Test
 	public void testyMax() {
@@ -107,7 +106,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yMin.
 	 */
 	@Test
 	public void testyMin() {
@@ -115,7 +114,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zMax.
 	 */
 	@Test
 	public void testzMax() {
@@ -123,7 +122,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zMin.
 	 */
 	@Test
 	public void testzMin() {
@@ -131,7 +130,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xLengthAverage.
 	 */
 	@Test
 	public void testxLengthAverage() {
@@ -139,7 +138,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yLengthAverage.
 	 */
 	@Test
 	public void testyLengthAverage() {
@@ -147,7 +146,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zLengthAverage.
 	 */
 	@Test
 	public void testzLengthAverage() {
@@ -155,7 +154,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xBetween.
 	 */
 	@Test
 	//LOOK : complete this test with other Triangles
@@ -166,7 +165,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yBetween.
 	 */
 	@Test
 	//LOOK : complete this test with other Triangles
@@ -177,7 +176,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zBetween.
 	 */
 	@Test
 	//LOOK : complete this test with other Triangles
@@ -189,7 +188,7 @@ public class MeshTest {
 
 	//LOOK : don't use xAverage() ?
 	/**
-	 * 
+	 * Test of the method xProjection.
 	 */
 	@Test
 	public void testXProjection() {
@@ -198,7 +197,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yProjection.
 	 */
 	@Test
 	public void testYProjection() {
@@ -207,7 +206,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zProjection.
 	 */
 	@Test
 	public void testZProjection() {
@@ -216,7 +215,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zMinFace.
 	 */
 	@Test
 	public void testZMinFace() {
@@ -224,7 +223,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method faceUnderZ.
 	 */
 	@Test
 	public void testFaceUnderZ() {
@@ -232,7 +231,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method orientedAs.
 	 */
 	@Test
 	public void testOrientedAs() {
@@ -242,7 +241,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method orientedNormalTo.
 	 */
 	@Test
 	public void testOrientedNormalTo() {
@@ -252,7 +251,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method returnUnsortedBounds.
 	 */
 	@Test
 	public void testReturnUnsortedBounds() {	
@@ -338,7 +337,7 @@ public class MeshTest {
 	}	
 	
 	/**
-	 * 
+	 * Test of the method returnSortedBounds.
 	 */
 	@Test
 	public void testReturnSortedBounds() {	
@@ -401,7 +400,7 @@ public class MeshTest {
 	}
 	
 	/**
-	 * 
+	 * Test of the method separateBounds.
 	 */
 	@Test
 	public void testSeparateBounds() {
@@ -491,7 +490,7 @@ public class MeshTest {
 	}
 	
 	/**
-	 * 
+	 * Test of the method returnLongestBounds.
 	 */
 	@Test
 	public void testReturnLongestBound() {
