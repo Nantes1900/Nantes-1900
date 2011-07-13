@@ -29,7 +29,7 @@ import modeles.Triangle;
  * 
  * @author Eric Berthe, Valentin Roger, Daniel Lefèvre
  */
-public class Parser {
+public class ParserSTL {
 
 	private static Vector3d currentVector;
 	private static ArrayList<Point> currentPoints;

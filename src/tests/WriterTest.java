@@ -15,9 +15,9 @@ import modeles.Triangle;
 
 import org.junit.Test;
 
-import utils.Parser;
-import utils.Parser.BadFormedFileException;
-import utils.Writer;
+import utils.ParserSTL;
+import utils.ParserSTL.BadFormedFileException;
+import utils.WriterSTL;
 
 /**
  * A set of tests for the class Writer.
@@ -28,7 +28,7 @@ public class WriterTest {
 
 	/**
 	 * Test method for
-	 * {@link utils.Writer#write(java.lang.String, modeles.Mesh)}.
+	 * {@link utils.WriterSTL#write(java.lang.String, modeles.Mesh)}.
 	 * Same test as readSTL in ParserTest.
 	 */
 	@Test
@@ -58,7 +58,7 @@ public class WriterTest {
 		
 		write.write("WriterTest.stl");
 		try {
-		Mesh read = new Mesh(Parser.readSTL("WriterTest.stl"));
+		Mesh read = new Mesh(ParserSTL.readSTL("WriterTest.stl"));
 		assertTrue(read.size() == 2);
 		ArrayList<Triangle> readList = new ArrayList<Triangle>(read);
 		assertTrue(readList.get(0).equals(t1) || readList.get(0).equals(t2));
@@ -73,14 +73,14 @@ public class WriterTest {
 	}
 
 	/**
-	 * Test method for {@link utils.Writer#setWriteMode(int)}.
+	 * Test method for {@link utils.WriterSTL#setWriteMode(int)}.
 	 */
 	@Test
 	public void testSetWriteMode() {
-		Writer.setWriteMode(Writer.ASCII_MODE);
-		assertTrue(Writer.getWriteMode() == Writer.ASCII_MODE);
+		WriterSTL.setWriteMode(WriterSTL.ASCII_MODE);
+		assertTrue(WriterSTL.getWriteMode() == WriterSTL.ASCII_MODE);
 
-		Writer.setWriteMode(Writer.BINARY_MODE);
-		assertTrue(Writer.getWriteMode() == Writer.BINARY_MODE);
+		WriterSTL.setWriteMode(WriterSTL.BINARY_MODE);
+		assertTrue(WriterSTL.getWriteMode() == WriterSTL.BINARY_MODE);
 	}
 }

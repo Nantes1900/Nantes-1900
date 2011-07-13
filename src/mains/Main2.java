@@ -7,7 +7,7 @@ import javax.vecmath.Vector3d;
 
 import modeles.Mesh;
 import utils.MatrixMethod;
-import utils.Parser;
+import utils.ParserSTL;
 
 public class Main2 {
 	public static void main(String[] args) {
@@ -18,11 +18,11 @@ public class Main2 {
 
 			ArrayList<Mesh> buildingList = new ArrayList<Mesh>();
 			while(new File("building - " + buildingCounter + ".stl").exists()) {
-				buildingList.add(new Mesh(Parser.readSTL("building - " + buildingCounter + ".stl")));
+				buildingList.add(new Mesh(ParserSTL.readSTL("building - " + buildingCounter + ".stl")));
 				buildingCounter ++;
 			}
 
-			Mesh floors = new Mesh(Parser.readSTL("sol.stl"));
+			Mesh floors = new Mesh(ParserSTL.readSTL("sol.stl"));
 
 			//Floor normal
 			Vector3d normalFloor = floors.averageNormal();

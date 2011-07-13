@@ -20,7 +20,7 @@ import modeles.Triangle;
  * 
  * @author Eric Berthe, Valentin Roger, Daniel Lefèvre
  */
-public class Writer {
+public class WriterSTL {
 
 	/**
 	 * Possible value of MODE. Intend to write ASCII STL files.
@@ -89,7 +89,7 @@ public class Writer {
 	 *            the mesh to write
 	 */
 	private static void writeA(String fileName, Mesh m) {
-		Writer.writeSTLA(fileName, m);
+		WriterSTL.writeSTLA(fileName, m);
 		log.info(fileName + " written in STL ASCII!");
 	}
 
@@ -102,7 +102,7 @@ public class Writer {
 	 *            the mesh to write
 	 */
 	private static void writeB(String fileName, Mesh m) {
-		Writer.writeSTLB(fileName, m);
+		WriterSTL.writeSTLB(fileName, m);
 		log.info(fileName + " written in STL binary!");
 	}
 

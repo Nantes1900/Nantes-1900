@@ -15,8 +15,8 @@ import modeles.Triangle;
 
 import org.junit.Test;
 
-import utils.Parser;
-import utils.Parser.BadFormedFileException;
+import utils.ParserSTL;
+import utils.ParserSTL.BadFormedFileException;
 
 /**
  * A set of tests for the class Parser.
@@ -26,7 +26,7 @@ import utils.Parser.BadFormedFileException;
 public class ParserTest {
 
 	/**
-	 * Test method for {@link utils.Parser#readSTL(java.lang.String)}.
+	 * Test method for {@link utils.ParserSTL#readSTL(java.lang.String)}.
 	 * Same test as write in WriterTest.
 	 */
 	@Test
@@ -56,7 +56,7 @@ public class ParserTest {
 		
 		write.write("WriterTest.stl");
 		try {
-		Mesh read = new Mesh(Parser.readSTL("WriterTest.stl"));
+		Mesh read = new Mesh(ParserSTL.readSTL("WriterTest.stl"));
 		assertTrue(read.size() == 2);
 		ArrayList<Triangle> readList = new ArrayList<Triangle>(read);
 		assertTrue(readList.get(0).equals(t1) || readList.get(0).equals(t2));

@@ -14,9 +14,9 @@ import modeles.Mesh;
 import modeles.Polyline;
 import utils.MatrixMethod;
 import utils.MatrixMethod.SingularMatrixException;
-import utils.Parser;
-import utils.Parser.BadFormedFileException;
-import utils.Writer;
+import utils.ParserSTL;
+import utils.ParserSTL.BadFormedFileException;
+import utils.WriterSTL;
 
 /**
  * @author Daniel Lefevre
@@ -49,7 +49,7 @@ public class SeparationTraitementMursToits {
 	private int counterRoof = 1;
 
 
-	private int WRITING_MODE = Writer.BINARY_MODE;
+	private int WRITING_MODE = WriterSTL.BINARY_MODE;
 
 	private Logger log = Logger.getLogger("logger");
 
@@ -60,7 +60,7 @@ public class SeparationTraitementMursToits {
 	public SeparationTraitementMursToits() {
 		
 		//Options set
-		Writer.setWriteMode(WRITING_MODE);
+		WriterSTL.setWriteMode(WRITING_MODE);
 
 		log.setLevel(Level.INFO);
 		log.setUseParentHandlers(false);
@@ -73,8 +73,8 @@ public class SeparationTraitementMursToits {
 	public void setDebugMode() {
 		log.setLevel(Level.FINEST);
 
-		this.WRITING_MODE = Writer.ASCII_MODE;
-		Writer.setWriteMode(WRITING_MODE);
+		this.WRITING_MODE = WriterSTL.ASCII_MODE;
+		WriterSTL.setWriteMode(WRITING_MODE);
 	}
 	
 	/**
@@ -114,7 +114,7 @@ public class SeparationTraitementMursToits {
 	 */
 	private void parseFloor() {
 		try {
-			this.floorBrut = new Mesh(Parser.readSTL("Originals/floor.stl"));
+			this.floorBrut = new Mesh(ParserSTL.readSTL("Originals/floor.stl"));
 		} catch (BadFormedFileException e) {
 			log.severe("Error in the file !");
 		} catch (IOException e) {
@@ -127,7 +127,7 @@ public class SeparationTraitementMursToits {
 	 */
 	private void parseBuilding(String fileName) {
 		try {
-			this.currentBuilding = new Mesh(Parser.readSTL(fileName));
+			this.currentBuilding = new Mesh(ParserSTL.readSTL(fileName));
 		}
 		catch (BadFormedFileException e) {
 			log.severe("Error in the file !");

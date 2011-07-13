@@ -8,7 +8,7 @@ import java.util.HashSet;
 import javax.vecmath.Vector3d;
 
 import utils.MatrixMethod;
-import utils.Writer;
+import utils.WriterSTL;
 
 /**
  * @author Daniel Lefevre, Eric Berthe, Valentin Roger, Elsa Arroud-Vignod
@@ -337,7 +337,7 @@ public class Mesh extends HashSet<Triangle>{
 	 * @param fileName
 	 */
 	public void write(String fileName) {
-		Writer.write(fileName, this);
+		WriterSTL.write(fileName, this);
 	}
 
 

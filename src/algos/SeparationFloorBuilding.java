@@ -12,9 +12,9 @@ import javax.vecmath.Vector3d;
 import modeles.Mesh;
 import utils.MatrixMethod;
 import utils.MatrixMethod.SingularMatrixException;
-import utils.Parser;
-import utils.Parser.BadFormedFileException;
-import utils.Writer;
+import utils.ParserSTL;
+import utils.ParserSTL.BadFormedFileException;
+import utils.WriterSTL;
 
 /**
  * @author Daniel Lefevre
@@ -41,7 +41,7 @@ public class SeparationFloorBuilding {
 	private ArrayList<Mesh> buildingList = new ArrayList<Mesh>();
 	private ArrayList<Mesh> floorsList = new ArrayList<Mesh>();
 
-	private int WRITING_MODE = Writer.BINARY_MODE;
+	private int WRITING_MODE = WriterSTL.BINARY_MODE;
 	private boolean DEBUG_MODE = false;
 
 	private Logger log = Logger.getLogger("logger");
@@ -61,7 +61,7 @@ public class SeparationFloorBuilding {
 	public SeparationFloorBuilding() {
 
 		// Writing option set
-		Writer.setWriteMode(WRITING_MODE);
+		WriterSTL.setWriteMode(WRITING_MODE);
 
 		this.log.setLevel(Level.INFO);
 		this.log.setUseParentHandlers(false);
@@ -75,8 +75,8 @@ public class SeparationFloorBuilding {
 		this.log.setLevel(Level.INFO);
 		this.DEBUG_MODE = true;
 
-		this.WRITING_MODE = Writer.ASCII_MODE;
-		Writer.setWriteMode(WRITING_MODE);
+		this.WRITING_MODE = WriterSTL.ASCII_MODE;
+		WriterSTL.setWriteMode(WRITING_MODE);
 	}
 
 	/**
@@ -126,8 +126,8 @@ public class SeparationFloorBuilding {
 		log.info("Parsing...");
 
 		try {
-			this.mesh = new Mesh(Parser.readSTL(townFileName));
-			this.floorBrut = new Mesh(Parser.readSTL(floorFileName));
+			this.mesh = new Mesh(ParserSTL.readSTL(townFileName));
+			this.floorBrut = new Mesh(ParserSTL.readSTL(floorFileName));
 
 		} catch (BadFormedFileException e) {
 			log.severe("Error : the file is badly formed !");
