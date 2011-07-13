@@ -15,8 +15,8 @@ import modeles.Triangle;
 import org.junit.Test;
 
 /**
- * @author CFV
- *
+ * Set of JUnit4 tests for the class Triangle.
+ * @author Daniel Lefevre
  */
 public class TriangleTest {
 
@@ -30,7 +30,7 @@ public class TriangleTest {
 	Triangle t = new Triangle(p1, p2, p3, e1, e2, e3, vect);
 
 	/**
-	 * 
+	 * Test of the method getPoints.
 	 */
 	@Test
 	public void testGetPoints() {
@@ -41,7 +41,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method contains.
 	 */
 	@Test
 	public void testContains() {
@@ -51,7 +51,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method equals.
 	 */
 	@Test
 	public void testEquals() {
@@ -61,7 +61,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xAverage.
 	 */
 	@Test
 	public void testXAverage() {
@@ -69,7 +69,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yAverage.
 	 */
 	@Test
 	public void testYAverage() {
@@ -77,7 +77,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zAverage.
 	 */
 	@Test
 	public void testZAverage() {
@@ -85,7 +85,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xMin.
 	 */
 	@Test
 	public void testXMin() {
@@ -93,7 +93,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xMax.
 	 */
 	@Test
 	public void testXMax() {
@@ -101,7 +101,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yMin.
 	 */
 	@Test
 	public void testYMin() {
@@ -109,7 +109,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yMax
 	 */
 	@Test
 	public void testYMax() {
@@ -117,7 +117,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zMin.
 	 */
 	@Test
 	public void testZMin() {
@@ -125,7 +125,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zMax.
 	 */
 	@Test
 	public void testZMax() {
@@ -133,7 +133,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xMinPoint.
 	 */
 	@Test
 	public void testXMinPoint() {
@@ -141,7 +141,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xMaxPoint.
 	 */
 	@Test
 	public void testXMaxPoint() {
@@ -149,7 +149,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yMinPoint.
 	 */
 	@Test
 	public void testYMinPoint() {
@@ -157,7 +157,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yMaxPoint.
 	 */
 	@Test
 	public void testYMaxPoint() {
@@ -165,7 +165,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zMinPoint.
 	 */
 	@Test
 	public void testZMinPoint() {
@@ -173,7 +173,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zMaxPoint.
 	 */
 	@Test
 	public void testZMaxPoint() {
@@ -181,7 +181,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method xProjection.
 	 */
 	@Test
 	public void testXProjection() {
@@ -192,7 +192,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method yProjection.
 	 */
 	@Test
 	public void testYProjection() {
@@ -203,7 +203,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method zProjection.
 	 */
 	@Test
 	public void testzProjection() {
@@ -214,7 +214,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method angularTolerance.
 	 */
 	@Test
 	public void testAngularTolerance() {
@@ -229,7 +229,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method isNormalTo.
 	 */
 	@Test
 	public void testIsNormalTo() {
@@ -241,7 +241,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method returnNeighbours.
 	 */
 	@Test
 	public void testReturnNeighbours() {
@@ -280,7 +280,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method getNeighbours.
 	 */
 	@Test
 	public void testGetNeighbours() {
@@ -312,7 +312,7 @@ public class TriangleTest {
 	}
 	
 	/**
-	 * 
+	 * Test of the method isNeighboor.
 	 */
 	public void testIsNeighboor() {
 
