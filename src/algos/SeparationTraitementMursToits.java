@@ -19,11 +19,7 @@ import utils.Parser.BadFormedFileException;
 import utils.Writer;
 
 /**
- * @author Daniel Lefèvre
- *
- */
-/**
- * @author CFV
+ * @author Daniel Lefevre
  *
  */
 public class SeparationTraitementMursToits {

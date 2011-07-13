@@ -17,8 +17,8 @@ import utils.Parser.BadFormedFileException;
 import utils.Writer;
 
 /**
- * @author CFV
- *
+ * @author Daniel Lefevre
+ * 
  */
 public class SeparationFloorBuilding {
 
@@ -41,12 +41,10 @@ public class SeparationFloorBuilding {
 	private ArrayList<Mesh> buildingList = new ArrayList<Mesh>();
 	private ArrayList<Mesh> floorsList = new ArrayList<Mesh>();
 
-
 	private int WRITING_MODE = Writer.BINARY_MODE;
 	private boolean DEBUG_MODE = false;
 
 	private Logger log = Logger.getLogger("logger");
-
 
 	/**
 	 * @param fileName
@@ -62,7 +60,7 @@ public class SeparationFloorBuilding {
 	 */
 	public SeparationFloorBuilding() {
 
-		//Writing option set
+		// Writing option set
 		Writer.setWriteMode(WRITING_MODE);
 
 		this.log.setLevel(Level.INFO);
@@ -81,7 +79,6 @@ public class SeparationFloorBuilding {
 		Writer.setWriteMode(WRITING_MODE);
 	}
 
-
 	/**
 	 * 
 	 */
@@ -94,22 +91,38 @@ public class SeparationFloorBuilding {
 		this.buildingsExtraction();
 		this.noiseTreatment();
 
-		//FIXME : implement those methods !
-		//		this.writeBuildings(); 
-		//		this.writeFloor(); 
+		this.writeBuildings();
+		this.writeFloor();
 
-		//TODO : remettre le reste des bruits dans un autre fichier		
-		if(DEBUG_MODE)
+		if (DEBUG_MODE)
 			noise.write("Files/noise.stl");
 	}
 
+	/**
+	 * 
+	 */
+	private void writeFloor() {
+		this.floors.write("Files/floors.stl");
+	}
+
+	/**
+	 * 
+	 */
+	private void writeBuildings() {
+		int buildingCounter = 1;
+
+		for (Mesh m : this.buildingList) {
+			m.write("Files/building - " + buildingCounter + ".stl");
+			buildingCounter++;
+		}
+	}
 
 	/**
 	 * 
 	 */
 	private void parseFiles() {
 
-		//Parsing
+		// Parsing
 		log.info("Parsing...");
 
 		try {
@@ -133,7 +146,7 @@ public class SeparationFloorBuilding {
 	 */
 	private void extractFloorNormal() {
 
-		//Extract of the normal of the floor
+		// Extract of the normal of the floor
 		this.normalFloor = this.floorBrut.averageNormal();
 	}
 
@@ -145,7 +158,7 @@ public class SeparationFloorBuilding {
 		try {
 			log.info("Base change...");
 
-			//Base change
+			// Base change
 			double[][] matrix = MatrixMethod.createOrthoBase(normalFloor);
 			MatrixMethod.changeBase(normalFloor, matrix);
 
@@ -166,14 +179,18 @@ public class SeparationFloorBuilding {
 
 		log.info("Floor extraction...");
 
-		//Searching for floor-oriented triangles with an error : angleNormalErrorFactor
-		Mesh meshOriented = mesh.orientedAs(normalFloor, angleNormalErrorFactor);
+		// Searching for floor-oriented triangles with an error :
+		// angleNormalErrorFactor
+		Mesh meshOriented = mesh
+				.orientedAs(normalFloor, angleNormalErrorFactor);
 
-		//Floor-search algorithm
-		//Select the lowest Triangle : it belongs to the floor
-		//Take all of its neighbours
-		//Select another Triangle which is not too high and repeat the above step		
-		this.floors = Algos.floorExtract(meshOriented, this.altitudeErrorFactor);
+		// Floor-search algorithm
+		// Select the lowest Triangle : it belongs to the floor
+		// Take all of its neighbours
+		// Select another Triangle which is not too high and repeat the above
+		// step
+		this.floors = Algos
+				.floorExtract(meshOriented, this.altitudeErrorFactor);
 
 		this.buildings = new Mesh(this.mesh);
 
@@ -187,40 +204,37 @@ public class SeparationFloorBuilding {
 	 */
 	private void buildingsExtraction() {
 
-		//Extraction of the buildings
+		// Extraction of the buildings
 		log.info("Extracting building ...");
 		ArrayList<Mesh> formsList = Algos.blockExtract(this.buildings);
+		ArrayList<Mesh> thingsList = new ArrayList<Mesh>();
 
-		//Separation of the little noises
-		for(Mesh m : formsList) {
-			if(m.size() > 1)
-				this.buildingList.add(m);
+		// Separation of the little noises
+		for (Mesh m : formsList) {
+			if (m.size() > 1)
+				thingsList.add(m);
 			else
 				this.noise.addAll(m);
 		}
 
-		//Algorithm : detection of buildings considering their size
+		// Algorithm : detection of buildings considering their size
 		int number = 0;
-		for(Mesh m : this.buildingList) {
+		for (Mesh m : this.buildingList) {
 			number += m.size();
 		}
 
-		int buildingCounter = 1;
-
 		log.info("Building extraction ...");
 
-		for(Mesh m : this.buildingList) {
-			if(m.size() >= this.blockSizeBuildingError * (double)number/(double)this.buildingList.size()) {
-				//FIXME : faire une autre méthode private pour l'écriture.
-				m.write("Files/building - " + buildingCounter + ".stl");
-				buildingCounter ++;
-			}
-			else {
+		for (Mesh m : thingsList) {
+			if (m.size() >= this.blockSizeBuildingError * (double) number
+					/ (double) this.buildingList.size()) {
+				this.buildingList.add(m);
+			} else {
 				this.noise.addAll(m);
 			}
 		}
 
-		if(buildingCounter == 0)
+		if (this.buildingList.size() == 0)
 			log.severe("Error !");
 
 		log.info("Buildings extracted !");
@@ -236,7 +250,7 @@ public class SeparationFloorBuilding {
 		this.floorsList = Algos.blockExtract(floorsAndNoise);
 
 		this.floors.clear();
-		for(Mesh e : this.floorsList) {
+		for (Mesh e : this.floorsList) {
 			this.floors.addAll(e);
 			this.noise.remove(e);
 		}

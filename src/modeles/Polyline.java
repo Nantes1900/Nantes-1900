@@ -128,11 +128,11 @@ public class Polyline {
 
 	// FIXME : it doesn't remove the points !
 	/**
-	 * Remove the edges of del contained in this
+	 * Remove the edges of del contained in this. Caution : it doesn't remove
+	 * the points Use the remove(Edge) method
 	 * 
 	 * @param del
-	 *            the list of edges to remove Caution : it doesn't remove the
-	 *            points Use the remove(Edge) method
+	 *            the list of edges to remove
 	 */
 	public void remove(Polyline del) {
 		for (Edge e : del.edgeList) {
@@ -482,11 +482,11 @@ public class Polyline {
 	}
 
 	/**
-	 * Returns the mesh composed all the triangles the edges belong to
+	 * Returns the mesh composed all the triangles the edges belong to. If one
+	 * edge in this doesn't have one triangle to return, this method returns the
+	 * returnCentroidMesh() : FIXME
 	 * 
-	 * @return the mesh composed all the triangles the edges belong to If one
-	 *         edge in this doesn't have one triangle to return, this method
-	 *         returns the returnCentroidMesh() : FIXME
+	 * @return the mesh composed all the triangles the edges belong to
 	 */
 	public Mesh returnMesh() {
 		// FIXME : si tous les Edge n'ont pas de triangles associés, renvoyer
@@ -524,11 +524,11 @@ public class Polyline {
 
 	/**
 	 * Apply the base change to all the points contained, without changing the
-	 * references
+	 * references. Caution : this method changes the hashCode, then be careful
+	 * the hashTables which contains points
 	 * 
 	 * @param matrix
-	 *            the change base matrix Caution : this method changes the
-	 *            hashCode, then be careful the hashTables which contains points
+	 *            the change base matrix
 	 */
 	public void changeBase(double[][] matrix) {
 		if (matrix == null) {
@@ -633,12 +633,12 @@ public class Polyline {
 
 	//
 	/**
-	 * Returns a polyline containing the importants points of this
+	 * Returns a polyline containing the importants points of this. Caution : we
+	 * consider that we are in the plane (x,y)
 	 * 
 	 * @param error
 	 *            the error of frame
-	 * @return a polyline containing the importants points of this Caution : we
-	 *         consider that we are in the plane (x,y)
+	 * @return a polyline containing the importants points of this
 	 */
 	// FIXME : continue the explanation
 	public Polyline determinateSingularPoints(double error) {
@@ -706,7 +706,9 @@ public class Polyline {
 	// We still consider that we are in the plane (x,y)
 	// FIXME : delete the Edge stop
 	/**
-	 * Return the next important point
+	 * Return the next important point. Begins the search, and returns the next
+	 * point which is not contained in the stripe : it's a point where the bound
+	 * change its direction We still consider that we are in the plane (x,y)
 	 * 
 	 * @param first
 	 *            the edge where the algorithm begins to search
@@ -716,10 +718,7 @@ public class Polyline {
 	 *            the error of areWeInTheTwoLinesOrNot
 	 * @param stop
 	 *            the edge not to pass further
-	 * @return the next important point Begins the search, and returns the next
-	 *         point which is not contained in the stripe : it's a point where
-	 *         the bound change its direction We still consider that we are in
-	 *         the plane (x,y)
+	 * @return the next important point
 	 */
 	public Edge followTheFramedLine(Edge first, Point p2, double error,
 			Edge stop) {
