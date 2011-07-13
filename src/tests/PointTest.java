@@ -1,8 +1,6 @@
 package tests;
 
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 import javax.vecmath.Vector3d;
 
