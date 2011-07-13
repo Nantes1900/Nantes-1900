@@ -13,14 +13,13 @@ import utils.MatrixMethod;
 import utils.MatrixMethod.SingularMatrixException;
 
 /**
- * @author CFV
+ * @author Daniel Lefevre
  *
  */
 public class PointTest {
 
-	//LOOK : Doc !
 	/**
-	 * 
+	 * Test of the method distance.
 	 */
 	@Test
 	public void testDistance() {
@@ -33,7 +32,7 @@ public class PointTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method equals.
 	 */
 	@Test
 	public void testEquals() {
@@ -49,7 +48,7 @@ public class PointTest {
 	}
 
 	/**
-	 * 
+	 * Test of the method changeBase.
 	 */
 	@Test
 	public void testChangeBase() {
