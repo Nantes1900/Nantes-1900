@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 
@@ -15,7 +16,8 @@ import modeles.Triangle;
 import org.junit.Test;
 
 /**
- * Set of JUnit4 tests for the class Triangle.
+ * A set of tests for the class Triangle.
+ * 
  * @author Daniel Lefevre
  */
 public class TriangleTest {
@@ -30,7 +32,7 @@ public class TriangleTest {
 	Triangle t = new Triangle(p1, p2, p3, e1, e2, e3, vect);
 
 	/**
-	 * Test of the method getPoints.
+	 * Test method for {@link modeles.Triangle#getPoints()}.
 	 */
 	@Test
 	public void testGetPoints() {
@@ -41,7 +43,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method contains.
+	 * Test method for {@link modeles.Triangle#contains(modeles.Point)}.
 	 */
 	@Test
 	public void testContains() {
@@ -51,17 +53,17 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method equals.
+	 * Test method for {@link modeles.Triangle#equals(java.lang.Object)}.
 	 */
 	@Test
-	public void testEquals() {
+	public void testEqualsObject() {
 		Triangle tBis = new Triangle(p1, p2, p3, e1, e2, e3, vect);
 		assertTrue(t.equals(tBis));
 		assertTrue(tBis.equals(t));
 	}
 
 	/**
-	 * Test of the method xAverage.
+	 * Test method for {@link modeles.Triangle#xAverage()}.
 	 */
 	@Test
 	public void testXAverage() {
@@ -69,7 +71,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method yAverage.
+	 * Test method for {@link modeles.Triangle#yAverage()}.
 	 */
 	@Test
 	public void testYAverage() {
@@ -77,7 +79,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method zAverage.
+	 * Test method for {@link modeles.Triangle#zAverage()}.
 	 */
 	@Test
 	public void testZAverage() {
@@ -85,7 +87,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method xMin.
+	 * Test method for {@link modeles.Triangle#xMin()}.
 	 */
 	@Test
 	public void testXMin() {
@@ -93,7 +95,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method xMax.
+	 * Test method for {@link modeles.Triangle#xMax()}.
 	 */
 	@Test
 	public void testXMax() {
@@ -101,7 +103,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method yMin.
+	 * Test method for {@link modeles.Triangle#yMin()}.
 	 */
 	@Test
 	public void testYMin() {
@@ -109,7 +111,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method yMax
+	 * Test method for {@link modeles.Triangle#yMax()}.
 	 */
 	@Test
 	public void testYMax() {
@@ -117,7 +119,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method zMin.
+	 * Test method for {@link modeles.Triangle#zMin()}.
 	 */
 	@Test
 	public void testZMin() {
@@ -125,7 +127,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method zMax.
+	 * Test method for {@link modeles.Triangle#zMax()}.
 	 */
 	@Test
 	public void testZMax() {
@@ -133,7 +135,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method xMinPoint.
+	 * Test method for {@link modeles.Triangle#xMinPoint()}.
 	 */
 	@Test
 	public void testXMinPoint() {
@@ -141,7 +143,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method xMaxPoint.
+	 * Test method for {@link modeles.Triangle#xMaxPoint()}.
 	 */
 	@Test
 	public void testXMaxPoint() {
@@ -149,7 +151,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method yMinPoint.
+	 * Test method for {@link modeles.Triangle#yMinPoint()}.
 	 */
 	@Test
 	public void testYMinPoint() {
@@ -157,7 +159,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method yMaxPoint.
+	 * Test method for {@link modeles.Triangle#yMaxPoint()}.
 	 */
 	@Test
 	public void testYMaxPoint() {
@@ -165,7 +167,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method zMinPoint.
+	 * Test method for {@link modeles.Triangle#zMinPoint()}.
 	 */
 	@Test
 	public void testZMinPoint() {
@@ -173,7 +175,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method zMaxPoint.
+	 * Test method for {@link modeles.Triangle#zMaxPoint()}.
 	 */
 	@Test
 	public void testZMaxPoint() {
@@ -181,7 +183,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method xProjection.
+	 * Test method for {@link modeles.Triangle#xProjection(double)}.
 	 */
 	@Test
 	public void testXProjection() {
@@ -192,7 +194,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method yProjection.
+	 * Test method for {@link modeles.Triangle#yProjection(double)}.
 	 */
 	@Test
 	public void testYProjection() {
@@ -203,7 +205,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method zProjection.
+	 * Test method for {@link modeles.Triangle#zProjection(double)}.
 	 */
 	@Test
 	public void testzProjection() {
@@ -214,7 +216,10 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method angularTolerance.
+	 * Test method for
+	 * {@link modeles.Triangle#angularTolerance(javax.vecmath.Vector3d, double)}
+	 * . Test method for
+	 * {@link modeles.Triangle#angularTolerance(modeles.Triangle, double)}.
 	 */
 	@Test
 	public void testAngularTolerance() {
@@ -229,7 +234,8 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method isNormalTo.
+	 * Test method for
+	 * {@link modeles.Triangle#isNormalTo(javax.vecmath.Vector3d, double)}.
 	 */
 	@Test
 	public void testIsNormalTo() {
@@ -241,7 +247,8 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method returnNeighbours.
+	 * Test method for
+	 * {@link modeles.Triangle#returnNeighbours(modeles.Mesh, modeles.Mesh)}.
 	 */
 	@Test
 	public void testReturnNeighbours() {
@@ -267,7 +274,8 @@ public class TriangleTest {
 		contain.add(t4);
 		contain.add(t5);
 
-		//TODO : ajouter un autre triangle qui n'est pas un voisin et tester le résultat.
+		// TODO : ajouter un autre triangle qui n'est pas un voisin et tester le
+		// résultat.
 
 		Mesh ret = new Mesh();
 		t.returnNeighbours(ret, contain);
@@ -280,7 +288,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test of the method getNeighbours.
+	 * Test method for {@link modeles.Triangle#getNeighbours()}.
 	 */
 	@Test
 	public void testGetNeighbours() {
@@ -310,9 +318,9 @@ public class TriangleTest {
 		assertTrue(l.contains(t3));
 		assertTrue(l.contains(t4));
 	}
-	
+
 	/**
-	 * Test of the method isNeighboor.
+	 * Test method for {@link modeles.Triangle#isNeighboor(modeles.Triangle)}.
 	 */
 	public void testIsNeighboor() {
 
@@ -333,5 +341,103 @@ public class TriangleTest {
 		assertTrue(t.isNeighboor(t2));
 		assertTrue(t.isNeighboor(t3));
 		assertTrue(t.isNeighboor(t4));
+	}
+
+	/**
+	 * Test method for {@link modeles.Triangle#getNumNeighbours()}.
+	 */
+	@Test
+	public void testGetNumNeighbours() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Triangle#hashCode()}.
+	 */
+	@Test
+	public void testHashCode() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
+	 * {@link modeles.Triangle#Triangle(modeles.Point, modeles.Point, modeles.Point, modeles.Edge, modeles.Edge, modeles.Edge, javax.vecmath.Vector3d)}
+	 * .
+	 */
+	@Test
+	public void testTriangle() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Triangle#getP1()}.
+	 */
+	@Test
+	public void testGetP1() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Triangle#getP2()}.
+	 */
+	@Test
+	public void testGetP2() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Triangle#getP3()}.
+	 */
+	@Test
+	public void testGetP3() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Triangle#getNormal()}.
+	 */
+	@Test
+	public void testGetNormal() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Triangle#getE1()}.
+	 */
+	@Test
+	public void testGetE1() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Triangle#getE2()}.
+	 */
+	@Test
+	public void testGetE2() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Triangle#getE3()}.
+	 */
+	@Test
+	public void testGetE3() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Triangle#getEdges()}.
+	 */
+	@Test
+	public void testGetEdges() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Triangle#toString()}.
+	 */
+	@Test
+	public void testToString() {
+		fail("Not yet implemented"); // TODO
 	}
 }

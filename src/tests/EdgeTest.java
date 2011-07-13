@@ -16,8 +16,10 @@ import modeles.Triangle;
 import org.junit.Test;
 
 /**
- * @author CFV
- *
+ * A set of tests for the class Edge.
+ * 
+ * @author Daniel Lefevre
+ * 
  */
 public class EdgeTest {
 
@@ -39,7 +41,8 @@ public class EdgeTest {
 	private Polyline line = new Polyline();
 
 	/**
-	 * Constructor of the EdgeTest class : create a polyline for the following tests.
+	 * Constructor of the test class EdgeTest : creates a polyline for the
+	 * following tests.
 	 */
 	public EdgeTest() {
 		line.add(e1);
@@ -49,7 +52,31 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test of the method returnOtherTriangle.
+	 * Test method for {@link modeles.Edge#hashCode()}.
+	 */
+	@Test
+	public void testHashCode() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Edge#Edge(modeles.Point, modeles.Point)}.
+	 */
+	@Test
+	public void testEdge() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Edge#getTriangleList()}.
+	 */
+	@Test
+	public void testGetTriangleList() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Edge#returnOther(modeles.Triangle)}.
 	 */
 	@Test
 	public void testReturnOtherTriangle() {
@@ -59,13 +86,37 @@ public class EdgeTest {
 		try {
 			e2.returnOther(t2);
 			fail("Should return an exception !");
-		} catch(InvalidParameterException e) {
-			//The method is supposed to return the Exception.
+		} catch (InvalidParameterException e) {
+			// The method is supposed to return the Exception.
 		}
 	}
 
 	/**
-	 * Test of the method length.
+	 * Test method for {@link modeles.Edge#getP1()}.
+	 */
+	@Test
+	public void testGetP1() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Edge#getP2()}.
+	 */
+	@Test
+	public void testGetP2() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Edge#getPoints()}.
+	 */
+	@Test
+	public void testGetPoints() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Edge#length()}.
 	 */
 	@Test
 	public void testLength() {
@@ -73,7 +124,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test of the method contains.
+	 * Test method for {@link modeles.Edge#contains(modeles.Point)}.
 	 */
 	@Test
 	public void testContains() {
@@ -82,16 +133,23 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test of the method addTriangle.
+	 * Test method for {@link modeles.Edge#addTriangle(modeles.Triangle)}.
 	 */
-	//	@Test
-	//	TODO
-	//	public final void testAddTriangle() {
-	//		
-	//	}
+	@Test
+	public void testAddTriangle() {
+		fail("Not yet implemented"); // TODO
+	}
 
 	/**
-	 * Test of the method isNeighboor.
+	 * Test method for {@link modeles.Edge#getNumberTriangles()}.
+	 */
+	@Test
+	public void testGetNumberTriangles() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Edge#isNeighboor(modeles.Edge)}.
 	 */
 	@Test
 	public void testIsNeighboor() {
@@ -100,10 +158,10 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test of the method equals.
+	 * Test method for {@link modeles.Edge#equals(java.lang.Object)}.
 	 */
 	@Test
-	public void testEquals() {
+	public void testEqualsObject() {
 		Edge eTest = new Edge(p1, p2);
 		assertFalse(e1.equals(e2));
 		assertTrue(e1.equals(e1));
@@ -111,16 +169,17 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test of the method returnNeighbours.
+	 * Test method for
+	 * {@link modeles.Edge#returnNeighbours(modeles.Polyline, modeles.Polyline)}
+	 * .
 	 */
-	//	@Test 
-	//	TODO
-	//	public final void testReturnNeighbours() {
-	//		fail("Not yet implemented");
-	//	}
+	@Test
+	public void testReturnNeighbours() {
+		fail("Not yet implemented"); // TODO
+	}
 
 	/**
-	 * Test of the method getNumNeighbours.
+	 * Test method for {@link modeles.Edge#getNumNeighbours(modeles.Polyline)}.
 	 */
 	@Test
 	public void testGetNumNeighbours() {
@@ -134,11 +193,12 @@ public class EdgeTest {
 		try {
 			assertTrue(e5.getNumNeighbours(p) == 0);
 			fail();
-		} catch(InvalidParameterException e) {}
+		} catch (InvalidParameterException e) {
+		}
 	}
 
 	/**
-	 * Test of the method returnOtherPoint.
+	 * Test method for {@link modeles.Edge#returnOther(modeles.Point)}.
 	 */
 	@Test
 	public void testReturnOtherPoint() {
@@ -148,7 +208,8 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test of the method returnNeighbour.
+	 * Test method for
+	 * {@link modeles.Edge#returnNeighbour(modeles.Point, modeles.Polyline)}.
 	 */
 	@Test
 	public void testReturnNeighbour() {
@@ -156,4 +217,14 @@ public class EdgeTest {
 		assertTrue(e2.returnNeighbour(p2, line) == e1);
 		assertTrue(e6.returnNeighbour(p3, line) == e2);
 	}
+
+	/**
+	 * Test method for {@link modeles.Edge#compose(modeles.Edge, modeles.Point)}
+	 * .
+	 */
+	@Test
+	public void testCompose() {
+		fail("Not yet implemented"); // TODO
+	}
+
 }

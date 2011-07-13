@@ -5,21 +5,20 @@ import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
 /**
- * @author CFV
- *
+ * Class to test every test of the project
+ * 
+ * @author Daniel Lefevre
+ * 
  */
 @RunWith(Suite.class)
-@SuiteClasses(value={
-		//		AlgosTest.class,
-		EdgeTest.class,
-		//		MatrixMethodTest.class,
+@SuiteClasses(value = { 
+		EdgeTest.class, 
+		MatrixMethodTest.class, 
 		MeshTest.class,
-		//		ParserTest.class,
-		PointTest.class,
+		ParserTest.class, 
+		PointTest.class, 
 		PolylineTest.class,
-		//		SeparationFloorBuildingTest.class,
-		//		SeparationTraitementMursToitsTest.class,
-		TriangleTest.class,
-		//		WriterTest.class,
-})
-public class AllTests {}
+		TriangleTest.class, 
+		WriterTest.class, })
+public class AllTests {
+}

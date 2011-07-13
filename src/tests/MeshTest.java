@@ -2,6 +2,7 @@ package tests;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
 
@@ -16,8 +17,10 @@ import modeles.Triangle;
 import org.junit.Test;
 
 /**
+ * A set of tests for the class Mesh.
+ * 
  * @author Daniel Lefevre
- *
+ * 
  */
 public class MeshTest {
 
@@ -42,7 +45,8 @@ public class MeshTest {
 	private Mesh m = new Mesh();
 
 	/**
-	 * Constructor of the MeshTest class : creating the mesh which will be an example.
+	 * Constructor of the MeshTest class : creating the mesh which will be an
+	 * example.
 	 */
 	public MeshTest() {
 		this.m.add(this.t1);
@@ -50,7 +54,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method averageNormal.
+	 * Test method for {@link modeles.Mesh#averageNormal()}.
 	 */
 	@Test
 	public void testAverageNormal() {
@@ -58,31 +62,31 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method xAverage.
+	 * Test method for {@link modeles.Mesh#xAverage()}.
 	 */
 	@Test
 	public void testxAverage() {
-		assertTrue(this.m.xAverage() == 2.0/3.0);
+		assertTrue(this.m.xAverage() == 2.0 / 3.0);
 	}
 
 	/**
-	 * Test of the method yAverage.
+	 * Test method for {@link modeles.Mesh#yAverage()}.
 	 */
 	@Test
 	public void testyAverage() {
-		assertTrue(this.m.yAverage() == 3.0/2.0);
+		assertTrue(this.m.yAverage() == 3.0 / 2.0);
 	}
 
 	/**
-	 * Test of the method zAverage.
+	 * Test method for {@link modeles.Mesh#zAverage()}.
 	 */
 	@Test
 	public void testzAverage() {
-		assertTrue(this.m.zAverage() == -2.0/3.0);
+		assertTrue(this.m.zAverage() == -2.0 / 3.0);
 	}
 
 	/**
-	 * Test of the method xMax.
+	 * Test method for {@link modeles.Mesh#xMax()}.
 	 */
 	@Test
 	public void testxMax() {
@@ -90,7 +94,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method xMin.
+	 * Test method for {@link modeles.Mesh#xMin()}.
 	 */
 	@Test
 	public void testxMin() {
@@ -98,7 +102,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method yMax.
+	 * Test method for {@link modeles.Mesh#yMax()}.
 	 */
 	@Test
 	public void testyMax() {
@@ -106,7 +110,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method yMin.
+	 * Test method for {@link modeles.Mesh#yMin()}.
 	 */
 	@Test
 	public void testyMin() {
@@ -114,7 +118,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method zMax.
+	 * Test method for {@link modeles.Mesh#zMax()}.
 	 */
 	@Test
 	public void testzMax() {
@@ -122,7 +126,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method zMin.
+	 * Test method for {@link modeles.Mesh#zMin()}.
 	 */
 	@Test
 	public void testzMin() {
@@ -130,7 +134,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method xLengthAverage.
+	 * Test method for {@link modeles.Mesh#xLengthAverage()}.
 	 */
 	@Test
 	public void testxLengthAverage() {
@@ -138,7 +142,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method yLengthAverage.
+	 * Test method for {@link modeles.Mesh#yLengthAverage()}.
 	 */
 	@Test
 	public void testyLengthAverage() {
@@ -146,7 +150,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method zLengthAverage.
+	 * Test method for {@link modeles.Mesh#zLengthAverage()}.
 	 */
 	@Test
 	public void testzLengthAverage() {
@@ -154,10 +158,10 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method xBetween.
+	 * Test method for {@link modeles.Mesh#xBetween(double, double)}.
 	 */
 	@Test
-	//LOOK : complete this test with other Triangles
+	// LOOK : complete this test with other Triangles
 	public void testXBetween() {
 		Mesh xBet = m.xBetween(10, -10);
 		assertTrue(xBet.contains(t1));
@@ -165,10 +169,10 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method yBetween.
+	 * Test method for {@link modeles.Mesh#yBetween(double, double)}.
 	 */
 	@Test
-	//LOOK : complete this test with other Triangles
+	// LOOK : complete this test with other Triangles
 	public void testYBetween() {
 		Mesh yBet = m.yBetween(10, -10);
 		assertTrue(yBet.contains(t1));
@@ -176,19 +180,19 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method zBetween.
+	 * Test method for {@link modeles.Mesh#zBetween(double, double)}.
 	 */
 	@Test
-	//LOOK : complete this test with other Triangles
+	// LOOK : complete this test with other Triangles
 	public void testZBetween() {
 		Mesh zBet = m.zBetween(10, -10);
 		assertTrue(zBet.contains(t1));
 		assertTrue(zBet.contains(t2));
 	}
 
-	//LOOK : don't use xAverage() ?
+	// LOOK : don't use xAverage() ?
 	/**
-	 * Test of the method xProjection.
+	 * Test method for {@link modeles.Mesh#xProjection(double)}.
 	 */
 	@Test
 	public void testXProjection() {
@@ -197,7 +201,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method yProjection.
+	 * Test method for {@link modeles.Mesh#yProjection(double)}.
 	 */
 	@Test
 	public void testYProjection() {
@@ -206,7 +210,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method zProjection.
+	 * Test method for {@link modeles.Mesh#zProjection(double)}.
 	 */
 	@Test
 	public void testZProjection() {
@@ -215,7 +219,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method zMinFace.
+	 * Test method for {@link modeles.Mesh#zMinFace()}.
 	 */
 	@Test
 	public void testZMinFace() {
@@ -223,7 +227,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method faceUnderZ.
+	 * Test method for {@link modeles.Mesh#faceUnderZ(double)}.
 	 */
 	@Test
 	public void testFaceUnderZ() {
@@ -231,7 +235,8 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method orientedAs.
+	 * Test method for
+	 * {@link modeles.Mesh#orientedAs(javax.vecmath.Vector3d, double)}.
 	 */
 	@Test
 	public void testOrientedAs() {
@@ -241,7 +246,8 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method orientedNormalTo.
+	 * Test method for
+	 * {@link modeles.Mesh#orientedNormalTo(javax.vecmath.Vector3d, double)}.
 	 */
 	@Test
 	public void testOrientedNormalTo() {
@@ -251,11 +257,12 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test of the method returnUnsortedBounds.
+	 * Test method for {@link modeles.Mesh#returnUnsortedBounds()}.
 	 */
 	@Test
-	public void testReturnUnsortedBounds() {	
-		//We create points, but no matter their coordinates, if they are not equals.
+	public void testReturnUnsortedBounds() {
+		// We create points, but no matter their coordinates, if they are not
+		// equals.
 		Point p1 = new Point(1, 0, -1);
 		Point p2 = new Point(0, 1, 0);
 		Point p3 = new Point(-1, 2, 1);
@@ -265,17 +272,17 @@ public class MeshTest {
 		Point p7 = new Point(-2, 1, 0);
 		Point p8 = new Point(3, 4, 5);
 		Point p9 = new Point(3, -2, -2);
-		
+
 		Vector3d vect = new Vector3d(0, 0, 1);
-		
+
 		Edge e1 = new Edge(p1, p2);
 		Edge e2 = new Edge(p2, p3);
 		Edge e3 = new Edge(p3, p1);
 		Edge e4 = new Edge(p1, p4);
 		Edge e5 = new Edge(p3, p4);
 		Edge e6 = new Edge(p4, p5);
-		Edge e7 = new Edge(p1, p5);	
-		
+		Edge e7 = new Edge(p1, p5);
+
 		Edge e8 = new Edge(p1, p6);
 		Edge e9 = new Edge(p5, p6);
 		Edge e10 = new Edge(p6, p7);
@@ -286,7 +293,7 @@ public class MeshTest {
 		Edge e15 = new Edge(p2, p7);
 		Edge e16 = new Edge(p1, p7);
 		Edge e17 = new Edge(p2, p8);
-		
+
 		Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect);
 		Triangle t2 = new Triangle(p1, p3, p4, e3, e4, e5, vect);
 		Triangle t3 = new Triangle(p1, p4, p5, e4, e6, e7, vect);
@@ -305,7 +312,7 @@ public class MeshTest {
 		mesh.add(t6);
 		mesh.add(t7);
 		mesh.add(t8);
-		
+
 		Polyline bounds = mesh.returnUnsortedBounds();
 		assertTrue(bounds.contains(p1));
 		assertTrue(bounds.contains(p2));
@@ -316,7 +323,7 @@ public class MeshTest {
 		assertTrue(bounds.contains(p7));
 		assertTrue(bounds.contains(p8));
 		assertTrue(bounds.contains(p9));
-		
+
 		assertTrue(bounds.contains(e1));
 		assertTrue(bounds.contains(e2));
 		assertFalse(bounds.contains(e3));
@@ -334,14 +341,16 @@ public class MeshTest {
 		assertTrue(bounds.contains(e15));
 		assertTrue(bounds.contains(e16));
 		assertTrue(bounds.contains(e17));
-	}	
-	
+	}
+
 	/**
-	 * Test of the method returnSortedBounds.
+	 * Test method for {@link modeles.Mesh#returnSortedBounds(modeles.Polyline)}
+	 * .
 	 */
 	@Test
-	public void testReturnSortedBounds() {	
-		//We create points, but no matter their coordinates, if they are not equals.
+	public void testReturnSortedBounds() {
+		// We create points, but no matter their coordinates, if they are not
+		// equals.
 		Point p1 = new Point(1, 0, -1);
 		Point p2 = new Point(0, 1, 0);
 		Point p3 = new Point(-1, 2, 1);
@@ -351,17 +360,17 @@ public class MeshTest {
 		Point p7 = new Point(-2, 1, 0);
 		Point p8 = new Point(3, 4, 5);
 		Point p9 = new Point(3, -2, -2);
-		
+
 		Vector3d vect = new Vector3d(0, 0, 1);
-		
+
 		Edge e1 = new Edge(p1, p2);
 		Edge e2 = new Edge(p2, p3);
 		Edge e3 = new Edge(p3, p1);
 		Edge e4 = new Edge(p1, p4);
 		Edge e5 = new Edge(p3, p4);
 		Edge e6 = new Edge(p4, p5);
-		Edge e7 = new Edge(p1, p5);	
-		
+		Edge e7 = new Edge(p1, p5);
+
 		Edge e8 = new Edge(p1, p6);
 		Edge e9 = new Edge(p5, p6);
 		Edge e10 = new Edge(p6, p7);
@@ -372,7 +381,7 @@ public class MeshTest {
 		Edge e15 = new Edge(p2, p7);
 		Edge e16 = new Edge(p1, p7);
 		Edge e17 = new Edge(p2, p8);
-		
+
 		Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect);
 		Triangle t2 = new Triangle(p1, p3, p4, e3, e4, e5, vect);
 		Triangle t3 = new Triangle(p1, p4, p5, e4, e6, e7, vect);
@@ -391,21 +400,23 @@ public class MeshTest {
 		mesh.add(t6);
 		mesh.add(t7);
 		mesh.add(t8);
-		
-		ArrayList<Polyline> boundList = mesh.returnSortedBounds(mesh.returnUnsortedBounds());
-		
+
+		ArrayList<Polyline> boundList = mesh.returnSortedBounds(mesh
+				.returnUnsortedBounds());
+
 		assertTrue(boundList.size() == 1);
 		assertTrue(boundList.get(0).edgeSize() == 10);
 		assertTrue(boundList.get(0).pointSize() == 9);
 	}
-	
+
 	/**
-	 * Test of the method separateBounds.
+	 * Test method for {@link modeles.Mesh#separateBounds(java.util.ArrayList)}.
 	 */
 	@Test
 	public void testSeparateBounds() {
-		
-		//We create points, but no matter their coordinates, if they are not equals.
+
+		// We create points, but no matter their coordinates, if they are not
+		// equals.
 		Point p1 = new Point(1, 0, -1);
 		Point p2 = new Point(0, 1, 0);
 		Point p3 = new Point(-1, 2, 1);
@@ -415,17 +426,17 @@ public class MeshTest {
 		Point p7 = new Point(-2, 1, 0);
 		Point p8 = new Point(3, 4, 5);
 		Point p9 = new Point(3, -2, -2);
-		
+
 		Vector3d vect = new Vector3d(0, 0, 1);
-		
+
 		Edge e1 = new Edge(p1, p2);
 		Edge e2 = new Edge(p2, p3);
 		Edge e3 = new Edge(p3, p1);
 		Edge e4 = new Edge(p1, p4);
 		Edge e5 = new Edge(p3, p4);
 		Edge e6 = new Edge(p4, p5);
-		Edge e7 = new Edge(p1, p5);	
-		
+		Edge e7 = new Edge(p1, p5);
+
 		Edge e8 = new Edge(p1, p6);
 		Edge e9 = new Edge(p5, p6);
 		Edge e10 = new Edge(p6, p7);
@@ -436,7 +447,7 @@ public class MeshTest {
 		Edge e15 = new Edge(p2, p7);
 		Edge e16 = new Edge(p1, p7);
 		Edge e17 = new Edge(p2, p8);
-		
+
 		Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect);
 		Triangle t2 = new Triangle(p1, p3, p4, e3, e4, e5, vect);
 		Triangle t3 = new Triangle(p1, p4, p5, e4, e6, e7, vect);
@@ -455,17 +466,20 @@ public class MeshTest {
 		mesh.add(t6);
 		mesh.add(t7);
 		mesh.add(t8);
-		
-		ArrayList<Polyline> boundList = mesh.separateBounds(mesh.returnSortedBounds(mesh.returnUnsortedBounds()));
-		
+
+		ArrayList<Polyline> boundList = mesh.separateBounds(mesh
+				.returnSortedBounds(mesh.returnUnsortedBounds()));
+
 		assertTrue(boundList.size() == 2);
-		assertTrue(boundList.get(0).edgeSize() == 3 || boundList.get(0).edgeSize() == 7);
-		assertTrue(boundList.get(1).edgeSize() == 3 || boundList.get(1).edgeSize() == 7);
-		
-		if(boundList.get(0).contains(e1)) {
+		assertTrue(boundList.get(0).edgeSize() == 3
+				|| boundList.get(0).edgeSize() == 7);
+		assertTrue(boundList.get(1).edgeSize() == 3
+				|| boundList.get(1).edgeSize() == 7);
+
+		if (boundList.get(0).contains(e1)) {
 			assertTrue(boundList.get(0).contains(e15));
 			assertTrue(boundList.get(0).contains(e16));
-			
+
 			assertTrue(boundList.get(1).contains(e2));
 			assertTrue(boundList.get(1).contains(e5));
 			assertTrue(boundList.get(1).contains(e6));
@@ -473,12 +487,11 @@ public class MeshTest {
 			assertTrue(boundList.get(1).contains(e11));
 			assertTrue(boundList.get(1).contains(e13));
 			assertTrue(boundList.get(1).contains(e17));
-		}
-		else {
+		} else {
 
 			assertTrue(boundList.get(1).contains(e15));
 			assertTrue(boundList.get(1).contains(e16));
-			
+
 			assertTrue(boundList.get(0).contains(e2));
 			assertTrue(boundList.get(0).contains(e5));
 			assertTrue(boundList.get(0).contains(e6));
@@ -488,14 +501,15 @@ public class MeshTest {
 			assertTrue(boundList.get(0).contains(e17));
 		}
 	}
-	
+
 	/**
-	 * Test of the method returnLongestBounds.
+	 * Test method for {@link modeles.Mesh#returnLongestBound()}.
 	 */
 	@Test
 	public void testReturnLongestBound() {
-		
-		//We create points, but no matter their coordinates, if they are not equals.
+
+		// We create points, but no matter their coordinates, if they are not
+		// equals.
 		Point p1 = new Point(1, 0, -1);
 		Point p2 = new Point(0, 1, 0);
 		Point p3 = new Point(-1, 2, 1);
@@ -505,17 +519,17 @@ public class MeshTest {
 		Point p7 = new Point(-2, 1, 0);
 		Point p8 = new Point(3, 4, 5);
 		Point p9 = new Point(3, -2, -2);
-		
+
 		Vector3d vect = new Vector3d(0, 0, 1);
-		
+
 		Edge e1 = new Edge(p1, p2);
 		Edge e2 = new Edge(p2, p3);
 		Edge e3 = new Edge(p3, p1);
 		Edge e4 = new Edge(p1, p4);
 		Edge e5 = new Edge(p3, p4);
 		Edge e6 = new Edge(p4, p5);
-		Edge e7 = new Edge(p1, p5);	
-		
+		Edge e7 = new Edge(p1, p5);
+
 		Edge e8 = new Edge(p1, p6);
 		Edge e9 = new Edge(p5, p6);
 		Edge e10 = new Edge(p6, p7);
@@ -526,7 +540,7 @@ public class MeshTest {
 		Edge e15 = new Edge(p2, p7);
 		Edge e16 = new Edge(p1, p7);
 		Edge e17 = new Edge(p2, p8);
-		
+
 		Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect);
 		Triangle t2 = new Triangle(p1, p3, p4, e3, e4, e5, vect);
 		Triangle t3 = new Triangle(p1, p4, p5, e4, e6, e7, vect);
@@ -545,9 +559,9 @@ public class MeshTest {
 		mesh.add(t6);
 		mesh.add(t7);
 		mesh.add(t8);
-		
+
 		Polyline l = mesh.returnLongestBound();
-		
+
 		assertTrue(l.contains(e2));
 		assertTrue(l.contains(e5));
 		assertTrue(l.contains(e6));
@@ -555,5 +569,54 @@ public class MeshTest {
 		assertTrue(l.contains(e11));
 		assertTrue(l.contains(e13));
 		assertTrue(l.contains(e17));
+	}
+
+	/**
+	 * Test method for {@link modeles.Mesh#getOne()}.
+	 */
+	@Test
+	public void testGetOne() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Mesh#remove(modeles.Mesh)}.
+	 */
+	@Test
+	public void testRemoveMesh() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Mesh#write(java.lang.String)}.
+	 */
+	@Test
+	public void testWrite() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Mesh#changeBase(double[][])}.
+	 */
+	@Test
+	public void testChangeBase() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
+	 * {@link modeles.Mesh#treatWeirdCase(modeles.Polyline, modeles.Point)}.
+	 */
+	@Test
+	public void testTreatWeirdCase() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link modeles.Mesh#returnBounds()}.
+	 */
+	@Test
+	public void testReturnBounds() {
+		fail("Not yet implemented"); // TODO
 	}
 }
