@@ -3,6 +3,7 @@ package modeles;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.vecmath.Vector3d;
 
@@ -105,6 +106,21 @@ public class Triangle {
 	 */
 	public Collection<Point> getPoints() {
 		return Arrays.asList(this.points);
+	}
+
+	/**
+	 * Returns a collection of the coordinates of the points.
+	 * 
+	 * @return a collection of the coordinates of the points
+	 */
+	public List<Double> getPointsAsCoordinates() {
+		ArrayList<Double> list = new ArrayList<Double>();
+		for (Point p : points) {
+			for(double d : p.getPointAsCoordinates()) {
+				list.add(new Double(d));
+			}
+		}
+		return list;
 	}
 
 	/**
@@ -435,11 +451,14 @@ public class Triangle {
 		return (this.normal.dot(normal) < error && this.normal.dot(normal) > -error);
 	}
 
-	// 
+	//
 	/**
 	 * Returns in ret the neighbours of this which belongs to m.
-	 * @param ret the returned mesh in which are the neighbours
-	 * @param m the mesh which all neighbours have to belong to
+	 * 
+	 * @param ret
+	 *            the returned mesh in which are the neighbours
+	 * @param m
+	 *            the mesh which all neighbours have to belong to
 	 */
 	public void returnNeighbours(Mesh ret, Mesh m) {
 		ret.add(this);

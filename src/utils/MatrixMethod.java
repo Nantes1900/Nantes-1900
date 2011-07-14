@@ -25,7 +25,7 @@ public class MatrixMethod {
 		Vector3d b = new Vector3d(baseVector);
 		b.normalize();
 
-		if (b.z < -0.95 && b.z > -1.05)
+		if (b.z < -0.99 && b.z > -1.01)
 			throw new SingularMatrixException();
 
 		// Gram-Schmidt

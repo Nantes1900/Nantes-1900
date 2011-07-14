@@ -4,8 +4,8 @@ import utils.MatrixMethod;
 
 /**
  * @author Daniel Lefèvre, Elsa Arroud-Vignod
- *
- * Implement a point, composed of three coordinates.
+ * 
+ *         Implement a point, composed of three coordinates.
  */
 public class Point {
 
@@ -14,10 +14,13 @@ public class Point {
 	private double z;
 
 	/**
-	 * Copy constructor
-	 * @param p the point to copy
+	 * Copy constructor.
 	 * 
-	 * To use very cautiously : it can create two Points with equal Values and different references in the Mesh !
+	 * To use very cautiously : it can create two Points with equal Values and
+	 * different references in the Mesh !
+	 * 
+	 * @param p
+	 *            the point to copy
 	 */
 	public Point(Point p) {
 		this.x = p.x;
@@ -26,10 +29,14 @@ public class Point {
 	}
 
 	/**
-	 * Constructor
-	 * @param x coordinate
-	 * @param y coordinate
-	 * @param z coordinate
+	 * Constructor.
+	 * 
+	 * @param x
+	 *            coordinate
+	 * @param y
+	 *            coordinate
+	 * @param z
+	 *            coordinate
 	 */
 	public Point(double x, double y, double z) {
 		this.x = x;
@@ -38,26 +45,47 @@ public class Point {
 	}
 
 	/**
-	 * Getter
+	 * Getter.
+	 * 
 	 * @return the x coordinate
 	 */
-	public double getX() {return x;}
+	public double getX() {
+		return x;
+	}
 
 	/**
-	 * Getter
+	 * Getter.
+	 * 
 	 * @return the y coordinate
 	 */
-	public double getY() {return y;}
+	public double getY() {
+		return y;
+	}
 
 	/**
-	 * Getter
+	 * Getter.
+	 * 
 	 * @return the z coordinate
 	 */
-	public double getZ() {return z;}
+	public double getZ() {
+		return z;
+	}
 
 	/**
-	 * Setter
-	 * @param x : the x coordinate
+	 * Getter of the coordinates of the point.
+	 * 
+	 * @return a table of double
+	 */
+	public double[] getPointAsCoordinates() {
+		double[] coords = {x, y, z};
+		return coords;
+	}
+
+	/**
+	 * Setter.
+	 * 
+	 * @param x
+	 *            : the x coordinate
 	 */
 	public void setX(double x) {
 		this.x = x;
@@ -65,7 +93,9 @@ public class Point {
 
 	/**
 	 * Setter
-	 * @param y coordinate
+	 * 
+	 * @param y
+	 *            coordinate
 	 */
 	public void setY(double y) {
 		this.y = y;
@@ -73,7 +103,9 @@ public class Point {
 
 	/**
 	 * Setter
-	 * @param z coordinate
+	 * 
+	 * @param z
+	 *            coordinate
 	 */
 	public void setZ(double z) {
 		this.z = z;
@@ -81,7 +113,9 @@ public class Point {
 
 	/**
 	 * Setter
-	 * @param coords the three coordinates
+	 * 
+	 * @param coords
+	 *            the three coordinates
 	 */
 	public void set(double[] coords) {
 		this.setX(coords[0]);
@@ -89,7 +123,9 @@ public class Point {
 		this.setZ(coords[2]);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#toString()
 	 */
 	public String toString() {
@@ -98,14 +134,20 @@ public class Point {
 
 	/**
 	 * Compute the distance between two points
-	 * @param p the other point
+	 * 
+	 * @param p
+	 *            the other point
 	 * @return the distance
 	 */
 	public double distance(Point p) {
-		return Math.pow(Math.pow(p.x - x, 2) + Math.pow(p.y - y, 2) + Math.pow(p.z - z, 2), 0.5);
-	}	
+		return Math.pow(
+				Math.pow(p.x - x, 2) + Math.pow(p.y - y, 2)
+						+ Math.pow(p.z - z, 2), 0.5);
+	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
@@ -122,7 +164,9 @@ public class Point {
 		return result;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
@@ -145,11 +189,13 @@ public class Point {
 
 	/**
 	 * Operate a change base on the point
-	 * @param matrix of base change
-	 * Be careful : the point doesn't have the same hashCode after this operation...
+	 * 
+	 * @param matrix
+	 *            of base change Be careful : the point doesn't have the same
+	 *            hashCode after this operation...
 	 */
-	public void changeBase(double[][] matrix){
-		double[] coords = {this.x, this.y, this.z};
+	public void changeBase(double[][] matrix) {
+		double[] coords = { this.x, this.y, this.z };
 		this.set(MatrixMethod.changeBase(coords, matrix));
 	}
 }
