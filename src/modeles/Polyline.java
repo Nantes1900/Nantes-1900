@@ -482,19 +482,24 @@ public class Polyline {
 	}
 
 	/**
-	 * Returns the mesh composed all the triangles the edges belong to. If one
-	 * edge in this doesn't have one triangle to return, this method returns the
-	 * returnCentroidMesh() : FIXME
+	 * Returns the mesh composed all the triangles the edges belong to and which
+	 * belong to the mesh m. If one edge in this doesn't have one triangle to
+	 * return, this method returns the returnCentroidMesh() : FIXME
 	 * 
 	 * @return the mesh composed all the triangles the edges belong to
 	 */
-	public Mesh returnMesh() {
+	public Mesh returnMesh(Mesh m) {
 		// FIXME : si tous les Edge n'ont pas de triangles associés, renvoyer
 		// vers l'autre méthode.
 		Mesh ens = new Mesh();
 		for (Edge e : this.edgeList) {
-			if (!e.getTriangleList().isEmpty())
-				ens.addAll(e.getTriangleList());
+			if (!e.getTriangleList().isEmpty()) {
+				for (Triangle t : e.getTriangleList()) {
+					if (m.contains(t)) {
+						ens.add(t);
+					}
+				}
+			}
 		}
 		return ens;
 	}

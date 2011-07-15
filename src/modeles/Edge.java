@@ -4,6 +4,9 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.activity.InvalidActivityException;
+import javax.vecmath.Vector3d;
+
 /**
  * Implement an edge : two points, and the triangles it belongs to.
  * 
@@ -206,6 +209,160 @@ public class Edge {
 		}
 	}
 
+	public void returnOneBound(Mesh m, Polyline ret, Polyline p, Point point,
+			Vector3d normalFloor) throws InvalidActivityException {
+		if (!ret.contains(this)) {
+			ret.add(this);
+
+			ArrayList<Edge> edgeList = p.getNeighbours(point);
+			if (!edgeList.contains(this)) {
+				System.err.println("Enormous error 1 !");
+			} else if (edgeList.size() == 4) {
+				Edge e = this.returnTheGoodOne(m, p.getNeighbours(point),
+						point, normalFloor);
+				e.returnOneBound(m, ret, p, e.returnOther(point), normalFloor);
+			} else if (edgeList.size() == 2) {
+				Edge e = this.returnNeighbour(point, p);
+				e.returnOneBound(m, ret, p, e.returnOther(point), normalFloor);
+			} else {
+				System.err.println("pb !");
+			}
+		}
+	}
+
+	private Edge returnTheGoodOne(Mesh m, ArrayList<Edge> weirdEdges,
+			Point weirdPoint, Vector3d normalFloor)
+			throws InvalidActivityException {
+
+		if (!weirdEdges.contains(this)) {
+			System.err.println("Big mistake 2!");
+		}
+
+		// TODO : si un triangle de ces 4 là possède un triangle qui n'est pas
+		// dans m en commun avec un autre, alors il sont de la même polyline.
+
+		ArrayList<Edge> weirdEdges1 = new ArrayList<Edge>(weirdEdges);
+		ArrayList<Edge> weirdEdges2 = new ArrayList<Edge>();
+
+		if (weirdEdges1.size() != 4) {
+			System.err.println("Error in the number of weirdEdges !");
+		} else {
+			Edge e1 = weirdEdges1.get(0);
+			Edge e2 = weirdEdges1.get(1);
+			Edge e3 = weirdEdges1.get(2);
+			Edge e4 = weirdEdges1.get(3);
+
+			Triangle t1 = null;
+			int counter = 0;
+			for (Triangle t : e1.getTriangleList()) {
+				if (m.contains(t)) {
+					t1 = t;
+					counter++;
+				}
+			}
+			if (counter != 1)
+				System.err.println("Error 32!");
+
+			weirdEdges2.add(e1);
+			weirdEdges1.remove(e1);
+
+			if (e2.getTriangleList().contains(t1)) {
+				weirdEdges2.add(e2);
+				weirdEdges1.remove(e2);
+			} else if (e3.getTriangleList().contains(t1)) {
+				weirdEdges2.add(e3);
+				weirdEdges1.remove(e3);
+			} else if (e4.getTriangleList().contains(t1)) {
+				weirdEdges2.add(e4);
+				weirdEdges1.remove(e4);
+			} else {
+				System.err.println("Re big !");
+			}
+		}
+
+		// We know that in weirdEdges1 are two edges which share one triangle,
+		// and the same in weirdEdges2. Now we have to find which one is with
+		// which other...
+
+		Vector3d v1 = new Vector3d();
+		Vector3d v2 = new Vector3d();
+		Vector3d v3 = new Vector3d();
+		Vector3d v4 = new Vector3d();
+
+		Edge e1 = weirdEdges1.get(0);
+		Edge e2 = weirdEdges1.get(1);
+
+		v1.x = e1.returnOther(weirdPoint).getX() - weirdPoint.getX();
+		v1.y = e1.returnOther(weirdPoint).getY() - weirdPoint.getY();
+		v1.z = e1.returnOther(weirdPoint).getZ() - weirdPoint.getZ();
+
+		v2.x = e2.returnOther(weirdPoint).getX() - weirdPoint.getX();
+		v2.y = e2.returnOther(weirdPoint).getY() - weirdPoint.getY();
+		v2.z = e2.returnOther(weirdPoint).getZ() - weirdPoint.getZ();
+
+		Edge e3 = weirdEdges2.get(0);
+		Edge e4 = weirdEdges2.get(1);
+
+		v3.x = e3.returnOther(weirdPoint).getX() - weirdPoint.getX();
+		v3.y = e3.returnOther(weirdPoint).getY() - weirdPoint.getY();
+		v3.z = e3.returnOther(weirdPoint).getZ() - weirdPoint.getZ();
+
+		v4.x = e4.returnOther(weirdPoint).getX() - weirdPoint.getX();
+		v4.y = e4.returnOther(weirdPoint).getY() - weirdPoint.getY();
+		v4.z = e4.returnOther(weirdPoint).getZ() - weirdPoint.getZ();
+
+		v1.normalize();
+		v2.normalize();
+		v3.normalize();
+		v4.normalize();
+
+		weirdEdges1.clear();
+		weirdEdges1.add(e1);
+
+		weirdEdges2.clear();
+		weirdEdges2.add(e2);
+
+		Vector3d cross = new Vector3d();
+		cross.cross(normalFloor, v1);
+
+		if (cross.dot(v2) > 0) {
+			// It means that seeing from the weirdPoint (middle point), e2 is at
+			// the left of e1.
+			// Thus we try to find the first edge at the right of e1.
+			if (cross.dot(v3) < cross.dot(v4)) {
+				weirdEdges1.add(e3);
+				weirdEdges2.add(e4);
+			} else {
+				weirdEdges1.add(e4);
+				weirdEdges2.add(e3);
+			}
+
+		} else {
+			// e2 is at the right. Find the first at the left of e1.
+			if (cross.dot(v3) > cross.dot(v4)) {
+				weirdEdges1.add(e3);
+				weirdEdges2.add(e4);
+			} else {
+				weirdEdges1.add(e4);
+				weirdEdges2.add(e3);
+			}
+		}
+
+		if (weirdEdges1.contains(this)) {
+			weirdEdges1.remove(this);
+			return weirdEdges1.get(0);
+		} else if (weirdEdges2.contains(this)) {
+			weirdEdges2.remove(this);
+			return weirdEdges2.get(0);
+		} else {
+			throw new InvalidActivityException();
+		}
+	}
+
+	public String toString() {
+		return new String("(" + this.getP1() + ", " + this.getP2() + ")");
+	}
+
 	/**
 	 * Returns the number of neighbours of this contained in the polyline p
 	 * 
@@ -267,11 +424,13 @@ public class Edge {
 		}
 		ArrayList<Edge> list = b.getNeighbours(p);
 		if (list.size() != 2) {
-			System.err.println("Error !");
-			// TODO : throw new Exception !
+			System.err.println("Error in returnNeighbours!");
+			// throw new InvalidParameterException();
 		}
+		// else {
 		list.remove(this);
 		return list.get(0);
+		// }
 	}
 
 	/**
@@ -287,4 +446,30 @@ public class Edge {
 	public Edge compose(Edge eAdd, Point p) {
 		return new Edge(this.returnOther(p), eAdd.returnOther(p));
 	}
+
+	// /**
+	// * Recursing method returning a polyline containing all the neighbours
+	// which
+	// * are contained in p
+	// *
+	// * @param ret
+	// * the polyline in which are returned the neighbours
+	// * @param p
+	// * the polyline in which the edges have to be //LOOK : fix
+	// * this...
+	// */
+	// public Edge returnNeighbours(Polyline bound, ArrayList<Edge> stop) {
+	// Polyline ret = new Polyline();
+	//
+	// for (Edge e : bound.getEdgeList()) {
+	// this.returnNeighbours(ret, bound);
+	// for (Edge edge : ret.getEdgeList()) {
+	// if (stop.contains(e)) {
+	// return e;
+	// } else {
+	// return edge.returnNeighbours(bound, stop);
+	// }
+	// }
+	// }
+	// }
 }
