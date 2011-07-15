@@ -255,4 +255,8 @@ public class SeparationFloorBuilding {
 			this.noise.remove(e);
 		}
 	}
+	
+	public Mesh getFloors() {
+		return this.floors;
+	}
 }

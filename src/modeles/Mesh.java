@@ -419,18 +419,55 @@ public class Mesh extends HashSet<Triangle> {
 				Edge arete = bounds.getOne();
 				Polyline ret = new Polyline();
 
-				arete.returnOneBound(this, ret, bounds, arete.getP1(), normalFloor);
+				Point point, p31 = null, p32 = null;
+				if (arete.getNumberTriangles() != 2) {
+					// LOOK
+					System.err.println("Encore une erreur !");
+				}
+				for (Point p : arete.getTriangleList().get(0).getPoints()) {
+					if (!arete.contains(p)) {
+						p31 = p;
+					}
+				}
+				for (Point p : arete.getTriangleList().get(1).getPoints()) {
+					if (!arete.contains(p)) {
+						p32 = p;
+					}
+				}
+				Vector3d vect = new Vector3d();
+				Vector3d v31 = new Vector3d();
+				Vector3d v32 = new Vector3d();
+				vect.x = arete.getP2().getX() - arete.getP1().getX();
+				vect.y = arete.getP2().getY() - arete.getP1().getY();
+				vect.z = arete.getP2().getZ() - arete.getP1().getZ();
+
+				v31.x = p31.getX() - arete.getP1().getX();
+				v31.y = p31.getY() - arete.getP1().getY();
+				v31.z = p31.getZ() - arete.getP1().getZ();
+
+				v32.x = p32.getX() - arete.getP1().getX();
+				v32.y = p32.getY() - arete.getP1().getY();
+				v32.z = p32.getZ() - arete.getP1().getZ();
+
+				Vector3d cross = new Vector3d();
+				cross.cross(normalFloor, vect);
+
+				if (cross.dot(v31) > 0)
+					point = arete.getP2();
+				else
+					point = arete.getP1();
+
+				arete.returnOneBound(this, ret, bounds, point, normalFloor);
 
 				boundList.add(ret);
 				// FIXME : la méthode remove ne supprime pas les Points,
-				// seulement
-				// les Edges.
+				// seulement les Edges.
 				bounds.remove(ret);
 			}
+			// FIXME : create new Exception !
 		} catch (InvalidActivityException e) {
 			e.printStackTrace();
 		}
-
 		return boundList;
 	}
 

@@ -4,6 +4,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.activity.InvalidActivityException;
 import javax.vecmath.Vector3d;
 
 /**
@@ -591,8 +592,10 @@ public class Polyline {
 	/**
 	 * Order the polyline Each edge in the edge list must be surrounded by its
 	 * neighbours
+	 * 
+	 * @throws InvalidActivityException
 	 */
-	public void order() {
+	public void order(Vector3d normalFloor) throws InvalidActivityException {
 		// TODO : vérification que chaque Edge a bien 2 voisins : ni plus, ni
 		// moins
 		// !
@@ -600,12 +603,12 @@ public class Polyline {
 
 		Edge first = this.getOne();
 		Point p = first.getP1();
-		Edge e = first.returnNeighbour(p, this);
+		Edge e = first.returnNeighbour(p, this, normalFloor);
 		p = e.returnOther(p);
 
 		while (e != first) {
 			ret.add(e);
-			e = e.returnNeighbour(p, this);
+			e = e.returnNeighbour(p, this, normalFloor);
 			p = e.returnOther(p);
 		}
 		ret.add(e);
@@ -644,22 +647,25 @@ public class Polyline {
 	 * @param error
 	 *            the error of frame
 	 * @return a polyline containing the importants points of this
+	 * @throws InvalidActivityException
 	 */
 	// FIXME : continue the explanation
-	public Polyline determinateSingularPoints(double error) {
+	public Polyline determinateSingularPoints(double error, Vector3d normalFloor)
+			throws InvalidActivityException {
 		Polyline singularPoints = new Polyline();
 
 		// We take a point, and we follow the line until we find a segment with
 		// angle change.
 		Edge first = this.getOne();
-		first = followTheFramedLine(first, first.getP2(), error, first);
+		first = followTheFramedLine(first, first.getP2(), error, first,
+				normalFloor);
 		singularPoints.add(first);
 		Edge e = first;
 
 		// Then we record all the points where there is a angle change.
 		do {
 			// We determinate the point to know the direction to take...
-			e = followTheFramedLine(e, this.toDelete, error, first);
+			e = followTheFramedLine(e, this.toDelete, error, first, normalFloor);
 			singularPoints.add(e);
 		} while (e != first);
 
@@ -724,15 +730,16 @@ public class Polyline {
 	 * @param stop
 	 *            the edge not to pass further
 	 * @return the next important point
+	 * @throws InvalidActivityException
 	 */
 	public Edge followTheFramedLine(Edge first, Point p2, double error,
-			Edge stop) {
+			Edge stop, Vector3d normalFloor) throws InvalidActivityException {
 
 		Point p1 = first.returnOther(p2);
 
 		// LOOK : We can take the second segment in the list : it's supposed to
 		// be ordered !
-		Edge e2 = first.returnNeighbour(p2, this);
+		Edge e2 = first.returnNeighbour(p2, this, normalFloor);
 		Point p3 = e2.returnOther(p2);
 
 		Edge eMain = first;
@@ -742,7 +749,7 @@ public class Polyline {
 			// Then the point p3 is almost aligned with the other points...
 			// We add the two segments, and we do that with a third segment...
 			eMain = eMain.compose(eNext, p2);
-			eNext = eNext.returnNeighbour(p3, this);
+			eNext = eNext.returnNeighbour(p3, this, normalFloor);
 			p1 = eMain.returnOther(p3);
 			p2 = p3;
 			p3 = eNext.returnOther(p2);

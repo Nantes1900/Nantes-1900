@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.logging.Logger;
 
 import modeles.Mesh;
 import modeles.Triangle;
@@ -37,10 +36,10 @@ public class WriterSTL {
 	 */
 	private static int MODE = ASCII_MODE;
 
-	/**
-	 * The logger to write the informations in.
-	 */
-	private static Logger log = Logger.getLogger("logger");
+//	/**
+//	 * The logger to write the informations in.
+//	 */
+//	private static Logger log = Logger.getLogger("logger");
 
 	/**
 	 * Write a mesh, depending on the attribute MODE.
@@ -90,7 +89,7 @@ public class WriterSTL {
 	 */
 	private static void writeA(String fileName, Mesh m) {
 		WriterSTL.writeSTLA(fileName, m);
-		log.info(fileName + " written in STL ASCII!");
+//		log.info(fileName + " written in STL ASCII!");
 	}
 
 	/**
@@ -103,7 +102,7 @@ public class WriterSTL {
 	 */
 	private static void writeB(String fileName, Mesh m) {
 		WriterSTL.writeSTLB(fileName, m);
-		log.info(fileName + " written in STL binary!");
+//		log.info(fileName + " written in STL binary!");
 	}
 
 	/**

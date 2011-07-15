@@ -272,37 +272,37 @@ public class PolylineTest {
 		assertFalse(p.areWeInTheTwoLinesOrNot(p1, p2, p3, error));
 	}
 
-	/**
-	 * Test method for {@link modeles.Polyline#followTheFramedLine(modeles.Edge, modeles.Point, double, modeles.Edge)}.
-	 */
-	@Test
-	public void testFollowTheFramedLine() {
-		Point p0 = new Point(-1, -1, 0);
-		Point p1 = new Point(0, 0, 0);
-		Point p2 = new Point(1, 1, 0);
-		Point p3 = new Point(2.2, 2, 0);
-		Point p4 = new Point(3, 3, 0);
-		Point p5 = new Point(4.1, 4, 0);
-		Point p6 = new Point(10, 4, 0);
-
-		Edge e0 = new Edge(p0, p1);
-		Edge e1 = new Edge(p1, p2);
-		Edge e2 = new Edge(p2, p3);
-		Edge e3 = new Edge(p3, p4);
-		Edge e4 = new Edge(p4, p5);
-		Edge e5 = new Edge(p5, p6);
-
-		Polyline line = new Polyline();
-
-		line.add(e0);
-		line.add(e1);
-		line.add(e2);
-		line.add(e3);
-		line.add(e4);
-		line.add(e5);
-
-		assertTrue(line.followTheFramedLine(e1, p1, 0.4, e0) == e5);
-	}
+//	/**
+//	 * Test method for {@link modeles.Polyline#followTheFramedLine(modeles.Edge, modeles.Point, double, modeles.Edge)}.
+//	 */
+//	@Test
+//	public void testFollowTheFramedLine() {
+//		Point p0 = new Point(-1, -1, 0);
+//		Point p1 = new Point(0, 0, 0);
+//		Point p2 = new Point(1, 1, 0);
+//		Point p3 = new Point(2.2, 2, 0);
+//		Point p4 = new Point(3, 3, 0);
+//		Point p5 = new Point(4.1, 4, 0);
+//		Point p6 = new Point(10, 4, 0);
+//
+//		Edge e0 = new Edge(p0, p1);
+//		Edge e1 = new Edge(p1, p2);
+//		Edge e2 = new Edge(p2, p3);
+//		Edge e3 = new Edge(p3, p4);
+//		Edge e4 = new Edge(p4, p5);
+//		Edge e5 = new Edge(p5, p6);
+//
+//		Polyline line = new Polyline();
+//
+//		line.add(e0);
+//		line.add(e1);
+//		line.add(e2);
+//		line.add(e3);
+//		line.add(e4);
+//		line.add(e5);
+//
+//		assertTrue(line.followTheFramedLine(e1, p1, 0.4, e0) == e5);
+//	}
 
 	/**
 	 * Test method for {@link modeles.Polyline#returnMesh()}.

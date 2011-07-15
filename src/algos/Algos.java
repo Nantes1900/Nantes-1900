@@ -30,12 +30,12 @@ public class Algos {
 		HashSet<Mesh> thingsList = new HashSet<Mesh>();
 		Mesh mesh = new Mesh(m);
 
-		int size = mesh.size();
+		// int size = mesh.size();
 
 		while (!mesh.isEmpty()) {
 			// LOOK : log.info instead of sysout.
-			System.out.println("Number of triangles left : " + mesh.size()
-					+ " on " + size);
+			// System.out.println("Number of triangles left : " + mesh.size()
+			// + " on " + size);
 			Mesh e = new Mesh();
 			mesh.getOne().returnNeighbours(e, mesh);
 			mesh.remove(e);
@@ -64,12 +64,12 @@ public class Algos {
 		ArrayList<Mesh> thingsList = new ArrayList<Mesh>();
 		Mesh mesh = new Mesh(m);
 
-		int size = mesh.size();
+		// int size = mesh.size();
 
 		while (!mesh.isEmpty()) {
 			// LOOK : redo this syso : the numbers are false !
-			System.out.println("Number of triangles left : " + mesh.size()
-					+ " on " + size);
+			// System.out.println("Number of triangles left : " + mesh.size()
+			// + " on " + size);
 			Mesh e = new Mesh();
 			Triangle tri = mesh.getOne();
 			Mesh oriented = mesh.orientedAs(tri.getNormal(),
@@ -137,15 +137,15 @@ public class Algos {
 
 		Mesh stripe = meshOriented.zBetween(lowestZ, lowestZ
 				+ altitudeErrorFactor);
-		int size = meshOriented.size();
+		// int size = meshOriented.size();
 
 		Mesh temp = new Mesh();
 
 		while (!stripe.isEmpty()) {
 			lowestTriangle = stripe.getOne();
 			// LOOK : redo this syso : the numbers are false !
-			System.out.println("Number of triangles left : "
-					+ meshOriented.size() + " on " + size);
+			// System.out.println("Number of triangles left : "
+			// + meshOriented.size() + " on " + size);
 			temp.clear();
 			lowestTriangle.returnNeighbours(temp, meshOriented);
 			floors.addAll(temp);

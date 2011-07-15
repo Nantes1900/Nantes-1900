@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.StringTokenizer;
-import java.util.logging.Logger;
 
 import javax.vecmath.Vector3d;
 
@@ -34,10 +33,10 @@ public class ParserSTL {
 	private static Vector3d currentVector;
 	private static ArrayList<Point> currentPoints;
 
-	/**
-	 * The logger to write the informations in.
-	 */
-	private static Logger log = Logger.getLogger("logger");
+//	/**
+//	 * The logger to write the informations in.
+//	 */
+//	private static Logger log = Logger.getLogger("logger");
 
 	/**
 	 * Read a binary STL file. Create a HashSet of triangle to put them in. If a
@@ -89,8 +88,8 @@ public class ParserSTL {
 			}
 		}
 
-		log.info("File : " + fileName + " read !");
-		log.info("Number of triangles : " + mesh.size());
+//		log.info("File : " + fileName + " read !");
+//		log.info("Number of triangles : " + mesh.size());
 
 		return mesh;
 	}
@@ -279,8 +278,8 @@ public class ParserSTL {
 			scanner.close();
 		}
 
-		log.info("File : " + fileName + " read !");
-		log.info("Number of triangles : " + mesh.size());
+//		log.info("File : " + fileName + " read !");
+//		log.info("Number of triangles : " + mesh.size());
 
 		return new HashSet<Triangle>(mesh);
 	}

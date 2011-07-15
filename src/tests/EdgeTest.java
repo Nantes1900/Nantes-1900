@@ -205,16 +205,16 @@ public class EdgeTest {
 		assertTrue(e5.returnOther(p4) == p2);
 	}
 
-	/**
-	 * Test method for
-	 * {@link modeles.Edge#returnNeighbour(modeles.Point, modeles.Polyline)}.
-	 */
-	@Test
-	public void testReturnNeighbour() {
-		assertTrue(e1.returnNeighbour(p1, line) == e4);
-		assertTrue(e2.returnNeighbour(p2, line) == e1);
-		assertTrue(e6.returnNeighbour(p3, line) == e2);
-	}
+//	/**
+//	 * Test method for
+//	 * {@link modeles.Edge#returnNeighbour(modeles.Point, modeles.Polyline)}.
+//	 */
+//	@Test
+//	public void testReturnNeighbour() {
+//		assertTrue(e1.returnNeighbour(p1, line) == e4);
+//		assertTrue(e2.returnNeighbour(p2, line) == e1);
+//		assertTrue(e6.returnNeighbour(p3, line) == e2);
+//	}
 
 	/**
 	 * Test method for {@link modeles.Edge#compose(modeles.Edge, modeles.Point)}

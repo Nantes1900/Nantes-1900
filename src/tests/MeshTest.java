@@ -1,8 +1,8 @@
 package tests;
 
-import static org.junit.Assert.*;
-
-import java.util.ArrayList;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import javax.vecmath.Vector3d;
 
@@ -341,233 +341,233 @@ public class MeshTest {
 		assertTrue(bounds.contains(e17));
 	}
 
-	/**
-	 * Test method for {@link modeles.Mesh#returnSortedBounds(modeles.Polyline)}
-	 * .
-	 */
-	@Test
-	public void testReturnSortedBounds() {
-		// We create points, but no matter their coordinates, if they are not
-		// equals.
-		Point p1 = new Point(1, 0, -1);
-		Point p2 = new Point(0, 1, 0);
-		Point p3 = new Point(-1, 2, 1);
-		Point p4 = new Point(1, 1, 1);
-		Point p5 = new Point(2, 2, 2);
-		Point p6 = new Point(-1, 3, 1);
-		Point p7 = new Point(-2, 1, 0);
-		Point p8 = new Point(3, 4, 5);
-		Point p9 = new Point(3, -2, -2);
+//	/**
+//	 * Test method for {@link modeles.Mesh#returnSortedBounds(modeles.Polyline)}
+//	 * .
+//	 */
+//	@Test
+//	public void testReturnSortedBounds() {
+//		// We create points, but no matter their coordinates, if they are not
+//		// equals.
+//		Point p1 = new Point(1, 0, -1);
+//		Point p2 = new Point(0, 1, 0);
+//		Point p3 = new Point(-1, 2, 1);
+//		Point p4 = new Point(1, 1, 1);
+//		Point p5 = new Point(2, 2, 2);
+//		Point p6 = new Point(-1, 3, 1);
+//		Point p7 = new Point(-2, 1, 0);
+//		Point p8 = new Point(3, 4, 5);
+//		Point p9 = new Point(3, -2, -2);
+//
+//		Vector3d vect = new Vector3d(0, 0, 1);
+//
+//		Edge e1 = new Edge(p1, p2);
+//		Edge e2 = new Edge(p2, p3);
+//		Edge e3 = new Edge(p3, p1);
+//		Edge e4 = new Edge(p1, p4);
+//		Edge e5 = new Edge(p3, p4);
+//		Edge e6 = new Edge(p4, p5);
+//		Edge e7 = new Edge(p1, p5);
+//
+//		Edge e8 = new Edge(p1, p6);
+//		Edge e9 = new Edge(p5, p6);
+//		Edge e10 = new Edge(p6, p7);
+//		Edge e11 = new Edge(p6, p9);
+//		Edge e12 = new Edge(p7, p9);
+//		Edge e13 = new Edge(p8, p9);
+//		Edge e14 = new Edge(p7, p8);
+//		Edge e15 = new Edge(p2, p7);
+//		Edge e16 = new Edge(p1, p7);
+//		Edge e17 = new Edge(p2, p8);
+//
+//		Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect);
+//		Triangle t2 = new Triangle(p1, p3, p4, e3, e4, e5, vect);
+//		Triangle t3 = new Triangle(p1, p4, p5, e4, e6, e7, vect);
+//		Triangle t4 = new Triangle(p1, p5, p6, e7, e8, e9, vect);
+//		Triangle t5 = new Triangle(p1, p6, p7, e8, e10, e16, vect);
+//		Triangle t6 = new Triangle(p6, p7, p9, e10, e11, e12, vect);
+//		Triangle t7 = new Triangle(p7, p8, p9, e12, e13, e14, vect);
+//		Triangle t8 = new Triangle(p2, p7, p8, e14, e15, e17, vect);
+//
+//		Mesh mesh = new Mesh();
+//		mesh.add(t1);
+//		mesh.add(t2);
+//		mesh.add(t3);
+//		mesh.add(t4);
+//		mesh.add(t5);
+//		mesh.add(t6);
+//		mesh.add(t7);
+//		mesh.add(t8);
+//
+//		ArrayList<Polyline> boundList = mesh.returnBounds();
+//
+//		assertTrue(boundList.size() == 1);
+//		assertTrue(boundList.get(0).edgeSize() == 10);
+//		assertTrue(boundList.get(0).pointSize() == 9);
+//	}
 
-		Vector3d vect = new Vector3d(0, 0, 1);
+	// /**
+	// * Test method for {@link
+	// modeles.Mesh#separateBounds(java.util.ArrayList)}.
+	// */
+	// @Test
+	// public void testSeparateBounds() {
+	//
+	// // We create points, but no matter their coordinates, if they are not
+	// // equals.
+	// Point p1 = new Point(1, 0, -1);
+	// Point p2 = new Point(0, 1, 0);
+	// Point p3 = new Point(-1, 2, 1);
+	// Point p4 = new Point(1, 1, 1);
+	// Point p5 = new Point(2, 2, 2);
+	// Point p6 = new Point(-1, 3, 1);
+	// Point p7 = new Point(-2, 1, 0);
+	// Point p8 = new Point(3, 4, 5);
+	// Point p9 = new Point(3, -2, -2);
+	//
+	// Vector3d vect = new Vector3d(0, 0, 1);
+	//
+	// Edge e1 = new Edge(p1, p2);
+	// Edge e2 = new Edge(p2, p3);
+	// Edge e3 = new Edge(p3, p1);
+	// Edge e4 = new Edge(p1, p4);
+	// Edge e5 = new Edge(p3, p4);
+	// Edge e6 = new Edge(p4, p5);
+	// Edge e7 = new Edge(p1, p5);
+	//
+	// Edge e8 = new Edge(p1, p6);
+	// Edge e9 = new Edge(p5, p6);
+	// Edge e10 = new Edge(p6, p7);
+	// Edge e11 = new Edge(p6, p9);
+	// Edge e12 = new Edge(p7, p9);
+	// Edge e13 = new Edge(p8, p9);
+	// Edge e14 = new Edge(p7, p8);
+	// Edge e15 = new Edge(p2, p7);
+	// Edge e16 = new Edge(p1, p7);
+	// Edge e17 = new Edge(p2, p8);
+	//
+	// Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect);
+	// Triangle t2 = new Triangle(p1, p3, p4, e3, e4, e5, vect);
+	// Triangle t3 = new Triangle(p1, p4, p5, e4, e6, e7, vect);
+	// Triangle t4 = new Triangle(p1, p5, p6, e7, e8, e9, vect);
+	// Triangle t5 = new Triangle(p1, p6, p7, e8, e10, e16, vect);
+	// Triangle t6 = new Triangle(p6, p7, p9, e10, e11, e12, vect);
+	// Triangle t7 = new Triangle(p7, p8, p9, e12, e13, e14, vect);
+	// Triangle t8 = new Triangle(p2, p7, p8, e14, e15, e17, vect);
+	//
+	// Mesh mesh = new Mesh();
+	// mesh.add(t1);
+	// mesh.add(t2);
+	// mesh.add(t3);
+	// mesh.add(t4);
+	// mesh.add(t5);
+	// mesh.add(t6);
+	// mesh.add(t7);
+	// mesh.add(t8);
+	//
+	// ArrayList<Polyline> boundList = mesh.separateBounds(mesh
+	// .returnSortedBounds(mesh.returnUnsortedBounds()));
+	//
+	// assertTrue(boundList.size() == 2);
+	// assertTrue(boundList.get(0).edgeSize() == 3
+	// || boundList.get(0).edgeSize() == 7);
+	// assertTrue(boundList.get(1).edgeSize() == 3
+	// || boundList.get(1).edgeSize() == 7);
+	//
+	// if (boundList.get(0).contains(e1)) {
+	// assertTrue(boundList.get(0).contains(e15));
+	// assertTrue(boundList.get(0).contains(e16));
+	//
+	// assertTrue(boundList.get(1).contains(e2));
+	// assertTrue(boundList.get(1).contains(e5));
+	// assertTrue(boundList.get(1).contains(e6));
+	// assertTrue(boundList.get(1).contains(e9));
+	// assertTrue(boundList.get(1).contains(e11));
+	// assertTrue(boundList.get(1).contains(e13));
+	// assertTrue(boundList.get(1).contains(e17));
+	// } else {
+	//
+	// assertTrue(boundList.get(1).contains(e15));
+	// assertTrue(boundList.get(1).contains(e16));
+	//
+	// assertTrue(boundList.get(0).contains(e2));
+	// assertTrue(boundList.get(0).contains(e5));
+	// assertTrue(boundList.get(0).contains(e6));
+	// assertTrue(boundList.get(0).contains(e9));
+	// assertTrue(boundList.get(0).contains(e11));
+	// assertTrue(boundList.get(0).contains(e13));
+	// assertTrue(boundList.get(0).contains(e17));
+	// }
+	// }
 
-		Edge e1 = new Edge(p1, p2);
-		Edge e2 = new Edge(p2, p3);
-		Edge e3 = new Edge(p3, p1);
-		Edge e4 = new Edge(p1, p4);
-		Edge e5 = new Edge(p3, p4);
-		Edge e6 = new Edge(p4, p5);
-		Edge e7 = new Edge(p1, p5);
-
-		Edge e8 = new Edge(p1, p6);
-		Edge e9 = new Edge(p5, p6);
-		Edge e10 = new Edge(p6, p7);
-		Edge e11 = new Edge(p6, p9);
-		Edge e12 = new Edge(p7, p9);
-		Edge e13 = new Edge(p8, p9);
-		Edge e14 = new Edge(p7, p8);
-		Edge e15 = new Edge(p2, p7);
-		Edge e16 = new Edge(p1, p7);
-		Edge e17 = new Edge(p2, p8);
-
-		Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect);
-		Triangle t2 = new Triangle(p1, p3, p4, e3, e4, e5, vect);
-		Triangle t3 = new Triangle(p1, p4, p5, e4, e6, e7, vect);
-		Triangle t4 = new Triangle(p1, p5, p6, e7, e8, e9, vect);
-		Triangle t5 = new Triangle(p1, p6, p7, e8, e10, e16, vect);
-		Triangle t6 = new Triangle(p6, p7, p9, e10, e11, e12, vect);
-		Triangle t7 = new Triangle(p7, p8, p9, e12, e13, e14, vect);
-		Triangle t8 = new Triangle(p2, p7, p8, e14, e15, e17, vect);
-
-		Mesh mesh = new Mesh();
-		mesh.add(t1);
-		mesh.add(t2);
-		mesh.add(t3);
-		mesh.add(t4);
-		mesh.add(t5);
-		mesh.add(t6);
-		mesh.add(t7);
-		mesh.add(t8);
-
-		ArrayList<Polyline> boundList = mesh.returnSortedBounds(mesh
-				.returnUnsortedBounds());
-
-		assertTrue(boundList.size() == 1);
-		assertTrue(boundList.get(0).edgeSize() == 10);
-		assertTrue(boundList.get(0).pointSize() == 9);
-	}
-
-	/**
-	 * Test method for {@link modeles.Mesh#separateBounds(java.util.ArrayList)}.
-	 */
-	@Test
-	public void testSeparateBounds() {
-
-		// We create points, but no matter their coordinates, if they are not
-		// equals.
-		Point p1 = new Point(1, 0, -1);
-		Point p2 = new Point(0, 1, 0);
-		Point p3 = new Point(-1, 2, 1);
-		Point p4 = new Point(1, 1, 1);
-		Point p5 = new Point(2, 2, 2);
-		Point p6 = new Point(-1, 3, 1);
-		Point p7 = new Point(-2, 1, 0);
-		Point p8 = new Point(3, 4, 5);
-		Point p9 = new Point(3, -2, -2);
-
-		Vector3d vect = new Vector3d(0, 0, 1);
-
-		Edge e1 = new Edge(p1, p2);
-		Edge e2 = new Edge(p2, p3);
-		Edge e3 = new Edge(p3, p1);
-		Edge e4 = new Edge(p1, p4);
-		Edge e5 = new Edge(p3, p4);
-		Edge e6 = new Edge(p4, p5);
-		Edge e7 = new Edge(p1, p5);
-
-		Edge e8 = new Edge(p1, p6);
-		Edge e9 = new Edge(p5, p6);
-		Edge e10 = new Edge(p6, p7);
-		Edge e11 = new Edge(p6, p9);
-		Edge e12 = new Edge(p7, p9);
-		Edge e13 = new Edge(p8, p9);
-		Edge e14 = new Edge(p7, p8);
-		Edge e15 = new Edge(p2, p7);
-		Edge e16 = new Edge(p1, p7);
-		Edge e17 = new Edge(p2, p8);
-
-		Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect);
-		Triangle t2 = new Triangle(p1, p3, p4, e3, e4, e5, vect);
-		Triangle t3 = new Triangle(p1, p4, p5, e4, e6, e7, vect);
-		Triangle t4 = new Triangle(p1, p5, p6, e7, e8, e9, vect);
-		Triangle t5 = new Triangle(p1, p6, p7, e8, e10, e16, vect);
-		Triangle t6 = new Triangle(p6, p7, p9, e10, e11, e12, vect);
-		Triangle t7 = new Triangle(p7, p8, p9, e12, e13, e14, vect);
-		Triangle t8 = new Triangle(p2, p7, p8, e14, e15, e17, vect);
-
-		Mesh mesh = new Mesh();
-		mesh.add(t1);
-		mesh.add(t2);
-		mesh.add(t3);
-		mesh.add(t4);
-		mesh.add(t5);
-		mesh.add(t6);
-		mesh.add(t7);
-		mesh.add(t8);
-
-		ArrayList<Polyline> boundList = mesh.separateBounds(mesh
-				.returnSortedBounds(mesh.returnUnsortedBounds()));
-
-		assertTrue(boundList.size() == 2);
-		assertTrue(boundList.get(0).edgeSize() == 3
-				|| boundList.get(0).edgeSize() == 7);
-		assertTrue(boundList.get(1).edgeSize() == 3
-				|| boundList.get(1).edgeSize() == 7);
-
-		if (boundList.get(0).contains(e1)) {
-			assertTrue(boundList.get(0).contains(e15));
-			assertTrue(boundList.get(0).contains(e16));
-
-			assertTrue(boundList.get(1).contains(e2));
-			assertTrue(boundList.get(1).contains(e5));
-			assertTrue(boundList.get(1).contains(e6));
-			assertTrue(boundList.get(1).contains(e9));
-			assertTrue(boundList.get(1).contains(e11));
-			assertTrue(boundList.get(1).contains(e13));
-			assertTrue(boundList.get(1).contains(e17));
-		} else {
-
-			assertTrue(boundList.get(1).contains(e15));
-			assertTrue(boundList.get(1).contains(e16));
-
-			assertTrue(boundList.get(0).contains(e2));
-			assertTrue(boundList.get(0).contains(e5));
-			assertTrue(boundList.get(0).contains(e6));
-			assertTrue(boundList.get(0).contains(e9));
-			assertTrue(boundList.get(0).contains(e11));
-			assertTrue(boundList.get(0).contains(e13));
-			assertTrue(boundList.get(0).contains(e17));
-		}
-	}
-
-	/**
-	 * Test method for {@link modeles.Mesh#returnLongestBound()}.
-	 */
-	@Test
-	public void testReturnLongestBound() {
-
-		// We create points, but no matter their coordinates, if they are not
-		// equals.
-		Point p1 = new Point(1, 0, -1);
-		Point p2 = new Point(0, 1, 0);
-		Point p3 = new Point(-1, 2, 1);
-		Point p4 = new Point(1, 1, 1);
-		Point p5 = new Point(2, 2, 2);
-		Point p6 = new Point(-1, 3, 1);
-		Point p7 = new Point(-2, 1, 0);
-		Point p8 = new Point(3, 4, 5);
-		Point p9 = new Point(3, -2, -2);
-
-		Vector3d vect = new Vector3d(0, 0, 1);
-
-		Edge e1 = new Edge(p1, p2);
-		Edge e2 = new Edge(p2, p3);
-		Edge e3 = new Edge(p3, p1);
-		Edge e4 = new Edge(p1, p4);
-		Edge e5 = new Edge(p3, p4);
-		Edge e6 = new Edge(p4, p5);
-		Edge e7 = new Edge(p1, p5);
-
-		Edge e8 = new Edge(p1, p6);
-		Edge e9 = new Edge(p5, p6);
-		Edge e10 = new Edge(p6, p7);
-		Edge e11 = new Edge(p6, p9);
-		Edge e12 = new Edge(p7, p9);
-		Edge e13 = new Edge(p8, p9);
-		Edge e14 = new Edge(p7, p8);
-		Edge e15 = new Edge(p2, p7);
-		Edge e16 = new Edge(p1, p7);
-		Edge e17 = new Edge(p2, p8);
-
-		Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect);
-		Triangle t2 = new Triangle(p1, p3, p4, e3, e4, e5, vect);
-		Triangle t3 = new Triangle(p1, p4, p5, e4, e6, e7, vect);
-		Triangle t4 = new Triangle(p1, p5, p6, e7, e8, e9, vect);
-		Triangle t5 = new Triangle(p1, p6, p7, e8, e10, e16, vect);
-		Triangle t6 = new Triangle(p6, p7, p9, e10, e11, e12, vect);
-		Triangle t7 = new Triangle(p7, p8, p9, e12, e13, e14, vect);
-		Triangle t8 = new Triangle(p2, p7, p8, e14, e15, e17, vect);
-
-		Mesh mesh = new Mesh();
-		mesh.add(t1);
-		mesh.add(t2);
-		mesh.add(t3);
-		mesh.add(t4);
-		mesh.add(t5);
-		mesh.add(t6);
-		mesh.add(t7);
-		mesh.add(t8);
-
-		Polyline l = mesh.returnLongestBound();
-
-		assertTrue(l.contains(e2));
-		assertTrue(l.contains(e5));
-		assertTrue(l.contains(e6));
-		assertTrue(l.contains(e9));
-		assertTrue(l.contains(e11));
-		assertTrue(l.contains(e13));
-		assertTrue(l.contains(e17));
-	}
+//	/**
+//	 * Test method for {@link modeles.Mesh#returnLongestBound()}.
+//	 */
+//	@Test
+//	public void testReturnLongestBound() {
+//
+//		// We create points, but no matter their coordinates, if they are not
+//		// equals.
+//		Point p1 = new Point(1, 0, -1);
+//		Point p2 = new Point(0, 1, 0);
+//		Point p3 = new Point(-1, 2, 1);
+//		Point p4 = new Point(1, 1, 1);
+//		Point p5 = new Point(2, 2, 2);
+//		Point p6 = new Point(-1, 3, 1);
+//		Point p7 = new Point(-2, 1, 0);
+//		Point p8 = new Point(3, 4, 5);
+//		Point p9 = new Point(3, -2, -2);
+//
+//		Vector3d vect = new Vector3d(0, 0, 1);
+//
+//		Edge e1 = new Edge(p1, p2);
+//		Edge e2 = new Edge(p2, p3);
+//		Edge e3 = new Edge(p3, p1);
+//		Edge e4 = new Edge(p1, p4);
+//		Edge e5 = new Edge(p3, p4);
+//		Edge e6 = new Edge(p4, p5);
+//		Edge e7 = new Edge(p1, p5);
+//
+//		Edge e8 = new Edge(p1, p6);
+//		Edge e9 = new Edge(p5, p6);
+//		Edge e10 = new Edge(p6, p7);
+//		Edge e11 = new Edge(p6, p9);
+//		Edge e12 = new Edge(p7, p9);
+//		Edge e13 = new Edge(p8, p9);
+//		Edge e14 = new Edge(p7, p8);
+//		Edge e15 = new Edge(p2, p7);
+//		Edge e16 = new Edge(p1, p7);
+//		Edge e17 = new Edge(p2, p8);
+//
+//		Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect);
+//		Triangle t2 = new Triangle(p1, p3, p4, e3, e4, e5, vect);
+//		Triangle t3 = new Triangle(p1, p4, p5, e4, e6, e7, vect);
+//		Triangle t4 = new Triangle(p1, p5, p6, e7, e8, e9, vect);
+//		Triangle t5 = new Triangle(p1, p6, p7, e8, e10, e16, vect);
+//		Triangle t6 = new Triangle(p6, p7, p9, e10, e11, e12, vect);
+//		Triangle t7 = new Triangle(p7, p8, p9, e12, e13, e14, vect);
+//		Triangle t8 = new Triangle(p2, p7, p8, e14, e15, e17, vect);
+//
+//		Mesh mesh = new Mesh();
+//		mesh.add(t1);
+//		mesh.add(t2);
+//		mesh.add(t3);
+//		mesh.add(t4);
+//		mesh.add(t5);
+//		mesh.add(t6);
+//		mesh.add(t7);
+//		mesh.add(t8);
+//
+//		Polyline l = mesh.returnLongestBound();
+//
+//		assertTrue(l.contains(e2));
+//		assertTrue(l.contains(e5));
+//		assertTrue(l.contains(e6));
+//		assertTrue(l.contains(e9));
+//		assertTrue(l.contains(e11));
+//		assertTrue(l.contains(e13));
+//		assertTrue(l.contains(e17));
+//	}
 
 	/**
 	 * Test method for {@link modeles.Mesh#getOne()}.
@@ -607,14 +607,6 @@ public class MeshTest {
 	 */
 	@Test
 	public void testTreatWeirdCase() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link modeles.Mesh#returnBounds()}.
-	 */
-	@Test
-	public void testReturnBounds() {
 		fail("Not yet implemented"); // TODO
 	}
 }

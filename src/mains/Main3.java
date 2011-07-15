@@ -1,12 +1,12 @@
 package mains;
 
-import algos.SeparationTraitementMursToits;
+import algos.SeparationTreatmentWallsFloors;
 
 public class Main3 {
 
 	public static void main(String[] args) {
 
-		SeparationTraitementMursToits algo = new SeparationTraitementMursToits();
+		SeparationTreatmentWallsFloors algo = new SeparationTreatmentWallsFloors();
 		algo.setDebugMode();
 		algo.apply();
 

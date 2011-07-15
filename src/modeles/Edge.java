@@ -216,147 +216,51 @@ public class Edge {
 
 			ArrayList<Edge> edgeList = p.getNeighbours(point);
 			if (!edgeList.contains(this)) {
+				///LOOK
 				System.err.println("Enormous error 1 !");
-			} else if (edgeList.size() == 4) {
-				Edge e = this.returnTheGoodOne(m, p.getNeighbours(point),
-						point, normalFloor);
-				e.returnOneBound(m, ret, p, e.returnOther(point), normalFloor);
-			} else if (edgeList.size() == 2) {
-				Edge e = this.returnNeighbour(point, p);
-				e.returnOneBound(m, ret, p, e.returnOther(point), normalFloor);
 			} else {
-				System.err.println("pb !");
+				Edge e = this.returnNeighbour(point, p, normalFloor);
+				e.returnOneBound(m, ret, p, e.returnOther(point), normalFloor);
 			}
 		}
 	}
 
-	private Edge returnTheGoodOne(Mesh m, ArrayList<Edge> weirdEdges,
-			Point weirdPoint, Vector3d normalFloor)
-			throws InvalidActivityException {
+	private Edge returnTheLeftOne(ArrayList<Edge> weirdEdges, Point weirdPoint,
+			Vector3d normalFloor) throws InvalidActivityException {
 
 		if (!weirdEdges.contains(this)) {
-			System.err.println("Big mistake 2!");
+			//LOOK
+			System.err.println("Big mistake !");
 		}
 
-		// TODO : si un triangle de ces 4 là possède un triangle qui n'est pas
-		// dans m en commun avec un autre, alors il sont de la même polyline.
+		Vector3d v = new Vector3d();
 
-		ArrayList<Edge> weirdEdges1 = new ArrayList<Edge>(weirdEdges);
-		ArrayList<Edge> weirdEdges2 = new ArrayList<Edge>();
-
-		if (weirdEdges1.size() != 4) {
-			System.err.println("Error in the number of weirdEdges !");
-		} else {
-			Edge e1 = weirdEdges1.get(0);
-			Edge e2 = weirdEdges1.get(1);
-			Edge e3 = weirdEdges1.get(2);
-			Edge e4 = weirdEdges1.get(3);
-
-			Triangle t1 = null;
-			int counter = 0;
-			for (Triangle t : e1.getTriangleList()) {
-				if (m.contains(t)) {
-					t1 = t;
-					counter++;
-				}
-			}
-			if (counter != 1)
-				System.err.println("Error 32!");
-
-			weirdEdges2.add(e1);
-			weirdEdges1.remove(e1);
-
-			if (e2.getTriangleList().contains(t1)) {
-				weirdEdges2.add(e2);
-				weirdEdges1.remove(e2);
-			} else if (e3.getTriangleList().contains(t1)) {
-				weirdEdges2.add(e3);
-				weirdEdges1.remove(e3);
-			} else if (e4.getTriangleList().contains(t1)) {
-				weirdEdges2.add(e4);
-				weirdEdges1.remove(e4);
-			} else {
-				System.err.println("Re big !");
-			}
-		}
-
-		// We know that in weirdEdges1 are two edges which share one triangle,
-		// and the same in weirdEdges2. Now we have to find which one is with
-		// which other...
-
-		Vector3d v1 = new Vector3d();
-		Vector3d v2 = new Vector3d();
-		Vector3d v3 = new Vector3d();
-		Vector3d v4 = new Vector3d();
-
-		Edge e1 = weirdEdges1.get(0);
-		Edge e2 = weirdEdges1.get(1);
-
-		v1.x = e1.returnOther(weirdPoint).getX() - weirdPoint.getX();
-		v1.y = e1.returnOther(weirdPoint).getY() - weirdPoint.getY();
-		v1.z = e1.returnOther(weirdPoint).getZ() - weirdPoint.getZ();
-
-		v2.x = e2.returnOther(weirdPoint).getX() - weirdPoint.getX();
-		v2.y = e2.returnOther(weirdPoint).getY() - weirdPoint.getY();
-		v2.z = e2.returnOther(weirdPoint).getZ() - weirdPoint.getZ();
-
-		Edge e3 = weirdEdges2.get(0);
-		Edge e4 = weirdEdges2.get(1);
-
-		v3.x = e3.returnOther(weirdPoint).getX() - weirdPoint.getX();
-		v3.y = e3.returnOther(weirdPoint).getY() - weirdPoint.getY();
-		v3.z = e3.returnOther(weirdPoint).getZ() - weirdPoint.getZ();
-
-		v4.x = e4.returnOther(weirdPoint).getX() - weirdPoint.getX();
-		v4.y = e4.returnOther(weirdPoint).getY() - weirdPoint.getY();
-		v4.z = e4.returnOther(weirdPoint).getZ() - weirdPoint.getZ();
-
-		v1.normalize();
-		v2.normalize();
-		v3.normalize();
-		v4.normalize();
-
-		weirdEdges1.clear();
-		weirdEdges1.add(e1);
-
-		weirdEdges2.clear();
-		weirdEdges2.add(e2);
+		v.x = this.returnOther(weirdPoint).getX() - weirdPoint.getX();
+		v.y = this.returnOther(weirdPoint).getY() - weirdPoint.getY();
+		v.z = this.returnOther(weirdPoint).getZ() - weirdPoint.getZ();
 
 		Vector3d cross = new Vector3d();
-		cross.cross(normalFloor, v1);
+		cross.cross(normalFloor, v);
 
-		if (cross.dot(v2) > 0) {
-			// It means that seeing from the weirdPoint (middle point), e2 is at
-			// the left of e1.
-			// Thus we try to find the first edge at the right of e1.
-			if (cross.dot(v3) < cross.dot(v4)) {
-				weirdEdges1.add(e3);
-				weirdEdges2.add(e4);
-			} else {
-				weirdEdges1.add(e4);
-				weirdEdges2.add(e3);
-			}
+		Edge ref = null;
+		double max = Double.NEGATIVE_INFINITY;
 
-		} else {
-			// e2 is at the right. Find the first at the left of e1.
-			if (cross.dot(v3) > cross.dot(v4)) {
-				weirdEdges1.add(e3);
-				weirdEdges2.add(e4);
-			} else {
-				weirdEdges1.add(e4);
-				weirdEdges2.add(e3);
+		for (Edge edge : weirdEdges) {
+			Vector3d vect = new Vector3d();
+
+			vect.x = edge.returnOther(weirdPoint).getX() - weirdPoint.getX();
+			vect.y = edge.returnOther(weirdPoint).getY() - weirdPoint.getY();
+			vect.z = edge.returnOther(weirdPoint).getZ() - weirdPoint.getZ();
+
+			vect.normalize();
+
+			if (cross.dot(vect) > max) {
+				max = cross.dot(vect);
+				ref = edge;
 			}
 		}
 
-		if (weirdEdges1.contains(this)) {
-			weirdEdges1.remove(this);
-			return weirdEdges1.get(0);
-		} else if (weirdEdges2.contains(this)) {
-			weirdEdges2.remove(this);
-			return weirdEdges2.get(0);
-		} else {
-			throw new InvalidActivityException();
-		}
+		return ref;
 	}
 
 	public String toString() {
@@ -414,23 +318,21 @@ public class Edge {
 	 * @param b
 	 *            the poliyline in which must be the edge returned
 	 * @return the edge belonging to b which contains p
-	 * @throws Exception
-	 *             if there is more than two edges containing the same point
+	 * @throws InvalidActivityException
 	 */
 	// TODO : @Test
-	public Edge returnNeighbour(Point p, Polyline b) {
+	public Edge returnNeighbour(Point p, Polyline b, Vector3d normalFloor)
+			throws InvalidActivityException {
 		if (!b.contains(this)) {
 			throw new InvalidParameterException();
 		}
 		ArrayList<Edge> list = b.getNeighbours(p);
 		if (list.size() != 2) {
-			System.err.println("Error in returnNeighbours!");
-			// throw new InvalidParameterException();
+			return this.returnTheLeftOne(b.getNeighbours(p), p, normalFloor);
+		} else {
+			list.remove(this);
+			return list.get(0);
 		}
-		// else {
-		list.remove(this);
-		return list.get(0);
-		// }
 	}
 
 	/**
