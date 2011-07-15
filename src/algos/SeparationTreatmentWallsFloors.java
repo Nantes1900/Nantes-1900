@@ -31,7 +31,7 @@ public class SeparationTreatmentWallsFloors {
 	private double errorNormalToFactor = 0.2;
 	private double errorNumberTrianglesWall = 4;
 	private double errorNumberTrianglesRoof = 6;
-	private double errorSingularPoints = 0.1;
+	private double errorSingularPoints = 0.7;
 
 	private Mesh floorBrut = new Mesh();
 	private Vector3d normalFloor = new Vector3d();
@@ -269,122 +269,88 @@ public class SeparationTreatmentWallsFloors {
 		}
 	}
 
-	/**
-	 * 
-	 */
 	private void treatWall() {
 
-		counterWall = 0;
+		this.counterWall = 0;
 
 		// For each wall
-		while (counterWall < wallList.size()) {
+		while (this.counterWall < this.wallList.size()) {
 
-			Mesh wall = wallList.get(counterWall);
+			Polyline wallComputed = this.treatSurface(this.wallList
+					.get(this.counterWall));
+			this.wallList.get(this.counterWall).write(
+					"Files/brutWall - " + this.counterWall + ".stl");
+			wallComputed.returnCentroidMesh().write(
+					"Files/computedWall - " + this.counterWall + ".stl");
 
-			// Compute the contour of the wall
-			Polyline longestBound = wall.returnLongestBound(this.normalFloor);
-
-			// Order the polyline of the contour
-//			try {
-//				longestBound.order(this.normalFloor);
-//			} catch (InvalidActivityException e1) {
-//				e1.printStackTrace();
-//			}
-
-			Vector3d normalWall = wall.averageNormal();
-			double[][] matrixWall = null, matrixWallInv = null;
-
-			// Base change to have the surface in the (x,y) plane
-			try {
-				matrixWall = MatrixMethod.createOrthoBase(normalWall);
-				matrixWallInv = MatrixMethod.getInversMatrix(matrixWall);
-			} catch (SingularMatrixException e) {
-				System.err.println("Error in the matrix !");
-				System.exit(1);
-			}
-
-			// Project on the plane at the z coordinate of the z average of
-			// all triangles of the wall.
-			longestBound.changeBase(matrixWall);
-			longestBound = longestBound.zProjection(longestBound.zAverage());
-
-			// Compute the singular points
-			Polyline singularPoints = null;
-			try {
-				singularPoints = longestBound
-						.determinateSingularPoints(this.errorSingularPoints, this.normalFloor);
-			} catch (InvalidActivityException e) {
-				e.printStackTrace();
-			}
-
-			// Inverse base change
-			singularPoints.changeBase(matrixWallInv);
-			singularPoints.returnCentroidMesh().write(
-					"Files/wallSingularPoints - " + counterWall + ".stl");
-
-			counterWall++;
+			this.counterWall++;
 		}
 	}
 
-	/**
-	 * 
-	 */
 	private void treatRoof() {
+		
+		this.counterRoof = 0;
 
-		counterRoof = 0;
+		// For each roof
+		while (this.counterRoof < this.roofList.size()) {
 
-		while (counterRoof < roofList.size()) {
+			Polyline roofComputed = this.treatSurface(this.roofList
+					.get(this.counterRoof));
+			this.roofList.get(this.counterRoof).write(
+					"Files/brutRoof - " + this.counterRoof + ".stl");
+			roofComputed.returnCentroidMesh().write(
+					"Files/computedRoof - " + this.counterRoof + ".stl");
 
-			Mesh roof = roofList.get(counterRoof);
-
-			// Compute the contour of the roof
-			Polyline longestBound = roof.returnLongestBound(this.normalFloor);
-
-//			// Order the polyline of the contour
-//			try {
-//				longestBound.order(this.normalFloor);
-//			} catch (InvalidActivityException e1) {
-//				e1.printStackTrace();
-//			}
-
-			Vector3d normalRoof = roof.averageNormal();
-			double[][] matrixRoof = null, matrixRoofInv = null;
-
-			// Base change to have the surface in the (x,y) plane
-			try {
-				matrixRoof = MatrixMethod.createOrthoBase(normalRoof);
-				matrixRoofInv = MatrixMethod.getInversMatrix(matrixRoof);
-			} catch (SingularMatrixException e) {
-				System.err.println("Error in the matrix !");
-				System.exit(1);
-			}
-
-			// Project on the plane at the z coordinate of the z average of
-			// all triangles of the roof.
-			longestBound.changeBase(matrixRoof);
-			longestBound = longestBound.zProjection(longestBound.zAverage());
-
-			// Compute the singular points
-			Polyline singularPoints = null;
-			try {
-				singularPoints = longestBound
-						.determinateSingularPoints(this.errorSingularPoints, this.normalFloor);
-			} catch (InvalidActivityException e) {
-				e.printStackTrace();
-			}
-
-			// Inverse base change
-			singularPoints.changeBase(matrixRoofInv);
-			longestBound.returnCentroidMesh().write(
-					"Files/roofSingularPoints - " + counterRoof + ".stl");
-
-			counterRoof++;
+			this.counterRoof++;
 		}
 	}
 
-	/**
-	 *
-	 */
+	private Polyline treatSurface(Mesh surface) {
+
+		// Compute the contour of the surface
+
+		Polyline longestBound = surface.returnLongestBound(surface
+				.averageNormal());
+
+		// Order the polyline of the contour
+		try {
+			longestBound.order(surface, surface.averageNormal());
+		} catch (InvalidActivityException e) {
+			e.printStackTrace();
+		}
+
+		Vector3d normalSurface = surface.averageNormal();
+		double[][] matrixSurface = null, matrixSurfaceInv = null;
+
+		// Base change to have the surface in the (x,y) plane
+		try {
+			matrixSurface = MatrixMethod.createOrthoBase(normalSurface);
+			matrixSurfaceInv = MatrixMethod.getInversMatrix(matrixSurface);
+		} catch (SingularMatrixException e) {
+			System.err.println("Error in the matrix !");
+			System.exit(1);
+		}
+
+		// Project on the plane at the z coordinate of the z average of
+		// all triangles of the roof.
+		longestBound.changeBase(matrixSurface);
+		longestBound = longestBound.zProjection(longestBound.zAverage());
+
+		// Compute the singular points
+		Polyline singularPoints = null;
+		try {
+			singularPoints = longestBound.determinateSingularPoints(
+					this.errorSingularPoints, new Vector3d(0, 0, 1));
+		} catch (InvalidActivityException e) {
+			e.printStackTrace();
+		}
+
+		// Inverse base change
+		singularPoints.changeBase(matrixSurfaceInv);
+
+		return singularPoints;
+	}
+
 	private void writeCityGMLWalls() {
 		// counterWall = 0;
 		//

@@ -202,6 +202,21 @@ public class Polyline {
 	}
 
 	/**
+	 * Convert the list of points in a list of coordinates as doubles.
+	 * 
+	 * @return a list of double as coordinates.
+	 */
+	public List<Double> getPointsAsCoordinates() {
+		ArrayList<Double> list = new ArrayList<Double>();
+		for (Point p : this.pointList) {
+			for(double d : p.getPointAsCoordinates()) {
+				list.add(new Double(d));
+			}
+		}
+		return list;
+	}
+
+	/**
 	 * Returns the average of the x coordinate of all the points
 	 * 
 	 * @return the average of the x coordinate of all the points
@@ -595,16 +610,24 @@ public class Polyline {
 	 * 
 	 * @throws InvalidActivityException
 	 */
-	public void order(Vector3d normalFloor) throws InvalidActivityException {
+	public void order(Mesh m, Vector3d normalFloor)
+			throws InvalidActivityException {
 		// TODO : vérification que chaque Edge a bien 2 voisins : ni plus, ni
 		// moins
 		// !
+		if (this.edgeSize() < 2) {
+			System.err.println("Error ! ");
+		}
 		Polyline ret = new Polyline();
 
 		Edge first = this.getOne();
 		Point p = first.getP1();
+
+		// FIXME : make another returnNeighbour without need of normalFloor.
 		Edge e = first.returnNeighbour(p, this, normalFloor);
 		p = e.returnOther(p);
+
+		this.returnMesh(m).write("error.stl");
 
 		while (e != first) {
 			ret.add(e);
@@ -650,22 +673,21 @@ public class Polyline {
 	 * @throws InvalidActivityException
 	 */
 	// FIXME : continue the explanation
-	public Polyline determinateSingularPoints(double error, Vector3d normalFloor)
+	public Polyline determinateSingularPoints(double error, Vector3d normal)
 			throws InvalidActivityException {
 		Polyline singularPoints = new Polyline();
 
 		// We take a point, and we follow the line until we find a segment with
 		// angle change.
 		Edge first = this.getOne();
-		first = followTheFramedLine(first, first.getP2(), error, first,
-				normalFloor);
+		first = followTheFramedLine(first, first.getP2(), error, first, normal);
 		singularPoints.add(first);
 		Edge e = first;
 
 		// Then we record all the points where there is a angle change.
 		do {
 			// We determinate the point to know the direction to take...
-			e = followTheFramedLine(e, this.toDelete, error, first, normalFloor);
+			e = followTheFramedLine(e, this.toDelete, error, first, normal);
 			singularPoints.add(e);
 		} while (e != first);
 

@@ -216,8 +216,11 @@ public class Edge {
 
 			ArrayList<Edge> edgeList = p.getNeighbours(point);
 			if (!edgeList.contains(this)) {
-				///LOOK
+				// /LOOK
 				System.err.println("Enormous error 1 !");
+			} else if (edgeList.size() < 2) {
+				System.err.println("Big");
+				throw new InvalidActivityException();
 			} else {
 				Edge e = this.returnNeighbour(point, p, normalFloor);
 				e.returnOneBound(m, ret, p, e.returnOther(point), normalFloor);
@@ -229,7 +232,7 @@ public class Edge {
 			Vector3d normalFloor) throws InvalidActivityException {
 
 		if (!weirdEdges.contains(this)) {
-			//LOOK
+			// LOOK
 			System.err.println("Big mistake !");
 		}
 
@@ -327,8 +330,16 @@ public class Edge {
 			throw new InvalidParameterException();
 		}
 		ArrayList<Edge> list = b.getNeighbours(p);
-		if (list.size() != 2) {
+		if (list.size() == 3) {
+			list.remove(this);
+			b.remove(list.get(0));
+			return list.get(1);
+		} else if (list.size() > 3) {
 			return this.returnTheLeftOne(b.getNeighbours(p), p, normalFloor);
+		} else if (list.size() < 2) {
+			System.err.println("Erororororoor !");
+			// FIXME : throw exp !
+			throw new InvalidActivityException();
 		} else {
 			list.remove(this);
 			return list.get(0);
