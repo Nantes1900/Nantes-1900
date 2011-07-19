@@ -49,10 +49,42 @@ public class Polyline {
 	}
 
 	// FIXME : NEVER USE IT
-	public Polyline(Polyline p) {
+	public Polyline(Polyline p) throws InvalidActivityException {
 		for (Edge e : p.edgeList) {
 			this.add(new Edge(e));
+			this.add(e.getP1());
+			this.add(e.getP2());
 		}
+
+		for (Point point : p.pointList) {
+
+			ArrayList<Edge> belongings = new ArrayList<Edge>();
+
+			for (Edge e : this.edgeList) {
+				if (e.contains(point))
+					belongings.add(e);
+			}
+
+			// if(belongings.size() > 2) {
+			// System.err.println("Error !");
+			// throw new InvalidActivityException();
+			// }
+
+			Point copy = new Point(point);
+			this.pointList.remove(point);
+			this.pointList.add(copy);
+			for (Edge e : belongings) {
+				if (e.getP1() == point) {
+					e.setP1(copy);
+				} else if (e.getP2() == point) {
+					e.setP2(copy);
+				} else {
+					System.err.println("Error !");
+					throw new InvalidActivityException();
+				}
+			}
+		}
+
 		this.ID = ++ID_current;
 	}
 
@@ -613,7 +645,6 @@ public class Polyline {
 	 *         the same z
 	 */
 	public void zProjection(double z) {
-
 		for (Point p : this.pointList) {
 			p.setZ(z);
 		}
@@ -626,11 +657,10 @@ public class Polyline {
 	 * @param error
 	 *            the error of frame
 	 * @return a polyline containing the importants points of this
-	 * @throws InvalidActivityException
+	 * @throws Exception
 	 */
 	// FIXME : continue the explanation
-	public Polyline determinateSingularPoints(double error)
-			throws InvalidActivityException {
+	public Polyline determinateSingularPoints(double error) throws Exception {
 
 		Polyline singularPoints = new Polyline();
 
@@ -653,6 +683,52 @@ public class Polyline {
 		return singularPoints;
 	}
 
+	public Polyline reductNoise(double error) {
+		Polyline ret = new Polyline();
+
+		int counter = 1;
+		double averageLength = this.lengthAverage();
+
+		while (counter < this.edgeSize() - 2) {
+
+			Edge e = this.edgeList.get(counter);
+			Edge before = this.edgeList.get(counter - 1);
+			Edge next = this.edgeList.get(counter + 1);
+
+			// If this edge is not oriented as the last and the next
+			if (!e.orientedAs(before, error) && !e.orientedAs(next, error)) {
+				// Then it is a noise. We must remove it.
+				Point shared = null;
+				try {
+					shared = e.sharedPoint(next);
+				} catch (Exception exc) {
+					exc.printStackTrace();
+				}
+				ret.add(new Edge(e.returnOther(shared), next
+						.returnOther(shared)));
+				counter++;
+			}
+			// If the edge is little
+			else if (e.length() < averageLength) {
+				Point shared = null;
+				try {
+					shared = e.sharedPoint(next);
+				} catch (Exception exc) {
+					exc.printStackTrace();
+				}
+				ret.add(new Edge(e.returnOther(shared), next
+						.returnOther(shared)));
+				counter++;
+			} else {
+				ret.add(e);
+			}
+
+			counter++;
+		}
+
+		return ret;
+	}
+
 	// We still consider that we are in the plane (x,y)
 	// Almost static method... Maybe to put in Edge ?
 	/**
@@ -671,37 +747,27 @@ public class Polyline {
 	 * @return true if p3 is contained between those segments and false
 	 *         otherwise
 	 */
-	// FIXME : if we are in 3D, add the z to the equation !
 	public boolean areWeInTheTwoLinesOrNot(Point p1, Point p2, Point p3,
 			double error) {
-		double a, b, c, d, dPlus, dMinus;
+		double a, b, c, cPlus, cMinus;
 
 		// We calculate the equation of the segment, and of the two lines
 		// parallels to it and which frame the line
-		if (p1.getY() == p2.getY()) {
-			a = 0;
-			b = 1;
-			c = 1;
-			d = -p1.getZ() + p2.getZ();
-		} else if (p1.getZ() == p2.getZ()) {
+		if (p1.getX() == p2.getX()) {
 			a = 1;
-			b = (p1.getX() - p2.getX()) / (p2.getY() - p1.getY());
-			c = 0;
-			d = (-p1.getX() * p2.getY() + p2.getX() * p1.getY())
-					/ (p2.getY() - p1.getY());
+			b = 0;
+			c = -p1.getX();
 		} else {
-			a = 1;
+			a = -(p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
 			b = 1;
-			c = (p2.getX() - p1.getX() + p2.getY() - p1.getY())
-					/ (p1.getZ() - p2.getZ());
-			d = -p1.getX() - p1.getY() - c * p1.getZ();
+			c = -p1.getY() - a * p1.getX();
 		}
 
-		dPlus = -d + error;
-		dMinus = -d - error;
+		cPlus = -c + error;
+		cMinus = -c - error;
 
-		return (a * p3.getX() + b * p3.getY() + c * p3.getZ() < dPlus && a
-				* p3.getX() + b * p3.getY() + c * p3.getZ() > dMinus);
+		return (a * p3.getX() + b * p3.getY() < cPlus && a * p3.getX() + b
+				* p3.getY() > cMinus);
 	}
 
 	// We still consider that we are in the plane (x,y)
@@ -770,5 +836,56 @@ public class Polyline {
 		// frame...
 
 		return numb;
+	}
+
+	// Error in degrees !
+	public Polyline refine(double angleError) throws Exception {
+
+		Polyline refined = new Polyline();
+
+		int numb = 0;
+
+		while (numb < this.edgeSize() - 1) {
+			Edge e = this.edgeList.get(numb);
+
+			while (this.edgeList.get(numb).orientedAs(e, angleError)
+					&& numb < this.edgeSize() - 1) {
+				// We continue.
+				numb++;
+			}
+
+			// When it's stopped...
+			refined.add(new Edge(e.getP1(), this.edgeList.get(numb - 1).getP2()));
+		}
+
+		return refined;
+	}
+
+	public Polyline getNeighbourLines(Edge e, double error) {
+		Polyline ret = new Polyline();
+
+		for (Edge edge : this.edgeList) {
+			if (areWeInTheTwoLinesOrNot(e.getP1(), e.getP2(), edge.getP1(),
+					error)
+			// && areWeInTheTwoLinesOrNot(e.getP1(), e.getP2(),
+			// edge.getP2(), error)
+			) {
+				ret.add(edge);
+			}
+		}
+
+		return ret;
+	}
+
+	public Polyline orientedAs2D(Edge e, double error) {
+		Polyline ret = new Polyline();
+
+		for (Edge edge : this.edgeList) {
+			if (edge.orientedAs(e, error)) {
+				ret.add(edge);
+			}
+		}
+
+		return ret;
 	}
 }

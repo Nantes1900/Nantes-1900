@@ -31,10 +31,10 @@ public class Edge {
 		this.points[1] = p2;
 	}
 
-	// FIXME : never use it !
+	// FIXME
 	public Edge(Edge e) {
-		this.setP1(new Point(e.getP1()));
-		this.setP2(new Point(e.getP2()));
+		this.setP1(e.getP1());
+		this.setP2(e.getP2());
 		this.triangleList = new ArrayList<Triangle>(e.triangleList);
 	}
 
@@ -230,8 +230,8 @@ public class Edge {
 
 			Edge e;
 			e = this.returnNeighbour(point, p, normalFloor);
-			this.setP2(this.returnOther(point));
-			this.setP1(point);
+			e.setP2(e.returnOther(point));
+			e.setP1(point);
 
 			bound.add(e);
 			point = e.returnOther(point);
@@ -262,19 +262,18 @@ public class Edge {
 				counter++;
 			}
 		} catch (InvalidActivityException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		return bound;
 	}
 
-	private void setP1(Point point) {
-		points[0] = point;
+	public void setP1(Point point) {
+		this.points[0] = point;
 
 	}
 
-	private void setP2(Point point) {
-		points[1] = point;
+	public void setP2(Point point) {
+		this.points[1] = point;
 
 	}
 
@@ -412,5 +411,44 @@ public class Edge {
 	// TODO : remove the parameter p : it's easy to find
 	public Edge compose(Edge eAdd, Point p) {
 		return new Edge(this.returnOther(p), eAdd.returnOther(p));
+	}
+
+	// Error in degrees !
+	public boolean orientedAs(Edge e, double error) {
+		Vector3d vect1 = new Vector3d(e.getP2().getX() - e.getP1().getX(), e
+				.getP2().getY() - e.getP1().getY(), e.getP2().getZ()
+				- e.getP1().getZ());
+		vect1.normalize();
+		Vector3d vect2 = new Vector3d(
+				this.getP2().getX() - this.getP1().getX(), this.getP2().getY()
+						- this.getP1().getY(), this.getP2().getZ()
+						- this.getP1().getZ());
+		vect2.normalize();
+		return (vect1.angle(vect2) < ((error / 180) * Math.PI) || vect1
+				.angle(vect2) > (((180 - error) / 180) * Math.PI));
+	}
+
+	public double minDistance(Edge edge) {
+		double min = Double.POSITIVE_INFINITY;
+
+		for (Point p1 : edge.points) {
+			for (Point p2 : this.points) {
+				if (p1.distance(p2) < min) {
+					min = p1.distance(p2);
+				}
+			}
+		}
+
+		return min;
+	}
+
+	public Point sharedPoint(Edge e) throws Exception {
+		if (this.contains(e.getP1())) {
+			return e.getP1();
+		} else if (this.contains(e.getP2())) {
+			return e.getP2();
+		} else {
+			throw new Exception();
+		}
 	}
 }

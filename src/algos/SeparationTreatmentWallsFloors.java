@@ -301,22 +301,50 @@ public class SeparationTreatmentWallsFloors {
 	private Polyline treatSurface(Mesh surface) {
 
 		// Compute the contour of the surface
-		Polyline longestBound = surface.returnLongestBound(surface
-				.averageNormal());
+		Polyline longestBound = null;
+		try {
+			longestBound = new Polyline(surface.returnLongestBound(surface
+					.averageNormal()));
+		} catch (InvalidActivityException e1) {
+			e1.printStackTrace();
+		}
 
-		// Compute the singular points
-		Polyline singularPoints = null;
+		Vector3d normalSurface = surface.averageNormal();
+		double[][] matrixSurface = null, matrixSurfaceInv = null;
 
 		try {
+			matrixSurface = MatrixMethod.createOrthoBase(normalSurface);
+			matrixSurfaceInv = MatrixMethod.getInversMatrix(matrixSurface);
+		} catch (SingularMatrixException e) {
+			System.err.println("Error in the matrix !");
+			System.exit(1);
+		}
 
-			singularPoints = longestBound
+		longestBound.changeBase(matrixSurface);
+		longestBound.zProjection(longestBound.zAverage());
+
+		// Compute the singular points
+		Polyline singularPointsFirst = longestBound.reductNoise(5);
+		try {
+
+			singularPointsFirst = singularPointsFirst
 					.determinateSingularPoints(this.errorSingularPoints);
 
 		} catch (InvalidActivityException e) {
 			e.printStackTrace();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
-		return singularPoints;
+		Polyline singularPointsSecond = null;
+		try {
+			singularPointsSecond = singularPointsFirst.refine(10);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		singularPointsSecond.changeBase(matrixSurfaceInv);
+		return singularPointsSecond;
 	}
 
 	private void writeCityGMLWalls() {
