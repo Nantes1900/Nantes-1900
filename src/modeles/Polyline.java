@@ -14,8 +14,8 @@ import javax.vecmath.Vector3d;
  */
 public class Polyline {
 
-	private ArrayList<Point> pointList;
-	private ArrayList<Edge> edgeList;
+	private ArrayList<Point> pointList = new ArrayList<Point>();
+	private ArrayList<Edge> edgeList = new ArrayList<Edge>();
 
 	private final int ID;
 
@@ -32,11 +32,8 @@ public class Polyline {
 	 *            list of edges
 	 */
 	public Polyline(List<Edge> a) {
-
-		this.edgeList = new ArrayList<Edge>(a);
-		this.pointList = new ArrayList<Point>();
-
 		for (Edge e : a) {
+			this.add(e);
 			this.add(e.getP1());
 			this.add(e.getP2());
 		}
@@ -48,8 +45,14 @@ public class Polyline {
 	 * Void constructor
 	 */
 	public Polyline() {
-		this.edgeList = new ArrayList<Edge>();
-		this.pointList = new ArrayList<Point>();
+		this.ID = ++ID_current;
+	}
+
+	// FIXME : NEVER USE IT
+	public Polyline(Polyline p) {
+		for (Edge e : p.edgeList) {
+			this.add(new Edge(e));
+		}
 		this.ID = ++ID_current;
 	}
 
@@ -112,11 +115,12 @@ public class Polyline {
 	 * @param l
 	 *            the list
 	 */
-	public void addAll(List<Edge> l) {
-		for (Edge e : l) {
-			this.add(e);
-		}
-	}
+	// DOESNT WORK ! FIXME !
+	// public void addAll(List<Edge> l) {
+	// for (Edge e : l) {
+	// this.add(e);
+	// }
+	// }
 
 	/**
 	 * Return one edge of the list
@@ -209,7 +213,7 @@ public class Polyline {
 	public List<Double> getPointsAsCoordinates() {
 		ArrayList<Double> list = new ArrayList<Double>();
 		for (Point p : this.pointList) {
-			for(double d : p.getPointAsCoordinates()) {
+			for (double d : p.getPointAsCoordinates()) {
 				list.add(new Double(d));
 			}
 		}
@@ -509,13 +513,13 @@ public class Polyline {
 		// vers l'autre méthode.
 		Mesh ens = new Mesh();
 		for (Edge e : this.edgeList) {
-			if (!e.getTriangleList().isEmpty()) {
-				for (Triangle t : e.getTriangleList()) {
-					if (m.contains(t)) {
-						ens.add(t);
-					}
+			// if (!e.getTriangleList().isEmpty()) {
+			for (Triangle t : e.getTriangleList()) {
+				if (m.contains(t)) {
+					ens.add(t);
 				}
 			}
+			// }
 		}
 		return ens;
 	}
@@ -529,12 +533,12 @@ public class Polyline {
 
 		Point centroid = new Point(this.xAverage(), this.yAverage(),
 				this.zAverage());
-		Vector3d normal = new Vector3d(0, 0, 1);
+		Vector3d normal = new Vector3d(0, 0, -1);
 
 		Point before = this.pointList.get(this.pointSize() - 1);
 
 		for (Point p : this.pointList) {
-			ens.add(new Triangle(centroid, before, p,
+			ens.add(new Triangle(before, centroid, p,
 					new Edge(centroid, before), new Edge(before, p), new Edge(
 							p, centroid), normal));
 			before = p;
@@ -546,7 +550,7 @@ public class Polyline {
 	/**
 	 * Apply the base change to all the points contained, without changing the
 	 * references. Caution : this method changes the hashCode, then be careful
-	 * the hashTables which contains points
+	 * with the hashTables which contains points
 	 * 
 	 * @param matrix
 	 *            the change base matrix
@@ -556,18 +560,13 @@ public class Polyline {
 			throw new InvalidParameterException();
 		}
 
-		Polyline line = new Polyline(this.edgeList);
-		for (Point p : line.pointList) {
+		for (Point p : this.pointList) {
 			p.changeBase(matrix);
 		}
-
-		this.edgeList.clear();
-		this.pointList.clear();
-		this.addAll(line.edgeList);
 	}
 
 	/**
-	 * Returns the number of edges contained in this that contain the point p
+	 * Returns the number of edges contained in this that contain the point p.
 	 * 
 	 * @param p
 	 *            the point considered
@@ -603,44 +602,6 @@ public class Polyline {
 		return list;
 	}
 
-	// FIXME : @Test
-	/**
-	 * Order the polyline Each edge in the edge list must be surrounded by its
-	 * neighbours
-	 * 
-	 * @throws InvalidActivityException
-	 */
-	public void order(Mesh m, Vector3d normalFloor)
-			throws InvalidActivityException {
-		// TODO : vérification que chaque Edge a bien 2 voisins : ni plus, ni
-		// moins
-		// !
-		if (this.edgeSize() < 2) {
-			System.err.println("Error ! ");
-		}
-		Polyline ret = new Polyline();
-
-		Edge first = this.getOne();
-		Point p = first.getP1();
-
-		// FIXME : make another returnNeighbour without need of normalFloor.
-		Edge e = first.returnNeighbour(p, this, normalFloor);
-		p = e.returnOther(p);
-
-		this.returnMesh(m).write("error.stl");
-
-		while (e != first) {
-			ret.add(e);
-			e = e.returnNeighbour(p, this, normalFloor);
-			p = e.returnOther(p);
-		}
-		ret.add(e);
-
-		this.edgeList.clear();
-		this.pointList.clear();
-		this.addAll(ret.getEdgeList());
-	}
-
 	// FIXME : it destroys the former Polyline and all the Points...
 	/**
 	 * Return a polyline that is the copy of this, but where all points have the
@@ -651,18 +612,13 @@ public class Polyline {
 	 * @return a polyline that is the copy of this, but where all points have
 	 *         the same z
 	 */
-	public Polyline zProjection(double z) {
-		Polyline line = new Polyline();
-		line.addAll(this.edgeList);
+	public void zProjection(double z) {
 
-		for (Point p : line.pointList) {
+		for (Point p : this.pointList) {
 			p.setZ(z);
 		}
-
-		return line;
 	}
 
-	//
 	/**
 	 * Returns a polyline containing the importants points of this. Caution : we
 	 * consider that we are in the plane (x,y)
@@ -673,23 +629,26 @@ public class Polyline {
 	 * @throws InvalidActivityException
 	 */
 	// FIXME : continue the explanation
-	public Polyline determinateSingularPoints(double error, Vector3d normal)
+	public Polyline determinateSingularPoints(double error)
 			throws InvalidActivityException {
+
 		Polyline singularPoints = new Polyline();
 
-		// We take a point, and we follow the line until we find a segment with
-		// angle change.
-		Edge first = this.getOne();
-		first = followTheFramedLine(first, first.getP2(), error, first, normal);
-		singularPoints.add(first);
-		Edge e = first;
+		// We take the first edge, and we follow the line until we find a
+		// segment with an angle change.
+		int numb = 0;
+		Edge first = this.getEdgeList().get(numb);
 
-		// Then we record all the points where there is a angle change.
+		numb = this.followTheFramedLine(error, numb);
+
+		singularPoints.add(first);
+
+		// Then we record all the points where there is an angle change.
 		do {
-			// We determinate the point to know the direction to take...
-			e = followTheFramedLine(e, this.toDelete, error, first, normal);
-			singularPoints.add(e);
-		} while (e != first);
+			numb = followTheFramedLine(error, numb);
+			singularPoints.add(this.getEdgeList().get(numb));
+
+		} while (this.getEdgeList().get(numb) != first);
 
 		return singularPoints;
 	}
@@ -712,74 +671,104 @@ public class Polyline {
 	 * @return true if p3 is contained between those segments and false
 	 *         otherwise
 	 */
+	// FIXME : if we are in 3D, add the z to the equation !
 	public boolean areWeInTheTwoLinesOrNot(Point p1, Point p2, Point p3,
 			double error) {
-		double a, b, c, cPlus, cMinus;
+		double a, b, c, d, dPlus, dMinus;
 
 		// We calculate the equation of the segment, and of the two lines
 		// parallels to it and which frame the line
 		if (p1.getY() == p2.getY()) {
 			a = 0;
 			b = 1;
-			c = -p1.getX();
-		} else {
+			c = 1;
+			d = -p1.getZ() + p2.getZ();
+		} else if (p1.getZ() == p2.getZ()) {
 			a = 1;
 			b = (p1.getX() - p2.getX()) / (p2.getY() - p1.getY());
-			c = (-p1.getX() * p2.getY() + p2.getX() * p1.getY())
+			c = 0;
+			d = (-p1.getX() * p2.getY() + p2.getX() * p1.getY())
 					/ (p2.getY() - p1.getY());
+		} else {
+			a = 1;
+			b = 1;
+			c = (p2.getX() - p1.getX() + p2.getY() - p1.getY())
+					/ (p1.getZ() - p2.getZ());
+			d = -p1.getX() - p1.getY() - c * p1.getZ();
 		}
 
-		cPlus = -c + error;
-		cMinus = -c - error;
+		dPlus = -d + error;
+		dMinus = -d - error;
 
-		return (a * p3.getX() + b * p3.getY() < cPlus && a * p3.getX() + b
-				* p3.getY() > cMinus);
+		return (a * p3.getX() + b * p3.getY() + c * p3.getZ() < dPlus && a
+				* p3.getX() + b * p3.getY() + c * p3.getZ() > dMinus);
 	}
 
 	// We still consider that we are in the plane (x,y)
-	// FIXME : delete the Edge stop
 	/**
 	 * Return the next important point. Begins the search, and returns the next
 	 * point which is not contained in the stripe : it's a point where the bound
 	 * change its direction We still consider that we are in the plane (x,y)
 	 * 
-	 * @param first
-	 *            the edge where the algorithm begins to search
-	 * @param p2
-	 *            the first point to search : it describes the direction
-	 * @param error
-	 *            the error of areWeInTheTwoLinesOrNot
-	 * @param stop
-	 *            the edge not to pass further
-	 * @return the next important point
-	 * @throws InvalidActivityException
 	 */
-	public Edge followTheFramedLine(Edge first, Point p2, double error,
-			Edge stop, Vector3d normalFloor) throws InvalidActivityException {
+	// FIXME : doc !
+	public int followTheFramedLine(double error, int numb)
+			throws InvalidActivityException {
 
-		Point p1 = first.returnOther(p2);
+		if (numb == this.edgeSize() - 1)
+			return 0;
 
-		// LOOK : We can take the second segment in the list : it's supposed to
-		// be ordered !
-		Edge e2 = first.returnNeighbour(p2, this, normalFloor);
-		Point p3 = e2.returnOther(p2);
+		// FIXME if numb = this.size() - 2 !
 
-		Edge eMain = first;
-		Edge eNext = e2;
+		Point p2 = null;
 
-		while (areWeInTheTwoLinesOrNot(p1, p2, p3, error) && eNext != stop) {
+		Edge eMain = this.getEdgeList().get(numb);
+		Edge eNext = this.getEdgeList().get(++numb);
+
+		// TODO : make a method to return the point common to the both edges.
+		if (eMain.contains(eNext.getP1())) {
+			p2 = eNext.getP1();
+		} else if (eMain.contains(eNext.getP2())) {
+			p2 = eNext.getP2();
+		} else {
+			System.err.println("Error !");
+		}
+
+		Point p1 = eMain.returnOther(p2);
+		Point p3 = eNext.returnOther(p2);
+		Point pbis = p2;
+
+		if (p3 == null) {
+			System.err.println("Error !");
+		}
+
+		while (areWeInTheTwoLinesOrNot(p1, p2, p3, error)
+				&& numb < this.edgeSize() - 1) {
+
 			// Then the point p3 is almost aligned with the other points...
 			// We add the two segments, and we do that with a third segment...
-			eMain = eMain.compose(eNext, p2);
-			eNext = eNext.returnNeighbour(p3, this, normalFloor);
-			p1 = eMain.returnOther(p3);
-			p2 = p3;
-			p3 = eNext.returnOther(p2);
+
+			// eMain = eMain.compose(eNext, p2);
+			eNext = this.getEdgeList().get(++numb);
+
+			pbis = p3;
+			p3 = eNext.returnOther(pbis);
+
+			if (p3 == null) {
+				System.err.println("Error !");
+			}
 		}
+
+		// We are after the angle change, but we certainly have missed the exact
+		// angle point. Then we turn back to try to find it.
+
+		if (numb == this.edgeSize() - 1) {
+			return 0;
+		}
+
 		// When we're here, it means we found some Point which was not in the
 		// frame...
 
-		this.toDelete = p3;
-		return eNext;
+		return numb;
 	}
 }

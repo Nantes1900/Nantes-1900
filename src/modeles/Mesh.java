@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 
-import javax.activity.InvalidActivityException;
 import javax.vecmath.Vector3d;
 
 import utils.MatrixMethod;
@@ -386,109 +385,126 @@ public class Mesh extends HashSet<Triangle> {
 
 	// FIXME : à améliorer !
 	/**
+	 * Search for all the edges which belong to the bounds. If an edge contain
+	 * only one triangle in this, then it is part of the bounds.
+	 * 
 	 * @return
 	 */
 	public Polyline returnUnsortedBounds() {
 		Polyline bounds = new Polyline();
+		HashSet<Edge> edges = new HashSet<Edge>();
+
 		for (Triangle tri : this) {
-			ArrayList<Edge> edges = new ArrayList<Edge>(tri.getEdges());
-			for (Edge e : edges) {
-				int counter = 0;
-				for (Triangle t : e.getTriangleList()) {
-					if (this.contains(t))
-						counter++;
-				}
-				// Add the edges which belong to only one triangle in this.
-				if (counter == 1)
-					bounds.add(e);
+			edges.addAll(tri.getEdges());
+		}
+
+		for (Edge e : edges) {
+			int counter = 0;
+			for (Triangle t : e.getTriangleList()) {
+				if (this.contains(t))
+					counter++;
 			}
+
+			// Add the edges which belong to only one triangle in this.
+			if (counter == 1)
+				bounds.add(e);
 		}
 		return bounds;
 	}
 
 	/**
-	 * @return
+	 * Sort the bounds.
+	 * 
+	 * @return a list of sorted bounds.
 	 */
-	public ArrayList<Polyline> returnBounds(Vector3d normalFloor) {
+	public ArrayList<Polyline> returnBounds(Vector3d normal) {
 		Polyline bounds = this.returnUnsortedBounds();
 
 		ArrayList<Polyline> boundList = new ArrayList<Polyline>();
 
+		Polyline ret = new Polyline();
+
+		int counter = 1;
+
 		while (!bounds.isEmpty()) {
+			ret = new Polyline();
+
 			Edge arete = bounds.getOne();
-			Polyline ret = new Polyline();
 
-			Point point, p31 = null, p32 = null;
-			if (arete.getNumberTriangles() != 2) {
-				// LOOK
-				System.err.println("Encore une erreur !");
-			}
-			for (Point p : arete.getTriangleList().get(0).getPoints()) {
-				if (!arete.contains(p)) {
-					p31 = p;
-				}
-			}
-			for (Point p : arete.getTriangleList().get(1).getPoints()) {
-				if (!arete.contains(p)) {
-					p32 = p;
-				}
-			}
-			Vector3d vect = new Vector3d();
-			Vector3d v31 = new Vector3d();
-			Vector3d v32 = new Vector3d();
-			vect.x = arete.getP2().getX() - arete.getP1().getX();
-			vect.y = arete.getP2().getY() - arete.getP1().getY();
-			vect.z = arete.getP2().getZ() - arete.getP1().getZ();
+			ret = arete.returnOneBound(this, bounds,
+					this.whichPointTheLeft(arete, normal), normal);
 
-			v31.x = p31.getX() - arete.getP1().getX();
-			v31.y = p31.getY() - arete.getP1().getY();
-			v31.z = p31.getZ() - arete.getP1().getZ();
+			boundList.add(ret);
 
-			v32.x = p32.getX() - arete.getP1().getX();
-			v32.y = p32.getY() - arete.getP1().getY();
-			v32.z = p32.getZ() - arete.getP1().getZ();
-
-			Vector3d cross = new Vector3d();
-			cross.cross(normalFloor, vect);
-
-			if (!this.contains(arete.getTriangleList().get(0))) {
-				if (cross.dot(v31) > 0) {
-					point = arete.getP2();
-				} else {
-					point = arete.getP1();
-				}
-			} else {
-				if (cross.dot(v32) > 0) {
-					point = arete.getP2();
-				} else {
-					point = arete.getP1();
-				}
-			}
-
-			try {
-				arete.returnOneBound(this, ret, bounds, point, normalFloor);
-
-				boundList.add(ret);
-
-				// FIXME : create new Exception !
-			} catch (InvalidActivityException e) {
-				// Don't do anything.
-			}
-
-			// FIXME : la méthode remove ne supprime pas les Points,
-			// seulement les Edges.
 			bounds.remove(ret);
+
+			counter++;
 		}
 
 		return boundList;
 	}
 
+	public Point whichPointTheLeft(Edge edge, Vector3d normalFloor) {
+
+		Point p31 = null, p32 = null;
+		if (edge.getNumberTriangles() != 2) {
+			// LOOK
+			System.err.println("Encore une erreur !");
+		}
+		for (Point p : edge.getTriangleList().get(0).getPoints()) {
+			if (!edge.contains(p)) {
+				p31 = p;
+			}
+		}
+		for (Point p : edge.getTriangleList().get(1).getPoints()) {
+			if (!edge.contains(p)) {
+				p32 = p;
+			}
+		}
+
+		Vector3d vect = new Vector3d();
+		Vector3d v31 = new Vector3d();
+		Vector3d v32 = new Vector3d();
+
+		vect.x = edge.getP2().getX() - edge.getP1().getX();
+		vect.y = edge.getP2().getY() - edge.getP1().getY();
+		vect.z = edge.getP2().getZ() - edge.getP1().getZ();
+
+		v31.x = p31.getX() - edge.getP1().getX();
+		v31.y = p31.getY() - edge.getP1().getY();
+		v31.z = p31.getZ() - edge.getP1().getZ();
+
+		v32.x = p32.getX() - edge.getP1().getX();
+		v32.y = p32.getY() - edge.getP1().getY();
+		v32.z = p32.getZ() - edge.getP1().getZ();
+
+		Vector3d cross = new Vector3d();
+		cross.cross(normalFloor, vect);
+
+		if (!this.contains(edge.getTriangleList().get(0))) {
+			if (cross.dot(v31) > 0) {
+				return edge.getP2();
+			} else {
+				return edge.getP1();
+			}
+		} else {
+			if (cross.dot(v32) > 0) {
+				return edge.getP2();
+			} else {
+				return edge.getP1();
+			}
+		}
+	}
+
 	/**
-	 * @return
+	 * Calculate the max of the bounds returned by the returnBounds.
+	 * 
+	 * @return the longest bound which is supposed to be the contour of the
+	 *         surface
 	 */
-	public Polyline returnLongestBound(Vector3d normalFloor) {
-		//FIXME
-		ArrayList<Polyline> boundList = this.returnBounds(normalFloor);
+	public Polyline returnLongestBound(Vector3d normal) {
+		// FIXME
+		ArrayList<Polyline> boundList = this.returnBounds(normal);
 		Polyline ret = null;
 
 		double max = Double.MIN_VALUE;

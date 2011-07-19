@@ -31,6 +31,13 @@ public class Edge {
 		this.points[1] = p2;
 	}
 
+	// FIXME : never use it !
+	public Edge(Edge e) {
+		this.setP1(new Point(e.getP1()));
+		this.setP2(new Point(e.getP2()));
+		this.triangleList = new ArrayList<Triangle>(e.triangleList);
+	}
+
 	/**
 	 * Getter
 	 * 
@@ -209,23 +216,66 @@ public class Edge {
 		}
 	}
 
-	public void returnOneBound(Mesh m, Polyline ret, Polyline p, Point point,
-			Vector3d normalFloor) throws InvalidActivityException {
-		if (!ret.contains(this)) {
-			ret.add(this);
+	public Polyline returnOneBound(Mesh m, Polyline p, Point point,
+			Vector3d normalFloor) {
 
+		Polyline bound = new Polyline();
+
+		try {
 			ArrayList<Edge> edgeList = p.getNeighbours(point);
-			if (!edgeList.contains(this)) {
-				// /LOOK
-				System.err.println("Enormous error 1 !");
-			} else if (edgeList.size() < 2) {
-				System.err.println("Big");
-				throw new InvalidActivityException();
-			} else {
-				Edge e = this.returnNeighbour(point, p, normalFloor);
-				e.returnOneBound(m, ret, p, e.returnOther(point), normalFloor);
+
+			if (edgeList.size() < 2) {
+				System.err.println("Error in returnOneBound 1 !");
 			}
+
+			Edge e;
+			e = this.returnNeighbour(point, p, normalFloor);
+			this.setP2(this.returnOther(point));
+			this.setP1(point);
+
+			bound.add(e);
+			point = e.returnOther(point);
+
+			int counter = 1;
+
+			while (e != this) {
+				edgeList = p.getNeighbours(point);
+				if (!edgeList.contains(e)) {
+					System.err.println("Error in returnOneBound 2 !"); // LOOK
+					throw new InvalidActivityException();
+				} else if (edgeList.size() < 2) {
+					System.err.println("Error in returnOneBound 3 !"); // LOOK
+					throw new InvalidActivityException();
+				} else {
+					e = e.returnNeighbour(point, p, normalFloor);
+
+					e.setP2(e.returnOther(point));
+					e.setP1(point);
+
+					bound.add(e);
+					point = e.returnOther(point);
+				}
+				if (counter > p.edgeSize()) {
+					System.err.println("too much loops !");
+					break;
+				}
+				counter++;
+			}
+		} catch (InvalidActivityException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
+		return bound;
+	}
+
+	private void setP1(Point point) {
+		points[0] = point;
+
+	}
+
+	private void setP2(Point point) {
+		points[1] = point;
+
 	}
 
 	private Edge returnTheLeftOne(ArrayList<Edge> weirdEdges, Point weirdPoint,
@@ -233,33 +283,40 @@ public class Edge {
 
 		if (!weirdEdges.contains(this)) {
 			// LOOK
-			System.err.println("Big mistake !");
+			System.err.println("Error in returnTheLeftOne !");
 		}
 
 		Vector3d v = new Vector3d();
 
-		v.x = this.returnOther(weirdPoint).getX() - weirdPoint.getX();
-		v.y = this.returnOther(weirdPoint).getY() - weirdPoint.getY();
-		v.z = this.returnOther(weirdPoint).getZ() - weirdPoint.getZ();
+		v.x = -this.returnOther(weirdPoint).getX() + weirdPoint.getX();
+		v.y = -this.returnOther(weirdPoint).getY() + weirdPoint.getY();
+		v.z = -this.returnOther(weirdPoint).getZ() + weirdPoint.getZ();
 
 		Vector3d cross = new Vector3d();
 		cross.cross(normalFloor, v);
+
+		cross.normalize();
 
 		Edge ref = null;
 		double max = Double.NEGATIVE_INFINITY;
 
 		for (Edge edge : weirdEdges) {
-			Vector3d vect = new Vector3d();
+			if (edge != this) {
+				Vector3d vect = new Vector3d();
 
-			vect.x = edge.returnOther(weirdPoint).getX() - weirdPoint.getX();
-			vect.y = edge.returnOther(weirdPoint).getY() - weirdPoint.getY();
-			vect.z = edge.returnOther(weirdPoint).getZ() - weirdPoint.getZ();
+				vect.x = edge.returnOther(weirdPoint).getX()
+						- weirdPoint.getX();
+				vect.y = edge.returnOther(weirdPoint).getY()
+						- weirdPoint.getY();
+				vect.z = edge.returnOther(weirdPoint).getZ()
+						- weirdPoint.getZ();
 
-			vect.normalize();
+				vect.normalize();
 
-			if (cross.dot(vect) > max) {
-				max = cross.dot(vect);
-				ref = edge;
+				if (cross.dot(vect) > max) {
+					max = cross.dot(vect);
+					ref = edge;
+				}
 			}
 		}
 
@@ -300,15 +357,13 @@ public class Edge {
 	 * @return the other point which forms the edge
 	 * @throws Exception
 	 */
-	// LOOK
 	public Point returnOther(Point p) {
 		if (this.getP1() == p)
 			return this.getP2();
 		else if (this.getP2() == p)
 			return this.getP1();
 		else {
-			return null;
-			// TODO : throw Ex !
+			throw new InvalidParameterException();
 		}
 	}
 
@@ -326,19 +381,18 @@ public class Edge {
 	// TODO : @Test
 	public Edge returnNeighbour(Point p, Polyline b, Vector3d normalFloor)
 			throws InvalidActivityException {
+
 		if (!b.contains(this)) {
 			throw new InvalidParameterException();
 		}
+
 		ArrayList<Edge> list = b.getNeighbours(p);
-		if (list.size() == 3) {
-			list.remove(this);
-			b.remove(list.get(0));
-			return list.get(1);
-		} else if (list.size() > 3) {
+
+		if (list.size() == 4) {
 			return this.returnTheLeftOne(b.getNeighbours(p), p, normalFloor);
-		} else if (list.size() < 2) {
-			System.err.println("Erororororoor !");
-			// FIXME : throw exp !
+		} else if (list.size() < 2 || list.size() > 4 || list.size() == 3) {
+			System.err.println("Error in returnNeighbour !");
+			// FIXME : throw exc !
 			throw new InvalidActivityException();
 		} else {
 			list.remove(this);
@@ -359,30 +413,4 @@ public class Edge {
 	public Edge compose(Edge eAdd, Point p) {
 		return new Edge(this.returnOther(p), eAdd.returnOther(p));
 	}
-
-	// /**
-	// * Recursing method returning a polyline containing all the neighbours
-	// which
-	// * are contained in p
-	// *
-	// * @param ret
-	// * the polyline in which are returned the neighbours
-	// * @param p
-	// * the polyline in which the edges have to be //LOOK : fix
-	// * this...
-	// */
-	// public Edge returnNeighbours(Polyline bound, ArrayList<Edge> stop) {
-	// Polyline ret = new Polyline();
-	//
-	// for (Edge e : bound.getEdgeList()) {
-	// this.returnNeighbours(ret, bound);
-	// for (Edge edge : ret.getEdgeList()) {
-	// if (stop.contains(e)) {
-	// return e;
-	// } else {
-	// return edge.returnNeighbours(bound, stop);
-	// }
-	// }
-	// }
-	// }
 }

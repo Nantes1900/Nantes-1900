@@ -31,7 +31,7 @@ public class SeparationTreatmentWallsFloors {
 	private double errorNormalToFactor = 0.2;
 	private double errorNumberTrianglesWall = 4;
 	private double errorNumberTrianglesRoof = 6;
-	private double errorSingularPoints = 0.7;
+	private double errorSingularPoints = 1;
 
 	private Mesh floorBrut = new Mesh();
 	private Vector3d normalFloor = new Vector3d();
@@ -101,6 +101,7 @@ public class SeparationTreatmentWallsFloors {
 
 			this.parseBuilding("Originals/building - " + this.counterBuilding
 					+ ".stl");
+
 			this.extractFloorNormal();
 
 			this.sortWalls();
@@ -109,7 +110,7 @@ public class SeparationTreatmentWallsFloors {
 			this.treatNoiseWalls();
 			this.treatNoiseRoofs();
 
-			this.treatWall();
+			this.treatWalls();
 			this.treatRoof();
 
 			this.writeCityGMLWalls();
@@ -174,9 +175,6 @@ public class SeparationTreatmentWallsFloors {
 		}
 	}
 
-	/**
-	 * 
-	 */
 	private void sortWalls() {
 
 		Mesh wallOriented = this.currentBuilding.orientedNormalTo(
@@ -205,9 +203,6 @@ public class SeparationTreatmentWallsFloors {
 		}
 	}
 
-	/**
-	 * 
-	 */
 	private void sortRoofs() {
 
 		ArrayList<Mesh> thingsList = Algos.blockOrientedExtract(
@@ -269,7 +264,7 @@ public class SeparationTreatmentWallsFloors {
 		}
 	}
 
-	private void treatWall() {
+	private void treatWalls() {
 
 		this.counterWall = 0;
 
@@ -278,8 +273,7 @@ public class SeparationTreatmentWallsFloors {
 
 			Polyline wallComputed = this.treatSurface(this.wallList
 					.get(this.counterWall));
-			this.wallList.get(this.counterWall).write(
-					"Files/brutWall - " + this.counterWall + ".stl");
+
 			wallComputed.returnCentroidMesh().write(
 					"Files/computedWall - " + this.counterWall + ".stl");
 
@@ -288,7 +282,7 @@ public class SeparationTreatmentWallsFloors {
 	}
 
 	private void treatRoof() {
-		
+
 		this.counterRoof = 0;
 
 		// For each roof
@@ -296,8 +290,7 @@ public class SeparationTreatmentWallsFloors {
 
 			Polyline roofComputed = this.treatSurface(this.roofList
 					.get(this.counterRoof));
-			this.roofList.get(this.counterRoof).write(
-					"Files/brutRoof - " + this.counterRoof + ".stl");
+
 			roofComputed.returnCentroidMesh().write(
 					"Files/computedRoof - " + this.counterRoof + ".stl");
 
@@ -308,63 +301,40 @@ public class SeparationTreatmentWallsFloors {
 	private Polyline treatSurface(Mesh surface) {
 
 		// Compute the contour of the surface
-
 		Polyline longestBound = surface.returnLongestBound(surface
 				.averageNormal());
 
-		// Order the polyline of the contour
-		try {
-			longestBound.order(surface, surface.averageNormal());
-		} catch (InvalidActivityException e) {
-			e.printStackTrace();
-		}
-
-		Vector3d normalSurface = surface.averageNormal();
-		double[][] matrixSurface = null, matrixSurfaceInv = null;
-
-		// Base change to have the surface in the (x,y) plane
-		try {
-			matrixSurface = MatrixMethod.createOrthoBase(normalSurface);
-			matrixSurfaceInv = MatrixMethod.getInversMatrix(matrixSurface);
-		} catch (SingularMatrixException e) {
-			System.err.println("Error in the matrix !");
-			System.exit(1);
-		}
-
-		// Project on the plane at the z coordinate of the z average of
-		// all triangles of the roof.
-		longestBound.changeBase(matrixSurface);
-		longestBound = longestBound.zProjection(longestBound.zAverage());
-
 		// Compute the singular points
 		Polyline singularPoints = null;
+
 		try {
-			singularPoints = longestBound.determinateSingularPoints(
-					this.errorSingularPoints, new Vector3d(0, 0, 1));
+
+			singularPoints = longestBound
+					.determinateSingularPoints(this.errorSingularPoints);
+
 		} catch (InvalidActivityException e) {
 			e.printStackTrace();
 		}
-
-		// Inverse base change
-		singularPoints.changeBase(matrixSurfaceInv);
 
 		return singularPoints;
 	}
 
 	private void writeCityGMLWalls() {
+
 		// counterWall = 0;
 		//
 		// while (counterWall < wallList.size()) {
 		//
 		// Mesh wall = wallList.get(counterWall);
 		//
-		// try {
-		// WriterCityGML.write("test", wall);
-		// } catch (Exception e) {
-		// e.printStackTrace();
-		// }
+		// // try {
+		// // WriterCityGML.write("test", wall);
+		// // } catch (Exception e) {
+		// // e.printStackTrace();
+		// // }
 		//
 		// counterWall++;
 		// }
+
 	}
 }
