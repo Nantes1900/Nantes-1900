@@ -276,6 +276,7 @@ public class Town {
 
 		// Extraction of the buildings
 		log.info("Extracting building ...");
+
 		ArrayList<Mesh> formsList = Algos.blockExtract(mesh);
 		ArrayList<Mesh> thingsList = new ArrayList<Mesh>();
 
@@ -289,20 +290,20 @@ public class Town {
 
 		// Algorithm : detection of buildings considering their size
 		int number = 0;
-		// FIXME : weird : buildingList or thingsList ?
-		for (Mesh m : buildingList) {
+		for (Mesh m : thingsList) {
 			number += m.size();
 		}
 
-		log.info("Building extraction ...");
-
 		for (Mesh m : thingsList) {
 			if (m.size() >= SeparationFloorBuilding.blockSizeBuildingError
-			// FIXME : weird : buildingList or thingsList ?
-					* (double) number / (double) buildingList.size()) {
+					* (double) number / (double) thingsList.size()) {
+
 				buildingList.add(m);
+
 			} else {
+
 				noise.addAll(m);
+
 			}
 		}
 

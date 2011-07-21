@@ -4,7 +4,6 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.activity.InvalidActivityException;
 import javax.vecmath.Vector3d;
 
 /**
@@ -49,8 +48,15 @@ public class Polyline {
 		this.ID = ++ID_current;
 	}
 
-	// FIXME : NEVER USE IT
-	public Polyline(Polyline p) throws InvalidActivityException {
+	/**
+	 * Copy constructor. Caution : this constructor make a copy of the points,
+	 * then after this method will exist duplicates with same values and
+	 * different references.
+	 * 
+	 * @param p
+	 *            the polyline to copy
+	 */
+	public Polyline(Polyline p) {
 		for (Edge e : p.edgeList) {
 			this.add(new Edge(e));
 			this.add(e.getP1());
@@ -66,22 +72,15 @@ public class Polyline {
 					belongings.add(e);
 			}
 
-			// if(belongings.size() > 2) {
-			// System.err.println("Error !");
-			// throw new InvalidActivityException();
-			// }
-
 			Point copy = new Point(point);
 			this.pointList.remove(point);
 			this.pointList.add(copy);
+
 			for (Edge e : belongings) {
 				if (e.getP1() == point) {
 					e.setP1(copy);
 				} else if (e.getP2() == point) {
 					e.setP2(copy);
-				} else {
-					System.err.println("Error !");
-					throw new InvalidActivityException();
 				}
 			}
 		}
@@ -156,12 +155,11 @@ public class Polyline {
 	 * @param l
 	 *            the list
 	 */
-	// DOESNT WORK ! FIXME !
-	// public void addAll(List<Edge> l) {
-	// for (Edge e : l) {
-	// this.add(e);
-	// }
-	// }
+	public void addAll(List<Edge> l) {
+		for (Edge e : l) {
+			this.add(e);
+		}
+	}
 
 	/**
 	 * Return one edge of the list
@@ -172,10 +170,9 @@ public class Polyline {
 		return this.edgeList.iterator().next();
 	}
 
-	// FIXME : it doesn't remove the points !
 	/**
 	 * Remove the edges of del contained in this. Caution : it doesn't remove
-	 * the points Use the remove(Edge) method
+	 * the points. This method uses the remove(Edge) method
 	 * 
 	 * @param del
 	 *            the list of edges to remove
@@ -545,29 +542,39 @@ public class Polyline {
 	/**
 	 * Returns the mesh composed all the triangles the edges belong to and which
 	 * belong to the mesh m. If one edge in this doesn't have one triangle to
-	 * return, this method returns the returnCentroidMesh() : FIXME
+	 * return, this method returns the returnCentroidMesh()
 	 * 
 	 * @return the mesh composed all the triangles the edges belong to
 	 */
-	public Mesh returnMesh(Mesh m) {
-		// FIXME : si tous les Edge n'ont pas de triangles associés, renvoyer
-		// vers l'autre méthode.
+	public Mesh returnExistingMesh(Mesh m) {
+
+		// If there is Edges which have not triangles associated, the method
+		// calls the returnCentroidMesh.
+		for (Edge e : this.edgeList) {
+			if (e.getNumberTriangles() == 0) {
+				return this.returnCentroidMesh();
+			}
+		}
+
+		// Find every triangles which belong to the edges, and which belong to m
+		// too.
 		Mesh ens = new Mesh();
 		for (Edge e : this.edgeList) {
-			// if (!e.getTriangleList().isEmpty()) {
 			for (Triangle t : e.getTriangleList()) {
 				if (m.contains(t)) {
 					ens.add(t);
 				}
 			}
-			// }
 		}
 		return ens;
 	}
 
-	// FIXME : make a better method
 	/**
-	 * @return
+	 * Return a mesh composed of the triangles formed by each edges and the
+	 * point centroid of the polyline. This is not really beautiful at the end,
+	 * but it's enough for debugging.
+	 * 
+	 * @return a mesh representing the surface of the polyline
 	 */
 	public Mesh returnCentroidMesh() {
 		Mesh ens = new Mesh();
@@ -643,10 +650,12 @@ public class Polyline {
 		return list;
 	}
 
-	// FIXME : it destroys the former Polyline and all the Points...
 	/**
 	 * Return a polyline that is the copy of this, but where all points have the
-	 * same z
+	 * same z. Caution : it modifies the points, then it must be a copy of the
+	 * points. Otherwise, the Mesh containing these points, and using the
+	 * hashCode will be lost (because the hashCode of the points would have been
+	 * modified without the hash table of the mesh refreshed).
 	 * 
 	 * @param z
 	 *            the value to project on
@@ -659,6 +668,8 @@ public class Polyline {
 		}
 	}
 
+	// TODO : this method is maybe not useful.
+	// With reductNoise and refine, we maybe have enough things...
 	/**
 	 * Returns a polyline containing the importants points of this. Caution : we
 	 * consider that we are in the plane (x,y)
@@ -668,7 +679,6 @@ public class Polyline {
 	 * @return a polyline containing the importants points of this
 	 * @throws Exception
 	 */
-	// FIXME : continue the explanation
 	public Polyline determinateSingularPoints(double error) throws Exception {
 
 		Polyline singularPoints = new Polyline();
@@ -680,19 +690,23 @@ public class Polyline {
 
 		numb = this.followTheFramedLine(error, numb);
 
+		// We add it to the list of singular points
 		singularPoints.add(first);
 
 		// Then we record all the points where there is an angle change.
 		do {
+			// When we find a point of angle change,
 			numb = followTheFramedLine(error, numb);
+			// We add it,
 			singularPoints.add(this.getEdgeList().get(numb));
 
+			// And we continue, until we've reached the first one.
 		} while (this.getEdgeList().get(numb) != first);
 
 		return singularPoints;
 	}
 
-	public Polyline reductNoise(double error) throws Exception {
+	public Polyline reductNoise(double error) {
 		Polyline ret = new Polyline();
 
 		int counter = 1;
@@ -731,11 +745,11 @@ public class Polyline {
 		return ret;
 	}
 
-	// We still consider that we are in the plane (x,y)
-	// Almost static method... Maybe to put in Edge ?
+	// TODO : Almost static method... Maybe to put in Edge ?
 	/**
 	 * Check if p3 is contained in the frame constitued by two segments
-	 * parallels to [p1 p2] with a coefficient
+	 * parallels to [p1 p2] with a coefficient. Caution : this method expects to
+	 * be in the plane (x,y). Thus a change base must be made before.
 	 * 
 	 * @param p1
 	 *            the first point of the segment
@@ -749,8 +763,7 @@ public class Polyline {
 	 * @return true if p3 is contained between those segments and false
 	 *         otherwise
 	 */
-	public boolean areWeInTheTwoLinesOrNot(Point p1, Point p2, Point p3,
-			double error) {
+	public boolean isInCylinder2D(Point p1, Point p2, Point p3, double error) {
 		double a, b, c, cPlus, cMinus;
 
 		// We calculate the equation of the segment, and of the two lines
@@ -772,8 +785,7 @@ public class Polyline {
 				* p3.getY() > cMinus);
 	}
 
-	public boolean areWeInTheCylinder3D(Point p1, Point p2, Point p3,
-			double error) {
+	public boolean isInCylinder3D(Point p1, Point p2, Point p3, double error) {
 
 		double x1 = p1.getX(), x2 = p2.getX(), x3 = p3.getX();
 		double y1 = p1.getY(), y2 = p2.getY(), y3 = p3.getY();
@@ -792,7 +804,7 @@ public class Polyline {
 		return (lambda > 0 && lambda < 1 && p3.distance(p4) < error);
 	}
 
-	public boolean areWeInTheCylinderInfinite3D(Point p1, Point p2, Point p3,
+	public boolean isInInfiniteCylinder3D(Point p1, Point p2, Point p3,
 			double error) {
 
 		double x1 = p1.getX(), x2 = p2.getX(), x3 = p3.getX();
@@ -812,76 +824,68 @@ public class Polyline {
 		return (p3.distance(p4) < error);
 	}
 
-	// We still consider that we are in the plane (x,y)
 	/**
 	 * Return the next important point. Begins the search, and returns the next
 	 * point which is not contained in the stripe : it's a point where the bound
-	 * change its direction We still consider that we are in the plane (x,y)
+	 * change its direction. Caution : this method expects to be in the plane
+	 * (x,y)
 	 * 
+	 * @param error
+	 *            the radius of the cylinder 2D where the points must be
+	 *            contained
+	 * @param numb
+	 *            the number of the current edge to begin the algorithm with
+	 * @return the number of the current edge where the algorithm stopped
 	 */
-	// FIXME : doc !
-	public int followTheFramedLine(double error, int numb)
-			throws InvalidActivityException {
+	public int followTheFramedLine(double error, int numb) {
 
 		if (numb == this.edgeSize() - 1)
 			return 0;
 
-		// FIXME if numb = this.size() - 2 !
-
-		Point p2 = null;
+		if (numb == this.edgeSize() - 2)
+			return this.edgeSize();
 
 		Edge eMain = this.getEdgeList().get(numb);
 		Edge eNext = this.getEdgeList().get(++numb);
 
-		// TODO : make a method to return the point common to the both edges.
-		if (eMain.contains(eNext.getP1())) {
-			p2 = eNext.getP1();
-		} else if (eMain.contains(eNext.getP2())) {
-			p2 = eNext.getP2();
-		} else {
-			System.err.println("Error !");
-		}
+		Point p2 = eMain.sharedPoint(eNext);
 
 		Point p1 = eMain.returnOther(p2);
 		Point p3 = eNext.returnOther(p2);
 		Point pbis = p2;
 
-		if (p3 == null) {
-			System.err.println("Error !");
-		}
+		while (isInCylinder2D(p1, p2, p3, error) && numb < this.edgeSize() - 1) {
 
-		while (areWeInTheTwoLinesOrNot(p1, p2, p3, error)
-				&& numb < this.edgeSize() - 1) {
-
-			// Then the point p3 is almost aligned with the other points...
-			// We add the two segments, and we do that with a third segment...
-
-			// eMain = eMain.compose(eNext, p2);
+			// If we are the loop, it means that the point p3 is almost aligned
+			// with the other points.
 			eNext = this.getEdgeList().get(++numb);
 
+			// Then we continue to the next edge.
 			pbis = p3;
 			p3 = eNext.returnOther(pbis);
-
-			if (p3 == null) {
-				System.err.println("Error !");
-			}
 		}
 
-		// We are after the angle change, but we certainly have missed the exact
-		// angle point. Then we turn back to try to find it.
-
+		// If we have arrived to the end of the polyline, we return 0 so that
+		// the upper method understand it is the end.
 		if (numb == this.edgeSize() - 1) {
 			return 0;
 		}
 
 		// When we're here, it means we found some Point which was not in the
-		// frame...
-
+		// cylinder, then which means an angle change.
 		return numb;
 	}
 
-	// Error in degrees !
-	public Polyline refine(double angleError) throws Exception {
+	// The error is in degrees
+	/**
+	 * Refine the polyline by mergind a list of edges which follow each other
+	 * and which are almost same-oriented.
+	 * 
+	 * @param angleError
+	 *            the error of orientation
+	 * @return a new polyline containing the refined polyline
+	 */
+	public Polyline refine(double angleError) {
 
 		Polyline refined = new Polyline();
 
@@ -919,7 +923,7 @@ public class Polyline {
 		ArrayList<Point> ret = new ArrayList<Point>();
 
 		for (Point p : this.pointList) {
-			if (areWeInTheCylinderInfinite3D(e.getP1(), e.getP2(), p, error)) {
+			if (isInInfiniteCylinder3D(e.getP1(), e.getP2(), p, error)) {
 				ret.add(p);
 			}
 		}
@@ -931,7 +935,7 @@ public class Polyline {
 		ArrayList<Point> ret = new ArrayList<Point>();
 
 		for (Point p : this.pointList) {
-			if (areWeInTheCylinder3D(e.getP1(), e.getP2(), p, error)) {
+			if (isInCylinder3D(e.getP1(), e.getP2(), p, error)) {
 				ret.add(p);
 			}
 		}
@@ -1138,8 +1142,8 @@ public class Polyline {
 		double max = Double.NEGATIVE_INFINITY;
 
 		for (Point p : this.pointList) {
-			if (getZAxisProjectionPoint(cylinder, axe, p).getX() > max) {
-				ref = getZAxisProjectionPoint(cylinder, axe, p);
+			if (getAxisProjectionPoint(cylinder, axe, p).getX() > max) {
+				ref = getAxisProjectionPoint(cylinder, axe, p);
 				max = ref.getX();
 			}
 		}
@@ -1147,26 +1151,13 @@ public class Polyline {
 		return ref;
 	}
 
-	public boolean isNeighbour(Polyline p) {
-		if (p == this) {
-			return false;
-		}
-		for (Point p1 : this.pointList) {
-			for (Point p2 : p.pointList) {
-				if (p1.distance(p2) < 2)
-					return true;
-			}
-		}
-		return false;
-	}
-
 	private Point getCylinderMinPoint(ArrayList<Point> cylinder, Edge axe) {
 		Point ref = null;
 		double min = Double.POSITIVE_INFINITY;
 
 		for (Point p : this.pointList) {
-			if (getZAxisProjectionPoint(cylinder, axe, p).getX() < min) {
-				ref = getZAxisProjectionPoint(cylinder, axe, p);
+			if (getAxisProjectionPoint(cylinder, axe, p).getX() < min) {
+				ref = getAxisProjectionPoint(cylinder, axe, p);
 				min = ref.getX();
 			}
 		}
@@ -1174,7 +1165,7 @@ public class Polyline {
 		return ref;
 	}
 
-	private Point getZAxisProjectionPoint(ArrayList<Point> cylinder, Edge axe,
+	private Point getAxisProjectionPoint(ArrayList<Point> cylinder, Edge axe,
 			Point p) {
 		Point p1 = axe.getP1(), p2 = axe.getP2(), p3 = p;
 
@@ -1197,7 +1188,20 @@ public class Polyline {
 		return this.neighbours;
 	}
 
-	public void write(String string) {
+	public boolean isNeighbour(Polyline p) {
+		if (p == this) {
+			return false;
+		}
+		for (Point p1 : this.pointList) {
+			for (Point p2 : p.pointList) {
+				if (p1.distance(p2) < 2)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	public void writeCentroidMesh(String string) {
 		this.returnCentroidMesh().writeSTL(string);
 	}
 }

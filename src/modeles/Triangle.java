@@ -59,7 +59,7 @@ public class Triangle {
 	 * @param t
 	 *            the triangle to copy
 	 */
-	private Triangle(Triangle t) {
+	public Triangle(Triangle t) {
 		this.points[0] = new Point(t.points[0]);
 		this.points[1] = new Point(t.points[1]);
 		this.points[2] = new Point(t.points[2]);
@@ -200,7 +200,6 @@ public class Triangle {
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
-	// FIXME : revoir le hashCode !
 	public int hashCode() {
 		int result = 1;
 		result = result + ((points[0] == null) ? 0 : points[0].hashCode());
@@ -215,8 +214,6 @@ public class Triangle {
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	// TODO : do not depends on the normal : fix it !
-	// Do not depend on the edges !
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
@@ -381,47 +378,6 @@ public class Triangle {
 	}
 
 	/**
-	 * @param x
-	 * @return
-	 */
-	public Triangle xProjection(double x) {
-		Triangle t = new Triangle(this);
-
-		for (Point p : t.points)
-			p.setX(x);
-
-		return t;
-	}
-
-	/**
-	 * @param y
-	 * @return
-	 */
-	public Triangle yProjection(double y) {
-		Triangle t = new Triangle(this);
-
-		for (Point p : t.points)
-			p.setY(y);
-
-		return t;
-	}
-
-	// FIXME : caution to the Edges ..
-	// FIXME : it destroy the former Triangle... and all the Points...
-	/**
-	 * @param z
-	 * @return
-	 */
-	public Triangle zProjection(double z) {
-		Triangle t = new Triangle(this);
-
-		for (Point p : t.points)
-			p.setZ(z);
-
-		return t;
-	}
-
-	/**
 	 * @param vector
 	 * @param error
 	 * @return
@@ -439,16 +395,20 @@ public class Triangle {
 		return (this.angularTolerance(face.normal, error));
 	}
 
-	// LOOK : Caution : this is not in degrees !
-	// The factor is between 0 and 1.
-	// TODO : normalize the vector before the compute.
 	/**
-	 * @param normal
+	 * Check if norm is normal to the normal of this triangle, with an error.
+	 * Caution : this error is not in degrees ! The error is compared with the
+	 * result of a dot product. Then this error must be between 0 and 1.
+	 * 
+	 * @param norm
+	 *            the vector to compare
 	 * @param error
-	 * @return
+	 *            the error of orientation
+	 * @return true if this triangle is oriented normal to norm with an error,
+	 *         false otherwise.
 	 */
-	public boolean isNormalTo(Vector3d normal, double error) {
-		return (this.normal.dot(normal) < error && this.normal.dot(normal) > -error);
+	public boolean isNormalTo(Vector3d norm, double error) {
+		return (this.normal.dot(norm) < error && this.normal.dot(norm) > -error);
 	}
 
 	//

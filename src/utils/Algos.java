@@ -30,16 +30,13 @@ public class Algos {
 		HashSet<Mesh> thingsList = new HashSet<Mesh>();
 		Mesh mesh = new Mesh(m);
 
-		// int size = mesh.size();
-
 		while (!mesh.isEmpty()) {
-			// LOOK : log.info instead of sysout.
-			// System.out.println("Number of triangles left : " + mesh.size()
-			// + " on " + size);
+
 			Mesh e = new Mesh();
 			mesh.getOne().returnNeighbours(e, mesh);
 			mesh.remove(e);
 			thingsList.add(e);
+
 		}
 
 		return new ArrayList<Mesh>(thingsList);
@@ -64,12 +61,8 @@ public class Algos {
 		ArrayList<Mesh> thingsList = new ArrayList<Mesh>();
 		Mesh mesh = new Mesh(m);
 
-		// int size = mesh.size();
-
 		while (!mesh.isEmpty()) {
-			// LOOK : redo this syso : the numbers are false !
-			// System.out.println("Number of triangles left : " + mesh.size()
-			// + " on " + size);
+
 			Mesh e = new Mesh();
 			Triangle tri = mesh.getOne();
 			Mesh oriented = mesh.orientedAs(tri.getNormal(),
@@ -77,6 +70,7 @@ public class Algos {
 			tri.returnNeighbours(e, oriented);
 			mesh.remove(e);
 			thingsList.add(e);
+
 		}
 
 		return thingsList;
@@ -119,14 +113,13 @@ public class Algos {
 	 * the floor, tt searches the lowest altitude as the lowest z, and take a
 	 * stripe of triangles that are contained in the lowest altitude and an
 	 * error. In this stripe, it takes one triangle, and returns all its
-	 * neighbours.
+	 * neighbours. FIXME : find the altitude factor automatically
 	 * 
 	 * @param meshOriented
 	 *            the floor-oriented triangles that will be treated
 	 * @param altitudeErrorFactor
 	 *            the error on the altitude
-	 * @return the mesh containing the floor extracted FIXME : find the altitude
-	 *         factor automatically
+	 * @return the mesh containing the floor extracted
 	 */
 	public static Mesh floorExtract(Mesh meshOriented,
 			double altitudeErrorFactor) {
@@ -137,20 +130,18 @@ public class Algos {
 
 		Mesh stripe = meshOriented.zBetween(lowestZ, lowestZ
 				+ altitudeErrorFactor);
-		// int size = meshOriented.size();
 
 		Mesh temp = new Mesh();
 
 		while (!stripe.isEmpty()) {
+
 			lowestTriangle = stripe.getOne();
-			// LOOK : redo this syso : the numbers are false !
-			// System.out.println("Number of triangles left : "
-			// + meshOriented.size() + " on " + size);
 			temp.clear();
 			lowestTriangle.returnNeighbours(temp, meshOriented);
 			floors.addAll(temp);
 			meshOriented.remove(temp);
 			stripe.remove(temp);
+
 		}
 
 		return floors;

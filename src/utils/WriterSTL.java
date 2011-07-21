@@ -36,10 +36,10 @@ public class WriterSTL {
 	 */
 	private static int MODE = ASCII_MODE;
 
-//	/**
-//	 * The logger to write the informations in.
-//	 */
-//	private static Logger log = Logger.getLogger("logger");
+	// /**
+	// * The logger to write the informations in.
+	// */
+	// private static Logger log = Logger.getLogger("logger");
 
 	/**
 	 * Write a mesh, depending on the attribute MODE.
@@ -54,10 +54,6 @@ public class WriterSTL {
 			writeA(fileName, m);
 		else if (MODE == BINARY_MODE)
 			writeB(fileName, m);
-		else {
-			System.err.println("Erreur !");
-			// FIXME throw exc !
-		}
 	}
 
 	/**
@@ -68,8 +64,8 @@ public class WriterSTL {
 	 */
 	public static void setWriteMode(int mode) {
 		MODE = mode;
-	}	
-	
+	}
+
 	/**
 	 * Allows to know the value of the attribute MODE.
 	 * 
@@ -89,7 +85,7 @@ public class WriterSTL {
 	 */
 	private static void writeA(String fileName, Mesh m) {
 		WriterSTL.writeSTLA(fileName, m);
-//		log.info(fileName + " written in STL ASCII!");
+		// log.info(fileName + " written in STL ASCII!");
 	}
 
 	/**
@@ -102,7 +98,7 @@ public class WriterSTL {
 	 */
 	private static void writeB(String fileName, Mesh m) {
 		WriterSTL.writeSTLB(fileName, m);
-//		log.info(fileName + " written in STL binary!");
+		// log.info(fileName + " written in STL binary!");
 	}
 
 	/**
@@ -114,29 +110,29 @@ public class WriterSTL {
 	 */
 	private static void writeASCIIFace(BufferedWriter fw, Triangle face) {
 		try {
-			//Write facet normal : to begin a triangle with writing its normal.
+			// Write facet normal : to begin a triangle with writing its normal.
 			fw.write("\nfacet normal");
-			
+
 			String s1 = new String();
-			
+
 			double[] t = new double[3];
 			face.getNormal().get(t);
-			//Write the normal.
+			// Write the normal.
 			for (int j = 0; j < 3; j++) {
 				s1 += " " + t[j];
 			}
-			
-			//Write outer loop : to begin to write the three points.
+
+			// Write outer loop : to begin to write the three points.
 			fw.write(s1 + "\nouter loop");
-			//Write the three points.
+			// Write the three points.
 			fw.write("\nvertex" + " " + face.getP1().getX() + " "
 					+ face.getP1().getY() + " " + face.getP1().getZ());
 			fw.write("\nvertex" + " " + face.getP2().getX() + " "
 					+ face.getP2().getY() + " " + face.getP2().getZ());
 			fw.write("\nvertex" + " " + face.getP3().getX() + " "
 					+ face.getP3().getY() + " " + face.getP3().getZ());
-			
-			//Write the end of the facet.
+
+			// Write the end of the facet.
 			fw.write("\nendloop\nendfacet");
 		} catch (java.io.IOException ee) {
 			ee.printStackTrace();
@@ -153,15 +149,15 @@ public class WriterSTL {
 	 */
 	private static void writeSTLA(String fileName, Mesh surface) {
 		try {
-			//Write the header of the file : solid.
+			// Write the header of the file : solid.
 			BufferedWriter fw = new BufferedWriter(new FileWriter(fileName));
 			fw.write("solid");
 			for (Triangle f : surface) {
 				writeASCIIFace(fw, f);
 			}
-			//Write the end of the file : endsolid.
+			// Write the end of the file : endsolid.
 			fw.write("\nendsolid");
-			//Finish to write the last datas before closing the writer.
+			// Finish to write the last datas before closing the writer.
 			fw.flush();
 		} catch (java.io.IOException e) {
 			e.printStackTrace();
@@ -179,8 +175,8 @@ public class WriterSTL {
 	 *             if the writer throws an error
 	 */
 	private static void writeInGoodOrder(OutputStream writer, double a)
-			throws IOException {			
-		//Write the double : must order it in the LITTLE_ENDIAN format.
+			throws IOException {
+		// Write the double : must order it in the LITTLE_ENDIAN format.
 		ByteBuffer bBuf = ByteBuffer.allocate(Float.SIZE);
 		bBuf.order(ByteOrder.LITTLE_ENDIAN);
 		bBuf.putFloat((float) a);
@@ -199,12 +195,12 @@ public class WriterSTL {
 	 */
 	private static void writeBinaryFace(OutputStream writer, Triangle face)
 			throws IOException {
-		//Write first the normal.
+		// Write first the normal.
 		writeInGoodOrder(writer, face.getNormal().getX());
 		writeInGoodOrder(writer, face.getNormal().getY());
 		writeInGoodOrder(writer, face.getNormal().getZ());
 
-		//And the three points after.
+		// And the three points after.
 		writeInGoodOrder(writer, face.getP1().getX());
 		writeInGoodOrder(writer, face.getP1().getY());
 		writeInGoodOrder(writer, face.getP1().getZ());
@@ -233,11 +229,13 @@ public class WriterSTL {
 			BufferedOutputStream stream = new BufferedOutputStream(
 					new FileOutputStream(fileName));
 
-			//Write a 80-byte long header. Possibility to write the name of the author.
+			// Write a 80-byte long header. Possibility to write the name of the
+			// author.
 			byte[] header = new byte[80];
 			stream.write(header);
 
-			//Write the number of triangles : must order the Int in the LITTLE_ENDIAN format.
+			// Write the number of triangles : must order the Int in the
+			// LITTLE_ENDIAN format.
 			ByteBuffer bBuf = ByteBuffer.allocate(Integer.SIZE);
 			bBuf.order(ByteOrder.LITTLE_ENDIAN);
 			bBuf.putInt(surface.size());
@@ -247,7 +245,7 @@ public class WriterSTL {
 				writeBinaryFace(stream, t);
 			}
 
-			//Finish to write the last datas before closing the writer.
+			// Finish to write the last datas before closing the writer.
 			stream.flush();
 		} catch (Exception e) {
 			e.printStackTrace();

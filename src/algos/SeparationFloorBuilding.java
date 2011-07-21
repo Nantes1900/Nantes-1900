@@ -21,6 +21,9 @@ import utils.WriterSTL;
  * @author Daniel Lefevre
  * 
  */
+
+//LOOK : this class must be deleted until the end of the project
+
 public class SeparationFloorBuilding {
 
 	public static double altitudeErrorFactor = 10;

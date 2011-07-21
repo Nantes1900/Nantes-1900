@@ -77,7 +77,7 @@ public class Point {
 	 * @return a table of double
 	 */
 	public double[] getPointAsCoordinates() {
-		double[] coords = {x, y, z};
+		double[] coords = { x, y, z };
 		return coords;
 	}
 

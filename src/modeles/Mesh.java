@@ -237,46 +237,6 @@ public class Mesh extends HashSet<Triangle> {
 		return ens;
 	}
 
-	// TODO : take care of the fact that new Triangle without order, and without
-	// neighbours are created !
-	// Caution !
-	// FIXME : the actual key table is destroyed :)
-	/**
-	 * @param x
-	 * @return
-	 */
-	public Mesh xProjection(double x) {
-		Mesh e = new Mesh();
-		for (Triangle t : this) {
-			e.add(t.xProjection(x));
-		}
-		return e;
-	}
-
-	/**
-	 * @param y
-	 * @return
-	 */
-	public Mesh yProjection(double y) {
-		Mesh e = new Mesh();
-		for (Triangle t : this) {
-			e.add(t.yProjection(y));
-		}
-		return e;
-	}
-
-	/**
-	 * @param z
-	 * @return
-	 */
-	public Mesh zProjection(double z) {
-		Mesh e = new Mesh();
-		for (Triangle t : this) {
-			e.add(t.zProjection(z));
-		}
-		return e;
-	}
-
 	/**
 	 * @return
 	 */
@@ -293,8 +253,6 @@ public class Mesh extends HashSet<Triangle> {
 		}
 		return t;
 	}
-
-	// TODO : improve the velocity of this method !
 
 	/**
 	 * @param zMax
@@ -383,7 +341,6 @@ public class Mesh extends HashSet<Triangle> {
 		this.addAll(mesh);
 	}
 
-	// FIXME : à améliorer !
 	/**
 	 * Search for all the edges which belong to the bounds. If an edge contain
 	 * only one triangle in this, then it is part of the bounds.
@@ -394,10 +351,13 @@ public class Mesh extends HashSet<Triangle> {
 		Polyline bounds = new Polyline();
 		HashSet<Edge> edges = new HashSet<Edge>();
 
+		// Select every edges of the mesh.
 		for (Triangle tri : this) {
 			edges.addAll(tri.getEdges());
 		}
 
+		// On each edges, select the ones that have only one triangle associated
+		// in this, ie they are part of the bounds.
 		for (Edge e : edges) {
 			int counter = 0;
 			for (Triangle t : e.getTriangleList()) {
@@ -405,7 +365,8 @@ public class Mesh extends HashSet<Triangle> {
 					counter++;
 			}
 
-			// Add the edges which belong to only one triangle in this.
+			// Add the edges which belong to only one triangle in this are
+			// selected as part of the bounds.
 			if (counter == 1)
 				bounds.add(e);
 		}
@@ -432,7 +393,7 @@ public class Mesh extends HashSet<Triangle> {
 			Edge arete = bounds.getOne();
 
 			ret = arete.returnOneBound(this, bounds,
-					this.whichPointTheLeft(arete, normal), normal);
+					this.getLeftPoint(arete, normal), normal);
 
 			boundList.add(ret);
 
@@ -444,13 +405,10 @@ public class Mesh extends HashSet<Triangle> {
 		return boundList;
 	}
 
-	public Point whichPointTheLeft(Edge edge, Vector3d normalFloor) {
+	public Point getLeftPoint(Edge edge, Vector3d normalFloor) {
 
 		Point p31 = null, p32 = null;
-		if (edge.getNumberTriangles() != 2) {
-			// LOOK
-			System.err.println("Encore une erreur !");
-		}
+
 		for (Point p : edge.getTriangleList().get(0).getPoints()) {
 			if (!edge.contains(p)) {
 				p31 = p;
@@ -503,7 +461,7 @@ public class Mesh extends HashSet<Triangle> {
 	 *         surface
 	 */
 	public Polyline returnLongestBound(Vector3d normal) {
-		// FIXME
+
 		ArrayList<Polyline> boundList = this.returnBounds(normal);
 		Polyline ret = null;
 

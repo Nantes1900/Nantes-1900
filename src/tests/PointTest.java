@@ -145,8 +145,6 @@ public class PointTest {
 	public void testChangeBase() {
 		Vector3d vect = new Vector3d(0, 0, 1);
 
-		boolean exception = true;
-
 		try {
 
 			double[][] matrix = MatrixMethod.createOrthoBase(vect);
@@ -165,10 +163,7 @@ public class PointTest {
 			assertTrue(p.equals(pChanged));
 
 		} catch (SingularMatrixException e) {
-			// TODO : this Exception is not supposed to happen.
-			exception = false;
+			fail();
 		}
-
-		assertTrue(exception);
 	}
 }

@@ -4,7 +4,6 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import javax.activity.InvalidActivityException;
 import javax.vecmath.Vector3d;
 
 /**
@@ -31,7 +30,8 @@ public class Edge {
 		this.points[1] = p2;
 	}
 
-	// FIXME
+	// Caution : use it very cautiously because it creates new Edges with same
+	// values and not the same references.
 	public Edge(Edge e) {
 		this.setP1(e.getP1());
 		this.setP2(e.getP2());
@@ -57,10 +57,8 @@ public class Edge {
 	 */
 	public Triangle returnOther(Triangle t) {
 		if (this.triangleList.size() > 2)
-			// TODO : renvoyer une exception
+			// TODO : throw Exception, but treat first addTriangle before.
 			System.err.println("Error : more than two triangles per edge !");
-		if (!this.triangleList.contains(t))
-			throw new InvalidParameterException("t is not part of the Edge !");
 		if (this.triangleList.size() < 2)
 			return null;
 		if (this.triangleList.get(0) == t)
@@ -168,7 +166,6 @@ public class Edge {
 	 * @see java.lang.Object#hashCode()
 	 */
 	@Override
-	// FIXME : revoir le hashCode !
 	public int hashCode() {
 		int result = 1;
 		result = result
@@ -195,27 +192,6 @@ public class Edge {
 		return (e.contains(this.points[0]) && e.contains(this.points[1]));
 	}
 
-	/**
-	 * Recursing method returning a polyline containing all the neighbours which
-	 * are contained in p
-	 * 
-	 * @param ret
-	 *            the polyline in which are returned the neighbours
-	 * @param p
-	 *            the polyline in which the edges have to be //LOOK : fix
-	 *            this...
-	 */
-	public void returnNeighbours(Polyline ret, Polyline p) {
-		if (!ret.contains(this)) {
-			ret.add(this);
-			for (Edge e : p.getEdgeList()) {
-				if (this.isNeighboor(e)) {
-					e.returnNeighbours(ret, p);
-				}
-			}
-		}
-	}
-
 	public Polyline returnOneBound(Mesh m, Polyline p, Point point,
 			Vector3d normalFloor) {
 
@@ -225,11 +201,11 @@ public class Edge {
 			ArrayList<Edge> edgeList = p.getNeighbours(point);
 
 			if (edgeList.size() < 2) {
-				System.err.println("Error in returnOneBound 1 !");
+				throw new BadFormedPolylineException();
 			}
 
 			Edge e;
-			e = this.returnNeighbour(point, p, normalFloor);
+			e = this.returnLeftNeighbour(point, p, normalFloor);
 			e.setP2(e.returnOther(point));
 			e.setP1(point);
 
@@ -240,14 +216,10 @@ public class Edge {
 
 			while (e != this) {
 				edgeList = p.getNeighbours(point);
-				if (!edgeList.contains(e)) {
-					System.err.println("Error in returnOneBound 2 !"); // LOOK
-					throw new InvalidActivityException();
-				} else if (edgeList.size() < 2) {
-					System.err.println("Error in returnOneBound 3 !"); // LOOK
-					throw new InvalidActivityException();
+				if (edgeList.size() < 2) {
+					throw new BadFormedPolylineException();
 				} else {
-					e = e.returnNeighbour(point, p, normalFloor);
+					e = e.returnLeftNeighbour(point, p, normalFloor);
 
 					e.setP2(e.returnOther(point));
 					e.setP1(point);
@@ -261,8 +233,8 @@ public class Edge {
 				}
 				counter++;
 			}
-		} catch (InvalidActivityException e1) {
-			e1.printStackTrace();
+		} catch (BadFormedPolylineException e) {
+			e.printStackTrace();
 		}
 		return bound;
 	}
@@ -278,12 +250,7 @@ public class Edge {
 	}
 
 	private Edge returnTheLeftOne(ArrayList<Edge> weirdEdges, Point weirdPoint,
-			Vector3d normalFloor) throws InvalidActivityException {
-
-		if (!weirdEdges.contains(this)) {
-			// LOOK
-			System.err.println("Error in returnTheLeftOne !");
-		}
+			Vector3d normalFloor) {
 
 		Vector3d v = new Vector3d();
 
@@ -331,9 +298,7 @@ public class Edge {
 	 * 
 	 * @param p
 	 *            the polyline in which the edges have to be
-	 * @return the number of neighbours //TODO : maybe for this method and
-	 *         returnNeighbours, it should be interesting to make an index and
-	 *         to search first, or to create references in the class Point...
+	 * @return the number of neighbours
 	 */
 	public int getNumNeighbours(Polyline p) {
 		if (!p.contains(this)) {
@@ -368,31 +333,27 @@ public class Edge {
 
 	/**
 	 * Returns the edge neighbour of this which contains p and which belongs to
-	 * b
+	 * b. If there is a point which belongs to 4 edges, the method will take the
+	 * left one.
 	 * 
 	 * @param p
 	 *            the point shared by the two edges
 	 * @param b
 	 *            the poliyline in which must be the edge returned
 	 * @return the edge belonging to b which contains p
-	 * @throws InvalidActivityException
+	 * @throws BadFormedPolylineException
+	 *             if a point in the polyline belongs nor to 2 edge neither to 4
+	 *             edges
 	 */
-	// TODO : @Test
-	public Edge returnNeighbour(Point p, Polyline b, Vector3d normalFloor)
-			throws InvalidActivityException {
-
-		if (!b.contains(this)) {
-			throw new InvalidParameterException();
-		}
+	public Edge returnLeftNeighbour(Point p, Polyline b, Vector3d normalFloor)
+			throws BadFormedPolylineException {
 
 		ArrayList<Edge> list = b.getNeighbours(p);
 
 		if (list.size() == 4) {
 			return this.returnTheLeftOne(b.getNeighbours(p), p, normalFloor);
 		} else if (list.size() < 2 || list.size() > 4 || list.size() == 3) {
-			System.err.println("Error in returnNeighbour !");
-			// FIXME : throw exc !
-			throw new InvalidActivityException();
+			throw new BadFormedPolylineException();
 		} else {
 			list.remove(this);
 			return list.get(0);
@@ -402,15 +363,13 @@ public class Edge {
 	/**
 	 * Create another edge with the opposite points of the two parameters
 	 * 
-	 * @param eAdd
-	 *            - the edge to compose with
-	 * @param p
-	 *            the point the two edges share
+	 * @param e
+	 *            the edge to compose with
 	 * @return a new edge formed with the opposite points of the two parameters
 	 */
-	// TODO : remove the parameter p : it's easy to find
-	public Edge compose(Edge eAdd, Point p) {
-		return new Edge(this.returnOther(p), eAdd.returnOther(p));
+	public Edge compose(Edge e) {
+		Point p = this.sharedPoint(e);
+		return new Edge(this.returnOther(p), e.returnOther(p));
 	}
 
 	// Error in degrees !
@@ -442,13 +401,11 @@ public class Edge {
 		return min;
 	}
 
-	public Point sharedPoint(Edge e) throws Exception {
+	public Point sharedPoint(Edge e) {
 		if (this.contains(e.getP1())) {
 			return e.getP1();
-		} else if (this.contains(e.getP2())) {
-			return e.getP2();
 		} else {
-			throw new Exception();
+			return e.getP2();
 		}
 	}
 
@@ -470,5 +427,9 @@ public class Edge {
 				* (z2 - z1) + z1;
 
 		return new Point(x4, y4, z4);
+	}
+
+	public static class BadFormedPolylineException extends Exception {
+		private static final long serialVersionUID = 1L;
 	}
 }

@@ -249,16 +249,12 @@ public class PolylineTest {
 		assertFalse(pol2.contains(e3));
 		assertTrue(pol2.contains(e4));
 		assertTrue(pol2.contains(e5));
-
-		assertTrue(pol2.contains(p1));
-		assertTrue(pol2.contains(p2));
-		// FIXME : look in Polyline
-		assertFalse(pol2.contains(p3));
-		assertTrue(pol2.contains(p4));
 	}
 
 	/**
-	 * Test method for {@link modeles.Polyline#areWeInTheTwoLinesOrNot(modeles.Point, modeles.Point, modeles.Point, double)}.
+	 * Test method for
+	 * {@link modeles.Polyline#isInCylinder2D(modeles.Point, modeles.Point, modeles.Point, double)}
+	 * .
 	 */
 	@Test
 	public void testAreWeInTheTwoLinesOrNot() {
@@ -266,51 +262,53 @@ public class PolylineTest {
 		Point p2 = new Point(1, 1, 0);
 		Point p3 = new Point(2.2, 2, 0);
 		double error = 0.3;
-		assertTrue(p.areWeInTheTwoLinesOrNot(p1, p2, p3, error));
+		assertTrue(p.isInCylinder2D(p1, p2, p3, error));
 
 		p3 = new Point(3, 2, 0);
-		assertFalse(p.areWeInTheTwoLinesOrNot(p1, p2, p3, error));
+		assertFalse(p.isInCylinder2D(p1, p2, p3, error));
 	}
 
-//	/**
-//	 * Test method for {@link modeles.Polyline#followTheFramedLine(modeles.Edge, modeles.Point, double, modeles.Edge)}.
-//	 */
-//	@Test
-//	public void testFollowTheFramedLine() {
-//		Point p0 = new Point(-1, -1, 0);
-//		Point p1 = new Point(0, 0, 0);
-//		Point p2 = new Point(1, 1, 0);
-//		Point p3 = new Point(2.2, 2, 0);
-//		Point p4 = new Point(3, 3, 0);
-//		Point p5 = new Point(4.1, 4, 0);
-//		Point p6 = new Point(10, 4, 0);
-//
-//		Edge e0 = new Edge(p0, p1);
-//		Edge e1 = new Edge(p1, p2);
-//		Edge e2 = new Edge(p2, p3);
-//		Edge e3 = new Edge(p3, p4);
-//		Edge e4 = new Edge(p4, p5);
-//		Edge e5 = new Edge(p5, p6);
-//
-//		Polyline line = new Polyline();
-//
-//		line.add(e0);
-//		line.add(e1);
-//		line.add(e2);
-//		line.add(e3);
-//		line.add(e4);
-//		line.add(e5);
-//
-//		assertTrue(line.followTheFramedLine(e1, p1, 0.4, e0) == e5);
-//	}
+	// /**
+	// * Test method for {@link
+	// modeles.Polyline#followTheFramedLine(modeles.Edge, modeles.Point, double,
+	// modeles.Edge)}.
+	// */
+	// @Test
+	// public void testFollowTheFramedLine() {
+	// Point p0 = new Point(-1, -1, 0);
+	// Point p1 = new Point(0, 0, 0);
+	// Point p2 = new Point(1, 1, 0);
+	// Point p3 = new Point(2.2, 2, 0);
+	// Point p4 = new Point(3, 3, 0);
+	// Point p5 = new Point(4.1, 4, 0);
+	// Point p6 = new Point(10, 4, 0);
+	//
+	// Edge e0 = new Edge(p0, p1);
+	// Edge e1 = new Edge(p1, p2);
+	// Edge e2 = new Edge(p2, p3);
+	// Edge e3 = new Edge(p3, p4);
+	// Edge e4 = new Edge(p4, p5);
+	// Edge e5 = new Edge(p5, p6);
+	//
+	// Polyline line = new Polyline();
+	//
+	// line.add(e0);
+	// line.add(e1);
+	// line.add(e2);
+	// line.add(e3);
+	// line.add(e4);
+	// line.add(e5);
+	//
+	// assertTrue(line.followTheFramedLine(e1, p1, 0.4, e0) == e5);
+	// }
 
 	/**
 	 * Test method for {@link modeles.Polyline#returnMesh()}.
 	 */
-	 @Test
-	 public void testReturnMesh() {
-			fail("Not yet implemented"); // TODO
-	 }
+	@Test
+	public void testReturnMesh() {
+		fail("Not yet implemented"); // TODO
+	}
 
 	/**
 	 * Test method for {@link modeles.Polyline#order()}.
@@ -318,7 +316,9 @@ public class PolylineTest {
 	@Test
 	public void testOrder() {
 		fail("Not yet implemented"); // TODO
-	}	/**
+	}
+
+	/**
 	 * Test method for {@link modeles.Polyline#Polyline(java.util.List)}.
 	 */
 	@Test
@@ -422,8 +422,6 @@ public class PolylineTest {
 		fail("Not yet implemented"); // TODO
 	}
 
-
-
 	/**
 	 * Test method for {@link modeles.Polyline#returnCentroidMesh()}.
 	 */
@@ -465,7 +463,8 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Polyline#determinateSingularPoints(double)}.
+	 * Test method for
+	 * {@link modeles.Polyline#determinateSingularPoints(double)}.
 	 */
 	@Test
 	public void testDeterminateSingularPoints() {

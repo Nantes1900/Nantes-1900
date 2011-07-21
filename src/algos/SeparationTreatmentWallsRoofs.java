@@ -23,6 +23,9 @@ import utils.WriterSTL;
  * 
  * @author Daniel Lefevre
  */
+
+// LOOK : this class must be deleted until the end of the projec
+
 public class SeparationTreatmentWallsRoofs {
 
 	public static double angleNormalErrorFactor = 20;

@@ -33,10 +33,10 @@ public class ParserSTL {
 	private static Vector3d currentVector;
 	private static ArrayList<Point> currentPoints;
 
-//	/**
-//	 * The logger to write the informations in.
-//	 */
-//	private static Logger log = Logger.getLogger("logger");
+	// /**
+	// * The logger to write the informations in.
+	// */
+	// private static Logger log = Logger.getLogger("logger");
 
 	/**
 	 * Read a binary STL file. Create a HashSet of triangle to put them in. If a
@@ -88,8 +88,8 @@ public class ParserSTL {
 			}
 		}
 
-//		log.info("File : " + fileName + " read !");
-//		log.info("Number of triangles : " + mesh.size());
+		// log.info("File : " + fileName + " read !");
+		// log.info("Number of triangles : " + mesh.size());
 
 		return mesh;
 	}
@@ -119,6 +119,8 @@ public class ParserSTL {
 		// Read in the ByteBuffer the floats.
 		Vector3d norm = new Vector3d(bBuf.getFloat(), bBuf.getFloat(),
 				bBuf.getFloat());
+		norm.normalize();
+
 		Point p1 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
 		Point p2 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
 		Point p3 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
@@ -136,9 +138,6 @@ public class ParserSTL {
 		if (p3.getX() > maxLimit || p3.getY() > maxLimit
 				|| p3.getZ() > maxLimit)
 			throw new OutOfBoundsPointException();
-
-		// FIXME : essayer de trier les points pour que le hashCode de Edge soit
-		// mieux codé.
 
 		// Add the point to the HashSet using get : if null is returned, it
 		// means that the HashSet doesn't contain any point with the same
@@ -278,8 +277,8 @@ public class ParserSTL {
 			scanner.close();
 		}
 
-//		log.info("File : " + fileName + " read !");
-//		log.info("Number of triangles : " + mesh.size());
+		// log.info("File : " + fileName + " read !");
+		// log.info("Number of triangles : " + mesh.size());
 
 		return new HashSet<Triangle>(mesh);
 	}
@@ -326,6 +325,8 @@ public class ParserSTL {
 							.nextToken()), Double.parseDouble(brokenLine
 							.nextToken()), Double.parseDouble(brokenLine
 							.nextToken()));
+
+					currentVector.normalize();
 				} else {
 					throw new BadFormedFileException();
 				}

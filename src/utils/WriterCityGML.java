@@ -146,7 +146,6 @@ public class WriterCityGML {
 						.createBoundarySurfaceProperty(boundarySurface));
 			}
 		} catch (DimensionMismatchException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -197,7 +196,7 @@ public class WriterCityGML {
 				geometry.setId(this.gmlIdManager.generateGmlId());
 				surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
 						.getId()));
-				// FIXME : peut-être classer en WALL et ROOF SURFACE !
+				// TODO : peut-être classer en WALL et ROOF SURFACE !
 
 				AbstractBoundarySurface boundarySurface = citygml
 						.createRoofSurface();

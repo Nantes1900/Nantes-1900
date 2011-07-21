@@ -2,6 +2,8 @@ package mains;
 
 import algos.SeparationTreatmentWallsRoofs;
 
+//LOOK : this class must be deleted until the end of the project
+
 public class Main2 {
 
 	public static void main(String[] args) {

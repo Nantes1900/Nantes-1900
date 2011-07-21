@@ -86,7 +86,9 @@ public class Edifice {
 	 */
 	private Mesh parseBuilding(String fileName) {
 		try {
+
 			return new Mesh(ParserSTL.readSTL(fileName));
+
 		} catch (BadFormedFileException e) {
 			log.severe("Error in the file !");
 			System.exit(1);
@@ -158,14 +160,20 @@ public class Edifice {
 			size += e.size();
 		}
 
-		// Considering their size, sort the blocks in roofs or noise.
+		// Considering their size and their orientation, sort the blocks in
+		// roofs or noise.
 		for (Mesh e : thingsList) {
 			if ((e.size() >= SeparationTreatmentWallsRoofs.errorNumberTrianglesRoof
 					* (double) size / (double) thingsList.size())
+
 					&& (e.averageNormal().dot(normalFloor) > 0)) {
+
 				roofList.add(e);
+
 			} else
+
 				noise.addAll(e);
+
 		}
 
 		// Add the roofs to the wholeRoof mesh.
@@ -177,8 +185,8 @@ public class Edifice {
 	}
 
 	/**
-	 * Add the noise to the wall which is its neighbour, and has the same
-	 * orientation. The orientation is determined by the
+	 * Add the noise to the wall which is its neighbour, and which has the same
+	 * orientation. The error orientation is determined by the
 	 * largeAngleNormalErrorFactor.
 	 */
 	private void treatNoiseWalls(ArrayList<Mesh> wallList, Mesh wholeWall,
@@ -196,8 +204,8 @@ public class Edifice {
 	}
 
 	/**
-	 * Add the noise to the floor which is its neighbour, and has the same
-	 * orientation. The orientation is determined by the
+	 * Add the noise to the floor which is its neighbour, and which has the same
+	 * orientation. The error orientation is determined by the
 	 * largeAngleNormalErrorFactor.
 	 */
 	private void treatNoiseRoofs(ArrayList<Mesh> roofList, Mesh wholeRoof,
@@ -263,16 +271,11 @@ public class Edifice {
 	private Polyline treatSurface(Mesh surface) {
 
 		// Compute the contour of the surface
-		Polyline longestBound = null;
-		try {
-			// Create other points, edges, on the new polyline to avoid the risk
-			// of modifying the meshes
-			// Compute the contour by calculating the longest bound
-			longestBound = new Polyline(surface.returnLongestBound(surface
-					.averageNormal()));
-		} catch (InvalidActivityException e1) {
-			e1.printStackTrace();
-		}
+		// Create other points, edges, on the new polyline to avoid the risk
+		// of modifying the meshes
+		// Compute the contour by calculating the longest bound
+		Polyline longestBound = new Polyline(surface.returnLongestBound(surface
+				.averageNormal()));
 
 		// Compute the change base matrix
 		Vector3d normalSurface = surface.averageNormal();
@@ -323,6 +326,7 @@ public class Edifice {
 
 	private void determinateNeighbours(ArrayList<Mesh> wallList,
 			ArrayList<Mesh> roofList) {
+
 		for (int i = 0; i < this.roofs.size(); i++) {
 			Polyline p = this.roofs.get(i);
 
@@ -380,31 +384,33 @@ public class Edifice {
 		}
 	}
 
-	public void writeSTLWalls() {
+	public void writeSTLWalls(String directoryName) {
 		this.counterWall = 0;
 
 		for (Polyline p : this.walls) {
 
 			p.returnCentroidMesh().writeSTL(
-					"Files/computedWall" + this.counterWall + ".stl");
+					directoryName + "computedWall" + this.counterWall + ".stl");
 
 			this.counterWall++;
 		}
 	}
 
-	public void writeSTLRoofs() {
+	public void writeSTLRoofs(String directoryName) {
 		this.counterRoof = 0;
 
 		for (Polyline p : this.roofs) {
 
 			p.returnCentroidMesh().writeSTL(
-					"Files/computedRoof" + this.counterRoof + ".stl");
+					directoryName + "computedRoof" + this.counterRoof + ".stl");
 
 			this.counterRoof++;
 		}
 	}
 
-	public void writeSTL(String fileName) {
-		// FIXME
+	// TODO : modify it !
+	public void writeSTL(String directoryName) {
+		this.writeSTLWalls(directoryName);
+		this.writeSTLRoofs(directoryName);
 	}
 }

@@ -181,39 +181,6 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#xProjection(double)}.
-	 */
-	@Test
-	public void testXProjection() {
-		Triangle tProj = t.xProjection(7.0);
-		assertTrue(tProj.getP1().getX() == 7.0);
-		assertTrue(tProj.getP2().getX() == 7.0);
-		assertTrue(tProj.getP3().getX() == 7.0);
-	}
-
-	/**
-	 * Test method for {@link modeles.Triangle#yProjection(double)}.
-	 */
-	@Test
-	public void testYProjection() {
-		Triangle tProj = t.yProjection(7.0);
-		assertTrue(tProj.getP1().getY() == 7.0);
-		assertTrue(tProj.getP2().getY() == 7.0);
-		assertTrue(tProj.getP3().getY() == 7.0);
-	}
-
-	/**
-	 * Test method for {@link modeles.Triangle#zProjection(double)}.
-	 */
-	@Test
-	public void testzProjection() {
-		Triangle tProj = t.zProjection(7.0);
-		assertTrue(tProj.getP1().getZ() == 7.0);
-		assertTrue(tProj.getP2().getZ() == 7.0);
-		assertTrue(tProj.getP3().getZ() == 7.0);
-	}
-
-	/**
 	 * Test method for
 	 * {@link modeles.Triangle#angularTolerance(javax.vecmath.Vector3d, double)}
 	 * . Test method for
