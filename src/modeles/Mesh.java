@@ -326,7 +326,7 @@ public class Mesh extends HashSet<Triangle> {
 	/**
 	 * @param fileName
 	 */
-	public void write(String fileName) {
+	public void writeSTL(String fileName) {
 		WriterSTL.write(fileName, this);
 	}
 
@@ -516,5 +516,18 @@ public class Mesh extends HashSet<Triangle> {
 		}
 
 		return ret;
+	}
+
+	public boolean isNeighbour(Mesh mesh) {
+		if (mesh == this) {
+			return false;
+		}
+		for (Triangle t1 : this) {
+			for (Triangle t2 : mesh) {
+				if (t1.isNeighboor(t2))
+					return true;
+			}
+		}
+		return false;
 	}
 }

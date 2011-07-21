@@ -451,4 +451,24 @@ public class Edge {
 			throw new Exception();
 		}
 	}
+
+	public Point project(Point point) {
+
+		Point p1 = this.getP1(), p2 = this.getP2();
+		Point p3 = point;
+
+		double x1 = p1.getX(), x2 = p2.getX(), x3 = p3.getX();
+		double y1 = p1.getY(), y2 = p2.getY(), y3 = p3.getY();
+		double z1 = p1.getZ(), z2 = p2.getZ(), z3 = p3.getZ();
+
+		double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
+				* (z2 - z1))
+				/ ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
+						* (z2 - z1));
+
+		double x4 = lambda * (x2 - x1) + x1, y4 = lambda * (y2 - y1) + y1, z4 = lambda
+				* (z2 - z1) + z1;
+
+		return new Point(x4, y4, z4);
+	}
 }

@@ -586,7 +586,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#write(java.lang.String)}.
+	 * Test method for {@link modeles.Mesh#writeSTL(java.lang.String)}.
 	 */
 	@Test
 	public void testWrite() {

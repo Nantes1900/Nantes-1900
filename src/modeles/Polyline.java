@@ -17,13 +17,14 @@ public class Polyline {
 	private ArrayList<Point> pointList = new ArrayList<Point>();
 	private ArrayList<Edge> edgeList = new ArrayList<Edge>();
 
+	private Vector3d normal = new Vector3d();
+
+	private ArrayList<Polyline> neighbours = new ArrayList<Polyline>();
+
 	private final int ID;
 
 	private static int ID_current = 0;
 	private static final long serialVersionUID = 1L;
-
-	// FIXME : :)
-	public Point toDelete;
 
 	/**
 	 * Constructor from a list of edges
@@ -113,6 +114,14 @@ public class Polyline {
 	 */
 	public int getID() {
 		return this.ID;
+	}
+
+	public Vector3d getNormal() {
+		return normal;
+	}
+
+	public void setNormal(Vector3d normal) {
+		this.normal = normal;
 	}
 
 	/**
@@ -683,7 +692,7 @@ public class Polyline {
 		return singularPoints;
 	}
 
-	public Polyline reductNoise(double error) {
+	public Polyline reductNoise(double error) throws Exception {
 		Polyline ret = new Polyline();
 
 		int counter = 1;
@@ -695,27 +704,20 @@ public class Polyline {
 			Edge before = this.edgeList.get(counter - 1);
 			Edge next = this.edgeList.get(counter + 1);
 
-			// If this edge is not oriented as the last and the next
+			// If this edge is not oriented as the former and the next
 			if (!e.orientedAs(before, error) && !e.orientedAs(next, error)) {
 				// Then it is a noise. We must remove it.
 				Point shared = null;
-				try {
-					shared = e.sharedPoint(next);
-				} catch (Exception exc) {
-					exc.printStackTrace();
-				}
+				shared = e.sharedPoint(next);
 				ret.add(new Edge(e.returnOther(shared), next
 						.returnOther(shared)));
 				counter++;
 			}
+
 			// If the edge is little
 			else if (e.length() < averageLength) {
 				Point shared = null;
-				try {
-					shared = e.sharedPoint(next);
-				} catch (Exception exc) {
-					exc.printStackTrace();
-				}
+				shared = e.sharedPoint(next);
 				ret.add(new Edge(e.returnOther(shared), next
 						.returnOther(shared)));
 				counter++;
@@ -768,6 +770,46 @@ public class Polyline {
 
 		return (a * p3.getX() + b * p3.getY() < cPlus && a * p3.getX() + b
 				* p3.getY() > cMinus);
+	}
+
+	public boolean areWeInTheCylinder3D(Point p1, Point p2, Point p3,
+			double error) {
+
+		double x1 = p1.getX(), x2 = p2.getX(), x3 = p3.getX();
+		double y1 = p1.getY(), y2 = p2.getY(), y3 = p3.getY();
+		double z1 = p1.getZ(), z2 = p2.getZ(), z3 = p3.getZ();
+
+		double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
+				* (z2 - z1))
+				/ ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
+						* (z2 - z1));
+
+		double x4 = lambda * (x2 - x1) + x1, y4 = lambda * (y2 - y1) + y1, z4 = lambda
+				* (z2 - z1) + z1;
+
+		Point p4 = new Point(x4, y4, z4);
+
+		return (lambda > 0 && lambda < 1 && p3.distance(p4) < error);
+	}
+
+	public boolean areWeInTheCylinderInfinite3D(Point p1, Point p2, Point p3,
+			double error) {
+
+		double x1 = p1.getX(), x2 = p2.getX(), x3 = p3.getX();
+		double y1 = p1.getY(), y2 = p2.getY(), y3 = p3.getY();
+		double z1 = p1.getZ(), z2 = p2.getZ(), z3 = p3.getZ();
+
+		double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
+				* (z2 - z1))
+				/ ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
+						* (z2 - z1));
+
+		double x4 = lambda * (x2 - x1) + x1, y4 = lambda * (y2 - y1) + y1, z4 = lambda
+				* (z2 - z1) + z1;
+
+		Point p4 = new Point(x4, y4, z4);
+
+		return (p3.distance(p4) < error);
 	}
 
 	// We still consider that we are in the plane (x,y)
@@ -861,16 +903,36 @@ public class Polyline {
 		return refined;
 	}
 
-	public Polyline getNeighbourLines(Edge e, double error) {
-		Polyline ret = new Polyline();
+	/**
+	 * Build a cylinder, with the edge e as central axe, with error as radius,
+	 * and framed into the two points of the edge, and select only the points of
+	 * this which are inside.
+	 * 
+	 * @param e
+	 *            the edge which will be the axe, and the two points will close
+	 *            the cylinder
+	 * @param error
+	 *            the radius
+	 * @return a list of points which are inside the cylinder
+	 */
+	public ArrayList<Point> getCylinderInfinite(Edge e, double error) {
+		ArrayList<Point> ret = new ArrayList<Point>();
 
-		for (Edge edge : this.edgeList) {
-			if (areWeInTheTwoLinesOrNot(e.getP1(), e.getP2(), edge.getP1(),
-					error)
-			// && areWeInTheTwoLinesOrNot(e.getP1(), e.getP2(),
-			// edge.getP2(), error)
-			) {
-				ret.add(edge);
+		for (Point p : this.pointList) {
+			if (areWeInTheCylinderInfinite3D(e.getP1(), e.getP2(), p, error)) {
+				ret.add(p);
+			}
+		}
+
+		return ret;
+	}
+
+	public ArrayList<Point> getCylinder(Edge e, double error) {
+		ArrayList<Point> ret = new ArrayList<Point>();
+
+		for (Point p : this.pointList) {
+			if (areWeInTheCylinder3D(e.getP1(), e.getP2(), p, error)) {
+				ret.add(p);
 			}
 		}
 
@@ -887,5 +949,255 @@ public class Polyline {
 		}
 
 		return ret;
+	}
+
+	public void addNeighbour(Polyline p) {
+		if (!this.neighbours.contains(p))
+			this.neighbours.add(p);
+	}
+
+	public void findCommonEdge(Polyline p, double radiusError) {
+		Polyline p1 = this;
+		Polyline p2 = p;
+
+		// We define the axe of the intersection
+		Vector3d norm1 = p1.getNormal();
+		Vector3d norm2 = p2.getNormal();
+
+		if (norm1.angle(norm2) > 0.3 && norm1.angle(norm2) < 2.8) {
+
+			// We define the axe of the intersection
+			Edge axis = this.getAxis(p, norm1, norm2, radiusError);
+
+			// Select only the points which are into these bounds
+			ArrayList<Point> cylinder1 = p1.getCylinder(axis, radiusError);
+			ArrayList<Point> cylinder2 = p2.getCylinder(axis, radiusError);
+
+			ArrayList<Point> cylinder = new ArrayList<Point>();
+			cylinder.addAll(cylinder1);
+			cylinder.addAll(cylinder2);
+
+			if (cylinder1.size() != 0 && cylinder2.size() != 0) {
+				for (Point point : cylinder) {
+					point.set(axis.project(point).getPointAsCoordinates());
+				}
+			}
+		}
+	}
+
+	private Edge getAxis(Polyline p, Vector3d norm1, Vector3d norm2,
+			double radiusError) {
+		Polyline p1 = this;
+		Polyline p2 = p;
+
+		Point p01 = p1.getPointList().get(0);
+		Point p02 = p2.getPointList().get(0);
+
+		double a1 = norm1.x, b1 = norm1.y, c1 = norm1.z;
+		double a2 = norm2.x, b2 = norm2.y, c2 = norm2.z;
+		double d1 = a1 * p01.getX() + b1 * p01.getY() + c1 * p01.getZ();
+		double d2 = a2 * p02.getX() + b2 * p02.getY() + c2 * p02.getZ();
+
+		double x = 0;
+		double y = (c2 * d1 - c1 * d2) / (b1 * c2 - b2 * c1);
+		double z = (b1 * d2 - b2 * d1) / (b1 * c2 - b2 * c1);
+
+		Vector3d norm3 = new Vector3d();
+		norm3.cross(norm1, norm2);
+
+		Edge axis = new Edge(new Point(x, y, z), new Point(x + norm3.x, y
+				+ norm3.y, z + norm3.z));
+
+		// Get the points which are into the cylinder, and project them on
+		// the axe.
+		ArrayList<Point> cylinder1 = p1.getCylinderInfinite(axis, radiusError);
+		ArrayList<Point> cylinder2 = p2.getCylinderInfinite(axis, radiusError);
+
+		ArrayList<Point> cylinder = new ArrayList<Point>();
+		cylinder.addAll(cylinder1);
+		cylinder.addAll(cylinder2);
+
+		// Select the max and min
+		Point extremityMax = this.getCylinderMaxPoint(cylinder, axis);
+		Point extremityMin = this.getCylinderMinPoint(cylinder, axis);
+
+		// Adjust the two surfaces to have the same edge with the same max
+		// and min
+		Point extremityMax1 = this.getCylinderMaxPoint(cylinder1, axis);
+		Point extremityMin1 = this.getCylinderMinPoint(cylinder1, axis);
+		Point extremityMax2 = this.getCylinderMaxPoint(cylinder2, axis);
+		Point extremityMin2 = this.getCylinderMinPoint(cylinder2, axis);
+
+		if (extremityMax == extremityMax1) {
+			extremityMax2.set(extremityMax1.getPointAsCoordinates());
+		} else {
+			extremityMax1.set(extremityMax2.getPointAsCoordinates());
+		}
+
+		if (extremityMin == extremityMin1) {
+			extremityMin2.set(extremityMin1.getPointAsCoordinates());
+		} else {
+			extremityMin1.set(extremityMin2.getPointAsCoordinates());
+		}
+
+		return new Edge(extremityMin, extremityMax);
+	}
+
+	public void findCommonWallEdges(Polyline p, Vector3d normalFloor,
+			double radiusError) {
+		Polyline p1 = this;
+		Polyline p2 = p;
+
+		if (p1 != p2 && p1.isNeighbour(p2)) {
+
+			// We define the axe of the intersection
+
+			Vector3d norm1 = p1.getNormal();
+			Vector3d norm2 = p2.getNormal();
+
+			if (norm1.angle(norm2) > 0.3 && norm1.angle(norm2) < 2.8) {
+
+				Point p01 = p1.getPointList().get(0);
+				Point p02 = p2.getPointList().get(0);
+
+				double a1 = norm1.x, b1 = norm1.y, c1 = norm1.z;
+				double a2 = norm2.x, b2 = norm2.y, c2 = norm2.z;
+				double d1 = a1 * p01.getX() + b1 * p01.getY() + c1 * p01.getZ();
+				double d2 = a2 * p02.getX() + b2 * p02.getY() + c2 * p02.getZ();
+
+				double x = 0;
+				double y = (c2 * d1 - c1 * d2) / (b1 * c2 - b2 * c1);
+				double z = (b1 * d2 - b2 * d1) / (b1 * c2 - b2 * c1);
+
+				Vector3d norm3 = new Vector3d();
+				norm3.cross(norm1, norm2);
+
+				Edge axis = new Edge(new Point(x, y, z), new Point(x + norm3.x,
+						y + norm3.y, z + norm3.z));
+
+				// Get the points which are into the cylinder, and project them
+				// on
+				// the axe.
+				ArrayList<Point> cylinder1 = p1.getCylinderInfinite(axis,
+						radiusError);
+				ArrayList<Point> cylinder2 = p2.getCylinderInfinite(axis,
+						radiusError);
+
+				ArrayList<Point> cylinder = new ArrayList<Point>();
+				cylinder.addAll(cylinder1);
+				cylinder.addAll(cylinder2);
+
+				// Select the max and min
+				Point extremityMax = this.getCylinderMaxPoint(cylinder, axis);
+				Point extremityMin = this.getCylinderMinPoint(cylinder, axis);
+
+				// Adjust the two surfaces to have the same edge with the same
+				// max
+				// and min
+				Point extremityMax1 = this.getCylinderMaxPoint(cylinder1, axis);
+				Point extremityMin1 = this.getCylinderMinPoint(cylinder1, axis);
+				Point extremityMax2 = this.getCylinderMaxPoint(cylinder2, axis);
+				Point extremityMin2 = this.getCylinderMinPoint(cylinder2, axis);
+
+				if (extremityMax == extremityMax1) {
+					extremityMax2.set(extremityMax1.getPointAsCoordinates());
+				} else {
+					extremityMax1.set(extremityMax2.getPointAsCoordinates());
+				}
+
+				if (extremityMin == extremityMin1) {
+					extremityMin2.set(extremityMin1.getPointAsCoordinates());
+				} else {
+					extremityMin1.set(extremityMin2.getPointAsCoordinates());
+				}
+
+				// Select only the points which are into these bounds
+				axis = new Edge(extremityMin, extremityMax);
+				cylinder1 = p1.getCylinder(axis, radiusError);
+				cylinder2 = p2.getCylinder(axis, radiusError);
+
+				cylinder = new ArrayList<Point>();
+				cylinder.addAll(cylinder1);
+				cylinder.addAll(cylinder2);
+
+				if (cylinder1.size() != 0 && cylinder2.size() != 0) {
+					for (Point point : cylinder) {
+						point.set(axis.project(point).getPointAsCoordinates());
+					}
+				}
+
+				// On the axe, select the min, max in x (or y, or z, no
+				// matter), they are the extremities. Thus make an edge, and
+				// remove all the other ones between.
+			}
+		}
+	}
+
+	private Point getCylinderMaxPoint(ArrayList<Point> cylinder, Edge axe) {
+		Point ref = null;
+		double max = Double.NEGATIVE_INFINITY;
+
+		for (Point p : this.pointList) {
+			if (getZAxisProjectionPoint(cylinder, axe, p).getX() > max) {
+				ref = getZAxisProjectionPoint(cylinder, axe, p);
+				max = ref.getX();
+			}
+		}
+
+		return ref;
+	}
+
+	public boolean isNeighbour(Polyline p) {
+		if (p == this) {
+			return false;
+		}
+		for (Point p1 : this.pointList) {
+			for (Point p2 : p.pointList) {
+				if (p1.distance(p2) < 2)
+					return true;
+			}
+		}
+		return false;
+	}
+
+	private Point getCylinderMinPoint(ArrayList<Point> cylinder, Edge axe) {
+		Point ref = null;
+		double min = Double.POSITIVE_INFINITY;
+
+		for (Point p : this.pointList) {
+			if (getZAxisProjectionPoint(cylinder, axe, p).getX() < min) {
+				ref = getZAxisProjectionPoint(cylinder, axe, p);
+				min = ref.getX();
+			}
+		}
+
+		return ref;
+	}
+
+	private Point getZAxisProjectionPoint(ArrayList<Point> cylinder, Edge axe,
+			Point p) {
+		Point p1 = axe.getP1(), p2 = axe.getP2(), p3 = p;
+
+		double x1 = p1.getX(), x2 = p2.getX(), x3 = p3.getX();
+		double y1 = p1.getY(), y2 = p2.getY(), y3 = p3.getY();
+		double z1 = p1.getZ(), z2 = p2.getZ(), z3 = p3.getZ();
+
+		double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
+				* (z2 - z1))
+				/ ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
+						* (z2 - z1));
+
+		double x4 = lambda * (x2 - x1) + x1, y4 = lambda * (y2 - y1) + y1, z4 = lambda
+				* (z2 - z1) + z1;
+
+		return new Point(x4, y4, z4);
+	}
+
+	public ArrayList<Polyline> getNeighbours() {
+		return this.neighbours;
+	}
+
+	public void write(String string) {
+		this.returnCentroidMesh().writeSTL(string);
 	}
 }

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.xml.bind.JAXBException;
 
 import modeles.Edifice;
+import modeles.Floor;
 import modeles.Mesh;
 import modeles.Polyline;
 import modeles.Triangle;
@@ -34,40 +35,34 @@ import org.citygml4j.xml.io.writer.CityGMLWriteException;
 import org.citygml4j.xml.io.writer.CityGMLWriter;
 
 /**
- * Implement a town as a CityGML set of floors, buildings, etc. Allows to write
- * a CityGML file.
+ * Implement a writer of a town to a CityGML file.
  * 
  * @author Daniel Lefevre
  */
-public class TownCityGML {
+public class WriterCityGML {
 
-	private CityGMLFactory citygml;
-	private GMLFactory gml;
-	private CityModel cityModel;
-	private GMLIdManager gmlIdManager;
+	private CityGMLFactory citygml = new CityGMLFactory();
+	private GMLFactory gml = new GMLFactory();
+	private CityModel cityModel = citygml.createCityModel();
+	private GMLIdManager gmlIdManager = DefaultGMLIdManager.getInstance();
+	private GMLGeometryFactory geom = new GMLGeometryFactory();
 	private JAXBBuilder builder;
-	private GMLGeometryFactory geom;
+
+	private String fileName = new String();
 
 	/**
 	 * Constructor
 	 */
-	public TownCityGML() {
+	public WriterCityGML(String fileName) {
 
 		try {
-			this.citygml = new CityGMLFactory();
-			this.gml = new GMLFactory();
-
 			CityGMLContext ctx = new CityGMLContext();
 			this.builder = ctx.createJAXBBuilder();
-			this.geom = new GMLGeometryFactory();
-			this.gmlIdManager = DefaultGMLIdManager.getInstance();
-			this.cityModel = citygml.createCityModel();
-
 		} catch (JAXBException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+		this.fileName = fileName;
 	}
 
 	/**
@@ -78,6 +73,18 @@ public class TownCityGML {
 	 */
 	public void addFloor(Mesh floor) {
 		// GroundSurface ground = citygml.createGroundSurface();
+	}
+
+	/**
+	 * Add a list of grounds to the CityGMLFactory
+	 * 
+	 * @param floor
+	 *            the list of meshes to write
+	 */
+	public void addFloors(List<Floor> floors) {
+		for (Floor floor : floors) {
+			this.addFloor(floor);
+		}
 	}
 
 	/**
@@ -150,6 +157,18 @@ public class TownCityGML {
 	}
 
 	/**
+	 * Add a list of edifices to the CityGMLFactory
+	 * 
+	 * @param buildingToAdd
+	 *            the list of edifices to write
+	 */
+	public void addBuildings(List<Edifice> buildings) {
+		for (Edifice building : buildings) {
+			this.addBuilding(building);
+		}
+	}
+
+	/**
 	 * Create a CityGMLBuilding, and add the special building as a mesh.
 	 * 
 	 * @param specialBuilding
@@ -191,7 +210,6 @@ public class TownCityGML {
 						.createBoundarySurfaceProperty(boundarySurface));
 			}
 		} catch (DimensionMismatchException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -202,18 +220,30 @@ public class TownCityGML {
 	}
 
 	/**
+	 * Add a list of special Buildings as meshes.
+	 * 
+	 * @param specialBuilding
+	 *            the list of the special buildings
+	 */
+	public void addSpecialBuildings(List<Mesh> specialBuildings) {
+		for (Mesh specialBuilding : specialBuildings) {
+			this.addSpecialBuilding(specialBuilding);
+		}
+	}
+
+	/**
 	 * Write the CityGML file with the CityGMLFactory
 	 * 
 	 * @param fileName
 	 *            the name of the file to write in
 	 */
-	public void write(String fileName) {
+	public void write() {
 
 		CityGMLOutputFactory out;
 		try {
 			out = builder.createCityGMLOutputFactory(CityGMLVersion.v1_0_0);
-			CityGMLWriter writer = out.createCityGMLWriter(new File(fileName
-					+ ".xml"));
+			CityGMLWriter writer = out.createCityGMLWriter(new File(
+					this.fileName + ".xml"));
 
 			writer.setPrefixes(CityGMLVersion.v1_0_0);
 			writer.setSchemaLocations(CityGMLVersion.v1_0_0);
@@ -221,11 +251,10 @@ public class TownCityGML {
 			writer.write(cityModel);
 			writer.close();
 		} catch (CityGMLReadException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (CityGMLWriteException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
 	}
 }

@@ -54,7 +54,7 @@ public class ParserTest {
 		write.add(t1);
 		write.add(t2);
 		
-		write.write("WriterTest.stl");
+		write.writeSTL("WriterTest.stl");
 		try {
 		Mesh read = new Mesh(ParserSTL.readSTL("WriterTest.stl"));
 		assertTrue(read.size() == 2);

@@ -1,4 +1,4 @@
-package algos;
+package utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;

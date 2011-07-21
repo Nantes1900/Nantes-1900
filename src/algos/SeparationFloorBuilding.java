@@ -10,6 +10,7 @@ import java.util.logging.StreamHandler;
 import javax.vecmath.Vector3d;
 
 import modeles.Mesh;
+import utils.Algos;
 import utils.MatrixMethod;
 import utils.MatrixMethod.SingularMatrixException;
 import utils.ParserSTL;
@@ -95,14 +96,14 @@ public class SeparationFloorBuilding {
 		this.writeFloor();
 
 		if (DEBUG_MODE)
-			noise.write("Files/noise.stl");
+			noise.writeSTL("Files/noise.stl");
 	}
 
 	/**
 	 * 
 	 */
 	private void writeFloor() {
-		this.floors.write("Files/floors.stl");
+		this.floors.writeSTL("Files/floors.stl");
 	}
 
 	/**
@@ -112,7 +113,7 @@ public class SeparationFloorBuilding {
 		int buildingCounter = 1;
 
 		for (Mesh m : this.buildingList) {
-			m.write("Files/building - " + buildingCounter + ".stl");
+			m.writeSTL("Files/building - " + buildingCounter + ".stl");
 			buildingCounter++;
 		}
 	}

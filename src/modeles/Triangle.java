@@ -116,7 +116,7 @@ public class Triangle {
 	public List<Double> getPointsAsCoordinates() {
 		ArrayList<Double> list = new ArrayList<Double>();
 		for (Point p : points) {
-			for(double d : p.getPointAsCoordinates()) {
+			for (double d : p.getPointAsCoordinates()) {
 				list.add(new Double(d));
 			}
 		}
