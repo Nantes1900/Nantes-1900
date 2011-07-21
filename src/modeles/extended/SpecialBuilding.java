@@ -1,4 +1,6 @@
-package modeles;
+package modeles.extended;
+
+import modeles.basis.Mesh;
 
 public class SpecialBuilding extends Mesh {
 

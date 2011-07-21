@@ -1,6 +1,6 @@
 package mains;
 
-import modeles.Town;
+import modeles.extended.Town;
 
 public class TownTreatment {
 

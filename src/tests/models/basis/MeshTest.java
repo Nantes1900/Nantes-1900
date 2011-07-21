@@ -1,4 +1,4 @@
-package tests;
+package tests.models.basis;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -6,11 +6,11 @@ import static org.junit.Assert.fail;
 
 import javax.vecmath.Vector3d;
 
-import modeles.Edge;
-import modeles.Mesh;
-import modeles.Point;
-import modeles.Polyline;
-import modeles.Triangle;
+import modeles.basis.Edge;
+import modeles.basis.Mesh;
+import modeles.basis.Point;
+import modeles.basis.Polyline;
+import modeles.basis.Triangle;
 
 import org.junit.Test;
 
@@ -52,7 +52,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#averageNormal()}.
+	 * Test method for {@link modeles.basis.Mesh#averageNormal()}.
 	 */
 	@Test
 	public void testAverageNormal() {
@@ -60,7 +60,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#xAverage()}.
+	 * Test method for {@link modeles.basis.Mesh#xAverage()}.
 	 */
 	@Test
 	public void testxAverage() {
@@ -68,7 +68,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#yAverage()}.
+	 * Test method for {@link modeles.basis.Mesh#yAverage()}.
 	 */
 	@Test
 	public void testyAverage() {
@@ -76,7 +76,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#zAverage()}.
+	 * Test method for {@link modeles.basis.Mesh#zAverage()}.
 	 */
 	@Test
 	public void testzAverage() {
@@ -84,7 +84,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#xMax()}.
+	 * Test method for {@link modeles.basis.Mesh#xMax()}.
 	 */
 	@Test
 	public void testxMax() {
@@ -92,7 +92,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#xMin()}.
+	 * Test method for {@link modeles.basis.Mesh#xMin()}.
 	 */
 	@Test
 	public void testxMin() {
@@ -100,7 +100,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#yMax()}.
+	 * Test method for {@link modeles.basis.Mesh#yMax()}.
 	 */
 	@Test
 	public void testyMax() {
@@ -108,7 +108,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#yMin()}.
+	 * Test method for {@link modeles.basis.Mesh#yMin()}.
 	 */
 	@Test
 	public void testyMin() {
@@ -116,7 +116,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#zMax()}.
+	 * Test method for {@link modeles.basis.Mesh#zMax()}.
 	 */
 	@Test
 	public void testzMax() {
@@ -124,7 +124,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#zMin()}.
+	 * Test method for {@link modeles.basis.Mesh#zMin()}.
 	 */
 	@Test
 	public void testzMin() {
@@ -132,7 +132,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#xLengthAverage()}.
+	 * Test method for {@link modeles.basis.Mesh#xLengthAverage()}.
 	 */
 	@Test
 	public void testxLengthAverage() {
@@ -140,7 +140,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#yLengthAverage()}.
+	 * Test method for {@link modeles.basis.Mesh#yLengthAverage()}.
 	 */
 	@Test
 	public void testyLengthAverage() {
@@ -148,7 +148,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#zLengthAverage()}.
+	 * Test method for {@link modeles.basis.Mesh#zLengthAverage()}.
 	 */
 	@Test
 	public void testzLengthAverage() {
@@ -156,7 +156,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#xBetween(double, double)}.
+	 * Test method for {@link modeles.basis.Mesh#xBetween(double, double)}.
 	 */
 	@Test
 	// LOOK : complete this test with other Triangles
@@ -167,7 +167,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#yBetween(double, double)}.
+	 * Test method for {@link modeles.basis.Mesh#yBetween(double, double)}.
 	 */
 	@Test
 	// LOOK : complete this test with other Triangles
@@ -178,7 +178,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#zBetween(double, double)}.
+	 * Test method for {@link modeles.basis.Mesh#zBetween(double, double)}.
 	 */
 	@Test
 	// LOOK : complete this test with other Triangles
@@ -189,7 +189,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#zMinFace()}.
+	 * Test method for {@link modeles.basis.Mesh#zMinFace()}.
 	 */
 	@Test
 	public void testZMinFace() {
@@ -197,7 +197,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#faceUnderZ(double)}.
+	 * Test method for {@link modeles.basis.Mesh#faceUnderZ(double)}.
 	 */
 	@Test
 	public void testFaceUnderZ() {
@@ -206,7 +206,7 @@ public class MeshTest {
 
 	/**
 	 * Test method for
-	 * {@link modeles.Mesh#orientedAs(javax.vecmath.Vector3d, double)}.
+	 * {@link modeles.basis.Mesh#orientedAs(javax.vecmath.Vector3d, double)}.
 	 */
 	@Test
 	public void testOrientedAs() {
@@ -217,7 +217,7 @@ public class MeshTest {
 
 	/**
 	 * Test method for
-	 * {@link modeles.Mesh#orientedNormalTo(javax.vecmath.Vector3d, double)}.
+	 * {@link modeles.basis.Mesh#orientedNormalTo(javax.vecmath.Vector3d, double)}.
 	 */
 	@Test
 	public void testOrientedNormalTo() {
@@ -227,7 +227,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#returnUnsortedBounds()}.
+	 * Test method for {@link modeles.basis.Mesh#returnUnsortedBounds()}.
 	 */
 	@Test
 	public void testReturnUnsortedBounds() {
@@ -543,7 +543,7 @@ public class MeshTest {
 	// }
 
 	/**
-	 * Test method for {@link modeles.Mesh#getOne()}.
+	 * Test method for {@link modeles.basis.Mesh#getOne()}.
 	 */
 	@Test
 	public void testGetOne() {
@@ -551,7 +551,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#remove(modeles.Mesh)}.
+	 * Test method for {@link modeles.basis.Mesh#remove(modeles.basis.Mesh)}.
 	 */
 	@Test
 	public void testRemoveMesh() {
@@ -559,7 +559,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#writeSTL(java.lang.String)}.
+	 * Test method for {@link modeles.basis.Mesh#writeSTL(java.lang.String)}.
 	 */
 	@Test
 	public void testWrite() {
@@ -567,7 +567,7 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Mesh#changeBase(double[][])}.
+	 * Test method for {@link modeles.basis.Mesh#changeBase(double[][])}.
 	 */
 	@Test
 	public void testChangeBase() {
@@ -576,7 +576,7 @@ public class MeshTest {
 
 	/**
 	 * Test method for
-	 * {@link modeles.Mesh#treatWeirdCase(modeles.Polyline, modeles.Point)}.
+	 * {@link modeles.basis.Mesh#treatWeirdCase(modeles.basis.Polyline, modeles.basis.Point)}.
 	 */
 	@Test
 	public void testTreatWeirdCase() {

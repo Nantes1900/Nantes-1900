@@ -1,6 +1,6 @@
-package algos;
+package mains.temporary;
 
-import modeles.Mesh;
+import modeles.basis.Mesh;
 
 /**
  * Algorithm to treat floors. It can receive floors from towns, or treat other

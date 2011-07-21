@@ -9,8 +9,8 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import modeles.Mesh;
-import modeles.Triangle;
+import modeles.basis.Mesh;
+import modeles.basis.Triangle;
 
 /**
  * Write a STL file containing the faces, list of faces or buildings. This

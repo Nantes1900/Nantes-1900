@@ -1,4 +1,4 @@
-package tests;
+package tests.models.basis;
 
 import static org.junit.Assert.*;
 
@@ -6,10 +6,10 @@ import java.security.InvalidParameterException;
 
 import javax.vecmath.Vector3d;
 
-import modeles.Edge;
-import modeles.Point;
-import modeles.Polyline;
-import modeles.Triangle;
+import modeles.basis.Edge;
+import modeles.basis.Point;
+import modeles.basis.Polyline;
+import modeles.basis.Triangle;
 
 import org.junit.Test;
 
@@ -50,7 +50,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#hashCode()}.
+	 * Test method for {@link modeles.basis.Edge#hashCode()}.
 	 */
 	@Test
 	public void testHashCode() {
@@ -58,7 +58,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#Edge(modeles.Point, modeles.Point)}.
+	 * Test method for {@link modeles.basis.Edge#Edge(modeles.basis.Point, modeles.basis.Point)}.
 	 */
 	@Test
 	public void testEdge() {
@@ -66,7 +66,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#getTriangleList()}.
+	 * Test method for {@link modeles.basis.Edge#getTriangleList()}.
 	 */
 	@Test
 	public void testGetTriangleList() {
@@ -74,7 +74,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#returnOther(modeles.Triangle)}.
+	 * Test method for {@link modeles.basis.Edge#returnOther(modeles.basis.Triangle)}.
 	 */
 	@Test
 	public void testReturnOtherTriangle() {
@@ -90,7 +90,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#getP1()}.
+	 * Test method for {@link modeles.basis.Edge#getP1()}.
 	 */
 	@Test
 	public void testGetP1() {
@@ -98,7 +98,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#getP2()}.
+	 * Test method for {@link modeles.basis.Edge#getP2()}.
 	 */
 	@Test
 	public void testGetP2() {
@@ -106,7 +106,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#getPoints()}.
+	 * Test method for {@link modeles.basis.Edge#getPoints()}.
 	 */
 	@Test
 	public void testGetPoints() {
@@ -114,7 +114,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#length()}.
+	 * Test method for {@link modeles.basis.Edge#length()}.
 	 */
 	@Test
 	public void testLength() {
@@ -122,7 +122,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#contains(modeles.Point)}.
+	 * Test method for {@link modeles.basis.Edge#contains(modeles.basis.Point)}.
 	 */
 	@Test
 	public void testContains() {
@@ -131,7 +131,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#addTriangle(modeles.Triangle)}.
+	 * Test method for {@link modeles.basis.Edge#addTriangle(modeles.basis.Triangle)}.
 	 */
 	@Test
 	public void testAddTriangle() {
@@ -139,7 +139,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#getNumberTriangles()}.
+	 * Test method for {@link modeles.basis.Edge#getNumberTriangles()}.
 	 */
 	@Test
 	public void testGetNumberTriangles() {
@@ -147,7 +147,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#isNeighboor(modeles.Edge)}.
+	 * Test method for {@link modeles.basis.Edge#isNeighboor(modeles.basis.Edge)}.
 	 */
 	@Test
 	public void testIsNeighboor() {
@@ -156,7 +156,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#equals(java.lang.Object)}.
+	 * Test method for {@link modeles.basis.Edge#equals(java.lang.Object)}.
 	 */
 	@Test
 	public void testEqualsObject() {
@@ -168,7 +168,7 @@ public class EdgeTest {
 
 	/**
 	 * Test method for
-	 * {@link modeles.Edge#returnNeighbours(modeles.Polyline, modeles.Polyline)}
+	 * {@link modeles.basis.Edge#returnNeighbours(modeles.basis.Polyline, modeles.basis.Polyline)}
 	 * .
 	 */
 	@Test
@@ -177,7 +177,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#getNumNeighbours(modeles.Polyline)}.
+	 * Test method for {@link modeles.basis.Edge#getNumNeighbours(modeles.basis.Polyline)}.
 	 */
 	@Test
 	public void testGetNumNeighbours() {
@@ -196,7 +196,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Edge#returnOther(modeles.Point)}.
+	 * Test method for {@link modeles.basis.Edge#returnOther(modeles.basis.Point)}.
 	 */
 	@Test
 	public void testReturnOtherPoint() {
@@ -217,7 +217,7 @@ public class EdgeTest {
 //	}
 
 	/**
-	 * Test method for {@link modeles.Edge#compose(modeles.Edge, modeles.Point)}
+	 * Test method for {@link modeles.basis.Edge#compose(modeles.basis.Edge, modeles.basis.Point)}
 	 * .
 	 */
 	@Test

@@ -1,6 +1,7 @@
 package mains;
 
-import algos.SeparationTreatmentWallsRoofs;
+import mains.temporary.SeparationTreatmentWallsRoofs;
+
 
 //LOOK : this class must be deleted until the end of the project
 

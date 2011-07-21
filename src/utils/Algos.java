@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.logging.Logger;
 
-import modeles.Mesh;
-import modeles.Triangle;
+import modeles.basis.Mesh;
+import modeles.basis.Triangle;
 
 /**
  * @author Daniel Lefevre

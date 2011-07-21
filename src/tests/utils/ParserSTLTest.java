@@ -1,4 +1,4 @@
-package tests;
+package tests.utils;
 
 import static org.junit.Assert.*;
 
@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 import javax.vecmath.Vector3d;
 
-import modeles.Edge;
-import modeles.Mesh;
-import modeles.Point;
-import modeles.Triangle;
+import modeles.basis.Edge;
+import modeles.basis.Mesh;
+import modeles.basis.Point;
+import modeles.basis.Triangle;
 
 import org.junit.Test;
 
@@ -23,7 +23,7 @@ import utils.ParserSTL.BadFormedFileException;
  * 
  * @author Daniel Lefevre
  */
-public class ParserTest {
+public class ParserSTLTest {
 
 	/**
 	 * Test method for {@link utils.ParserSTL#readSTL(java.lang.String)}.

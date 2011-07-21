@@ -16,9 +16,9 @@ import java.util.StringTokenizer;
 
 import javax.vecmath.Vector3d;
 
-import modeles.Edge;
-import modeles.Point;
-import modeles.Triangle;
+import modeles.basis.Edge;
+import modeles.basis.Point;
+import modeles.basis.Triangle;
 
 /**
  * Parse a STL file : detect if it is a ASCII or a binary file, and parse it.

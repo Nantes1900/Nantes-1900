@@ -1,4 +1,4 @@
-package tests;
+package tests.models.basis;
 
 import static org.junit.Assert.*;
 
@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 import javax.vecmath.Vector3d;
 
-import modeles.Edge;
-import modeles.Mesh;
-import modeles.Point;
-import modeles.Triangle;
+import modeles.basis.Edge;
+import modeles.basis.Mesh;
+import modeles.basis.Point;
+import modeles.basis.Triangle;
 
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public class TriangleTest {
 	Triangle t = new Triangle(p1, p2, p3, e1, e2, e3, vect);
 
 	/**
-	 * Test method for {@link modeles.Triangle#getPoints()}.
+	 * Test method for {@link modeles.basis.Triangle#getPoints()}.
 	 */
 	@Test
 	public void testGetPoints() {
@@ -41,7 +41,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#contains(modeles.Point)}.
+	 * Test method for {@link modeles.basis.Triangle#contains(modeles.basis.Point)}.
 	 */
 	@Test
 	public void testContains() {
@@ -51,7 +51,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#equals(java.lang.Object)}.
+	 * Test method for {@link modeles.basis.Triangle#equals(java.lang.Object)}.
 	 */
 	@Test
 	public void testEqualsObject() {
@@ -61,7 +61,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#xAverage()}.
+	 * Test method for {@link modeles.basis.Triangle#xAverage()}.
 	 */
 	@Test
 	public void testXAverage() {
@@ -69,7 +69,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#yAverage()}.
+	 * Test method for {@link modeles.basis.Triangle#yAverage()}.
 	 */
 	@Test
 	public void testYAverage() {
@@ -77,7 +77,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#zAverage()}.
+	 * Test method for {@link modeles.basis.Triangle#zAverage()}.
 	 */
 	@Test
 	public void testZAverage() {
@@ -85,7 +85,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#xMin()}.
+	 * Test method for {@link modeles.basis.Triangle#xMin()}.
 	 */
 	@Test
 	public void testXMin() {
@@ -93,7 +93,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#xMax()}.
+	 * Test method for {@link modeles.basis.Triangle#xMax()}.
 	 */
 	@Test
 	public void testXMax() {
@@ -101,7 +101,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#yMin()}.
+	 * Test method for {@link modeles.basis.Triangle#yMin()}.
 	 */
 	@Test
 	public void testYMin() {
@@ -109,7 +109,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#yMax()}.
+	 * Test method for {@link modeles.basis.Triangle#yMax()}.
 	 */
 	@Test
 	public void testYMax() {
@@ -117,7 +117,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#zMin()}.
+	 * Test method for {@link modeles.basis.Triangle#zMin()}.
 	 */
 	@Test
 	public void testZMin() {
@@ -125,7 +125,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#zMax()}.
+	 * Test method for {@link modeles.basis.Triangle#zMax()}.
 	 */
 	@Test
 	public void testZMax() {
@@ -133,7 +133,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#xMinPoint()}.
+	 * Test method for {@link modeles.basis.Triangle#xMinPoint()}.
 	 */
 	@Test
 	public void testXMinPoint() {
@@ -141,7 +141,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#xMaxPoint()}.
+	 * Test method for {@link modeles.basis.Triangle#xMaxPoint()}.
 	 */
 	@Test
 	public void testXMaxPoint() {
@@ -149,7 +149,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#yMinPoint()}.
+	 * Test method for {@link modeles.basis.Triangle#yMinPoint()}.
 	 */
 	@Test
 	public void testYMinPoint() {
@@ -157,7 +157,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#yMaxPoint()}.
+	 * Test method for {@link modeles.basis.Triangle#yMaxPoint()}.
 	 */
 	@Test
 	public void testYMaxPoint() {
@@ -165,7 +165,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#zMinPoint()}.
+	 * Test method for {@link modeles.basis.Triangle#zMinPoint()}.
 	 */
 	@Test
 	public void testZMinPoint() {
@@ -173,7 +173,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#zMaxPoint()}.
+	 * Test method for {@link modeles.basis.Triangle#zMaxPoint()}.
 	 */
 	@Test
 	public void testZMaxPoint() {
@@ -182,9 +182,9 @@ public class TriangleTest {
 
 	/**
 	 * Test method for
-	 * {@link modeles.Triangle#angularTolerance(javax.vecmath.Vector3d, double)}
+	 * {@link modeles.basis.Triangle#angularTolerance(javax.vecmath.Vector3d, double)}
 	 * . Test method for
-	 * {@link modeles.Triangle#angularTolerance(modeles.Triangle, double)}.
+	 * {@link modeles.basis.Triangle#angularTolerance(modeles.basis.Triangle, double)}.
 	 */
 	@Test
 	public void testAngularTolerance() {
@@ -200,7 +200,7 @@ public class TriangleTest {
 
 	/**
 	 * Test method for
-	 * {@link modeles.Triangle#isNormalTo(javax.vecmath.Vector3d, double)}.
+	 * {@link modeles.basis.Triangle#isNormalTo(javax.vecmath.Vector3d, double)}.
 	 */
 	@Test
 	public void testIsNormalTo() {
@@ -213,7 +213,7 @@ public class TriangleTest {
 
 	/**
 	 * Test method for
-	 * {@link modeles.Triangle#returnNeighbours(modeles.Mesh, modeles.Mesh)}.
+	 * {@link modeles.basis.Triangle#returnNeighbours(modeles.basis.Mesh, modeles.basis.Mesh)}.
 	 */
 	@Test
 	public void testReturnNeighbours() {
@@ -253,7 +253,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#getNeighbours()}.
+	 * Test method for {@link modeles.basis.Triangle#getNeighbours()}.
 	 */
 	@Test
 	public void testGetNeighbours() {
@@ -285,7 +285,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#isNeighboor(modeles.Triangle)}.
+	 * Test method for {@link modeles.basis.Triangle#isNeighboor(modeles.basis.Triangle)}.
 	 */
 	public void testIsNeighboor() {
 
@@ -309,7 +309,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#getNumNeighbours()}.
+	 * Test method for {@link modeles.basis.Triangle#getNumNeighbours()}.
 	 */
 	@Test
 	public void testGetNumNeighbours() {
@@ -317,7 +317,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#hashCode()}.
+	 * Test method for {@link modeles.basis.Triangle#hashCode()}.
 	 */
 	@Test
 	public void testHashCode() {
@@ -326,7 +326,7 @@ public class TriangleTest {
 
 	/**
 	 * Test method for
-	 * {@link modeles.Triangle#Triangle(modeles.Point, modeles.Point, modeles.Point, modeles.Edge, modeles.Edge, modeles.Edge, javax.vecmath.Vector3d)}
+	 * {@link modeles.basis.Triangle#Triangle(modeles.basis.Point, modeles.basis.Point, modeles.basis.Point, modeles.basis.Edge, modeles.basis.Edge, modeles.basis.Edge, javax.vecmath.Vector3d)}
 	 * .
 	 */
 	@Test
@@ -335,7 +335,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#getP1()}.
+	 * Test method for {@link modeles.basis.Triangle#getP1()}.
 	 */
 	@Test
 	public void testGetP1() {
@@ -343,7 +343,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#getP2()}.
+	 * Test method for {@link modeles.basis.Triangle#getP2()}.
 	 */
 	@Test
 	public void testGetP2() {
@@ -351,7 +351,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#getP3()}.
+	 * Test method for {@link modeles.basis.Triangle#getP3()}.
 	 */
 	@Test
 	public void testGetP3() {
@@ -359,7 +359,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#getNormal()}.
+	 * Test method for {@link modeles.basis.Triangle#getNormal()}.
 	 */
 	@Test
 	public void testGetNormal() {
@@ -367,7 +367,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#getE1()}.
+	 * Test method for {@link modeles.basis.Triangle#getE1()}.
 	 */
 	@Test
 	public void testGetE1() {
@@ -375,7 +375,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#getE2()}.
+	 * Test method for {@link modeles.basis.Triangle#getE2()}.
 	 */
 	@Test
 	public void testGetE2() {
@@ -383,7 +383,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#getE3()}.
+	 * Test method for {@link modeles.basis.Triangle#getE3()}.
 	 */
 	@Test
 	public void testGetE3() {
@@ -391,7 +391,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#getEdges()}.
+	 * Test method for {@link modeles.basis.Triangle#getEdges()}.
 	 */
 	@Test
 	public void testGetEdges() {
@@ -399,7 +399,7 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.Triangle#toString()}.
+	 * Test method for {@link modeles.basis.Triangle#toString()}.
 	 */
 	@Test
 	public void testToString() {

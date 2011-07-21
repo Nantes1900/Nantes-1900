@@ -1,4 +1,4 @@
-package modeles;
+package modeles.extended;
 
 import java.io.File;
 import java.io.IOException;
@@ -7,7 +7,9 @@ import java.util.logging.Logger;
 
 import javax.vecmath.Vector3d;
 
-import algos.SeparationFloorBuilding;
+import mains.temporary.SeparationFloorBuilding;
+import modeles.basis.Mesh;
+
 
 import utils.Algos;
 import utils.MatrixMethod;

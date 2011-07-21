@@ -1,7 +1,8 @@
 package mains;
 
-import algos.SeparationFloorBuilding;
-import algos.TreatmentFloors;
+import mains.temporary.SeparationFloorBuilding;
+import mains.temporary.TreatmentFloors;
+
 
 //LOOK : this class must be deleted until the end of the project
 

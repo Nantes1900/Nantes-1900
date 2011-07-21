@@ -1,4 +1,4 @@
-package modeles;
+package modeles.basis;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -30,8 +30,13 @@ public class Edge {
 		this.points[1] = p2;
 	}
 
-	// Caution : use it very cautiously because it creates new Edges with same
-	// values and not the same references.
+	/**
+	 * Copy constructor. Caution : use it very cautiously because it creates new
+	 * Edges with same values and not the same references.
+	 * 
+	 * @param e
+	 *            the polyline to copy
+	 */
 	public Edge(Edge e) {
 		this.setP1(e.getP1());
 		this.setP2(e.getP2());
@@ -85,6 +90,28 @@ public class Edge {
 	 */
 	public Point getP2() {
 		return this.points[1];
+	}
+
+	/**
+	 * Setter
+	 * 
+	 * @param point
+	 *            the first point
+	 */
+	public void setP1(Point point) {
+		this.points[0] = point;
+
+	}
+
+	/**
+	 * Setter
+	 * 
+	 * @param point
+	 *            the second point
+	 */
+	public void setP2(Point point) {
+		this.points[1] = point;
+
 	}
 
 	/**
@@ -192,8 +219,20 @@ public class Edge {
 		return (e.contains(this.points[0]) && e.contains(this.points[1]));
 	}
 
-	public Polyline returnOneBound(Mesh m, Polyline p, Point point,
-			Vector3d normalFloor) {
+	/**
+	 * Return a polyline containing one entire bound. Take one point and search
+	 * for its neighbours. If we find a point which belong to 4 edges, then the
+	 * algorithm take the edge which is the more at the left.
+	 * 
+	 * @param p
+	 *            the polyline which contains all the bounds
+	 * @param point
+	 *            one point to begin the algorithm with
+	 * @param normalFloor
+	 *            the normal to the floor
+	 * @return the polyline containing the bound
+	 */
+	public Polyline returnOneBound(Polyline p, Point point, Vector3d normalFloor) {
 
 		Polyline bound = new Polyline();
 
@@ -205,7 +244,7 @@ public class Edge {
 			}
 
 			Edge e;
-			e = this.returnLeftNeighbour(point, p, normalFloor);
+			e = this.returnLeftNeighbour(p, point, normalFloor);
 			e.setP2(e.returnOther(point));
 			e.setP1(point);
 
@@ -219,7 +258,7 @@ public class Edge {
 				if (edgeList.size() < 2) {
 					throw new BadFormedPolylineException();
 				} else {
-					e = e.returnLeftNeighbour(point, p, normalFloor);
+					e = e.returnLeftNeighbour(p, point, normalFloor);
 
 					e.setP2(e.returnOther(point));
 					e.setP1(point);
@@ -239,16 +278,17 @@ public class Edge {
 		return bound;
 	}
 
-	public void setP1(Point point) {
-		this.points[0] = point;
-
-	}
-
-	public void setP2(Point point) {
-		this.points[1] = point;
-
-	}
-
+	/**
+	 * On many edges, return the one which is at the left.
+	 * 
+	 * @param weirdEdges
+	 *            the list of edges to choose in.
+	 * @param weirdPoint
+	 *            the point shared by all these edges.
+	 * @param normalFloor
+	 *            the normal to the floor.
+	 * @return the edge which is at the left.
+	 */
 	private Edge returnTheLeftOne(ArrayList<Edge> weirdEdges, Point weirdPoint,
 			Vector3d normalFloor) {
 
@@ -289,6 +329,11 @@ public class Edge {
 		return ref;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#toString()
+	 */
 	public String toString() {
 		return new String("(" + this.getP1() + ", " + this.getP2() + ")");
 	}
@@ -345,7 +390,7 @@ public class Edge {
 	 *             if a point in the polyline belongs nor to 2 edge neither to 4
 	 *             edges
 	 */
-	public Edge returnLeftNeighbour(Point p, Polyline b, Vector3d normalFloor)
+	public Edge returnLeftNeighbour(Polyline b, Point p, Vector3d normalFloor)
 			throws BadFormedPolylineException {
 
 		ArrayList<Edge> list = b.getNeighbours(p);
@@ -387,28 +432,31 @@ public class Edge {
 				.angle(vect2) > (((180 - error) / 180) * Math.PI));
 	}
 
-	public double minDistance(Edge edge) {
-		double min = Double.POSITIVE_INFINITY;
-
-		for (Point p1 : edge.points) {
-			for (Point p2 : this.points) {
-				if (p1.distance(p2) < min) {
-					min = p1.distance(p2);
-				}
-			}
-		}
-
-		return min;
-	}
-
+	/**
+	 * Return the point shared by the two edges. Return null if the two edges
+	 * don't share any point.
+	 * 
+	 * @param e
+	 *            the edge to search in
+	 * @return the point shared by this and e
+	 */
 	public Point sharedPoint(Edge e) {
 		if (this.contains(e.getP1())) {
 			return e.getP1();
-		} else {
+		} else if (this.contains(e.getP2())) {
 			return e.getP2();
+		} else {
+			return null;
 		}
 	}
 
+	/**
+	 * Project a point on the edge.
+	 * 
+	 * @param point
+	 *            the point to project
+	 * @return the point projected
+	 */
 	public Point project(Point point) {
 
 		Point p1 = this.getP1(), p2 = this.getP2();
@@ -429,6 +477,11 @@ public class Edge {
 		return new Point(x4, y4, z4);
 	}
 
+	/**
+	 * Implement a class used when the polyline is bad formed.
+	 * 
+	 * @author Daniel Lefevre
+	 */
 	public static class BadFormedPolylineException extends Exception {
 		private static final long serialVersionUID = 1L;
 	}

@@ -1,4 +1,4 @@
-package modeles;
+package modeles.basis;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ import javax.vecmath.Vector3d;
 public class Triangle {
 
 	private Point[] points = new Point[3];
-	private Vector3d normal;
+	private Vector3d normal = new Vector3d();;
 	private Edge[] edges = new Edge[3];
 
 	/**
@@ -231,7 +231,9 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
+	 * Compute the average x-coordinate of the three points.
+	 * 
+	 * @return the average x-coordinate of the three points
 	 */
 	public double xAverage() {
 		double xAverage = points[0].getX() + points[1].getX()
@@ -240,16 +242,9 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
-	 */
-	public double zAverage() {
-		double zAverage = points[0].getZ() + points[1].getZ()
-				+ points[2].getZ();
-		return zAverage / 3;
-	}
-
-	/**
-	 * @return
+	 * Compute the average y-coordinate of the three points.
+	 * 
+	 * @return the average y-coordinate of the three points
 	 */
 	public double yAverage() {
 		double yAverage = points[0].getY() + points[1].getY()
@@ -258,7 +253,20 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
+	 * Compute the average z-coordinate of the three points.
+	 * 
+	 * @return the average z-coordinate of the three points
+	 */
+	public double zAverage() {
+		double zAverage = points[0].getZ() + points[1].getZ()
+				+ points[2].getZ();
+		return zAverage / 3;
+	}
+
+	/**
+	 * Compute the x-minimum of the three points.
+	 * 
+	 * @return the x-minimum of the three points
 	 */
 	public double xMin() {
 		return Math.min(points[0].getX(),
@@ -266,7 +274,9 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
+	 * Compute the x-maximum of the three points.
+	 * 
+	 * @return the x-maximum of the three points
 	 */
 	public double xMax() {
 		return Math.max(points[0].getX(),
@@ -274,7 +284,9 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
+	 * Compute the y-minimum of the three points.
+	 * 
+	 * @return the y-minimum of the three points
 	 */
 	public double yMin() {
 		return Math.min(points[0].getY(),
@@ -282,7 +294,9 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
+	 * Compute the y-maximum of the three points.
+	 * 
+	 * @return the y-maximum of the three points
 	 */
 	public double yMax() {
 		return Math.max(points[0].getY(),
@@ -290,7 +304,9 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
+	 * Compute the z-minimum of the three points.
+	 * 
+	 * @return the z-minimum of the three points
 	 */
 	public double zMin() {
 		return Math.min(points[0].getZ(),
@@ -298,7 +314,9 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
+	 * Compute the z-maximum of the three points.
+	 * 
+	 * @return the z-maximum of the three points
 	 */
 	public double zMax() {
 		return Math.max(points[0].getZ(),
@@ -306,7 +324,9 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
+	 * Compute the point at the x-minimum of the three points.
+	 * 
+	 * @return the point at the x-minimum of the three points.
 	 */
 	public Point xMinPoint() {
 		double xMin = this.xMin();
@@ -318,7 +338,9 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
+	 * Compute the point at the x-maximum of the three points.
+	 * 
+	 * @return the point at the x-maximum of the three points.
 	 */
 	public Point xMaxPoint() {
 		double xMax = this.xMax();
@@ -330,7 +352,9 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
+	 * Compute the point at the y-minimum of the three points.
+	 * 
+	 * @return the point at the y-minimum of the three points.
 	 */
 	public Point yMinPoint() {
 		double yMin = this.yMin();
@@ -342,7 +366,9 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
+	 * Compute the point at the y-maximum of the three points.
+	 * 
+	 * @return the point at the y-maximum of the three points.
 	 */
 	public Point yMaxPoint() {
 		double yMay = this.yMax();
@@ -354,7 +380,9 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
+	 * Compute the point at the z-minimum of the three points.
+	 * 
+	 * @return the point at the z-minimum of the three points.
 	 */
 	public Point zMinPoint() {
 		double zMin = this.zMin();
@@ -366,7 +394,9 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
+	 * Compute the point at the z-maximum of the three points.
+	 * 
+	 * @return the point at the z-maximum of the three points.
 	 */
 	public Point zMaxPoint() {
 		double zMax = this.zMax();
@@ -378,18 +408,28 @@ public class Triangle {
 	}
 
 	/**
+	 * Check if the this face is oriented as vector with an error on the angle.
+	 * The error is in degree.
+	 * 
 	 * @param vector
+	 *            the vector to compare with
 	 * @param error
-	 * @return
+	 *            the orientation error
+	 * @return true if it is oriented as vector, false otherwise
 	 */
 	public boolean angularTolerance(Vector3d vector, double error) {
 		return (this.normal.angle(vector) * 180.0 / Math.PI < error);
 	}
 
 	/**
+	 * Check if the this face is oriented as face with an error on the angle.
+	 * The error is in degree.
+	 * 
 	 * @param face
+	 *            the other triangle to compare with
 	 * @param error
-	 * @return
+	 *            the orientation error
+	 * @return true if it is oriented as face, false otherwise
 	 */
 	public boolean angularTolerance(Triangle face, double error) {
 		return (this.angularTolerance(face.normal, error));
@@ -411,7 +451,6 @@ public class Triangle {
 		return (this.normal.dot(norm) < error && this.normal.dot(norm) > -error);
 	}
 
-	//
 	/**
 	 * Returns in ret the neighbours of this which belongs to m.
 	 * 
@@ -433,7 +472,10 @@ public class Triangle {
 	}
 
 	/**
-	 * @return
+	 * Return the neighbours of this triangle. Look in the edges to find the
+	 * other triangles which share those edges.
+	 * 
+	 * @return a list of the neighbours triangles
 	 */
 	public ArrayList<Triangle> getNeighbours() {
 		ArrayList<Triangle> l = new ArrayList<Triangle>();
@@ -449,15 +491,21 @@ public class Triangle {
 	}
 
 	/**
+	 * Check if a triangle is a neighbours of this. This method calls the
+	 * getNeighbours method.
+	 * 
 	 * @param f
-	 * @return
+	 *            the triangle to check
+	 * @return true if it is neighbours, false otherwise.
 	 */
 	public boolean isNeighboor(Triangle f) {
 		return (this.getNeighbours().contains(f));
 	}
 
 	/**
-	 * @return
+	 * Return the number of neighbours of this triangle.
+	 * 
+	 * @return the number of neighbours
 	 */
 	public int getNumNeighbours() {
 		return this.getNeighbours().size();

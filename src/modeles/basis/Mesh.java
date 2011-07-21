@@ -1,4 +1,4 @@
-package modeles;
+package modeles.basis;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -11,22 +11,26 @@ import utils.MatrixMethod;
 import utils.WriterSTL;
 
 /**
- * @author Daniel Lefevre, Eric Berthe, Valentin Roger, Elsa Arroud-Vignod
+ * Implement a mesh as a HashSet of Triangle.
  * 
+ * @author Daniel Lefevre, Eric Berthe, Valentin Roger, Elsa Arroud-Vignod
  */
 public class Mesh extends HashSet<Triangle> {
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * 
+	 * Void constructor
 	 */
 	public Mesh() {
 		super();
 	}
 
 	/**
+	 * Constructor from a collection of triangle.
+	 * 
 	 * @param c
+	 *            the collection
 	 */
 	public Mesh(Collection<? extends Triangle> c) {
 		super(c);
@@ -49,7 +53,10 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * @return
+	 * Compute the average x-coordinate of all points of all faces from this
+	 * mesh.
+	 * 
+	 * @return the average x-coordinate of all points
 	 */
 	public double xAverage() {
 		double xAverage = 0;
@@ -60,7 +67,10 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * @return
+	 * Compute the average y-coordinate of all points of all faces from this
+	 * mesh.
+	 * 
+	 * @return the average y-coordinate of all points
 	 */
 	public double yAverage() {
 		double yAverage = 0;
@@ -72,7 +82,7 @@ public class Mesh extends HashSet<Triangle> {
 
 	/**
 	 * Compute the average z-coordinate of all points of all faces from this
-	 * Ensemble
+	 * mesh.
 	 * 
 	 * @return the average z-coordinate of all points
 	 */
@@ -85,7 +95,9 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * @return
+	 * Compute the x-maximum of all points of all faces from this mesh.
+	 * 
+	 * @return the x-maximum of all points of all faces from this mesh
 	 */
 	public double xMax() {
 		double xMaxi = Double.NEGATIVE_INFINITY;
@@ -98,7 +110,9 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * @return
+	 * Compute the x-minimum of all points of all faces from this mesh.
+	 * 
+	 * @return the x-minimum of all points of all faces from this mesh
 	 */
 	public double xMin() {
 		double xMini = Double.POSITIVE_INFINITY;
@@ -111,7 +125,9 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * @return
+	 * Compute the y-maximum of all points of all faces from this mesh.
+	 * 
+	 * @return the y-maximum of all points of all faces from this mesh
 	 */
 	public double yMax() {
 		double yMaxi = Double.NEGATIVE_INFINITY;
@@ -124,7 +140,9 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * @return
+	 * Compute the y-minimum of all points of all faces from this mesh.
+	 * 
+	 * @return the y-minimum of all points of all faces from this mesh
 	 */
 	public double yMin() {
 		double yMini = Double.POSITIVE_INFINITY;
@@ -137,7 +155,9 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * @return
+	 * Compute the z-maximum of all points of all faces from this mesh.
+	 * 
+	 * @return the z-maximum of all points of all faces from this mesh
 	 */
 	public double zMax() {
 		double zMaxi = Double.NEGATIVE_INFINITY;
@@ -150,7 +170,9 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * @return
+	 * Compute the z-minimum of all points of all faces from this mesh.
+	 * 
+	 * @return the z-minimum of all points of all faces from this mesh
 	 */
 	public double zMin() {
 		double zMini = Double.POSITIVE_INFINITY;
@@ -163,7 +185,10 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * @return
+	 * Compute the average length on x of all points of all faces from this
+	 * mesh.
+	 * 
+	 * @return the average length on x of all points of all faces from this mesh
 	 */
 	public double xLengthAverage() {
 		double xLengthAve = 0;
@@ -174,7 +199,10 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * @return
+	 * Compute the average length on y of all points of all faces from this
+	 * mesh.
+	 * 
+	 * @return the average length on y of all points of all faces from this mesh
 	 */
 	public double yLengthAverage() {
 		double yLengthAve = 0;
@@ -185,7 +213,10 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * @return
+	 * Compute the average length on z of all points of all faces from this
+	 * mesh.
+	 * 
+	 * @return the average length on z of all points of all faces from this mesh
 	 */
 	public double zLengthAverage() {
 		double zLengthAve = 0;
@@ -305,6 +336,7 @@ public class Mesh extends HashSet<Triangle> {
 	// Caution : this is not in degrees
 	// The factor is between 0 and 1.
 	/**
+	 * 
 	 * @param normal
 	 * @param error
 	 * @return
@@ -392,7 +424,7 @@ public class Mesh extends HashSet<Triangle> {
 
 			Edge arete = bounds.getOne();
 
-			ret = arete.returnOneBound(this, bounds,
+			ret = arete.returnOneBound(bounds,
 					this.getLeftPoint(arete, normal), normal);
 
 			boundList.add(ret);

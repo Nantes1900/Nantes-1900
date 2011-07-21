@@ -1,4 +1,4 @@
-package algos;
+package mains.temporary;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,9 +9,9 @@ import java.util.logging.StreamHandler;
 
 import javax.vecmath.Vector3d;
 
-import modeles.Edifice;
-import modeles.Mesh;
-import modeles.Town;
+import modeles.basis.Mesh;
+import modeles.extended.Edifice;
+import modeles.extended.Town;
 import utils.MatrixMethod;
 import utils.MatrixMethod.SingularMatrixException;
 import utils.ParserSTL;

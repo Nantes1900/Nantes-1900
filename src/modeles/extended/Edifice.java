@@ -1,4 +1,4 @@
-package modeles;
+package modeles.extended;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,7 +8,10 @@ import java.util.logging.Logger;
 import javax.activity.InvalidActivityException;
 import javax.vecmath.Vector3d;
 
-import algos.SeparationTreatmentWallsRoofs;
+import mains.temporary.SeparationTreatmentWallsRoofs;
+import modeles.basis.Mesh;
+import modeles.basis.Polyline;
+
 
 import utils.Algos;
 import utils.MatrixMethod;

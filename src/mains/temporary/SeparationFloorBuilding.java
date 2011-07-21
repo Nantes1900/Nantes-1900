@@ -1,4 +1,4 @@
-package algos;
+package mains.temporary;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -9,7 +9,7 @@ import java.util.logging.StreamHandler;
 
 import javax.vecmath.Vector3d;
 
-import modeles.Mesh;
+import modeles.basis.Mesh;
 import utils.Algos;
 import utils.MatrixMethod;
 import utils.MatrixMethod.SingularMatrixException;
