@@ -243,7 +243,7 @@ public class WriterCityGML {
 		try {
 			out = builder.createCityGMLOutputFactory(CityGMLVersion.v1_0_0);
 			CityGMLWriter writer = out.createCityGMLWriter(new File(
-					this.fileName + ".xml"));
+					this.fileName));
 
 			writer.setPrefixes(CityGMLVersion.v1_0_0);
 			writer.setSchemaLocations(CityGMLVersion.v1_0_0);

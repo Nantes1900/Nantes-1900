@@ -23,9 +23,9 @@ import utils.WriterSTL;
  */
 public class SeparationFloorBuilding {
 
-	private double altitudeErrorFactor = 10;
-	private double angleNormalErrorFactor = 20;
-	private double blockSizeBuildingError = 1;
+	public static double altitudeErrorFactor = 10;
+	public static double angleNormalErrorFactor = 20;
+	public static double blockSizeBuildingError = 1;
 
 	private String townFileName = "Originals/batiments 1 - binary.stl";
 	private String floorFileName = "Originals/floor.stl";
@@ -190,8 +190,8 @@ public class SeparationFloorBuilding {
 		// Take all of its neighbours
 		// Select another Triangle which is not too high and repeat the above
 		// step
-		this.floors = Algos
-				.floorExtract(meshOriented, this.altitudeErrorFactor);
+		this.floors = Algos.floorExtract(meshOriented,
+				SeparationFloorBuilding.altitudeErrorFactor);
 
 		this.buildings = new Mesh(this.mesh);
 
@@ -227,8 +227,8 @@ public class SeparationFloorBuilding {
 		log.info("Building extraction ...");
 
 		for (Mesh m : thingsList) {
-			if (m.size() >= this.blockSizeBuildingError * (double) number
-					/ (double) this.buildingList.size()) {
+			if (m.size() >= SeparationFloorBuilding.blockSizeBuildingError
+					* (double) number / (double) this.buildingList.size()) {
 				this.buildingList.add(m);
 			} else {
 				this.noise.addAll(m);
@@ -256,8 +256,9 @@ public class SeparationFloorBuilding {
 			this.noise.remove(e);
 		}
 	}
-	
+
 	public Mesh getFloors() {
 		return this.floors;
 	}
+
 }
