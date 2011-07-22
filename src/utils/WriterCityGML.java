@@ -6,11 +6,11 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import modeles.basis.Mesh;
-import modeles.basis.Polyline;
-import modeles.basis.Triangle;
-import modeles.extended.Edifice;
-import modeles.extended.Floor;
+import models.Mesh;
+import models.Polyline;
+import models.basis.Triangle;
+import models.extended.Edifice;
+import models.extended.Floor;
 
 import org.citygml4j.CityGMLContext;
 import org.citygml4j.builder.jaxb.JAXBBuilder;

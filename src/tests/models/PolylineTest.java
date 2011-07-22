@@ -1,9 +1,9 @@
-package tests.models.basis;
+package tests.models;
 
 import static org.junit.Assert.*;
-import modeles.basis.Edge;
-import modeles.basis.Point;
-import modeles.basis.Polyline;
+import models.Polyline;
+import models.basis.Edge;
+import models.basis.Point;
 
 import org.junit.Test;
 
@@ -39,7 +39,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#edgeSize()}.
+	 * Test method for {@link models.Polyline#edgeSize()}.
 	 */
 	@Test
 	public void testEdgeSize() {
@@ -47,7 +47,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#pointSize()}.
+	 * Test method for {@link models.Polyline#pointSize()}.
 	 */
 	@Test
 	public void testPointSize() {
@@ -55,7 +55,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#xAverage()}.
+	 * Test method for {@link models.Polyline#xAverage()}.
 	 */
 	@Test
 	public void testXAverage() {
@@ -63,7 +63,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#yAverage()}.
+	 * Test method for {@link models.Polyline#yAverage()}.
 	 */
 	@Test
 	public void testYAverage() {
@@ -71,7 +71,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#zAverage()}.
+	 * Test method for {@link models.Polyline#zAverage()}.
 	 */
 	@Test
 	public void testZAverage() {
@@ -79,7 +79,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#xMax()}.
+	 * Test method for {@link models.Polyline#xMax()}.
 	 */
 	@Test
 	public void testXMax() {
@@ -87,7 +87,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#xMin()}.
+	 * Test method for {@link models.Polyline#xMin()}.
 	 */
 	@Test
 	public void testXMin() {
@@ -95,7 +95,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#yMax()}.
+	 * Test method for {@link models.Polyline#yMax()}.
 	 */
 	@Test
 	public void testYMax() {
@@ -103,7 +103,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#yMin()}.
+	 * Test method for {@link models.Polyline#yMin()}.
 	 */
 	@Test
 	public void testYMin() {
@@ -111,7 +111,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#zMax()}.
+	 * Test method for {@link models.Polyline#zMax()}.
 	 */
 	@Test
 	public void testZMax() {
@@ -119,7 +119,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#zMin()}.
+	 * Test method for {@link models.Polyline#zMin()}.
 	 */
 	@Test
 	public void testZMin() {
@@ -127,7 +127,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#xLengthAverage()}.
+	 * Test method for {@link models.Polyline#xLengthAverage()}.
 	 */
 	@Test
 	public void testXLengthAverage() {
@@ -135,7 +135,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#yLengthAverage()}.
+	 * Test method for {@link models.Polyline#yLengthAverage()}.
 	 */
 	@Test
 	public void testYLengthAverage() {
@@ -143,7 +143,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#zLengthAverage()}.
+	 * Test method for {@link models.Polyline#zLengthAverage()}.
 	 */
 	@Test
 	public void testZLengthAverage() {
@@ -151,7 +151,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#lengthAverage()}.
+	 * Test method for {@link models.Polyline#lengthAverage()}.
 	 */
 	@Test
 	public void testLengthAverage() {
@@ -160,7 +160,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#xBetween(double, double)}.
+	 * Test method for {@link models.Polyline#xBetween(double, double)}.
 	 */
 	@Test
 	public void testXBetween() {
@@ -179,7 +179,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#yBetween(double, double)}.
+	 * Test method for {@link models.Polyline#yBetween(double, double)}.
 	 */
 	@Test
 	public void testYBetween() {
@@ -198,7 +198,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#zBetween(double, double)}.
+	 * Test method for {@link models.Polyline#zBetween(double, double)}.
 	 */
 	@Test
 	public void testZBetween() {
@@ -217,7 +217,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#zMaxPoint()}.
+	 * Test method for {@link models.Polyline#zMaxPoint()}.
 	 */
 	@Test
 	public void testZMaxPoint() {
@@ -225,7 +225,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#length()}.
+	 * Test method for {@link models.Polyline#length()}.
 	 */
 	@Test
 	public void testLength() {
@@ -233,7 +233,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#remove(modeles.basis.Polyline)}.
+	 * Test method for {@link models.Polyline#remove(models.Polyline)}.
 	 */
 	@Test
 	public void testRemovePolyline() {
@@ -253,19 +253,20 @@ public class PolylineTest {
 
 	/**
 	 * Test method for
-	 * {@link modeles.basis.Polyline#isInCylinder2D(modeles.basis.Point, modeles.basis.Point, modeles.basis.Point, double)}
+	 * {@link models.Polyline#isInCylinder2D(models.basis.Point, models.basis.Point, models.basis.Point, double)}
 	 * .
 	 */
 	@Test
-	public void testAreWeInTheTwoLinesOrNot() {
+	public void testIsInCylinder2D() {
 		Point p1 = new Point(0, 0, 0);
 		Point p2 = new Point(1, 1, 0);
 		Point p3 = new Point(2.2, 2, 0);
+		Edge e = new Edge(p1, p2);
 		double error = 0.3;
-		assertTrue(p.isInCylinder2D(p1, p2, p3, error));
+		assertTrue(e.isInCylinder2D(p3, error));
 
 		p3 = new Point(3, 2, 0);
-		assertFalse(p.isInCylinder2D(p1, p2, p3, error));
+		assertFalse(e.isInCylinder2D(p3, error));
 	}
 
 	// /**
@@ -303,23 +304,7 @@ public class PolylineTest {
 	// }
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#returnMesh()}.
-	 */
-	@Test
-	public void testReturnMesh() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link modeles.basis.Polyline#order()}.
-	 */
-	@Test
-	public void testOrder() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link modeles.basis.Polyline#Polyline(java.util.List)}.
+	 * Test method for {@link models.Polyline#Polyline(java.util.List)}.
 	 */
 	@Test
 	public void testPolylineListOfEdge() {
@@ -327,7 +312,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#Polyline()}.
+	 * Test method for {@link models.Polyline#Polyline()}.
 	 */
 	@Test
 	public void testPolyline() {
@@ -335,7 +320,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#getEdgeList()}.
+	 * Test method for {@link models.Polyline#getEdgeList()}.
 	 */
 	@Test
 	public void testGetEdgeList() {
@@ -343,7 +328,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#getPointList()}.
+	 * Test method for {@link models.Polyline#getPointList()}.
 	 */
 	@Test
 	public void testGetPointList() {
@@ -351,7 +336,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#getID()}.
+	 * Test method for {@link models.Polyline#getID()}.
 	 */
 	@Test
 	public void testGetID() {
@@ -359,7 +344,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#add(modeles.basis.Edge)}.
+	 * Test method for {@link models.Polyline#add(models.basis.Edge)}.
 	 */
 	@Test
 	public void testAddEdge() {
@@ -367,7 +352,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#add(modeles.basis.Point)}.
+	 * Test method for {@link models.Polyline#add(models.basis.Point)}.
 	 */
 	@Test
 	public void testAddPoint() {
@@ -375,7 +360,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#addAll(java.util.List)}.
+	 * Test method for {@link models.Polyline#addAll(java.util.List)}.
 	 */
 	@Test
 	public void testAddAll() {
@@ -383,7 +368,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#getOne()}.
+	 * Test method for {@link models.Polyline#getOne()}.
 	 */
 	@Test
 	public void testGetOne() {
@@ -391,7 +376,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#remove(modeles.basis.Edge)}.
+	 * Test method for {@link models.Polyline#remove(models.basis.Edge)}.
 	 */
 	@Test
 	public void testRemoveEdge() {
@@ -399,7 +384,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#contains(modeles.basis.Point)}.
+	 * Test method for {@link models.Polyline#contains(models.basis.Point)}.
 	 */
 	@Test
 	public void testContainsPoint() {
@@ -407,7 +392,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#contains(modeles.basis.Edge)}.
+	 * Test method for {@link models.Polyline#contains(models.basis.Edge)} .
 	 */
 	@Test
 	public void testContainsEdge() {
@@ -415,7 +400,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#isEmpty()}.
+	 * Test method for {@link models.Polyline#isEmpty()}.
 	 */
 	@Test
 	public void testIsEmpty() {
@@ -423,7 +408,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#returnCentroidMesh()}.
+	 * Test method for {@link models.Polyline#returnCentroidMesh()}.
 	 */
 	@Test
 	public void testReturnCentroidMesh() {
@@ -431,7 +416,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#changeBase(double[][])}.
+	 * Test method for {@link models.Polyline#changeBase(double[][])}.
 	 */
 	@Test
 	public void testChangeBase() {
@@ -439,7 +424,8 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#getNumNeighbours(modeles.basis.Point)}.
+	 * Test method for
+	 * {@link models.Polyline#getNumNeighbours(models.basis.Point)}.
 	 */
 	@Test
 	public void testGetNumNeighbours() {
@@ -447,7 +433,8 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#getNeighbours(modeles.basis.Point)}.
+	 * Test method for {@link models.Polyline#getNeighbours(models.basis.Point)}
+	 * .
 	 */
 	@Test
 	public void testGetNeighbours() {
@@ -455,7 +442,7 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Polyline#zProjection(double)}.
+	 * Test method for {@link models.Polyline#zProjection(double)}.
 	 */
 	@Test
 	public void testZProjection() {
@@ -463,12 +450,40 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for
-	 * {@link modeles.basis.Polyline#determinateSingularPoints(double)}.
+	 * Test method for {@link models.Polyline#determinateSingularPoints(double)}
+	 * .
 	 */
 	@Test
 	public void testDeterminateSingularPoints() {
 		fail("Not yet implemented"); // TODO
 	}
 
+	@Test
+	public void testBuildContour() {
+		Point p1 = new Point(-0.05, 0, 0);
+		Point p2 = new Point(0.1, 0, 0);
+		Point p3 = new Point(0.9, 0, 0);
+		Point p4 = new Point(1.01, 0, 0);
+		Point p5 = new Point(0, 0.95, 0);
+		Point p6 = new Point(0, 1.01, 0);
+		Point p7 = new Point(1.1, 0.98, 0);
+		Point p8 = new Point(1.01, 1.1, 0);
+
+		Edge e1 = new Edge(p1, p8);
+		Edge e2 = new Edge(p2, p3);
+		Edge e4 = new Edge(p4, p5);
+		Edge e3 = new Edge(p6, p7);
+
+		Polyline p = new Polyline();
+		p.add(e1);
+		p.add(e2);
+		p.add(e3);
+		p.add(e4);
+
+		p.buildContour();
+
+		for (Point point : p.getPointList()) {
+			System.out.println(point);
+		}
+	}
 }

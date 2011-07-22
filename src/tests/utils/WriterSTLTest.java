@@ -8,10 +8,10 @@ import java.util.ArrayList;
 
 import javax.vecmath.Vector3d;
 
-import modeles.basis.Edge;
-import modeles.basis.Mesh;
-import modeles.basis.Point;
-import modeles.basis.Triangle;
+import models.Mesh;
+import models.basis.Edge;
+import models.basis.Point;
+import models.basis.Triangle;
 
 import org.junit.Test;
 
@@ -28,8 +28,8 @@ public class WriterSTLTest {
 
 	/**
 	 * Test method for
-	 * {@link utils.WriterSTL#write(java.lang.String, modeles.basis.Mesh)}.
-	 * Same test as readSTL in ParserTest.
+	 * {@link utils.WriterSTL#write(java.lang.String, models.Mesh)}. Same
+	 * test as readSTL in ParserTest.
 	 */
 	@Test
 	public void testWrite() {
@@ -55,20 +55,21 @@ public class WriterSTLTest {
 		Mesh write = new Mesh();
 		write.add(t1);
 		write.add(t2);
-		
+
 		write.writeSTL("WriterTest.stl");
 		try {
-		Mesh read = new Mesh(ParserSTL.readSTL("WriterTest.stl"));
-		assertTrue(read.size() == 2);
-		ArrayList<Triangle> readList = new ArrayList<Triangle>(read);
-		assertTrue(readList.get(0).equals(t1) || readList.get(0).equals(t2));
-		assertTrue(readList.get(1).equals(t1) || readList.get(1).equals(t2));
+			Mesh read = new Mesh(ParserSTL.readSTL("WriterTest.stl"));
+			assertTrue(read.size() == 2);
+			ArrayList<Triangle> readList = new ArrayList<Triangle>(read);
+			assertTrue(readList.get(0).equals(t1) || readList.get(0).equals(t2));
+			assertTrue(readList.get(1).equals(t1) || readList.get(1).equals(t2));
 		} catch (BadFormedFileException e) {
 			fail("BadFormedFileException !");
 		} catch (IOException e) {
 			fail("IOException !");
 		}
-		
+
+		// FIXME : it doesn't remove the file.
 		new File("WriterTest.stl").delete();
 	}
 

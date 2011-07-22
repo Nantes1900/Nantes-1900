@@ -1,4 +1,4 @@
-package modeles.basis;
+package models;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -6,6 +6,10 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import javax.vecmath.Vector3d;
+
+import models.basis.Edge;
+import models.basis.Point;
+import models.basis.Triangle;
 
 import utils.MatrixMethod;
 import utils.WriterSTL;
@@ -18,6 +22,8 @@ import utils.WriterSTL;
 public class Mesh extends HashSet<Triangle> {
 
 	private static final long serialVersionUID = 1L;
+
+	private ArrayList<Mesh> neighbours = new ArrayList<Mesh>();
 
 	/**
 	 * Void constructor
@@ -34,6 +40,27 @@ public class Mesh extends HashSet<Triangle> {
 	 */
 	public Mesh(Collection<? extends Triangle> c) {
 		super(c);
+	}
+
+	/**
+	 * Add a neighbours to the attribute neighbours. Check if it is not
+	 * contained.
+	 * 
+	 * @param p
+	 *            the polyline as neighbour to add
+	 */
+	public void addNeighbour(Mesh m) {
+		if (!this.neighbours.contains(m))
+			this.neighbours.add(m);
+	}
+
+	/**
+	 * Getter
+	 * 
+	 * @return the neighbours
+	 */
+	public ArrayList<Mesh> getNeighbours() {
+		return this.neighbours;
 	}
 
 	/**
@@ -227,9 +254,13 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
+	 * Return a Mesh containing only the triangle whose x is between m1 and m2
+	 * 
 	 * @param m1
+	 *            the first bound
 	 * @param m2
-	 * @return
+	 *            the second bound
+	 * @return the mesh containing the triangles
 	 */
 	public Mesh xBetween(double m1, double m2) {
 		Mesh ens = new Mesh();
@@ -241,9 +272,13 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
+	 * Return a Mesh containing only the triangle whose y is between m1 and m2
+	 * 
 	 * @param m1
+	 *            the first bound
 	 * @param m2
-	 * @return
+	 *            the second bound
+	 * @return the mesh containing the triangles
 	 */
 	public Mesh yBetween(double m1, double m2) {
 		Mesh ens = new Mesh();
@@ -255,9 +290,13 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
+	 * Return a Mesh containing only the triangle whose z is between m1 and m2
+	 * 
 	 * @param m1
+	 *            the first bound
 	 * @param m2
-	 * @return
+	 *            the second bound
+	 * @return the mesh containing the triangles
 	 */
 	public Mesh zBetween(double m1, double m2) {
 		Mesh ens = new Mesh();
@@ -269,12 +308,14 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * @return
+	 * Return the triangle which has the lowest z.
+	 * 
+	 * @return the triangle which has the lowest z
 	 */
 	public Triangle zMinFace() {
 		Triangle t = null;
 		if (this.isEmpty())
-			throw new InvalidParameterException("Empty mesh !");
+			throw new InvalidParameterException();
 		double zMini = Double.POSITIVE_INFINITY;
 		for (Triangle face : this) {
 			if (face.zMin() < zMini) {
@@ -286,8 +327,12 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
+	 * Search for one triangle which is under zMax. It means that all its points
+	 * are under zMax.
+	 * 
 	 * @param zMax
-	 * @return
+	 *            the bound
+	 * @return the first triangle found which is under zMax
 	 */
 	public Triangle faceUnderZ(double zMax) {
 		for (Triangle t : this) {
@@ -299,30 +344,44 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * @return
+	 * Get one triangle. It returns iterator().next(), it means the triangle
+	 * which has the first hashCode. This method is just a confortable way to
+	 * access a triangle without order.
+	 * 
+	 * @return one triangle
 	 */
 	public Triangle getOne() {
 		return this.iterator().next();
 	}
 
 	/**
+	 * Remove the triangles of m in this.
+	 * 
 	 * @param m
+	 *            the mesh which contains the triangle to remove from this
 	 */
 	public void remove(Mesh m) {
 		this.removeAll(m);
 	}
 
 	/**
+	 * Write the mesh in a STL file using the class ParserSTL
+	 * 
 	 * @param fileName
+	 *            the name of the file
 	 */
 	public void writeSTL(String fileName) {
 		WriterSTL.write(fileName, this);
 	}
 
 	/**
+	 * Return the triangles which are oriented as normal, with an error.
+	 * 
 	 * @param normal
+	 *            the vector to compare with
 	 * @param error
-	 * @return
+	 *            the orientation error in degrees
+	 * @return a mesh containing all those triangles
 	 */
 	public Mesh orientedAs(Vector3d normal, double error) {
 		Mesh ret = new Mesh();
@@ -333,25 +392,31 @@ public class Mesh extends HashSet<Triangle> {
 		return ret;
 	}
 
-	// Caution : this is not in degrees
-	// The factor is between 0 and 1.
 	/**
+	 * Return the triangle which are normal to vect, with an error. The error is
+	 * compared with the result of a dot product (vectors are normalized, then
+	 * this result is between 0 and 1).
 	 * 
-	 * @param normal
+	 * @param vect
+	 *            the vector to compare with
 	 * @param error
-	 * @return
+	 *            the orientation error
+	 * @return the mesh containing all those triangles
 	 */
-	public Mesh orientedNormalTo(Vector3d normal, double error) {
+	public Mesh orientedNormalTo(Vector3d vect, double error) {
 		Mesh ret = new Mesh();
 		for (Triangle f : this) {
-			if (f.isNormalTo(normal, error))
+			if (f.isNormalTo(vect, error))
 				ret.add(f);
 		}
 		return ret;
 	}
 
 	/**
+	 * Change the base of all the points contained in the mesh.
+	 * 
 	 * @param matrix
+	 *            the change base matrix
 	 */
 	public void changeBase(double[][] matrix) {
 		if (matrix == null)
@@ -417,8 +482,6 @@ public class Mesh extends HashSet<Triangle> {
 
 		Polyline ret = new Polyline();
 
-		int counter = 1;
-
 		while (!bounds.isEmpty()) {
 			ret = new Polyline();
 
@@ -427,20 +490,32 @@ public class Mesh extends HashSet<Triangle> {
 			ret = arete.returnOneBound(bounds,
 					this.getLeftPoint(arete, normal), normal);
 
-			boundList.add(ret);
+			if (ret != null)
+				boundList.add(ret);
 
 			bounds.remove(ret);
-
-			counter++;
 		}
 
 		return boundList;
 	}
 
+	/**
+	 * Compute some calculations to obtain the point (ie the direction) to
+	 * follow to have the inside mesh at the right, and the hole at the left.
+	 * 
+	 * @param edge
+	 *            an edge which is a bound for this
+	 * @param normalFloor
+	 *            the normal to the floor
+	 * @return the point which represent the direction
+	 */
 	public Point getLeftPoint(Edge edge, Vector3d normalFloor) {
 
 		Point p31 = null, p32 = null;
 
+		// FIXME : if edge doesn't have 2 triangles ?
+
+		// Get the third point of each triangle of the edge
 		for (Point p : edge.getTriangleList().get(0).getPoints()) {
 			if (!edge.contains(p)) {
 				p31 = p;
@@ -471,6 +546,12 @@ public class Mesh extends HashSet<Triangle> {
 		Vector3d cross = new Vector3d();
 		cross.cross(normalFloor, vect);
 
+		// If (normalFloor cross vect) dot a vector is positive, then the vector
+		// point considered is at the left of vect
+
+		// We then try to determine on which side is the inside of the mesh, and
+		// on which side is the outside, to know the direction : we want to
+		// begin with the outside at our left.
 		if (!this.contains(edge.getTriangleList().get(0))) {
 			if (cross.dot(v31) > 0) {
 				return edge.getP2();
@@ -508,16 +589,167 @@ public class Mesh extends HashSet<Triangle> {
 		return ret;
 	}
 
+	/**
+	 * Search on two meshes to know if they have one common point.
+	 * 
+	 * @param mesh
+	 *            the mesh to search in
+	 * @return true if at least one point is shared, false otherwise
+	 */
 	public boolean isNeighbour(Mesh mesh) {
-		if (mesh == this) {
-			return false;
-		}
-		for (Triangle t1 : this) {
-			for (Triangle t2 : mesh) {
-				if (t1.isNeighboor(t2))
-					return true;
+		if (mesh != this) {
+			for (Triangle t1 : this) {
+				for (Triangle t2 : mesh) {
+					if (t1.isNeighboor(t2))
+						return true;
+				}
 			}
 		}
 		return false;
+	}
+
+	public Edge findCommonEdge(Mesh m, double radiusError) {
+
+		// We define the axe of the intersection
+		Vector3d norm1 = this.averageNormal();
+		Vector3d norm2 = m.averageNormal();
+
+		// We define the axe of the intersection
+		Edge axis = this.getAxis(m, norm1, norm2, radiusError);
+
+		return axis;
+	}
+
+	private Edge getAxis(Mesh m, Vector3d norm1, Vector3d norm2,
+			double radiusError) {
+		Mesh p1 = this;
+		Mesh p2 = m;
+
+		Point p01 = p1.getOne().getP1();
+		Point p02 = p2.getOne().getP1();
+
+		double a1 = norm1.x, b1 = norm1.y, c1 = norm1.z;
+		double a2 = norm2.x, b2 = norm2.y, c2 = norm2.z;
+		double d1 = a1 * p01.getX() + b1 * p01.getY() + c1 * p01.getZ();
+		double d2 = a2 * p02.getX() + b2 * p02.getY() + c2 * p02.getZ();
+
+		double x = 0;
+		double y = (c2 * d1 - c1 * d2) / (b1 * c2 - b2 * c1);
+		double z = (b1 * d2 - b2 * d1) / (b1 * c2 - b2 * c1);
+
+		Vector3d norm3 = new Vector3d();
+		norm3.cross(norm1, norm2);
+
+		Edge axis = new Edge(new Point(x, y, z), new Point(x + norm3.x, y
+				+ norm3.y, z + norm3.z));
+
+		// Get the points which are into the cylinder, and project them on
+		// the axe.
+		ArrayList<Point> cylinder1 = p1.getCylinderInfinite(axis, radiusError);
+		ArrayList<Point> cylinder2 = p2.getCylinderInfinite(axis, radiusError);
+
+		ArrayList<Point> cylinder = new ArrayList<Point>();
+		cylinder.addAll(cylinder1);
+		cylinder.addAll(cylinder2);
+
+		// Select the max and min
+		Point extremityMax = this.getCylinderMaxPoint(cylinder, axis);
+		Point extremityMin = this.getCylinderMinPoint(cylinder, axis);
+
+		// Adjust the two surfaces to have the same edge with the same max
+		// and min
+		Point extremityMax1 = this.getCylinderMaxPoint(cylinder1, axis);
+		Point extremityMin1 = this.getCylinderMinPoint(cylinder1, axis);
+		Point extremityMax2 = this.getCylinderMaxPoint(cylinder2, axis);
+		Point extremityMin2 = this.getCylinderMinPoint(cylinder2, axis);
+
+		if (extremityMax == extremityMax1) {
+			extremityMax2.set(extremityMax1.getPointAsCoordinates());
+		} else {
+			extremityMax1.set(extremityMax2.getPointAsCoordinates());
+		}
+
+		if (extremityMin == extremityMin1) {
+			extremityMin2.set(extremityMin1.getPointAsCoordinates());
+		} else {
+			extremityMin1.set(extremityMin2.getPointAsCoordinates());
+		}
+
+		return new Edge(extremityMin, extremityMax);
+	}
+
+	private Point getCylinderMaxPoint(ArrayList<Point> cylinder, Edge axe) {
+		Point ref = null;
+		double max = Double.NEGATIVE_INFINITY;
+
+		for (Triangle t : this) {
+			for (Point p : t.getPoints()) {
+				if (Mesh.getAxisProjectionPoint(cylinder, axe, p).getX() > max) {
+					ref = Mesh.getAxisProjectionPoint(cylinder, axe, p);
+					max = ref.getX();
+				}
+			}
+		}
+
+		return ref;
+	}
+
+	private Point getCylinderMinPoint(ArrayList<Point> cylinder, Edge axe) {
+		Point ref = null;
+		double min = Double.POSITIVE_INFINITY;
+
+		for (Triangle t : this) {
+			for (Point p : t.getPoints()) {
+				if (Mesh.getAxisProjectionPoint(cylinder, axe, p).getX() < min) {
+					ref = Mesh.getAxisProjectionPoint(cylinder, axe, p);
+					min = ref.getX();
+				}
+			}
+		}
+
+		return ref;
+	}
+
+	/**
+	 * Build a infinite cylinder, with the edge e as central axe, with error as
+	 * radius, and select only the points of this which are inside.
+	 * 
+	 * @param e
+	 *            the edge which will be the axe
+	 * @param error
+	 *            the radius
+	 * @return a list of points which are inside the cylinder
+	 */
+	public ArrayList<Point> getCylinderInfinite(Edge e, double error) {
+		ArrayList<Point> ret = new ArrayList<Point>();
+
+		for (Triangle t : this) {
+			for (Point p : t.getPoints()) {
+				if (e.isInInfiniteCylinder3D(p, error)) {
+					ret.add(p);
+				}
+			}
+		}
+
+		return ret;
+	}
+
+	private static Point getAxisProjectionPoint(ArrayList<Point> cylinder,
+			Edge axe, Point p) {
+		Point p1 = axe.getP1(), p2 = axe.getP2(), p3 = p;
+
+		double x1 = p1.getX(), x2 = p2.getX(), x3 = p3.getX();
+		double y1 = p1.getY(), y2 = p2.getY(), y3 = p3.getY();
+		double z1 = p1.getZ(), z2 = p2.getZ(), z3 = p3.getZ();
+
+		double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
+				* (z2 - z1))
+				/ ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
+						* (z2 - z1));
+
+		double x4 = lambda * (x2 - x1) + x1, y4 = lambda * (y2 - y1) + y1, z4 = lambda
+				* (z2 - z1) + z1;
+
+		return new Point(x4, y4, z4);
 	}
 }

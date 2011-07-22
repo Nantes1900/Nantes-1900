@@ -1,11 +1,12 @@
 package utils;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.logging.Logger;
 
-import modeles.basis.Mesh;
-import modeles.basis.Triangle;
+import models.Mesh;
+import models.basis.Triangle;
 
 /**
  * @author Daniel Lefevre
@@ -120,30 +121,45 @@ public class Algos {
 	 * @param altitudeErrorFactor
 	 *            the error on the altitude
 	 * @return the mesh containing the floor extracted
+	 * @throws NoFloorException
+	 *             if there is no floor
 	 */
 	public static Mesh floorExtract(Mesh meshOriented,
-			double altitudeErrorFactor) {
+			double altitudeErrorFactor) throws NoFloorException {
 		Mesh floors = new Mesh();
 
-		Triangle lowestTriangle = meshOriented.zMinFace();
-		double lowestZ = lowestTriangle.zMin();
+		try {
+			Triangle lowestTriangle = meshOriented.zMinFace();
+			double lowestZ = lowestTriangle.zMin();
 
-		Mesh stripe = meshOriented.zBetween(lowestZ, lowestZ
-				+ altitudeErrorFactor);
+			Mesh stripe = meshOriented.zBetween(lowestZ, lowestZ
+					+ altitudeErrorFactor);
 
-		Mesh temp = new Mesh();
+			Mesh temp = new Mesh();
 
-		while (!stripe.isEmpty()) {
+			while (!stripe.isEmpty()) {
 
-			lowestTriangle = stripe.getOne();
-			temp.clear();
-			lowestTriangle.returnNeighbours(temp, meshOriented);
-			floors.addAll(temp);
-			meshOriented.remove(temp);
-			stripe.remove(temp);
+				lowestTriangle = stripe.getOne();
+				temp.clear();
+				lowestTriangle.returnNeighbours(temp, meshOriented);
+				floors.addAll(temp);
+				meshOriented.remove(temp);
+				stripe.remove(temp);
 
+			}
+
+			return floors;
+		} catch (InvalidParameterException e) {
+			throw new NoFloorException();
 		}
+	}
 
-		return floors;
+	/**
+	 * Implement an exception when the floor is empty.
+	 * 
+	 * @author Daniel Lefevre
+	 */
+	public static class NoFloorException extends Exception {
+		private static final long serialVersionUID = 1L;
 	}
 }

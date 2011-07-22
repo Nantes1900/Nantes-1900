@@ -1,4 +1,4 @@
-package modeles.extended;
+package models.extended;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,24 +8,19 @@ import java.util.logging.Logger;
 import javax.activity.InvalidActivityException;
 import javax.vecmath.Vector3d;
 
-import mains.temporary.SeparationTreatmentWallsRoofs;
-import modeles.basis.Mesh;
-import modeles.basis.Polyline;
-
-
+import models.Mesh;
+import models.Polyline;
 import utils.Algos;
 import utils.MatrixMethod;
-import utils.ParserSTL;
 import utils.MatrixMethod.SingularMatrixException;
+import utils.ParserSTL;
 import utils.ParserSTL.BadFormedFileException;
+import coefficients.SeparationTreatmentWallsRoofs;
 
 public class Edifice {
 
 	private ArrayList<Polyline> walls = new ArrayList<Polyline>();
 	private ArrayList<Polyline> roofs = new ArrayList<Polyline>();
-
-	private int counterWall = 1;
-	private int counterRoof = 1;
 
 	private Logger log = Logger.getLogger("logger");
 
@@ -56,9 +51,9 @@ public class Edifice {
 		return this.roofs;
 	}
 
-	public void buildFromMesh(String fileName, Vector3d normalFloor) {
+	public void buildFromMesh(Mesh building, Vector3d normalFloor) {
 
-		Mesh building = this.parseBuilding(fileName);
+		building.writeSTL("Files/building.stl");
 
 		Mesh wholeWall = new Mesh();
 		Mesh wholeRoof = new Mesh();
@@ -73,34 +68,21 @@ public class Edifice {
 		this.treatNoiseWalls(wallList, wholeWall, noise);
 		this.treatNoiseRoofs(roofList, wholeRoof, noise);
 
-		this.treatWalls(wallList);
-		this.treatRoofs(roofList);
+		int counterWall = 0;
+		for (Mesh m : wallList) {
+			m.writeSTL("Files/" + "computedWall" + counterWall + ".stl");
+			counterWall++;
+		}
+
+		int counterRoof = 0;
+		for (Mesh m : roofList) {
+			m.writeSTL("Files/" + "computedRoof" + counterRoof + ".stl");
+			counterRoof++;
+		}
 
 		this.determinateNeighbours(wallList, roofList);
 
-		this.findCommonEdges();
-	}
-
-	/**
-	 * Parse the building. Catch and treat the errors.
-	 * 
-	 * @param fileName
-	 *            the name of the file containing the building
-	 */
-	private Mesh parseBuilding(String fileName) {
-		try {
-
-			return new Mesh(ParserSTL.readSTL(fileName));
-
-		} catch (BadFormedFileException e) {
-			log.severe("Error in the file !");
-			System.exit(1);
-			return null;
-		} catch (IOException e) {
-			log.severe("Error : file does not exist or is unreadable !");
-			System.exit(1);
-			return null;
-		}
+		this.findCommonEdges(wallList, roofList);
 	}
 
 	/**
@@ -225,193 +207,178 @@ public class Edifice {
 		}
 	}
 
-	/**
-	 * For each wall, treat the surface and add it to the list. See behind.
-	 */
-	private void treatWalls(ArrayList<Mesh> wallList) {
-
-		this.counterWall = 0;
-
-		// For each wall
-		while (this.counterWall < wallList.size()) {
-
-			Polyline wallComputed = this.treatSurface(wallList
-					.get(this.counterWall));
-
-			walls.add(wallComputed);
-
-			this.counterWall++;
-		}
-	}
-
-	/**
-	 * For each roof, treat the surface and add it to the list. See behind.
-	 */
-	private void treatRoofs(ArrayList<Mesh> roofList) {
-
-		this.counterRoof = 0;
-
-		// For each roof
-		while (this.counterRoof < roofList.size()) {
-
-			Polyline roofComputed = this.treatSurface(roofList
-					.get(this.counterRoof));
-
-			this.roofs.add(roofComputed);
-
-			this.counterRoof++;
-		}
-	}
-
-	/**
-	 * Treat the surface : find the contour, project it on a plan, delete
-	 * noises, and find the singular points.
-	 * 
-	 * @param surface
-	 *            the surface to treat
-	 * @return the polyline containing the singular points.
-	 */
-	private Polyline treatSurface(Mesh surface) {
-
-		// Compute the contour of the surface
-		// Create other points, edges, on the new polyline to avoid the risk
-		// of modifying the meshes
-		// Compute the contour by calculating the longest bound
-		Polyline longestBound = new Polyline(surface.returnLongestBound(surface
-				.averageNormal()));
-
-		// Compute the change base matrix
-		Vector3d normalSurface = surface.averageNormal();
-		double[][] matrixSurface = null, matrixSurfaceInv = null;
-
-		try {
-			matrixSurface = MatrixMethod.createOrthoBase(normalSurface);
-			matrixSurfaceInv = MatrixMethod.getInversMatrix(matrixSurface);
-		} catch (SingularMatrixException e) {
-			System.err.println("Error in the matrix !");
-			System.exit(1);
-		}
-
-		// Change base to have the surface in the plan (x, y)
-		longestBound.changeBase(matrixSurface);
-
-		// Project it on z = average z
-		longestBound.zProjection(longestBound.zAverage());
-
-		// Compute the singular points
-		Polyline singularPoints = null;
-		try {
-			// Remove the too little edges, and the edges with bad orientations
-			singularPoints = longestBound.reductNoise(5);
-
-			// Find the points where the angle change is important.
-			singularPoints = singularPoints
-					.determinateSingularPoints(SeparationTreatmentWallsRoofs.errorSingularPoints);
-
-			// Compute in one edge a suite of edges which have the same
-			// orientation.
-			singularPoints = singularPoints.refine(5);
-
-		} catch (InvalidActivityException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		// Inverse change base.
-		singularPoints.changeBase(matrixSurfaceInv);
-
-		// Set the normal attribute of the surface for the next steps.
-		singularPoints.setNormal(surface.averageNormal());
-
-		return singularPoints;
-	}
+//	/**
+//	 * For each wall, treat the surface and add it to the list. See behind.
+//	 */
+//	private void treatWalls(ArrayList<Mesh> wallList) {
+//
+//		int counterWall = 0;
+//
+//		// For each wall
+//		while (counterWall < wallList.size()) {
+//
+//			Polyline wallComputed = this
+//					.treatSurface(wallList.get(counterWall));
+//
+//			walls.add(wallComputed);
+//
+//			counterWall++;
+//		}
+//	}
+//
+//	/**
+//	 * For each roof, treat the surface and add it to the list. See behind.
+//	 */
+//	private void treatRoofs(ArrayList<Mesh> roofList) {
+//
+//		int counterRoof = 0;
+//
+//		// For each roof
+//		while (counterRoof < roofList.size()) {
+//
+//			Polyline roofComputed = this
+//					.treatSurface(roofList.get(counterRoof));
+//
+//			this.roofs.add(roofComputed);
+//
+//			counterRoof++;
+//		}
+//	}
+//
+//	/**
+//	 * Treat the surface : find the contour, project it on a plan, delete
+//	 * noises, and find the singular points.
+//	 * 
+//	 * @param surface
+//	 *            the surface to treat
+//	 * @return the polyline containing the singular points.
+//	 */
+//	private Polyline treatSurface(Mesh surface) {
+//
+//		// Compute the contour of the surface
+//		// Create other points, edges, on the new polyline to avoid the risk
+//		// of modifying the meshes
+//		// Compute the contour by calculating the longest bound
+//		Polyline longestBound = new Polyline(surface.returnLongestBound(surface
+//				.averageNormal()));
+//
+//		// Compute the change base matrix
+//		Vector3d normalSurface = surface.averageNormal();
+//		double[][] matrixSurface = null, matrixSurfaceInv = null;
+//
+//		try {
+//			matrixSurface = MatrixMethod.createOrthoBase(normalSurface);
+//			matrixSurfaceInv = MatrixMethod.getInversMatrix(matrixSurface);
+//		} catch (SingularMatrixException e) {
+//			System.err.println("Error in the matrix !");
+//			System.exit(1);
+//		}
+//
+//		// Change base to have the surface in the plan (x, y)
+//		longestBound.changeBase(matrixSurface);
+//
+//		// Project it on z = average z
+//		longestBound.zProjection(longestBound.zAverage());
+//
+//		// Compute the singular points
+//		Polyline singularPoints = null;
+//		try {
+//			// Remove the too little edges, and the edges with bad orientations
+//			singularPoints = longestBound.reductNoise(5);
+//
+//			// Find the points where the angle change is important.
+//			singularPoints = singularPoints
+//					.determinateSingularPoints(SeparationTreatmentWallsRoofs.errorSingularPoints);
+//
+//			// Compute in one edge a suite of edges which have the same
+//			// orientation.
+//			singularPoints = singularPoints.refine(5);
+//
+//		} catch (InvalidActivityException e) {
+//			e.printStackTrace();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//
+//		// Inverse change base.
+//		singularPoints.changeBase(matrixSurfaceInv);
+//
+//		// Set the normal attribute of the surface for the next steps.
+//		singularPoints.setNormal(surface.averageNormal());
+//
+//		return singularPoints;
+//	}
 
 	private void determinateNeighbours(ArrayList<Mesh> wallList,
 			ArrayList<Mesh> roofList) {
 
-		for (int i = 0; i < this.roofs.size(); i++) {
-			Polyline p = this.roofs.get(i);
-
-			for (int k = 0; k < this.roofs.size(); k++) {
-				Polyline line = this.roofs.get(k);
-
-				if (roofList.get(i).isNeighbour(roofList.get(k))) {
-					p.addNeighbour(line);
-					line.addNeighbour(p);
+		for (Mesh m1 : roofList) {
+			for (Mesh m2 : roofList) {
+				if (m1.isNeighbour(m2)) {
+					m1.addNeighbour(m2);
+					m2.addNeighbour(m1);
 				}
 			}
 
-			for (int k = 0; k < this.walls.size(); k++) {
-				Polyline line = this.walls.get(k);
-
-				if (roofList.get(i).isNeighbour(wallList.get(k))) {
-					p.addNeighbour(line);
-					line.addNeighbour(p);
+			for (Mesh m2 : wallList) {
+				if (m1.isNeighbour(m2)) {
+					m1.addNeighbour(m2);
+					m2.addNeighbour(m1);
 				}
 			}
 		}
 
-		for (int i = 0; i < this.walls.size(); i++) {
-			Polyline p = this.walls.get(i);
-
-			for (int k = 0; k < this.roofs.size(); k++) {
-				Polyline line = this.roofs.get(k);
-
-				if (wallList.get(i).isNeighbour(roofList.get(k))) {
-					p.addNeighbour(line);
-					line.addNeighbour(p);
-				}
-			}
-
-			for (int k = 0; k < this.walls.size(); k++) {
-				Polyline line = this.walls.get(k);
-
-				if (wallList.get(i).isNeighbour(wallList.get(k))) {
-					p.addNeighbour(line);
-					line.addNeighbour(p);
+		for (Mesh m1 : wallList) {
+			for (Mesh m2 : wallList) {
+				if (m1.isNeighbour(m2)) {
+					m1.addNeighbour(m2);
+					m2.addNeighbour(m1);
 				}
 			}
 		}
 	}
 
-	private void findCommonEdges() {
+	private void findCommonEdges(ArrayList<Mesh> wallList,
+			ArrayList<Mesh> roofList) {
 
 		double radiusError = 5;
 
-		// FIXME !
-		for (Polyline p1 : this.roofs) {
-			for (Polyline p2 : p1.getNeighbours()) {
-				p1.findCommonEdge(p2, radiusError);
-			}
+		Polyline edges = new Polyline();
+
+		Mesh m1 = roofList.get(0);
+		for (Mesh m2 : m1.getNeighbours()) {
+			edges.add(m1.findCommonEdge(m2, radiusError));
 		}
+
+		edges.buildContour();
+
+		edges.writeCentroidMesh("testFindCommonEdges.stl");
 	}
 
 	public void writeSTLWalls(String directoryName) {
-		this.counterWall = 0;
+		int counterWall = 0;
 
 		for (Polyline p : this.walls) {
 
 			p.returnCentroidMesh().writeSTL(
-					directoryName + "computedWall" + this.counterWall + ".stl");
+					directoryName + "computedWall" + counterWall + ".stl");
 
-			this.counterWall++;
+			counterWall++;
 		}
 	}
 
 	public void writeSTLRoofs(String directoryName) {
-		this.counterRoof = 0;
+		int counterRoof = 0;
 
 		for (Polyline p : this.roofs) {
 
 			p.returnCentroidMesh().writeSTL(
-					directoryName + "computedRoof" + this.counterRoof + ".stl");
+					directoryName + "computedRoof" + counterRoof + ".stl");
 
-			this.counterRoof++;
+			counterRoof++;
 		}
 	}
 
-	// TODO : modify it !
 	public void writeSTL(String directoryName) {
 		this.writeSTLWalls(directoryName);
 		this.writeSTLRoofs(directoryName);

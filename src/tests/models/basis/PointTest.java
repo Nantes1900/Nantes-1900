@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import javax.vecmath.Vector3d;
 
-import modeles.basis.Point;
+import models.basis.Point;
 
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ import utils.MatrixMethod.SingularMatrixException;
  */
 public class PointTest {
 	/**
-	 * Test method for {@link modeles.basis.Point#hashCode()}.
+	 * Test method for {@link models.basis.Point#hashCode()}.
 	 */
 	@Test
 	public void testHashCode() {
@@ -27,7 +27,7 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Point#Point(modeles.basis.Point)}.
+	 * Test method for {@link models.basis.Point#Point(models.basis.Point)}.
 	 */
 	@Test
 	public void testPointPoint() {
@@ -35,7 +35,7 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Point#Point(double, double, double)}.
+	 * Test method for {@link models.basis.Point#Point(double, double, double)}.
 	 */
 	@Test
 	public void testPointDoubleDoubleDouble() {
@@ -43,7 +43,7 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Point#getX()}.
+	 * Test method for {@link models.basis.Point#getX()}.
 	 */
 	@Test
 	public void testGetX() {
@@ -51,7 +51,7 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Point#getY()}.
+	 * Test method for {@link models.basis.Point#getY()}.
 	 */
 	@Test
 	public void testGetY() {
@@ -59,7 +59,7 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Point#getZ()}.
+	 * Test method for {@link models.basis.Point#getZ()}.
 	 */
 	@Test
 	public void testGetZ() {
@@ -67,7 +67,7 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Point#setX(double)}.
+	 * Test method for {@link models.basis.Point#setX(double)}.
 	 */
 	@Test
 	public void testSetX() {
@@ -75,7 +75,7 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Point#setY(double)}.
+	 * Test method for {@link models.basis.Point#setY(double)}.
 	 */
 	@Test
 	public void testSetY() {
@@ -83,7 +83,7 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Point#setZ(double)}.
+	 * Test method for {@link models.basis.Point#setZ(double)}.
 	 */
 	@Test
 	public void testSetZ() {
@@ -91,7 +91,7 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Point#set(double[])}.
+	 * Test method for {@link models.basis.Point#set(double[])}.
 	 */
 	@Test
 	public void testSet() {
@@ -99,7 +99,7 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Point#toString()}.
+	 * Test method for {@link models.basis.Point#toString()}.
 	 */
 	@Test
 	public void testToString() {
@@ -107,7 +107,7 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Point#distance(modeles.basis.Point)}.
+	 * Test method for {@link models.basis.Point#distance(models.basis.Point)}.
 	 */
 	@Test
 	public void testDistance() {
@@ -123,7 +123,7 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Point#equals(java.lang.Object)}.
+	 * Test method for {@link models.basis.Point#equals(java.lang.Object)}.
 	 */
 	@Test
 	public void testEquals() {
@@ -139,7 +139,7 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Point#changeBase(double[][])}.
+	 * Test method for {@link models.basis.Point#changeBase(double[][])}.
 	 */
 	@Test
 	public void testChangeBase() {

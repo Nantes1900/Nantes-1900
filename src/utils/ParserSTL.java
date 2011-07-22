@@ -16,9 +16,9 @@ import java.util.StringTokenizer;
 
 import javax.vecmath.Vector3d;
 
-import modeles.basis.Edge;
-import modeles.basis.Point;
-import modeles.basis.Triangle;
+import models.basis.Edge;
+import models.basis.Point;
+import models.basis.Triangle;
 
 /**
  * Parse a STL file : detect if it is a ASCII or a binary file, and parse it.
@@ -32,11 +32,6 @@ public class ParserSTL {
 
 	private static Vector3d currentVector;
 	private static ArrayList<Point> currentPoints;
-
-	// /**
-	// * The logger to write the informations in.
-	// */
-	// private static Logger log = Logger.getLogger("logger");
 
 	/**
 	 * Read a binary STL file. Create a HashSet of triangle to put them in. If a
@@ -87,9 +82,6 @@ public class ParserSTL {
 				// is not added to the Mesh.
 			}
 		}
-
-		// log.info("File : " + fileName + " read !");
-		// log.info("Number of triangles : " + mesh.size());
 
 		return mesh;
 	}
@@ -230,6 +222,7 @@ public class ParserSTL {
 		} finally {
 			scanner.close();
 		}
+
 	}
 
 	/**
@@ -277,14 +270,9 @@ public class ParserSTL {
 			scanner.close();
 		}
 
-		// log.info("File : " + fileName + " read !");
-		// log.info("Number of triangles : " + mesh.size());
-
 		return new HashSet<Triangle>(mesh);
 	}
 
-	// To improve : no verification whatsoever, if the stl is badly formed,
-	// explosion !
 	/**
 	 * Read one line of the file. If a point is out of bounds, it removes it. If
 	 * a triangle is flat, it removes it. It doesn't create double points for

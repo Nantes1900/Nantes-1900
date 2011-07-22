@@ -9,8 +9,8 @@ import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
-import modeles.basis.Mesh;
-import modeles.basis.Triangle;
+import models.Mesh;
+import models.basis.Triangle;
 
 /**
  * Write a STL file containing the faces, list of faces or buildings. This
@@ -34,7 +34,7 @@ public class WriterSTL {
 	/**
 	 * The mode of writing. Use the two constants : ASCII_MODE or BINARY_MODE.
 	 */
-	private static int MODE = ASCII_MODE;
+	private static int MODE = BINARY_MODE;
 
 	// /**
 	// * The logger to write the informations in.

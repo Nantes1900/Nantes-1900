@@ -1,10 +1,15 @@
-package modeles.basis;
+package models.basis;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.vecmath.Vector3d;
+
+import utils.MatrixMethod;
+import utils.MatrixMethod.SingularMatrixException;
+
+import models.Polyline;
 
 /**
  * Implement an edge : two points, and the triangles it belongs to.
@@ -243,15 +248,12 @@ public class Edge {
 				throw new BadFormedPolylineException();
 			}
 
-			Edge e;
-			e = this.returnLeftNeighbour(p, point, normalFloor);
+			Edge e = this.returnLeftNeighbour(p, point, normalFloor);
 			e.setP2(e.returnOther(point));
 			e.setP1(point);
 
 			bound.add(e);
 			point = e.returnOther(point);
-
-			int counter = 1;
 
 			while (e != this) {
 				edgeList = p.getNeighbours(point);
@@ -266,20 +268,15 @@ public class Edge {
 					bound.add(e);
 					point = e.returnOther(point);
 				}
-				if (counter > p.edgeSize()) {
-					System.err.println("too much loops !");
-					break;
-				}
-				counter++;
 			}
 		} catch (BadFormedPolylineException e) {
-			e.printStackTrace();
+			return null;
 		}
 		return bound;
 	}
 
 	/**
-	 * On many edges, return the one which is at the left.
+	 * On many edges, return the one which is the most at the left.
 	 * 
 	 * @param weirdEdges
 	 *            the list of edges to choose in.
@@ -319,8 +316,9 @@ public class Edge {
 
 				vect.normalize();
 
-				if (cross.dot(vect) > max) {
-					max = cross.dot(vect);
+				if (v.angle(vect) * cross.dot(vect) / Math.abs(cross.dot(vect)) > max) {
+					max = v.angle(vect) * cross.dot(vect)
+							/ Math.abs(cross.dot(vect));
 					ref = edge;
 				}
 			}
@@ -384,7 +382,7 @@ public class Edge {
 	 * @param p
 	 *            the point shared by the two edges
 	 * @param b
-	 *            the poliyline in which must be the edge returned
+	 *            the polyline in which must be the edge returned
 	 * @return the edge belonging to b which contains p
 	 * @throws BadFormedPolylineException
 	 *             if a point in the polyline belongs nor to 2 edge neither to 4
@@ -395,9 +393,9 @@ public class Edge {
 
 		ArrayList<Edge> list = b.getNeighbours(p);
 
-		if (list.size() == 4) {
+		if (list.size() > 3) {
 			return this.returnTheLeftOne(b.getNeighbours(p), p, normalFloor);
-		} else if (list.size() < 2 || list.size() > 4 || list.size() == 3) {
+		} else if (list.size() < 2 || list.size() == 3) {
 			throw new BadFormedPolylineException();
 		} else {
 			list.remove(this);
@@ -417,7 +415,15 @@ public class Edge {
 		return new Edge(this.returnOther(p), e.returnOther(p));
 	}
 
-	// Error in degrees !
+	/**
+	 * Check if this is oriented as another edge, with an orientation error.
+	 * 
+	 * @param e
+	 *            the other edge
+	 * @param error
+	 *            the orientation error
+	 * @return true if it oriented correctly, false otherwise
+	 */
 	public boolean orientedAs(Edge e, double error) {
 		Vector3d vect1 = new Vector3d(e.getP2().getX() - e.getP1().getX(), e
 				.getP2().getY() - e.getP1().getY(), e.getP2().getZ()
@@ -478,11 +484,169 @@ public class Edge {
 	}
 
 	/**
+	 * Check if p is contained in the frame constitued by two segments parallels
+	 * to this edge with a coefficient. Caution : this method expects to be in
+	 * the plane (x,y). Thus a change base must be made before.
+	 * 
+	 * @param p
+	 *            the point to check
+	 * @param error
+	 *            the distance between this edge and its two parallel segments
+	 *            in which p must be
+	 * @return true if p is contained between those segments and false otherwise
+	 */
+	public boolean isInCylinder2D(Point p, double error) {
+		double a, b, c, cPlus, cMinus;
+
+		Point p1 = this.getP1();
+		Point p2 = this.getP2();
+
+		// We calculate the equation of the segment, and of the two lines
+		// parallels to it and which frame the line
+		if (p1.getX() == p2.getX()) {
+			a = 1;
+			b = 0;
+			c = -p1.getX();
+		} else {
+			a = -(p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+			b = 1;
+			c = -p1.getY() - a * p1.getX();
+		}
+
+		cPlus = -c + error;
+		cMinus = -c - error;
+
+		return (a * p.getX() + b * p.getY() < cPlus && a * p.getX() + b
+				* p.getY() > cMinus);
+	}
+
+	/**
+	 * Check if p is contained in the cylinder which axis is this edge, which
+	 * bounds are the two points of this edge, and which radius is error.
+	 * 
+	 * @param p
+	 *            the point to check
+	 * @param error
+	 *            the radius of the cylinder
+	 * @return true if p is contained in the cylinder and false otherwise
+	 */
+	public boolean isInCylinder3D(Point p, double error) {
+
+		Point p1 = this.getP1();
+		Point p2 = this.getP2();
+
+		double x1 = p1.getX(), x2 = p2.getX(), x3 = p.getX();
+		double y1 = p1.getY(), y2 = p2.getY(), y3 = p.getY();
+		double z1 = p1.getZ(), z2 = p2.getZ(), z3 = p.getZ();
+
+		double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
+				* (z2 - z1))
+				/ ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
+						* (z2 - z1));
+
+		double x4 = lambda * (x2 - x1) + x1, y4 = lambda * (y2 - y1) + y1, z4 = lambda
+				* (z2 - z1) + z1;
+
+		Point p4 = new Point(x4, y4, z4);
+
+		return (lambda > 0 && lambda < 1 && p.distance(p4) < error);
+	}
+
+	/**
+	 * Check if p is contained in the infinite cylinder which axis is this edge,
+	 * and which radius is error.
+	 * 
+	 * @param p
+	 *            the point to check
+	 * @param error
+	 *            the radius of the cylinder
+	 * @return true if p is contained in the infinite cylinder and false
+	 *         otherwise
+	 */
+	public boolean isInInfiniteCylinder3D(Point p, double error) {
+
+		Point p1 = this.getP1();
+		Point p2 = this.getP2();
+
+		double x1 = p1.getX(), x2 = p2.getX(), x3 = p.getX();
+		double y1 = p1.getY(), y2 = p2.getY(), y3 = p.getY();
+		double z1 = p1.getZ(), z2 = p2.getZ(), z3 = p.getZ();
+
+		double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
+				* (z2 - z1))
+				/ ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
+						* (z2 - z1));
+
+		double x4 = lambda * (x2 - x1) + x1, y4 = lambda * (y2 - y1) + y1, z4 = lambda
+				* (z2 - z1) + z1;
+
+		Point p4 = new Point(x4, y4, z4);
+
+		return (p.distance(p4) < error);
+	}
+
+	/**
 	 * Implement a class used when the polyline is bad formed.
 	 * 
 	 * @author Daniel Lefevre
 	 */
 	public static class BadFormedPolylineException extends Exception {
 		private static final long serialVersionUID = 1L;
+	}
+
+	public Point intersection(Edge e2) {
+		// If the 4 points are not on the same plan, throw an exception.
+		// Take the first 3 points, make a plan (equation), and look if the
+		// fourth belongs to it.
+		Vector3d vect1 = this.convertToVector3d();
+		Vector3d vect2 = e2.convertToVector3d();
+		Vector3d vect3 = new Edge(this.getP1(), e2.getP1()).convertToVector3d();
+
+		Vector3d cross1 = new Vector3d();
+		cross1.cross(vect1, vect3);
+
+		Vector3d cross2 = new Vector3d();
+		cross2.cross(cross1, vect1);
+
+		Vector3d cross3 = new Vector3d();
+		cross3.cross(cross1, vect2);
+
+		double a1 = cross1.x, b1 = cross1.y, c1 = cross1.z;
+		double d1 = -this.getP1().getX() * a1 - this.getP1().getY() * b1
+				- this.getP1().getZ() * c1;
+
+		double a2 = cross2.x, b2 = cross2.y, c2 = cross2.z;
+		double d2 = -this.getP1().getX() * a2 - this.getP1().getY() * b2
+				- this.getP1().getZ() * c2;
+
+		double a3 = cross3.x, b3 = cross3.y, c3 = cross3.z;
+		double d3 = -e2.getP1().getX() * a3 - e2.getP1().getY() * b3
+				- e2.getP1().getZ() * c3;
+
+		if (e2.getP2().getX() * a1 + this.getP1().getY() * b1
+				+ this.getP1().getZ() * c1 == d1) {
+
+			double[][] matrix = null, matrixInv = null;
+			try {
+				matrix = MatrixMethod.createOrthoBase(cross1, cross2, cross3);
+				matrixInv = MatrixMethod.getInversMatrix(matrix);
+			} catch (SingularMatrixException e) {
+				e.printStackTrace();
+			}
+
+			double[] ds = { -d1, -d2, -d3 };
+			double[] p = MatrixMethod.changeBase(ds, matrixInv);
+			return new Point(p[0], p[1], p[2]);
+
+		} else {
+			return null;
+		}
+
+	}
+
+	public Vector3d convertToVector3d() {
+		return new Vector3d(this.getP2().getX() - this.getP1().getX(), this
+				.getP2().getY() - this.getP1().getY(), this.getP2().getZ()
+				- this.getP1().getZ());
 	}
 }

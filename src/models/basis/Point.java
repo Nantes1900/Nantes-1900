@@ -1,4 +1,4 @@
-package modeles.basis;
+package models.basis;
 
 import utils.MatrixMethod;
 

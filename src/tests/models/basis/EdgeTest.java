@@ -1,15 +1,19 @@
 package tests.models.basis;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 
 import javax.vecmath.Vector3d;
 
-import modeles.basis.Edge;
-import modeles.basis.Point;
-import modeles.basis.Polyline;
-import modeles.basis.Triangle;
+import models.Polyline;
+import models.basis.Edge;
+import models.basis.Triangle;
+import models.basis.Edge.BadFormedPolylineException;
+import models.basis.Point;
 
 import org.junit.Test;
 
@@ -50,71 +54,39 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Edge#hashCode()}.
-	 */
-	@Test
-	public void testHashCode() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link modeles.basis.Edge#Edge(modeles.basis.Point, modeles.basis.Point)}.
-	 */
-	@Test
-	public void testEdge() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link modeles.basis.Edge#getTriangleList()}.
+	 * Test method for {@link models.basis.Edge#getTriangleList()} and
+	 * {@link models.basis.Edge#addTriangle(models.basis.Triangle)}. This test
+	 * is also the test of addTriangle.
 	 */
 	@Test
 	public void testGetTriangleList() {
-		fail("Not yet implemented"); // TODO
+		ArrayList<Triangle> list1 = e1.getTriangleList();
+		ArrayList<Triangle> list2 = e2.getTriangleList();
+		ArrayList<Triangle> list4 = e4.getTriangleList();
+
+		assertTrue(list1.contains(t1));
+		assertTrue(list1.contains(t2));
+
+		assertTrue(list2.contains(t1));
+		assertFalse(list2.contains(t2));
+
+		assertTrue(list4.contains(t2));
+		assertFalse(list4.contains(t1));
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Edge#returnOther(modeles.basis.Triangle)}.
+	 * Test method for
+	 * {@link models.basis.Edge#returnOther(models.basis.Triangle)}.
 	 */
 	@Test
 	public void testReturnOtherTriangle() {
 		assertTrue(e1.returnOther(t1) == t2);
 		assertTrue(e1.returnOther(t2) == t1);
 		assertTrue(e2.returnOther(t1) == null);
-		try {
-			e2.returnOther(t2);
-			fail("Should return an exception !");
-		} catch (InvalidParameterException e) {
-			// The method is supposed to return the Exception.
-		}
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Edge#getP1()}.
-	 */
-	@Test
-	public void testGetP1() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link modeles.basis.Edge#getP2()}.
-	 */
-	@Test
-	public void testGetP2() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link modeles.basis.Edge#getPoints()}.
-	 */
-	@Test
-	public void testGetPoints() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link modeles.basis.Edge#length()}.
+	 * Test method for {@link models.basis.Edge#length()}.
 	 */
 	@Test
 	public void testLength() {
@@ -122,7 +94,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Edge#contains(modeles.basis.Point)}.
+	 * Test method for {@link models.basis.Edge#contains(models.basis.Point)}.
 	 */
 	@Test
 	public void testContains() {
@@ -131,23 +103,16 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Edge#addTriangle(modeles.basis.Triangle)}.
-	 */
-	@Test
-	public void testAddTriangle() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link modeles.basis.Edge#getNumberTriangles()}.
+	 * Test method for {@link models.basis.Edge#getNumberTriangles()}.
 	 */
 	@Test
 	public void testGetNumberTriangles() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(e1.getNumberTriangles() == 2);
+		assertTrue(e5.getNumberTriangles() == 1);
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Edge#isNeighboor(modeles.basis.Edge)}.
+	 * Test method for {@link models.basis.Edge#isNeighboor(models.basis.Edge)}.
 	 */
 	@Test
 	public void testIsNeighboor() {
@@ -156,7 +121,7 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Edge#equals(java.lang.Object)}.
+	 * Test method for {@link models.basis.Edge#equals(java.lang.Object)}.
 	 */
 	@Test
 	public void testEqualsObject() {
@@ -168,16 +133,7 @@ public class EdgeTest {
 
 	/**
 	 * Test method for
-	 * {@link modeles.basis.Edge#returnNeighbours(modeles.basis.Polyline, modeles.basis.Polyline)}
-	 * .
-	 */
-	@Test
-	public void testReturnNeighbours() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link modeles.basis.Edge#getNumNeighbours(modeles.basis.Polyline)}.
+	 * {@link models.basis.Edge#getNumNeighbours(models.Polyline)}.
 	 */
 	@Test
 	public void testGetNumNeighbours() {
@@ -196,7 +152,8 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link modeles.basis.Edge#returnOther(modeles.basis.Point)}.
+	 * Test method for {@link models.basis.Edge#returnOther(models.basis.Point)}
+	 * .
 	 */
 	@Test
 	public void testReturnOtherPoint() {
@@ -205,24 +162,67 @@ public class EdgeTest {
 		assertTrue(e5.returnOther(p4) == p2);
 	}
 
-//	/**
-//	 * Test method for
-//	 * {@link modeles.Edge#returnNeighbour(modeles.Point, modeles.Polyline)}.
-//	 */
-//	@Test
-//	public void testReturnNeighbour() {
-//		assertTrue(e1.returnNeighbour(p1, line) == e4);
-//		assertTrue(e2.returnNeighbour(p2, line) == e1);
-//		assertTrue(e6.returnNeighbour(p3, line) == e2);
-//	}
+	/**
+	 * Test method for
+	 * {@link modeles.Edge#returnNeighbour(modeles.Point, modeles.Polyline)}.
+	 */
+	@Test
+	public void testReturnLeftNeighbour() {
+
+		Point p1 = new Point(0, 0, 0);
+		Point p2 = new Point(0, 1, 0);
+		Point p3 = new Point(-1, 2, 0);
+		Point p4 = new Point(2, 2, 0);
+		Point p5 = new Point(4, 2, 0);
+
+		Edge edge1 = new Edge(p1, p2);
+		Edge edge2 = new Edge(p1, p3);
+		Edge edge3 = new Edge(p1, p4);
+		Edge edge4 = new Edge(p1, p5);
+
+		Vector3d normalFloor = new Vector3d(0, 0, 1);
+
+		Polyline b = new Polyline();
+		b.add(edge1);
+		b.add(edge2);
+		b.add(edge3);
+		b.add(edge4);
+
+		try {
+			assertTrue(edge1.returnLeftNeighbour(b, p1, normalFloor) == edge3);
+		} catch (BadFormedPolylineException e) {
+			fail();
+		}
+	}
 
 	/**
-	 * Test method for {@link modeles.basis.Edge#compose(modeles.basis.Edge, modeles.basis.Point)}
-	 * .
+	 * Test method for {@link models.basis.Edge#compose(models.basis.Edge)} .
 	 */
 	@Test
 	public void testCompose() {
-		fail("Not yet implemented"); // TODO
+		Edge e = e1.compose(e2);
+		assertTrue(e.getP1() == p1);
+		assertTrue(e.getP2() == p3);
 	}
 
+	/**
+	 * Test method for
+	 * {@link models.basis.Point#intersection(models.basis.Edge)} .
+	 */
+	@Test
+	public void testIntersection() {
+		Point p1 = new Point(0, 0, 0);
+		Point p2 = new Point(0, 1.5722145, 0);
+		Point p3 = new Point(0.227378378, 0, 0);
+		Point p4 = new Point(0.337387378, 0.8678377, 0);
+
+		Edge e1 = new Edge(p1, p2);
+		Edge e2 = new Edge(p3, p4);
+
+		Point i = e1.intersection(e2);
+
+		assertTrue(i.getX() == 0.0);
+		assertTrue(i.getY() == -0.5609452304908549);
+		assertTrue(i.getZ() == 0.0);
+	}
 }

@@ -1,4 +1,4 @@
-package modeles.basis;
+package models.basis;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.vecmath.Vector3d;
+
+import models.Mesh;
+
 
 /**
  * Implement a triangle, composed of three points, three edges, and one vector

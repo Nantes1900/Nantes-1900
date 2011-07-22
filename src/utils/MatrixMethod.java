@@ -82,8 +82,8 @@ public class MatrixMethod {
 			throws SingularMatrixException {
 		double[][] matrix1 = new double[3][3];
 
-		if (MatrixMethod.determinant(matrix) < 0.95
-				|| MatrixMethod.determinant(matrix) > 1.05)
+		if (MatrixMethod.determinant(matrix) < 0.01
+				&& MatrixMethod.determinant(matrix) > -0.01)
 			throw new SingularMatrixException();
 
 		double a = matrix[0][0];
@@ -96,15 +96,15 @@ public class MatrixMethod {
 		double f = matrix[1][2];
 		double i = matrix[2][2];
 
-		matrix1[0][0] = e * i - f * h;
-		matrix1[0][1] = c * h - b * i;
-		matrix1[0][2] = b * f - c * e;
-		matrix1[1][0] = f * g - d * i;
-		matrix1[1][1] = a * i - c * g;
-		matrix1[1][2] = c * d - a * f;
-		matrix1[2][0] = d * h - e * g;
-		matrix1[2][1] = b * g - a * h;
-		matrix1[2][2] = a * e - b * d;
+		matrix1[0][0] = (e * i - f * h) / determinant(matrix);
+		matrix1[0][1] = (c * h - b * i) / determinant(matrix);
+		matrix1[0][2] = (b * f - c * e) / determinant(matrix);
+		matrix1[1][0] = (f * g - d * i) / determinant(matrix);
+		matrix1[1][1] = (a * i - c * g) / determinant(matrix);
+		matrix1[1][2] = (c * d - a * f) / determinant(matrix);
+		matrix1[2][0] = (d * h - e * g) / determinant(matrix);
+		matrix1[2][1] = (b * g - a * h) / determinant(matrix);
+		matrix1[2][2] = (a * e - b * d) / determinant(matrix);
 
 		return matrix1;
 	}
@@ -144,10 +144,6 @@ public class MatrixMethod {
 		matrix1[2][0] = d.x;
 		matrix1[2][1] = d.y;
 		matrix1[2][2] = d.z;
-
-		if (MatrixMethod.determinant(matrix1) < 0.95
-				|| MatrixMethod.determinant(matrix1) > 1.05)
-			throw new SingularMatrixException();
 
 		return matrix1;
 	}
