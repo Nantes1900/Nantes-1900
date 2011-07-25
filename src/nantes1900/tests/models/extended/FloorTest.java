@@ -73,7 +73,7 @@ public class FloorTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.extended.Floor#reduce(modeles.basis.Mesh)}.
+	 * Test method for {@link nantes1900.models.extended.Floor#decimate(modeles.basis.Mesh)}.
 	 */
 	@Test
 	public void testReduce() {

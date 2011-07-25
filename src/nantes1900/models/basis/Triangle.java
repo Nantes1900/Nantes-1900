@@ -9,7 +9,6 @@ import javax.vecmath.Vector3d;
 
 import nantes1900.models.Mesh;
 
-
 /**
  * Implement a triangle, composed of three points, three edges, and one vector
  * as a normal
@@ -514,6 +513,13 @@ public class Triangle {
 		return this.getNeighbours().size();
 	}
 
+	/**
+	 * Check if the triangle contains the edge e.
+	 * 
+	 * @param e
+	 *            the edge to check
+	 * @return true if the edge e is one of the edges of this, false otherwise.
+	 */
 	public boolean contains(Edge e) {
 		if (this.getEdges().contains(e))
 			return true;

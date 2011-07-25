@@ -7,10 +7,6 @@ import java.util.Arrays;
 import javax.vecmath.Vector3d;
 
 import nantes1900.models.Polyline;
-import nantes1900.utils.MatrixMethod;
-import nantes1900.utils.MatrixMethod.SingularMatrixException;
-
-
 
 /**
  * Implement an edge : two points, and the triangles it belongs to.
@@ -378,12 +374,14 @@ public class Edge {
 	/**
 	 * Returns the edge neighbour of this which contains p and which belongs to
 	 * b. If there is a point which belongs to 4 edges, the method will take the
-	 * left one.
+	 * left one, using vector considerations.
 	 * 
 	 * @param p
 	 *            the point shared by the two edges
 	 * @param b
 	 *            the polyline in which must be the edge returned
+	 * @param normalFloor
+	 *            the normal to the floor, to select the left edge
 	 * @return the edge belonging to b which contains p
 	 * @throws BadFormedPolylineException
 	 *             if a point in the polyline belongs nor to 2 edge neither to 4
@@ -399,6 +397,32 @@ public class Edge {
 		} else if (list.size() < 2 || list.size() == 3) {
 			throw new BadFormedPolylineException();
 		} else {
+			list.remove(this);
+			return list.get(0);
+		}
+	}
+
+	/**
+	 * Returns the edge neighbour of this which contains p and which belongs to
+	 * b. If there is a point which does not belong to 2 edges, throw an
+	 * exception.
+	 * 
+	 * @param p
+	 *            the point shared by the two edges
+	 * @param b
+	 *            the polyline in which must be the edge returned
+	 * @return the edge belonging to b which contains p
+	 * @throws BadFormedPolylineException
+	 *             if a point in the polyline does not belong to 2 edges
+	 */
+	public Edge returnNeighbour(Polyline b, Point p)
+			throws BadFormedPolylineException {
+
+		ArrayList<Edge> list = b.getNeighbours(p);
+
+		if (list.size() != 2)
+			throw new BadFormedPolylineException();
+		else {
 			list.remove(this);
 			return list.get(0);
 		}
@@ -593,61 +617,5 @@ public class Edge {
 	 */
 	public static class BadFormedPolylineException extends Exception {
 		private static final long serialVersionUID = 1L;
-	}
-
-	public Point intersection(Edge e2) {
-		// If the 4 points are not on the same plan, throw an exception.
-		// Take the first 3 points, make a plan (equation), and look if the
-		// fourth belongs to it.
-		Vector3d vect1 = this.convertToVector3d();
-		Vector3d vect2 = e2.convertToVector3d();
-		Vector3d vect3 = new Edge(this.getP1(), e2.getP1()).convertToVector3d();
-
-		Vector3d cross1 = new Vector3d();
-		cross1.cross(vect1, vect3);
-
-		Vector3d cross2 = new Vector3d();
-		cross2.cross(cross1, vect1);
-
-		Vector3d cross3 = new Vector3d();
-		cross3.cross(cross1, vect2);
-
-		double a1 = cross1.x, b1 = cross1.y, c1 = cross1.z;
-		double d1 = -this.getP1().getX() * a1 - this.getP1().getY() * b1
-				- this.getP1().getZ() * c1;
-
-		double a2 = cross2.x, b2 = cross2.y, c2 = cross2.z;
-		double d2 = -this.getP1().getX() * a2 - this.getP1().getY() * b2
-				- this.getP1().getZ() * c2;
-
-		double a3 = cross3.x, b3 = cross3.y, c3 = cross3.z;
-		double d3 = -e2.getP1().getX() * a3 - e2.getP1().getY() * b3
-				- e2.getP1().getZ() * c3;
-
-		if (e2.getP2().getX() * a1 + this.getP1().getY() * b1
-				+ this.getP1().getZ() * c1 == d1) {
-
-			double[][] matrix = null, matrixInv = null;
-			try {
-				matrix = MatrixMethod.createOrthoBase(cross1, cross2, cross3);
-				matrixInv = MatrixMethod.getInversMatrix(matrix);
-			} catch (SingularMatrixException e) {
-				e.printStackTrace();
-			}
-
-			double[] ds = { -d1, -d2, -d3 };
-			double[] p = MatrixMethod.changeBase(ds, matrixInv);
-			return new Point(p[0], p[1], p[2]);
-
-		} else {
-			return null;
-		}
-
-	}
-
-	public Vector3d convertToVector3d() {
-		return new Vector3d(this.getP2().getX() - this.getP1().getX(), this
-				.getP2().getY() - this.getP1().getY(), this.getP2().getZ()
-				- this.getP1().getZ());
 	}
 }

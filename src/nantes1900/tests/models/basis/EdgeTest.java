@@ -54,9 +54,10 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Edge#getTriangleList()} and
-	 * {@link nantes1900.models.basis.Edge#addTriangle(nantes1900.models.basis.Triangle)}. This test
-	 * is also the test of addTriangle.
+	 * Test method for {@link nantes1900.models.basis.Edge#getTriangleList()}
+	 * and
+	 * {@link nantes1900.models.basis.Edge#addTriangle(nantes1900.models.basis.Triangle)}
+	 * . This test is also the test of addTriangle.
 	 */
 	@Test
 	public void testGetTriangleList() {
@@ -76,7 +77,8 @@ public class EdgeTest {
 
 	/**
 	 * Test method for
-	 * {@link nantes1900.models.basis.Edge#returnOther(nantes1900.models.basis.Triangle)}.
+	 * {@link nantes1900.models.basis.Edge#returnOther(nantes1900.models.basis.Triangle)}
+	 * .
 	 */
 	@Test
 	public void testReturnOtherTriangle() {
@@ -94,7 +96,9 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Edge#contains(nantes1900.models.basis.Point)}.
+	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#contains(nantes1900.models.basis.Point)}
+	 * .
 	 */
 	@Test
 	public void testContains() {
@@ -103,7 +107,8 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Edge#getNumberTriangles()}.
+	 * Test method for {@link nantes1900.models.basis.Edge#getNumberTriangles()}
+	 * .
 	 */
 	@Test
 	public void testGetNumberTriangles() {
@@ -112,7 +117,9 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Edge#isNeighboor(nantes1900.models.basis.Edge)}.
+	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#isNeighboor(nantes1900.models.basis.Edge)}
+	 * .
 	 */
 	@Test
 	public void testIsNeighboor() {
@@ -121,7 +128,8 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Edge#equals(java.lang.Object)}.
+	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#equals(java.lang.Object)}.
 	 */
 	@Test
 	public void testEqualsObject() {
@@ -133,7 +141,8 @@ public class EdgeTest {
 
 	/**
 	 * Test method for
-	 * {@link nantes1900.models.basis.Edge#getNumNeighbours(nantes1900.models.Polyline)}.
+	 * {@link nantes1900.models.basis.Edge#getNumNeighbours(nantes1900.models.Polyline)}
+	 * .
 	 */
 	@Test
 	public void testGetNumNeighbours() {
@@ -152,7 +161,8 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Edge#returnOther(nantes1900.models.basis.Point)}
+	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#returnOther(nantes1900.models.basis.Point)}
 	 * .
 	 */
 	@Test
@@ -196,33 +206,14 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Edge#compose(nantes1900.models.basis.Edge)} .
+	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#compose(nantes1900.models.basis.Edge)}
+	 * .
 	 */
 	@Test
 	public void testCompose() {
 		Edge e = e1.compose(e2);
 		assertTrue(e.getP1() == p1);
 		assertTrue(e.getP2() == p3);
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.basis.Point#intersection(nantes1900.models.basis.Edge)} .
-	 */
-	@Test
-	public void testIntersection() {
-		Point p1 = new Point(0, 0, 0);
-		Point p2 = new Point(0, 1.5722145, 0);
-		Point p3 = new Point(0.227378378, 0, 0);
-		Point p4 = new Point(0.337387378, 0.8678377, 0);
-
-		Edge e1 = new Edge(p1, p2);
-		Edge e2 = new Edge(p3, p4);
-
-		Point i = e1.intersection(e2);
-
-		assertTrue(i.getX() == 0.0);
-		assertTrue(i.getY() == -0.5609452304908549);
-		assertTrue(i.getZ() == 0.0);
 	}
 }

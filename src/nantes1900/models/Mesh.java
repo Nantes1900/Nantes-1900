@@ -14,8 +14,6 @@ import nantes1900.utils.MatrixMethod;
 import nantes1900.utils.WriterSTL;
 import nantes1900.utils.MatrixMethod.SingularMatrixException;
 
-
-
 /**
  * Implement a mesh as a HashSet of Triangle.
  * 
@@ -45,15 +43,18 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * Add a neighbours to the attribute neighbours. Check if it is not
-	 * contained.
+	 * Add a neighbour to the attribute neighbours. Check if it is not
+	 * contained. Add also this to the m neighbours, also checking if not
+	 * already contained.
 	 * 
-	 * @param p
-	 *            the polyline as neighbour to add
+	 * @param m
+	 *            the mesh as neighbour to add
 	 */
 	public void addNeighbour(Mesh m) {
 		if (!this.neighbours.contains(m))
 			this.neighbours.add(m);
+		if (!m.neighbours.contains(this))
+			m.neighbours.add(this);
 	}
 
 	/**
@@ -591,6 +592,14 @@ public class Mesh extends HashSet<Triangle> {
 		return ret;
 	}
 
+	/**
+	 * Check if two meshes share an edge.
+	 * 
+	 * @param mesh
+	 *            the mesh to compare with
+	 * @return tru if one edge at least is shared between this and mesh, and
+	 *         false otherwise.
+	 */
 	public boolean isNeighbour(Mesh mesh) {
 		if (mesh != this) {
 			for (Edge e : this.returnUnsortedBounds().getEdgeList()) {
@@ -601,6 +610,14 @@ public class Mesh extends HashSet<Triangle> {
 		return false;
 	}
 
+	/**
+	 * Check if an edge is contained in this.
+	 * 
+	 * @param e
+	 *            the edge to search
+	 * @return true if one triangle at least owns this edge, false if no
+	 *         triangle own it.
+	 */
 	public boolean contains(Edge e) {
 		for (Triangle t : this) {
 			if (t.contains(e))
@@ -609,164 +626,91 @@ public class Mesh extends HashSet<Triangle> {
 		return false;
 	}
 
-	public Edge findCommonEdge(Mesh m, double radiusError) {
+	public Polyline findEdgesRoof() {
 
-		// We define the axe of the intersection
-		Vector3d norm1 = this.averageNormal();
-		Vector3d norm2 = m.averageNormal();
+		ArrayList<Mesh> neighbours = this.getNeighbours();
+		Polyline edges = new Polyline();
 
-		// We define the axe of the intersection
-		Edge axis = this.getAxis(m, norm1, norm2, radiusError);
+		// We first have to sort the neighbours. TODO
 
-		// Caution : may return null
+		try {
+			int counterError;
+			for (Mesh m2 : neighbours) {
 
-		return axis;
-	}
+				counterError = 0;
+				ArrayList<Point> points = new ArrayList<Point>();
 
-	private Edge getAxis(Mesh m, Vector3d norm1, Vector3d norm2,
-			double radiusError) {
-		Mesh m1 = this;
-		Mesh m2 = m;
-
-		Point p1 = m1.getOne().getP1();
-		Point p2 = m2.getOne().getP1();
-
-		double a1 = norm1.x, b1 = norm1.y, c1 = norm1.z;
-		double a2 = norm2.x, b2 = norm2.y, c2 = norm2.z;
-		double d1 = a1 * p1.getX() + b1 * p1.getY() + c1 * p1.getZ();
-		double d2 = a2 * p2.getX() + b2 * p2.getY() + c2 * p2.getZ();
-
-		double x = 0;
-		double y = (c2 * d1 - c1 * d2) / (b1 * c2 - b2 * c1);
-		double z = (b1 * d2 - b2 * d1) / (b1 * c2 - b2 * c1);
-
-		Vector3d norm3 = new Vector3d();
-		norm3.cross(norm1, norm2);
-
-		Edge axis = new Edge(new Point(x, y, z), new Point(x + norm3.x, y
-				+ norm3.y, z + norm3.z));
-
-		// Get the points which are into the cylinder, and project them on
-		// the axe.
-		ArrayList<Point> cylinder1 = m1.getCylinderInfinite(axis, radiusError);
-		ArrayList<Point> cylinder2 = m2.getCylinderInfinite(axis, radiusError);
-
-		ArrayList<Point> cylinder = new ArrayList<Point>();
-		cylinder.addAll(cylinder1);
-		cylinder.addAll(cylinder2);
-
-		if (!cylinder.isEmpty()) {
-
-			// Select the max and min
-			Point extremityMax = this.getCylinderMaxPoint(cylinder, axis);
-			Point extremityMin = this.getCylinderMinPoint(cylinder, axis);
-
-			// Adjust the two surfaces to have the same edge with the same max
-			// and min
-			Point extremityMax1 = this.getCylinderMaxPoint(cylinder1, axis);
-			Point extremityMin1 = this.getCylinderMinPoint(cylinder1, axis);
-			Point extremityMax2 = this.getCylinderMaxPoint(cylinder2, axis);
-			Point extremityMin2 = this.getCylinderMinPoint(cylinder2, axis);
-
-			if (extremityMax == extremityMax1) {
-				extremityMax2.set(extremityMax1.getPointAsCoordinates());
-			} else {
-				extremityMax1.set(extremityMax2.getPointAsCoordinates());
+				for (Mesh m3 : neighbours) {
+					if (m2.getNeighbours().contains(m3)) {
+						counterError++;
+						points.add(this.intersection(m2, m3));
+					}
+				}
+				if (counterError == 2) {
+					edges.add(new Edge(points.get(0), points.get(1)));
+				} else {
+					System.err.println("Erreur!");
+				}
 			}
 
-			if (extremityMin == extremityMin1) {
-				extremityMin2.set(extremityMin1.getPointAsCoordinates());
-			} else {
-				extremityMin1.set(extremityMin2.getPointAsCoordinates());
-			}
+			if (edges.edgeSize() > 2) {
+				edges.setNormal(this.averageNormal());
 
-			return new Edge(extremityMin, extremityMax);
-		} else {
+				// Put the same references to the the points which have the same
+				// values...
+				// FIXME : the values are not always equal...
+				for (Edge e : edges.getEdgeList()) {
+					for (Point p : edges.getPointList()) {
+						if (e.getP1().equals(p)) {
+							e.setP1(p);
+						}
+						if (e.getP2().equals(p)) {
+							e.setP2(p);
+						}
+					}
+				}
+				ArrayList<Edge> listEdges = new ArrayList<Edge>(
+						edges.getEdgeList());
+				edges.clear();
+				edges.addAll(listEdges);
+				// edges.order();
+				return edges;
+			} else {
+				return null;
+			}
+		} catch (SingularMatrixException e1) {
+			System.err.println("Matrix error ! Program shutting down !");
+			System.exit(1);
 			return null;
 		}
 	}
 
-	private Point getCylinderMaxPoint(ArrayList<Point> cylinder, Edge axe) {
-		Point ref = null;
-		double max = Double.NEGATIVE_INFINITY;
-
-		for (Triangle t : this) {
-			for (Point p : t.getPoints()) {
-				if (Mesh.getAxisProjectionPoint(cylinder, axe, p).getX() > max) {
-					ref = Mesh.getAxisProjectionPoint(cylinder, axe, p);
-					max = ref.getX();
-				}
-			}
-		}
-
-		return ref;
-	}
-
-	private Point getCylinderMinPoint(ArrayList<Point> cylinder, Edge axe) {
-		Point ref = null;
-		double min = Double.POSITIVE_INFINITY;
-
-		for (Triangle t : this) {
-			for (Point p : t.getPoints()) {
-				if (Mesh.getAxisProjectionPoint(cylinder, axe, p).getX() < min) {
-					ref = Mesh.getAxisProjectionPoint(cylinder, axe, p);
-					min = ref.getX();
-				}
-			}
-		}
-
-		return ref;
+	public Polyline findEdgesWall() {
+		// FIXME
+		return null;
 	}
 
 	/**
-	 * Build a infinite cylinder, with the edge e as central axe, with error as
-	 * radius, and select only the points of this which are inside.
+	 * Compute the intersection of three planes in 3D. Create three planes with
+	 * the average normal of eazch mesh, and the centroid of each mesh, and then
+	 * solve a 3*3 system by inversing a matrix.
 	 * 
-	 * @param e
-	 *            the edge which will be the axe
-	 * @param error
-	 *            the radius
-	 * @return a list of points which are inside the cylinder
+	 * @param m2
+	 *            the second plane
+	 * @param m3
+	 *            the third plane
+	 * @return the point which is the intersection of the three planes
+	 * @throws SingularMatrixException
+	 *             //FIXME : treat it in the method !
 	 */
-	public ArrayList<Point> getCylinderInfinite(Edge e, double error) {
-		ArrayList<Point> ret = new ArrayList<Point>();
-
-		for (Triangle t : this) {
-			for (Point p : t.getPoints()) {
-				if (e.isInInfiniteCylinder3D(p, error)) {
-					ret.add(p);
-				}
-			}
-		}
-
-		return ret;
-	}
-
-	private static Point getAxisProjectionPoint(ArrayList<Point> cylinder,
-			Edge axe, Point p) {
-		Point p1 = axe.getP1(), p2 = axe.getP2(), p3 = p;
-
-		double x1 = p1.getX(), x2 = p2.getX(), x3 = p3.getX();
-		double y1 = p1.getY(), y2 = p2.getY(), y3 = p3.getY();
-		double z1 = p1.getZ(), z2 = p2.getZ(), z3 = p3.getZ();
-
-		double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
-				* (z2 - z1))
-				/ ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
-						* (z2 - z1));
-
-		double x4 = lambda * (x2 - x1) + x1, y4 = lambda * (y2 - y1) + y1, z4 = lambda
-				* (z2 - z1) + z1;
-
-		return new Point(x4, y4, z4);
-	}
-
 	public Point intersection(Mesh m2, Mesh m3) throws SingularMatrixException {
 
 		Vector3d vect1 = this.averageNormal();
 		Vector3d vect2 = m2.averageNormal();
 		Vector3d vect3 = m3.averageNormal();
-		// FIXME : verifications : if they are colinear... ?
+
+		// FIXME : verifications : if they are colinear... ? This problem is
+		// linked with the singular matrix problem !
 
 		double a1 = vect1.x, b1 = vect1.y, c1 = vect1.z;
 		double d1 = -this.xAverage() * a1 - this.yAverage() * b1
@@ -787,5 +731,10 @@ public class Mesh extends HashSet<Triangle> {
 		double[] ds = { -d1, -d2, -d3 };
 		double[] p = MatrixMethod.changeBase(ds, matrixInv);
 		return new Point(p[0], p[1], p[2]);
+	}
+
+	public boolean isOrientedAs(Mesh w2, double littleAngleNormalErrorFactor) {
+		return (this.averageNormal().angle(w2.averageNormal()) < littleAngleNormalErrorFactor
+				/ 180 * Math.PI);
 	}
 }

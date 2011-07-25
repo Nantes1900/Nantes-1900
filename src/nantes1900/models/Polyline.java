@@ -7,9 +7,9 @@ import java.util.List;
 import javax.vecmath.Vector3d;
 
 import nantes1900.models.basis.Edge;
+import nantes1900.models.basis.Edge.BadFormedPolylineException;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
-
 
 /**
  * Implement a polyline : a closed suite of points.
@@ -185,7 +185,7 @@ public class Polyline {
 	}
 
 	/**
-	 * Add all the edges of the list
+	 * Add all the edges of the list.
 	 * 
 	 * @param l
 	 *            the list
@@ -206,19 +206,29 @@ public class Polyline {
 	}
 
 	/**
+	 * Clear the edges and the points of the polyline.
+	 */
+	public void clear() {
+		this.edgeList.clear();
+		this.pointList.clear();
+	}
+
+	/**
 	 * Remove the edges of del contained in this. Caution : it doesn't remove
 	 * the points. This method uses the remove(Edge) method
 	 * 
-	 * @param del
+	 * @param p
 	 *            the list of edges to remove
 	 */
-	public void remove(Polyline del) {
-		for (Edge e : del.edgeList) {
-			this.edgeList.remove(e);
+	public void remove(Polyline p) {
+		ArrayList<Edge> edges = new ArrayList<Edge>(this.edgeList);
+		for (Edge e : p.edgeList) {
+			edges.remove(e);
 		}
+		this.clear();
+		this.addAll(edges);
 	}
 
-	// FIXME : it doesn't remove the points !
 	/**
 	 * Remove the occurences of e contained in this
 	 * 
@@ -226,7 +236,10 @@ public class Polyline {
 	 *            the edge to remove Caution : it doesn't remove the points
 	 */
 	public void remove(Edge e) {
-		this.edgeList.remove(e);
+		ArrayList<Edge> edges = new ArrayList<Edge>(this.edgeList);
+		edges.remove(e);
+		this.clear();
+		this.addAll(edges);
 	}
 
 	/**
@@ -703,178 +716,6 @@ public class Polyline {
 		}
 	}
 
-	// TODO : this method is maybe not useful.
-	// With reductNoise and refine, we maybe have enough things...
-	/**
-	 * Returns a polyline containing the importants points of this. Caution : we
-	 * consider that we are in the plane (x,y)
-	 * 
-	 * @param error
-	 *            the error of frame
-	 * @return a polyline containing the importants points of this
-	 * @throws Exception
-	 */
-	public Polyline determinateSingularPoints(double error) throws Exception {
-
-		Polyline singularPoints = new Polyline();
-
-		// We take the first edge, and we follow the line until we find a
-		// segment with an angle change.
-		int numb = 0;
-		Edge first = this.getEdgeList().get(numb);
-
-		numb = this.followTheFramedLine(error, numb);
-
-		// We add it to the list of singular points
-		singularPoints.add(first);
-
-		// Then we record all the points where there is an angle change.
-		do {
-			// When we find a point of angle change,
-			numb = followTheFramedLine(error, numb);
-			// We add it,
-			singularPoints.add(this.getEdgeList().get(numb));
-
-			// And we continue, until we've reached the first one.
-		} while (this.getEdgeList().get(numb) != first);
-
-		return singularPoints;
-	}
-
-	/**
-	 * Reduce the noise of the polyline representing a contour. It removes the
-	 * edges which are oriented too badly (with an orientation error) than their
-	 * two neighbours, and it removes the too little edges. The method replace
-	 * those edges by a new one which is the composition of the edge before and
-	 * the current edge.
-	 * 
-	 * @param error
-	 *            the orientation error to dertermine if the edge are bad
-	 *            oriented. In degrees.
-	 * @return the polyline without noise
-	 */
-	public Polyline reductNoise(double error) {
-		Polyline ret = new Polyline();
-
-		int counter = 1;
-		double averageLength = this.lengthAverage();
-
-		while (counter < this.edgeSize() - 2) {
-
-			Edge e = this.edgeList.get(counter);
-			Edge before = this.edgeList.get(counter - 1);
-			Edge next = this.edgeList.get(counter + 1);
-
-			// If this edge is not oriented as the former and the next
-			if (!e.orientedAs(before, error) && !e.orientedAs(next, error)) {
-				// Then it is a noise. We must remove it.
-				Point shared = null;
-				shared = e.sharedPoint(next);
-
-				// Compose an edge, and add it
-				ret.add(new Edge(e.returnOther(shared), next
-						.returnOther(shared)));
-				counter++;
-			}
-
-			// If the edge is little
-			else if (e.length() < averageLength) {
-				Point shared = null;
-				shared = e.sharedPoint(next);
-
-				// Compose an edge, and add it
-				ret.add(new Edge(e.returnOther(shared), next
-						.returnOther(shared)));
-				counter++;
-			} else {
-				ret.add(e);
-			}
-
-			counter++;
-		}
-
-		return ret;
-	}
-
-	/**
-	 * Return the next important point. Begins the search, and returns the next
-	 * point which is not contained in the stripe : it's a point where the bound
-	 * change its direction. Caution : this method expects to be in the plane
-	 * (x,y)
-	 * 
-	 * @param error
-	 *            the radius of the cylinder 2D where the points must be
-	 *            contained
-	 * @param numb
-	 *            the number of the current edge to begin the algorithm with
-	 * @return the number of the current edge where the algorithm stopped
-	 */
-	public int followTheFramedLine(double error, int numb) {
-
-		if (numb == this.edgeSize() - 1)
-			return 0;
-
-		if (numb == this.edgeSize() - 2)
-			return this.edgeSize();
-
-		Edge eMain = this.getEdgeList().get(numb);
-		Edge eNext = this.getEdgeList().get(++numb);
-
-		Point p1 = eMain.sharedPoint(eNext);
-		Point p2 = eNext.returnOther(p1);
-
-		while (eMain.isInCylinder2D(p2, error) && numb < this.edgeSize() - 1) {
-
-			// If we are the loop, it means that the point p3 is almost aligned
-			// with the other points.
-			eNext = this.getEdgeList().get(++numb);
-
-			// Then we continue to the next edge.
-			p1 = p2;
-			p2 = eNext.returnOther(p1);
-		}
-
-		// If we have arrived to the end of the polyline, we return 0 so that
-		// the upper method understand it is the end.
-		if (numb == this.edgeSize() - 1) {
-			return 0;
-		}
-
-		// When we're here, it means we found some Point which was not in the
-		// cylinder, then which means an angle change.
-		return numb;
-	}
-
-	/**
-	 * Refine the polyline by merging a list of edges which follow each other
-	 * and which are almost same-oriented.
-	 * 
-	 * @param angleError
-	 *            the error of orientation, in degrees.
-	 * @return a new polyline containing the refined polyline
-	 */
-	public Polyline refine(double angleError) {
-
-		Polyline refined = new Polyline();
-
-		int numb = 0;
-
-		while (numb < this.edgeSize() - 1) {
-			Edge e = this.edgeList.get(numb);
-
-			while (this.edgeList.get(numb).orientedAs(e, angleError)
-					&& numb < this.edgeSize() - 1) {
-				// We continue.
-				numb++;
-			}
-
-			// When it's stopped...
-			refined.add(new Edge(e.getP1(), this.edgeList.get(numb - 1).getP2()));
-		}
-
-		return refined;
-	}
-
 	/**
 	 * Build a cylinder, with the edge e as central axe, with error as radius,
 	 * and framed into the two points of the edge, and select only the points of
@@ -955,32 +796,35 @@ public class Polyline {
 		this.returnCentroidMesh().writeSTL(string);
 	}
 
-	public void buildContour() {
+	/**
+	 * Order the polyline. Each edge in the edge list will be surrounded by its
+	 * neighbours
+	 */
+	public void order() {
+		if (!this.isEmpty()) {
+			Polyline ret = new Polyline();
 
-//		ArrayList<Point> intersectionPoints = new ArrayList<Point>();
-//
-//		for (int i = 0; i < this.edgeSize(); i++) {
-//			Edge e1 = this.edgeList.get(i);
-//			for (int j = i + 1; j < this.edgeSize(); j++) {
-//				Edge e2 = this.edgeList.get(i);
-//				intersectionPoints.add(e1.intersection(e2));
-//			}
-//		}
-		
-		Polyline edges = new Polyline();
+			try {
 
-		for (Point p1 : this.pointList) {
-			double min = Double.POSITIVE_INFINITY;
-			Point ref = null;
-			for (Point p2 : this.pointList) {
-				if (p1.distance(p2) < min) {
-					min = p1.distance(p2);
-					ref = p2;
+				Edge first = this.getOne();
+				Point p = first.getP1();
+				Edge e = first.returnNeighbour(this, p);
+				p = e.returnOther(p);
+
+				while (e != first) {
+					ret.add(e);
+					e = e.returnNeighbour(this, p);
+					p = e.returnOther(p);
 				}
-			}
-			edges.add(ref);
-		}
+				ret.add(e);
 
-		// Maintenant enlever les doublons...
+				this.edgeList.clear();
+				this.pointList.clear();
+				this.addAll(ret.getEdgeList());
+
+			} catch (BadFormedPolylineException e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 }

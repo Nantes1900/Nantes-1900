@@ -8,133 +8,46 @@ import javax.vecmath.Vector3d;
 import nantes1900.coefficients.SeparationTreatmentWallsRoofs;
 import nantes1900.models.Mesh;
 import nantes1900.models.Polyline;
-import nantes1900.models.basis.Edge;
-import nantes1900.models.basis.Point;
 import nantes1900.utils.Algos;
-import nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 public class Building {
 
 	private ArrayList<Polyline> walls = new ArrayList<Polyline>();
 	private ArrayList<Polyline> roofs = new ArrayList<Polyline>();
 
+	/**
+	 * Constructor. Create the lists of walls and lists of roofs.
+	 */
 	public Building() {
 	}
 
+	/**
+	 * Build the polyline. With all the neighbours, build the polyline by
+	 * computing the common edges between them.
+	 * 
+	 * @param wallList
+	 *            the list of walls as meshes
+	 * @param roofList
+	 *            the list of roofs as meshes
+	 */
 	private void findCommonEdges(ArrayList<Mesh> wallList,
 			ArrayList<Mesh> roofList) {
 
 		int counter = 0;
-		for (Mesh m1 : roofList) {
-
-			ArrayList<Mesh> neighbours = new ArrayList<Mesh>();
-
-			Polyline edges = new Polyline();
-
-			for (Mesh m2 : roofList) {
-				if (m1.isNeighbour(m2)) {
-					neighbours.add(m2);
-				}
-			}
-			for (Mesh m2 : wallList) {
-				if (m1.isNeighbour(m2)) {
-					neighbours.add(m2);
-				}
-			}
-
-			int counterError;
-			for (Mesh m2 : neighbours) {
-
-				counterError = 0;
-				ArrayList<Point> points = new ArrayList<Point>();
-
-				for (Mesh m3 : neighbours) {
-
-					if (m2.isNeighbour(m3)) {
-						counterError++;
-						if (counterError > 2) {
-							System.err.println("Erreur 1 !");
-						}
-						try {
-							points.add(m1.intersection(m2, m3));
-						} catch (SingularMatrixException e1) {
-							System.err.println("Erreur 2 !");
-						}
-					}
-				}
-				if (counterError == 2) {
-					Edge e = new Edge(points.get(0), points.get(1));
-					edges.add(e);
-				} else {
-					System.err.println("Erreur 3 !");
-				}
-			}
-
-			if (edges.edgeSize() > 2) {
-
-				edges.setNormal(m1.averageNormal());
-
-				edges.writeCentroidMesh("Files/testFindCommonEdgesRoofs"
-						+ counter + ".stl");
-			}
+		for (Mesh m : roofList) {
+			Polyline p = m.findEdgesRoof();
+			if (p != null && !p.isEmpty())
+				p.writeCentroidMesh("Files/roofComputed" + counter + ".stl");
 			counter++;
 		}
 
-		counter = 0;
-		for (Mesh m1 : wallList) {
-
-			ArrayList<Mesh> neighbours = new ArrayList<Mesh>();
-
-			Polyline edges = new Polyline();
-
-			for (Mesh m2 : roofList) {
-				if (m1.isNeighbour(m2)) {
-					neighbours.add(m2);
-				}
-			}
-			for (Mesh m2 : wallList) {
-				if (m1.isNeighbour(m2)) {
-					neighbours.add(m2);
-				}
-			}
-
-			int counterError;
-			for (Mesh m2 : neighbours) {
-
-				counterError = 0;
-				ArrayList<Point> points = new ArrayList<Point>();
-
-				for (Mesh m3 : neighbours) {
-
-					if (m2.isNeighbour(m3)) {
-						counterError++;
-						if (counterError > 2) {
-							System.err.println("Erreur 1 !");
-						}
-						try {
-							points.add(m1.intersection(m2, m3));
-						} catch (SingularMatrixException e1) {
-							System.err.println("Erreur 2 !");
-						}
-					}
-				}
-				if (counterError == 2) {
-					Edge e = new Edge(points.get(0), points.get(1));
-					edges.add(e);
-				} else {
-					System.err.println("Erreur 3 !");
-				}
-			}
-
-			if (edges.edgeSize() > 2) {
-
-				edges.setNormal(m1.averageNormal());
-
-				edges.writeCentroidMesh("Files/testFindCommonEdgesWalls"
-						+ counter + ".stl");
-			}
-			counter++;
-		}
+		// counter = 0;
+		// for (Mesh m : wallList) {
+		// Polyline p = m.findEdgesWall();
+		// if (p != null)
+		// p.writeCentroidMesh("Files/wallComputed" + counter + ".stl");
+		// counter++;
+		// }
 	}
 
 	/**
@@ -232,6 +145,23 @@ public class Building {
 		Algos.blockTreatOrientedNoise(roofList, noise,
 				SeparationTreatmentWallsRoofs.largeAngleNormalErrorFactor);
 
+		for (int i = 0; i < wallList.size(); i++) {
+			Mesh w1 = wallList.get(i);
+
+			for (int j = i + 1; j < wallList.size(); j++) {
+				Mesh w2 = wallList.get(j);
+
+				if (w1.isNeighbour(w2)
+						&& w1.isOrientedAs(
+								w2,
+								SeparationTreatmentWallsRoofs.angleNormalErrorFactor)) {
+					w1.addAll(w2);
+					wallList.remove(w2);
+				}
+
+			}
+		}
+
 		// Sum all the walls to build the wholeWall.
 		for (Mesh w : wallList) {
 			wholeWall.addAll(w);
@@ -243,22 +173,54 @@ public class Building {
 		}
 	}
 
+	/**
+	 * Add a roof to the attribute list of roofs.
+	 * 
+	 * @param roof
+	 *            the roof to add
+	 */
 	public void addRoof(Polyline roof) {
 		this.roofs.add(roof);
 	}
 
+	/**
+	 * Add a list of roofs to the attribute list of roofs.
+	 * 
+	 * @param roofs
+	 *            the list of roofs to add
+	 */
 	public void addRoofs(List<Polyline> roofs) {
 		this.roofs.addAll(roofs);
 	}
 
+	/**
+	 * Add a wall to the attribute list of walls.
+	 * 
+	 * @param wall
+	 *            the wall to add
+	 */
 	public void addWall(Polyline wall) {
 		this.walls.add(wall);
 	}
 
+	/**
+	 * Add a list of walls to the attribute list of walls.
+	 * 
+	 * @param wall
+	 *            the wall to add
+	 */
 	public void addWalls(List<Polyline> walls) {
 		this.walls.addAll(walls);
 	}
 
+	/**
+	 * Build the building from a mesh, by computingthe algorithms.
+	 * 
+	 * @param building
+	 *            the mesh to compute
+	 * @param normalFloor
+	 *            the normal to the floor
+	 */
 	public void buildFromMesh(Mesh building, Vector3d normalFloor) {
 
 		Mesh wholeWall = new Mesh();
@@ -286,22 +248,80 @@ public class Building {
 			counterRoof++;
 		}
 
+		this.determinateNeighbours(wallList, roofList);
+
 		this.findCommonEdges(wallList, roofList);
 	}
 
+	/**
+	 * Determinate the neighbours of each meshes. Two mehes are neighbours if
+	 * they share an edge.
+	 * 
+	 * @param wallList
+	 *            the list of walls as meshes
+	 * @param roofList
+	 *            the list of roofs as meshes
+	 */
+	private void determinateNeighbours(ArrayList<Mesh> wallList,
+			ArrayList<Mesh> roofList) {
+
+		for (Mesh w1 : wallList) {
+			for (Mesh w2 : wallList) {
+				if (w1.isNeighbour(w2)) {
+					w1.addNeighbour(w2);
+				}
+			}
+			for (Mesh r2 : roofList) {
+				if (w1.isNeighbour(r2)) {
+					w1.addNeighbour(r2);
+				}
+			}
+		}
+
+		for (Mesh r1 : roofList) {
+			for (Mesh r2 : roofList) {
+				if (r1.isNeighbour(r2)) {
+					r1.addNeighbour(r2);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Getter.
+	 * 
+	 * @return the list of roofs
+	 */
 	public List<Polyline> getRoofs() {
 		return this.roofs;
 	}
 
+	/**
+	 * Getter.
+	 * 
+	 * @return the list of walls
+	 */
 	public List<Polyline> getWalls() {
 		return this.walls;
 	}
 
+	/**
+	 * Write the building in STL files. Use for debugging.
+	 * 
+	 * @param directoryName
+	 *            the directory name to write in
+	 */
 	public void writeSTL(String directoryName) {
 		this.writeSTLWalls(directoryName);
 		this.writeSTLRoofs(directoryName);
 	}
 
+	/**
+	 * Write the roofs in STL files. Use for debugging.
+	 * 
+	 * @param directoryName
+	 *            the directory name to write in
+	 */
 	public void writeSTLRoofs(String directoryName) {
 		int counterRoof = 0;
 
@@ -314,6 +334,12 @@ public class Building {
 		}
 	}
 
+	/**
+	 * Write the walls in STL files. Use for debugging.
+	 * 
+	 * @param directoryName
+	 *            the directory name to write in
+	 */
 	public void writeSTLWalls(String directoryName) {
 		int counterWall = 0;
 

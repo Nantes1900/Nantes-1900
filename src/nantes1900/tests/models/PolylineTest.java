@@ -160,7 +160,8 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#xBetween(double, double)}.
+	 * Test method for
+	 * {@link nantes1900.models.Polyline#xBetween(double, double)}.
 	 */
 	@Test
 	public void testXBetween() {
@@ -179,7 +180,8 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#yBetween(double, double)}.
+	 * Test method for
+	 * {@link nantes1900.models.Polyline#yBetween(double, double)}.
 	 */
 	@Test
 	public void testYBetween() {
@@ -198,7 +200,8 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#zBetween(double, double)}.
+	 * Test method for
+	 * {@link nantes1900.models.Polyline#zBetween(double, double)}.
 	 */
 	@Test
 	public void testZBetween() {
@@ -233,7 +236,8 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#remove(nantes1900.models.Polyline)}.
+	 * Test method for
+	 * {@link nantes1900.models.Polyline#remove(nantes1900.models.Polyline)}.
 	 */
 	@Test
 	public void testRemovePolyline() {
@@ -304,7 +308,8 @@ public class PolylineTest {
 	// }
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#Polyline(java.util.List)}.
+	 * Test method for
+	 * {@link nantes1900.models.Polyline#Polyline(java.util.List)}.
 	 */
 	@Test
 	public void testPolylineListOfEdge() {
@@ -344,7 +349,8 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#add(nantes1900.models.basis.Edge)}.
+	 * Test method for
+	 * {@link nantes1900.models.Polyline#add(nantes1900.models.basis.Edge)}.
 	 */
 	@Test
 	public void testAddEdge() {
@@ -352,7 +358,8 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#add(nantes1900.models.basis.Point)}.
+	 * Test method for
+	 * {@link nantes1900.models.Polyline#add(nantes1900.models.basis.Point)}.
 	 */
 	@Test
 	public void testAddPoint() {
@@ -360,7 +367,8 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#addAll(java.util.List)}.
+	 * Test method for {@link nantes1900.models.Polyline#addAll(java.util.List)}
+	 * .
 	 */
 	@Test
 	public void testAddAll() {
@@ -376,7 +384,8 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#remove(nantes1900.models.basis.Edge)}.
+	 * Test method for
+	 * {@link nantes1900.models.Polyline#remove(nantes1900.models.basis.Edge)}.
 	 */
 	@Test
 	public void testRemoveEdge() {
@@ -384,7 +393,9 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#contains(nantes1900.models.basis.Point)}.
+	 * Test method for
+	 * {@link nantes1900.models.Polyline#contains(nantes1900.models.basis.Point)}
+	 * .
 	 */
 	@Test
 	public void testContainsPoint() {
@@ -392,7 +403,9 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#contains(nantes1900.models.basis.Edge)} .
+	 * Test method for
+	 * {@link nantes1900.models.Polyline#contains(nantes1900.models.basis.Edge)}
+	 * .
 	 */
 	@Test
 	public void testContainsEdge() {
@@ -416,7 +429,8 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#changeBase(double[][])}.
+	 * Test method for {@link nantes1900.models.Polyline#changeBase(double[][])}
+	 * .
 	 */
 	@Test
 	public void testChangeBase() {
@@ -425,7 +439,8 @@ public class PolylineTest {
 
 	/**
 	 * Test method for
-	 * {@link nantes1900.models.Polyline#getNumNeighbours(nantes1900.models.basis.Point)}.
+	 * {@link nantes1900.models.Polyline#getNumNeighbours(nantes1900.models.basis.Point)}
+	 * .
 	 */
 	@Test
 	public void testGetNumNeighbours() {
@@ -433,7 +448,8 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#getNeighbours(nantes1900.models.basis.Point)}
+	 * Test method for
+	 * {@link nantes1900.models.Polyline#getNeighbours(nantes1900.models.basis.Point)}
 	 * .
 	 */
 	@Test
@@ -450,40 +466,11 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#determinateSingularPoints(double)}
-	 * .
+	 * Test method for
+	 * {@link nantes1900.models.Polyline#determinateSingularPoints(double)} .
 	 */
 	@Test
 	public void testDeterminateSingularPoints() {
 		fail("Not yet implemented"); // TODO
-	}
-
-	@Test
-	public void testBuildContour() {
-		Point p1 = new Point(-0.05, 0, 0);
-		Point p2 = new Point(0.1, 0, 0);
-		Point p3 = new Point(0.9, 0, 0);
-		Point p4 = new Point(1.01, 0, 0);
-		Point p5 = new Point(0, 0.95, 0);
-		Point p6 = new Point(0, 1.01, 0);
-		Point p7 = new Point(1.1, 0.98, 0);
-		Point p8 = new Point(1.01, 1.1, 0);
-
-		Edge e1 = new Edge(p1, p8);
-		Edge e2 = new Edge(p2, p3);
-		Edge e4 = new Edge(p4, p5);
-		Edge e3 = new Edge(p6, p7);
-
-		Polyline p = new Polyline();
-		p.add(e1);
-		p.add(e2);
-		p.add(e3);
-		p.add(e4);
-
-		p.buildContour();
-
-		for (Point point : p.getPointList()) {
-			System.out.println(point);
-		}
 	}
 }
