@@ -661,10 +661,10 @@ public class Mesh extends HashSet<Triangle> {
 				// FIXME : the values are not always equal...
 				for (Edge e : edges.getEdgeList()) {
 					for (Point p : edges.getPointList()) {
-						if (e.getP1().equals(p)) {
+						if (e.getP1().epsilonEquals(p, 0.0001)) {
 							e.setP1(p);
 						}
-						if (e.getP2().equals(p)) {
+						if (e.getP2().epsilonEquals(p, 0.0001)) {
 							e.setP2(p);
 						}
 					}
@@ -673,7 +673,7 @@ public class Mesh extends HashSet<Triangle> {
 						edges.getEdgeList());
 				edges.clear();
 				edges.addAll(listEdges);
-				// edges.order();
+				edges.order();
 				return edges;
 			} else {
 				return null;
@@ -712,7 +712,31 @@ public class Mesh extends HashSet<Triangle> {
 					System.err.println("Erreur!");
 				}
 			}
-			return edges;
+			if (edges.edgeSize() > 2) {
+				edges.setNormal(this.averageNormal());
+
+				// Put the same references to the the points which have the same
+				// values...
+				// FIXME : the values are not always equal...
+				for (Edge e : edges.getEdgeList()) {
+					for (Point p : edges.getPointList()) {
+						if (e.getP1().epsilonEquals(p, 0.0001)) {
+							e.setP1(p);
+						}
+						if (e.getP2().epsilonEquals(p, 0.0001)) {
+							e.setP2(p);
+						}
+					}
+				}
+				ArrayList<Edge> listEdges = new ArrayList<Edge>(
+						edges.getEdgeList());
+				edges.clear();
+				edges.addAll(listEdges);
+				edges.order();
+				return edges;
+			} else {
+				return null;
+			}
 		} catch (SingularMatrixException e1) {
 			System.err.println("Matrix error ! Program shutting down !");
 			System.exit(1);

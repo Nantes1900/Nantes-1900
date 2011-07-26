@@ -198,4 +198,21 @@ public class Point {
 		double[] coords = { this.x, this.y, this.z };
 		this.set(MatrixMethod.changeBase(coords, matrix));
 	}
+
+	/**
+	 * Check if a point is almost equal to another. It check if every
+	 * coordinates of this are between the coordinates of p - error et the
+	 * coordinates of p + error.
+	 * 
+	 * @param p
+	 *            the other point
+	 * @param error
+	 *            the error
+	 * @return true if the point is almost equal, false otherwise.
+	 */
+	public boolean epsilonEquals(Point p, double error) {
+		return ((this.x < p.x + error && this.x > p.x - error)
+				&& (this.y < p.y + error && this.y > p.y - error) && (this.z < p.z
+				+ error && this.z > p.z - error));
+	}
 }

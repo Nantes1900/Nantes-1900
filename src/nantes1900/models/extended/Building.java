@@ -278,7 +278,9 @@ public class Building {
 					w1.addNeighbour(r2);
 				}
 			}
-			w1.addNeighbour(floors);
+			if (w1.isNeighbour(floors)) {
+				w1.addNeighbour(floors);
+			}
 		}
 
 		for (Mesh r1 : roofList) {
