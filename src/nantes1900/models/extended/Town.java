@@ -406,6 +406,8 @@ public class Town {
 				ArrayList<Mesh> floors = this.noiseTreatment(wholeFloor, noise);
 				log.finest("Noise treatment : " + (System.nanoTime() - time));
 
+				wholeFloor.writeSTL("floorWhole.stl");
+
 				time = System.nanoTime();
 
 				// FIXME

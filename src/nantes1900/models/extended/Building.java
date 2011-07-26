@@ -23,7 +23,8 @@ public class Building {
 
 	/**
 	 * Build the polyline. With all the neighbours, build the polyline by
-	 * computing the common edges between them.
+	 * computing the common edges between them, and put them into the list of
+	 * polylines walls and roofs.
 	 * 
 	 * @param wallList
 	 *            the list of walls as meshes
@@ -33,24 +34,18 @@ public class Building {
 	private void findCommonEdges(ArrayList<Mesh> wallList,
 			ArrayList<Mesh> roofList) {
 
-		// int counter = 0;
 		for (Mesh m : roofList) {
 			Polyline p = m.findEdgesRoof();
 			if (p != null && !p.isEmpty()) {
 				roofs.add(p);
-				// p.writeCentroidMesh("Files/roofComputed" + counter + ".stl");
 			}
-			// counter++;
 		}
 
-		// counter = 0;
 		for (Mesh m : wallList) {
 			Polyline p = m.findEdgesWall();
 			if (p != null && !p.isEmpty()) {
 				walls.add(p);
-				// p.writeCentroidMesh("Files/wallComputed" + counter + ".stl");
 			}
-			// counter++;
 		}
 	}
 
