@@ -11,8 +11,8 @@ import nantes1900.models.basis.Edge;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
 import nantes1900.utils.MatrixMethod;
-import nantes1900.utils.WriterSTL;
 import nantes1900.utils.MatrixMethod.SingularMatrixException;
+import nantes1900.utils.WriterSTL;
 
 /**
  * Implement a mesh as a HashSet of Triangle.
@@ -686,8 +686,38 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	public Polyline findEdgesWall() {
-		// FIXME
-		return null;
+		ArrayList<Mesh> neighbours = this.getNeighbours();
+		Polyline edges = new Polyline();
+		// FIXME : this floor is not at the same altitude as the floor close to
+		// the building... Find another clue !
+
+		// We first have to sort the neighbours. TODO
+
+		try {
+			int counterError;
+			for (Mesh m2 : neighbours) {
+
+				counterError = 0;
+				ArrayList<Point> points = new ArrayList<Point>();
+
+				for (Mesh m3 : neighbours) {
+					if (m2.getNeighbours().contains(m3)) {
+						counterError++;
+						points.add(this.intersection(m2, m3));
+					}
+				}
+				if (counterError == 2) {
+					edges.add(new Edge(points.get(0), points.get(1)));
+				} else {
+					System.err.println("Erreur!");
+				}
+			}
+			return edges;
+		} catch (SingularMatrixException e1) {
+			System.err.println("Matrix error ! Program shutting down !");
+			System.exit(1);
+			return null;
+		}
 	}
 
 	/**

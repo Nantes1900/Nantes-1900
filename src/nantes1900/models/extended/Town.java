@@ -179,12 +179,6 @@ public class Town {
 		return buildingList;
 	}
 
-//	private ArrayList<Mesh> carveRealBuildings(ArrayList<Mesh> buildings) {
-//
-//		// FIXME
-//		return null;
-//	}
-
 	/**
 	 * Create a change base matrix with the normal to the floor. See the
 	 * MatrixMethod for more informations.
@@ -195,7 +189,6 @@ public class Town {
 	private void createChangeBaseMatrix(Vector3d normalFloor) {
 
 		try {
-
 			// Base change
 			this.matrix = MatrixMethod.createOrthoBase(normalFloor);
 			MatrixMethod.changeBase(normalFloor, matrix);
@@ -402,7 +395,7 @@ public class Town {
 
 				for (Mesh m : buildings) {
 					Building e = new Building();
-					e.buildFromMesh(m, normalFloor);
+					e.buildFromMesh(m, wholeFloor, normalFloor);
 					this.recollerCorrectementLesSolsAuxMurs(e, floors);
 					this.addResidential(e);
 				}
@@ -418,17 +411,8 @@ public class Town {
 
 			} catch (NoFloorException e1) {
 				// If there is no floor to extract
-
-				buildings = this.buildingsExtraction(mesh, noise);
-
-				// ArrayList<Mesh> formsList =
-				// this.carveRealBuildings(buildings);
-
-				for (Mesh m : buildings) {
-					Building e = new Building();
-					e.buildFromMesh(m, normalFloor);
-					this.addResidential(e);
-				}
+				System.err
+						.println("You need a floor to complete the bottom of the walls");
 			}
 
 			// FIXME : I don't know what to do with the formsList : little

@@ -36,18 +36,20 @@ public class Building {
 		int counter = 0;
 		for (Mesh m : roofList) {
 			Polyline p = m.findEdgesRoof();
-			if (p != null && !p.isEmpty())
+			if (p != null && !p.isEmpty()) {
 				p.writeCentroidMesh("Files/roofComputed" + counter + ".stl");
+			}
 			counter++;
 		}
 
-		// counter = 0;
-		// for (Mesh m : wallList) {
-		// Polyline p = m.findEdgesWall();
-		// if (p != null)
-		// p.writeCentroidMesh("Files/wallComputed" + counter + ".stl");
-		// counter++;
-		// }
+		counter = 0;
+		for (Mesh m : wallList) {
+			Polyline p = m.findEdgesWall();
+			if (p != null && !p.isEmpty()) {
+				p.writeCentroidMesh("Files/wallComputed" + counter + ".stl");
+			}
+			counter++;
+		}
 	}
 
 	/**
@@ -221,7 +223,7 @@ public class Building {
 	 * @param normalFloor
 	 *            the normal to the floor
 	 */
-	public void buildFromMesh(Mesh building, Vector3d normalFloor) {
+	public void buildFromMesh(Mesh building, Mesh floors, Vector3d normalFloor) {
 
 		Mesh wholeWall = new Mesh();
 		Mesh wholeRoof = new Mesh();
@@ -248,7 +250,7 @@ public class Building {
 			counterRoof++;
 		}
 
-		this.determinateNeighbours(wallList, roofList);
+		this.determinateNeighbours(wallList, roofList, floors);
 
 		this.findCommonEdges(wallList, roofList);
 	}
@@ -263,7 +265,7 @@ public class Building {
 	 *            the list of roofs as meshes
 	 */
 	private void determinateNeighbours(ArrayList<Mesh> wallList,
-			ArrayList<Mesh> roofList) {
+			ArrayList<Mesh> roofList, Mesh floors) {
 
 		for (Mesh w1 : wallList) {
 			for (Mesh w2 : wallList) {
@@ -276,6 +278,7 @@ public class Building {
 					w1.addNeighbour(r2);
 				}
 			}
+			w1.addNeighbour(floors);
 		}
 
 		for (Mesh r1 : roofList) {
