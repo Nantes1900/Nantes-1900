@@ -2,12 +2,10 @@ package nantes1900.models.extended;
 
 import nantes1900.models.Mesh;
 
-public class Floor extends Mesh {
+public class Floor {
 
 	private String attribute = new String();
-	private Mesh floor = new Mesh();
-
-	private static final long serialVersionUID = 1L;
+	private Mesh mesh = new Mesh();
 
 	/**
 	 * Constructor. Build the Floor with an attribute as a String.
@@ -44,8 +42,8 @@ public class Floor extends Mesh {
 	 * 
 	 * @return the floor as a mesh
 	 */
-	public Mesh getFloor() {
-		return floor;
+	public Mesh getMesh() {
+		return mesh;
 	}
 
 	/**
@@ -54,8 +52,8 @@ public class Floor extends Mesh {
 	 * @param floor
 	 *            the floor as a mesh
 	 */
-	public void setFloor(Mesh floor) {
-		this.floor = floor;
+	public void setMesh(Mesh floor) {
+		this.mesh = floor;
 	}
 
 	/**
@@ -65,9 +63,9 @@ public class Floor extends Mesh {
 	 *            the mesh to convert
 	 */
 	public void buildFromMesh(Mesh m) {
-		floor = new Mesh(m);
+		this.mesh = new Mesh(m);
 
-		this.decimate(floor);
+		this.decimate(this.mesh);
 	}
 
 	/**

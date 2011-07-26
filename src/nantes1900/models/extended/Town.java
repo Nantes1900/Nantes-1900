@@ -3,6 +3,7 @@ package nantes1900.models.extended;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
@@ -36,9 +37,11 @@ public class Town {
 	 * Constructor.
 	 */
 	public Town() {
-		this.log.setLevel(Level.FINE);
-		this.log.setUseParentHandlers(false);
-		this.log.addHandler(new StreamHandler(System.out, new SimpleFormatter()));
+		log.setLevel(Level.FINEST);
+		Handler handler = new StreamHandler(System.out, new SimpleFormatter());
+		handler.setLevel(Level.FINEST);
+		log.addHandler(handler);
+		log.setUseParentHandlers(false);
 	}
 
 	/**
@@ -107,26 +110,35 @@ public class Town {
 	 */
 	public void buildFromMesh(String directoryName) {
 
+		long time = System.nanoTime();
 		Vector3d normalFloor = this.extractFloorNormal(directoryName
 				+ "/floor.stl");
 		this.createChangeBaseMatrix(normalFloor);
+		log.finest("Matrix computing : " + (System.nanoTime() - time));
 
+		time = System.nanoTime();
 		this.treatFloors(directoryName + "/floors/");
 		this.treatWateries(directoryName + "/wateries/");
 
 		log.info("Numbers of floors : " + this.floors.size());
 		log.info("Numbers of wateries : " + this.wateries.size());
+		log.finest("Floors and wateries : " + (System.nanoTime() - time));
 
+		time = System.nanoTime();
 		this.treatSpecialBuildings(directoryName + "/special_buildings/");
 
 		log.info("Numbers of special buildings : "
 				+ this.specialBuildings.size());
+		log.finest("Special buildings : " + (System.nanoTime() - time));
 
+		time = System.nanoTime();
 		this.treatIndustrials(directoryName + "/industrials/", normalFloor);
 		this.treatResidentials(directoryName + "/residentials/", normalFloor);
 
 		log.info("Numbers of industrials zones : " + this.industrials.size());
 		log.info("Numbers of residentials zones : " + this.residentials.size());
+		log.finest("Residentials and industrials : "
+				+ (System.nanoTime() - time));
 	}
 
 	/**
@@ -308,11 +320,6 @@ public class Town {
 		}
 	}
 
-	private void recollerCorrectementLesSolsAuxMurs(Building e,
-			ArrayList<Mesh> floors2) {
-		// FIXME
-	}
-
 	/**
 	 * Treat the files of floors which are in the directory. Create Floor
 	 * objects for each files, put an attribute, and call the buildFromMesh
@@ -332,7 +339,7 @@ public class Town {
 			floor.buildFromMesh(this.parseFile(directoryName + "floor - "
 					+ counterFloors + ".stl"));
 
-			floor.changeBase(this.matrix);
+			floor.getMesh().changeBase(this.matrix);
 
 			this.addFloor(floor);
 
@@ -352,7 +359,6 @@ public class Town {
 	 *            the normal to the floor
 	 */
 	private void treatIndustrials(String directoryName, Vector3d normalFloor) {
-		// int counterIndustrial = 1;
 		// FIXME
 	}
 
@@ -373,10 +379,14 @@ public class Town {
 		while (new File(directoryName + "residential - " + counterResidentials
 				+ ".stl").exists()) {
 
+			long time = System.nanoTime();
 			Mesh mesh = this.parseFile((directoryName + "residential - "
 					+ counterResidentials + ".stl"));
+			log.finest("Parsing file : " + (System.nanoTime() - time));
 
+			time = System.nanoTime();
 			mesh.changeBase(this.matrix);
+			log.finest("Change base : " + (System.nanoTime() - time));
 
 			Mesh noise = new Mesh();
 
@@ -384,24 +394,34 @@ public class Town {
 			ArrayList<Mesh> buildings;
 
 			try {
+				time = System.nanoTime();
 				wholeFloor = this.floorExtraction(mesh, normalFloor);
+				log.finest("Floor extraction : " + (System.nanoTime() - time));
 
+				time = System.nanoTime();
 				buildings = this.buildingsExtraction(mesh, noise);
+				log.finest("Building extraction : "
+						+ (System.nanoTime() - time));
 
 				ArrayList<Mesh> floors = this.noiseTreatment(wholeFloor, noise);
+				log.finest("Noise treatment : " + (System.nanoTime() - time));
 
+				time = System.nanoTime();
+
+				// FIXME
 				// ArrayList<Mesh> formsList =
 				// this.carveRealBuildings(buildings);
 
 				for (Mesh m : buildings) {
 					Building e = new Building();
 					e.buildFromMesh(m, wholeFloor, normalFloor);
-					this.recollerCorrectementLesSolsAuxMurs(e, floors);
 					this.addResidential(e);
 				}
 
-				// FIXME
-				System.exit(0);
+				log.finest("Building construction : "
+						+ (System.nanoTime() - time));
+
+				time = System.nanoTime();
 
 				for (Mesh m : floors) {
 					Floor floor = new Floor("street");
@@ -409,7 +429,10 @@ public class Town {
 					this.addFloor(floor);
 				}
 
+				log.finest("Floor construction : " + (System.nanoTime() - time));
+
 			} catch (NoFloorException e1) {
+				// FIXME
 				// If there is no floor to extract
 				System.err
 						.println("You need a floor to complete the bottom of the walls");
@@ -466,22 +489,8 @@ public class Town {
 	 *            the directory name to find the wateries.
 	 */
 	private void treatWateries(String directoryName) {
-		int counterWateries = 1;
-
-		while (new File(directoryName + "watery - " + counterWateries + ".stl")
-				.exists()) {
-
-			Floor watery = new Floor("watery");
-
-			watery.buildFromMesh(this.parseFile(directoryName + "watery - "
-					+ counterWateries + ".stl"));
-
-			watery.changeBase(this.matrix);
-
-			this.addWatery(watery);
-
-			counterWateries++;
-		}
+		// FIXME : see in treatFloors, it's the same. Maybe create a private
+		// method.
 	}
 
 	/**
@@ -506,8 +515,12 @@ public class Town {
 	 * Write the floors as STL files. Use for debugging.
 	 */
 	public void writeSTLFloors() {
-		for (Floor f : this.floors)
-			f.writeSTL("Files/floors.stl");
+		int counterFloor = 1;
+
+		for (Floor f : this.floors) {
+			f.writeSTL("Files/floors" + counterFloor + ".stl");
+			counterFloor++;
+		}
 	}
 
 	/**
@@ -538,14 +551,23 @@ public class Town {
 	 * Write the special buildings as STL files. Use for debugging.
 	 */
 	public void writeSTLSpecialBuildings() {
+		int buildingCounter = 1;
 
+		for (Mesh m : this.specialBuildings) {
+			m.writeSTL("Files/special_building - " + buildingCounter + ".stl");
+			buildingCounter++;
+		}
 	}
 
 	/**
 	 * Write the wateries as STL files. Use for debugging.
 	 */
 	public void writeSTLWateries() {
-		for (Floor f : this.wateries)
-			f.writeSTL("Files/floors.stl");
+		int counterWateries = 1;
+
+		for (Floor f : this.wateries) {
+			f.writeSTL("Files/watery - " + counterWateries + ".stl");
+			counterWateries++;
+		}
 	}
 }

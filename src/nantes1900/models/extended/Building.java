@@ -33,22 +33,24 @@ public class Building {
 	private void findCommonEdges(ArrayList<Mesh> wallList,
 			ArrayList<Mesh> roofList) {
 
-		int counter = 0;
+		// int counter = 0;
 		for (Mesh m : roofList) {
 			Polyline p = m.findEdgesRoof();
 			if (p != null && !p.isEmpty()) {
-				p.writeCentroidMesh("Files/roofComputed" + counter + ".stl");
+				roofs.add(p);
+				// p.writeCentroidMesh("Files/roofComputed" + counter + ".stl");
 			}
-			counter++;
+			// counter++;
 		}
 
-		counter = 0;
+		// counter = 0;
 		for (Mesh m : wallList) {
 			Polyline p = m.findEdgesWall();
 			if (p != null && !p.isEmpty()) {
-				p.writeCentroidMesh("Files/wallComputed" + counter + ".stl");
+				walls.add(p);
+				// p.writeCentroidMesh("Files/wallComputed" + counter + ".stl");
 			}
-			counter++;
+			// counter++;
 		}
 	}
 
@@ -235,20 +237,6 @@ public class Building {
 				wholeRoof, noise);
 
 		this.treatNoise(wallList, roofList, wholeWall, wholeRoof, noise);
-
-		// FIXME : some walls are contained in the others...
-
-		int counterWall = 0;
-		for (Mesh m : wallList) {
-			m.writeSTL("Files/" + "wall - " + counterWall + ".stl");
-			counterWall++;
-		}
-
-		int counterRoof = 0;
-		for (Mesh m : roofList) {
-			m.writeSTL("Files/" + "roof - " + counterRoof + ".stl");
-			counterRoof++;
-		}
 
 		this.determinateNeighbours(wallList, roofList, floors);
 

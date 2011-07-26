@@ -12,7 +12,6 @@ import java.nio.ByteOrder;
 import nantes1900.models.Mesh;
 import nantes1900.models.basis.Triangle;
 
-
 /**
  * Write a STL file containing the faces, list of faces or buildings. This
  * writer use the ASCII or the binary format, depending on the static attribute
@@ -51,10 +50,14 @@ public class WriterSTL {
 	 *            the mesh to write
 	 */
 	public static void write(String fileName, Mesh m) {
-		if (MODE == ASCII_MODE)
-			writeA(fileName, m);
-		else if (MODE == BINARY_MODE)
-			writeB(fileName, m);
+		try {
+			if (MODE == ASCII_MODE)
+				writeA(fileName, m);
+			else if (MODE == BINARY_MODE)
+				writeB(fileName, m);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -83,8 +86,10 @@ public class WriterSTL {
 	 *            the name of the file to write in.
 	 * @param m
 	 *            the mesh to write
+	 * @throws IOException
+	 *             if there is a problem in the opening or the closing operation
 	 */
-	private static void writeA(String fileName, Mesh m) {
+	private static void writeA(String fileName, Mesh m) throws IOException {
 		WriterSTL.writeSTLA(fileName, m);
 		// log.info(fileName + " written in STL ASCII!");
 	}
@@ -96,8 +101,10 @@ public class WriterSTL {
 	 *            the name of the file to write in.
 	 * @param m
 	 *            the mesh to write
+	 * @throws IOException
+	 *             if there is a problem in the opening or the closing operation
 	 */
-	private static void writeB(String fileName, Mesh m) {
+	private static void writeB(String fileName, Mesh m) throws IOException {
 		WriterSTL.writeSTLB(fileName, m);
 		// log.info(fileName + " written in STL binary!");
 	}
@@ -135,8 +142,8 @@ public class WriterSTL {
 
 			// Write the end of the facet.
 			fw.write("\nendloop\nendfacet");
-		} catch (java.io.IOException ee) {
-			ee.printStackTrace();
+		} catch (java.io.IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -147,11 +154,15 @@ public class WriterSTL {
 	 *            the name of the file to write in.
 	 * @param surface
 	 *            the mesh to write
+	 * @throws IOException
+	 *             if there is a problem in the opening or the closing operation
 	 */
-	private static void writeSTLA(String fileName, Mesh surface) {
+	private static void writeSTLA(String fileName, Mesh surface)
+			throws IOException {
+		BufferedWriter fw = null;
 		try {
 			// Write the header of the file : solid.
-			BufferedWriter fw = new BufferedWriter(new FileWriter(fileName));
+			fw = new BufferedWriter(new FileWriter(fileName));
 			fw.write("solid");
 			for (Triangle f : surface) {
 				writeASCIIFace(fw, f);
@@ -160,9 +171,12 @@ public class WriterSTL {
 			fw.write("\nendsolid");
 			// Finish to write the last datas before closing the writer.
 			fw.flush();
-		} catch (java.io.IOException e) {
-			e.printStackTrace();
+		} finally {
+			if (fw != null) {
+				fw.close();
+			}
 		}
+
 	}
 
 	/**
@@ -224,11 +238,14 @@ public class WriterSTL {
 	 *            the name of the file to write in.
 	 * @param surface
 	 *            the mesh to write
+	 * @throws IOException
+	 *             if there is a problem in the opening of the closing operation
 	 */
-	private static void writeSTLB(String fileName, Mesh surface) {
+	private static void writeSTLB(String fileName, Mesh surface)
+			throws IOException {
+		BufferedOutputStream stream = null;
 		try {
-			BufferedOutputStream stream = new BufferedOutputStream(
-					new FileOutputStream(fileName));
+			stream = new BufferedOutputStream(new FileOutputStream(fileName));
 
 			// Write a 80-byte long header. Possibility to write the name of the
 			// author.
@@ -248,8 +265,8 @@ public class WriterSTL {
 
 			// Finish to write the last datas before closing the writer.
 			stream.flush();
-		} catch (Exception e) {
-			e.printStackTrace();
+		} finally {
+			stream.close();
 		}
 	}
 }
