@@ -2,6 +2,7 @@ package nantes1900.models.extended;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import javax.vecmath.Vector3d;
 
@@ -15,10 +16,49 @@ public class Building {
 	private ArrayList<Polyline> walls = new ArrayList<Polyline>();
 	private ArrayList<Polyline> roofs = new ArrayList<Polyline>();
 
+	private Logger log = Logger.getLogger("logger");
+
 	/**
 	 * Constructor. Create the lists of walls and lists of roofs.
 	 */
 	public Building() {
+	}
+
+	/**
+	 * Determinate the neighbours of each meshes. Two meshes are neighbours if
+	 * they share an edge.
+	 * 
+	 * @param wallList
+	 *            the list of walls as meshes
+	 * @param roofList
+	 *            the list of roofs as meshes
+	 */
+	private void determinateNeighbours(ArrayList<Mesh> wallList,
+			ArrayList<Mesh> roofList, Mesh floors) {
+
+		for (Mesh w1 : wallList) {
+			for (Mesh w2 : wallList) {
+				if (w1.isNeighbour(w2)) {
+					w1.addNeighbour(w2);
+				}
+			}
+			for (Mesh r2 : roofList) {
+				if (w1.isNeighbour(r2)) {
+					w1.addNeighbour(r2);
+				}
+			}
+			if (w1.isNeighbour(floors)) {
+				w1.addNeighbour(floors);
+			}
+		}
+
+		for (Mesh r1 : roofList) {
+			for (Mesh r2 : roofList) {
+				if (r1.isNeighbour(r2)) {
+					r1.addNeighbour(r2);
+				}
+			}
+		}
 	}
 
 	/**
@@ -47,6 +87,10 @@ public class Building {
 				walls.add(p);
 			}
 		}
+	}
+
+	private void recollerLesmMorceaux(ArrayList<Mesh> wallList, Mesh floors) {
+
 	}
 
 	/**
@@ -226,53 +270,31 @@ public class Building {
 		Mesh wholeRoof = new Mesh();
 		Mesh noise = new Mesh();
 
+		long time = System.nanoTime();
 		ArrayList<Mesh> wallList = this.sortWalls(building, normalFloor,
 				wholeWall, noise);
+		log.finest("Sort walls : " + (System.nanoTime() - time));
+
+		time = System.nanoTime();
 		ArrayList<Mesh> roofList = this.sortRoofs(building, normalFloor,
 				wholeRoof, noise);
+		log.finest("Sort roofs : " + (System.nanoTime() - time));
 
+		time = System.nanoTime();
+		// TODO : compute wholeWall and wholeRoof in the method, and not in
+		// sortRoofs or sortWalls.
 		this.treatNoise(wallList, roofList, wholeWall, wholeRoof, noise);
+		log.finest("Treat noise : " + (System.nanoTime() - time));
 
+		time = System.nanoTime();
 		this.determinateNeighbours(wallList, roofList, floors);
+		log.finest("Determinate neighbours : " + (System.nanoTime() - time));
 
+		time = System.nanoTime();
 		this.findCommonEdges(wallList, roofList);
-	}
+		log.finest("Find common edges : " + (System.nanoTime() - time));
 
-	/**
-	 * Determinate the neighbours of each meshes. Two mehes are neighbours if
-	 * they share an edge.
-	 * 
-	 * @param wallList
-	 *            the list of walls as meshes
-	 * @param roofList
-	 *            the list of roofs as meshes
-	 */
-	private void determinateNeighbours(ArrayList<Mesh> wallList,
-			ArrayList<Mesh> roofList, Mesh floors) {
-
-		for (Mesh w1 : wallList) {
-			for (Mesh w2 : wallList) {
-				if (w1.isNeighbour(w2)) {
-					w1.addNeighbour(w2);
-				}
-			}
-			for (Mesh r2 : roofList) {
-				if (w1.isNeighbour(r2)) {
-					w1.addNeighbour(r2);
-				}
-			}
-			if (w1.isNeighbour(floors)) {
-				w1.addNeighbour(floors);
-			}
-		}
-
-		for (Mesh r1 : roofList) {
-			for (Mesh r2 : roofList) {
-				if (r1.isNeighbour(r2)) {
-					r1.addNeighbour(r2);
-				}
-			}
-		}
+		this.recollerLesmMorceaux(wallList, floors);
 	}
 
 	/**

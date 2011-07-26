@@ -14,7 +14,13 @@ import nantes1900.models.basis.Triangle;
  */
 public final class Algos {
 
-	private Algos() {
+	/**
+	 * Implement an exception when the floor is empty.
+	 * 
+	 * @author Daniel Lefevre
+	 */
+	public static class NoFloorException extends Exception {
+		private static final long serialVersionUID = 1L;
 	}
 
 	/**
@@ -156,12 +162,6 @@ public final class Algos {
 		}
 	}
 
-	/**
-	 * Implement an exception when the floor is empty.
-	 * 
-	 * @author Daniel Lefevre
-	 */
-	public static class NoFloorException extends Exception {
-		private static final long serialVersionUID = 1L;
+	private Algos() {
 	}
 }

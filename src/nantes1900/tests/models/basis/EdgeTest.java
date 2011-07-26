@@ -54,45 +54,15 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Edge#getTriangleList()}
-	 * and
-	 * {@link nantes1900.models.basis.Edge#addTriangle(nantes1900.models.basis.Triangle)}
-	 * . This test is also the test of addTriangle.
-	 */
-	@Test
-	public void testGetTriangleList() {
-		ArrayList<Triangle> list1 = e1.getTriangleList();
-		ArrayList<Triangle> list2 = e2.getTriangleList();
-		ArrayList<Triangle> list4 = e4.getTriangleList();
-
-		assertTrue(list1.contains(t1));
-		assertTrue(list1.contains(t2));
-
-		assertTrue(list2.contains(t1));
-		assertFalse(list2.contains(t2));
-
-		assertTrue(list4.contains(t2));
-		assertFalse(list4.contains(t1));
-	}
-
-	/**
 	 * Test method for
-	 * {@link nantes1900.models.basis.Edge#returnOther(nantes1900.models.basis.Triangle)}
+	 * {@link nantes1900.models.basis.Edge#compose(nantes1900.models.basis.Edge)}
 	 * .
 	 */
 	@Test
-	public void testReturnOtherTriangle() {
-		assertTrue(e1.returnOther(t1) == t2);
-		assertTrue(e1.returnOther(t2) == t1);
-		assertTrue(e2.returnOther(t1) == null);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Edge#length()}.
-	 */
-	@Test
-	public void testLength() {
-		assertTrue(e5.length() == 3);
+	public void testCompose() {
+		Edge e = e1.compose(e2);
+		assertTrue(e.getP1() == p1);
+		assertTrue(e.getP2() == p3);
 	}
 
 	/**
@@ -107,27 +77,6 @@ public class EdgeTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Edge#getNumberTriangles()}
-	 * .
-	 */
-	@Test
-	public void testGetNumberTriangles() {
-		assertTrue(e1.getNumberTriangles() == 2);
-		assertTrue(e5.getNumberTriangles() == 1);
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.basis.Edge#isNeighboor(nantes1900.models.basis.Edge)}
-	 * .
-	 */
-	@Test
-	public void testIsNeighboor() {
-		assertTrue(e1.isNeighboor(e2));
-		assertFalse(e3.isNeighboor(e5));
-	}
-
-	/**
 	 * Test method for
 	 * {@link nantes1900.models.basis.Edge#equals(java.lang.Object)}.
 	 */
@@ -137,6 +86,16 @@ public class EdgeTest {
 		assertFalse(e1.equals(e2));
 		assertTrue(e1.equals(e1));
 		assertTrue(e1.equals(eTest));
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.basis.Edge#getNumberTriangles()}
+	 * .
+	 */
+	@Test
+	public void testGetNumberTriangles() {
+		assertTrue(e1.getNumberTriangles() == 2);
+		assertTrue(e5.getNumberTriangles() == 1);
 	}
 
 	/**
@@ -161,15 +120,44 @@ public class EdgeTest {
 	}
 
 	/**
+	 * Test method for {@link nantes1900.models.basis.Edge#getTriangleList()}
+	 * and
+	 * {@link nantes1900.models.basis.Edge#addTriangle(nantes1900.models.basis.Triangle)}
+	 * . This test is also the test of addTriangle.
+	 */
+	@Test
+	public void testGetTriangleList() {
+		ArrayList<Triangle> list1 = e1.getTriangleList();
+		ArrayList<Triangle> list2 = e2.getTriangleList();
+		ArrayList<Triangle> list4 = e4.getTriangleList();
+
+		assertTrue(list1.contains(t1));
+		assertTrue(list1.contains(t2));
+
+		assertTrue(list2.contains(t1));
+		assertFalse(list2.contains(t2));
+
+		assertTrue(list4.contains(t2));
+		assertFalse(list4.contains(t1));
+	}
+
+	/**
 	 * Test method for
-	 * {@link nantes1900.models.basis.Edge#returnOther(nantes1900.models.basis.Point)}
+	 * {@link nantes1900.models.basis.Edge#isNeighboor(nantes1900.models.basis.Edge)}
 	 * .
 	 */
 	@Test
-	public void testReturnOtherPoint() {
-		assertTrue(e1.returnOther(p1) == p2);
-		assertTrue(e3.returnOther(p3) == p1);
-		assertTrue(e5.returnOther(p4) == p2);
+	public void testIsNeighboor() {
+		assertTrue(e1.isNeighboor(e2));
+		assertFalse(e3.isNeighboor(e5));
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.basis.Edge#length()}.
+	 */
+	@Test
+	public void testLength() {
+		assertTrue(e5.length() == 3);
 	}
 
 	/**
@@ -207,13 +195,25 @@ public class EdgeTest {
 
 	/**
 	 * Test method for
-	 * {@link nantes1900.models.basis.Edge#compose(nantes1900.models.basis.Edge)}
+	 * {@link nantes1900.models.basis.Edge#returnOther(nantes1900.models.basis.Point)}
 	 * .
 	 */
 	@Test
-	public void testCompose() {
-		Edge e = e1.compose(e2);
-		assertTrue(e.getP1() == p1);
-		assertTrue(e.getP2() == p3);
+	public void testReturnOtherPoint() {
+		assertTrue(e1.returnOther(p1) == p2);
+		assertTrue(e3.returnOther(p3) == p1);
+		assertTrue(e5.returnOther(p4) == p2);
+	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#returnOther(nantes1900.models.basis.Triangle)}
+	 * .
+	 */
+	@Test
+	public void testReturnOtherTriangle() {
+		assertTrue(e1.returnOther(t1) == t2);
+		assertTrue(e1.returnOther(t2) == t1);
+		assertTrue(e2.returnOther(t1) == null);
 	}
 }

@@ -10,6 +10,52 @@ import javax.vecmath.Vector3d;
 public class MatrixMethod {
 
 	/**
+	 * An exception sub-class to signal a singular matrix.
+	 * 
+	 * @author Daniel Lefevre
+	 * 
+	 */
+	public static class SingularMatrixException extends Exception {
+		private static final long serialVersionUID = 1L;
+	}
+
+	/**
+	 * Compute the result of a base change of a double[].
+	 * 
+	 * @param coord
+	 *            the coordinates to base change
+	 * @param matrix
+	 *            the base change matrix
+	 * @return the new coordinates
+	 */
+	public static double[] changeBase(double[] coord, double[][] matrix) {
+		int n = coord.length;
+		double[] sol = new double[n];
+
+		for (int i = 0; i < n; i++) {
+			sol[i] = 0;
+			for (int j = 0; j < n; j++) {
+				sol[i] += matrix[i][j] * coord[j];
+			}
+		}
+		return sol;
+	}
+
+	/**
+	 * Compute the result of a base change of a Vector3d. vect is modified to
+	 * contain the result of the compute.
+	 * 
+	 * @param vect
+	 *            the vector to base change
+	 * @param matrix
+	 *            the base change matrix
+	 */
+	public static void changeBase(Vector3d vect, double[][] matrix) {
+		double[] coord = { vect.x, vect.y, vect.z };
+		vect.set(MatrixMethod.changeBase(coord, matrix));
+	}
+
+	/**
 	 * Create an orthobase from one vector. The baseVector will be the z-axis
 	 * after the base change. The matrix will have a determinant equals to 1.
 	 * 
@@ -43,6 +89,45 @@ public class MatrixMethod {
 		matrix1[0][1] = (1 / (b.z + 1)) * b.y * b.x;
 		matrix1[1][0] = (1 / (b.z + 1)) * b.y * b.x;
 		matrix1[0][0] = -1 + (1 / (b.z + 1)) * b.x * b.x;
+
+		return matrix1;
+	}
+
+	/**
+	 * Create an orthobase from three vectors. Create the matrix which pass from
+	 * the actual base ((1,0,0),(0,1,0),(0,0,1)) to the parameter base (vect1,
+	 * vect2, vect3).
+	 * 
+	 * @param vect1
+	 *            the first vector of the base
+	 * @param vect2
+	 *            the second vector of the base
+	 * @param vect3
+	 *            the third vector of the base
+	 * @return the matrix of base change
+	 * @throws SingularMatrixException
+	 *             if the matrix is singular
+	 */
+	public static double[][] createOrthoBase(Vector3d vect1, Vector3d vect2,
+			Vector3d vect3) throws SingularMatrixException {
+		Vector3d b = new Vector3d(vect1), c = new Vector3d(vect2), d = new Vector3d(
+				vect3);
+//		b.normalize();
+//		c.normalize();
+//		d.normalize();
+
+		// Gram-Schmidt
+		double[][] matrix1 = new double[3][3];
+
+		matrix1[0][0] = b.x;
+		matrix1[0][1] = b.y;
+		matrix1[0][2] = b.z;
+		matrix1[1][0] = c.x;
+		matrix1[1][1] = c.y;
+		matrix1[1][2] = c.z;
+		matrix1[2][0] = d.x;
+		matrix1[2][1] = d.y;
+		matrix1[2][2] = d.z;
 
 		return matrix1;
 	}
@@ -107,90 +192,5 @@ public class MatrixMethod {
 		matrix1[2][2] = (a * e - b * d) / determinant(matrix);
 
 		return matrix1;
-	}
-
-	/**
-	 * Create an orthobase from three vectors. Create the matrix which pass from
-	 * the actual base ((1,0,0),(0,1,0),(0,0,1)) to the parameter base (vect1,
-	 * vect2, vect3).
-	 * 
-	 * @param vect1
-	 *            the first vector of the base
-	 * @param vect2
-	 *            the second vector of the base
-	 * @param vect3
-	 *            the third vector of the base
-	 * @return the matrix of base change
-	 * @throws SingularMatrixException
-	 *             if the matrix is singular
-	 */
-	public static double[][] createOrthoBase(Vector3d vect1, Vector3d vect2,
-			Vector3d vect3) throws SingularMatrixException {
-		Vector3d b = new Vector3d(vect1), c = new Vector3d(vect2), d = new Vector3d(
-				vect3);
-//		b.normalize();
-//		c.normalize();
-//		d.normalize();
-
-		// Gram-Schmidt
-		double[][] matrix1 = new double[3][3];
-
-		matrix1[0][0] = b.x;
-		matrix1[0][1] = b.y;
-		matrix1[0][2] = b.z;
-		matrix1[1][0] = c.x;
-		matrix1[1][1] = c.y;
-		matrix1[1][2] = c.z;
-		matrix1[2][0] = d.x;
-		matrix1[2][1] = d.y;
-		matrix1[2][2] = d.z;
-
-		return matrix1;
-	}
-
-	/**
-	 * Compute the result of a base change of a double[].
-	 * 
-	 * @param coord
-	 *            the coordinates to base change
-	 * @param matrix
-	 *            the base change matrix
-	 * @return the new coordinates
-	 */
-	public static double[] changeBase(double[] coord, double[][] matrix) {
-		int n = coord.length;
-		double[] sol = new double[n];
-
-		for (int i = 0; i < n; i++) {
-			sol[i] = 0;
-			for (int j = 0; j < n; j++) {
-				sol[i] += matrix[i][j] * coord[j];
-			}
-		}
-		return sol;
-	}
-
-	/**
-	 * Compute the result of a base change of a Vector3d. vect is modified to
-	 * contain the result of the compute.
-	 * 
-	 * @param vect
-	 *            the vector to base change
-	 * @param matrix
-	 *            the base change matrix
-	 */
-	public static void changeBase(Vector3d vect, double[][] matrix) {
-		double[] coord = { vect.x, vect.y, vect.z };
-		vect.set(MatrixMethod.changeBase(coord, matrix));
-	}
-
-	/**
-	 * An exception sub-class to signal a singular matrix.
-	 * 
-	 * @author Daniel Lefevre
-	 * 
-	 */
-	public static class SingularMatrixException extends Exception {
-		private static final long serialVersionUID = 1L;
 	}
 }

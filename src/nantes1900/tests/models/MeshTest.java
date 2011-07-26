@@ -60,137 +60,11 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Mesh#xAverage()}.
+	 * Test method for {@link nantes1900.models.Mesh#changeBase(double[][])}.
 	 */
 	@Test
-	public void testxAverage() {
-		assertTrue(this.m.xAverage() == 2.0 / 3.0);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#yAverage()}.
-	 */
-	@Test
-	public void testyAverage() {
-		assertTrue(this.m.yAverage() == 3.0 / 2.0);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#zAverage()}.
-	 */
-	@Test
-	public void testzAverage() {
-		assertTrue(this.m.zAverage() == -2.0 / 3.0);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#xMax()}.
-	 */
-	@Test
-	public void testxMax() {
-		assertTrue(this.m.xMax() == 4);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#xMin()}.
-	 */
-	@Test
-	public void testxMin() {
-		assertTrue(this.m.xMin() == -2);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#yMax()}.
-	 */
-	@Test
-	public void testyMax() {
-		assertTrue(this.m.yMax() == 5);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#yMin()}.
-	 */
-	@Test
-	public void testyMin() {
-		assertTrue(this.m.yMin() == -3);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#zMax()}.
-	 */
-	@Test
-	public void testzMax() {
-		assertTrue(this.m.zMax() == 4);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#zMin()}.
-	 */
-	@Test
-	public void testzMin() {
-		assertTrue(this.m.zMin() == -5);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#xLengthAverage()}.
-	 */
-	@Test
-	public void testxLengthAverage() {
-		assertTrue(this.m.xLengthAverage() == 4);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#yLengthAverage()}.
-	 */
-	@Test
-	public void testyLengthAverage() {
-		assertTrue(this.m.yLengthAverage() == 5);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#zLengthAverage()}.
-	 */
-	@Test
-	public void testzLengthAverage() {
-		assertTrue(this.m.zLengthAverage() == 5.5);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#xBetween(double, double)}.
-	 */
-	@Test
-	public void testXBetween() {
-		Mesh xBet = m.xBetween(10, -10);
-		assertTrue(xBet.contains(t1));
-		assertTrue(xBet.contains(t2));
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#yBetween(double, double)}.
-	 */
-	@Test
-	public void testYBetween() {
-		Mesh yBet = m.yBetween(10, -10);
-		assertTrue(yBet.contains(t1));
-		assertTrue(yBet.contains(t2));
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#zBetween(double, double)}.
-	 */
-	@Test
-	public void testZBetween() {
-		Mesh zBet = m.zBetween(10, -10);
-		assertTrue(zBet.contains(t1));
-		assertTrue(zBet.contains(t2));
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#zMinFace()}.
-	 */
-	@Test
-	public void testZMinFace() {
-		assertTrue(m.zMinFace() == t2);
+	public void testChangeBase() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -221,6 +95,20 @@ public class MeshTest {
 		Mesh oriented = m.orientedNormalTo(new Vector3d(0.1, 0.1, 0.9), 0.2);
 		assertTrue(oriented.contains(t2));
 		assertFalse(oriented.contains(t1));
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#remove(nantes1900.models.Mesh)}.
+	 */
+	@Test
+	public void testRemoveMesh() {
+		Mesh m1 = new Mesh(this.m);
+		Mesh m2 = new Mesh();
+		m2.add(t1);
+
+		m1.remove(m2);
+
+		assertTrue(m1.contains(t2));
 	}
 
 	/**
@@ -311,24 +199,136 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Mesh#remove(nantes1900.models.Mesh)}.
+	 * Test method for {@link nantes1900.models.Mesh#xAverage()}.
 	 */
 	@Test
-	public void testRemoveMesh() {
-		Mesh m1 = new Mesh(this.m);
-		Mesh m2 = new Mesh();
-		m2.add(t1);
-
-		m1.remove(m2);
-
-		assertTrue(m1.contains(t2));
+	public void testxAverage() {
+		assertTrue(this.m.xAverage() == 2.0 / 3.0);
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Mesh#changeBase(double[][])}.
+	 * Test method for {@link nantes1900.models.Mesh#xBetween(double, double)}.
 	 */
 	@Test
-	public void testChangeBase() {
-		fail("Not yet implemented"); // TODO
+	public void testXBetween() {
+		Mesh xBet = m.xBetween(10, -10);
+		assertTrue(xBet.contains(t1));
+		assertTrue(xBet.contains(t2));
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#xLengthAverage()}.
+	 */
+	@Test
+	public void testxLengthAverage() {
+		assertTrue(this.m.xLengthAverage() == 4);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#xMax()}.
+	 */
+	@Test
+	public void testxMax() {
+		assertTrue(this.m.xMax() == 4);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#xMin()}.
+	 */
+	@Test
+	public void testxMin() {
+		assertTrue(this.m.xMin() == -2);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#yAverage()}.
+	 */
+	@Test
+	public void testyAverage() {
+		assertTrue(this.m.yAverage() == 3.0 / 2.0);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#yBetween(double, double)}.
+	 */
+	@Test
+	public void testYBetween() {
+		Mesh yBet = m.yBetween(10, -10);
+		assertTrue(yBet.contains(t1));
+		assertTrue(yBet.contains(t2));
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#yLengthAverage()}.
+	 */
+	@Test
+	public void testyLengthAverage() {
+		assertTrue(this.m.yLengthAverage() == 5);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#yMax()}.
+	 */
+	@Test
+	public void testyMax() {
+		assertTrue(this.m.yMax() == 5);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#yMin()}.
+	 */
+	@Test
+	public void testyMin() {
+		assertTrue(this.m.yMin() == -3);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#zAverage()}.
+	 */
+	@Test
+	public void testzAverage() {
+		assertTrue(this.m.zAverage() == -2.0 / 3.0);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#zBetween(double, double)}.
+	 */
+	@Test
+	public void testZBetween() {
+		Mesh zBet = m.zBetween(10, -10);
+		assertTrue(zBet.contains(t1));
+		assertTrue(zBet.contains(t2));
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#zLengthAverage()}.
+	 */
+	@Test
+	public void testzLengthAverage() {
+		assertTrue(this.m.zLengthAverage() == 5.5);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#zMax()}.
+	 */
+	@Test
+	public void testzMax() {
+		assertTrue(this.m.zMax() == 4);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#zMin()}.
+	 */
+	@Test
+	public void testzMin() {
+		assertTrue(this.m.zMin() == -5);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.Mesh#zMinFace()}.
+	 */
+	@Test
+	public void testZMinFace() {
+		assertTrue(m.zMinFace() == t2);
 	}
 }

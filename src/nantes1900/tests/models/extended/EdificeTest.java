@@ -14,34 +14,10 @@ import org.junit.Test;
 public class EdificeTest {
 
 	/**
-	 * Test method for {@link nantes1900.models.extended.Building#Edifice()}.
-	 */
-	@Test
-	public void testEdifice() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.extended.Building#addWall(modeles.basis.Polyline)}.
-	 */
-	@Test
-	public void testAddWall() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
 	 * Test method for {@link nantes1900.models.extended.Building#addRoof(modeles.basis.Polyline)}.
 	 */
 	@Test
 	public void testAddRoof() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.extended.Building#addWalls(java.util.List)}.
-	 */
-	@Test
-	public void testAddWalls() {
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -54,18 +30,18 @@ public class EdificeTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.extended.Building#getWalls()}.
+	 * Test method for {@link nantes1900.models.extended.Building#addWall(modeles.basis.Polyline)}.
 	 */
 	@Test
-	public void testGetWalls() {
+	public void testAddWall() {
 		fail("Not yet implemented"); // TODO
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.extended.Building#getRoofs()}.
+	 * Test method for {@link nantes1900.models.extended.Building#addWalls(java.util.List)}.
 	 */
 	@Test
-	public void testGetRoofs() {
+	public void testAddWalls() {
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -78,10 +54,34 @@ public class EdificeTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.extended.Building#writeSTLWalls(java.lang.String)}.
+	 * Test method for {@link nantes1900.models.extended.Building#Edifice()}.
 	 */
 	@Test
-	public void testWriteSTLWalls() {
+	public void testEdifice() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.extended.Building#getRoofs()}.
+	 */
+	@Test
+	public void testGetRoofs() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.extended.Building#getWalls()}.
+	 */
+	@Test
+	public void testGetWalls() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.extended.Building#writeSTL(java.lang.String)}.
+	 */
+	@Test
+	public void testWriteSTL() {
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -94,10 +94,10 @@ public class EdificeTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.extended.Building#writeSTL(java.lang.String)}.
+	 * Test method for {@link nantes1900.models.extended.Building#writeSTLWalls(java.lang.String)}.
 	 */
 	@Test
-	public void testWriteSTL() {
+	public void testWriteSTLWalls() {
 		fail("Not yet implemented"); // TODO
 	}
 

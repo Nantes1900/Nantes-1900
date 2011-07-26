@@ -27,6 +27,18 @@ import org.junit.Test;
 public class WriterSTLTest {
 
 	/**
+	 * Test method for {@link nantes1900.utils.WriterSTL#setWriteMode(int)}.
+	 */
+	@Test
+	public void testSetWriteMode() {
+		WriterSTL.setWriteMode(WriterSTL.ASCII_MODE);
+		assertTrue(WriterSTL.getWriteMode() == WriterSTL.ASCII_MODE);
+
+		WriterSTL.setWriteMode(WriterSTL.BINARY_MODE);
+		assertTrue(WriterSTL.getWriteMode() == WriterSTL.BINARY_MODE);
+	}
+
+	/**
 	 * Test method for
 	 * {@link nantes1900.utils.WriterSTL#write(java.lang.String, nantes1900.models.Mesh)}. Same
 	 * test as readSTL in ParserTest.
@@ -71,17 +83,5 @@ public class WriterSTLTest {
 
 		// FIXME : it doesn't remove the file.
 		new File("WriterTest.stl").delete();
-	}
-
-	/**
-	 * Test method for {@link nantes1900.utils.WriterSTL#setWriteMode(int)}.
-	 */
-	@Test
-	public void testSetWriteMode() {
-		WriterSTL.setWriteMode(WriterSTL.ASCII_MODE);
-		assertTrue(WriterSTL.getWriteMode() == WriterSTL.ASCII_MODE);
-
-		WriterSTL.setWriteMode(WriterSTL.BINARY_MODE);
-		assertTrue(WriterSTL.getWriteMode() == WriterSTL.BINARY_MODE);
 	}
 }

@@ -14,6 +14,22 @@ public class Point {
 	private double z;
 
 	/**
+	 * Constructor.
+	 * 
+	 * @param x
+	 *            coordinate
+	 * @param y
+	 *            coordinate
+	 * @param z
+	 *            coordinate
+	 */
+	public Point(double x, double y, double z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
+	}
+
+	/**
 	 * Copy constructor.
 	 * 
 	 * To use very cautiously : it can create two Points with equal Values and
@@ -29,19 +45,78 @@ public class Point {
 	}
 
 	/**
-	 * Constructor.
+	 * Operate a change base on the point
 	 * 
-	 * @param x
-	 *            coordinate
-	 * @param y
-	 *            coordinate
-	 * @param z
-	 *            coordinate
+	 * @param matrix
+	 *            of base change Be careful : the point doesn't have the same
+	 *            hashCode after this operation...
 	 */
-	public Point(double x, double y, double z) {
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public void changeBase(double[][] matrix) {
+		double[] coords = { this.x, this.y, this.z };
+		this.set(MatrixMethod.changeBase(coords, matrix));
+	}
+
+	/**
+	 * Compute the distance between two points
+	 * 
+	 * @param p
+	 *            the other point
+	 * @return the distance
+	 */
+	public double distance(Point p) {
+		return Math.pow(
+				Math.pow(p.x - x, 2) + Math.pow(p.y - y, 2)
+						+ Math.pow(p.z - z, 2), 0.5);
+	}
+
+	/**
+	 * Check if a point is almost equal to another. It check if every
+	 * coordinates of this are between the coordinates of p - error et the
+	 * coordinates of p + error.
+	 * 
+	 * @param p
+	 *            the other point
+	 * @param error
+	 *            the error
+	 * @return true if the point is almost equal, false otherwise.
+	 */
+	public boolean epsilonEquals(Point p, double error) {
+		return ((this.x < p.x + error && this.x > p.x - error)
+				&& (this.y < p.y + error && this.y > p.y - error) && (this.z < p.z
+				+ error && this.z > p.z - error));
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Point other = (Point) obj;
+		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
+			return false;
+		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
+			return false;
+		if (Double.doubleToLongBits(z) != Double.doubleToLongBits(other.z))
+			return false;
+		return true;
+	}
+
+	/**
+	 * Getter of the coordinates of the point.
+	 * 
+	 * @return a table of double
+	 */
+	public double[] getPointAsCoordinates() {
+		double[] coords = { x, y, z };
+		return coords;
 	}
 
 	/**
@@ -71,14 +146,35 @@ public class Point {
 		return z;
 	}
 
-	/**
-	 * Getter of the coordinates of the point.
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @return a table of double
+	 * @see java.lang.Object#hashCode()
 	 */
-	public double[] getPointAsCoordinates() {
-		double[] coords = { x, y, z };
-		return coords;
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(x);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(y);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(z);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
+	/**
+	 * Setter
+	 * 
+	 * @param coords
+	 *            the three coordinates
+	 */
+	public void set(double[] coords) {
+		this.setX(coords[0]);
+		this.setY(coords[1]);
+		this.setZ(coords[2]);
 	}
 
 	/**
@@ -111,18 +207,6 @@ public class Point {
 		this.z = z;
 	}
 
-	/**
-	 * Setter
-	 * 
-	 * @param coords
-	 *            the three coordinates
-	 */
-	public void set(double[] coords) {
-		this.setX(coords[0]);
-		this.setY(coords[1]);
-		this.setZ(coords[2]);
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -130,89 +214,5 @@ public class Point {
 	 */
 	public String toString() {
 		return new String("(" + x + ", " + y + ", " + z + ")");
-	}
-
-	/**
-	 * Compute the distance between two points
-	 * 
-	 * @param p
-	 *            the other point
-	 * @return the distance
-	 */
-	public double distance(Point p) {
-		return Math.pow(
-				Math.pow(p.x - x, 2) + Math.pow(p.y - y, 2)
-						+ Math.pow(p.z - z, 2), 0.5);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#hashCode()
-	 */
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(x);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(y);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(z);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		return result;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Point other = (Point) obj;
-		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
-			return false;
-		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
-			return false;
-		if (Double.doubleToLongBits(z) != Double.doubleToLongBits(other.z))
-			return false;
-		return true;
-	}
-
-	/**
-	 * Operate a change base on the point
-	 * 
-	 * @param matrix
-	 *            of base change Be careful : the point doesn't have the same
-	 *            hashCode after this operation...
-	 */
-	public void changeBase(double[][] matrix) {
-		double[] coords = { this.x, this.y, this.z };
-		this.set(MatrixMethod.changeBase(coords, matrix));
-	}
-
-	/**
-	 * Check if a point is almost equal to another. It check if every
-	 * coordinates of this are between the coordinates of p - error et the
-	 * coordinates of p + error.
-	 * 
-	 * @param p
-	 *            the other point
-	 * @param error
-	 *            the error
-	 * @return true if the point is almost equal, false otherwise.
-	 */
-	public boolean epsilonEquals(Point p, double error) {
-		return ((this.x < p.x + error && this.x > p.x - error)
-				&& (this.y < p.y + error && this.y > p.y - error) && (this.z < p.z
-				+ error && this.z > p.z - error));
 	}
 }

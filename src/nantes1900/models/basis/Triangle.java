@@ -75,6 +75,159 @@ public class Triangle {
 	}
 
 	/**
+	 * Check if the this face is oriented as face with an error on the angle.
+	 * The error is in degree.
+	 * 
+	 * @param face
+	 *            the other triangle to compare with
+	 * @param error
+	 *            the orientation error
+	 * @return true if it is oriented as face, false otherwise
+	 */
+	public boolean angularTolerance(Triangle face, double error) {
+		return (this.angularTolerance(face.normal, error));
+	}
+
+	/**
+	 * Check if the this face is oriented as vector with an error on the angle.
+	 * The error is in degree.
+	 * 
+	 * @param vector
+	 *            the vector to compare with
+	 * @param error
+	 *            the orientation error
+	 * @return true if it is oriented as vector, false otherwise
+	 */
+	public boolean angularTolerance(Vector3d vector, double error) {
+		return (this.normal.angle(vector) * 180.0 / Math.PI < error);
+	}
+
+	/**
+	 * Check if the triangle contains the edge e.
+	 * 
+	 * @param e
+	 *            the edge to check
+	 * @return true if the edge e is one of the edges of this, false otherwise.
+	 */
+	public boolean contains(Edge e) {
+		if (this.getEdges().contains(e))
+			return true;
+		else
+			return false;
+	}
+
+	/**
+	 * Check if p is one of the three points of this. Use the method equals of
+	 * this class
+	 * 
+	 * @param p
+	 *            the point to check
+	 * @return true is one point is equal with p
+	 */
+	public boolean contains(Point p) {
+		for (Point point : points) {
+			if (point.equals(p))
+				return true;
+		}
+		return false;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Triangle other = (Triangle) obj;
+
+		if (this.contains(other.points[0]) && this.contains(other.points[1])
+				&& this.contains(other.points[2]))
+			return true;
+		else
+			return false;
+	}
+
+	/**
+	 * Getter.
+	 * 
+	 * @return the first edge
+	 */
+	public Edge getE1() {
+		return edges[0];
+	}
+
+	/**
+	 * Getter.
+	 * 
+	 * @return the second edge
+	 */
+	public Edge getE2() {
+		return edges[1];
+	}
+
+	/**
+	 * Getter.
+	 * 
+	 * @return the third edge
+	 */
+	public Edge getE3() {
+		return edges[2];
+	}
+
+	/**
+	 * Getter.
+	 * 
+	 * @return a collection containing the three edges
+	 */
+	public Collection<Edge> getEdges() {
+		return Arrays.asList(this.edges);
+	}
+
+	/**
+	 * Return the neighbours of this triangle. Look in the edges to find the
+	 * other triangles which share those edges.
+	 * 
+	 * @return a list of the neighbours triangles
+	 */
+	public ArrayList<Triangle> getNeighbours() {
+		ArrayList<Triangle> l = new ArrayList<Triangle>();
+		Triangle other;
+
+		for (Edge e : this.edges) {
+			other = e.returnOther(this);
+			if (other != null)
+				l.add(other);
+		}
+
+		return l;
+	}
+
+	/**
+	 * Getter.
+	 * 
+	 * @return the normal
+	 */
+	public Vector3d getNormal() {
+		return normal;
+	}
+
+	/**
+	 * Return the number of neighbours of this triangle.
+	 * 
+	 * @return the number of neighbours
+	 */
+	public int getNumNeighbours() {
+		return this.getNeighbours().size();
+	}
+
+	/**
 	 * Getter.
 	 * 
 	 * @return the first point
@@ -125,77 +278,6 @@ public class Triangle {
 		return list;
 	}
 
-	/**
-	 * Getter.
-	 * 
-	 * @return the normal
-	 */
-	public Vector3d getNormal() {
-		return normal;
-	}
-
-	/**
-	 * Getter.
-	 * 
-	 * @return the first edge
-	 */
-	public Edge getE1() {
-		return edges[0];
-	}
-
-	/**
-	 * Getter.
-	 * 
-	 * @return the second edge
-	 */
-	public Edge getE2() {
-		return edges[1];
-	}
-
-	/**
-	 * Getter.
-	 * 
-	 * @return the third edge
-	 */
-	public Edge getE3() {
-		return edges[2];
-	}
-
-	/**
-	 * Getter.
-	 * 
-	 * @return a collection containing the three edges
-	 */
-	public Collection<Edge> getEdges() {
-		return Arrays.asList(this.edges);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString()
-	 */
-	public String toString() {
-		return points[0].toString() + "\n" + points[1].toString() + "\n"
-				+ points[2].toString() + "\n" + normal.toString();
-	}
-
-	/**
-	 * Check if p is one of the three points of this. Use the method equals of
-	 * this class
-	 * 
-	 * @param p
-	 *            the point to check
-	 * @return true is one point is equal with p
-	 */
-	public boolean contains(Point p) {
-		for (Point point : points) {
-			if (point.equals(p))
-				return true;
-		}
-		return false;
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -210,231 +292,16 @@ public class Triangle {
 		return result;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Triangle other = (Triangle) obj;
-
-		if (this.contains(other.points[0]) && this.contains(other.points[1])
-				&& this.contains(other.points[2]))
-			return true;
-		else
-			return false;
-	}
-
 	/**
-	 * Compute the average x-coordinate of the three points.
+	 * Check if a triangle is a neighbours of this. This method calls the
+	 * getNeighbours method.
 	 * 
-	 * @return the average x-coordinate of the three points
+	 * @param f
+	 *            the triangle to check
+	 * @return true if it is neighbours, false otherwise.
 	 */
-	public double xAverage() {
-		double xAverage = points[0].getX() + points[1].getX()
-				+ points[2].getX();
-		return xAverage / 3;
-	}
-
-	/**
-	 * Compute the average y-coordinate of the three points.
-	 * 
-	 * @return the average y-coordinate of the three points
-	 */
-	public double yAverage() {
-		double yAverage = points[0].getY() + points[1].getY()
-				+ points[2].getY();
-		return yAverage / 3;
-	}
-
-	/**
-	 * Compute the average z-coordinate of the three points.
-	 * 
-	 * @return the average z-coordinate of the three points
-	 */
-	public double zAverage() {
-		double zAverage = points[0].getZ() + points[1].getZ()
-				+ points[2].getZ();
-		return zAverage / 3;
-	}
-
-	/**
-	 * Compute the x-minimum of the three points.
-	 * 
-	 * @return the x-minimum of the three points
-	 */
-	public double xMin() {
-		return Math.min(points[0].getX(),
-				Math.min(points[1].getX(), points[2].getX()));
-	}
-
-	/**
-	 * Compute the x-maximum of the three points.
-	 * 
-	 * @return the x-maximum of the three points
-	 */
-	public double xMax() {
-		return Math.max(points[0].getX(),
-				Math.max(points[1].getX(), points[2].getX()));
-	}
-
-	/**
-	 * Compute the y-minimum of the three points.
-	 * 
-	 * @return the y-minimum of the three points
-	 */
-	public double yMin() {
-		return Math.min(points[0].getY(),
-				Math.min(points[1].getY(), points[2].getY()));
-	}
-
-	/**
-	 * Compute the y-maximum of the three points.
-	 * 
-	 * @return the y-maximum of the three points
-	 */
-	public double yMax() {
-		return Math.max(points[0].getY(),
-				Math.max(points[1].getY(), points[2].getY()));
-	}
-
-	/**
-	 * Compute the z-minimum of the three points.
-	 * 
-	 * @return the z-minimum of the three points
-	 */
-	public double zMin() {
-		return Math.min(points[0].getZ(),
-				Math.min(points[1].getZ(), points[2].getZ()));
-	}
-
-	/**
-	 * Compute the z-maximum of the three points.
-	 * 
-	 * @return the z-maximum of the three points
-	 */
-	public double zMax() {
-		return Math.max(points[0].getZ(),
-				Math.max(points[1].getZ(), points[2].getZ()));
-	}
-
-	/**
-	 * Compute the point at the x-minimum of the three points.
-	 * 
-	 * @return the point at the x-minimum of the three points.
-	 */
-	public Point xMinPoint() {
-		double xMin = this.xMin();
-		for (Point p : points) {
-			if (p.getX() == xMin)
-				return p;
-		}
-		return null;
-	}
-
-	/**
-	 * Compute the point at the x-maximum of the three points.
-	 * 
-	 * @return the point at the x-maximum of the three points.
-	 */
-	public Point xMaxPoint() {
-		double xMax = this.xMax();
-		for (Point p : points) {
-			if (p.getX() == xMax)
-				return p;
-		}
-		return null;
-	}
-
-	/**
-	 * Compute the point at the y-minimum of the three points.
-	 * 
-	 * @return the point at the y-minimum of the three points.
-	 */
-	public Point yMinPoint() {
-		double yMin = this.yMin();
-		for (Point p : points) {
-			if (p.getY() == yMin)
-				return p;
-		}
-		return null;
-	}
-
-	/**
-	 * Compute the point at the y-maximum of the three points.
-	 * 
-	 * @return the point at the y-maximum of the three points.
-	 */
-	public Point yMaxPoint() {
-		double yMay = this.yMax();
-		for (Point p : points) {
-			if (p.getY() == yMay)
-				return p;
-		}
-		return null;
-	}
-
-	/**
-	 * Compute the point at the z-minimum of the three points.
-	 * 
-	 * @return the point at the z-minimum of the three points.
-	 */
-	public Point zMinPoint() {
-		double zMin = this.zMin();
-		for (Point p : points) {
-			if (p.getZ() == zMin)
-				return p;
-		}
-		return null;
-	}
-
-	/**
-	 * Compute the point at the z-maximum of the three points.
-	 * 
-	 * @return the point at the z-maximum of the three points.
-	 */
-	public Point zMaxPoint() {
-		double zMax = this.zMax();
-		for (Point p : points) {
-			if (p.getZ() == zMax)
-				return p;
-		}
-		return null;
-	}
-
-	/**
-	 * Check if the this face is oriented as vector with an error on the angle.
-	 * The error is in degree.
-	 * 
-	 * @param vector
-	 *            the vector to compare with
-	 * @param error
-	 *            the orientation error
-	 * @return true if it is oriented as vector, false otherwise
-	 */
-	public boolean angularTolerance(Vector3d vector, double error) {
-		return (this.normal.angle(vector) * 180.0 / Math.PI < error);
-	}
-
-	/**
-	 * Check if the this face is oriented as face with an error on the angle.
-	 * The error is in degree.
-	 * 
-	 * @param face
-	 *            the other triangle to compare with
-	 * @param error
-	 *            the orientation error
-	 * @return true if it is oriented as face, false otherwise
-	 */
-	public boolean angularTolerance(Triangle face, double error) {
-		return (this.angularTolerance(face.normal, error));
+	public boolean isNeighboor(Triangle f) {
+		return (this.getNeighbours().contains(f));
 	}
 
 	/**
@@ -473,57 +340,190 @@ public class Triangle {
 		}
 	}
 
-	/**
-	 * Return the neighbours of this triangle. Look in the edges to find the
-	 * other triangles which share those edges.
+	/*
+	 * (non-Javadoc)
 	 * 
-	 * @return a list of the neighbours triangles
+	 * @see java.lang.Object#toString()
 	 */
-	public ArrayList<Triangle> getNeighbours() {
-		ArrayList<Triangle> l = new ArrayList<Triangle>();
-		Triangle other;
+	public String toString() {
+		return points[0].toString() + "\n" + points[1].toString() + "\n"
+				+ points[2].toString() + "\n" + normal.toString();
+	}
 
-		for (Edge e : this.edges) {
-			other = e.returnOther(this);
-			if (other != null)
-				l.add(other);
+	/**
+	 * Compute the average x-coordinate of the three points.
+	 * 
+	 * @return the average x-coordinate of the three points
+	 */
+	public double xAverage() {
+		double xAverage = points[0].getX() + points[1].getX()
+				+ points[2].getX();
+		return xAverage / 3;
+	}
+
+	/**
+	 * Compute the x-maximum of the three points.
+	 * 
+	 * @return the x-maximum of the three points
+	 */
+	public double xMax() {
+		return Math.max(points[0].getX(),
+				Math.max(points[1].getX(), points[2].getX()));
+	}
+
+	/**
+	 * Compute the point at the x-maximum of the three points.
+	 * 
+	 * @return the point at the x-maximum of the three points.
+	 */
+	public Point xMaxPoint() {
+		double xMax = this.xMax();
+		for (Point p : points) {
+			if (p.getX() == xMax)
+				return p;
 		}
-
-		return l;
+		return null;
 	}
 
 	/**
-	 * Check if a triangle is a neighbours of this. This method calls the
-	 * getNeighbours method.
+	 * Compute the x-minimum of the three points.
 	 * 
-	 * @param f
-	 *            the triangle to check
-	 * @return true if it is neighbours, false otherwise.
+	 * @return the x-minimum of the three points
 	 */
-	public boolean isNeighboor(Triangle f) {
-		return (this.getNeighbours().contains(f));
+	public double xMin() {
+		return Math.min(points[0].getX(),
+				Math.min(points[1].getX(), points[2].getX()));
 	}
 
 	/**
-	 * Return the number of neighbours of this triangle.
+	 * Compute the point at the x-minimum of the three points.
 	 * 
-	 * @return the number of neighbours
+	 * @return the point at the x-minimum of the three points.
 	 */
-	public int getNumNeighbours() {
-		return this.getNeighbours().size();
+	public Point xMinPoint() {
+		double xMin = this.xMin();
+		for (Point p : points) {
+			if (p.getX() == xMin)
+				return p;
+		}
+		return null;
 	}
 
 	/**
-	 * Check if the triangle contains the edge e.
+	 * Compute the average y-coordinate of the three points.
 	 * 
-	 * @param e
-	 *            the edge to check
-	 * @return true if the edge e is one of the edges of this, false otherwise.
+	 * @return the average y-coordinate of the three points
 	 */
-	public boolean contains(Edge e) {
-		if (this.getEdges().contains(e))
-			return true;
-		else
-			return false;
+	public double yAverage() {
+		double yAverage = points[0].getY() + points[1].getY()
+				+ points[2].getY();
+		return yAverage / 3;
+	}
+
+	/**
+	 * Compute the y-maximum of the three points.
+	 * 
+	 * @return the y-maximum of the three points
+	 */
+	public double yMax() {
+		return Math.max(points[0].getY(),
+				Math.max(points[1].getY(), points[2].getY()));
+	}
+
+	/**
+	 * Compute the point at the y-maximum of the three points.
+	 * 
+	 * @return the point at the y-maximum of the three points.
+	 */
+	public Point yMaxPoint() {
+		double yMay = this.yMax();
+		for (Point p : points) {
+			if (p.getY() == yMay)
+				return p;
+		}
+		return null;
+	}
+
+	/**
+	 * Compute the y-minimum of the three points.
+	 * 
+	 * @return the y-minimum of the three points
+	 */
+	public double yMin() {
+		return Math.min(points[0].getY(),
+				Math.min(points[1].getY(), points[2].getY()));
+	}
+
+	/**
+	 * Compute the point at the y-minimum of the three points.
+	 * 
+	 * @return the point at the y-minimum of the three points.
+	 */
+	public Point yMinPoint() {
+		double yMin = this.yMin();
+		for (Point p : points) {
+			if (p.getY() == yMin)
+				return p;
+		}
+		return null;
+	}
+
+	/**
+	 * Compute the average z-coordinate of the three points.
+	 * 
+	 * @return the average z-coordinate of the three points
+	 */
+	public double zAverage() {
+		double zAverage = points[0].getZ() + points[1].getZ()
+				+ points[2].getZ();
+		return zAverage / 3;
+	}
+
+	/**
+	 * Compute the z-maximum of the three points.
+	 * 
+	 * @return the z-maximum of the three points
+	 */
+	public double zMax() {
+		return Math.max(points[0].getZ(),
+				Math.max(points[1].getZ(), points[2].getZ()));
+	}
+
+	/**
+	 * Compute the point at the z-maximum of the three points.
+	 * 
+	 * @return the point at the z-maximum of the three points.
+	 */
+	public Point zMaxPoint() {
+		double zMax = this.zMax();
+		for (Point p : points) {
+			if (p.getZ() == zMax)
+				return p;
+		}
+		return null;
+	}
+
+	/**
+	 * Compute the z-minimum of the three points.
+	 * 
+	 * @return the z-minimum of the three points
+	 */
+	public double zMin() {
+		return Math.min(points[0].getZ(),
+				Math.min(points[1].getZ(), points[2].getZ()));
+	}
+
+	/**
+	 * Compute the point at the z-minimum of the three points.
+	 * 
+	 * @return the point at the z-minimum of the three points.
+	 */
+	public Point zMinPoint() {
+		double zMin = this.zMin();
+		for (Point p : points) {
+			if (p.getZ() == zMin)
+				return p;
+		}
+		return null;
 	}
 }

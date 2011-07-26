@@ -14,23 +14,6 @@ import org.junit.Test;
 public class TownTest {
 
 	/**
-	 * Test method for {@link nantes1900.models.extended.Town#Town()}.
-	 */
-	@Test
-	public void testTown() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.extended.Town#buildFromMesh(java.lang.String)}.
-	 */
-	@Test
-	public void testBuildFromMesh() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
 	 * Test method for
 	 * {@link nantes1900.models.extended.Town#addBuilding(models.extended.Edifice)}.
 	 */
@@ -59,6 +42,23 @@ public class TownTest {
 
 	/**
 	 * Test method for
+	 * {@link nantes1900.models.extended.Town#buildFromMesh(java.lang.String)}.
+	 */
+	@Test
+	public void testBuildFromMesh() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.extended.Town#Town()}.
+	 */
+	@Test
+	public void testTown() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
 	 * {@link nantes1900.models.extended.Town#writeCityGML(java.lang.String)}.
 	 */
 	@Test
@@ -67,18 +67,18 @@ public class TownTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.extended.Town#writeSTLFloors()}.
-	 */
-	@Test
-	public void testWriteSTLFloors() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
 	 * Test method for {@link nantes1900.models.extended.Town#writeSTLBuildings()}.
 	 */
 	@Test
 	public void testWriteSTLBuildings() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.extended.Town#writeSTLFloors()}.
+	 */
+	@Test
+	public void testWriteSTLFloors() {
 		fail("Not yet implemented"); // TODO
 	}
 

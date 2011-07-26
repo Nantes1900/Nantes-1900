@@ -19,44 +19,6 @@ public class Floor {
 	}
 
 	/**
-	 * Getter.
-	 * 
-	 * @return the attribute
-	 */
-	public String getAttribute() {
-		return attribute;
-	}
-
-	/**
-	 * Setter
-	 * 
-	 * @param attribute
-	 *            the attribute of the Floor
-	 */
-	public void setAttribute(String attribute) {
-		this.attribute = attribute;
-	}
-
-	/**
-	 * Getter.
-	 * 
-	 * @return the floor as a mesh
-	 */
-	public Mesh getMesh() {
-		return mesh;
-	}
-
-	/**
-	 * Setter.
-	 * 
-	 * @param floor
-	 *            the floor as a mesh
-	 */
-	public void setMesh(Mesh floor) {
-		this.mesh = floor;
-	}
-
-	/**
 	 * Build a floor from a mesh, by computing the algorithms.
 	 * 
 	 * @param m
@@ -76,6 +38,44 @@ public class Floor {
 	 */
 	public void decimate(Mesh floor) {
 
+	}
+
+	/**
+	 * Getter.
+	 * 
+	 * @return the attribute
+	 */
+	public String getAttribute() {
+		return attribute;
+	}
+
+	/**
+	 * Getter.
+	 * 
+	 * @return the floor as a mesh
+	 */
+	public Mesh getMesh() {
+		return mesh;
+	}
+
+	/**
+	 * Setter
+	 * 
+	 * @param attribute
+	 *            the attribute of the Floor
+	 */
+	public void setAttribute(String attribute) {
+		this.attribute = attribute;
+	}
+
+	/**
+	 * Setter.
+	 * 
+	 * @param floor
+	 *            the floor as a mesh
+	 */
+	public void setMesh(Mesh floor) {
+		this.mesh = floor;
 	}
 
 	/*

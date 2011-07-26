@@ -14,10 +14,11 @@ import org.junit.Test;
 public class FloorTest {
 
 	/**
-	 * Test method for {@link nantes1900.models.extended.Floor#writeSTL(java.lang.String)}.
+	 * Test method for
+	 * {@link nantes1900.models.extended.Floor#buildFromMesh(modeles.basis.Mesh)}.
 	 */
 	@Test
-	public void testWriteSTL() {
+	public void testBuildFromMesh() {
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -38,19 +39,27 @@ public class FloorTest {
 	}
 
 	/**
+	 * Test method for {@link nantes1900.models.extended.Floor#getFloor()}.
+	 */
+	@Test
+	public void testGetFloor() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.extended.Floor#decimate(modeles.basis.Mesh)}.
+	 */
+	@Test
+	public void testReduce() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
 	 * Test method for
 	 * {@link nantes1900.models.extended.Floor#setAttribute(java.lang.String)}.
 	 */
 	@Test
 	public void testSetAttribute() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.extended.Floor#getFloor()}.
-	 */
-	@Test
-	public void testGetFloor() {
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -64,19 +73,10 @@ public class FloorTest {
 	}
 
 	/**
-	 * Test method for
-	 * {@link nantes1900.models.extended.Floor#buildFromMesh(modeles.basis.Mesh)}.
+	 * Test method for {@link nantes1900.models.extended.Floor#writeSTL(java.lang.String)}.
 	 */
 	@Test
-	public void testBuildFromMesh() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.extended.Floor#decimate(modeles.basis.Mesh)}.
-	 */
-	@Test
-	public void testReduce() {
+	public void testWriteSTL() {
 		fail("Not yet implemented"); // TODO
 	}
 

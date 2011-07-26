@@ -42,44 +42,6 @@ public class WriterSTL {
 	// private static Logger log = Logger.getLogger("logger");
 
 	/**
-	 * Write a mesh, depending on the attribute MODE.
-	 * 
-	 * @param fileName
-	 *            the name of the file to write in
-	 * @param m
-	 *            the mesh to write
-	 */
-	public static void write(String fileName, Mesh m) {
-		try {
-			if (MODE == ASCII_MODE)
-				writeA(fileName, m);
-			else if (MODE == BINARY_MODE)
-				writeB(fileName, m);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
-	 * Allows to change the writing mode attribute : MODE.
-	 * 
-	 * @param mode
-	 *            the new mode
-	 */
-	public static void setWriteMode(int mode) {
-		MODE = mode;
-	}
-
-	/**
-	 * Allows to know the value of the attribute MODE.
-	 * 
-	 * @return the attribute MODE
-	 */
-	public static int getWriteMode() {
-		return MODE;
-	}
-
-	/**
 	 * Write a mesh in an ASCII file.
 	 * 
 	 * @param fileName
@@ -92,21 +54,6 @@ public class WriterSTL {
 	private static void writeA(String fileName, Mesh m) throws IOException {
 		WriterSTL.writeSTLA(fileName, m);
 		// log.info(fileName + " written in STL ASCII!");
-	}
-
-	/**
-	 * Write a mesh in an binary file.
-	 * 
-	 * @param fileName
-	 *            the name of the file to write in.
-	 * @param m
-	 *            the mesh to write
-	 * @throws IOException
-	 *             if there is a problem in the opening or the closing operation
-	 */
-	private static void writeB(String fileName, Mesh m) throws IOException {
-		WriterSTL.writeSTLB(fileName, m);
-		// log.info(fileName + " written in STL binary!");
 	}
 
 	/**
@@ -148,54 +95,18 @@ public class WriterSTL {
 	}
 
 	/**
-	 * Write a mesh in an ASCII file.
+	 * Write a mesh in an binary file.
 	 * 
 	 * @param fileName
 	 *            the name of the file to write in.
-	 * @param surface
+	 * @param m
 	 *            the mesh to write
 	 * @throws IOException
 	 *             if there is a problem in the opening or the closing operation
 	 */
-	private static void writeSTLA(String fileName, Mesh surface)
-			throws IOException {
-		BufferedWriter fw = null;
-		try {
-			// Write the header of the file : solid.
-			fw = new BufferedWriter(new FileWriter(fileName));
-			fw.write("solid");
-			for (Triangle f : surface) {
-				writeASCIIFace(fw, f);
-			}
-			// Write the end of the file : endsolid.
-			fw.write("\nendsolid");
-			// Finish to write the last datas before closing the writer.
-			fw.flush();
-		} finally {
-			if (fw != null) {
-				fw.close();
-			}
-		}
-
-	}
-
-	/**
-	 * Write a double in the good order (LITTLE_ENDIAN) in the writer.
-	 * 
-	 * @param writer
-	 *            the writer which writes in the file
-	 * @param a
-	 *            the double to write
-	 * @throws IOException
-	 *             if the writer throws an error
-	 */
-	private static void writeInGoodOrder(OutputStream writer, double a)
-			throws IOException {
-		// Write the double : must order it in the LITTLE_ENDIAN format.
-		ByteBuffer bBuf = ByteBuffer.allocate(Float.SIZE);
-		bBuf.order(ByteOrder.LITTLE_ENDIAN);
-		bBuf.putFloat((float) a);
-		writer.write(bBuf.array(), 0, Float.SIZE / 8);
+	private static void writeB(String fileName, Mesh m) throws IOException {
+		WriterSTL.writeSTLB(fileName, m);
+		// log.info(fileName + " written in STL binary!");
 	}
 
 	/**
@@ -229,6 +140,57 @@ public class WriterSTL {
 		writeInGoodOrder(writer, face.getP3().getZ());
 
 		writer.write(new byte[2]);
+	}
+
+	/**
+	 * Write a double in the good order (LITTLE_ENDIAN) in the writer.
+	 * 
+	 * @param writer
+	 *            the writer which writes in the file
+	 * @param a
+	 *            the double to write
+	 * @throws IOException
+	 *             if the writer throws an error
+	 */
+	private static void writeInGoodOrder(OutputStream writer, double a)
+			throws IOException {
+		// Write the double : must order it in the LITTLE_ENDIAN format.
+		ByteBuffer bBuf = ByteBuffer.allocate(Float.SIZE);
+		bBuf.order(ByteOrder.LITTLE_ENDIAN);
+		bBuf.putFloat((float) a);
+		writer.write(bBuf.array(), 0, Float.SIZE / 8);
+	}
+
+	/**
+	 * Write a mesh in an ASCII file.
+	 * 
+	 * @param fileName
+	 *            the name of the file to write in.
+	 * @param surface
+	 *            the mesh to write
+	 * @throws IOException
+	 *             if there is a problem in the opening or the closing operation
+	 */
+	private static void writeSTLA(String fileName, Mesh surface)
+			throws IOException {
+		BufferedWriter fw = null;
+		try {
+			// Write the header of the file : solid.
+			fw = new BufferedWriter(new FileWriter(fileName));
+			fw.write("solid");
+			for (Triangle f : surface) {
+				writeASCIIFace(fw, f);
+			}
+			// Write the end of the file : endsolid.
+			fw.write("\nendsolid");
+			// Finish to write the last datas before closing the writer.
+			fw.flush();
+		} finally {
+			if (fw != null) {
+				fw.close();
+			}
+		}
+
 	}
 
 	/**
@@ -267,6 +229,44 @@ public class WriterSTL {
 			stream.flush();
 		} finally {
 			stream.close();
+		}
+	}
+
+	/**
+	 * Allows to know the value of the attribute MODE.
+	 * 
+	 * @return the attribute MODE
+	 */
+	public static int getWriteMode() {
+		return MODE;
+	}
+
+	/**
+	 * Allows to change the writing mode attribute : MODE.
+	 * 
+	 * @param mode
+	 *            the new mode
+	 */
+	public static void setWriteMode(int mode) {
+		MODE = mode;
+	}
+
+	/**
+	 * Write a mesh, depending on the attribute MODE.
+	 * 
+	 * @param fileName
+	 *            the name of the file to write in
+	 * @param m
+	 *            the mesh to write
+	 */
+	public static void write(String fileName, Mesh m) {
+		try {
+			if (MODE == ASCII_MODE)
+				writeA(fileName, m);
+			else if (MODE == BINARY_MODE)
+				writeB(fileName, m);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 }

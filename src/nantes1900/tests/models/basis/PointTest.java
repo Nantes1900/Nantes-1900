@@ -19,91 +19,32 @@ import org.junit.Test;
  */
 public class PointTest {
 	/**
-	 * Test method for {@link nantes1900.models.basis.Point#hashCode()}.
+	 * Test method for {@link nantes1900.models.basis.Point#changeBase(double[][])}.
 	 */
 	@Test
-	public void testHashCode() {
-		fail("Not yet implemented"); // TODO
-	}
+	public void testChangeBase() {
+		Vector3d vect = new Vector3d(0, 0, 1);
 
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#Point(nantes1900.models.basis.Point)}.
-	 */
-	@Test
-	public void testPointPoint() {
-		fail("Not yet implemented"); // TODO
-	}
+		try {
 
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#Point(double, double, double)}.
-	 */
-	@Test
-	public void testPointDoubleDoubleDouble() {
-		fail("Not yet implemented"); // TODO
-	}
+			double[][] matrix = MatrixMethod.createOrthoBase(vect);
 
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#getX()}.
-	 */
-	@Test
-	public void testGetX() {
-		fail("Not yet implemented"); // TODO
-	}
+			double x = 1.2366646772;
+			double y = 435.23134144;
+			double z = -210.35681944;
+			Point p = new Point(x, y, z);
 
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#getY()}.
-	 */
-	@Test
-	public void testGetY() {
-		fail("Not yet implemented"); // TODO
-	}
+			p.changeBase(matrix);
 
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#getZ()}.
-	 */
-	@Test
-	public void testGetZ() {
-		fail("Not yet implemented"); // TODO
-	}
+			Point pChanged = new Point(0, 0, 0);
+			double[] coords = { x, y, z };
+			pChanged.set(MatrixMethod.changeBase(coords, matrix));
 
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#setX(double)}.
-	 */
-	@Test
-	public void testSetX() {
-		fail("Not yet implemented"); // TODO
-	}
+			assertTrue(p.equals(pChanged));
 
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#setY(double)}.
-	 */
-	@Test
-	public void testSetY() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#setZ(double)}.
-	 */
-	@Test
-	public void testSetZ() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#set(double[])}.
-	 */
-	@Test
-	public void testSet() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#toString()}.
-	 */
-	@Test
-	public void testToString() {
-		fail("Not yet implemented"); // TODO
+		} catch (SingularMatrixException e) {
+			fail();
+		}
 	}
 
 	/**
@@ -139,31 +80,90 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Point#changeBase(double[][])}.
+	 * Test method for {@link nantes1900.models.basis.Point#getX()}.
 	 */
 	@Test
-	public void testChangeBase() {
-		Vector3d vect = new Vector3d(0, 0, 1);
+	public void testGetX() {
+		fail("Not yet implemented"); // TODO
+	}
 
-		try {
+	/**
+	 * Test method for {@link nantes1900.models.basis.Point#getY()}.
+	 */
+	@Test
+	public void testGetY() {
+		fail("Not yet implemented"); // TODO
+	}
 
-			double[][] matrix = MatrixMethod.createOrthoBase(vect);
+	/**
+	 * Test method for {@link nantes1900.models.basis.Point#getZ()}.
+	 */
+	@Test
+	public void testGetZ() {
+		fail("Not yet implemented"); // TODO
+	}
 
-			double x = 1.2366646772;
-			double y = 435.23134144;
-			double z = -210.35681944;
-			Point p = new Point(x, y, z);
+	/**
+	 * Test method for {@link nantes1900.models.basis.Point#hashCode()}.
+	 */
+	@Test
+	public void testHashCode() {
+		fail("Not yet implemented"); // TODO
+	}
 
-			p.changeBase(matrix);
+	/**
+	 * Test method for {@link nantes1900.models.basis.Point#Point(double, double, double)}.
+	 */
+	@Test
+	public void testPointDoubleDoubleDouble() {
+		fail("Not yet implemented"); // TODO
+	}
 
-			Point pChanged = new Point(0, 0, 0);
-			double[] coords = { x, y, z };
-			pChanged.set(MatrixMethod.changeBase(coords, matrix));
+	/**
+	 * Test method for {@link nantes1900.models.basis.Point#Point(nantes1900.models.basis.Point)}.
+	 */
+	@Test
+	public void testPointPoint() {
+		fail("Not yet implemented"); // TODO
+	}
 
-			assertTrue(p.equals(pChanged));
+	/**
+	 * Test method for {@link nantes1900.models.basis.Point#set(double[])}.
+	 */
+	@Test
+	public void testSet() {
+		fail("Not yet implemented"); // TODO
+	}
 
-		} catch (SingularMatrixException e) {
-			fail();
-		}
+	/**
+	 * Test method for {@link nantes1900.models.basis.Point#setX(double)}.
+	 */
+	@Test
+	public void testSetX() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.basis.Point#setY(double)}.
+	 */
+	@Test
+	public void testSetY() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.basis.Point#setZ(double)}.
+	 */
+	@Test
+	public void testSetZ() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.basis.Point#toString()}.
+	 */
+	@Test
+	public void testToString() {
+		fail("Not yet implemented"); // TODO
 	}
 }

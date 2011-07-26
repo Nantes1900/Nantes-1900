@@ -65,70 +65,6 @@ public class WriterCityGML {
 	}
 
 	/**
-	 * Add a ground to the CityGMLFactory
-	 * 
-	 * @param floor
-	 *            the mesh to write
-	 */
-	public void addFloor(Floor floor) {
-		// FIXME : make a real ground...
-		Building building = citygml.createBuilding();
-
-		// LOD2 solid
-		List<SurfaceProperty> surfaceMember = new ArrayList<SurfaceProperty>();
-
-		CompositeSurface compositeSurface = this.gml.createCompositeSurface();
-		compositeSurface.setSurfaceMember(surfaceMember);
-		Solid solid = this.gml.createSolid();
-		solid.setExterior(this.gml.createSurfaceProperty(compositeSurface));
-
-		building.setLod2Solid(this.gml.createSolidProperty(solid));
-
-		// Thematic boundary surfaces
-		List<BoundarySurfaceProperty> boundedBy = new ArrayList<BoundarySurfaceProperty>();
-
-		try {
-			for (Triangle t : floor.getMesh()) {
-				Polygon geometry = geom.createLinearPolygon(
-						t.getPointsAsCoordinates(), 3);
-				geometry.setId(this.gmlIdManager.generateGmlId());
-				surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
-						.getId()));
-				// TODO : peut-être classer en WALL et ROOF SURFACE !
-
-				AbstractBoundarySurface boundarySurface = citygml
-						.createRoofSurface();
-
-				boundarySurface.setLod2MultiSurface(gml
-						.createMultiSurfaceProperty(gml
-								.createMultiSurface(geometry)));
-
-				boundedBy.add(citygml
-						.createBoundarySurfaceProperty(boundarySurface));
-			}
-		} catch (DimensionMismatchException e) {
-			e.printStackTrace();
-		}
-
-		building.setBoundedBySurface(boundedBy);
-
-		cityModel.setBoundedBy(building.calcBoundedBy(false));
-		cityModel.addCityObjectMember(citygml.createCityObjectMember(building));
-	}
-
-	/**
-	 * Add a list of grounds to the CityGMLFactory
-	 * 
-	 * @param floor
-	 *            the list of meshes to write
-	 */
-	public void addFloors(List<Floor> floors) {
-		for (Floor floor : floors) {
-			this.addFloor(floor);
-		}
-	}
-
-	/**
 	 * Add a building to the CityGMLFactory
 	 * 
 	 * @param buildingToAdd
@@ -205,6 +141,70 @@ public class WriterCityGML {
 	public void addBuildings(List<nantes1900.models.extended.Building> buildings) {
 		for (nantes1900.models.extended.Building building : buildings) {
 			this.addBuilding(building);
+		}
+	}
+
+	/**
+	 * Add a ground to the CityGMLFactory
+	 * 
+	 * @param floor
+	 *            the mesh to write
+	 */
+	public void addFloor(Floor floor) {
+		// FIXME : make a real ground...
+		Building building = citygml.createBuilding();
+
+		// LOD2 solid
+		List<SurfaceProperty> surfaceMember = new ArrayList<SurfaceProperty>();
+
+		CompositeSurface compositeSurface = this.gml.createCompositeSurface();
+		compositeSurface.setSurfaceMember(surfaceMember);
+		Solid solid = this.gml.createSolid();
+		solid.setExterior(this.gml.createSurfaceProperty(compositeSurface));
+
+		building.setLod2Solid(this.gml.createSolidProperty(solid));
+
+		// Thematic boundary surfaces
+		List<BoundarySurfaceProperty> boundedBy = new ArrayList<BoundarySurfaceProperty>();
+
+		try {
+			for (Triangle t : floor.getMesh()) {
+				Polygon geometry = geom.createLinearPolygon(
+						t.getPointsAsCoordinates(), 3);
+				geometry.setId(this.gmlIdManager.generateGmlId());
+				surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
+						.getId()));
+				// TODO : peut-être classer en WALL et ROOF SURFACE !
+
+				AbstractBoundarySurface boundarySurface = citygml
+						.createRoofSurface();
+
+				boundarySurface.setLod2MultiSurface(gml
+						.createMultiSurfaceProperty(gml
+								.createMultiSurface(geometry)));
+
+				boundedBy.add(citygml
+						.createBoundarySurfaceProperty(boundarySurface));
+			}
+		} catch (DimensionMismatchException e) {
+			e.printStackTrace();
+		}
+
+		building.setBoundedBySurface(boundedBy);
+
+		cityModel.setBoundedBy(building.calcBoundedBy(false));
+		cityModel.addCityObjectMember(citygml.createCityObjectMember(building));
+	}
+
+	/**
+	 * Add a list of grounds to the CityGMLFactory
+	 * 
+	 * @param floor
+	 *            the list of meshes to write
+	 */
+	public void addFloors(List<Floor> floors) {
+		for (Floor floor : floors) {
+			this.addFloor(floor);
 		}
 	}
 

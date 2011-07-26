@@ -30,14 +30,21 @@ public class TriangleTest {
 	Triangle t = new Triangle(p1, p2, p3, e1, e2, e3, vect);
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getPoints()}.
+	 * Test method for
+	 * {@link nantes1900.models.basis.Triangle#angularTolerance(javax.vecmath.Vector3d, double)}
+	 * . Test method for
+	 * {@link nantes1900.models.basis.Triangle#angularTolerance(nantes1900.models.basis.Triangle, double)}.
 	 */
 	@Test
-	public void testGetPoints() {
-		ArrayList<Point> pointList = new ArrayList<Point>(t.getPoints());
-		assertTrue(pointList.get(0) == p1);
-		assertTrue(pointList.get(1) == p2);
-		assertTrue(pointList.get(2) == p3);
+	public void testAngularTolerance() {
+		Vector3d vector = new Vector3d(0, 1, 0);
+		Triangle tBis = new Triangle(p1, p2, p3, e1, e2, e3, vector);
+
+		assertFalse(t.angularTolerance(vector, 60));
+		assertFalse(t.angularTolerance(tBis, 60));
+
+		assertTrue(t.angularTolerance(vector, 100));
+		assertTrue(t.angularTolerance(tBis, 100));
 	}
 
 	/**
@@ -61,141 +68,150 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#xAverage()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#getE1()}.
 	 */
 	@Test
-	public void testXAverage() {
-		assertTrue(t.xAverage() == 0);
+	public void testGetE1() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#yAverage()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#getE2()}.
 	 */
 	@Test
-	public void testYAverage() {
-		assertTrue(t.yAverage() == 1);
+	public void testGetE2() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#zAverage()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#getE3()}.
 	 */
 	@Test
-	public void testZAverage() {
-		assertTrue(t.zAverage() == 0);
+	public void testGetE3() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#xMin()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#getEdges()}.
 	 */
 	@Test
-	public void testXMin() {
-		assertTrue(t.xMin() == -1);
+	public void testGetEdges() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#xMax()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#getNeighbours()}.
 	 */
 	@Test
-	public void testXMax() {
-		assertTrue(t.xMax() == 1);
+	public void testGetNeighbours() {
+		Point p4 = new Point(3, 4, 5);
+		Point p5 = new Point(-3, -4, -5);
+		Point p6 = new Point(-3.5, -1.2, 5.9);
+		Edge e4 = new Edge(p1, p4);
+		Edge e5 = new Edge(p2, p4);
+		Edge e6 = new Edge(p1, p5);
+		Edge e7 = new Edge(p2, p5);
+		Edge e8 = new Edge(p1, p6);
+		Edge e9 = new Edge(p2, p6);
+		Triangle t2 = new Triangle(p1, p2, p4, e1, e4, e5, vect);
+		Triangle t3 = new Triangle(p1, p3, p5, e3, e6, e7, vect);
+		Triangle t4 = new Triangle(p2, p3, p6, e2, e8, e9, vect);
+
+		Mesh contain = new Mesh();
+		contain.add(t);
+		contain.add(t2);
+		contain.add(t3);
+		contain.add(t4);
+
+		ArrayList<Triangle> l = t.getNeighbours();
+
+		assertFalse(l.contains(t));
+		assertTrue(l.contains(t2));
+		assertTrue(l.contains(t3));
+		assertTrue(l.contains(t4));
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#yMin()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#getNormal()}.
 	 */
 	@Test
-	public void testYMin() {
-		assertTrue(t.yMin() == 0);
+	public void testGetNormal() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#yMax()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#getNumNeighbours()}.
 	 */
 	@Test
-	public void testYMax() {
-		assertTrue(t.yMax() == 2);
+	public void testGetNumNeighbours() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#zMin()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#getP1()}.
 	 */
 	@Test
-	public void testZMin() {
-		assertTrue(t.zMin() == -1);
+	public void testGetP1() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#zMax()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#getP2()}.
 	 */
 	@Test
-	public void testZMax() {
-		assertTrue(t.zMax() == 1);
+	public void testGetP2() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#xMinPoint()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#getP3()}.
 	 */
 	@Test
-	public void testXMinPoint() {
-		assertTrue(t.xMinPoint() == p3);
+	public void testGetP3() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#xMaxPoint()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#getPoints()}.
 	 */
 	@Test
-	public void testXMaxPoint() {
-		assertTrue(t.xMaxPoint() == p1);
+	public void testGetPoints() {
+		ArrayList<Point> pointList = new ArrayList<Point>(t.getPoints());
+		assertTrue(pointList.get(0) == p1);
+		assertTrue(pointList.get(1) == p2);
+		assertTrue(pointList.get(2) == p3);
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#yMinPoint()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#hashCode()}.
 	 */
 	@Test
-	public void testYMinPoint() {
-		assertTrue(t.yMinPoint() == p1);
+	public void testHashCode() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#yMaxPoint()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#isNeighboor(nantes1900.models.basis.Triangle)}.
 	 */
-	@Test
-	public void testYMaxPoint() {
-		assertTrue(t.yMaxPoint() == p3);
-	}
+	public void testIsNeighboor() {
 
-	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#zMinPoint()}.
-	 */
-	@Test
-	public void testZMinPoint() {
-		assertTrue(t.zMinPoint() == p1);
-	}
+		Point p4 = new Point(3, 4, 5);
+		Point p5 = new Point(-3, -4, -5);
+		Point p6 = new Point(-3.5, -1.2, 5.9);
+		Edge e4 = new Edge(p1, p4);
+		Edge e5 = new Edge(p2, p4);
+		Edge e6 = new Edge(p1, p5);
+		Edge e7 = new Edge(p2, p5);
+		Edge e8 = new Edge(p1, p6);
+		Edge e9 = new Edge(p2, p6);
+		Triangle t2 = new Triangle(p1, p2, p4, e1, e4, e5, vect);
+		Triangle t3 = new Triangle(p1, p3, p5, e3, e6, e7, vect);
+		Triangle t4 = new Triangle(p2, p3, p6, e2, e8, e9, vect);
 
-	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#zMaxPoint()}.
-	 */
-	@Test
-	public void testZMaxPoint() {
-		assertTrue(t.zMaxPoint() == p3);
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.basis.Triangle#angularTolerance(javax.vecmath.Vector3d, double)}
-	 * . Test method for
-	 * {@link nantes1900.models.basis.Triangle#angularTolerance(nantes1900.models.basis.Triangle, double)}.
-	 */
-	@Test
-	public void testAngularTolerance() {
-		Vector3d vector = new Vector3d(0, 1, 0);
-		Triangle tBis = new Triangle(p1, p2, p3, e1, e2, e3, vector);
-
-		assertFalse(t.angularTolerance(vector, 60));
-		assertFalse(t.angularTolerance(tBis, 60));
-
-		assertTrue(t.angularTolerance(vector, 100));
-		assertTrue(t.angularTolerance(tBis, 100));
+		assertFalse(t.isNeighboor(t));
+		assertTrue(t.isNeighboor(t2));
+		assertTrue(t.isNeighboor(t3));
+		assertTrue(t.isNeighboor(t4));
 	}
 
 	/**
@@ -253,74 +269,10 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getNeighbours()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#toString()}.
 	 */
 	@Test
-	public void testGetNeighbours() {
-		Point p4 = new Point(3, 4, 5);
-		Point p5 = new Point(-3, -4, -5);
-		Point p6 = new Point(-3.5, -1.2, 5.9);
-		Edge e4 = new Edge(p1, p4);
-		Edge e5 = new Edge(p2, p4);
-		Edge e6 = new Edge(p1, p5);
-		Edge e7 = new Edge(p2, p5);
-		Edge e8 = new Edge(p1, p6);
-		Edge e9 = new Edge(p2, p6);
-		Triangle t2 = new Triangle(p1, p2, p4, e1, e4, e5, vect);
-		Triangle t3 = new Triangle(p1, p3, p5, e3, e6, e7, vect);
-		Triangle t4 = new Triangle(p2, p3, p6, e2, e8, e9, vect);
-
-		Mesh contain = new Mesh();
-		contain.add(t);
-		contain.add(t2);
-		contain.add(t3);
-		contain.add(t4);
-
-		ArrayList<Triangle> l = t.getNeighbours();
-
-		assertFalse(l.contains(t));
-		assertTrue(l.contains(t2));
-		assertTrue(l.contains(t3));
-		assertTrue(l.contains(t4));
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#isNeighboor(nantes1900.models.basis.Triangle)}.
-	 */
-	public void testIsNeighboor() {
-
-		Point p4 = new Point(3, 4, 5);
-		Point p5 = new Point(-3, -4, -5);
-		Point p6 = new Point(-3.5, -1.2, 5.9);
-		Edge e4 = new Edge(p1, p4);
-		Edge e5 = new Edge(p2, p4);
-		Edge e6 = new Edge(p1, p5);
-		Edge e7 = new Edge(p2, p5);
-		Edge e8 = new Edge(p1, p6);
-		Edge e9 = new Edge(p2, p6);
-		Triangle t2 = new Triangle(p1, p2, p4, e1, e4, e5, vect);
-		Triangle t3 = new Triangle(p1, p3, p5, e3, e6, e7, vect);
-		Triangle t4 = new Triangle(p2, p3, p6, e2, e8, e9, vect);
-
-		assertFalse(t.isNeighboor(t));
-		assertTrue(t.isNeighboor(t2));
-		assertTrue(t.isNeighboor(t3));
-		assertTrue(t.isNeighboor(t4));
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getNumNeighbours()}.
-	 */
-	@Test
-	public void testGetNumNeighbours() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#hashCode()}.
-	 */
-	@Test
-	public void testHashCode() {
+	public void testToString() {
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -335,74 +287,122 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getP1()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#xAverage()}.
 	 */
 	@Test
-	public void testGetP1() {
-		fail("Not yet implemented"); // TODO
+	public void testXAverage() {
+		assertTrue(t.xAverage() == 0);
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getP2()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#xMax()}.
 	 */
 	@Test
-	public void testGetP2() {
-		fail("Not yet implemented"); // TODO
+	public void testXMax() {
+		assertTrue(t.xMax() == 1);
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getP3()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#xMaxPoint()}.
 	 */
 	@Test
-	public void testGetP3() {
-		fail("Not yet implemented"); // TODO
+	public void testXMaxPoint() {
+		assertTrue(t.xMaxPoint() == p1);
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getNormal()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#xMin()}.
 	 */
 	@Test
-	public void testGetNormal() {
-		fail("Not yet implemented"); // TODO
+	public void testXMin() {
+		assertTrue(t.xMin() == -1);
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getE1()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#xMinPoint()}.
 	 */
 	@Test
-	public void testGetE1() {
-		fail("Not yet implemented"); // TODO
+	public void testXMinPoint() {
+		assertTrue(t.xMinPoint() == p3);
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getE2()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#yAverage()}.
 	 */
 	@Test
-	public void testGetE2() {
-		fail("Not yet implemented"); // TODO
+	public void testYAverage() {
+		assertTrue(t.yAverage() == 1);
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getE3()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#yMax()}.
 	 */
 	@Test
-	public void testGetE3() {
-		fail("Not yet implemented"); // TODO
+	public void testYMax() {
+		assertTrue(t.yMax() == 2);
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getEdges()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#yMaxPoint()}.
 	 */
 	@Test
-	public void testGetEdges() {
-		fail("Not yet implemented"); // TODO
+	public void testYMaxPoint() {
+		assertTrue(t.yMaxPoint() == p3);
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#toString()}.
+	 * Test method for {@link nantes1900.models.basis.Triangle#yMin()}.
 	 */
 	@Test
-	public void testToString() {
-		fail("Not yet implemented"); // TODO
+	public void testYMin() {
+		assertTrue(t.yMin() == 0);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.basis.Triangle#yMinPoint()}.
+	 */
+	@Test
+	public void testYMinPoint() {
+		assertTrue(t.yMinPoint() == p1);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.basis.Triangle#zAverage()}.
+	 */
+	@Test
+	public void testZAverage() {
+		assertTrue(t.zAverage() == 0);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.basis.Triangle#zMax()}.
+	 */
+	@Test
+	public void testZMax() {
+		assertTrue(t.zMax() == 1);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.basis.Triangle#zMaxPoint()}.
+	 */
+	@Test
+	public void testZMaxPoint() {
+		assertTrue(t.zMaxPoint() == p3);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.basis.Triangle#zMin()}.
+	 */
+	@Test
+	public void testZMin() {
+		assertTrue(t.zMin() == -1);
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.basis.Triangle#zMinPoint()}.
+	 */
+	@Test
+	public void testZMinPoint() {
+		assertTrue(t.zMinPoint() == p1);
 	}
 }

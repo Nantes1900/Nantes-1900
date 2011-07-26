@@ -600,6 +600,7 @@ public class Mesh extends HashSet<Triangle> {
 	 * @return tru if one edge at least is shared between this and mesh, and
 	 *         false otherwise.
 	 */
+	// FIXME : too long method. Optimize it.
 	public boolean isNeighbour(Mesh mesh) {
 		if (mesh != this) {
 			for (Edge e : this.returnUnsortedBounds().getEdgeList()) {
