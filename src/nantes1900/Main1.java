@@ -8,6 +8,7 @@ public class Main1 {
 
 		Town town = new Town();
 		town.buildFromMesh("Tests/test - st-similien");
-		town.writeCityGML("test.xml");
+		town.writeCityGML("Files/test.gml");
+		town.writeSTL("Files");
 	}
 }

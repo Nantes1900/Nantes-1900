@@ -618,4 +618,16 @@ public class Edge {
 	public String toString() {
 		return new String("(" + this.getP1() + ", " + this.getP2() + ")");
 	}
+
+	public Vector3d convertToVector3d() {
+		return new Vector3d(this.getP2().getX() - this.getP1().getX(), this
+				.getP2().getY() - this.getP1().getY(), this.getP2().getZ()
+				- this.getP1().getZ());
+	}
+
+	public Point computeMiddle() {
+		return new Point((this.getP1().getX() + this.getP2().getX()) / 2, (this
+				.getP1().getY() + this.getP2().getY()) / 2, (this.getP1()
+				.getZ() + this.getP2().getZ()) / 2);
+	}
 }

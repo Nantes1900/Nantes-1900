@@ -84,6 +84,6 @@ public class Floor {
 	 * @see nantes1900.models.Mesh#writeSTL(java.lang.String)
 	 */
 	public void writeSTL(String fileName) {
-		this.writeSTL(fileName);
+		this.mesh.writeSTL(fileName);
 	}
 }

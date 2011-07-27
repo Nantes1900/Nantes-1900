@@ -13,10 +13,10 @@ import nantes1900.models.basis.Edge;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
 import nantes1900.utils.ParserSTL;
+import nantes1900.utils.WriterSTL;
 import nantes1900.utils.ParserSTL.BadFormedFileException;
 
 import org.junit.Test;
-
 
 /**
  * A set of tests for the class Parser.
@@ -26,11 +26,13 @@ import org.junit.Test;
 public class ParserSTLTest {
 
 	/**
-	 * Test method for {@link nantes1900.utils.ParserSTL#readSTL(java.lang.String)}. Same
-	 * test as write in WriterTest.
+	 * Test method for
+	 * {@link nantes1900.utils.ParserSTL#readSTL(java.lang.String)} and
+	 * {@link nantes1900.utils.WriteSTL#writeSTL(java.lang.String)} Same test as
+	 * write in WriterTest.
 	 */
 	@Test
-	public void testReadSTL() {
+	public void testReadWriteSTL() {
 
 		Point p1 = new Point(1, 0, -1);
 		Point p2 = new Point(0, 1, 0);
@@ -54,20 +56,39 @@ public class ParserSTLTest {
 		write.add(t1);
 		write.add(t2);
 
-		write.writeSTL("WriterTest.stl");
+		WriterSTL writerA = new WriterSTL("WriterTestA.stl",
+				WriterSTL.ASCII_MODE);
+		writerA.setMesh(write);
+		writerA.write();
+
+		WriterSTL writerB = new WriterSTL("WriterTestB.stl",
+				WriterSTL.BINARY_MODE);
+		writerB.setMesh(write);
+		writerB.write();
+
 		try {
-			Mesh read = new Mesh(ParserSTL.readSTL("WriterTest.stl"));
-			assertTrue(read.size() == 2);
-			ArrayList<Triangle> readList = new ArrayList<Triangle>(read);
-			assertTrue(readList.get(0).equals(t1) || readList.get(0).equals(t2));
-			assertTrue(readList.get(1).equals(t1) || readList.get(1).equals(t2));
+			Mesh readA = new Mesh(ParserSTL.readSTL("WriterTestA.stl"));
+			assertTrue(readA.size() == 2);
+			ArrayList<Triangle> readListA = new ArrayList<Triangle>(readA);
+			assertTrue(readListA.get(0).equals(t1)
+					|| readListA.get(0).equals(t2));
+			assertTrue(readListA.get(1).equals(t1)
+					|| readListA.get(1).equals(t2));
+
+			Mesh readB = new Mesh(ParserSTL.readSTL("WriterTestB.stl"));
+			assertTrue(readB.size() == 2);
+			ArrayList<Triangle> readListB = new ArrayList<Triangle>(readB);
+			assertTrue(readListB.get(0).equals(t1)
+					|| readListB.get(0).equals(t2));
+			assertTrue(readListB.get(1).equals(t1)
+					|| readListB.get(1).equals(t2));
 		} catch (BadFormedFileException e) {
 			fail("BadFormedFileException !");
 		} catch (IOException e) {
 			fail("IOException !");
 		}
 
-		new File("WriterTest.stl").deleteOnExit();
+		assertTrue(new File("WriterTestA.stl").delete());
+		assertTrue(new File("WriterTestB.stl").delete());
 	}
-
 }

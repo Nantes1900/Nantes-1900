@@ -13,6 +13,7 @@ public final class SeparationTreatmentWallsRoofs {
 	public static final double errorNormalToFactor = 0.2;
 	public static final double errorNumberTrianglesWall = 4;
 	public static final double errorNumberTrianglesRoof = 6;
+	public static final double errorVerticalWalls = 10;
 
 	private SeparationTreatmentWallsRoofs() {
 	}

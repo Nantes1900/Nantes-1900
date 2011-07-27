@@ -1,6 +1,7 @@
 package nantes1900.models.extended;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -9,6 +10,8 @@ import javax.vecmath.Vector3d;
 import nantes1900.coefficients.SeparationTreatmentWallsRoofs;
 import nantes1900.models.Mesh;
 import nantes1900.models.Polyline;
+import nantes1900.models.basis.Edge;
+import nantes1900.models.basis.Point;
 import nantes1900.utils.Algos;
 
 public class Building {
@@ -33,29 +36,54 @@ public class Building {
 	 * @param roofList
 	 *            the list of roofs as meshes
 	 */
+	// FIXME : optimize it !
 	private void determinateNeighbours(ArrayList<Mesh> wallList,
 			ArrayList<Mesh> roofList, Mesh floors) {
 
-		for (Mesh w1 : wallList) {
-			for (Mesh w2 : wallList) {
-				if (w1.isNeighbour(w2)) {
-					w1.addNeighbour(w2);
+		ArrayList<Polyline> wallsBoundsList = new ArrayList<Polyline>();
+		ArrayList<Polyline> roofsBoundsList = new ArrayList<Polyline>();
+
+		for (Mesh w : wallList) {
+			wallsBoundsList.add(w.returnUnsortedBounds());
+		}
+
+		for (Mesh r : roofList) {
+			roofsBoundsList.add(r.returnUnsortedBounds());
+		}
+
+		Polyline floorsBounds = floors.returnUnsortedBounds();
+
+		for (int i = 0; i < wallsBoundsList.size(); i++) {
+
+			Polyline p1 = wallsBoundsList.get(i);
+
+			for (int j = 0; j < wallsBoundsList.size(); j++) {
+				Polyline p2 = wallsBoundsList.get(j);
+				if (p1.isNeighbour(p2)) {
+					wallList.get(i).addNeighbour(wallList.get(j));
 				}
 			}
-			for (Mesh r2 : roofList) {
-				if (w1.isNeighbour(r2)) {
-					w1.addNeighbour(r2);
+
+			for (int j = 0; j < roofsBoundsList.size(); j++) {
+				Polyline p2 = roofsBoundsList.get(j);
+				if (p1.isNeighbour(p2)) {
+					wallList.get(i).addNeighbour(roofList.get(j));
 				}
 			}
-			if (w1.isNeighbour(floors)) {
-				w1.addNeighbour(floors);
+
+			if (p1.isNeighbour(floorsBounds)) {
+				wallList.get(i).addNeighbour(floors);
 			}
 		}
 
-		for (Mesh r1 : roofList) {
-			for (Mesh r2 : roofList) {
-				if (r1.isNeighbour(r2)) {
-					r1.addNeighbour(r2);
+		for (int i = 0; i < roofsBoundsList.size(); i++) {
+
+			Polyline p1 = roofsBoundsList.get(i);
+
+			for (int j = 0; j < roofsBoundsList.size(); j++) {
+				Polyline p2 = roofsBoundsList.get(j);
+				if (p1.isNeighbour(p2)) {
+					roofList.get(i).addNeighbour(roofList.get(j));
 				}
 			}
 		}
@@ -72,28 +100,28 @@ public class Building {
 	 *            the list of roofs as meshes
 	 */
 	private void findCommonEdges(ArrayList<Mesh> wallList,
-			ArrayList<Mesh> roofList) {
+			ArrayList<Mesh> roofList, Vector3d normalFloor) {
+
+		HashMap<Point, Point> pointMap = new HashMap<Point, Point>();
+		HashMap<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
 
 		for (Mesh m : roofList) {
-			Polyline p = m.findEdgesRoof();
+			Polyline p = m.findEdges(wallList, pointMap, edgeMap, normalFloor);
 			if (p != null && !p.isEmpty()) {
 				roofs.add(p);
 			}
 		}
 
 		for (Mesh m : wallList) {
-			Polyline p = m.findEdgesWall();
+			Polyline p = m.findEdges(wallList, pointMap, edgeMap, normalFloor);
 			if (p != null && !p.isEmpty()) {
 				walls.add(p);
 			}
 		}
 	}
 
-	private void recollerLesmMorceaux(ArrayList<Mesh> wallList, Mesh floors) {
-
-	}
-
 	/**
+	 * 
 	 * Cut the rest of the mesh in roofs considering the orientation of the
 	 * triangles.
 	 */
@@ -178,7 +206,7 @@ public class Building {
 	 * largeAngleNormalErrorFactor.
 	 */
 	private void treatNoise(ArrayList<Mesh> wallList, ArrayList<Mesh> roofList,
-			Mesh wholeWall, Mesh wholeRoof, Mesh noise) {
+			Mesh noise) {
 
 		// Add the oriented and neighbour noise to the walls.
 		Algos.blockTreatOrientedNoise(wallList, noise,
@@ -201,18 +229,7 @@ public class Building {
 					w1.addAll(w2);
 					wallList.remove(w2);
 				}
-
 			}
-		}
-
-		// Sum all the walls to build the wholeWall.
-		for (Mesh w : wallList) {
-			wholeWall.addAll(w);
-		}
-
-		// Sum all the roofs to build the wholeRoof.
-		for (Mesh r : roofList) {
-			wholeRoof.addAll(r);
 		}
 	}
 
@@ -257,6 +274,7 @@ public class Building {
 	}
 
 	/**
+	 * 
 	 * Build the building from a mesh, by computingthe algorithms.
 	 * 
 	 * @param building
@@ -283,18 +301,26 @@ public class Building {
 		time = System.nanoTime();
 		// TODO : compute wholeWall and wholeRoof in the method, and not in
 		// sortRoofs or sortWalls.
-		this.treatNoise(wallList, roofList, wholeWall, wholeRoof, noise);
+		this.treatNoise(wallList, roofList, noise);
 		log.finest("Treat noise : " + (System.nanoTime() - time));
+
+		// Sum all the walls to build the wholeWall.
+		for (Mesh w : wallList) {
+			wholeWall.addAll(w);
+		}
+
+		// Sum all the roofs to build the wholeRoof.
+		for (Mesh r : roofList) {
+			wholeRoof.addAll(r);
+		}
 
 		time = System.nanoTime();
 		this.determinateNeighbours(wallList, roofList, floors);
 		log.finest("Determinate neighbours : " + (System.nanoTime() - time));
 
 		time = System.nanoTime();
-		this.findCommonEdges(wallList, roofList);
+		this.findCommonEdges(wallList, roofList, normalFloor);
 		log.finest("Find common edges : " + (System.nanoTime() - time));
-
-		this.recollerLesmMorceaux(wallList, floors);
 	}
 
 	/**

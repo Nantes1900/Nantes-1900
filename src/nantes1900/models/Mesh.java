@@ -3,6 +3,7 @@ package nantes1900.models;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import javax.vecmath.Vector3d;
@@ -25,11 +26,15 @@ public class Mesh extends HashSet<Triangle> {
 
 	private ArrayList<Mesh> neighbours = new ArrayList<Mesh>();
 
+	private final int ID;
+	private static int ID_current = 0;
+
 	/**
 	 * Void constructor
 	 */
 	public Mesh() {
 		super();
+		this.ID = ID_current++;
 	}
 
 	/**
@@ -40,6 +45,7 @@ public class Mesh extends HashSet<Triangle> {
 	 */
 	public Mesh(Collection<? extends Triangle> c) {
 		super(c);
+		this.ID = ID_current++;
 	}
 
 	/**
@@ -55,6 +61,10 @@ public class Mesh extends HashSet<Triangle> {
 			this.neighbours.add(m);
 		if (!m.neighbours.contains(this))
 			m.neighbours.add(this);
+	}
+
+	public int getID() {
+		return this.ID;
 	}
 
 	/**
@@ -374,7 +384,9 @@ public class Mesh extends HashSet<Triangle> {
 	 *            the name of the file
 	 */
 	public void writeSTL(String fileName) {
-		WriterSTL.write(fileName, this);
+		WriterSTL writer = new WriterSTL(fileName);
+		writer.setMesh(this);
+		writer.write();
 	}
 
 	/**
@@ -550,7 +562,7 @@ public class Mesh extends HashSet<Triangle> {
 		cross.cross(normalFloor, vect);
 
 		// If (normalFloor cross vect) dot a vector is positive, then the vector
-		// point considered is at the left of vect
+		// point considered is at the left of vect.
 
 		// We then try to determine on which side is the inside of the mesh, and
 		// on which side is the outside, to know the direction : we want to
@@ -627,28 +639,55 @@ public class Mesh extends HashSet<Triangle> {
 		return false;
 	}
 
-	public Polyline findEdgesRoof() {
+	public Polyline findEdges(ArrayList<Mesh> wallList,
+			HashMap<Point, Point> pointMap, HashMap<Edge, Edge> edgeMap,
+			Vector3d normalFloor) {
 
 		ArrayList<Mesh> neighbours = this.getNeighbours();
 		Polyline edges = new Polyline();
 
-		// We first have to sort the neighbours. TODO
-
 		try {
-			int counterError;
 			for (Mesh m2 : neighbours) {
-
-				counterError = 0;
 				ArrayList<Point> points = new ArrayList<Point>();
 
 				for (Mesh m3 : neighbours) {
 					if (m2.getNeighbours().contains(m3)) {
-						counterError++;
-						points.add(this.intersection(m2, m3));
+						Mesh plane1 = this;
+						Mesh plane2 = m2;
+						Mesh plane3 = m3;
+						if (wallList.contains(this)) {
+							plane1 = this.returnVerticalPlane(normalFloor);
+						}
+						if (wallList.contains(m2)) {
+							plane2 = m2.returnVerticalPlane(normalFloor);
+						}
+						if (wallList.contains(m3)) {
+							plane3 = m3.returnVerticalPlane(normalFloor);
+						}
+
+						Point p = plane1.intersection(plane2, plane3);
+
+						Point mapP = pointMap.get(p);
+						if (mapP == null)
+							pointMap.put(p, p);
+						else
+							p = mapP;
+
+						points.add(p);
 					}
 				}
-				if (counterError == 2) {
-					edges.add(new Edge(points.get(0), points.get(1)));
+
+				if (points.size() == 2) {
+
+					Edge e = new Edge(points.get(0), points.get(1));
+
+					Edge mapE = edgeMap.get(e);
+					if (mapE == null)
+						edgeMap.put(e, e);
+					else
+						e = mapE;
+
+					edges.add(e);
 				} else {
 					System.err.println("Erreur!");
 				}
@@ -656,24 +695,6 @@ public class Mesh extends HashSet<Triangle> {
 
 			if (edges.edgeSize() > 2) {
 				edges.setNormal(this.averageNormal());
-
-				// Put the same references to the the points which have the same
-				// values...
-				// FIXME : the values are not always equal...
-				for (Edge e : edges.getEdgeList()) {
-					for (Point p : edges.getPointList()) {
-						if (e.getP1().epsilonEquals(p, 0.0001)) {
-							e.setP1(p);
-						}
-						if (e.getP2().epsilonEquals(p, 0.0001)) {
-							e.setP2(p);
-						}
-					}
-				}
-				ArrayList<Edge> listEdges = new ArrayList<Edge>(
-						edges.getEdgeList());
-				edges.clear();
-				edges.addAll(listEdges);
 				edges.order();
 				return edges;
 			} else {
@@ -686,63 +707,31 @@ public class Mesh extends HashSet<Triangle> {
 		}
 	}
 
-	public Polyline findEdgesWall() {
-		ArrayList<Mesh> neighbours = this.getNeighbours();
-		Polyline edges = new Polyline();
-		// FIXME : this floor is not at the same altitude as the floor close to
-		// the building... Find another clue !
+	private Mesh returnVerticalPlane(Vector3d normalFloor) {
 
-		// We first have to sort the neighbours. TODO
+		Vector3d averageNormal = this.averageNormal();
 
-		try {
-			int counterError;
-			for (Mesh m2 : neighbours) {
+		Mesh computedWallPlane = new Mesh();
 
-				counterError = 0;
-				ArrayList<Point> points = new ArrayList<Point>();
+		Point centroid = new Point(this.xAverage(), this.yAverage(),
+				this.zAverage());
 
-				for (Mesh m3 : neighbours) {
-					if (m2.getNeighbours().contains(m3)) {
-						counterError++;
-						points.add(this.intersection(m2, m3));
-					}
-				}
-				if (counterError == 2) {
-					edges.add(new Edge(points.get(0), points.get(1)));
-				} else {
-					System.err.println("Erreur!");
-				}
-			}
-			if (edges.edgeSize() > 2) {
-				edges.setNormal(this.averageNormal());
+		// TODO : if normal.getY() == 0 ?
+		Point p1 = new Point(centroid.getX() + 1, centroid.getY()
+				- averageNormal.getX() / averageNormal.getY(), centroid.getZ());
+		Point p2 = p1;
+		Point p3 = centroid;
 
-				// Put the same references to the the points which have the same
-				// values...
-				// FIXME : the values are not always equal...
-				for (Edge e : edges.getEdgeList()) {
-					for (Point p : edges.getPointList()) {
-						if (e.getP1().epsilonEquals(p, 0.0001)) {
-							e.setP1(p);
-						}
-						if (e.getP2().epsilonEquals(p, 0.0001)) {
-							e.setP2(p);
-						}
-					}
-				}
-				ArrayList<Edge> listEdges = new ArrayList<Edge>(
-						edges.getEdgeList());
-				edges.clear();
-				edges.addAll(listEdges);
-				edges.order();
-				return edges;
-			} else {
-				return null;
-			}
-		} catch (SingularMatrixException e1) {
-			System.err.println("Matrix error ! Program shutting down !");
-			System.exit(1);
-			return null;
-		}
+		Edge e1 = new Edge(p1, p2);
+		Edge e2 = new Edge(p2, p3);
+		Edge e3 = new Edge(p1, p3);
+
+		Vector3d vect = new Vector3d();
+		vect.cross(normalFloor, e3.convertToVector3d());
+
+		computedWallPlane.add(new Triangle(p1, p2, p3, e1, e2, e3, vect));
+
+		return computedWallPlane;
 	}
 
 	/**

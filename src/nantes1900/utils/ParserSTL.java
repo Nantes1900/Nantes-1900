@@ -20,7 +20,6 @@ import nantes1900.models.basis.Edge;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
 
-
 /**
  * Parse a STL file : detect if it is a ASCII or a binary file, and parse it.
  * During the parsing, it builds the Mesh, giving to the same points the same
@@ -40,6 +39,7 @@ public class ParserSTL {
 	private static class FlatTriangleException extends Exception {
 		private static final long serialVersionUID = 1L;
 	}
+
 	/**
 	 * A sub-class for the exception when a point has one coordinate too high.
 	 * 
@@ -113,10 +113,10 @@ public class ParserSTL {
 			} else {
 				// If the word is vertex, read one of the three points.
 				if (openingWord.equals("vertex")) {
-					Point p = new Point(Double.parseDouble(brokenLine
-							.nextToken()), Double.parseDouble(brokenLine
-							.nextToken()), Double.parseDouble(brokenLine
-							.nextToken()));
+					Point p = new Point((float) Double.parseDouble(brokenLine
+							.nextToken()),
+							(float) Double.parseDouble(brokenLine.nextToken()),
+							(float) Double.parseDouble(brokenLine.nextToken()));
 
 					// If the point has one coordinate > 1e5, throws and
 					// Exception. It can cause an error further in the program.
@@ -217,9 +217,12 @@ public class ParserSTL {
 				bBuf.getFloat());
 		norm.normalize();
 
-		Point p1 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
-		Point p2 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
-		Point p3 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
+		Point p1 = new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
+				(float) bBuf.getFloat());
+		Point p2 = new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
+				(float) bBuf.getFloat());
+		Point p3 = new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
+				(float) bBuf.getFloat());
 
 		// If the point is out of bounds, it's maybe an error when the file was
 		// written. But it could cause error further in the program. Thus we
@@ -392,6 +395,7 @@ public class ParserSTL {
 			}
 		}
 
+		stream.close();
 		return mesh;
 	}
 

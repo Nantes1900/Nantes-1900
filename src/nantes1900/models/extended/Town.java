@@ -514,11 +514,11 @@ public class Town {
 	/**
 	 * Write the floors as STL files. Use for debugging.
 	 */
-	public void writeSTLFloors() {
+	public void writeSTLFloors(String directoryName) {
 		int counterFloor = 1;
 
 		for (Floor f : this.floors) {
-			f.writeSTL("Files/floors" + counterFloor + ".stl");
+			f.writeSTL(directoryName + "/floors" + counterFloor + ".stl");
 			counterFloor++;
 		}
 	}
@@ -526,11 +526,12 @@ public class Town {
 	/**
 	 * Write the industrial buildings as STL files. Use for debugging.
 	 */
-	public void writeSTLIndustrials() {
+	public void writeSTLIndustrials(String directoryName) {
 		int buildingCounter = 1;
 
 		for (Building m : this.industrials) {
-			m.writeSTL("Files/building - " + buildingCounter + ".stl");
+			m.writeSTL(directoryName + "/building - " + buildingCounter
+					+ ".stl");
 			buildingCounter++;
 		}
 	}
@@ -538,11 +539,12 @@ public class Town {
 	/**
 	 * Write the residential buildings as STL files. Use for debugging.
 	 */
-	public void writeSTLResidentials() {
+	public void writeSTLResidentials(String directoryName) {
 		int buildingCounter = 1;
 
 		for (Building m : this.residentials) {
-			m.writeSTL("Files/building - " + buildingCounter + ".stl");
+			m.writeSTL(directoryName + "/building - " + buildingCounter
+					+ ".stl");
 			buildingCounter++;
 		}
 	}
@@ -550,11 +552,12 @@ public class Town {
 	/**
 	 * Write the special buildings as STL files. Use for debugging.
 	 */
-	public void writeSTLSpecialBuildings() {
+	public void writeSTLSpecialBuildings(String directoryName) {
 		int buildingCounter = 1;
 
 		for (Mesh m : this.specialBuildings) {
-			m.writeSTL("Files/special_building - " + buildingCounter + ".stl");
+			m.writeSTL(directoryName + "/special_building - " + buildingCounter
+					+ ".stl");
 			buildingCounter++;
 		}
 	}
@@ -562,12 +565,20 @@ public class Town {
 	/**
 	 * Write the wateries as STL files. Use for debugging.
 	 */
-	public void writeSTLWateries() {
+	public void writeSTLWateries(String directoryName) {
 		int counterWateries = 1;
 
 		for (Floor f : this.wateries) {
-			f.writeSTL("Files/watery - " + counterWateries + ".stl");
+			f.writeSTL(directoryName + "/watery - " + counterWateries + ".stl");
 			counterWateries++;
 		}
+	}
+
+	public void writeSTL(String directoryName) {
+		this.writeSTLFloors(directoryName);
+		this.writeSTLIndustrials(directoryName);
+		this.writeSTLResidentials(directoryName);
+		this.writeSTLSpecialBuildings(directoryName);
+		this.writeSTLWateries(directoryName);
 	}
 }

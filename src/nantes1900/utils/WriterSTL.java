@@ -19,7 +19,12 @@ import nantes1900.models.basis.Triangle;
  * 
  * @author Eric Berthe, Valentin Roger, Daniel Lefèvre
  */
+
+// FIXME : create a not static writer.
 public class WriterSTL {
+
+	private String fileName;
+	private Mesh mesh = null;
 
 	/**
 	 * Possible value of MODE. Intend to write ASCII STL files.
@@ -34,26 +39,15 @@ public class WriterSTL {
 	/**
 	 * The mode of writing. Use the two constants : ASCII_MODE or BINARY_MODE.
 	 */
-	private static int MODE = ASCII_MODE;
+	private int MODE = ASCII_MODE;
 
-	// /**
-	// * The logger to write the informations in.
-	// */
-	// private static Logger log = Logger.getLogger("logger");
+	public WriterSTL(String fileName) {
+		this.fileName = fileName;
+	}
 
-	/**
-	 * Write a mesh in an ASCII file.
-	 * 
-	 * @param fileName
-	 *            the name of the file to write in.
-	 * @param m
-	 *            the mesh to write
-	 * @throws IOException
-	 *             if there is a problem in the opening or the closing operation
-	 */
-	private static void writeA(String fileName, Mesh m) throws IOException {
-		WriterSTL.writeSTLA(fileName, m);
-		// log.info(fileName + " written in STL ASCII!");
+	public WriterSTL(String fileName, int mode) {
+		this.fileName = fileName;
+		this.MODE = mode;
 	}
 
 	/**
@@ -63,7 +57,7 @@ public class WriterSTL {
 	 * @param face
 	 *            The face to be written.
 	 */
-	private static void writeASCIIFace(BufferedWriter fw, Triangle face) {
+	private void writeASCIIFace(BufferedWriter fw, Triangle face) {
 		try {
 			// Write facet normal : to begin a triangle with writing its normal.
 			fw.write("\nfacet normal");
@@ -95,21 +89,6 @@ public class WriterSTL {
 	}
 
 	/**
-	 * Write a mesh in an binary file.
-	 * 
-	 * @param fileName
-	 *            the name of the file to write in.
-	 * @param m
-	 *            the mesh to write
-	 * @throws IOException
-	 *             if there is a problem in the opening or the closing operation
-	 */
-	private static void writeB(String fileName, Mesh m) throws IOException {
-		WriterSTL.writeSTLB(fileName, m);
-		// log.info(fileName + " written in STL binary!");
-	}
-
-	/**
 	 * Write a triangle in the binary format.
 	 * 
 	 * @param writer
@@ -119,7 +98,7 @@ public class WriterSTL {
 	 * @throws IOException
 	 *             if the writer throws an error
 	 */
-	private static void writeBinaryFace(OutputStream writer, Triangle face)
+	private void writeBinaryFace(OutputStream writer, Triangle face)
 			throws IOException {
 		// Write first the normal.
 		writeInGoodOrder(writer, face.getNormal().getX());
@@ -152,7 +131,7 @@ public class WriterSTL {
 	 * @throws IOException
 	 *             if the writer throws an error
 	 */
-	private static void writeInGoodOrder(OutputStream writer, double a)
+	private void writeInGoodOrder(OutputStream writer, double a)
 			throws IOException {
 		// Write the double : must order it in the LITTLE_ENDIAN format.
 		ByteBuffer bBuf = ByteBuffer.allocate(Float.SIZE);
@@ -171,14 +150,13 @@ public class WriterSTL {
 	 * @throws IOException
 	 *             if there is a problem in the opening or the closing operation
 	 */
-	private static void writeSTLA(String fileName, Mesh surface)
-			throws IOException {
+	private void writeSTLA() throws IOException {
 		BufferedWriter fw = null;
 		try {
 			// Write the header of the file : solid.
-			fw = new BufferedWriter(new FileWriter(fileName));
+			fw = new BufferedWriter(new FileWriter(this.fileName));
 			fw.write("solid");
-			for (Triangle f : surface) {
+			for (Triangle f : this.mesh) {
 				writeASCIIFace(fw, f);
 			}
 			// Write the end of the file : endsolid.
@@ -203,11 +181,11 @@ public class WriterSTL {
 	 * @throws IOException
 	 *             if there is a problem in the opening of the closing operation
 	 */
-	private static void writeSTLB(String fileName, Mesh surface)
-			throws IOException {
+	private void writeSTLB() throws IOException {
 		BufferedOutputStream stream = null;
 		try {
-			stream = new BufferedOutputStream(new FileOutputStream(fileName));
+			stream = new BufferedOutputStream(new FileOutputStream(
+					this.fileName));
 
 			// Write a 80-byte long header. Possibility to write the name of the
 			// author.
@@ -218,10 +196,10 @@ public class WriterSTL {
 			// LITTLE_ENDIAN format.
 			ByteBuffer bBuf = ByteBuffer.allocate(Integer.SIZE);
 			bBuf.order(ByteOrder.LITTLE_ENDIAN);
-			bBuf.putInt(surface.size());
+			bBuf.putInt(this.mesh.size());
 			stream.write(bBuf.array(), 0, Integer.SIZE / 8);
 
-			for (Triangle t : surface) {
+			for (Triangle t : this.mesh) {
 				writeBinaryFace(stream, t);
 			}
 
@@ -232,13 +210,21 @@ public class WriterSTL {
 		}
 	}
 
+	public Mesh getMesh() {
+		return this.mesh;
+	}
+
 	/**
 	 * Allows to know the value of the attribute MODE.
 	 * 
 	 * @return the attribute MODE
 	 */
-	public static int getWriteMode() {
+	public int getWriteMode() {
 		return MODE;
+	}
+
+	public void setMesh(Mesh m) {
+		this.mesh = m;
 	}
 
 	/**
@@ -247,7 +233,7 @@ public class WriterSTL {
 	 * @param mode
 	 *            the new mode
 	 */
-	public static void setWriteMode(int mode) {
+	public void setWriteMode(int mode) {
 		MODE = mode;
 	}
 
@@ -259,14 +245,23 @@ public class WriterSTL {
 	 * @param m
 	 *            the mesh to write
 	 */
-	public static void write(String fileName, Mesh m) {
+	public void write() {
 		try {
+			if (mesh == null) {
+				throw new NoMeshException();
+			}
 			if (MODE == ASCII_MODE)
-				writeA(fileName, m);
+				this.writeSTLA();
 			else if (MODE == BINARY_MODE)
-				writeB(fileName, m);
+				this.writeSTLB();
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (NoMeshException e) {
+			e.printStackTrace();
 		}
+	}
+
+	public class NoMeshException extends Exception {
+		private static final long serialVersionUID = 1L;
 	}
 }

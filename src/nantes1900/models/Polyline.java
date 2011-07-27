@@ -343,19 +343,16 @@ public class Polyline {
 	 * 
 	 * @param p
 	 *            the polyline to search in
-	 * @param error
-	 *            the distance minimum to consider two points as close
 	 * @return true if one point is find close to another of the other polyline,
 	 *         false otherwise
 	 */
-	public boolean isNeighbour(Polyline p, double error) {
+	public boolean isNeighbour(Polyline p) {
 		if (p == this) {
 			return false;
 		}
-		for (Point p1 : this.pointList) {
-			for (Point p2 : p.pointList) {
-				if (p1.distance(p2) < error)
-					return true;
+		for (Edge e1 : this.edgeList) {
+			if (p.contains(e1)) {
+				return true;
 			}
 		}
 		return false;
@@ -447,6 +444,12 @@ public class Polyline {
 	 */
 	public int pointSize() {
 		return this.pointList.size();
+	}
+
+	public void refresh() {
+		ArrayList<Edge> edges = new ArrayList<Edge>(this.getEdgeList());
+		this.clear();
+		this.addAll(edges);
 	}
 
 	/**

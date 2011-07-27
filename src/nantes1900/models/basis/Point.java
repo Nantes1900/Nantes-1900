@@ -9,6 +9,12 @@ import nantes1900.utils.MatrixMethod;
  */
 public class Point {
 
+	// LOOK : maybe truncate those doubles to reduce useless precision... :
+	// maybe cast it in the parser. But it can be dangerous. And this conversion
+	// is weird in JAVA... See also then the hashCode AND equals method. For
+	// now, these methods truncate, but it could be useful to have a further
+	// look to see if everything walk on perfectly.
+
 	private double x;
 	private double y;
 	private double z;
@@ -69,22 +75,24 @@ public class Point {
 						+ Math.pow(p.z - z, 2), 0.5);
 	}
 
-	/**
-	 * Check if a point is almost equal to another. It check if every
-	 * coordinates of this are between the coordinates of p - error et the
-	 * coordinates of p + error.
-	 * 
-	 * @param p
-	 *            the other point
-	 * @param error
-	 *            the error
-	 * @return true if the point is almost equal, false otherwise.
-	 */
-	public boolean epsilonEquals(Point p, double error) {
-		return ((this.x < p.x + error && this.x > p.x - error)
-				&& (this.y < p.y + error && this.y > p.y - error) && (this.z < p.z
-				+ error && this.z > p.z - error));
-	}
+	// /**
+	// * Check if a point is almost equal to another. It check if every
+	// * coordinates of this are between the coordinates of p - error et the
+	// * coordinates of p + error.
+	// *
+	// * @param p
+	// * the other point
+	// * @param error
+	// * the error
+	// * @return true if the point is almost equal, false otherwise.
+	// */
+	// // FIXME : change the equals method by casting the double to float and
+	// // comparing the result.
+	// public boolean epsilonEquals(Point p, double error) {
+	// return ((this.x < p.x + error && this.x > p.x - error)
+	// && (this.y < p.y + error && this.y > p.y - error) && (this.z < p.z
+	// + error && this.z > p.z - error));
+	// }
 
 	/*
 	 * (non-Javadoc)
@@ -100,11 +108,14 @@ public class Point {
 		if (getClass() != obj.getClass())
 			return false;
 		Point other = (Point) obj;
-		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
+		if (Double.doubleToLongBits((float) x) != Double
+				.doubleToLongBits((float) other.x))
 			return false;
-		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
+		if (Double.doubleToLongBits((float) y) != Double
+				.doubleToLongBits((float) other.y))
 			return false;
-		if (Double.doubleToLongBits(z) != Double.doubleToLongBits(other.z))
+		if (Double.doubleToLongBits((float) z) != Double
+				.doubleToLongBits((float) other.z))
 			return false;
 		return true;
 	}
@@ -156,11 +167,11 @@ public class Point {
 		final int prime = 31;
 		int result = 1;
 		long temp;
-		temp = Double.doubleToLongBits(x);
+		temp = Double.doubleToLongBits((float) x);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(y);
+		temp = Double.doubleToLongBits((float) y);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(z);
+		temp = Double.doubleToLongBits((float) z);
 		result = prime * result + (int) (temp ^ (temp >>> 32));
 		return result;
 	}
@@ -214,5 +225,11 @@ public class Point {
 	 */
 	public String toString() {
 		return new String("(" + x + ", " + y + ", " + z + ")");
+	}
+
+	public void set(double x, double y, double z) {
+		this.x = x;
+		this.y = y;
+		this.z = z;
 	}
 }
