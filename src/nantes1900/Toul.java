@@ -2,7 +2,7 @@ package nantes1900;
 
 import nantes1900.models.extended.Town;
 
-public class Main2 {
+public class Toul {
 
 	public static void main(String[] args) {
 
