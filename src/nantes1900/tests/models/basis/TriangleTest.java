@@ -8,6 +8,7 @@ import javax.vecmath.Vector3d;
 
 import nantes1900.models.Mesh;
 import nantes1900.models.basis.Edge;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
 
@@ -27,16 +28,24 @@ public class TriangleTest {
 	private Edge e1 = new Edge(p1, p2);
 	private Edge e2 = new Edge(p2, p3);
 	private Edge e3 = new Edge(p3, p1);
-	Triangle t = new Triangle(p1, p2, p3, e1, e2, e3, vect);
+	Triangle t;
+
+	public TriangleTest() throws MoreThanTwoTrianglesPerEdgeException {
+		t = new Triangle(p1, p2, p3, e1, e2, e3, vect);
+	}
 
 	/**
 	 * Test method for
 	 * {@link nantes1900.models.basis.Triangle#angularTolerance(javax.vecmath.Vector3d, double)}
 	 * . Test method for
-	 * {@link nantes1900.models.basis.Triangle#angularTolerance(nantes1900.models.basis.Triangle, double)}.
+	 * {@link nantes1900.models.basis.Triangle#angularTolerance(nantes1900.models.basis.Triangle, double)}
+	 * .
+	 * 
+	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
 	@Test
-	public void testAngularTolerance() {
+	public void testAngularTolerance()
+			throws MoreThanTwoTrianglesPerEdgeException {
 		Vector3d vector = new Vector3d(0, 1, 0);
 		Triangle tBis = new Triangle(p1, p2, p3, e1, e2, e3, vector);
 
@@ -48,7 +57,29 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#contains(nantes1900.models.basis.Point)}.
+	 * Test method for
+	 * {@link nantes1900.models.basis.Triangle#angularTolerance(nantes1900.models.basis.Triangle, double)}
+	 * .
+	 */
+	@Test
+	public void testAngularToleranceTriangleDouble() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Triangle#angularTolerance(javax.vecmath.Vector3d, double)}
+	 * .
+	 */
+	@Test
+	public void testAngularToleranceVector3dDouble() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Triangle#contains(nantes1900.models.basis.Point)}
+	 * .
 	 */
 	@Test
 	public void testContains() {
@@ -58,10 +89,33 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#equals(java.lang.Object)}.
+	 * Test method for
+	 * {@link nantes1900.models.basis.Triangle#contains(nantes1900.models.basis.Edge)}
+	 * .
 	 */
 	@Test
-	public void testEqualsObject() {
+	public void testContainsEdge() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Triangle#contains(nantes1900.models.basis.Point)}
+	 * .
+	 */
+	@Test
+	public void testContainsPoint() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Triangle#equals(java.lang.Object)}.
+	 * 
+	 * @throws MoreThanTwoTrianglesPerEdgeException
+	 */
+	@Test
+	public void testEqualsObject() throws MoreThanTwoTrianglesPerEdgeException {
 		Triangle tBis = new Triangle(p1, p2, p3, e1, e2, e3, vect);
 		assertTrue(t.equals(tBis));
 		assertTrue(tBis.equals(t));
@@ -101,9 +155,11 @@ public class TriangleTest {
 
 	/**
 	 * Test method for {@link nantes1900.models.basis.Triangle#getNeighbours()}.
+	 * 
+	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
 	@Test
-	public void testGetNeighbours() {
+	public void testGetNeighbours() throws MoreThanTwoTrianglesPerEdgeException {
 		Point p4 = new Point(3, 4, 5);
 		Point p5 = new Point(-3, -4, -5);
 		Point p6 = new Point(-3.5, -1.2, 5.9);
@@ -140,7 +196,8 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getNumNeighbours()}.
+	 * Test method for
+	 * {@link nantes1900.models.basis.Triangle#getNumNeighbours()}.
 	 */
 	@Test
 	public void testGetNumNeighbours() {
@@ -183,6 +240,15 @@ public class TriangleTest {
 	}
 
 	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Triangle#getPointsAsCoordinates()}.
+	 */
+	@Test
+	public void testGetPointsAsCoordinates() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
 	 * Test method for {@link nantes1900.models.basis.Triangle#hashCode()}.
 	 */
 	@Test
@@ -191,9 +257,13 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#isNeighboor(nantes1900.models.basis.Triangle)}.
+	 * Test method for
+	 * {@link nantes1900.models.basis.Triangle#isNeighboor(nantes1900.models.basis.Triangle)}
+	 * .
+	 * 
+	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
-	public void testIsNeighboor() {
+	public void testIsNeighboor() throws MoreThanTwoTrianglesPerEdgeException {
 
 		Point p4 = new Point(3, 4, 5);
 		Point p5 = new Point(-3, -4, -5);
@@ -216,7 +286,8 @@ public class TriangleTest {
 
 	/**
 	 * Test method for
-	 * {@link nantes1900.models.basis.Triangle#isNormalTo(javax.vecmath.Vector3d, double)}.
+	 * {@link nantes1900.models.basis.Triangle#isNormalTo(javax.vecmath.Vector3d, double)}
+	 * .
 	 */
 	@Test
 	public void testIsNormalTo() {
@@ -229,10 +300,14 @@ public class TriangleTest {
 
 	/**
 	 * Test method for
-	 * {@link nantes1900.models.basis.Triangle#returnNeighbours(nantes1900.models.Mesh, nantes1900.models.Mesh)}.
+	 * {@link nantes1900.models.basis.Triangle#returnNeighbours(nantes1900.models.Mesh, nantes1900.models.Mesh)}
+	 * .
+	 * 
+	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
 	@Test
-	public void testReturnNeighbours() {
+	public void testReturnNeighbours()
+			throws MoreThanTwoTrianglesPerEdgeException {
 		Point p4 = new Point(3, 4, 5);
 		Point p5 = new Point(-3, -4, -5);
 		Point p6 = new Point(-3.5, -1.2, 5.9);
@@ -403,6 +478,7 @@ public class TriangleTest {
 	 */
 	@Test
 	public void testZMinPoint() {
-		assertTrue(t.zMinPoint() == p1);
+		fail("Not yet implemented"); // TODO
 	}
+
 }

@@ -10,7 +10,6 @@ import nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 import org.junit.Test;
 
-
 /**
  * A set of tests for the class Point.
  * 
@@ -19,7 +18,8 @@ import org.junit.Test;
  */
 public class PointTest {
 	/**
-	 * Test method for {@link nantes1900.models.basis.Point#changeBase(double[][])}.
+	 * Test method for
+	 * {@link nantes1900.models.basis.Point#changeBase(double[][])}.
 	 */
 	@Test
 	public void testChangeBase() {
@@ -48,7 +48,9 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Point#distance(nantes1900.models.basis.Point)}.
+	 * Test method for
+	 * {@link nantes1900.models.basis.Point#distance(nantes1900.models.basis.Point)}
+	 * .
 	 */
 	@Test
 	public void testDistance() {
@@ -64,7 +66,8 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Point#equals(java.lang.Object)}.
+	 * Test method for
+	 * {@link nantes1900.models.basis.Point#equals(java.lang.Object)}.
 	 */
 	@Test
 	public void testEquals() {
@@ -77,6 +80,24 @@ public class PointTest {
 
 		p2.setX(1.0);
 		assertFalse(p2.equals(p1));
+	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Point#equals(java.lang.Object)}.
+	 */
+	@Test
+	public void testEqualsObject() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Point#getPointAsCoordinates()}.
+	 */
+	@Test
+	public void testGetPointAsCoordinates() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -112,7 +133,8 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Point#Point(double, double, double)}.
+	 * Test method for
+	 * {@link nantes1900.models.basis.Point#Point(double, double, double)}.
 	 */
 	@Test
 	public void testPointDoubleDoubleDouble() {
@@ -120,7 +142,9 @@ public class PointTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Point#Point(nantes1900.models.basis.Point)}.
+	 * Test method for
+	 * {@link nantes1900.models.basis.Point#Point(nantes1900.models.basis.Point)}
+	 * .
 	 */
 	@Test
 	public void testPointPoint() {
@@ -132,6 +156,23 @@ public class PointTest {
 	 */
 	@Test
 	public void testSet() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.basis.Point#set(double[])}.
+	 */
+	@Test
+	public void testSetDoubleArray() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Point#set(double, double, double)}.
+	 */
+	@Test
+	public void testSetDoubleDoubleDouble() {
 		fail("Not yet implemented"); // TODO
 	}
 
@@ -166,4 +207,5 @@ public class PointTest {
 	public void testToString() {
 		fail("Not yet implemented"); // TODO
 	}
+
 }

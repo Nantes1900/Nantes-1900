@@ -3,19 +3,20 @@
  */
 package nantes1900.tests.models.extended;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
+
+import nantes1900.models.extended.Floor;
 
 import org.junit.Test;
 
 /**
- * @author CFV
- * 
+ * @author Daniel Lefevre
+ *
  */
 public class FloorTest {
 
 	/**
-	 * Test method for
-	 * {@link nantes1900.models.extended.Floor#buildFromMesh(modeles.basis.Mesh)}.
+	 * Test method for {@link nantes1900.models.extended.Floor#buildFromMesh(nantes1900.models.Mesh)}.
 	 */
 	@Test
 	public void testBuildFromMesh() {
@@ -23,52 +24,10 @@ public class FloorTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.extended.Floor#Floor(java.lang.String)}.
+	 * Test method for {@link nantes1900.models.extended.Floor#decimate(nantes1900.models.Mesh)}.
 	 */
 	@Test
-	public void testFloor() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.extended.Floor#getAttribute()}.
-	 */
-	@Test
-	public void testGetAttribute() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.extended.Floor#getFloor()}.
-	 */
-	@Test
-	public void testGetFloor() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.extended.Floor#decimate(modeles.basis.Mesh)}.
-	 */
-	@Test
-	public void testReduce() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.extended.Floor#setAttribute(java.lang.String)}.
-	 */
-	@Test
-	public void testSetAttribute() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.extended.Floor#setFloor(modeles.basis.Mesh)}.
-	 */
-	@Test
-	public void testSetFloor() {
+	public void testDecimate() {
 		fail("Not yet implemented"); // TODO
 	}
 

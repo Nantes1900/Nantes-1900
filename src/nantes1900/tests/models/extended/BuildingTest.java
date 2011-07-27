@@ -3,18 +3,20 @@
  */
 package nantes1900.tests.models.extended;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
+
+import nantes1900.models.extended.Building;
 
 import org.junit.Test;
 
 /**
- * @author CFV
+ * @author Daniel Lefevre
  *
  */
-public class EdificeTest {
+public class BuildingTest {
 
 	/**
-	 * Test method for {@link nantes1900.models.extended.Building#addRoof(modeles.basis.Polyline)}.
+	 * Test method for {@link nantes1900.models.extended.Building#addRoof(nantes1900.models.Polyline)}.
 	 */
 	@Test
 	public void testAddRoof() {
@@ -30,7 +32,7 @@ public class EdificeTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.extended.Building#addWall(modeles.basis.Polyline)}.
+	 * Test method for {@link nantes1900.models.extended.Building#addWall(nantes1900.models.Polyline)}.
 	 */
 	@Test
 	public void testAddWall() {
@@ -46,34 +48,10 @@ public class EdificeTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.extended.Building#buildFromMesh(java.lang.String, javax.vecmath.Vector3d)}.
+	 * Test method for {@link nantes1900.models.extended.Building#buildFromMesh(nantes1900.models.Mesh, nantes1900.models.Mesh, javax.vecmath.Vector3d)}.
 	 */
 	@Test
 	public void testBuildFromMesh() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.extended.Building#Edifice()}.
-	 */
-	@Test
-	public void testEdifice() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.extended.Building#getRoofs()}.
-	 */
-	@Test
-	public void testGetRoofs() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.extended.Building#getWalls()}.
-	 */
-	@Test
-	public void testGetWalls() {
 		fail("Not yet implemented"); // TODO
 	}
 

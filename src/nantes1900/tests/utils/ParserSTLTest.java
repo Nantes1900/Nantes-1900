@@ -10,6 +10,7 @@ import javax.vecmath.Vector3d;
 
 import nantes1900.models.Mesh;
 import nantes1900.models.basis.Edge;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
 import nantes1900.utils.ParserSTL;
@@ -30,9 +31,11 @@ public class ParserSTLTest {
 	 * {@link nantes1900.utils.ParserSTL#readSTL(java.lang.String)} and
 	 * {@link nantes1900.utils.WriteSTL#writeSTL(java.lang.String)} Same test as
 	 * write in WriterTest.
+	 * 
+	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
 	@Test
-	public void testReadWriteSTL() {
+	public void testReadWriteSTL() throws MoreThanTwoTrianglesPerEdgeException {
 
 		Point p1 = new Point(1, 0, -1);
 		Point p2 = new Point(0, 1, 0);
@@ -41,7 +44,8 @@ public class ParserSTLTest {
 		Edge e1 = new Edge(p1, p2);
 		Edge e2 = new Edge(p2, p3);
 		Edge e3 = new Edge(p3, p1);
-		Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect1);
+		Triangle t1;
+		t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect1);
 
 		Point p4 = new Point(4, 5, 4);
 		Point p5 = new Point(2, -3, -3);

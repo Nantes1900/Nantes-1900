@@ -9,7 +9,6 @@ import nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 import org.junit.Test;
 
-
 /**
  * A set of tests for the class MatrixMethod.
  * 
@@ -24,7 +23,7 @@ public class MatrixMethodTest {
 	 */
 	@Test
 	public void testChangeBaseDoubleArrayDoubleArrayArray() {
-		double[] coord = {0, 1, 0};
+		double[] coord = { 0, 1, 0 };
 		Vector3d vect = new Vector3d(0, 0, 1);
 		try {
 			double[][] matrix = MatrixMethod.createOrthoBase(vect);
@@ -59,7 +58,8 @@ public class MatrixMethodTest {
 
 	/**
 	 * Test method for
-	 * {@link nantes1900.utils.MatrixMethod#createOrthoBase(javax.vecmath.Vector3d)}.
+	 * {@link nantes1900.utils.MatrixMethod#createOrthoBase(javax.vecmath.Vector3d)}
+	 * .
 	 */
 	@Test
 	public void testCreateOrthoBaseVector3d() {
@@ -80,11 +80,11 @@ public class MatrixMethodTest {
 		}
 
 		vect = new Vector3d(0, 0, -1);
-		try{
+		try {
 			MatrixMethod.createOrthoBase(vect);
 			fail();
-		} catch(SingularMatrixException e) {
-			
+		} catch (SingularMatrixException e) {
+
 		}
 	}
 
@@ -99,7 +99,8 @@ public class MatrixMethodTest {
 		Vector3d vect2 = new Vector3d(1, 0, 0);
 		Vector3d vect3 = new Vector3d(0, 1, 0);
 		try {
-			double[][] matrix = MatrixMethod.createOrthoBase(vect1, vect2, vect3);
+			double[][] matrix = MatrixMethod.createOrthoBase(vect1, vect2,
+					vect3);
 			assertTrue(matrix[0][0] == 0);
 			assertTrue(matrix[0][1] == 0);
 			assertTrue(matrix[0][2] == 1);
@@ -115,7 +116,8 @@ public class MatrixMethodTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.utils.MatrixMethod#determinant(double[][])}.
+	 * Test method for
+	 * {@link nantes1900.utils.MatrixMethod#determinant(double[][])}.
 	 */
 	@Test
 	public void testDeterminant() {
@@ -129,7 +131,8 @@ public class MatrixMethodTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.utils.MatrixMethod#getInversMatrix(double[][])}.
+	 * Test method for
+	 * {@link nantes1900.utils.MatrixMethod#getInversMatrix(double[][])}.
 	 */
 	@Test
 	public void testGetInversMatrix() {
@@ -150,5 +153,4 @@ public class MatrixMethodTest {
 			fail("Singular matrix !");
 		}
 	}
-
 }

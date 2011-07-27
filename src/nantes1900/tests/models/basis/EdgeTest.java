@@ -11,6 +11,7 @@ import javax.vecmath.Vector3d;
 
 import nantes1900.models.Polyline;
 import nantes1900.models.basis.Edge;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
 import nantes1900.models.basis.Edge.BadFormedPolylineException;
@@ -32,12 +33,14 @@ public class EdgeTest {
 	private Edge e1 = new Edge(p1, p2);
 	private Edge e2 = new Edge(p2, p3);
 	private Edge e3 = new Edge(p3, p1);
-	private Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect);
+
+	private Triangle t1;
 
 	private Point p4 = new Point(2, 2, 2);
 	private Edge e4 = new Edge(p1, p4);
 	private Edge e5 = new Edge(p2, p4);
-	private Triangle t2 = new Triangle(p1, p2, p4, e1, e4, e5, vect);
+
+	private Triangle t2;
 
 	private Edge e6 = new Edge(p3, p4);
 	private Polyline line = new Polyline();
@@ -45,12 +48,27 @@ public class EdgeTest {
 	/**
 	 * Constructor of the test class EdgeTest : creates a polyline for the
 	 * following tests.
+	 * 
+	 * @throws MoreThanTwoTrianglesPerEdgeException
+	 *             exception if one edge has more than two triangles
 	 */
-	public EdgeTest() {
+	public EdgeTest() throws MoreThanTwoTrianglesPerEdgeException {
+		t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect);
+		t2 = new Triangle(p1, p2, p4, e1, e4, e5, vect);
 		line.add(e1);
 		line.add(e2);
 		line.add(e4);
 		line.add(e6);
+	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#addTriangle(nantes1900.models.basis.Triangle)}
+	 * .
+	 */
+	@Test
+	public void testAddTriangle() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -66,6 +84,14 @@ public class EdgeTest {
 	}
 
 	/**
+	 * Test method for {@link nantes1900.models.basis.Edge#computeMiddle()}.
+	 */
+	@Test
+	public void testComputeMiddle() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
 	 * Test method for
 	 * {@link nantes1900.models.basis.Edge#contains(nantes1900.models.basis.Point)}
 	 * .
@@ -74,6 +100,14 @@ public class EdgeTest {
 	public void testContains() {
 		assertTrue(e5.contains(p2));
 		assertFalse(e5.contains(p1));
+	}
+
+	/**
+	 * Test method for {@link nantes1900.models.basis.Edge#convertToVector3d()}.
+	 */
+	@Test
+	public void testConvertToVector3d() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -143,6 +177,36 @@ public class EdgeTest {
 
 	/**
 	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#isInCylinder2D(nantes1900.models.basis.Point, double)}
+	 * .
+	 */
+	@Test
+	public void testIsInCylinder2D() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#isInCylinder3D(nantes1900.models.basis.Point, double)}
+	 * .
+	 */
+	@Test
+	public void testIsInCylinder3D() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#isInInfiniteCylinder3D(nantes1900.models.basis.Point, double)}
+	 * .
+	 */
+	@Test
+	public void testIsInInfiniteCylinder3D() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
 	 * {@link nantes1900.models.basis.Edge#isNeighboor(nantes1900.models.basis.Edge)}
 	 * .
 	 */
@@ -158,6 +222,26 @@ public class EdgeTest {
 	@Test
 	public void testLength() {
 		assertTrue(e5.length() == 3);
+	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#orientedAs(nantes1900.models.basis.Edge, double)}
+	 * .
+	 */
+	@Test
+	public void testOrientedAs() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#project(nantes1900.models.basis.Point)}
+	 * .
+	 */
+	@Test
+	public void testProject() {
+		fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -195,6 +279,26 @@ public class EdgeTest {
 
 	/**
 	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#returnNeighbour(nantes1900.models.Polyline, nantes1900.models.basis.Point)}
+	 * .
+	 */
+	@Test
+	public void testReturnNeighbour() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#returnOneBound(nantes1900.models.Polyline, nantes1900.models.basis.Point, javax.vecmath.Vector3d)}
+	 * .
+	 */
+	@Test
+	public void testReturnOneBound() {
+		fail("Not yet implemented"); // TODO
+	}
+
+	/**
+	 * Test method for
 	 * {@link nantes1900.models.basis.Edge#returnOther(nantes1900.models.basis.Point)}
 	 * .
 	 */
@@ -216,4 +320,15 @@ public class EdgeTest {
 		assertTrue(e1.returnOther(t2) == t1);
 		assertTrue(e2.returnOther(t1) == null);
 	}
+
+	/**
+	 * Test method for
+	 * {@link nantes1900.models.basis.Edge#sharedPoint(nantes1900.models.basis.Edge)}
+	 * .
+	 */
+	@Test
+	public void testSharedPoint() {
+		fail("Not yet implemented"); // TODO
+	}
+
 }
