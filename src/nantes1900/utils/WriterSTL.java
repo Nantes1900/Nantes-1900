@@ -39,7 +39,7 @@ public class WriterSTL {
 	/**
 	 * The mode of writing. Use the two constants : ASCII_MODE or BINARY_MODE.
 	 */
-	private int MODE = ASCII_MODE;
+	private int MODE = BINARY_MODE;
 
 	public WriterSTL(String fileName) {
 		this.fileName = fileName;
@@ -206,6 +206,8 @@ public class WriterSTL {
 			// Finish to write the last datas before closing the writer.
 			stream.flush();
 		} finally {
+			// FIXME : if the directory is not created, then throw an exception
+			// or create it !
 			stream.close();
 		}
 	}

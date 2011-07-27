@@ -17,6 +17,7 @@ import java.util.StringTokenizer;
 import javax.vecmath.Vector3d;
 
 import nantes1900.models.basis.Edge;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
 
@@ -173,9 +174,15 @@ public class ParserSTL {
 						if (e1 == e2 || e2 == e3 || e1 == e3)
 							throw new FlatTriangleException();
 
-						facesFromSTL.add(new Triangle(currentPoints.get(0),
-								currentPoints.get(1), currentPoints.get(2), e1,
-								e2, e3, currentVector));
+						try {
+							facesFromSTL.add(new Triangle(currentPoints.get(0),
+									currentPoints.get(1), currentPoints.get(2),
+									e1, e2, e3, currentVector));
+						} catch (MoreThanTwoTrianglesPerEdgeException e4) {
+							// Do nothing : it will not add the Triangle to the
+							// mesh.
+							// TODO? Select the good triangle to remove ?
+						}
 					} else {
 						// If the triangle is read, clear the currentPoints
 						// static ArrayList for the next triangle.
@@ -207,10 +214,14 @@ public class ParserSTL {
 	 *             if the triangle is flat (two points equals)
 	 * @throws OutOfBoundsPointException
 	 *             if one point has a coordinate > 1e5
+	 * @throws MoreThanTwoTrianglesPerEdgeException
+	 *             if one edge of the new triangle contains already two
+	 *             triangles
 	 */
 	private static Triangle processLineB(ByteBuffer bBuf,
 			HashMap<Point, Point> pointMap, HashMap<Edge, Edge> edgeMap)
-			throws FlatTriangleException, OutOfBoundsPointException {
+			throws FlatTriangleException, OutOfBoundsPointException,
+			MoreThanTwoTrianglesPerEdgeException {
 
 		// Read in the ByteBuffer the floats.
 		Vector3d norm = new Vector3d(bBuf.getFloat(), bBuf.getFloat(),
@@ -392,6 +403,11 @@ public class ParserSTL {
 			} catch (OutOfBoundsPointException e) {
 				// The coordinates of the Point are unbounded, then the Triangle
 				// is not added to the Mesh.
+			} catch (MoreThanTwoTrianglesPerEdgeException e) {
+				// If one edge of the new triangle contains already two
+				// triangles, then the new triangle is removed from the mesh.
+				// TODO? Try to improve that by removing the triangle which is
+				// the worst.
 			}
 		}
 

@@ -1,9 +1,21 @@
 package nantes1900.tests.models;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import java.util.ArrayList;
+
+import javax.vecmath.Vector3d;
+
+import nantes1900.models.Mesh;
 import nantes1900.models.Polyline;
 import nantes1900.models.basis.Edge;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Point;
+import nantes1900.models.basis.Triangle;
+import nantes1900.utils.MatrixMethod;
+import nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 import org.junit.Test;
 
@@ -39,86 +51,32 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#addAll(java.util.List)}
-	 * .
-	 */
-	@Test
-	public void testAddAll() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.Polyline#add(nantes1900.models.basis.Edge)}.
-	 */
-	@Test
-	public void testAddEdge() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.Polyline#addNeighbour(nantes1900.models.Polyline)}
-	 * .
-	 */
-	@Test
-	public void testAddNeighbour() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.Polyline#add(nantes1900.models.basis.Point)}.
-	 */
-	@Test
-	public void testAddPoint() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
 	 * Test method for {@link nantes1900.models.Polyline#changeBase(double[][])}
 	 * .
 	 */
 	@Test
 	public void testChangeBase() {
-		fail("Not yet implemented"); // TODO
-	}
+		Point p1 = new Point(1, 0, -1);
+		Point p2 = new Point(0, 1, 0);
+		Point p3 = new Point(-1, 2, 1);
+		Edge e1 = new Edge(p1, p2);
+		Edge e2 = new Edge(p2, p3);
+		Edge e3 = new Edge(p3, p1);
 
-	/**
-	 * Test method for {@link nantes1900.models.Polyline#clear()}.
-	 */
-	@Test
-	public void testClear() {
-		fail("Not yet implemented"); // TODO
-	}
+		Polyline pol = new Polyline();
+		pol.add(e1);
+		pol.add(e2);
+		pol.add(e3);
 
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.Polyline#contains(nantes1900.models.basis.Edge)}
-	 * .
-	 */
-	@Test
-	public void testContainsEdge() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.Polyline#contains(nantes1900.models.basis.Point)}
-	 * .
-	 */
-	@Test
-	public void testContainsPoint() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.Polyline#determinateSingularPoints(double)} .
-	 */
-	@Test
-	public void testDeterminateSingularPoints() {
-		fail("Not yet implemented"); // TODO
+		try {
+			pol.changeBase(MatrixMethod.createOrthoBase(new Vector3d(1, 0, 0),
+					new Vector3d(0, 1, 0), new Vector3d(0, 0, 1)));
+			assertTrue(p1.equals(new Point(1, 0, -1)));
+			assertTrue(p2.equals(new Point(0, 1, 0)));
+			assertTrue(p3.equals(new Point(-1, 2, 1)));
+		} catch (SingularMatrixException e) {
+			fail();
+		}
 	}
 
 	/**
@@ -136,33 +94,28 @@ public class PolylineTest {
 	 */
 	@Test
 	public void testGetCylinder() {
-		fail("Not yet implemented"); // TODO
-	}
 
-	/**
-	 * Test method for {@link nantes1900.models.Polyline#getEdgeList()}.
-	 */
-	@Test
-	public void testGetEdgeList() {
-		fail("Not yet implemented"); // TODO
-	}
+		Point point1 = new Point(-1, -1, 0);
+		Point point2 = new Point(1, 1, 0);
+		Edge e1 = new Edge(point1, point2);
+		Point point3 = new Point(0, 0.7, 0);
+		Point point4 = new Point(-0.5, 1, 0);
+		Point point5 = new Point(1.6, 1.5, 0);
+		Edge e2 = new Edge(point3, point4);
+		Edge e3 = new Edge(point4, point5);
 
-	/**
-	 * Test method for {@link nantes1900.models.Polyline#getID()}.
-	 */
-	@Test
-	public void testGetID() {
-		fail("Not yet implemented"); // TODO
-	}
+		Polyline pol = new Polyline();
+		pol.add(e1);
+		pol.add(e2);
+		pol.add(e3);
 
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.Polyline#getNeighbours(nantes1900.models.basis.Point)}
-	 * .
-	 */
-	@Test
-	public void testGetNeighbours() {
-		fail("Not yet implemented"); // TODO
+		ArrayList<Point> list = pol.getCylinder(e1, 1);
+
+		assertTrue(list.contains(point1));
+		assertTrue(list.contains(point2));
+		assertTrue(list.contains(point3));
+		assertFalse(list.contains(point4));
+		assertFalse(list.contains(point5));
 	}
 
 	/**
@@ -172,7 +125,9 @@ public class PolylineTest {
 	 */
 	@Test
 	public void testGetNeighboursPoint() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(p.getNeighbours(p1).contains(e1));
+		assertFalse(p.getNeighbours(p1).contains(e2));
+		assertTrue(p.getNeighbours(p1).contains(e3));
 	}
 
 	/**
@@ -182,40 +137,7 @@ public class PolylineTest {
 	 */
 	@Test
 	public void testGetNumNeighbours() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Polyline#getOne()}.
-	 */
-	@Test
-	public void testGetOne() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Polyline#getPointList()}.
-	 */
-	@Test
-	public void testGetPointList() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.Polyline#getPointsAsCoordinates()}.
-	 */
-	@Test
-	public void testGetPointsAsCoordinates() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Polyline#isEmpty()}.
-	 */
-	@Test
-	public void testIsEmpty() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(p.getNumNeighbours(p1) == 2);
 	}
 
 	/**
@@ -230,10 +152,10 @@ public class PolylineTest {
 		Point p3 = new Point(2.2, 2, 0);
 		Edge e = new Edge(p1, p2);
 		double error = 0.3;
-		assertTrue(e.isInCylinder2D(p3, error));
+		assertTrue(e.isInInfiniteCylinder2D(p3, error));
 
 		p3 = new Point(3, 2, 0);
-		assertFalse(e.isInCylinder2D(p3, error));
+		assertFalse(e.isInInfiniteCylinder2D(p3, error));
 	}
 
 	/**
@@ -243,7 +165,9 @@ public class PolylineTest {
 	 */
 	@Test
 	public void testIsNeighbour() {
-		fail("Not yet implemented"); // TODO
+		Polyline pol = new Polyline();
+		pol.add(e1);
+		assertTrue(p.isNeighbour(pol));
 	}
 
 	/**
@@ -268,7 +192,15 @@ public class PolylineTest {
 	 */
 	@Test
 	public void testOrder() {
-		fail("Not yet implemented"); // TODO
+		Polyline pol = new Polyline();
+		pol.add(e1);
+		pol.add(e2);
+		pol.add(e3);
+
+		pol.order();
+		assertTrue(pol.getEdgeList().get(0) == e3);
+		assertTrue(pol.getEdgeList().get(1) == e2);
+		assertTrue(pol.getEdgeList().get(2) == e1);
 	}
 
 	/**
@@ -278,7 +210,20 @@ public class PolylineTest {
 	 */
 	@Test
 	public void testOrientedAs() {
-		fail("Not yet implemented"); // TODO
+		Polyline p = new Polyline();
+		p.add(e1);
+		p.add(e2);
+		p.add(e3);
+		p.add(e4);
+		p.add(e5);
+		Polyline pol = p.orientedAs(new Edge(new Point(0, -1, -2), new Point(1,
+				1, 1)), 0.5);
+
+		assertFalse(pol.contains(e1));
+		assertFalse(pol.contains(e2));
+		assertFalse(pol.contains(e3));
+		assertTrue(pol.contains(e4));
+		assertFalse(pol.contains(e5));
 	}
 
 	/**
@@ -290,28 +235,25 @@ public class PolylineTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Polyline#Polyline()}.
-	 */
-	@Test
-	public void testPolyline() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.Polyline#Polyline(java.util.List)}.
-	 */
-	@Test
-	public void testPolylineListOfEdge() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
 	 * Test method for {@link nantes1900.models.Polyline#refresh()}.
 	 */
 	@Test
 	public void testRefresh() {
-		fail("Not yet implemented"); // TODO
+		Polyline pol2 = new Polyline();
+		pol2.add(e1);
+		pol2.add(e2);
+		pol2.add(e3);
+		pol2.add(e4);
+		pol2.add(e5);
+		pol2.getEdgeList().remove(e2);
+		pol2.getEdgeList().remove(e3);
+
+		pol2.refresh();
+
+		assertTrue(pol2.contains(p1));
+		assertTrue(pol2.contains(p2));
+		assertFalse(pol2.contains(p3));
+		assertTrue(pol2.contains(p4));
 	}
 
 	/**
@@ -320,7 +262,18 @@ public class PolylineTest {
 	 */
 	@Test
 	public void testRemoveEdge() {
-		fail("Not yet implemented"); // TODO
+		Polyline pol2 = new Polyline();
+		pol2.add(e1);
+		pol2.add(e2);
+		pol2.add(e3);
+		pol2.add(e4);
+		pol2.add(e5);
+		pol2.remove(e1);
+		assertFalse(pol2.contains(e1));
+		assertTrue(pol2.contains(e2));
+		assertTrue(pol2.contains(e3));
+		assertTrue(pol2.contains(e4));
+		assertTrue(pol2.contains(e5));
 	}
 
 	/**
@@ -348,7 +301,24 @@ public class PolylineTest {
 	 */
 	@Test
 	public void testReturnCentroidMesh() {
-		fail("Not yet implemented"); // TODO
+
+		Point p1 = new Point(1, 0, -1);
+		Point p2 = new Point(0, 1, 0);
+
+		Edge e1 = new Edge(p1, p2);
+
+		Polyline p = new Polyline();
+		p.add(e1);
+
+		Mesh m = p.returnCentroidMesh();
+		Point centroid = new Point(0.5, 0.5, -0.5);
+
+		assertTrue(m.getOne().getP1() == p1 || m.getOne().getP1() == p2
+				|| m.getOne().getP1().equals(centroid));
+		assertTrue(m.getOne().getP2() == p1 || m.getOne().getP2() == p2
+				|| m.getOne().getP2().equals(centroid));
+		assertTrue(m.getOne().getP3() == p1 || m.getOne().getP3() == p2
+				|| m.getOne().getP3().equals(centroid));
 	}
 
 	/**
@@ -358,16 +328,40 @@ public class PolylineTest {
 	 */
 	@Test
 	public void testReturnExistingMesh() {
-		fail("Not yet implemented"); // TODO
-	}
+		try {
+			Point p1 = new Point(1, 0, -1);
+			Point p2 = new Point(0, 1, 0);
+			Point p3 = new Point(-1, 2, 1);
+			Point p4 = new Point(2, 2, 2);
 
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.Polyline#writeCentroidMesh(java.lang.String)}.
-	 */
-	@Test
-	public void testWriteCentroidMesh() {
-		fail("Not yet implemented"); // TODO
+			Edge e1 = new Edge(p1, p2);
+			Edge e2 = new Edge(p2, p3);
+			Edge e3 = new Edge(p3, p1);
+			Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, new Vector3d(0,
+					0, 0));
+
+			Edge e4 = new Edge(p1, p4);
+			Edge e5 = new Edge(p2, p4);
+			Triangle t2 = new Triangle(p1, p2, p4, e1, e4, e5, new Vector3d(0,
+					0, 1));
+
+			Polyline p = new Polyline();
+			p.add(e1);
+			p.add(e2);
+			p.add(e3);
+			p.add(e4);
+			p.add(e5);
+
+			Mesh belongTo = new Mesh();
+			belongTo.add(t1);
+			belongTo.add(t2);
+
+			Mesh m = p.returnExistingMesh(belongTo);
+			assertTrue(m.contains(t1));
+			assertTrue(m.contains(t2));
+		} catch (MoreThanTwoTrianglesPerEdgeException e) {
+			fail();
+		}
 	}
 
 	/**
@@ -539,7 +533,16 @@ public class PolylineTest {
 	 */
 	@Test
 	public void testZProjection() {
-		fail("Not yet implemented"); // TODO
-	}
+		Point p1 = new Point(0, 0, 0);
+		Point p2 = new Point(0, 1, 0);
 
+		Edge e = new Edge(p1, p2);
+
+		Polyline p = new Polyline();
+		p.add(e);
+		p.zProjection(1);
+
+		assertTrue(p1.getZ() == 1);
+		assertTrue(p2.getZ() == 1);
+	}
 }

@@ -1,6 +1,7 @@
 package nantes1900.tests.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,8 +15,8 @@ import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
 import nantes1900.utils.ParserSTL;
-import nantes1900.utils.WriterSTL;
 import nantes1900.utils.ParserSTL.BadFormedFileException;
+import nantes1900.utils.WriterSTL;
 
 import org.junit.Test;
 

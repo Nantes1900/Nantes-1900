@@ -37,7 +37,7 @@ public class Floor {
 	 *            the floor to decimate as a mesh
 	 */
 	public void decimate(Mesh floor) {
-
+		// FIXME
 	}
 
 	/**
@@ -68,21 +68,6 @@ public class Floor {
 		this.attribute = attribute;
 	}
 
-	/**
-	 * Setter.
-	 * 
-	 * @param floor
-	 *            the floor as a mesh
-	 */
-	public void setMesh(Mesh floor) {
-		this.mesh = floor;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see nantes1900.models.Mesh#writeSTL(java.lang.String)
-	 */
 	public void writeSTL(String fileName) {
 		this.mesh.writeSTL(fileName);
 	}

@@ -111,19 +111,23 @@ public class Edge {
 	 * 
 	 * @param t
 	 *            the triangle to add
-	 * @throws Exception
-	 *             (LOOK) if the edge already contains 2 triangles
+	 * @throws MoreThanTwoTrianglesPerEdgeException
+	 *             if the edge already contains 2 triangles
 	 * 
 	 */
-	public void addTriangle(Triangle t) {
+	public void addTriangle(Triangle t)
+			throws MoreThanTwoTrianglesPerEdgeException {
 		if (!this.triangleList.contains(t)) {
-			this.triangleList.add(t);
-			if (this.triangleList.size() > 2) {
-				// Throw an exception and treat it !
-				System.err
-						.println("Problem in the mesh : more than two triangles for one edge !");
+			if (this.triangleList.size() >= 2) {
+				throw new MoreThanTwoTrianglesPerEdgeException();
+			} else {
+				this.triangleList.add(t);
 			}
 		}
+	}
+
+	public static class MoreThanTwoTrianglesPerEdgeException extends Exception {
+		private static final long serialVersionUID = 1L;
 	}
 
 	/**
@@ -258,7 +262,7 @@ public class Edge {
 	 *            in which p must be
 	 * @return true if p is contained between those segments and false otherwise
 	 */
-	public boolean isInCylinder2D(Point p, double error) {
+	public boolean isInInfiniteCylinder2D(Point p, double error) {
 		double a, b, c, cPlus, cMinus;
 
 		Point p1 = this.getP1();
@@ -312,7 +316,7 @@ public class Edge {
 
 		Point p4 = new Point(x4, y4, z4);
 
-		return (lambda > 0 && lambda < 1 && p.distance(p4) < error);
+		return (lambda >= 0 && lambda <= 1 && p.distance(p4) <= error);
 	}
 
 	/**
@@ -345,7 +349,7 @@ public class Edge {
 
 		Point p4 = new Point(x4, y4, z4);
 
-		return (p.distance(p4) < error);
+		return (p.distance(p4) <= error);
 	}
 
 	/**
@@ -477,57 +481,6 @@ public class Edge {
 			list.remove(this);
 			return list.get(0);
 		}
-	}
-
-	/**
-	 * Return a polyline containing one entire bound. Take one point and search
-	 * for its neighbours. If we find a point which belong to 4 edges, then the
-	 * algorithm take the edge which is the more at the left.
-	 * 
-	 * @param p
-	 *            the polyline which contains all the bounds
-	 * @param point
-	 *            one point to begin the algorithm with
-	 * @param normalFloor
-	 *            the normal to the floor
-	 * @return the polyline containing the bound
-	 */
-	public Polyline returnOneBound(Polyline p, Point point, Vector3d normalFloor) {
-
-		Polyline bound = new Polyline();
-
-		try {
-			ArrayList<Edge> edgeList = p.getNeighbours(point);
-
-			if (edgeList.size() < 2) {
-				throw new BadFormedPolylineException();
-			}
-
-			Edge e = this.returnLeftNeighbour(p, point, normalFloor);
-			e.setP2(e.returnOther(point));
-			e.setP1(point);
-
-			bound.add(e);
-			point = e.returnOther(point);
-
-			while (e != this) {
-				edgeList = p.getNeighbours(point);
-				if (edgeList.size() < 2) {
-					throw new BadFormedPolylineException();
-				} else {
-					e = e.returnLeftNeighbour(p, point, normalFloor);
-
-					e.setP2(e.returnOther(point));
-					e.setP1(point);
-
-					bound.add(e);
-					point = e.returnOther(point);
-				}
-			}
-		} catch (BadFormedPolylineException e) {
-			return null;
-		}
-		return bound;
 	}
 
 	/**

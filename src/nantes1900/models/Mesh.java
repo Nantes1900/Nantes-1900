@@ -9,6 +9,7 @@ import java.util.HashSet;
 import javax.vecmath.Vector3d;
 
 import nantes1900.models.basis.Edge;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
 import nantes1900.utils.MatrixMethod;
@@ -486,125 +487,6 @@ public class Mesh extends HashSet<Triangle> {
 	}
 
 	/**
-	 * Sort the bounds.
-	 * 
-	 * @return a list of sorted bounds.
-	 */
-	public ArrayList<Polyline> returnBounds(Vector3d normal) {
-		Polyline bounds = this.returnUnsortedBounds();
-
-		ArrayList<Polyline> boundList = new ArrayList<Polyline>();
-
-		Polyline ret = new Polyline();
-
-		while (!bounds.isEmpty()) {
-			ret = new Polyline();
-
-			Edge arete = bounds.getOne();
-
-			ret = arete.returnOneBound(bounds,
-					this.getLeftPoint(arete, normal), normal);
-
-			if (ret != null)
-				boundList.add(ret);
-
-			bounds.remove(ret);
-		}
-
-		return boundList;
-	}
-
-	/**
-	 * Compute some calculations to obtain the point (ie the direction) to
-	 * follow to have the inside mesh at the right, and the hole at the left.
-	 * 
-	 * @param edge
-	 *            an edge which is a bound for this
-	 * @param normalFloor
-	 *            the normal to the floor
-	 * @return the point which represent the direction
-	 */
-	public Point getLeftPoint(Edge edge, Vector3d normalFloor) {
-
-		Point p31 = null, p32 = null;
-
-		// FIXME : if edge doesn't have 2 triangles ?
-
-		// Get the third point of each triangle of the edge
-		for (Point p : edge.getTriangleList().get(0).getPoints()) {
-			if (!edge.contains(p)) {
-				p31 = p;
-			}
-		}
-		for (Point p : edge.getTriangleList().get(1).getPoints()) {
-			if (!edge.contains(p)) {
-				p32 = p;
-			}
-		}
-
-		Vector3d vect = new Vector3d();
-		Vector3d v31 = new Vector3d();
-		Vector3d v32 = new Vector3d();
-
-		vect.x = edge.getP2().getX() - edge.getP1().getX();
-		vect.y = edge.getP2().getY() - edge.getP1().getY();
-		vect.z = edge.getP2().getZ() - edge.getP1().getZ();
-
-		v31.x = p31.getX() - edge.getP1().getX();
-		v31.y = p31.getY() - edge.getP1().getY();
-		v31.z = p31.getZ() - edge.getP1().getZ();
-
-		v32.x = p32.getX() - edge.getP1().getX();
-		v32.y = p32.getY() - edge.getP1().getY();
-		v32.z = p32.getZ() - edge.getP1().getZ();
-
-		Vector3d cross = new Vector3d();
-		cross.cross(normalFloor, vect);
-
-		// If (normalFloor cross vect) dot a vector is positive, then the vector
-		// point considered is at the left of vect.
-
-		// We then try to determine on which side is the inside of the mesh, and
-		// on which side is the outside, to know the direction : we want to
-		// begin with the outside at our left.
-		if (!this.contains(edge.getTriangleList().get(0))) {
-			if (cross.dot(v31) > 0) {
-				return edge.getP2();
-			} else {
-				return edge.getP1();
-			}
-		} else {
-			if (cross.dot(v32) > 0) {
-				return edge.getP2();
-			} else {
-				return edge.getP1();
-			}
-		}
-	}
-
-	/**
-	 * Calculate the max of the bounds returned by the returnBounds.
-	 * 
-	 * @return the longest bound which is supposed to be the contour of the
-	 *         surface
-	 */
-	public Polyline returnLongestBound(Vector3d normal) {
-
-		ArrayList<Polyline> boundList = this.returnBounds(normal);
-		Polyline ret = null;
-
-		double max = Double.MIN_VALUE;
-		for (Polyline p : boundList) {
-			if (p.length() > max) {
-				max = p.length();
-				ret = p;
-			}
-		}
-
-		return ret;
-	}
-
-	/**
 	 * Check if two meshes share an edge.
 	 * 
 	 * @param mesh
@@ -729,7 +611,11 @@ public class Mesh extends HashSet<Triangle> {
 		Vector3d vect = new Vector3d();
 		vect.cross(normalFloor, e3.convertToVector3d());
 
-		computedWallPlane.add(new Triangle(p1, p2, p3, e1, e2, e3, vect));
+		try {
+			computedWallPlane.add(new Triangle(p1, p2, p3, e1, e2, e3, vect));
+		} catch (MoreThanTwoTrianglesPerEdgeException e) {
+			e.printStackTrace();
+		}
 
 		return computedWallPlane;
 	}

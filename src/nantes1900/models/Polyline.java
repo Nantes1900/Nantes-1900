@@ -8,6 +8,7 @@ import javax.vecmath.Vector3d;
 
 import nantes1900.models.basis.Edge;
 import nantes1900.models.basis.Edge.BadFormedPolylineException;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
 
@@ -393,7 +394,7 @@ public class Polyline {
 
 			try {
 
-				Edge first = this.getOne();
+				Edge first = this.getEdgeList().get(0);
 				Point p = first.getP1();
 				Edge e = first.returnNeighbour(this, p);
 				p = e.returnOther(p);
@@ -498,9 +499,13 @@ public class Polyline {
 		Point before = this.pointList.get(this.pointSize() - 1);
 
 		for (Point p : this.pointList) {
-			ens.add(new Triangle(before, centroid, p,
-					new Edge(centroid, before), new Edge(before, p), new Edge(
-							p, centroid), normal));
+			try {
+				ens.add(new Triangle(before, centroid, p, new Edge(centroid,
+						before), new Edge(before, p), new Edge(p, centroid),
+						normal));
+			} catch (MoreThanTwoTrianglesPerEdgeException e) {
+				e.printStackTrace();
+			}
 			before = p;
 		}
 

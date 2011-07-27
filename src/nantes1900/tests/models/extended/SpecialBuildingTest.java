@@ -3,9 +3,7 @@
  */
 package nantes1900.tests.models.extended;
 
-import static org.junit.Assert.*;
-
-import nantes1900.models.extended.SpecialBuilding;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 

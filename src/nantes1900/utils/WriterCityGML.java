@@ -6,10 +6,10 @@ import java.util.List;
 
 import javax.xml.bind.JAXBException;
 
-import nantes1900.models.Mesh;
 import nantes1900.models.Polyline;
 import nantes1900.models.basis.Triangle;
 import nantes1900.models.extended.Floor;
+import nantes1900.models.extended.SpecialBuilding;
 
 import org.citygml4j.CityGMLContext;
 import org.citygml4j.builder.jaxb.JAXBBuilder;
@@ -214,7 +214,7 @@ public class WriterCityGML {
 	 * @param specialBuilding
 	 *            the mesh of the special building
 	 */
-	public void addSpecialBuilding(Mesh specialBuilding) {
+	public void addSpecialBuilding(SpecialBuilding specialBuilding) {
 		Building building = citygml.createBuilding();
 
 		// LOD2 solid
@@ -231,7 +231,7 @@ public class WriterCityGML {
 		List<BoundarySurfaceProperty> boundedBy = new ArrayList<BoundarySurfaceProperty>();
 
 		try {
-			for (Triangle t : specialBuilding) {
+			for (Triangle t : specialBuilding.getMesh()) {
 				Polygon geometry = geom.createLinearPolygon(
 						t.getPointsAsCoordinates(), 3);
 				geometry.setId(this.gmlIdManager.generateGmlId());
@@ -265,8 +265,8 @@ public class WriterCityGML {
 	 * @param specialBuilding
 	 *            the list of the special buildings
 	 */
-	public void addSpecialBuildings(List<Mesh> specialBuildings) {
-		for (Mesh specialBuilding : specialBuildings) {
+	public void addSpecialBuildings(List<SpecialBuilding> specialBuildings) {
+		for (SpecialBuilding specialBuilding : specialBuildings) {
 			this.addSpecialBuilding(specialBuilding);
 		}
 	}

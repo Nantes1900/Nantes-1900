@@ -68,7 +68,13 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testAddTriangle() {
-		fail("Not yet implemented"); // TODO
+		Triangle t3 = null;
+		try {
+			e1.addTriangle(t3);
+			fail();
+		} catch (MoreThanTwoTrianglesPerEdgeException e) {
+			assertFalse(e1.getTriangleList().contains(t3));
+		}
 	}
 
 	/**
@@ -88,7 +94,7 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testComputeMiddle() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(e5.computeMiddle().equals(new Point(1, 1.5, 1)));
 	}
 
 	/**
@@ -107,7 +113,7 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testConvertToVector3d() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(e5.convertToVector3d().equals(new Vector3d(2, 1, 2)));
 	}
 
 	/**
@@ -177,12 +183,22 @@ public class EdgeTest {
 
 	/**
 	 * Test method for
-	 * {@link nantes1900.models.basis.Edge#isInCylinder2D(nantes1900.models.basis.Point, double)}
+	 * {@link nantes1900.models.basis.Edge#isInInfiniteCylinder2D(nantes1900.models.basis.Point, double)}
 	 * .
 	 */
 	@Test
-	public void testIsInCylinder2D() {
-		fail("Not yet implemented"); // TODO
+	public void testIsInInfiniteCylinder2D() {
+		Point point1 = new Point(-1, -1, 0);
+		Point point2 = new Point(1, 1, 0);
+		Edge e = new Edge(point1, point2);
+
+		Point point3 = new Point(0, 0.7, 0);
+		assertTrue(e.isInInfiniteCylinder2D(point3, 1));
+
+		Point point4 = new Point(-0.5, 1, 0);
+		Point point5 = new Point(1.6, 1.5, 0);
+		assertFalse(e.isInInfiniteCylinder2D(point4, 1));
+		assertTrue(e.isInInfiniteCylinder2D(point5, 1));
 	}
 
 	/**
@@ -192,7 +208,17 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testIsInCylinder3D() {
-		fail("Not yet implemented"); // TODO
+		Point point1 = new Point(0, 0, 0);
+		Point point2 = new Point(1, 1, 1);
+		Edge e = new Edge(point1, point2);
+
+		Point point3 = new Point(0, 0.5, 0.5);
+		assertTrue(e.isInCylinder3D(point3, 1));
+
+		Point point4 = new Point(1.5, 1.5, 1.5);
+		Point point5 = new Point(1, 3, 1);
+		assertFalse(e.isInCylinder3D(point4, 1));
+		assertFalse(e.isInCylinder3D(point5, 1));
 	}
 
 	/**
@@ -202,7 +228,17 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testIsInInfiniteCylinder3D() {
-		fail("Not yet implemented"); // TODO
+		Point point1 = new Point(0, 0, 0);
+		Point point2 = new Point(1, 1, 1);
+		Edge e = new Edge(point1, point2);
+
+		Point point3 = new Point(0, 0.5, 0.5);
+		assertTrue(e.isInInfiniteCylinder3D(point3, 1));
+
+		Point point4 = new Point(1.5, 1.5, 1.5);
+		Point point5 = new Point(1, 3, 1);
+		assertTrue(e.isInInfiniteCylinder3D(point4, 1));
+		assertFalse(e.isInInfiniteCylinder3D(point5, 1));
 	}
 
 	/**
@@ -231,7 +267,15 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testOrientedAs() {
-		fail("Not yet implemented"); // TODO
+		Point point0 = new Point(0, 0, 0);
+		Point point1 = new Point(1, 0, 0);
+		Point point2 = new Point(1, 0.1, 0);
+
+		Edge e1 = new Edge(point0, point1);
+		Edge e2 = new Edge(point2, point0);
+
+		assertTrue(e1.orientedAs(e2, 20));
+		assertFalse(e1.orientedAs(e2, 2));
 	}
 
 	/**
@@ -241,7 +285,13 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testProject() {
-		fail("Not yet implemented"); // TODO
+		Point point0 = new Point(0, 0, 0);
+		Point point1 = new Point(1, 0, 0);
+		Point point2 = new Point(0.9, 0.1, 0);
+
+		Edge e1 = new Edge(point0, point1);
+
+		assertTrue(e1.project(point2).equals(new Point(0.9, 0, 0)));
 	}
 
 	/**
@@ -284,17 +334,22 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testReturnNeighbour() {
-		fail("Not yet implemented"); // TODO
-	}
+		Point p1 = new Point(0, 0, 0);
+		Point p2 = new Point(0, 1, 0);
+		Point p3 = new Point(-1, 2, 0);
 
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.basis.Edge#returnOneBound(nantes1900.models.Polyline, nantes1900.models.basis.Point, javax.vecmath.Vector3d)}
-	 * .
-	 */
-	@Test
-	public void testReturnOneBound() {
-		fail("Not yet implemented"); // TODO
+		Edge edge1 = new Edge(p1, p2);
+		Edge edge2 = new Edge(p1, p3);
+
+		Polyline b = new Polyline();
+		b.add(edge1);
+		b.add(edge2);
+
+		try {
+			assertTrue(edge1.returnNeighbour(b, p1) == edge2);
+		} catch (BadFormedPolylineException e) {
+			fail();
+		}
 	}
 
 	/**
@@ -328,7 +383,14 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testSharedPoint() {
-		fail("Not yet implemented"); // TODO
+		Point p1 = new Point(0, 0, 0);
+		Point p2 = new Point(0, 1, 0);
+		Point p3 = new Point(-1, 2, 0);
+
+		Edge edge1 = new Edge(p1, p2);
+		Edge edge2 = new Edge(p1, p3);
+
+		assertTrue(edge1.sharedPoint(edge2) == p1);
 	}
 
 }

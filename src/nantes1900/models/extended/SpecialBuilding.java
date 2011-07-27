@@ -2,15 +2,14 @@ package nantes1900.models.extended;
 
 import nantes1900.models.Mesh;
 
-public class SpecialBuilding extends Mesh {
+public class SpecialBuilding {
 
-	private static final long serialVersionUID = 1L;
+	private Mesh mesh = new Mesh();
 
 	/**
 	 * Constructor.
 	 */
 	public SpecialBuilding() {
-		super();
 	}
 
 	/**
@@ -20,6 +19,14 @@ public class SpecialBuilding extends Mesh {
 	 *            the special building as a mesh
 	 */
 	public void buildFromMesh(Mesh m) {
-		// FIXME
+		this.mesh = m;
+	}
+
+	public Mesh getMesh() {
+		return mesh;
+	}
+
+	public void setMesh(Mesh mesh) {
+		this.mesh = mesh;
 	}
 }

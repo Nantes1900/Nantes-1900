@@ -12,6 +12,8 @@ import nantes1900.models.basis.Edge;
 import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
+import nantes1900.utils.MatrixMethod;
+import nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 import org.junit.Test;
 
@@ -69,7 +71,39 @@ public class MeshTest {
 	 */
 	@Test
 	public void testChangeBase() {
-		fail("Not yet implemented"); // TODO
+		try {
+			Point p1 = new Point(1, 0, -1);
+			Point p2 = new Point(0, 1, 0);
+			Point p3 = new Point(-1, 2, 1);
+			Vector3d vect1 = new Vector3d(0, 0, 1);
+			Edge e1 = new Edge(p1, p2);
+			Edge e2 = new Edge(p2, p3);
+			Edge e3 = new Edge(p3, p1);
+			Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect1);
+
+			Point p4 = new Point(4, 5, 4);
+			Point p5 = new Point(2, -3, -3);
+			Point p6 = new Point(-2, 4, -5);
+			Vector3d vect2 = new Vector3d(1, 0, 0);
+			Edge e4 = new Edge(p4, p5);
+			Edge e5 = new Edge(p5, p6);
+			Edge e6 = new Edge(p6, p4);
+			Triangle t2 = new Triangle(p4, p5, p6, e4, e5, e6, vect2);
+
+			Mesh m = new Mesh();
+			m.add(t1);
+			m.add(t2);
+
+			m.changeBase(MatrixMethod.createOrthoBase(new Vector3d(1, 0, 0),
+					new Vector3d(0, 1, 0), new Vector3d(0, 0, 1)));
+			assertTrue(p1.equals(new Point(1, 0, -1)));
+			assertTrue(p2.equals(new Point(0, 1, 0)));
+			assertTrue(p3.equals(new Point(-1, 2, 1)));
+		} catch (SingularMatrixException e) {
+			fail();
+		} catch (MoreThanTwoTrianglesPerEdgeException e) {
+			fail();
+		}
 	}
 
 	/**
@@ -78,7 +112,11 @@ public class MeshTest {
 	 */
 	@Test
 	public void testContainsEdge() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(m.contains(e1));
+		assertTrue(m.contains(e2));
+		assertTrue(m.contains(e3));
+		assertTrue(m.contains(e4));
+		assertTrue(m.contains(e5));
 	}
 
 	/**
@@ -101,30 +139,41 @@ public class MeshTest {
 
 	/**
 	 * Test method for
-	 * {@link nantes1900.models.Mesh#getLeftPoint(nantes1900.models.basis.Edge, javax.vecmath.Vector3d)}
-	 * .
-	 */
-	@Test
-	public void testGetLeftPoint() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#getOne()}.
-	 */
-	@Test
-	public void testGetOne() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
 	 * {@link nantes1900.models.Mesh#intersection(nantes1900.models.Mesh, nantes1900.models.Mesh)}
 	 * .
 	 */
 	@Test
 	public void testIntersection() {
-		fail("Not yet implemented"); // TODO
+		try {
+			Point p1 = new Point(0, 0, 0);
+			Vector3d vect1 = new Vector3d(0, 0, 1);
+			Edge e1 = new Edge(p1, p1);
+			Triangle t1 = new Triangle(p1, p1, p1, e1, e1, e1, vect1);
+
+			Point p2 = new Point(0, 0, 0);
+			Vector3d vect2 = new Vector3d(0, 1, 0);
+			Edge e2 = new Edge(p1, p1);
+			Triangle t2 = new Triangle(p2, p2, p2, e2, e2, e2, vect2);
+
+			Point p3 = new Point(0, 0, 0);
+			Vector3d vect3 = new Vector3d(1, 0, 0);
+			Edge e3 = new Edge(p1, p1);
+			Triangle t3 = new Triangle(p3, p3, p3, e3, e3, e3, vect3);
+
+			Mesh m1 = new Mesh();
+			m1.add(t1);
+			Mesh m2 = new Mesh();
+			m2.add(t2);
+			Mesh m3 = new Mesh();
+			m3.add(t3);
+
+			assertTrue(m1.intersection(m2, m3).equals(new Point(0, 0, 0)));
+
+		} catch (MoreThanTwoTrianglesPerEdgeException e) {
+			fail();
+		} catch (SingularMatrixException e) {
+			fail();
+		}
 	}
 
 	/**
@@ -133,7 +182,9 @@ public class MeshTest {
 	 */
 	@Test
 	public void testIsNeighbour() {
-		fail("Not yet implemented"); // TODO
+		Mesh m1 = new Mesh();
+		m1.add(t1);
+		assertTrue(m1.isNeighbour(m));
 	}
 
 	/**
@@ -143,7 +194,27 @@ public class MeshTest {
 	 */
 	@Test
 	public void testIsOrientedAs() {
-		fail("Not yet implemented"); // TODO
+		try {
+			Point p1 = new Point(0, 0, 0);
+			Vector3d vect1 = new Vector3d(0, 0, 1);
+			Edge e1 = new Edge(p1, p1);
+			Triangle t1 = new Triangle(p1, p1, p1, e1, e1, e1, vect1);
+
+			Point p2 = new Point(0, 0, 0);
+			Vector3d vect2 = new Vector3d(0, 0.1, 1.1);
+			Edge e2 = new Edge(p1, p1);
+			Triangle t2 = new Triangle(p2, p2, p2, e2, e2, e2, vect2);
+
+			Mesh m1 = new Mesh();
+			m1.add(t1);
+			Mesh m2 = new Mesh();
+			m2.add(t2);
+
+			assertTrue(m1.isOrientedAs(m2, 15));
+			assertFalse(m1.isOrientedAs(m2, 2));
+		} catch (MoreThanTwoTrianglesPerEdgeException e) {
+			fail();
+		}
 	}
 
 	/**
@@ -183,25 +254,6 @@ public class MeshTest {
 		m1.remove(m2);
 
 		assertTrue(m1.contains(t2));
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.Mesh#returnBounds(javax.vecmath.Vector3d)}.
-	 */
-	@Test
-	public void testReturnBounds() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.Mesh#returnLongestBound(javax.vecmath.Vector3d)}
-	 * .
-	 */
-	@Test
-	public void testReturnLongestBound() {
-		fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -295,28 +347,11 @@ public class MeshTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.Mesh#writeSTL(java.lang.String)}
-	 * .
-	 */
-	@Test
-	public void testWriteSTL() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#xAverage()}.
-	 */
-	@Test
-	public void testxAverage() {
-		assertTrue(this.m.xAverage() == 2.0 / 3.0);
-	}
-
-	/**
 	 * Test method for {@link nantes1900.models.Mesh#xAverage()}.
 	 */
 	@Test
 	public void testXAverage() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(this.m.xAverage() == 2.0 / 3.0);
 	}
 
 	/**
@@ -333,24 +368,8 @@ public class MeshTest {
 	 * Test method for {@link nantes1900.models.Mesh#xLengthAverage()}.
 	 */
 	@Test
-	public void testxLengthAverage() {
-		assertTrue(this.m.xLengthAverage() == 4);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#xLengthAverage()}.
-	 */
-	@Test
 	public void testXLengthAverage() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#xMax()}.
-	 */
-	@Test
-	public void testxMax() {
-		assertTrue(this.m.xMax() == 4);
+		assertTrue(this.m.xLengthAverage() == 4);
 	}
 
 	/**
@@ -358,15 +377,7 @@ public class MeshTest {
 	 */
 	@Test
 	public void testXMax() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#xMin()}.
-	 */
-	@Test
-	public void testxMin() {
-		assertTrue(this.m.xMin() == -2);
+		assertTrue(this.m.xMax() == 4);
 	}
 
 	/**
@@ -374,15 +385,7 @@ public class MeshTest {
 	 */
 	@Test
 	public void testXMin() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#yAverage()}.
-	 */
-	@Test
-	public void testyAverage() {
-		assertTrue(this.m.yAverage() == 3.0 / 2.0);
+		assertTrue(this.m.xMin() == -2);
 	}
 
 	/**
@@ -390,7 +393,7 @@ public class MeshTest {
 	 */
 	@Test
 	public void testYAverage() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(this.m.yAverage() == 3.0 / 2.0);
 	}
 
 	/**
@@ -407,24 +410,8 @@ public class MeshTest {
 	 * Test method for {@link nantes1900.models.Mesh#yLengthAverage()}.
 	 */
 	@Test
-	public void testyLengthAverage() {
-		assertTrue(this.m.yLengthAverage() == 5);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#yLengthAverage()}.
-	 */
-	@Test
 	public void testYLengthAverage() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#yMax()}.
-	 */
-	@Test
-	public void testyMax() {
-		assertTrue(this.m.yMax() == 5);
+		assertTrue(this.m.yLengthAverage() == 5);
 	}
 
 	/**
@@ -432,15 +419,7 @@ public class MeshTest {
 	 */
 	@Test
 	public void testYMax() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#yMin()}.
-	 */
-	@Test
-	public void testyMin() {
-		assertTrue(this.m.yMin() == -3);
+		assertTrue(this.m.yMax() == 5);
 	}
 
 	/**
@@ -448,15 +427,7 @@ public class MeshTest {
 	 */
 	@Test
 	public void testYMin() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#zAverage()}.
-	 */
-	@Test
-	public void testzAverage() {
-		assertTrue(this.m.zAverage() == -2.0 / 3.0);
+		assertTrue(this.m.yMin() == -3);
 	}
 
 	/**
@@ -464,7 +435,7 @@ public class MeshTest {
 	 */
 	@Test
 	public void testZAverage() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(this.m.zAverage() == -2.0 / 3.0);
 	}
 
 	/**
@@ -481,24 +452,8 @@ public class MeshTest {
 	 * Test method for {@link nantes1900.models.Mesh#zLengthAverage()}.
 	 */
 	@Test
-	public void testzLengthAverage() {
-		assertTrue(this.m.zLengthAverage() == 5.5);
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#zLengthAverage()}.
-	 */
-	@Test
 	public void testZLengthAverage() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#zMax()}.
-	 */
-	@Test
-	public void testzMax() {
-		assertTrue(this.m.zMax() == 4);
+		assertTrue(this.m.zLengthAverage() == 5.5);
 	}
 
 	/**
@@ -506,15 +461,7 @@ public class MeshTest {
 	 */
 	@Test
 	public void testZMax() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.Mesh#zMin()}.
-	 */
-	@Test
-	public void testzMin() {
-		assertTrue(this.m.zMin() == -5);
+		assertTrue(this.m.zMax() == 4);
 	}
 
 	/**
@@ -522,7 +469,7 @@ public class MeshTest {
 	 */
 	@Test
 	public void testZMin() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(this.m.zMin() == -5);
 	}
 
 	/**

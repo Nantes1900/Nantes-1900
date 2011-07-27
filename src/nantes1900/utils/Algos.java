@@ -7,7 +7,6 @@ import java.util.HashSet;
 import nantes1900.models.Mesh;
 import nantes1900.models.basis.Triangle;
 
-
 /**
  * @author Daniel Lefevre
  * 
@@ -129,11 +128,9 @@ public final class Algos {
 	 * @param altitudeErrorFactor
 	 *            the error on the altitude
 	 * @return the mesh containing the floor extracted
-	 * @throws NoFloorException
-	 *             if there is no floor
 	 */
 	public static Mesh floorExtract(Mesh meshOriented,
-			double altitudeErrorFactor) throws NoFloorException {
+			double altitudeErrorFactor) {
 		Mesh floors = new Mesh();
 
 		try {
@@ -158,7 +155,9 @@ public final class Algos {
 
 			return floors;
 		} catch (InvalidParameterException e) {
-			throw new NoFloorException();
+			System.err.println("Error : no floor to extract !");
+			// TODO? what to do ?
+			return null;
 		}
 	}
 

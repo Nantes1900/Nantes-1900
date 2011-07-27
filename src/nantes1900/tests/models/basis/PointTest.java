@@ -88,7 +88,10 @@ public class PointTest {
 	 */
 	@Test
 	public void testEqualsObject() {
-		fail("Not yet implemented"); // TODO
+		Point p1 = new Point(0, 0, 0);
+		Point p2 = new Point(0, 0, 0);
+
+		assertTrue(p1.equals(p2));
 	}
 
 	/**
@@ -97,31 +100,9 @@ public class PointTest {
 	 */
 	@Test
 	public void testGetPointAsCoordinates() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#getX()}.
-	 */
-	@Test
-	public void testGetX() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#getY()}.
-	 */
-	@Test
-	public void testGetY() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#getZ()}.
-	 */
-	@Test
-	public void testGetZ() {
-		fail("Not yet implemented"); // TODO
+		Point p1 = new Point(0.5, 0.5, 0.5);
+		double[] coords = p1.getPointAsCoordinates();
+		assertTrue(coords[0] == 0.5 && coords[1] == 0.5 && coords[2] == 0.5);
 	}
 
 	/**
@@ -129,34 +110,9 @@ public class PointTest {
 	 */
 	@Test
 	public void testHashCode() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.basis.Point#Point(double, double, double)}.
-	 */
-	@Test
-	public void testPointDoubleDoubleDouble() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.basis.Point#Point(nantes1900.models.basis.Point)}
-	 * .
-	 */
-	@Test
-	public void testPointPoint() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#set(double[])}.
-	 */
-	@Test
-	public void testSet() {
-		fail("Not yet implemented"); // TODO
+		Point p1 = new Point(0.0242515242412, 0, 0);
+		Point p2 = new Point(0.0242515244450, 0, 0);
+		assertTrue(p1.hashCode() == p2.hashCode());
 	}
 
 	/**
@@ -164,7 +120,13 @@ public class PointTest {
 	 */
 	@Test
 	public void testSetDoubleArray() {
-		fail("Not yet implemented"); // TODO
+		double[] a = { 0.1, 0.2, 0.4 };
+		Point p1 = new Point(0, 0, 0);
+		p1.set(a);
+
+		assertTrue(p1.getX() == 0.1);
+		assertTrue(p1.getY() == 0.2);
+		assertTrue(p1.getZ() == 0.4);
 	}
 
 	/**
@@ -173,39 +135,12 @@ public class PointTest {
 	 */
 	@Test
 	public void testSetDoubleDoubleDouble() {
-		fail("Not yet implemented"); // TODO
-	}
+		double a = 0.1, b = 0.2, c = 0.4;
+		Point p1 = new Point(0, 0, 0);
+		p1.set(a, b, c);
 
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#setX(double)}.
-	 */
-	@Test
-	public void testSetX() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(p1.getX() == 0.1);
+		assertTrue(p1.getY() == 0.2);
+		assertTrue(p1.getZ() == 0.4);
 	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#setY(double)}.
-	 */
-	@Test
-	public void testSetY() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#setZ(double)}.
-	 */
-	@Test
-	public void testSetZ() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Point#toString()}.
-	 */
-	@Test
-	public void testToString() {
-		fail("Not yet implemented"); // TODO
-	}
-
 }

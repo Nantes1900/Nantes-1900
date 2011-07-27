@@ -8,6 +8,7 @@ import java.util.List;
 import javax.vecmath.Vector3d;
 
 import nantes1900.models.Mesh;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 
 /**
  * Implement a triangle, composed of three points, three edges, and one vector
@@ -38,9 +39,11 @@ public class Triangle {
 	 *            one edge composed by two of the three points
 	 * @param normale
 	 *            the normal of the triangle
+	 * @throws MoreThanTwoTrianglesPerEdgeException
+	 *             if one edge already contains 2 triangles
 	 */
 	public Triangle(Point p0, Point p1, Point p2, Edge e1, Edge e2, Edge e3,
-			Vector3d normale) {
+			Vector3d normale) throws MoreThanTwoTrianglesPerEdgeException {
 		this.points[0] = p0;
 		this.points[1] = p1;
 		this.points[2] = p2;
@@ -60,8 +63,10 @@ public class Triangle {
 	 * 
 	 * @param t
 	 *            the triangle to copy
+	 * @throws MoreThanTwoTrianglesPerEdgeException
+	 *             if one edge already contains 2 triangles
 	 */
-	public Triangle(Triangle t) {
+	public Triangle(Triangle t) throws MoreThanTwoTrianglesPerEdgeException {
 		this.points[0] = new Point(t.points[0]);
 		this.points[1] = new Point(t.points[1]);
 		this.points[2] = new Point(t.points[2]);

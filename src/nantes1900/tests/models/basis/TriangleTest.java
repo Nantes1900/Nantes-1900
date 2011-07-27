@@ -58,31 +58,11 @@ public class TriangleTest {
 
 	/**
 	 * Test method for
-	 * {@link nantes1900.models.basis.Triangle#angularTolerance(nantes1900.models.basis.Triangle, double)}
-	 * .
-	 */
-	@Test
-	public void testAngularToleranceTriangleDouble() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.basis.Triangle#angularTolerance(javax.vecmath.Vector3d, double)}
-	 * .
-	 */
-	@Test
-	public void testAngularToleranceVector3dDouble() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
 	 * {@link nantes1900.models.basis.Triangle#contains(nantes1900.models.basis.Point)}
 	 * .
 	 */
 	@Test
-	public void testContains() {
+	public void testContainsPoint() {
 		assertTrue(t.contains(p1));
 		assertTrue(t.contains(p2));
 		assertTrue(t.contains(p3));
@@ -95,17 +75,9 @@ public class TriangleTest {
 	 */
 	@Test
 	public void testContainsEdge() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.basis.Triangle#contains(nantes1900.models.basis.Point)}
-	 * .
-	 */
-	@Test
-	public void testContainsPoint() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(t.contains(e1));
+		assertTrue(t.contains(e2));
+		assertTrue(t.contains(e3));
 	}
 
 	/**
@@ -122,44 +94,10 @@ public class TriangleTest {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getE1()}.
-	 */
-	@Test
-	public void testGetE1() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getE2()}.
-	 */
-	@Test
-	public void testGetE2() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getE3()}.
-	 */
-	@Test
-	public void testGetE3() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getEdges()}.
-	 */
-	@Test
-	public void testGetEdges() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
 	 * Test method for {@link nantes1900.models.basis.Triangle#getNeighbours()}.
-	 * 
-	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
 	@Test
-	public void testGetNeighbours() throws MoreThanTwoTrianglesPerEdgeException {
+	public void testGetNeighbours() {
 		Point p4 = new Point(3, 4, 5);
 		Point p5 = new Point(-3, -4, -5);
 		Point p6 = new Point(-3.5, -1.2, 5.9);
@@ -169,30 +107,21 @@ public class TriangleTest {
 		Edge e7 = new Edge(p2, p5);
 		Edge e8 = new Edge(p1, p6);
 		Edge e9 = new Edge(p2, p6);
-		Triangle t2 = new Triangle(p1, p2, p4, e1, e4, e5, vect);
-		Triangle t3 = new Triangle(p1, p3, p5, e3, e6, e7, vect);
-		Triangle t4 = new Triangle(p2, p3, p6, e2, e8, e9, vect);
+		try {
 
-		Mesh contain = new Mesh();
-		contain.add(t);
-		contain.add(t2);
-		contain.add(t3);
-		contain.add(t4);
+			Triangle t2 = new Triangle(p1, p2, p4, e1, e4, e5, vect);
+			Triangle t3 = new Triangle(p1, p3, p5, e3, e6, e7, vect);
+			Triangle t4 = new Triangle(p2, p3, p6, e2, e8, e9, vect);
 
-		ArrayList<Triangle> l = t.getNeighbours();
+			ArrayList<Triangle> l = t.getNeighbours();
 
-		assertFalse(l.contains(t));
-		assertTrue(l.contains(t2));
-		assertTrue(l.contains(t3));
-		assertTrue(l.contains(t4));
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getNormal()}.
-	 */
-	@Test
-	public void testGetNormal() {
-		fail("Not yet implemented"); // TODO
+			assertFalse(l.contains(t));
+			assertTrue(l.contains(t2));
+			assertTrue(l.contains(t3));
+			assertTrue(l.contains(t4));
+		} catch (MoreThanTwoTrianglesPerEdgeException e) {
+			fail();
+		}
 	}
 
 	/**
@@ -201,31 +130,25 @@ public class TriangleTest {
 	 */
 	@Test
 	public void testGetNumNeighbours() {
-		fail("Not yet implemented"); // TODO
-	}
+		Point p4 = new Point(3, 4, 5);
+		Point p5 = new Point(-3, -4, -5);
+		Point p6 = new Point(-3.5, -1.2, 5.9);
+		Edge e4 = new Edge(p1, p4);
+		Edge e5 = new Edge(p2, p4);
+		Edge e6 = new Edge(p1, p5);
+		Edge e7 = new Edge(p2, p5);
+		Edge e8 = new Edge(p1, p6);
+		Edge e9 = new Edge(p2, p6);
 
-	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getP1()}.
-	 */
-	@Test
-	public void testGetP1() {
-		fail("Not yet implemented"); // TODO
-	}
+		try {
+			new Triangle(p1, p2, p4, e1, e4, e5, vect);
+			new Triangle(p1, p3, p5, e3, e6, e7, vect);
+			new Triangle(p2, p3, p6, e2, e8, e9, vect);
 
-	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getP2()}.
-	 */
-	@Test
-	public void testGetP2() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#getP3()}.
-	 */
-	@Test
-	public void testGetP3() {
-		fail("Not yet implemented"); // TODO
+			assertTrue(t.getNumNeighbours() == 3);
+		} catch (MoreThanTwoTrianglesPerEdgeException e) {
+			fail();
+		}
 	}
 
 	/**
@@ -237,23 +160,6 @@ public class TriangleTest {
 		assertTrue(pointList.get(0) == p1);
 		assertTrue(pointList.get(1) == p2);
 		assertTrue(pointList.get(2) == p3);
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.basis.Triangle#getPointsAsCoordinates()}.
-	 */
-	@Test
-	public void testGetPointsAsCoordinates() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#hashCode()}.
-	 */
-	@Test
-	public void testHashCode() {
-		fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -330,8 +236,12 @@ public class TriangleTest {
 		contain.add(t4);
 		contain.add(t5);
 
-		// TODO : ajouter un autre triangle qui n'est pas un voisin et tester le
-		// résultat.
+		Triangle t6 = new Triangle(new Point(0.05, 0.05, 0.05), new Point(0.05,
+				0.05, 0.05), new Point(0.05, 0.05, 0.05), new Edge(new Point(
+				0.05, 0.05, 0.05), new Point(0.05, 0.05, 0.05)), new Edge(
+				new Point(0.05, 0.05, 0.05), new Point(0.05, 0.05, 0.05)),
+				new Edge(new Point(0.05, 0.05, 0.05), new Point(0.05, 0.05,
+						0.05)), vect);
 
 		Mesh ret = new Mesh();
 		t.returnNeighbours(ret, contain);
@@ -341,24 +251,7 @@ public class TriangleTest {
 		assertTrue(ret.contains(t3));
 		assertTrue(ret.contains(t4));
 		assertTrue(ret.contains(t5));
-	}
-
-	/**
-	 * Test method for {@link nantes1900.models.basis.Triangle#toString()}.
-	 */
-	@Test
-	public void testToString() {
-		fail("Not yet implemented"); // TODO
-	}
-
-	/**
-	 * Test method for
-	 * {@link nantes1900.models.basis.Triangle#Triangle(nantes1900.models.basis.Point, nantes1900.models.basis.Point, nantes1900.models.basis.Point, nantes1900.models.basis.Edge, nantes1900.models.basis.Edge, nantes1900.models.basis.Edge, javax.vecmath.Vector3d)}
-	 * .
-	 */
-	@Test
-	public void testTriangle() {
-		fail("Not yet implemented"); // TODO
+		assertFalse(ret.contains(t6));
 	}
 
 	/**
@@ -478,7 +371,6 @@ public class TriangleTest {
 	 */
 	@Test
 	public void testZMinPoint() {
-		fail("Not yet implemented"); // TODO
+		assertTrue(t.zMinPoint() == p1);
 	}
-
 }

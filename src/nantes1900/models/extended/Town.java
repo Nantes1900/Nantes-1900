@@ -27,7 +27,7 @@ public class Town {
 	private ArrayList<Building> industrials = new ArrayList<Building>();
 	private ArrayList<Floor> floors = new ArrayList<Floor>();
 	private ArrayList<Floor> wateries = new ArrayList<Floor>();
-	private ArrayList<Mesh> specialBuildings = new ArrayList<Mesh>();
+	private ArrayList<SpecialBuilding> specialBuildings = new ArrayList<SpecialBuilding>();
 
 	private double[][] matrix = new double[3][3];
 
@@ -83,7 +83,7 @@ public class Town {
 	 * @param specialBuilding
 	 *            the special building to add
 	 */
-	public void addSpecialBuilding(Mesh specialBuilding) {
+	public void addSpecialBuilding(SpecialBuilding specialBuilding) {
 		if (!this.specialBuildings.contains(specialBuilding))
 			this.specialBuildings.add(specialBuilding);
 	}
@@ -111,34 +111,29 @@ public class Town {
 	public void buildFromMesh(String directoryName) {
 
 		long time = System.nanoTime();
+
 		Vector3d normalFloor = this.extractFloorNormal(directoryName
 				+ "/floor.stl");
 		this.createChangeBaseMatrix(normalFloor);
-		log.finest("Matrix computing : " + (System.nanoTime() - time));
 
-		time = System.nanoTime();
 		this.treatFloors(directoryName + "/floors/");
-		this.treatWateries(directoryName + "/wateries/");
-
 		log.info("Numbers of floors : " + this.floors.size());
+
+		this.treatWateries(directoryName + "/wateries/");
 		log.info("Numbers of wateries : " + this.wateries.size());
-		log.finest("Floors and wateries : " + (System.nanoTime() - time));
 
-		time = System.nanoTime();
-		this.treatSpecialBuildings(directoryName + "/special_buildings/");
-
+		this.treatSpecialBuildings(directoryName + "/special_buildings/",
+				normalFloor);
 		log.info("Numbers of special buildings : "
 				+ this.specialBuildings.size());
-		log.finest("Special buildings : " + (System.nanoTime() - time));
 
-		time = System.nanoTime();
 		this.treatIndustrials(directoryName + "/industrials/", normalFloor);
-		this.treatResidentials(directoryName + "/residentials/", normalFloor);
-
 		log.info("Numbers of industrials zones : " + this.industrials.size());
+
+		this.treatResidentials(directoryName + "/residentials/", normalFloor);
 		log.info("Numbers of residentials zones : " + this.residentials.size());
-		log.finest("Residentials and industrials : "
-				+ (System.nanoTime() - time));
+
+		log.info("Temps total écoulé : " + (System.nanoTime() - time));
 	}
 
 	/**
@@ -203,7 +198,7 @@ public class Town {
 		try {
 			// Base change
 			this.matrix = MatrixMethod.createOrthoBase(normalFloor);
-			MatrixMethod.changeBase(normalFloor, matrix);
+			MatrixMethod.changeBase(normalFloor, this.matrix);
 
 		} catch (SingularMatrixException e) {
 			log.severe("Error : the matrix is badly formed !");
@@ -249,8 +244,9 @@ public class Town {
 	 * @throws NoFloorException
 	 *             if there is no floor-oriented triangle
 	 */
-	private Mesh floorExtraction(Mesh mesh, Vector3d normalFloor)
-			throws NoFloorException {
+	private Mesh floorExtraction(Mesh mesh, Vector3d normalFloor) {
+		// TODO? Return an exception if there is no floor in the mesh, such as :
+		// please get some floors during the previous cut !
 
 		// Searching for floor-oriented triangles with an error :
 		// angleNormalErrorFactor
@@ -370,73 +366,74 @@ public class Town {
 	 * 
 	 * @param directoryName
 	 *            the name of the directory where are the files
-	 * @param normalFloor
-	 *            the normal to the floor
+	 * @param normalGravityOriented
+	 *            the normal oriented as the gravity vector oriented to the sky
 	 */
-	private void treatResidentials(String directoryName, Vector3d normalFloor) {
+	private void treatResidentials(String directoryName,
+			Vector3d normalGravityOriented) {
 		int counterResidentials = 1;
 
 		while (new File(directoryName + "residential - " + counterResidentials
 				+ ".stl").exists()) {
 
-			long time = System.nanoTime();
 			Mesh mesh = this.parseFile((directoryName + "residential - "
 					+ counterResidentials + ".stl"));
-			log.finest("Parsing file : " + (System.nanoTime() - time));
 
-			time = System.nanoTime();
+			Vector3d realNormalToTheFloor;
+			if (new File(directoryName + "floor - " + counterResidentials
+					+ ".stl").exists()) {
+				realNormalToTheFloor = this.extractFloorNormal(directoryName
+						+ "floor - " + counterResidentials + ".stl");
+				MatrixMethod.changeBase(realNormalToTheFloor, this.matrix);
+			} else {
+				realNormalToTheFloor = normalGravityOriented;
+			}
+
+			// FIXME FIXME FIXME : after extracting the
+			// normalGravityOriented, then make the change base on each mesh
+			// and assume that this normal is (0, 0, 1).
+			// Then the real normalFloor will not be confonded.
+
+			// FIXME : the zMinPoint method is not adapted to extract the
+			// floor... It should be a new realNormalToTheFloor z...
 			mesh.changeBase(this.matrix);
-			log.finest("Change base : " + (System.nanoTime() - time));
 
 			Mesh noise = new Mesh();
 
-			Mesh wholeFloor;
-			ArrayList<Mesh> buildings;
+			Mesh wholeFloor = this.floorExtraction(mesh, realNormalToTheFloor);
+			ArrayList<Mesh> buildings = this.buildingsExtraction(mesh, noise);
 
-			try {
-				time = System.nanoTime();
-				wholeFloor = this.floorExtraction(mesh, normalFloor);
-				log.finest("Floor extraction : " + (System.nanoTime() - time));
+			ArrayList<Mesh> floors = this.noiseTreatment(wholeFloor, noise);
 
-				time = System.nanoTime();
-				buildings = this.buildingsExtraction(mesh, noise);
-				log.finest("Building extraction : "
-						+ (System.nanoTime() - time));
+			// FIXME
+			// ArrayList<Mesh> formsList =
+			// this.carveRealBuildings(buildings);
 
-				ArrayList<Mesh> floors = this.noiseTreatment(wholeFloor, noise);
-				log.finest("Noise treatment : " + (System.nanoTime() - time));
-
-				time = System.nanoTime();
-
-				// FIXME
-				// ArrayList<Mesh> formsList =
-				// this.carveRealBuildings(buildings);
-
-				for (Mesh m : buildings) {
-					Building e = new Building();
-					e.buildFromMesh(m, wholeFloor, normalFloor);
-					this.addResidential(e);
-				}
-
-				log.finest("Building construction : "
-						+ (System.nanoTime() - time));
-
-				time = System.nanoTime();
-
-				for (Mesh m : floors) {
-					Floor floor = new Floor("street");
-					floor.buildFromMesh(m);
-					this.addFloor(floor);
-				}
-
-				log.finest("Floor construction : " + (System.nanoTime() - time));
-
-			} catch (NoFloorException e1) {
-				// FIXME
-				// If there is no floor to extract
-				System.err
-						.println("You need a floor to complete the bottom of the walls");
+			int counterBuilding = 1;
+			for (Mesh m : buildings) {
+				m.writeSTL("Tests/St-Similien/m01/results/building - "
+						+ counterResidentials + " " + counterBuilding + ".stl");
+				// Building e = new Building();
+				// e.buildFromMesh(m, wholeFloor, normalFloor);
+				// this.addResidential(e);
+				counterBuilding++;
 			}
+
+			wholeFloor = new Mesh();
+			for (Mesh m : floors) {
+				wholeFloor.addAll(m);
+			}
+
+			wholeFloor.writeSTL("Tests/St-Similien/m01/results/wholeFloor - "
+					+ counterResidentials + ".stl");
+			// int counterFloor = 1;
+			// for (Mesh m : floors) {
+			// m.writeSTL("Files/floor - " + counterFloor + ".stl");
+			// // Floor floor = new Floor("street");
+			// // floor.buildFromMesh(m);
+			// // this.addFloor(floor);
+			// counterFloor++;
+			// }
 
 			// FIXME : I don't know what to do with the formsList : little
 			// walls, forms on the ground...
@@ -452,29 +449,24 @@ public class Town {
 	 * @param directoryName
 	 *            the name of the directory where are the files
 	 */
-	private void treatSpecialBuildings(String directoryName) {
+	private void treatSpecialBuildings(String directoryName,
+			Vector3d normalFloor) {
 		int counterSpecialBuildings = 1;
 
 		while (new File(directoryName + "special_building - "
 				+ counterSpecialBuildings + ".stl").exists()) {
 
+			Mesh meshSpecialBuilding = this
+					.parseFile((directoryName + "special_building - "
+							+ counterSpecialBuildings + ".stl"));
+
+			meshSpecialBuilding.changeBase(this.matrix);
+
 			SpecialBuilding specialBuilding = new SpecialBuilding();
-			Floor floor = new Floor("street");
 
-			// FIXME : floor extraction first
-			//
-			//
-			//
-
-			specialBuilding
-					.buildFromMesh(this.parseFile(directoryName
-							+ "special_building - " + counterSpecialBuildings
-							+ ".stl"));
-
-			specialBuilding.changeBase(this.matrix);
+			specialBuilding.buildFromMesh(meshSpecialBuilding);
 
 			this.addSpecialBuilding(specialBuilding);
-			this.addFloor(floor);
 
 			counterSpecialBuildings++;
 		}
@@ -518,7 +510,7 @@ public class Town {
 		int counterFloor = 1;
 
 		for (Floor f : this.floors) {
-			f.writeSTL(directoryName + "/floors" + counterFloor + ".stl");
+			f.writeSTL(directoryName + "floor - " + counterFloor + ".stl");
 			counterFloor++;
 		}
 	}
@@ -530,8 +522,7 @@ public class Town {
 		int buildingCounter = 1;
 
 		for (Building m : this.industrials) {
-			m.writeSTL(directoryName + "/building - " + buildingCounter
-					+ ".stl");
+			m.writeSTL(directoryName + "building - " + buildingCounter + ".stl");
 			buildingCounter++;
 		}
 	}
@@ -555,9 +546,10 @@ public class Town {
 	public void writeSTLSpecialBuildings(String directoryName) {
 		int buildingCounter = 1;
 
-		for (Mesh m : this.specialBuildings) {
-			m.writeSTL(directoryName + "/special_building - " + buildingCounter
-					+ ".stl");
+		for (SpecialBuilding m : this.specialBuildings) {
+			m.getMesh().writeSTL(
+					directoryName + "special_building - " + buildingCounter
+							+ ".stl");
 			buildingCounter++;
 		}
 	}

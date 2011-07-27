@@ -3,9 +3,7 @@
  */
 package nantes1900.tests.utils;
 
-import static org.junit.Assert.*;
-
-import nantes1900.utils.WriterCityGML;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 

@@ -1,6 +1,7 @@
 package nantes1900.tests.utils;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import javax.vecmath.Vector3d;
 
