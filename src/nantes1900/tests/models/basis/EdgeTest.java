@@ -1,25 +1,21 @@
 package nantes1900.tests.models.basis;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.vecmath.Vector3d;
 
 import junit.framework.TestCase;
-
 import nantes1900.models.Polyline;
 import nantes1900.models.basis.Edge;
-import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
 import nantes1900.models.basis.Edge.BadFormedPolylineException;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 
 import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 /**
  * A set of tests for the class Edge.
@@ -29,24 +25,24 @@ import org.junit.Test;
  */
 public class EdgeTest extends TestCase {
 
-	private Point p1 = new Point(1, 0, -1);
-	private Point p2 = new Point(0, 1, 0);
-	private Point p3 = new Point(-1, 2, 1);
-	private Vector3d vect = new Vector3d(0, 0, 1);
-	private Edge e1 = new Edge(p1, p2);
-	private Edge e2 = new Edge(p2, p3);
-	private Edge e3 = new Edge(p3, p1);
+	private final Point point1 = new Point(1, 0, -1);
+	private final Point point2 = new Point(0, 1, 0);
+	private final Point point3 = new Point(-1, 2, 1);
+	private final Vector3d vect = new Vector3d(0, 0, 1);
+	private final Edge edge1 = new Edge(point1, point2);
+	private final Edge edge2 = new Edge(point2, point3);
+	private final Edge edge3 = new Edge(point3, point1);
 
-	private Triangle t1;
+	private final Triangle triangle1;
 
-	private Point p4 = new Point(2, 2, 2);
-	private Edge e4 = new Edge(p1, p4);
-	private Edge e5 = new Edge(p2, p4);
+	private final Point point4 = new Point(2, 2, 2);
+	private final Edge edge4 = new Edge(point1, point4);
+	private final Edge edge5 = new Edge(point2, point4);
 
-	private Triangle t2;
+	private final Triangle triangle2;
 
-	private Edge e6 = new Edge(p3, p4);
-	private Polyline line = new Polyline();
+	private final Edge edge6 = new Edge(point3, point4);
+	private final Polyline polyline = new Polyline();
 
 	/**
 	 * Constructor of the test class EdgeTest : creates a polyline for the
@@ -56,12 +52,14 @@ public class EdgeTest extends TestCase {
 	 *             exception if one edge has more than two triangles
 	 */
 	public EdgeTest() throws MoreThanTwoTrianglesPerEdgeException {
-		t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect);
-		t2 = new Triangle(p1, p2, p4, e1, e4, e5, vect);
-		line.add(e1);
-		line.add(e2);
-		line.add(e4);
-		line.add(e6);
+		triangle1 = new Triangle(point1, point2, point3, edge1, edge2, edge3,
+				vect);
+		triangle2 = new Triangle(point1, point2, point4, edge1, edge4, edge5,
+				vect);
+		polyline.add(edge1);
+		polyline.add(edge2);
+		polyline.add(edge4);
+		polyline.add(edge6);
 	}
 
 	/**
@@ -73,10 +71,10 @@ public class EdgeTest extends TestCase {
 	public void testAddTriangle() {
 		Triangle t3 = null;
 		try {
-			e1.addTriangle(t3);
+			edge1.addTriangle(t3);
 			fail();
 		} catch (MoreThanTwoTrianglesPerEdgeException e) {
-			assertFalse(e1.getTriangleList().contains(t3));
+			assertFalse(edge1.getTriangles().contains(t3));
 		}
 	}
 
@@ -87,9 +85,9 @@ public class EdgeTest extends TestCase {
 	 */
 	@Test
 	public void testCompose() {
-		Edge e = e1.compose(e2);
-		assertTrue(e.getP1() == p1);
-		assertTrue(e.getP2() == p3);
+		final Edge e = edge1.compose(edge2);
+		assertSame(e.getP1(), point1);
+		assertSame(e.getP2(), point3);
 	}
 
 	/**
@@ -97,7 +95,7 @@ public class EdgeTest extends TestCase {
 	 */
 	@Test
 	public void testComputeMiddle() {
-		assertTrue(e5.computeMiddle().equals(new Point(1, 1.5, 1)));
+		assertTrue(edge5.computeMiddle().equals(new Point(1, 1.5, 1)));
 	}
 
 	/**
@@ -107,8 +105,8 @@ public class EdgeTest extends TestCase {
 	 */
 	@Test
 	public void testContains() {
-		assertTrue(e5.contains(p2));
-		assertFalse(e5.contains(p1));
+		assertTrue(edge5.contains(point2));
+		assertFalse(edge5.contains(point1));
 	}
 
 	/**
@@ -116,7 +114,7 @@ public class EdgeTest extends TestCase {
 	 */
 	@Test
 	public void testConvertToVector3d() {
-		assertTrue(e5.convertToVector3d().equals(new Vector3d(2, 1, 2)));
+		assertTrue(edge5.convertToVector3d().equals(new Vector3d(2, 1, 2)));
 	}
 
 	/**
@@ -125,10 +123,10 @@ public class EdgeTest extends TestCase {
 	 */
 	@Test
 	public void testEqualsObject() {
-		Edge eTest = new Edge(p1, p2);
-		assertFalse(e1.equals(e2));
-		assertTrue(e1.equals(e1));
-		assertTrue(e1.equals(eTest));
+		final Edge eTest = new Edge(point1, point2);
+		assertFalse(edge1.equals(edge2));
+		assertEquals(edge1, edge1);
+		assertEquals(edge1, eTest);
 	}
 
 	/**
@@ -137,8 +135,8 @@ public class EdgeTest extends TestCase {
 	 */
 	@Test
 	public void testGetNumberTriangles() {
-		assertTrue(e1.getNumberTriangles() == 2);
-		assertTrue(e5.getNumberTriangles() == 1);
+		assertTrue(edge1.getNumberTriangles() == 2);
+		assertTrue(edge5.getNumberTriangles() == 1);
 	}
 
 	/**
@@ -149,39 +147,39 @@ public class EdgeTest extends TestCase {
 	@Test
 	public void testGetNumNeighbours() {
 		Polyline p = new Polyline();
-		p.add(e1);
-		p.add(e2);
-		p.add(e3);
-		p.add(e4);
-		assertTrue(e1.getNumNeighbours(p) == 3);
-		assertTrue(e2.getNumNeighbours(p) == 2);
+		p.add(edge1);
+		p.add(edge2);
+		p.add(edge3);
+		p.add(edge4);
+		assertTrue(edge1.getNumNeighbours(p) == 3);
+		assertTrue(edge2.getNumNeighbours(p) == 2);
 		try {
-			assertTrue(e5.getNumNeighbours(p) == 0);
+			assertTrue(edge5.getNumNeighbours(p) == 0);
 			fail();
 		} catch (InvalidParameterException e) {
 		}
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Edge#getTriangleList()}
+	 * Test method for {@link nantes1900.models.basis.Edge#getTriangles()}
 	 * and
 	 * {@link nantes1900.models.basis.Edge#addTriangle(nantes1900.models.basis.Triangle)}
 	 * . This test is also the test of addTriangle.
 	 */
 	@Test
 	public void testGetTriangleList() {
-		List<Triangle> list1 = e1.getTriangleList();
-		List<Triangle> list2 = e2.getTriangleList();
-		List<Triangle> list4 = e4.getTriangleList();
+		List<Triangle> list1 = edge1.getTriangles();
+		List<Triangle> list2 = edge2.getTriangles();
+		List<Triangle> list4 = edge4.getTriangles();
 
-		assertTrue(list1.contains(t1));
-		assertTrue(list1.contains(t2));
+		assertTrue(list1.contains(triangle1));
+		assertTrue(list1.contains(triangle2));
 
-		assertTrue(list2.contains(t1));
-		assertFalse(list2.contains(t2));
+		assertTrue(list2.contains(triangle1));
+		assertFalse(list2.contains(triangle2));
 
-		assertTrue(list4.contains(t2));
-		assertFalse(list4.contains(t1));
+		assertTrue(list4.contains(triangle2));
+		assertFalse(list4.contains(triangle1));
 	}
 
 	/**
@@ -251,8 +249,8 @@ public class EdgeTest extends TestCase {
 	 */
 	@Test
 	public void testIsNeighboor() {
-		assertTrue(e1.isNeighboor(e2));
-		assertFalse(e3.isNeighboor(e5));
+		assertTrue(edge1.isNeighboor(edge2));
+		assertFalse(edge3.isNeighboor(edge5));
 	}
 
 	/**
@@ -260,7 +258,7 @@ public class EdgeTest extends TestCase {
 	 */
 	@Test
 	public void testLength() {
-		assertTrue(e5.length() == 3);
+		assertTrue(edge5.length() == 3);
 	}
 
 	/**
@@ -362,9 +360,9 @@ public class EdgeTest extends TestCase {
 	 */
 	@Test
 	public void testReturnOtherPoint() {
-		assertTrue(e1.returnOther(p1) == p2);
-		assertTrue(e3.returnOther(p3) == p1);
-		assertTrue(e5.returnOther(p4) == p2);
+		assertTrue(edge1.returnOther(point1) == point2);
+		assertTrue(edge3.returnOther(point3) == point1);
+		assertTrue(edge5.returnOther(point4) == point2);
 	}
 
 	/**
@@ -375,9 +373,9 @@ public class EdgeTest extends TestCase {
 	@Test
 	public void testReturnOtherTriangle() {
 		try {
-			assertTrue(e1.returnOther(t1) == t2);
-			assertTrue(e1.returnOther(t2) == t1);
-			assertTrue(e2.returnOther(t1) == null);
+			assertTrue(edge1.returnOther(triangle1) == triangle2);
+			assertTrue(edge1.returnOther(triangle2) == triangle1);
+			assertTrue(edge2.returnOther(triangle1) == null);
 		} catch (MoreThanTwoTrianglesPerEdgeException e) {
 			fail();
 		}

@@ -2,7 +2,7 @@ package nantes1900;
 
 import nantes1900.models.extended.Town;
 
-public abstract class StSimilienM01 {
+public final class StSimilienM01 {
 
 	private StSimilienM01() {
 

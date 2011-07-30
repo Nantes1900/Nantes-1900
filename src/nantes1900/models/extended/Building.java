@@ -11,6 +11,7 @@ import nantes1900.models.Mesh;
 import nantes1900.models.Mesh.InvalidSurfaceException;
 import nantes1900.models.Polyline;
 import nantes1900.models.basis.Edge;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Point;
 import nantes1900.utils.Algos;
 
@@ -128,7 +129,8 @@ public class Building {
 			}
 		}
 
-//		System.out.println("Nombre de surfaces non traitées : " + counterError);
+		// System.out.println("Nombre de surfaces non traitées : " +
+		// counterError);
 	}
 
 	/**
@@ -142,29 +144,34 @@ public class Building {
 		ArrayList<Mesh> roofList = new ArrayList<Mesh>();
 
 		// Cut the mesh in parts, considering their orientation.
-		ArrayList<Mesh> thingsList = Algos.blockOrientedExtract(building,
-				SeparationTreatmentWallsRoofs.ANGLE_ROOF_ERROR);
+		ArrayList<Mesh> thingsList;
+		try {
+			thingsList = Algos.blockOrientedExtract(building,
+					SeparationTreatmentWallsRoofs.ANGLE_ROOF_ERROR);
 
-		// Compute the average of triangles per block (roof)
-		int size = 0;
-		for (Mesh e : thingsList) {
-			size += e.size();
-		}
+			// Compute the average of triangles per block (roof)
+			int size = 0;
+			for (Mesh e : thingsList) {
+				size += e.size();
+			}
 
-		// Considering their size and their orientation, sort the blocks in
-		// roofs or noise.
-		for (Mesh e : thingsList) {
-			if ((e.size() >= SeparationTreatmentWallsRoofs.ROOF_BLOCK_SIZE_ERROR
-					* (double) size / (double) thingsList.size())
-					&& (e.averageNormal().dot(normalFloor) > 0)) {
-				roofList.add(e);
-			} else
-				noise.addAll(e);
-		}
+			// Considering their size and their orientation, sort the blocks in
+			// roofs or noise.
+			for (Mesh e : thingsList) {
+				if ((e.size() >= SeparationTreatmentWallsRoofs.ROOF_SIZE_ERROR
+						* (double) size / (double) thingsList.size())
+						&& (e.averageNormal().dot(normalFloor) > 0)) {
+					roofList.add(e);
+				} else
+					noise.addAll(e);
+			}
 
-		// Add the roofs to the wholeRoof mesh.
-		for (Mesh r : roofList) {
-			wholeRoof.addAll(r);
+			// Add the roofs to the wholeRoof mesh.
+			for (Mesh r : roofList) {
+				wholeRoof.addAll(r);
+			}
+		} catch (MoreThanTwoTrianglesPerEdgeException e1) {
+			e1.printStackTrace();
 		}
 
 		return roofList;
@@ -184,28 +191,33 @@ public class Building {
 				SeparationTreatmentWallsRoofs.NORMALTO_ERROR);
 
 		// Cut the mesh in parts, considering their orientation.
-		ArrayList<Mesh> thingsList = Algos.blockOrientedExtract(wallOriented,
-				SeparationTreatmentWallsRoofs.ANGLE_WALL_ERROR);
+		ArrayList<Mesh> thingsList;
+		try {
+			thingsList = Algos.blockOrientedExtract(wallOriented,
+					SeparationTreatmentWallsRoofs.ANGLE_WALL_ERROR);
 
-		// Compute the average of triangles per block (wall)
-		int size = 0;
-		for (Mesh e : thingsList) {
-			building.remove(e);
-			size += e.size();
-		}
+			// Compute the average of triangles per block (wall)
+			int size = 0;
+			for (Mesh e : thingsList) {
+				building.remove(e);
+				size += e.size();
+			}
 
-		// Considering their size, sort the blocks in walls or noise.
-		for (Mesh e : thingsList) {
-			if (e.size() >= SeparationTreatmentWallsRoofs.WALL_BLOCK_SIZE_ERROR
-					* (double) size / (double) thingsList.size()) {
-				wallList.add(e);
-			} else
-				noise.addAll(e);
-		}
+			// Considering their size, sort the blocks in walls or noise.
+			for (Mesh e : thingsList) {
+				if (e.size() >= SeparationTreatmentWallsRoofs.WALL_SIZE_ERROR
+						* (double) size / (double) thingsList.size()) {
+					wallList.add(e);
+				} else
+					noise.addAll(e);
+			}
 
-		// Add the walls to the wholeWall mesh.
-		for (Mesh w : wallList) {
-			wholeWall.addAll(w);
+			// Add the walls to the wholeWall mesh.
+			for (Mesh w : wallList) {
+				wholeWall.addAll(w);
+			}
+		} catch (MoreThanTwoTrianglesPerEdgeException e1) {
+			e1.printStackTrace();
 		}
 
 		return wallList;
@@ -220,12 +232,16 @@ public class Building {
 			Mesh noise) {
 
 		// Add the oriented and neighbour noise to the walls.
-		Algos.blockTreatOrientedNoise(wallList, noise,
-				SeparationTreatmentWallsRoofs.LARGE_ANGLE_ERROR);
+		try {
+			Algos.blockTreatOrientedNoise(wallList, noise,
+					SeparationTreatmentWallsRoofs.LARGE_ANGLE_ERROR);
 
-		// Add the oriented and neighbour noise to the roofs.
-		Algos.blockTreatOrientedNoise(roofList, noise,
-				SeparationTreatmentWallsRoofs.LARGE_ANGLE_ERROR);
+			// Add the oriented and neighbour noise to the roofs.
+			Algos.blockTreatOrientedNoise(roofList, noise,
+					SeparationTreatmentWallsRoofs.LARGE_ANGLE_ERROR);
+		} catch (MoreThanTwoTrianglesPerEdgeException e) {
+			e.printStackTrace();
+		}
 
 		// After the noise add, if some of the alls or some of the roofs are now
 		// neighbours (they share an edge) and have the same orientation, then
@@ -238,8 +254,7 @@ public class Building {
 				Mesh w2 = wallList.get(j);
 
 				if (w1.isNeighbour(w2)
-						&& w1.isOrientedAs(
-								w2,
+						&& w1.isOrientedAs(w2,
 								SeparationTreatmentWallsRoofs.ANGLE_WALL_ERROR)) {
 					w1.addAll(w2);
 					wallList.remove(w2);
@@ -250,8 +265,7 @@ public class Building {
 				Mesh r2 = roofList.get(j);
 
 				if (w1.isNeighbour(r2)
-						&& w1.isOrientedAs(
-								r2,
+						&& w1.isOrientedAs(r2,
 								SeparationTreatmentWallsRoofs.ANGLE_WALL_ERROR)) {
 					w1.addAll(r2);
 					roofList.remove(r2);
@@ -267,8 +281,7 @@ public class Building {
 				Mesh r2 = roofList.get(j);
 
 				if (r1.isNeighbour(r2)
-						&& r1.isOrientedAs(
-								r2,
+						&& r1.isOrientedAs(r2,
 								SeparationTreatmentWallsRoofs.ANGLE_ROOF_ERROR)) {
 					r1.addAll(r2);
 					roofList.remove(r2);

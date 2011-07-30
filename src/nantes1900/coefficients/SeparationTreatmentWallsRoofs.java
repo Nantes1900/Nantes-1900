@@ -14,8 +14,8 @@ public final class SeparationTreatmentWallsRoofs {
 	public static final double ANGLE_ROOF_ERROR = 20;
 	public static final double LARGE_ANGLE_ERROR = 50;
 	public static final double NORMALTO_ERROR = 0.2;
-	public static final double WALL_BLOCK_SIZE_ERROR = 2;
-	public static final double ROOF_BLOCK_SIZE_ERROR = 7;
+	public static final double WALL_SIZE_ERROR = 2;
+	public static final double ROOF_SIZE_ERROR = 7;
 
 	private SeparationTreatmentWallsRoofs() {
 	}

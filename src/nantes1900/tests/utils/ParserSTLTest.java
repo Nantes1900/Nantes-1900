@@ -13,12 +13,12 @@ import junit.framework.TestCase;
 
 import nantes1900.models.Mesh;
 import nantes1900.models.basis.Edge;
-import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.utils.ParserSTL;
-import nantes1900.utils.ParserSTL.BadFormedFileException;
 import nantes1900.utils.WriterSTL;
+import nantes1900.utils.ParserSTL.BadFormedFileException;
 
 import org.junit.Test;
 

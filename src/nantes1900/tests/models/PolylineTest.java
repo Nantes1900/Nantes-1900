@@ -1,15 +1,10 @@
 package nantes1900.tests.models;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 
 import javax.vecmath.Vector3d;
 
 import junit.framework.TestCase;
-
 import nantes1900.models.Mesh;
 import nantes1900.models.Polyline;
 import nantes1900.models.basis.Edge;

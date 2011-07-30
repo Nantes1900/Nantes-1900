@@ -60,16 +60,10 @@ public class WriterSTL {
 	private void writeASCIIFace(BufferedWriter fw, Triangle face) {
 		try {
 			// Write facet normal : to begin a triangle with writing its normal.
-			fw.write("\nfacet normal");
+			String s1 = "\nfacet normal";
 
-			String s1 = new String();
-
-			double[] t = new double[3];
-			face.getNormal().get(t);
-			// Write the normal.
-			for (int j = 0; j < 3; j++) {
-				s1 += " " + t[j];
-			}
+			s1 += " " + face.getNormal().x + " " + face.getNormal().y + " "
+					+ face.getNormal().z;
 
 			// Write outer loop : to begin to write the three points.
 			fw.write(s1 + "\nouter loop");

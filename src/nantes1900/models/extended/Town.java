@@ -14,6 +14,7 @@ import javax.vecmath.Vector3d;
 
 import nantes1900.coefficients.SeparationFloorBuilding;
 import nantes1900.models.Mesh;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.utils.Algos;
 import nantes1900.utils.Algos.NoFloorException;
 import nantes1900.utils.MatrixMethod;
@@ -32,17 +33,17 @@ public class Town {
 
 	private double[][] matrix = new double[3][3];
 
-	private final Logger log = Logger.getLogger("logger");
+	private final static Logger LOG = Logger.getLogger("logger");
 
 	/**
 	 * Constructor.
 	 */
 	public Town() {
-		log.setLevel(Level.FINEST);
+		LOG.setLevel(Level.FINEST);
 		Handler handler = new StreamHandler(System.out, new SimpleFormatter());
 		handler.setLevel(Level.FINEST);
-		log.addHandler(handler);
-		log.setUseParentHandlers(false);
+		LOG.addHandler(handler);
+		LOG.setUseParentHandlers(false);
 	}
 
 	/**
@@ -141,23 +142,23 @@ public class Town {
 		this.createChangeBaseMatrix(normalFloor);
 
 		this.treatFloors(directoryName + "/floors/");
-		log.info("Numbers of floors : " + this.floors.size());
+		LOG.info("Numbers of floors : " + this.floors.size());
 
 		this.treatWateries(directoryName + "/wateries/");
-		log.info("Numbers of wateries : " + this.wateries.size());
+		LOG.info("Numbers of wateries : " + this.wateries.size());
 
 		this.treatSpecialBuildings(directoryName + "/special_buildings/",
 				normalFloor);
-		log.info("Numbers of special buildings : "
+		LOG.info("Numbers of special buildings : "
 				+ this.specialBuildings.size());
 
 		this.treatIndustrials(directoryName + "/industrials/", normalFloor);
-		log.info("Numbers of industrials zones : " + this.industrials.size());
+		LOG.info("Numbers of industrials zones : " + this.industrials.size());
 
 		this.treatResidentials(directoryName + "/residentials/", normalFloor);
-		log.info("Numbers of residentials zones : " + this.residentials.size());
+		LOG.info("Numbers of residentials zones : " + this.residentials.size());
 
-		log.info("Temps total écoulé : " + (System.nanoTime() - time));
+		LOG.info("Temps total écoulé : " + (System.nanoTime() - time));
 	}
 
 	/**
@@ -169,20 +170,26 @@ public class Town {
 	 *            the noise mesh to stock the noise
 	 * @return a list of buildings as meshes
 	 */
-	private ArrayList<Mesh> buildingsExtraction(Mesh mesh, Mesh noise) {
+	private List<Mesh> buildingsExtraction(Mesh mesh, Mesh noise) {
 
-		ArrayList<Mesh> buildingList = new ArrayList<Mesh>();
+		List<Mesh> buildingList = new ArrayList<Mesh>();
+		List<Mesh> thingsList = new ArrayList<Mesh>();
 
 		// Extraction of the buildings
-		ArrayList<Mesh> formsList = Algos.blockExtract(mesh);
-		ArrayList<Mesh> thingsList = new ArrayList<Mesh>();
+		List<Mesh> formsList;
+		try {
+			formsList = Algos.blockExtract(mesh);
 
-		// Separation of the little noises
-		for (Mesh m : formsList) {
-			if (m.size() > 1)
-				thingsList.add(m);
-			else
-				noise.addAll(m);
+			// Separation of the little noises
+			for (Mesh m : formsList) {
+				if (m.size() > 1)
+					thingsList.add(m);
+				else
+					noise.addAll(m);
+			}
+		} catch (MoreThanTwoTrianglesPerEdgeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 		// Algorithm : detection of buildings considering their size
@@ -205,7 +212,7 @@ public class Town {
 		}
 
 		if (buildingList.size() == 0)
-			log.severe("Error !");
+			LOG.severe("Error !");
 
 		return buildingList;
 	}
@@ -225,7 +232,7 @@ public class Town {
 			MatrixMethod.changeBase(normalFloor, this.matrix);
 
 		} catch (SingularMatrixException e) {
-			log.severe("Error : the matrix is badly formed !");
+			LOG.severe("Error : the matrix is badly formed !");
 			System.exit(1);
 		}
 	}
@@ -246,12 +253,12 @@ public class Town {
 			return floorBrut.averageNormal();
 
 		} catch (BadFormedFileException e) {
-			log.severe("Error : the file is badly formed !");
+			LOG.severe("Error : the file is badly formed !");
 			System.exit(1);
 			return null;
 
 		} catch (IOException e) {
-			log.severe("Error : file not found or unreadable !");
+			LOG.severe("Error : file not found or unreadable !");
 			System.exit(1);
 			return null;
 		}
@@ -282,12 +289,18 @@ public class Town {
 		// Take all of its neighbours
 		// Select another Triangle which is not too high and repeat the above
 		// step
-		Mesh floors = Algos.floorExtract(meshOriented,
-				SeparationFloorBuilding.ALTITUDE_ERROR);
+		Mesh floors;
+		try {
+			floors = Algos.floorExtract(meshOriented,
+					SeparationFloorBuilding.ALTITUDE_ERROR);
 
-		mesh.remove(floors);
+			mesh.remove(floors);
 
-		return floors;
+			return floors;
+		} catch (MoreThanTwoTrianglesPerEdgeException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**
@@ -305,15 +318,21 @@ public class Town {
 
 		Mesh floorsAndNoise = new Mesh(floors);
 		floorsAndNoise.addAll(noise);
-		ArrayList<Mesh> floorsList = Algos.blockExtract(floorsAndNoise);
+		ArrayList<Mesh> floorsList;
+		try {
+			floorsList = Algos.blockExtract(floorsAndNoise);
 
-		floors.clear();
-		for (Mesh e : floorsList) {
-			floors.addAll(e);
-			noise.remove(e);
+			floors.clear();
+			for (Mesh e : floorsList) {
+				floors.addAll(e);
+				noise.remove(e);
+			}
+
+			return floorsList;
+		} catch (MoreThanTwoTrianglesPerEdgeException e1) {
+			e1.printStackTrace();
+			return null;
 		}
-
-		return floorsList;
 	}
 
 	/**
@@ -329,12 +348,12 @@ public class Town {
 			return new Mesh(ParserSTL.readSTL(fileName));
 
 		} catch (BadFormedFileException e) {
-			log.severe("Error : the file is badly formed !");
+			LOG.severe("Error : the file is badly formed !");
 			System.exit(1);
 			return null;
 
 		} catch (IOException e) {
-			log.severe("Error : file not found or unreadable !");
+			LOG.severe("Error : file not found or unreadable !");
 			System.exit(1);
 			return null;
 		}
@@ -429,9 +448,9 @@ public class Town {
 			Mesh noise = new Mesh();
 
 			Mesh wholeFloor = this.floorExtraction(mesh, realNormalToTheFloor);
-			ArrayList<Mesh> buildings = this.buildingsExtraction(mesh, noise);
+			List<Mesh> buildings = this.buildingsExtraction(mesh, noise);
 
-			ArrayList<Mesh> floors = this.noiseTreatment(wholeFloor, noise);
+			List<Mesh> floors = this.noiseTreatment(wholeFloor, noise);
 
 			// FIXME : code this method !
 			// ArrayList<Mesh> formsList =

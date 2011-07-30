@@ -29,14 +29,14 @@ public class Mesh extends HashSet<Triangle> {
 	private List<Mesh> neighbours = new ArrayList<Mesh>();
 
 	private final int ID;
-	private static int ID_current = 0;
+	private static int currentID = 0;
 
 	/**
 	 * Void constructor
 	 */
 	public Mesh() {
 		super();
-		this.ID = ID_current++;
+		this.ID = currentID++;
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class Mesh extends HashSet<Triangle> {
 	 */
 	public Mesh(Collection<? extends Triangle> c) {
 		super(c);
-		this.ID = ID_current++;
+		this.ID = currentID++;
 	}
 
 	/**
@@ -474,7 +474,7 @@ public class Mesh extends HashSet<Triangle> {
 		// in this, ie they are part of the bounds.
 		for (Edge e : edges) {
 			int counter = 0;
-			for (Triangle t : e.getTriangleList()) {
+			for (Triangle t : e.getTriangles()) {
 				if (this.contains(t))
 					counter++;
 			}
@@ -640,7 +640,7 @@ public class Mesh extends HashSet<Triangle> {
 			edges.order();
 			return edges;
 		} else {
-			System.err.println("Il manquait plus d'un edge !");
+//			System.err.println("Il manquait plus d'un edge !");
 			throw new InvalidSurfaceException();
 		}
 	}

@@ -17,9 +17,9 @@ import java.util.StringTokenizer;
 import javax.vecmath.Vector3d;
 
 import nantes1900.models.basis.Edge;
-import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 
 /**
  * Parse a STL file : detect if it is a ASCII or a binary file, and parse it.

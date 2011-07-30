@@ -65,9 +65,12 @@ public class Polyline {
 	 */
 	public Polyline(Polyline p) {
 		for (Edge e : p.edgeList) {
-			this.add(new Edge(e));
-			this.add(e.getP1());
-			this.add(e.getP2());
+			if (!this.edgeList.contains(e))
+				this.edgeList.add(e);
+			if (!this.pointList.contains(e.getP1()))
+				this.pointList.add(e.getP1());
+			if (!this.pointList.contains(e.getP2()))
+				this.pointList.add(e.getP2());
 		}
 
 		for (Point point : p.pointList) {
@@ -536,7 +539,7 @@ public class Polyline {
 		// too.
 		Mesh ens = new Mesh();
 		for (Edge e : this.edgeList) {
-			for (Triangle t : e.getTriangleList()) {
+			for (Triangle t : e.getTriangles()) {
 				if (m.contains(t)) {
 					ens.add(t);
 				}

@@ -1,6 +1,5 @@
 package nantes1900.tests;
 
-import junit.framework.TestCase;
 import nantes1900.tests.models.MeshTest;
 import nantes1900.tests.models.PolylineTest;
 import nantes1900.tests.models.basis.EdgeTest;
@@ -32,7 +31,7 @@ import org.junit.runners.Suite.SuiteClasses;
 		TownTest.class,
 
 		AlgosTest.class, MatrixMethodTest.class, ParserSTLTest.class, })
-public class AllTests extends TestCase {
+public final class AllTests {
 	private AllTests() {
 	}
 }

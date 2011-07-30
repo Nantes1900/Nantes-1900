@@ -12,12 +12,12 @@ import javax.vecmath.Vector3d;
 import junit.framework.TestCase;
 
 import nantes1900.models.Mesh;
-import nantes1900.models.Mesh.InvalidSurfaceException;
 import nantes1900.models.Polyline;
+import nantes1900.models.Mesh.InvalidSurfaceException;
 import nantes1900.models.basis.Edge;
-import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Point;
 import nantes1900.models.basis.Triangle;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.utils.MatrixMethod;
 import nantes1900.utils.MatrixMethod.SingularMatrixException;
 

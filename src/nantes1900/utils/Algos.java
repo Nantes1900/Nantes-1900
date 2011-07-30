@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import nantes1900.models.Mesh;
-import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Triangle;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 
 /**
  * @author Daniel Lefevre
