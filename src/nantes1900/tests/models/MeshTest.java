@@ -4,9 +4,15 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import javax.vecmath.Vector3d;
 
+import junit.framework.TestCase;
+
 import nantes1900.models.Mesh;
+import nantes1900.models.Mesh.InvalidSurfaceException;
 import nantes1900.models.Polyline;
 import nantes1900.models.basis.Edge;
 import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
@@ -23,7 +29,7 @@ import org.junit.Test;
  * @author Daniel Lefevre
  * 
  */
-public class MeshTest {
+public class MeshTest extends TestCase {
 
 	private Point p1 = new Point(1, 0, -1);
 	private Point p2 = new Point(0, 1, 0);
@@ -134,7 +140,66 @@ public class MeshTest {
 	 */
 	@Test
 	public void testFindEdges() {
-		fail("Not yet implemented"); // TODO
+		try {
+			Point p1 = new Point(0, 1, 0);
+			Edge e1 = new Edge(p1, p1);
+			Vector3d vect1 = new Vector3d(0, 1, 0);
+			Mesh m1 = new Mesh();
+			m1.add(new Triangle(p1, p1, p1, e1, e1, e1, vect1));
+
+			Point p2 = new Point(1, 0, 0);
+			Edge e2 = new Edge(p2, p2);
+			Vector3d vect2 = new Vector3d(1, 0, 0);
+			Mesh m2 = new Mesh();
+			m2.add(new Triangle(p2, p2, p2, e2, e2, e2, vect2));
+
+			Point p3 = new Point(0, -1, 0);
+			Edge e3 = new Edge(p3, p3);
+			Vector3d vect3 = new Vector3d(0, -1, 0);
+			Mesh m3 = new Mesh();
+			m3.add(new Triangle(p3, p3, p3, e3, e3, e3, vect3));
+
+			Point p4 = new Point(-1, 0, 0);
+			Edge e4 = new Edge(p4, p4);
+			Vector3d vect4 = new Vector3d(-1, 0, 0);
+			Mesh m4 = new Mesh();
+			m4.add(new Triangle(p4, p4, p4, e4, e4, e4, vect4));
+
+			Point p5 = new Point(0, 0, 0);
+			Edge e5 = new Edge(p5, p5);
+			Vector3d vect5 = new Vector3d(0, 0, 1);
+			Mesh m5 = new Mesh();
+			m5.add(new Triangle(p5, p5, p5, e5, e5, e5, vect5));
+
+			m1.addNeighbour(m2);
+			m1.addNeighbour(m4);
+			m3.addNeighbour(m2);
+			m3.addNeighbour(m4);
+
+			m5.addNeighbour(m1);
+			m5.addNeighbour(m2);
+			m5.addNeighbour(m3);
+			m5.addNeighbour(m4);
+
+			ArrayList<Mesh> wallList = new ArrayList<Mesh>();
+
+			HashMap<Point, Point> pointMap = new HashMap<Point, Point>();
+			HashMap<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
+
+			Polyline p = m5.findEdges(wallList, pointMap, edgeMap,
+					new Vector3d(0, 0, 1));
+
+			assertTrue(p.edgeSize() == 4);
+			assertTrue(p.pointSize() == 4);
+			assertTrue(p.getPointList().get(0).getZ() == 0);
+			assertTrue(p.getPointList().get(1).getZ() == 0);
+			assertTrue(p.getPointList().get(2).getZ() == 0);
+			assertTrue(p.getPointList().get(3).getZ() == 0);
+		} catch (MoreThanTwoTrianglesPerEdgeException e) {
+			fail();
+		} catch (InvalidSurfaceException e) {
+			fail();
+		}
 	}
 
 	/**

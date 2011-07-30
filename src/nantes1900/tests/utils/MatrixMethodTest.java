@@ -5,6 +5,8 @@ import static org.junit.Assert.fail;
 
 import javax.vecmath.Vector3d;
 
+import junit.framework.TestCase;
+
 import nantes1900.utils.MatrixMethod;
 import nantes1900.utils.MatrixMethod.SingularMatrixException;
 
@@ -16,7 +18,7 @@ import org.junit.Test;
  * @author Daniel Lefevre
  * 
  */
-public class MatrixMethodTest {
+public class MatrixMethodTest extends TestCase {
 
 	/**
 	 * Test method for

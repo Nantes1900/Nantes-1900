@@ -3,12 +3,12 @@ package nantes1900.models.extended;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.logging.Logger;
 
 import javax.vecmath.Vector3d;
 
 import nantes1900.coefficients.SeparationTreatmentWallsRoofs;
 import nantes1900.models.Mesh;
+import nantes1900.models.Mesh.InvalidSurfaceException;
 import nantes1900.models.Polyline;
 import nantes1900.models.basis.Edge;
 import nantes1900.models.basis.Point;
@@ -18,8 +18,6 @@ public class Building {
 
 	private ArrayList<Polyline> walls = new ArrayList<Polyline>();
 	private ArrayList<Polyline> roofs = new ArrayList<Polyline>();
-
-	private Logger log = Logger.getLogger("logger");
 
 	/**
 	 * Constructor. Create the lists of walls and lists of roofs.
@@ -36,7 +34,6 @@ public class Building {
 	 * @param roofList
 	 *            the list of roofs as meshes
 	 */
-	// FIXME : optimize it !
 	private void determinateNeighbours(ArrayList<Mesh> wallList,
 			ArrayList<Mesh> roofList, Mesh floors) {
 
@@ -105,19 +102,33 @@ public class Building {
 		HashMap<Point, Point> pointMap = new HashMap<Point, Point>();
 		HashMap<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
 
+		int counterError = 0;
+
 		for (Mesh m : roofList) {
-			Polyline p = m.findEdges(wallList, pointMap, edgeMap, normalFloor);
-			if (p != null && !p.isEmpty()) {
+			Polyline p;
+			try {
+				p = m.findEdges(wallList, pointMap, edgeMap, normalFloor);
 				roofs.add(p);
+			} catch (InvalidSurfaceException e) {
+				// If this exception is catched, do not treat the surface.
+				// FIXME
+				counterError++;
 			}
 		}
 
 		for (Mesh m : wallList) {
-			Polyline p = m.findEdges(wallList, pointMap, edgeMap, normalFloor);
-			if (p != null && !p.isEmpty()) {
+			Polyline p;
+			try {
+				p = m.findEdges(wallList, pointMap, edgeMap, normalFloor);
 				walls.add(p);
+			} catch (InvalidSurfaceException e) {
+				// If this exception is catched, do not treat the surface.
+				// FIXME
+				counterError++;
 			}
 		}
+
+//		System.out.println("Nombre de surfaces non traitées : " + counterError);
 	}
 
 	/**
@@ -132,7 +143,7 @@ public class Building {
 
 		// Cut the mesh in parts, considering their orientation.
 		ArrayList<Mesh> thingsList = Algos.blockOrientedExtract(building,
-				SeparationTreatmentWallsRoofs.angleNormalErrorFactor);
+				SeparationTreatmentWallsRoofs.ANGLE_ROOF_ERROR);
 
 		// Compute the average of triangles per block (roof)
 		int size = 0;
@@ -143,7 +154,7 @@ public class Building {
 		// Considering their size and their orientation, sort the blocks in
 		// roofs or noise.
 		for (Mesh e : thingsList) {
-			if ((e.size() >= SeparationTreatmentWallsRoofs.errorNumberTrianglesRoof
+			if ((e.size() >= SeparationTreatmentWallsRoofs.ROOF_BLOCK_SIZE_ERROR
 					* (double) size / (double) thingsList.size())
 					&& (e.averageNormal().dot(normalFloor) > 0)) {
 				roofList.add(e);
@@ -170,11 +181,11 @@ public class Building {
 
 		// Select the triangles which are oriented normal to normalFloor.
 		Mesh wallOriented = building.orientedNormalTo(normalFloor,
-				SeparationTreatmentWallsRoofs.errorNormalToFactor);
+				SeparationTreatmentWallsRoofs.NORMALTO_ERROR);
 
 		// Cut the mesh in parts, considering their orientation.
 		ArrayList<Mesh> thingsList = Algos.blockOrientedExtract(wallOriented,
-				SeparationTreatmentWallsRoofs.angleNormalErrorFactor);
+				SeparationTreatmentWallsRoofs.ANGLE_WALL_ERROR);
 
 		// Compute the average of triangles per block (wall)
 		int size = 0;
@@ -185,7 +196,7 @@ public class Building {
 
 		// Considering their size, sort the blocks in walls or noise.
 		for (Mesh e : thingsList) {
-			if (e.size() >= SeparationTreatmentWallsRoofs.errorNumberTrianglesWall
+			if (e.size() >= SeparationTreatmentWallsRoofs.WALL_BLOCK_SIZE_ERROR
 					* (double) size / (double) thingsList.size()) {
 				wallList.add(e);
 			} else
@@ -210,12 +221,16 @@ public class Building {
 
 		// Add the oriented and neighbour noise to the walls.
 		Algos.blockTreatOrientedNoise(wallList, noise,
-				SeparationTreatmentWallsRoofs.largeAngleNormalErrorFactor);
+				SeparationTreatmentWallsRoofs.LARGE_ANGLE_ERROR);
 
 		// Add the oriented and neighbour noise to the roofs.
 		Algos.blockTreatOrientedNoise(roofList, noise,
-				SeparationTreatmentWallsRoofs.largeAngleNormalErrorFactor);
+				SeparationTreatmentWallsRoofs.LARGE_ANGLE_ERROR);
 
+		// After the noise add, if some of the alls or some of the roofs are now
+		// neighbours (they share an edge) and have the same orientation, then
+		// they are added to form only one
+		// wall or roof.
 		for (int i = 0; i < wallList.size(); i++) {
 			Mesh w1 = wallList.get(i);
 
@@ -225,9 +240,38 @@ public class Building {
 				if (w1.isNeighbour(w2)
 						&& w1.isOrientedAs(
 								w2,
-								SeparationTreatmentWallsRoofs.angleNormalErrorFactor)) {
+								SeparationTreatmentWallsRoofs.ANGLE_WALL_ERROR)) {
 					w1.addAll(w2);
 					wallList.remove(w2);
+				}
+			}
+
+			for (int j = 0; j < roofList.size(); j++) {
+				Mesh r2 = roofList.get(j);
+
+				if (w1.isNeighbour(r2)
+						&& w1.isOrientedAs(
+								r2,
+								SeparationTreatmentWallsRoofs.ANGLE_WALL_ERROR)) {
+					w1.addAll(r2);
+					roofList.remove(r2);
+				}
+			}
+		}
+
+		// See above.
+		for (int i = 0; i < roofList.size(); i++) {
+			Mesh r1 = roofList.get(i);
+
+			for (int j = i + 1; j < roofList.size(); j++) {
+				Mesh r2 = roofList.get(j);
+
+				if (r1.isNeighbour(r2)
+						&& r1.isOrientedAs(
+								r2,
+								SeparationTreatmentWallsRoofs.ANGLE_ROOF_ERROR)) {
+					r1.addAll(r2);
+					roofList.remove(r2);
 				}
 			}
 		}
@@ -284,43 +328,43 @@ public class Building {
 	 */
 	public void buildFromMesh(Mesh building, Mesh floors, Vector3d normalFloor) {
 
+		building.writeSTL("Tests/St-Similien/m01/results/building.stl");
+
 		Mesh wholeWall = new Mesh();
 		Mesh wholeRoof = new Mesh();
 		Mesh noise = new Mesh();
 
-		long time = System.nanoTime();
 		ArrayList<Mesh> wallList = this.sortWalls(building, normalFloor,
 				wholeWall, noise);
-		log.finest("Sort walls : " + (System.nanoTime() - time));
-
-		time = System.nanoTime();
 		ArrayList<Mesh> roofList = this.sortRoofs(building, normalFloor,
 				wholeRoof, noise);
-		log.finest("Sort roofs : " + (System.nanoTime() - time));
 
-		time = System.nanoTime();
-		// TODO : compute wholeWall and wholeRoof in the method, and not in
-		// sortRoofs or sortWalls.
 		this.treatNoise(wallList, roofList, noise);
-		log.finest("Treat noise : " + (System.nanoTime() - time));
+
+		// FIXME : if some roofs are neighbours to the floors, remove them...
+		// because it's noise. TODO ? Because if they are not noise.
 
 		// Sum all the walls to build the wholeWall.
+		int counter = 0;
 		for (Mesh w : wallList) {
 			wholeWall.addAll(w);
+			w.writeSTL("Tests/St-Similien/m01/results/wall - " + counter
+					+ ".stl");
+			counter++;
 		}
 
 		// Sum all the roofs to build the wholeRoof.
+		counter = 0;
 		for (Mesh r : roofList) {
 			wholeRoof.addAll(r);
+			r.writeSTL("Tests/St-Similien/m01/results/roof - " + counter
+					+ ".stl");
+			counter++;
 		}
 
-		time = System.nanoTime();
 		this.determinateNeighbours(wallList, roofList, floors);
-		log.finest("Determinate neighbours : " + (System.nanoTime() - time));
 
-		time = System.nanoTime();
 		this.findCommonEdges(wallList, roofList, normalFloor);
-		log.finest("Find common edges : " + (System.nanoTime() - time));
 	}
 
 	/**

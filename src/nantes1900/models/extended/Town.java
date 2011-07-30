@@ -3,6 +3,7 @@ package nantes1900.models.extended;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -23,15 +24,15 @@ import nantes1900.utils.WriterCityGML;
 
 public class Town {
 
-	private ArrayList<Building> residentials = new ArrayList<Building>();
-	private ArrayList<Building> industrials = new ArrayList<Building>();
-	private ArrayList<Floor> floors = new ArrayList<Floor>();
-	private ArrayList<Floor> wateries = new ArrayList<Floor>();
-	private ArrayList<SpecialBuilding> specialBuildings = new ArrayList<SpecialBuilding>();
+	private List<Building> residentials = new ArrayList<Building>();
+	private List<Building> industrials = new ArrayList<Building>();
+	private List<Floor> floors = new ArrayList<Floor>();
+	private List<Floor> wateries = new ArrayList<Floor>();
+	private List<SpecialBuilding> specialBuildings = new ArrayList<SpecialBuilding>();
 
 	private double[][] matrix = new double[3][3];
 
-	private Logger log = Logger.getLogger("logger");
+	private final Logger log = Logger.getLogger("logger");
 
 	/**
 	 * Constructor.
@@ -99,6 +100,25 @@ public class Town {
 			this.floors.add(watery);
 	}
 
+	private void cleanResultDirectory(String directoryName) {
+		if (new File(directoryName + "/results/").exists()) {
+			File[] fileList = new File(directoryName + "/results/").listFiles();
+			for (int i = 0; i < fileList.length; i++) {
+
+				// Delete only the files, and the empty directories. Then it's
+				// safe to put something in a directory Archives for example.
+				fileList[i].delete();
+			}
+		} else {
+			// Create the directory results if not already existing.
+			try {
+				new File(directoryName + "/results/").createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	/**
 	 * Build a town by computing all the files in the directory. Search in the
 	 * directory name the fives directories : inductrials, residentials, floors,
@@ -111,6 +131,10 @@ public class Town {
 	public void buildFromMesh(String directoryName) {
 
 		long time = System.nanoTime();
+
+		// Create or clean the directory : directoryName + "/results/" to put
+		// the datas in.
+		this.cleanResultDirectory(directoryName);
 
 		Vector3d normalFloor = this.extractFloorNormal(directoryName
 				+ "/floor.stl");
@@ -168,7 +192,7 @@ public class Town {
 		}
 
 		for (Mesh m : thingsList) {
-			if (m.size() >= SeparationFloorBuilding.blockSizeBuildingError
+			if (m.size() >= SeparationFloorBuilding.BLOCK_SIZE_ERROR
 					* (double) number / (double) thingsList.size()) {
 
 				buildingList.add(m);
@@ -251,7 +275,7 @@ public class Town {
 		// Searching for floor-oriented triangles with an error :
 		// angleNormalErrorFactor
 		Mesh meshOriented = mesh.orientedAs(normalFloor,
-				SeparationFloorBuilding.angleNormalErrorFactor);
+				SeparationFloorBuilding.ANGLE_FLOOR_ERROR);
 
 		// Floor-search algorithm
 		// Select the lowest Triangle : it belongs to the floor
@@ -259,7 +283,7 @@ public class Town {
 		// Select another Triangle which is not too high and repeat the above
 		// step
 		Mesh floors = Algos.floorExtract(meshOriented,
-				SeparationFloorBuilding.altitudeErrorFactor);
+				SeparationFloorBuilding.ALTITUDE_ERROR);
 
 		mesh.remove(floors);
 
@@ -355,7 +379,9 @@ public class Town {
 	 *            the normal to the floor
 	 */
 	private void treatIndustrials(String directoryName, Vector3d normalFloor) {
-		// FIXME
+		// FIXME : maybe create the same private method for things common with
+		// treat residentials...
+		// TODO? different coefficients than residentials.
 	}
 
 	/**
@@ -371,7 +397,8 @@ public class Town {
 	 */
 	private void treatResidentials(String directoryName,
 			Vector3d normalGravityOriented) {
-		int counterResidentials = 1;
+		// /FIXME : put it to 1 and not 2 !
+		int counterResidentials = 4;
 
 		while (new File(directoryName + "residential - " + counterResidentials
 				+ ".stl").exists()) {
@@ -393,9 +420,10 @@ public class Town {
 			// normalGravityOriented, then make the change base on each mesh
 			// and assume that this normal is (0, 0, 1).
 			// Then the real normalFloor will not be confonded.
+			// Make it on all the source codes !
 
-			// FIXME : the zMinPoint method is not adapted to extract the
-			// floor... It should be a new realNormalToTheFloor z...
+			// FIXME FIXME FIXME : the zMinPoint method is not adapted to
+			// extract the floor... It should be a new realNormalToTheFloor z...
 			mesh.changeBase(this.matrix);
 
 			Mesh noise = new Mesh();
@@ -405,18 +433,15 @@ public class Town {
 
 			ArrayList<Mesh> floors = this.noiseTreatment(wholeFloor, noise);
 
-			// FIXME
+			// FIXME : code this method !
 			// ArrayList<Mesh> formsList =
 			// this.carveRealBuildings(buildings);
 
-			int counterBuilding = 1;
 			for (Mesh m : buildings) {
-				m.writeSTL("Tests/St-Similien/m01/results/building - "
-						+ counterResidentials + " " + counterBuilding + ".stl");
-				// Building e = new Building();
-				// e.buildFromMesh(m, wholeFloor, normalFloor);
-				// this.addResidential(e);
-				counterBuilding++;
+
+				Building e = new Building();
+				e.buildFromMesh(m, wholeFloor, normalGravityOriented);
+				this.addResidential(e);
 			}
 
 			wholeFloor = new Mesh();
@@ -424,16 +449,14 @@ public class Town {
 				wholeFloor.addAll(m);
 			}
 
-			wholeFloor.writeSTL("Tests/St-Similien/m01/results/wholeFloor - "
-					+ counterResidentials + ".stl");
-			// int counterFloor = 1;
-			// for (Mesh m : floors) {
-			// m.writeSTL("Files/floor - " + counterFloor + ".stl");
-			// // Floor floor = new Floor("street");
-			// // floor.buildFromMesh(m);
-			// // this.addFloor(floor);
-			// counterFloor++;
-			// }
+			int counterFloor = 1;
+			for (Mesh m : floors) {
+				m.writeSTL("Files/floor - " + counterFloor + ".stl");
+				Floor floor = new Floor("street");
+				floor.buildFromMesh(m);
+				this.addFloor(floor);
+				counterFloor++;
+			}
 
 			// FIXME : I don't know what to do with the formsList : little
 			// walls, forms on the ground...
@@ -462,6 +485,8 @@ public class Town {
 
 			meshSpecialBuilding.changeBase(this.matrix);
 
+			// TODO : improve this by extracting floors.
+
 			SpecialBuilding specialBuilding = new SpecialBuilding();
 
 			specialBuilding.buildFromMesh(meshSpecialBuilding);
@@ -482,7 +507,7 @@ public class Town {
 	 */
 	private void treatWateries(String directoryName) {
 		// FIXME : see in treatFloors, it's the same. Maybe create a private
-		// method.
+		// common shared method.
 	}
 
 	/**

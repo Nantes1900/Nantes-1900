@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import nantes1900.models.Mesh;
+import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.models.basis.Triangle;
 
 /**
@@ -32,8 +33,10 @@ public final class Algos {
 	 * @param m
 	 *            the mesh to divide
 	 * @return an array of the blocks-meshs
+	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
-	public static ArrayList<Mesh> blockExtract(Mesh m) {
+	public static ArrayList<Mesh> blockExtract(Mesh m)
+			throws MoreThanTwoTrianglesPerEdgeException {
 		HashSet<Mesh> thingsList = new HashSet<Mesh>();
 		Mesh mesh = new Mesh(m);
 
@@ -62,9 +65,11 @@ public final class Algos {
 	 * @param angleNormalErrorFactor
 	 *            the error on the orientation
 	 * @return an array of the blocks-meshs
+	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
 	public static ArrayList<Mesh> blockOrientedExtract(Mesh m,
-			double angleNormalErrorFactor) {
+			double angleNormalErrorFactor)
+			throws MoreThanTwoTrianglesPerEdgeException {
 		ArrayList<Mesh> thingsList = new ArrayList<Mesh>();
 		Mesh mesh = new Mesh(m);
 
@@ -95,9 +100,11 @@ public final class Algos {
 	 * @param largeAngleNormalErrorFactor
 	 *            the error on the orientation
 	 * @return the list of mesh updated
+	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
 	public static void blockTreatOrientedNoise(ArrayList<Mesh> list,
-			Mesh noise, double largeAngleNormalErrorFactor) {
+			Mesh noise, double largeAngleNormalErrorFactor)
+			throws MoreThanTwoTrianglesPerEdgeException {
 
 		ArrayList<Mesh> m = new ArrayList<Mesh>();
 
@@ -128,9 +135,11 @@ public final class Algos {
 	 * @param altitudeErrorFactor
 	 *            the error on the altitude
 	 * @return the mesh containing the floor extracted
+	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
 	public static Mesh floorExtract(Mesh meshOriented,
-			double altitudeErrorFactor) {
+			double altitudeErrorFactor)
+			throws MoreThanTwoTrianglesPerEdgeException {
 		Mesh floors = new Mesh();
 
 		try {
@@ -155,7 +164,6 @@ public final class Algos {
 
 			return floors;
 		} catch (InvalidParameterException e) {
-			System.err.println("Error : no floor to extract !");
 			// TODO? what to do ?
 			return null;
 		}

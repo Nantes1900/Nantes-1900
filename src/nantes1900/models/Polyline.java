@@ -27,13 +27,13 @@ public class Polyline {
 	private ArrayList<Polyline> neighbours = new ArrayList<Polyline>();
 
 	private final int ID;
-	private static int ID_current = 0;
+	private static int currentID = 0;
 
 	/**
 	 * Void constructor
 	 */
 	public Polyline() {
-		this.ID = ++ID_current;
+		this.ID = ++currentID;
 	}
 
 	/**
@@ -44,12 +44,15 @@ public class Polyline {
 	 */
 	public Polyline(List<Edge> a) {
 		for (Edge e : a) {
-			this.add(e);
-			this.add(e.getP1());
-			this.add(e.getP2());
+			if (!this.edgeList.contains(e))
+				this.edgeList.add(e);
+			if (!this.pointList.contains(e.getP1()))
+				this.pointList.add(e.getP1());
+			if (!this.pointList.contains(e.getP2()))
+				this.pointList.add(e.getP2());
 		}
 
-		this.ID = ++ID_current;
+		this.ID = ++currentID;
 	}
 
 	/**
@@ -89,7 +92,7 @@ public class Polyline {
 			}
 		}
 
-		this.ID = ++ID_current;
+		this.ID = ++currentID;
 	}
 
 	/**

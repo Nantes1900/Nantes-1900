@@ -47,7 +47,7 @@ public class WriterCityGML {
 	private GMLGeometryFactory geom = new GMLGeometryFactory();
 	private JAXBBuilder builder;
 
-	private String fileName = new String();
+	private String fileName;
 
 	/**
 	 * Constructor

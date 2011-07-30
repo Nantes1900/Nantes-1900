@@ -3,6 +3,7 @@ package nantes1900.models.basis;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import javax.vecmath.Vector3d;
 
@@ -24,7 +25,7 @@ public class Edge {
 		private static final long serialVersionUID = 1L;
 	}
 
-	private ArrayList<Triangle> triangleList = new ArrayList<Triangle>(2);
+	private List<Triangle> triangles = new ArrayList<Triangle>(2);
 
 	private Point[] points = new Point[2];
 
@@ -32,13 +33,13 @@ public class Edge {
 	 * Copy constructor. Caution : use it very cautiously because it creates new
 	 * Edges with same values and not the same references.
 	 * 
-	 * @param e
+	 * @param copy
 	 *            the polyline to copy
 	 */
-	public Edge(Edge e) {
-		this.setP1(e.getP1());
-		this.setP2(e.getP2());
-		this.triangleList = new ArrayList<Triangle>(e.triangleList);
+	public Edge(final Edge copy) {
+		this.points[0] = copy.getP1();
+		this.points[1] = copy.getP2();
+		this.triangles = new ArrayList<Triangle>(copy.triangles);
 	}
 
 	/**
@@ -68,7 +69,7 @@ public class Edge {
 	private Edge returnTheLeftOne(ArrayList<Edge> weirdEdges, Point weirdPoint,
 			Vector3d normalFloor) {
 
-		Vector3d v = new Vector3d();
+		final Vector3d v = new Vector3d();
 
 		v.x = -this.returnOther(weirdPoint).getX() + weirdPoint.getX();
 		v.y = -this.returnOther(weirdPoint).getY() + weirdPoint.getY();
@@ -117,11 +118,11 @@ public class Edge {
 	 */
 	public void addTriangle(Triangle t)
 			throws MoreThanTwoTrianglesPerEdgeException {
-		if (!this.triangleList.contains(t)) {
-			if (this.triangleList.size() >= 2) {
+		if (!this.triangles.contains(t)) {
+			if (this.triangles.size() >= 2) {
 				throw new MoreThanTwoTrianglesPerEdgeException();
 			} else {
-				this.triangleList.add(t);
+				this.triangles.add(t);
 			}
 		}
 	}
@@ -176,7 +177,7 @@ public class Edge {
 	 * @return the number of triangles
 	 */
 	public int getNumberTriangles() {
-		return this.triangleList.size();
+		return this.triangles.size();
 	}
 
 	/**
@@ -231,8 +232,8 @@ public class Edge {
 	 * 
 	 * @return the list of triangles the edge belongs to
 	 */
-	public ArrayList<Triangle> getTriangleList() {
-		return this.triangleList;
+	public List<Triangle> getTriangleList() {
+		return this.triangles;
 	}
 
 	/*
@@ -508,17 +509,21 @@ public class Edge {
 	 *            one triangle which contains the edge
 	 * @return the other triangle which contains the edge Return an exception if
 	 *         the edge is bad-formed : ie it contains more than two triangles
+	 * @throws MoreThanTwoTrianglesPerEdgeException
+	 *             if the edge is badly formed
 	 */
-	public Triangle returnOther(Triangle t) {
-		if (this.triangleList.size() > 2)
-			// TODO : throw Exception, but treat first addTriangle before.
-			System.err.println("Error : more than two triangles per edge !");
-		if (this.triangleList.size() < 2)
+	public Triangle returnOther(Triangle t)
+			throws MoreThanTwoTrianglesPerEdgeException {
+		if (this.triangles.size() > 2) {
+			throw new MoreThanTwoTrianglesPerEdgeException();
+		}
+		if (this.triangles.size() < 2) {
 			return null;
-		if (this.triangleList.get(0) == t)
-			return this.triangleList.get(1);
-		else if (this.triangleList.get(1) == t)
-			return this.triangleList.get(0);
+		}
+		if (this.triangles.get(0) == t)
+			return this.triangles.get(1);
+		else if (this.triangles.get(1) == t)
+			return this.triangles.get(0);
 		else
 			return null;
 	}

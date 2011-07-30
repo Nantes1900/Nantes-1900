@@ -49,7 +49,7 @@ public class ParserSTL {
 	 */
 	private static class OutOfBoundsPointException extends Exception {
 		private static final long serialVersionUID = 1L;
-		private static final double boundLimit = 1e5;
+		private static final double BOUND_LIMIT = 1e5;
 	}
 
 	/**
@@ -121,7 +121,7 @@ public class ParserSTL {
 
 					// If the point has one coordinate > 1e5, throws and
 					// Exception. It can cause an error further in the program.
-					double maxLimit = OutOfBoundsPointException.boundLimit;
+					double maxLimit = OutOfBoundsPointException.BOUND_LIMIT;
 					if (p.getX() > maxLimit || p.getY() > maxLimit
 							|| p.getZ() > maxLimit)
 						throw new OutOfBoundsPointException();
@@ -238,7 +238,7 @@ public class ParserSTL {
 		// If the point is out of bounds, it's maybe an error when the file was
 		// written. But it could cause error further in the program. Thus we
 		// remove the triangles which contain thos points.
-		double maxLimit = OutOfBoundsPointException.boundLimit;
+		double maxLimit = OutOfBoundsPointException.BOUND_LIMIT;
 		if (p1.getX() > maxLimit || p1.getY() > maxLimit
 				|| p1.getZ() > maxLimit)
 			throw new OutOfBoundsPointException();

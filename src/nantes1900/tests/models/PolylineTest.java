@@ -8,6 +8,8 @@ import java.util.ArrayList;
 
 import javax.vecmath.Vector3d;
 
+import junit.framework.TestCase;
+
 import nantes1900.models.Mesh;
 import nantes1900.models.Polyline;
 import nantes1900.models.basis.Edge;
@@ -25,7 +27,7 @@ import org.junit.Test;
  * @author Daniel Lefevre
  * 
  */
-public class PolylineTest {
+public class PolylineTest extends TestCase {
 
 	private Point p1 = new Point(1, 0, -1);
 	private Point p2 = new Point(0, 1, 0);

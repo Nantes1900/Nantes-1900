@@ -1,5 +1,6 @@
 package nantes1900.tests;
 
+import junit.framework.TestCase;
 import nantes1900.tests.models.MeshTest;
 import nantes1900.tests.models.PolylineTest;
 import nantes1900.tests.models.basis.EdgeTest;
@@ -12,7 +13,6 @@ import nantes1900.tests.models.extended.TownTest;
 import nantes1900.tests.utils.AlgosTest;
 import nantes1900.tests.utils.MatrixMethodTest;
 import nantes1900.tests.utils.ParserSTLTest;
-import nantes1900.tests.utils.WriterCityGMLTest;
 
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -31,7 +31,8 @@ import org.junit.runners.Suite.SuiteClasses;
 		BuildingTest.class, FloorTest.class, SpecialBuildingTest.class,
 		TownTest.class,
 
-		AlgosTest.class, MatrixMethodTest.class, ParserSTLTest.class,
-		WriterCityGMLTest.class })
-public class AllTests {
+		AlgosTest.class, MatrixMethodTest.class, ParserSTLTest.class, })
+public class AllTests extends TestCase {
+	private AllTests() {
+	}
 }

@@ -4,6 +4,8 @@ import static org.junit.Assert.*;
 
 import javax.vecmath.Vector3d;
 
+import junit.framework.TestCase;
+
 import nantes1900.models.basis.Point;
 import nantes1900.utils.MatrixMethod;
 import nantes1900.utils.MatrixMethod.SingularMatrixException;
@@ -16,7 +18,7 @@ import org.junit.Test;
  * @author Daniel Lefevre
  * 
  */
-public class PointTest {
+public class PointTest extends TestCase {
 	/**
 	 * Test method for
 	 * {@link nantes1900.models.basis.Point#changeBase(double[][])}.

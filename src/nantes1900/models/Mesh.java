@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import javax.vecmath.Vector3d;
 
@@ -25,7 +26,7 @@ public class Mesh extends HashSet<Triangle> {
 
 	private static final long serialVersionUID = 1L;
 
-	private ArrayList<Mesh> neighbours = new ArrayList<Mesh>();
+	private List<Mesh> neighbours = new ArrayList<Mesh>();
 
 	private final int ID;
 	private static int ID_current = 0;
@@ -73,7 +74,7 @@ public class Mesh extends HashSet<Triangle> {
 	 * 
 	 * @return the neighbours
 	 */
-	public ArrayList<Mesh> getNeighbours() {
+	public List<Mesh> getNeighbours() {
 		return this.neighbours;
 	}
 
@@ -523,17 +524,17 @@ public class Mesh extends HashSet<Triangle> {
 
 	public Polyline findEdges(ArrayList<Mesh> wallList,
 			HashMap<Point, Point> pointMap, HashMap<Edge, Edge> edgeMap,
-			Vector3d normalFloor) {
+			Vector3d normalFloor) throws InvalidSurfaceException {
 
-		ArrayList<Mesh> neighbours = this.getNeighbours();
 		Polyline edges = new Polyline();
 
-		try {
-			for (Mesh m2 : neighbours) {
-				ArrayList<Point> points = new ArrayList<Point>();
+		for (Mesh m2 : this.neighbours) {
+			ArrayList<Point> points = new ArrayList<Point>();
 
-				for (Mesh m3 : neighbours) {
-					if (m2.getNeighbours().contains(m3)) {
+			try {
+				for (Mesh m3 : this.neighbours) {
+
+					if (m2.neighbours.contains(m3)) {
 						Mesh plane1 = this;
 						Mesh plane2 = m2;
 						Mesh plane3 = m3;
@@ -547,46 +548,109 @@ public class Mesh extends HashSet<Triangle> {
 							plane3 = m3.returnVerticalPlane(normalFloor);
 						}
 
-						Point p = plane1.intersection(plane2, plane3);
+						// If there is two neighbours oriented the same, then
+						// don't try to cumpute the intersection of the two
+						// planes, but don't compute the edge.
+						if (this.isOrientedAs(plane2, 10)) {
+							this.writeSTL("erreur1.stl");
+							m2.writeSTL("erreur2.stl");
+							m3.writeSTL("erreur3.stl");
+							// System.exit(1);
+							throw new ParallelPlanesException();
+						}
+						if (this.isOrientedAs(plane3, 10)) {
+							this.writeSTL("erreur1.stl");
+							m2.writeSTL("erreur2.stl");
+							m3.writeSTL("erreur3.stl");
+							// System.exit(1);
+							throw new ParallelPlanesException();
+						}
+						if (plane2.isOrientedAs(plane3, 10)) {
+							this.writeSTL("erreur1.stl");
+							m2.writeSTL("erreur2.stl");
+							m3.writeSTL("erreur3.stl");
+							// System.exit(1);
+							throw new ParallelPlanesException();
+						}
 
-						Point mapP = pointMap.get(p);
-						if (mapP == null)
-							pointMap.put(p, p);
-						else
-							p = mapP;
+						try {
+							Point p = plane1.intersection(plane2, plane3);
 
-						points.add(p);
+							Point mapP = pointMap.get(p);
+							if (mapP == null)
+								pointMap.put(p, p);
+							else
+								p = mapP;
+
+							points.add(p);
+
+						} catch (SingularMatrixException e1) {
+							this.writeSTL("erreurMatrix1.stl");
+							m2.writeSTL("erreurMatrix2.stl");
+							m3.writeSTL("erreurMatrix3.stl");
+							// System.err.println("Matrix exception");
+							// System.exit(1);
+							throw new InvalidSurfaceException();
+						}
 					}
 				}
+			} catch (ParallelPlanesException e) {
+				// System.err.println("Parallel planes exception !");
+				throw new InvalidSurfaceException();
+			}
 
-				if (points.size() == 2) {
+			if (points.size() == 2) {
 
-					Edge e = new Edge(points.get(0), points.get(1));
+				Edge e = new Edge(points.get(0), points.get(1));
 
-					Edge mapE = edgeMap.get(e);
-					if (mapE == null)
-						edgeMap.put(e, e);
-					else
-						e = mapE;
+				Edge mapE = edgeMap.get(e);
+				if (mapE == null)
+					edgeMap.put(e, e);
+				else
+					e = mapE;
 
-					edges.add(e);
-				} else {
-					System.err.println("Erreur!");
+				edges.add(e);
+			} else {
+				// We let the exception for below : if they can complete the
+				// last edge, it's ok, if not, then they throw themselves the
+				// exception.
+			}
+		}
+
+		if (edges.edgeSize() == this.getNeighbours().size()) {
+			edges.setNormal(this.averageNormal());
+			edges.order();
+			return edges;
+		} else if (edges.edgeSize() == this.getNeighbours().size() - 1) {
+			edges.setNormal(this.averageNormal());
+			// Complete the last edge
+			ArrayList<Point> list = new ArrayList<Point>();
+			for (Point p : edges.getPointList()) {
+				if (edges.getNumNeighbours(p) == 1) {
+					list.add(p);
 				}
 			}
-
-			if (edges.edgeSize() > 2) {
-				edges.setNormal(this.averageNormal());
-				edges.order();
-				return edges;
+			if (list.size() == 2) {
+				edges.add(new Edge(list.get(0), list.get(1)));
+				// System.err.println("Yeah");
 			} else {
-				return null;
+				// System.err.println("Pas marché !");
+				throw new InvalidSurfaceException();
 			}
-		} catch (SingularMatrixException e1) {
-			System.err.println("Matrix error ! Program shutting down !");
-			System.exit(1);
-			return null;
+			edges.order();
+			return edges;
+		} else {
+			System.err.println("Il manquait plus d'un edge !");
+			throw new InvalidSurfaceException();
 		}
+	}
+
+	public static class InvalidSurfaceException extends Exception {
+		private static final long serialVersionUID = 1L;
+	}
+
+	public static class ParallelPlanesException extends Exception {
+		private static final long serialVersionUID = 1L;
 	}
 
 	private Mesh returnVerticalPlane(Vector3d normalFloor) {

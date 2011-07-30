@@ -3,7 +3,7 @@
  */
 package nantes1900.tests.utils;
 
-import static org.junit.Assert.fail;
+import junit.framework.TestCase;
 
 import org.junit.Test;
 
@@ -11,7 +11,7 @@ import org.junit.Test;
  * @author Daniel Lefevre
  *
  */
-public class AlgosTest {
+public class AlgosTest extends TestCase {
 
 	/**
 	 * Test method for {@link nantes1900.utils.Algos#blockExtract(nantes1900.models.Mesh)}.

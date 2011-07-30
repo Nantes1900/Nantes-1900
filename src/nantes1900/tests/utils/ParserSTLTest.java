@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 import javax.vecmath.Vector3d;
 
+import junit.framework.TestCase;
+
 import nantes1900.models.Mesh;
 import nantes1900.models.basis.Edge;
 import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
@@ -25,7 +27,7 @@ import org.junit.Test;
  * 
  * @author Daniel Lefevre
  */
-public class ParserSTLTest {
+public class ParserSTLTest extends TestCase {
 
 	/**
 	 * Test method for

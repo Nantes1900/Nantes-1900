@@ -18,9 +18,9 @@ import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
  */
 public class Triangle {
 
-	private Point[] points = new Point[3];
-	private Vector3d normal = new Vector3d();;
-	private Edge[] edges = new Edge[3];
+	private final Point[] points = new Point[3];
+	private Vector3d normal = new Vector3d();
+	private final Edge[] edges = new Edge[3];
 
 	/**
 	 * Constructor of the triangle.
@@ -43,11 +43,11 @@ public class Triangle {
 	 *             if one edge already contains 2 triangles
 	 */
 	public Triangle(Point p0, Point p1, Point p2, Edge e1, Edge e2, Edge e3,
-			Vector3d normale) throws MoreThanTwoTrianglesPerEdgeException {
+			Vector3d normal) throws MoreThanTwoTrianglesPerEdgeException {
 		this.points[0] = p0;
 		this.points[1] = p1;
 		this.points[2] = p2;
-		this.normal = normale;
+		this.normal = normal;
 		this.edges[0] = e1;
 		this.edges[1] = e2;
 		this.edges[2] = e3;
@@ -200,8 +200,10 @@ public class Triangle {
 	 * other triangles which share those edges.
 	 * 
 	 * @return a list of the neighbours triangles
+	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
-	public ArrayList<Triangle> getNeighbours() {
+	public ArrayList<Triangle> getNeighbours()
+			throws MoreThanTwoTrianglesPerEdgeException {
 		ArrayList<Triangle> l = new ArrayList<Triangle>();
 		Triangle other;
 
@@ -227,8 +229,9 @@ public class Triangle {
 	 * Return the number of neighbours of this triangle.
 	 * 
 	 * @return the number of neighbours
+	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
-	public int getNumNeighbours() {
+	public int getNumNeighbours() throws MoreThanTwoTrianglesPerEdgeException {
 		return this.getNeighbours().size();
 	}
 
@@ -290,11 +293,9 @@ public class Triangle {
 	 */
 	@Override
 	public int hashCode() {
-		int result = 1;
-		result = result + ((points[0] == null) ? 0 : points[0].hashCode());
-		result = result + ((points[1] == null) ? 0 : points[1].hashCode());
-		result = result + ((points[2] == null) ? 0 : points[2].hashCode());
-		return result;
+		return ((points[0] == null) ? 0 : points[0].hashCode())
+				+ ((points[1] == null) ? 0 : points[1].hashCode())
+				+ ((points[2] == null) ? 0 : points[2].hashCode());
 	}
 
 	/**
@@ -304,9 +305,13 @@ public class Triangle {
 	 * @param f
 	 *            the triangle to check
 	 * @return true if it is neighbours, false otherwise.
+	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
-	public boolean isNeighboor(Triangle f) {
-		return (this.getNeighbours().contains(f));
+	// TODO : code again this method : you don't need to call the big
+	// getNeighbours to check that little thing.
+	public boolean isNeighboor(Triangle f)
+			throws MoreThanTwoTrianglesPerEdgeException {
+		return this.getNeighbours().contains(f);
 	}
 
 	/**
@@ -332,8 +337,10 @@ public class Triangle {
 	 *            the returned mesh in which are the neighbours
 	 * @param m
 	 *            the mesh which all neighbours have to belong to
+	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
-	public void returnNeighbours(Mesh ret, Mesh m) {
+	public void returnNeighbours(Mesh ret, Mesh m)
+			throws MoreThanTwoTrianglesPerEdgeException {
 		ret.add(this);
 
 		Triangle other;
@@ -361,9 +368,7 @@ public class Triangle {
 	 * @return the average x-coordinate of the three points
 	 */
 	public double xAverage() {
-		double xAverage = points[0].getX() + points[1].getX()
-				+ points[2].getX();
-		return xAverage / 3;
+		return (points[0].getX() + points[1].getX() + points[2].getX()) / 3;
 	}
 
 	/**
@@ -382,7 +387,7 @@ public class Triangle {
 	 * @return the point at the x-maximum of the three points.
 	 */
 	public Point xMaxPoint() {
-		double xMax = this.xMax();
+		final double xMax = this.xMax();
 		for (Point p : points) {
 			if (p.getX() == xMax)
 				return p;
@@ -524,7 +529,7 @@ public class Triangle {
 	 * @return the point at the z-minimum of the three points.
 	 */
 	public Point zMinPoint() {
-		double zMin = this.zMin();
+		final double zMin = this.zMin();
 		for (Point p : points) {
 			if (p.getZ() == zMin)
 				return p;

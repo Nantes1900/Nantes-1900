@@ -4,7 +4,7 @@ import nantes1900.models.Mesh;
 
 public class Floor {
 
-	private String attribute = new String();
+	private String attribute;
 	private Mesh mesh = new Mesh();
 
 	/**

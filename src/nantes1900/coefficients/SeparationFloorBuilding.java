@@ -8,10 +8,9 @@ package nantes1900.coefficients;
 public final class SeparationFloorBuilding {
 
 	// TODO : doc
-	public static final double altitudeErrorFactor = 10;
-	public static final double angleNormalErrorFactor = 20;
-	public static final double largeAngleNormalErrorFactor = 20;
-	public static final double blockSizeBuildingError = 1;
+	public static final double ALTITUDE_ERROR = 5;
+	public static final double ANGLE_FLOOR_ERROR = 60;
+	public static final double BLOCK_SIZE_ERROR = 1;
 
 	private SeparationFloorBuilding() {
 	}

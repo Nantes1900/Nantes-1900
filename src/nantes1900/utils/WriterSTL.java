@@ -39,7 +39,7 @@ public class WriterSTL {
 	/**
 	 * The mode of writing. Use the two constants : ASCII_MODE or BINARY_MODE.
 	 */
-	private int MODE = BINARY_MODE;
+	private int writingMode = BINARY_MODE;
 
 	public WriterSTL(String fileName) {
 		this.fileName = fileName;
@@ -47,7 +47,7 @@ public class WriterSTL {
 
 	public WriterSTL(String fileName, int mode) {
 		this.fileName = fileName;
-		this.MODE = mode;
+		this.writingMode = mode;
 	}
 
 	/**
@@ -222,7 +222,7 @@ public class WriterSTL {
 	 * @return the attribute MODE
 	 */
 	public int getWriteMode() {
-		return MODE;
+		return writingMode;
 	}
 
 	public void setMesh(Mesh m) {
@@ -236,7 +236,7 @@ public class WriterSTL {
 	 *            the new mode
 	 */
 	public void setWriteMode(int mode) {
-		MODE = mode;
+		writingMode = mode;
 	}
 
 	/**
@@ -252,9 +252,9 @@ public class WriterSTL {
 			if (mesh == null) {
 				throw new NoMeshException();
 			}
-			if (MODE == ASCII_MODE)
+			if (writingMode == ASCII_MODE)
 				this.writeSTLA();
-			else if (MODE == BINARY_MODE)
+			else if (writingMode == BINARY_MODE)
 				this.writeSTLB();
 		} catch (IOException e) {
 			e.printStackTrace();

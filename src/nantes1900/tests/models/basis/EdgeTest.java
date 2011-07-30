@@ -6,8 +6,11 @@ import static org.junit.Assert.fail;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.vecmath.Vector3d;
+
+import junit.framework.TestCase;
 
 import nantes1900.models.Polyline;
 import nantes1900.models.basis.Edge;
@@ -24,7 +27,7 @@ import org.junit.Test;
  * @author Daniel Lefevre
  * 
  */
-public class EdgeTest {
+public class EdgeTest extends TestCase {
 
 	private Point p1 = new Point(1, 0, -1);
 	private Point p2 = new Point(0, 1, 0);
@@ -167,9 +170,9 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testGetTriangleList() {
-		ArrayList<Triangle> list1 = e1.getTriangleList();
-		ArrayList<Triangle> list2 = e2.getTriangleList();
-		ArrayList<Triangle> list4 = e4.getTriangleList();
+		List<Triangle> list1 = e1.getTriangleList();
+		List<Triangle> list2 = e2.getTriangleList();
+		List<Triangle> list4 = e4.getTriangleList();
 
 		assertTrue(list1.contains(t1));
 		assertTrue(list1.contains(t2));
@@ -371,9 +374,13 @@ public class EdgeTest {
 	 */
 	@Test
 	public void testReturnOtherTriangle() {
-		assertTrue(e1.returnOther(t1) == t2);
-		assertTrue(e1.returnOther(t2) == t1);
-		assertTrue(e2.returnOther(t1) == null);
+		try {
+			assertTrue(e1.returnOther(t1) == t2);
+			assertTrue(e1.returnOther(t2) == t1);
+			assertTrue(e2.returnOther(t1) == null);
+		} catch (MoreThanTwoTrianglesPerEdgeException e) {
+			fail();
+		}
 	}
 
 	/**
