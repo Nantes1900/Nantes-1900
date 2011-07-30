@@ -12,7 +12,7 @@ import java.util.logging.StreamHandler;
 
 import javax.vecmath.Vector3d;
 
-import nantes1900.coefficients.SeparationFloorBuilding;
+import nantes1900.constants.SeparationFloorBuilding;
 import nantes1900.models.Mesh;
 import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import nantes1900.utils.Algos;

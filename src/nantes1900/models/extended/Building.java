@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.vecmath.Vector3d;
 
-import nantes1900.coefficients.SeparationTreatmentWallsRoofs;
+import nantes1900.constants.SeparationTreatmentWallsRoofs;
 import nantes1900.models.Mesh;
 import nantes1900.models.Mesh.InvalidSurfaceException;
 import nantes1900.models.Polyline;

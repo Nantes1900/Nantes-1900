@@ -1,4 +1,4 @@
-package nantes1900.coefficients;
+package nantes1900.constants;
 
 /**
  * Implement class to define some coefficients used in the algorithms.
