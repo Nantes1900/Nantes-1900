@@ -29,21 +29,21 @@ public class Edge {
 		private static final long serialVersionUID = 1L;
 	}
 
-	private List<Triangle> triangles = new ArrayList<Triangle>(2);
+	private transient List<Triangle> triangles = new ArrayList<Triangle>(2);
 
-	private Point[] points = new Point[2];
+	private transient Point[] points = new Point[2];
 
 	/**
 	 * Copy constructor. Caution : use it very cautiously because it creates new
 	 * Edges with same values and not the same references.
 	 * 
-	 * @param copy
+	 * @param edge
 	 *            the polyline to copy
 	 */
-	public Edge(final Edge copy) {
-		this.points[0] = copy.getP1();
-		this.points[1] = copy.getP2();
-		this.triangles = new ArrayList<Triangle>(copy.triangles);
+	public Edge(final Edge edge) {
+		this.points[0] = edge.getP1();
+		this.points[1] = edge.getP2();
+		this.triangles = new ArrayList<Triangle>(edge.triangles);
 	}
 
 	/**
@@ -86,12 +86,10 @@ public class Edge {
 
 		Edge ref = null;
 		double max = Double.NEGATIVE_INFINITY;
-		Vector3d vect = new Vector3d();
+		final Vector3d vect = new Vector3d();
 
 		for (Edge edge : weirdEdges) {
 			if (edge != this) {
-				vect = new Vector3d();
-
 				vect.x = edge.returnOther(weirdPoint).getX()
 						- weirdPoint.getX();
 				vect.y = edge.returnOther(weirdPoint).getY()
@@ -198,7 +196,7 @@ public class Edge {
 	}
 
 	/**
-	 * Returns the number of neighbours of this contained in the polyline p
+	 * Returns the number of neighbours of this contained in the polyline p.
 	 * 
 	 * @param polyline
 	 *            the polyline in which the edges have to be
@@ -218,7 +216,7 @@ public class Edge {
 	}
 
 	/**
-	 * Getter
+	 * Getter.
 	 * 
 	 * @return the first point
 	 */
@@ -227,7 +225,7 @@ public class Edge {
 	}
 
 	/**
-	 * Getter
+	 * Getter.
 	 * 
 	 * @return the second point
 	 */
@@ -236,9 +234,9 @@ public class Edge {
 	}
 
 	/**
-	 * Getter
+	 * Getter.
 	 * 
-	 * @return an ArrayList<Point> with the two points of the edge
+	 * @return a list of points with the two points of the edge
 	 */
 	public List<Point> getPoints() {
 		return Arrays.asList(this.points);
@@ -268,32 +266,31 @@ public class Edge {
 	 * Check if p is contained in the cylinder which axis is this edge, which
 	 * bounds are the two points of this edge, and which radius is error.
 	 * 
-	 * @param p
+	 * @param point
 	 *            the point to check
 	 * @param error
 	 *            the radius of the cylinder
 	 * @return true if p is contained in the cylinder and false otherwise
 	 */
-	public boolean isInCylinder3D(Point p, double error) {
+	public boolean isInCylinder3D(Point point, double error) {
 
-		double x1 = this.getP1().getX(), x2 = this.getP2().getX(), x3 = p
+		final double x1 = this.getP1().getX(), x2 = this.getP2().getX(), x3 = point
 				.getX();
-		double y1 = this.getP1().getY(), y2 = this.getP2().getY(), y3 = p
+		final double y1 = this.getP1().getY(), y2 = this.getP2().getY(), y3 = point
 				.getY();
-		double z1 = this.getP1().getZ(), z2 = this.getP2().getZ(), z3 = p
+		final double z1 = this.getP1().getZ(), z2 = this.getP2().getZ(), z3 = point
 				.getZ();
 
-		double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
+		final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
 				* (z2 - z1))
 				/ ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
 						* (z2 - z1));
 
-		double x4 = lambda * (x2 - x1) + x1, y4 = lambda * (y2 - y1) + y1, z4 = lambda
+		final double x4 = lambda * (x2 - x1) + x1, y4 = lambda * (y2 - y1) + y1, z4 = lambda
 				* (z2 - z1) + z1;
 
-		Point p4 = new Point(x4, y4, z4);
-
-		return (lambda >= 0 && lambda <= 1 && p.distance(p4) <= error);
+		return (lambda >= 0 && lambda <= 1 && point.distance(new Point(x4, y4,
+				z4)) <= error);
 	}
 
 	/**
@@ -308,7 +305,7 @@ public class Edge {
 	 *            in which p must be
 	 * @return true if p is contained between those segments and false otherwise
 	 */
-	public boolean isInInfiniteCylinder2D(Point point, double error) {
+	public boolean isInInfiniteCylinder2D(final Point point, final double error) {
 		double a, b, c, cPlus, cMinus;
 
 		final Point p1 = this.getP1();
@@ -337,20 +334,20 @@ public class Edge {
 	 * Check if p is contained in the infinite cylinder which axis is this edge,
 	 * and which radius is error.
 	 * 
-	 * @param p
+	 * @param point
 	 *            the point to check
 	 * @param error
 	 *            the radius of the cylinder
 	 * @return true if p is contained in the infinite cylinder and false
 	 *         otherwise
 	 */
-	public boolean isInInfiniteCylinder3D(Point p, final double error) {
+	public boolean isInInfiniteCylinder3D(final Point point, final double error) {
 
-		double x1 = this.getP1().getX(), x2 = this.getP2().getX(), x3 = p
+		double x1 = this.getP1().getX(), x2 = this.getP2().getX(), x3 = point
 				.getX();
-		double y1 = this.getP1().getY(), y2 = this.getP2().getY(), y3 = p
+		double y1 = this.getP1().getY(), y2 = this.getP2().getY(), y3 = point
 				.getY();
-		double z1 = this.getP1().getZ(), z2 = this.getP2().getZ(), z3 = p
+		double z1 = this.getP1().getZ(), z2 = this.getP2().getZ(), z3 = point
 				.getZ();
 
 		double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
@@ -363,7 +360,7 @@ public class Edge {
 
 		Point p4 = new Point(x4, y4, z4);
 
-		return (p.distance(p4) <= error);
+		return (point.distance(p4) <= error);
 	}
 
 	/**

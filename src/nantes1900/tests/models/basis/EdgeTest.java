@@ -161,8 +161,7 @@ public class EdgeTest extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link nantes1900.models.basis.Edge#getTriangles()}
-	 * and
+	 * Test method for {@link nantes1900.models.basis.Edge#getTriangles()} and
 	 * {@link nantes1900.models.basis.Edge#addTriangle(nantes1900.models.basis.Triangle)}
 	 * . This test is also the test of addTriangle.
 	 */

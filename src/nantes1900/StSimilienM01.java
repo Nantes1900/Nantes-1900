@@ -5,7 +5,6 @@ import nantes1900.models.extended.Town;
 public final class StSimilienM01 {
 
 	private StSimilienM01() {
-
 	}
 
 	public static void main(final String[] args) {

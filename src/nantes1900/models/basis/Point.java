@@ -29,7 +29,7 @@ public class Point {
 	 * @param z
 	 *            coordinate
 	 */
-	public Point(double x, double y, double z) {
+	public Point(final double x, final double y, final double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;
@@ -41,13 +41,13 @@ public class Point {
 	 * To use very cautiously : it can create two Points with equal Values and
 	 * different references in the Mesh !
 	 * 
-	 * @param p
+	 * @param point
 	 *            the point to copy
 	 */
-	public Point(Point p) {
-		this.x = p.x;
-		this.y = p.y;
-		this.z = p.z;
+	public Point(final Point point) {
+		this.x = point.x;
+		this.y = point.y;
+		this.z = point.z;
 	}
 
 	/**
@@ -57,8 +57,8 @@ public class Point {
 	 *            of base change Be careful : the point doesn't have the same
 	 *            hashCode after this operation...
 	 */
-	public void changeBase(double[][] matrix) {
-		double[] coords = { this.x, this.y, this.z };
+	public void changeBase(final double[][] matrix) {
+		final double[] coords = { this.x, this.y, this.z };
 		this.set(MatrixMethod.changeBase(coords, matrix));
 	}
 
@@ -75,25 +75,6 @@ public class Point {
 						+ Math.pow(p.z - z, 2), 0.5);
 	}
 
-	// /**
-	// * Check if a point is almost equal to another. It check if every
-	// * coordinates of this are between the coordinates of p - error et the
-	// * coordinates of p + error.
-	// *
-	// * @param p
-	// * the other point
-	// * @param error
-	// * the error
-	// * @return true if the point is almost equal, false otherwise.
-	// */
-	// // FIXME : change the equals method by casting the double to float and
-	// // comparing the result.
-	// public boolean epsilonEquals(Point p, double error) {
-	// return ((this.x < p.x + error && this.x > p.x - error)
-	// && (this.y < p.y + error && this.y > p.y - error) && (this.z < p.z
-	// + error && this.z > p.z - error));
-	// }
-
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -101,22 +82,28 @@ public class Point {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Point other = (Point) obj;
 		if (Double.doubleToLongBits((float) x) != Double
-				.doubleToLongBits((float) other.x))
+				.doubleToLongBits((float) other.x)) {
 			return false;
+		}
 		if (Double.doubleToLongBits((float) y) != Double
-				.doubleToLongBits((float) other.y))
+				.doubleToLongBits((float) other.y)) {
 			return false;
+		}
 		if (Double.doubleToLongBits((float) z) != Double
-				.doubleToLongBits((float) other.z))
+				.doubleToLongBits((float) other.z)) {
 			return false;
+		}
 		return true;
 	}
 
@@ -126,8 +113,7 @@ public class Point {
 	 * @return a table of double
 	 */
 	public double[] getPointAsCoordinates() {
-		double[] coords = { x, y, z };
-		return coords;
+		return new double[] { this.x, this.y, this.z };
 	}
 
 	/**
@@ -182,7 +168,7 @@ public class Point {
 	 * @param coords
 	 *            the three coordinates
 	 */
-	public void set(double[] coords) {
+	public void set(final double[] coords) {
 		this.setX(coords[0]);
 		this.setY(coords[1]);
 		this.setZ(coords[2]);
@@ -194,7 +180,7 @@ public class Point {
 	 * @param x
 	 *            : the x coordinate
 	 */
-	public void setX(double x) {
+	public void setX(final double x) {
 		this.x = x;
 	}
 
@@ -204,7 +190,7 @@ public class Point {
 	 * @param y
 	 *            coordinate
 	 */
-	public void setY(double y) {
+	public void setY(final double y) {
 		this.y = y;
 	}
 
@@ -214,7 +200,7 @@ public class Point {
 	 * @param z
 	 *            coordinate
 	 */
-	public void setZ(double z) {
+	public void setZ(final double z) {
 		this.z = z;
 	}
 
@@ -227,7 +213,7 @@ public class Point {
 		return new String("(" + x + ", " + y + ", " + z + ")");
 	}
 
-	public void set(double x, double y, double z) {
+	public void set(final double x, final double y, final double z) {
 		this.x = x;
 		this.y = y;
 		this.z = z;

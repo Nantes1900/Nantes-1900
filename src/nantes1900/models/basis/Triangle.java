@@ -19,38 +19,40 @@ import nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 public class Triangle {
 
 	private final Point[] points = new Point[3];
-	private Vector3d normal = new Vector3d();
+	private final Vector3d normal = new Vector3d();
 	private final Edge[] edges = new Edge[3];
 
 	/**
 	 * Constructor of the triangle.
 	 * 
-	 * @param p0
+	 * @param point0
 	 *            one point
-	 * @param p1
+	 * @param point1
 	 *            one point
-	 * @param p2
+	 * @param point2
 	 *            one point
-	 * @param e1
+	 * @param edge1
 	 *            one edge composed by two of the three points
-	 * @param e2
+	 * @param edge2
 	 *            one edge composed by two of the three points
-	 * @param e3
+	 * @param edge3
 	 *            one edge composed by two of the three points
 	 * @param normale
 	 *            the normal of the triangle
 	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 *             if one edge already contains 2 triangles
 	 */
-	public Triangle(Point p0, Point p1, Point p2, Edge e1, Edge e2, Edge e3,
-			Vector3d normal) throws MoreThanTwoTrianglesPerEdgeException {
-		this.points[0] = p0;
-		this.points[1] = p1;
-		this.points[2] = p2;
-		this.normal = normal;
-		this.edges[0] = e1;
-		this.edges[1] = e2;
-		this.edges[2] = e3;
+	// TODO : reduce this constructor by making the edge inside.
+	public Triangle(final Point point0, final Point point1, final Point point2,
+			final Edge edge1, final Edge edge2, final Edge edge3,
+			final Vector3d normal) throws MoreThanTwoTrianglesPerEdgeException {
+		this.points[0] = point0;
+		this.points[1] = point1;
+		this.points[2] = point2;
+		this.normal.set(normal);
+		this.edges[0] = edge1;
+		this.edges[1] = edge2;
+		this.edges[2] = edge3;
 		this.edges[0].addTriangle(this);
 		this.edges[1].addTriangle(this);
 		this.edges[2].addTriangle(this);
@@ -61,16 +63,17 @@ public class Triangle {
 	 * to create double Triangle with equal values and different references !
 	 * This method create new points so as the old ones are not modified.
 	 * 
-	 * @param t
+	 * @param triangle
 	 *            the triangle to copy
 	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 *             if one edge already contains 2 triangles
 	 */
-	public Triangle(Triangle t) throws MoreThanTwoTrianglesPerEdgeException {
-		this.points[0] = new Point(t.points[0]);
-		this.points[1] = new Point(t.points[1]);
-		this.points[2] = new Point(t.points[2]);
-		this.normal = new Vector3d(t.normal);
+	public Triangle(final Triangle triangle)
+			throws MoreThanTwoTrianglesPerEdgeException {
+		this.points[0] = new Point(triangle.points[0]);
+		this.points[1] = new Point(triangle.points[1]);
+		this.points[2] = new Point(triangle.points[2]);
+		this.normal.set(new Vector3d(triangle.normal));
 		this.edges[0] = new Edge(this.points[0], this.points[1]);
 		this.edges[1] = new Edge(this.points[1], this.points[2]);
 		this.edges[2] = new Edge(this.points[2], this.points[0]);
@@ -89,8 +92,8 @@ public class Triangle {
 	 *            the orientation error
 	 * @return true if it is oriented as face, false otherwise
 	 */
-	public boolean angularTolerance(Triangle face, double error) {
-		return (this.angularTolerance(face.normal, error));
+	public boolean angularTolerance(final Triangle face, final double error) {
+		return this.angularTolerance(face.normal, error);
 	}
 
 	/**
@@ -103,7 +106,7 @@ public class Triangle {
 	 *            the orientation error
 	 * @return true if it is oriented as vector, false otherwise
 	 */
-	public boolean angularTolerance(Vector3d vector, double error) {
+	public boolean angularTolerance(final Vector3d vector, final double error) {
 		return (this.normal.angle(vector) * 180.0 / Math.PI < error);
 	}
 
@@ -114,25 +117,23 @@ public class Triangle {
 	 *            the edge to check
 	 * @return true if the edge e is one of the edges of this, false otherwise.
 	 */
-	public boolean contains(Edge e) {
-		if (this.getEdges().contains(e))
-			return true;
-		else
-			return false;
+	public boolean contains(final Edge e) {
+		return this.getEdges().contains(e);
 	}
 
 	/**
 	 * Check if p is one of the three points of this. Use the method equals of
-	 * this class
+	 * this class.
 	 * 
-	 * @param p
+	 * @param point
 	 *            the point to check
 	 * @return true is one point is equal with p
 	 */
-	public boolean contains(Point p) {
-		for (Point point : points) {
-			if (point.equals(p))
+	public boolean contains(final Point point) {
+		for (Point point2 : points) {
+			if (point.equals(point2)) {
 				return true;
+			}
 		}
 		return false;
 	}
@@ -144,19 +145,23 @@ public class Triangle {
 	 */
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Triangle other = (Triangle) obj;
 
 		if (this.contains(other.points[0]) && this.contains(other.points[1])
-				&& this.contains(other.points[2]))
+				&& this.contains(other.points[2])) {
 			return true;
-		else
+		} else {
 			return false;
+		}
 	}
 
 	/**
@@ -202,18 +207,19 @@ public class Triangle {
 	 * @return a list of the neighbours triangles
 	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
-	public ArrayList<Triangle> getNeighbours()
+	public List<Triangle> getNeighbours()
 			throws MoreThanTwoTrianglesPerEdgeException {
-		ArrayList<Triangle> l = new ArrayList<Triangle>();
+		final List<Triangle> list = new ArrayList<Triangle>();
 		Triangle other;
 
 		for (Edge e : this.edges) {
 			other = e.returnOther(this);
-			if (other != null)
-				l.add(other);
+			if (other != null) {
+				list.add(other);
+			}
 		}
 
-		return l;
+		return list;
 	}
 
 	/**
@@ -277,10 +283,10 @@ public class Triangle {
 	 * @return a collection of the coordinates of the points
 	 */
 	public List<Double> getPointsAsCoordinates() {
-		ArrayList<Double> list = new ArrayList<Double>();
+		final List<Double> list = new ArrayList<Double>();
 		for (Point p : points) {
 			for (double d : p.getPointAsCoordinates()) {
-				list.add(new Double(d));
+				list.add(d);
 			}
 		}
 		return list;
@@ -302,16 +308,16 @@ public class Triangle {
 	 * Check if a triangle is a neighbours of this. This method calls the
 	 * getNeighbours method.
 	 * 
-	 * @param f
+	 * @param triangle
 	 *            the triangle to check
 	 * @return true if it is neighbours, false otherwise.
 	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
 	// TODO : code again this method : you don't need to call the big
 	// getNeighbours to check that little thing.
-	public boolean isNeighboor(Triangle f)
+	public boolean isNeighboor(Triangle triangle)
 			throws MoreThanTwoTrianglesPerEdgeException {
-		return this.getNeighbours().contains(f);
+		return this.getNeighbours().contains(triangle);
 	}
 
 	/**
@@ -335,11 +341,11 @@ public class Triangle {
 	 * 
 	 * @param ret
 	 *            the returned mesh in which are the neighbours
-	 * @param m
+	 * @param container
 	 *            the mesh which all neighbours have to belong to
 	 * @throws MoreThanTwoTrianglesPerEdgeException
 	 */
-	public void returnNeighbours(Mesh ret, Mesh m)
+	public void returnNeighbours(Mesh ret, Mesh container)
 			throws MoreThanTwoTrianglesPerEdgeException {
 		ret.add(this);
 
@@ -347,8 +353,10 @@ public class Triangle {
 
 		for (Edge e : this.edges) {
 			other = e.returnOther(this);
-			if (other != null && m.contains(other) && !ret.contains(other))
-				other.returnNeighbours(ret, m);
+			if (other != null && container.contains(other)
+					&& !ret.contains(other)) {
+				other.returnNeighbours(ret, container);
+			}
 		}
 	}
 
@@ -389,8 +397,9 @@ public class Triangle {
 	public Point xMaxPoint() {
 		final double xMax = this.xMax();
 		for (Point p : points) {
-			if (p.getX() == xMax)
+			if (p.getX() == xMax) {
 				return p;
+			}
 		}
 		return null;
 	}
@@ -413,8 +422,9 @@ public class Triangle {
 	public Point xMinPoint() {
 		double xMin = this.xMin();
 		for (Point p : points) {
-			if (p.getX() == xMin)
+			if (p.getX() == xMin) {
 				return p;
+			}
 		}
 		return null;
 	}
@@ -425,9 +435,7 @@ public class Triangle {
 	 * @return the average y-coordinate of the three points
 	 */
 	public double yAverage() {
-		double yAverage = points[0].getY() + points[1].getY()
-				+ points[2].getY();
-		return yAverage / 3;
+		return (points[0].getY() + points[1].getY() + points[2].getY()) / 3;
 	}
 
 	/**
@@ -446,10 +454,11 @@ public class Triangle {
 	 * @return the point at the y-maximum of the three points.
 	 */
 	public Point yMaxPoint() {
-		double yMay = this.yMax();
+		double yMax = this.yMax();
 		for (Point p : points) {
-			if (p.getY() == yMay)
+			if (p.getY() == yMax) {
 				return p;
+			}
 		}
 		return null;
 	}
@@ -472,8 +481,9 @@ public class Triangle {
 	public Point yMinPoint() {
 		double yMin = this.yMin();
 		for (Point p : points) {
-			if (p.getY() == yMin)
+			if (p.getY() == yMin) {
 				return p;
+			}
 		}
 		return null;
 	}
@@ -507,8 +517,9 @@ public class Triangle {
 	public Point zMaxPoint() {
 		double zMax = this.zMax();
 		for (Point p : points) {
-			if (p.getZ() == zMax)
+			if (p.getZ() == zMax) {
 				return p;
+			}
 		}
 		return null;
 	}
@@ -531,8 +542,9 @@ public class Triangle {
 	public Point zMinPoint() {
 		final double zMin = this.zMin();
 		for (Point p : points) {
-			if (p.getZ() == zMin)
+			if (p.getZ() == zMin) {
 				return p;
+			}
 		}
 		return null;
 	}
