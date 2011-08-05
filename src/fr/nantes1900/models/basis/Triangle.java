@@ -1,14 +1,14 @@
 package fr.nantes1900.models.basis;
 
+import fr.nantes1900.models.Mesh;
+import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
 import javax.vecmath.Vector3d;
-
-import fr.nantes1900.models.Mesh;
-import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 
 /**
  * Implement a triangle, composed of three points, three edges, and one vector
@@ -51,10 +51,10 @@ public class Triangle {
      */
     // TODO : reduce this constructor by making the edge inside.
     public Triangle(final Point point0, final Point point1,
-            final Point point2, final Edge edge1,
-            final Edge edge2, final Edge edge3,
-            final Vector3d normalNew)
-            throws MoreThanTwoTrianglesPerEdgeException {
+        final Point point2, final Edge edge1,
+        final Edge edge2, final Edge edge3,
+        final Vector3d normalNew)
+        throws MoreThanTwoTrianglesPerEdgeException {
         this.points[0] = point0;
         this.points[1] = point1;
         this.points[2] = point2;
@@ -77,7 +77,7 @@ public class Triangle {
      *             if one edge already contains 2 triangles
      */
     public Triangle(final Triangle triangle)
-            throws MoreThanTwoTrianglesPerEdgeException {
+        throws MoreThanTwoTrianglesPerEdgeException {
         this.points[0] = new Point(triangle.points[0]);
         this.points[1] = new Point(triangle.points[1]);
         this.points[2] = new Point(triangle.points[2]);
@@ -100,7 +100,7 @@ public class Triangle {
      * @return true if it is oriented as face, false otherwise
      */
     public final boolean angularTolerance(final Triangle face,
-            final double error) {
+        final double error) {
         return this.angularTolerance(face.normal, error);
     }
 
@@ -114,7 +114,7 @@ public class Triangle {
      * @return true if it is oriented as vector, false otherwise
      */
     public final boolean angularTolerance(final Vector3d vector,
-            final double error) {
+        final double error) {
         return (this.normal.angle(vector) * 180.0 / Math.PI < error);
     }
 
@@ -162,8 +162,8 @@ public class Triangle {
         Triangle other = (Triangle) obj;
 
         return (this.contains(other.points[0])
-                && this.contains(other.points[1]) && this
-                    .contains(other.points[2]));
+            && this.contains(other.points[1]) && this
+                .contains(other.points[2]));
     }
 
     /**
@@ -206,7 +206,7 @@ public class Triangle {
      *             if an edge is bad formed
      */
     public final List<Triangle> getNeighbours()
-            throws MoreThanTwoTrianglesPerEdgeException {
+        throws MoreThanTwoTrianglesPerEdgeException {
         final List<Triangle> list = new ArrayList<Triangle>();
         Triangle other;
 
@@ -234,7 +234,7 @@ public class Triangle {
      * @throws MoreThanTwoTrianglesPerEdgeException
      */
     public int getNumNeighbours()
-            throws MoreThanTwoTrianglesPerEdgeException {
+        throws MoreThanTwoTrianglesPerEdgeException {
         return this.getNeighbours().size();
     }
 
@@ -291,10 +291,10 @@ public class Triangle {
     @Override
     public int hashCode() {
         return ((points[0] == null) ? 0 : points[0].hashCode())
-                + ((points[1] == null) ? 0 : points[1]
-                        .hashCode())
-                + ((points[2] == null) ? 0 : points[2]
-                        .hashCode());
+            + ((points[1] == null) ? 0 : points[1]
+                .hashCode())
+            + ((points[2] == null) ? 0 : points[2]
+                .hashCode());
     }
 
     /**
@@ -308,7 +308,7 @@ public class Triangle {
     // TODO : code again this method : you don't need to call the big
     // getNeighbours to check that little thing.
     public boolean isNeighboor(Triangle triangle)
-            throws MoreThanTwoTrianglesPerEdgeException {
+        throws MoreThanTwoTrianglesPerEdgeException {
         return this.getNeighbours().contains(triangle);
     }
 
@@ -325,7 +325,7 @@ public class Triangle {
      */
     public boolean isNormalTo(Vector3d norm, double error) {
         return (this.normal.dot(norm) < error && this.normal
-                .dot(norm) > -error);
+            .dot(norm) > -error);
     }
 
     /**
@@ -337,7 +337,7 @@ public class Triangle {
      * @throws MoreThanTwoTrianglesPerEdgeException
      */
     public void returnNeighbours(Mesh ret, Mesh container)
-            throws MoreThanTwoTrianglesPerEdgeException {
+        throws MoreThanTwoTrianglesPerEdgeException {
         ret.add(this);
 
         Triangle other;
@@ -345,7 +345,7 @@ public class Triangle {
         for (Edge e : this.edges) {
             other = e.returnOther(this);
             if (other != null && container.contains(other)
-                    && !ret.contains(other)) {
+                && !ret.contains(other)) {
                 other.returnNeighbours(ret, container);
             }
         }
@@ -357,9 +357,9 @@ public class Triangle {
      */
     public String toString() {
         return points[0].toString() + "\n"
-                + points[1].toString() + "\n"
-                + points[2].toString() + "\n"
-                + normal.toString();
+            + points[1].toString() + "\n"
+            + points[2].toString() + "\n"
+            + normal.toString();
     }
 
     /**
@@ -368,7 +368,7 @@ public class Triangle {
      */
     public double xAverage() {
         return (points[0].getX() + points[1].getX() + points[2]
-                .getX()) / 3;
+            .getX()) / 3;
     }
 
     /**
@@ -377,7 +377,7 @@ public class Triangle {
      */
     public double xMax() {
         return Math.max(points[0].getX(),
-                Math.max(points[1].getX(), points[2].getX()));
+            Math.max(points[1].getX(), points[2].getX()));
     }
 
     /**
@@ -400,7 +400,7 @@ public class Triangle {
      */
     public double xMin() {
         return Math.min(points[0].getX(),
-                Math.min(points[1].getX(), points[2].getX()));
+            Math.min(points[1].getX(), points[2].getX()));
     }
 
     /**
@@ -423,7 +423,7 @@ public class Triangle {
      */
     public double yAverage() {
         return (points[0].getY() + points[1].getY() + points[2]
-                .getY()) / 3;
+            .getY()) / 3;
     }
 
     /**
@@ -432,7 +432,7 @@ public class Triangle {
      */
     public double yMax() {
         return Math.max(points[0].getY(),
-                Math.max(points[1].getY(), points[2].getY()));
+            Math.max(points[1].getY(), points[2].getY()));
     }
 
     /**
@@ -455,7 +455,7 @@ public class Triangle {
      */
     public double yMin() {
         return Math.min(points[0].getY(),
-                Math.min(points[1].getY(), points[2].getY()));
+            Math.min(points[1].getY(), points[2].getY()));
     }
 
     /**
@@ -478,7 +478,7 @@ public class Triangle {
      */
     public double zAverage() {
         double zAverage = points[0].getZ() + points[1].getZ()
-                + points[2].getZ();
+            + points[2].getZ();
         return zAverage / 3;
     }
 
@@ -488,7 +488,7 @@ public class Triangle {
      */
     public double zMax() {
         return Math.max(points[0].getZ(),
-                Math.max(points[1].getZ(), points[2].getZ()));
+            Math.max(points[1].getZ(), points[2].getZ()));
     }
 
     /**
@@ -511,7 +511,7 @@ public class Triangle {
      */
     public double zMin() {
         return Math.min(points[0].getZ(),
-                Math.min(points[1].getZ(), points[2].getZ()));
+            Math.min(points[1].getZ(), points[2].getZ()));
     }
 
     /**

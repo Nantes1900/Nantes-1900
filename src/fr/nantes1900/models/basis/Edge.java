@@ -1,5 +1,7 @@
 package fr.nantes1900.models.basis;
 
+import fr.nantes1900.models.Polyline;
+
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -7,40 +9,11 @@ import java.util.List;
 
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.models.Polyline;
-
 /**
  * Implement an edge : two points, and the triangles it belongs to.
  * @author Daniel Lefevre
  */
 public class Edge {
-
-    /**
-     * Implement a exception used when the polyline is bad formed.
-     * @author Daniel Lefevre
-     */
-    public static class BadFormedPolylineException extends
-            Exception {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-    }
-
-    /**
-     * Implement an exception used when an edge belongs to more than two
-     * triangles.
-     * @author Daniel Lefevre
-     */
-    public static class MoreThanTwoTrianglesPerEdgeException
-            extends Exception {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-    }
 
     /**
      * List of triangles which contain this edge.
@@ -87,16 +60,16 @@ public class Edge {
      * @return the edge which is at the left.
      */
     private Edge returnTheLeftOne(final List<Edge> weirdEdges,
-            final Point weirdPoint, final Vector3d normalFloor) {
+        final Point weirdPoint, final Vector3d normalFloor) {
 
         final Vector3d vector = new Vector3d();
 
         vector.x = -this.returnOther(weirdPoint).getX()
-                + weirdPoint.getX();
+            + weirdPoint.getX();
         vector.y = -this.returnOther(weirdPoint).getY()
-                + weirdPoint.getY();
+            + weirdPoint.getY();
         vector.z = -this.returnOther(weirdPoint).getZ()
-                + weirdPoint.getZ();
+            + weirdPoint.getZ();
 
         final Vector3d cross = new Vector3d();
         cross.cross(normalFloor, vector);
@@ -110,18 +83,18 @@ public class Edge {
         for (Edge edge : weirdEdges) {
             if (edge != this) {
                 vect.x = edge.returnOther(weirdPoint).getX()
-                        - weirdPoint.getX();
+                    - weirdPoint.getX();
                 vect.y = edge.returnOther(weirdPoint).getY()
-                        - weirdPoint.getY();
+                    - weirdPoint.getY();
                 vect.z = edge.returnOther(weirdPoint).getZ()
-                        - weirdPoint.getZ();
+                    - weirdPoint.getZ();
 
                 vect.normalize();
 
                 if (vector.angle(vect) * cross.dot(vect)
-                        / Math.abs(cross.dot(vect)) > max) {
+                    / Math.abs(cross.dot(vect)) > max) {
                     max = vector.angle(vect) * cross.dot(vect)
-                            / Math.abs(cross.dot(vect));
+                        / Math.abs(cross.dot(vect));
                     ref = edge;
                 }
             }
@@ -138,7 +111,7 @@ public class Edge {
      *             if the edge already contains 2 triangles
      */
     public final void addTriangle(final Triangle triangle)
-            throws MoreThanTwoTrianglesPerEdgeException {
+        throws MoreThanTwoTrianglesPerEdgeException {
         if (!this.triangles.contains(triangle)) {
             if (this.triangles.size() >= 2) {
                 throw new MoreThanTwoTrianglesPerEdgeException();
@@ -157,7 +130,7 @@ public class Edge {
     public final Edge compose(final Edge edge) {
         final Point point = this.sharedPoint(edge);
         return new Edge(this.returnOther(point),
-                edge.returnOther(point));
+            edge.returnOther(point));
     }
 
     /**
@@ -166,9 +139,9 @@ public class Edge {
      */
     public final Point computeMiddle() {
         return new Point((this.getP1().getX() + this.getP2()
-                .getX()) / 2, (this.getP1().getY() + this
-                .getP2().getY()) / 2,
-                (this.getP1().getZ() + this.getP2().getZ()) / 2);
+            .getX()) / 2, (this.getP1().getY() + this
+            .getP2().getY()) / 2,
+            (this.getP1().getZ() + this.getP2().getZ()) / 2);
     }
 
     /**
@@ -188,9 +161,9 @@ public class Edge {
      */
     public final Vector3d convertToVector3d() {
         return new Vector3d(this.getP2().getX()
-                - this.getP1().getX(), this.getP2().getY()
-                - this.getP1().getY(), this.getP2().getZ()
-                - this.getP1().getZ());
+            - this.getP1().getX(), this.getP2().getY()
+            - this.getP1().getY(), this.getP2().getZ()
+            - this.getP1().getZ());
     }
 
     /*
@@ -209,7 +182,7 @@ public class Edge {
             return false;
         }
         return (((Edge) obj).contains(this.points[0]) && ((Edge) obj)
-                .contains(this.points[1]));
+            .contains(this.points[1]));
     }
 
     /**
@@ -278,7 +251,7 @@ public class Edge {
     @Override
     public final int hashCode() {
         return (this.points[0].hashCode() + this.points[1]
-                .hashCode());
+            .hashCode());
     }
 
     /**
@@ -291,25 +264,25 @@ public class Edge {
      * @return true if p is contained in the cylinder and false otherwise
      */
     public final boolean isInCylinder3D(final Point point,
-            final double error) {
+        final double error) {
 
         final double x1 = this.getP1().getX(), x2 = this.getP2()
-                .getX(), x3 = point.getX();
+            .getX(), x3 = point.getX();
         final double y1 = this.getP1().getY(), y2 = this.getP2()
-                .getY(), y3 = point.getY();
+            .getY(), y3 = point.getY();
         final double z1 = this.getP1().getZ(), z2 = this.getP2()
-                .getZ(), z3 = point.getZ();
+            .getZ(), z3 = point.getZ();
 
         final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1)
-                * (y2 - y1) + (z3 - z1) * (z2 - z1))
-                / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
-                        * (z2 - z1));
+            * (y2 - y1) + (z3 - z1) * (z2 - z1))
+            / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
+                * (z2 - z1));
 
         final double x4 = lambda * (x2 - x1) + x1, y4 = lambda
-                * (y2 - y1) + y1, z4 = lambda * (z2 - z1) + z1;
+            * (y2 - y1) + y1, z4 = lambda * (z2 - z1) + z1;
 
         return (lambda >= 0 && lambda <= 1 && point
-                .distance(new Point(x4, y4, z4)) <= error);
+            .distance(new Point(x4, y4, z4)) <= error);
     }
 
     /**
@@ -324,7 +297,7 @@ public class Edge {
      * @return true if p is contained between those segments and false otherwise
      */
     public final boolean isInInfiniteCylinder2D(
-            final Point point, final double error) {
+        final Point point, final double error) {
         double a, b, c, cPlus, cMinus;
 
         final Point p1 = this.getP1();
@@ -338,7 +311,7 @@ public class Edge {
             c = -p1.getX();
         } else {
             a = -(p2.getY() - p1.getY())
-                    / (p2.getX() - p1.getX());
+                / (p2.getX() - p1.getX());
             b = 1;
             c = -p1.getY() - a * p1.getX();
         }
@@ -347,7 +320,7 @@ public class Edge {
         cMinus = -c - error;
 
         return (a * point.getX() + b * point.getY() < cPlus && a
-                * point.getX() + b * point.getY() > cMinus);
+            * point.getX() + b * point.getY() > cMinus);
     }
 
     /**
@@ -361,19 +334,19 @@ public class Edge {
      *         otherwise
      */
     public final boolean isInInfiniteCylinder3D(
-            final Point point, final double error) {
+        final Point point, final double error) {
 
         double x1 = this.getP1().getX(), x2 = this.getP2()
-                .getX(), x3 = point.getX();
+            .getX(), x3 = point.getX();
         double y1 = this.getP1().getY(), y2 = this.getP2()
-                .getY(), y3 = point.getY();
+            .getY(), y3 = point.getY();
         double z1 = this.getP1().getZ(), z2 = this.getP2()
-                .getZ(), z3 = point.getZ();
+            .getZ(), z3 = point.getZ();
 
         double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1)
-                * (y2 - y1) + (z3 - z1) * (z2 - z1))
-                / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
-                        * (z2 - z1));
+            * (y2 - y1) + (z3 - z1) * (z2 - z1))
+            / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
+                * (z2 - z1));
 
         double x4 = lambda * (x2 - x1) + x1;
         double y4 = lambda * (y2 - y1) + y1;
@@ -396,7 +369,7 @@ public class Edge {
             return false;
         } else {
             return (this.contains(e.points[0]) || this
-                    .contains(e.points[1]));
+                .contains(e.points[1]));
         }
     }
 
@@ -417,20 +390,20 @@ public class Edge {
      * @return true if it oriented correctly, false otherwise
      */
     public final boolean orientedAs(final Edge e,
-            final double error) {
+        final double error) {
         Vector3d vect1 = new Vector3d(e.getP2().getX()
-                - e.getP1().getX(), e.getP2().getY()
-                - e.getP1().getY(), e.getP2().getZ()
-                - e.getP1().getZ());
+            - e.getP1().getX(), e.getP2().getY()
+            - e.getP1().getY(), e.getP2().getZ()
+            - e.getP1().getZ());
         vect1.normalize();
         Vector3d vect2 = new Vector3d(this.getP2().getX()
-                - this.getP1().getX(), this.getP2().getY()
-                - this.getP1().getY(), this.getP2().getZ()
-                - this.getP1().getZ());
+            - this.getP1().getX(), this.getP2().getY()
+            - this.getP1().getY(), this.getP2().getZ()
+            - this.getP1().getZ());
         vect2.normalize();
         final double convertDegreeRadian = 180 / Math.PI;
         return (vect1.angle(vect2) < (error / convertDegreeRadian))
-                || vect1.angle(vect2) > (((180 - error) / convertDegreeRadian));
+            || vect1.angle(vect2) > (((180 - error) / convertDegreeRadian));
     }
 
     /**
@@ -449,9 +422,9 @@ public class Edge {
         double z1 = p1.getZ(), z2 = p2.getZ(), z3 = p3.getZ();
 
         double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1)
-                * (y2 - y1) + (z3 - z1) * (z2 - z1))
-                / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
-                        * (z2 - z1));
+            * (y2 - y1) + (z3 - z1) * (z2 - z1))
+            / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
+                * (z2 - z1));
 
         double x4 = lambda * (x2 - x1) + x1;
         double y4 = lambda * (y2 - y1) + y1;
@@ -476,14 +449,14 @@ public class Edge {
      *             edges
      */
     public final Edge returnLeftNeighbour(final Polyline b,
-            final Point p, final Vector3d normalFloor)
-            throws BadFormedPolylineException {
+        final Point p, final Vector3d normalFloor)
+        throws BadFormedPolylineException {
 
         ArrayList<Edge> list = b.getNeighbours(p);
 
         if (list.size() > 3) {
             return this.returnTheLeftOne(b.getNeighbours(p), p,
-                    normalFloor);
+                normalFloor);
         } else if (list.size() == 2) {
             list.remove(this);
             return list.get(0);
@@ -505,7 +478,7 @@ public class Edge {
      *             if a point in the polyline does not belong to 2 edges
      */
     public final Edge returnNeighbour(final Polyline b,
-            final Point p) throws BadFormedPolylineException {
+        final Point p) throws BadFormedPolylineException {
 
         ArrayList<Edge> list = b.getNeighbours(p);
 
@@ -544,7 +517,7 @@ public class Edge {
      *             if the edge is badly formed
      */
     public final Triangle returnOther(final Triangle t)
-            throws MoreThanTwoTrianglesPerEdgeException {
+        throws MoreThanTwoTrianglesPerEdgeException {
         if (this.triangles.size() > 2) {
             throw new MoreThanTwoTrianglesPerEdgeException();
         }
@@ -603,6 +576,33 @@ public class Edge {
     @Override
     public final String toString() {
         return new String("(" + this.getP1() + ", "
-                + this.getP2() + ")");
+            + this.getP2() + ")");
+    }
+
+    /**
+     * Implement a exception used when the polyline is bad formed.
+     * @author Daniel Lefevre
+     */
+    public static class BadFormedPolylineException extends
+        Exception {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+    }
+
+    /**
+     * Implement an exception used when an edge belongs to more than two
+     * triangles.
+     * @author Daniel Lefevre
+     */
+    public static class MoreThanTwoTrianglesPerEdgeException
+        extends Exception {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
     }
 }

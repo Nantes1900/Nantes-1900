@@ -3,3 +3,4 @@
  * Point, Edge, and Triangle.
  */
 package fr.nantes1900.models.basis;
+

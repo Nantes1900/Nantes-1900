@@ -1,5 +1,5 @@
 /**
- * This is a package. TODO
+ * This package contains the library and some mains for examples.
  */
 package fr.nantes1900;
 

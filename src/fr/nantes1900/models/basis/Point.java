@@ -37,7 +37,7 @@ public class Point {
      *            coordinate
      */
     public Point(final double xNew, final double yNew,
-            final double zNew) {
+        final double zNew) {
         this.x = xNew;
         this.y = yNew;
         this.z = zNew;
@@ -75,7 +75,7 @@ public class Point {
      */
     public final double distance(final Point p) {
         return Math.sqrt(Math.pow(p.x - x, 2)
-                + Math.pow(p.y - y, 2) + Math.pow(p.z - z, 2));
+            + Math.pow(p.y - y, 2) + Math.pow(p.z - z, 2));
     }
 
     /*
@@ -95,15 +95,15 @@ public class Point {
         }
         Point other = (Point) obj;
         if (Double.doubleToLongBits((float) x) != Double
-                .doubleToLongBits((float) other.x)) {
+            .doubleToLongBits((float) other.x)) {
             return false;
         }
         if (Double.doubleToLongBits((float) y) != Double
-                .doubleToLongBits((float) other.y)) {
+            .doubleToLongBits((float) other.y)) {
             return false;
         }
         if (Double.doubleToLongBits((float) z) != Double
-                .doubleToLongBits((float) other.z)) {
+            .doubleToLongBits((float) other.z)) {
             return false;
         }
         return true;
@@ -161,6 +161,22 @@ public class Point {
     }
 
     /**
+     * Setter method.
+     * @param xNew
+     *            the new x coordinate
+     * @param yNew
+     *            the new y coordinate
+     * @param zNew
+     *            the new z coordinate
+     */
+    public final void set(final double xNew, final double yNew,
+        final double zNew) {
+        this.x = xNew;
+        this.y = yNew;
+        this.z = zNew;
+    }
+
+    /**
      * Setter.
      * @param coords
      *            the three coordinates
@@ -205,21 +221,5 @@ public class Point {
     @Override
     public final String toString() {
         return new String("(" + x + ", " + y + ", " + z + ")");
-    }
-
-    /**
-     * Setter method.
-     * @param xNew
-     *            the new x coordinate
-     * @param yNew
-     *            the new y coordinate
-     * @param zNew
-     *            the new z coordinate
-     */
-    public final void set(final double xNew, final double yNew,
-            final double zNew) {
-        this.x = xNew;
-        this.y = yNew;
-        this.z = zNew;
     }
 }

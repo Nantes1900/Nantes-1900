@@ -1,6 +1,5 @@
 package test.nantes1900;
 
-
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -18,22 +17,22 @@ import test.nantes1900.utils.AlgosTest;
 import test.nantes1900.utils.MatrixMethodTest;
 import test.nantes1900.utils.ParserSTLTest;
 
-
 /**
  * Class to test every class tests of the project
- * 
  * @author Daniel Lefevre
- * 
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = { EdgeTest.class, PointTest.class, TriangleTest.class,
-		PolylineTest.class, MeshTest.class,
+@SuiteClasses(
+    value = {EdgeTest.class, PointTest.class, TriangleTest.class,
+        PolylineTest.class, MeshTest.class,
 
-		BuildingTest.class, FloorTest.class, SpecialBuildingTest.class,
-		TownTest.class,
+        BuildingTest.class, FloorTest.class, SpecialBuildingTest.class,
+        TownTest.class,
 
-		AlgosTest.class, MatrixMethodTest.class, ParserSTLTest.class, })
+        AlgosTest.class, MatrixMethodTest.class, ParserSTLTest.class,
+    })
 public final class AllTests {
-	private AllTests() {
-	}
+
+    private AllTests() {
+    }
 }
