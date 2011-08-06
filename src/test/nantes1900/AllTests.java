@@ -18,7 +18,7 @@ import test.nantes1900.utils.MatrixMethodTest;
 import test.nantes1900.utils.ParserSTLTest;
 
 /**
- * Class to test every class tests of the project
+ * Class to test every class tests of the project.
  * @author Daniel Lefevre
  */
 @RunWith(Suite.class)
@@ -29,10 +29,12 @@ import test.nantes1900.utils.ParserSTLTest;
         BuildingTest.class, FloorTest.class, SpecialBuildingTest.class,
         TownTest.class,
 
-        AlgosTest.class, MatrixMethodTest.class, ParserSTLTest.class,
-    })
+        AlgosTest.class, MatrixMethodTest.class, ParserSTLTest.class })
 public final class AllTests {
 
+    /**
+     * Private constructor.
+     */
     private AllTests() {
     }
 }

@@ -5,6 +5,7 @@ import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 import javax.vecmath.Vector3d;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -13,7 +14,13 @@ import org.junit.Test;
  * A set of tests for the class MatrixMethod.
  * @author Daniel Lefevre
  */
-public class MatrixMethodTest extends TestCase {
+public final class MatrixMethodTest extends TestCase {
+
+    /**
+     * Private constructor.
+     */
+    private MatrixMethodTest() {
+    }
 
     /**
      * Test method for
@@ -22,17 +29,16 @@ public class MatrixMethodTest extends TestCase {
      */
     @Test
     public void testChangeBaseDoubleArrayDoubleArrayArray() {
-        double[] coord = {0, 1, 0
-        };
-        Vector3d vect = new Vector3d(0, 0, 1);
+        final double[] coord = {0, 1, 0 };
+        final Vector3d vect = new Vector3d(0, 0, 1);
         try {
-            double[][] matrix = MatrixMethod.createOrthoBase(vect);
-            double[] newCoords = MatrixMethod.changeBase(coord, matrix);
-            assertTrue(newCoords[0] == 0);
-            assertTrue(newCoords[1] == -1);
-            assertTrue(newCoords[2] == 0);
+            final double[][] matrix = MatrixMethod.createOrthoBase(vect);
+            final double[] newCoords = MatrixMethod.changeBase(coord, matrix);
+            Assert.assertTrue(newCoords[0] == 0);
+            Assert.assertTrue(newCoords[1] == -1);
+            Assert.assertTrue(newCoords[2] == 0);
         } catch (SingularMatrixException e) {
-            fail("Singular matrix !");
+            Assert.fail("Singular matrix !");
         }
     }
 
@@ -43,16 +49,16 @@ public class MatrixMethodTest extends TestCase {
      */
     @Test
     public void testChangeBaseVector3dDoubleArrayArray() {
-        Vector3d vect = new Vector3d(0, 1, 0);
-        Vector3d norm = new Vector3d(0, 0, 1);
+        final Vector3d vect = new Vector3d(0, 1, 0);
+        final Vector3d norm = new Vector3d(0, 0, 1);
         try {
-            double[][] matrix = MatrixMethod.createOrthoBase(norm);
+            final double[][] matrix = MatrixMethod.createOrthoBase(norm);
             MatrixMethod.changeBase(vect, matrix);
-            assertTrue(vect.x == 0);
-            assertTrue(vect.y == -1);
-            assertTrue(vect.z == 0);
+            Assert.assertTrue(vect.x == 0);
+            Assert.assertTrue(vect.y == -1);
+            Assert.assertTrue(vect.z == 0);
         } catch (SingularMatrixException e) {
-            fail("Singular matrix !");
+            Assert.fail("Singular matrix !");
         }
     }
 
@@ -65,26 +71,26 @@ public class MatrixMethodTest extends TestCase {
     public void testCreateOrthoBaseVector3d() {
         Vector3d vect = new Vector3d(0, 0, 1);
         try {
-            double[][] matrix = MatrixMethod.createOrthoBase(vect);
-            assertTrue(matrix[0][0] == -1);
-            assertTrue(matrix[0][1] == 0);
-            assertTrue(matrix[0][2] == 0);
-            assertTrue(matrix[1][0] == 0);
-            assertTrue(matrix[1][1] == -1);
-            assertTrue(matrix[1][2] == 0);
-            assertTrue(matrix[2][0] == 0);
-            assertTrue(matrix[2][1] == 0);
-            assertTrue(matrix[2][2] == 1);
+            final double[][] matrix = MatrixMethod.createOrthoBase(vect);
+            Assert.assertTrue(matrix[0][0] == -1);
+            Assert.assertTrue(matrix[0][1] == 0);
+            Assert.assertTrue(matrix[0][2] == 0);
+            Assert.assertTrue(matrix[1][0] == 0);
+            Assert.assertTrue(matrix[1][1] == -1);
+            Assert.assertTrue(matrix[1][2] == 0);
+            Assert.assertTrue(matrix[2][0] == 0);
+            Assert.assertTrue(matrix[2][1] == 0);
+            Assert.assertTrue(matrix[2][2] == 1);
         } catch (SingularMatrixException e) {
-            fail("Singular matrix !");
+            Assert.fail("Singular matrix !");
         }
 
         vect = new Vector3d(0, 0, -1);
         try {
             MatrixMethod.createOrthoBase(vect);
-            fail();
+            Assert.fail("Should throw an exception !");
         } catch (SingularMatrixException e) {
-
+            // If the exception is reached, it's good.
         }
     }
 
@@ -95,23 +101,23 @@ public class MatrixMethodTest extends TestCase {
      */
     @Test
     public void testCreateOrthoBaseVector3dVector3dVector3d() {
-        Vector3d vect1 = new Vector3d(0, 0, 1);
-        Vector3d vect2 = new Vector3d(1, 0, 0);
-        Vector3d vect3 = new Vector3d(0, 1, 0);
+        final Vector3d vect1 = new Vector3d(0, 0, 1);
+        final Vector3d vect2 = new Vector3d(1, 0, 0);
+        final Vector3d vect3 = new Vector3d(0, 1, 0);
         try {
-            double[][] matrix = MatrixMethod.createOrthoBase(vect1, vect2,
-                vect3);
-            assertTrue(matrix[0][0] == 0);
-            assertTrue(matrix[0][1] == 0);
-            assertTrue(matrix[0][2] == 1);
-            assertTrue(matrix[1][0] == 1);
-            assertTrue(matrix[1][1] == 0);
-            assertTrue(matrix[1][2] == 0);
-            assertTrue(matrix[2][0] == 0);
-            assertTrue(matrix[2][1] == 1);
-            assertTrue(matrix[2][2] == 0);
+            final double[][] matrix =
+                MatrixMethod.createOrthoBase(vect1, vect2, vect3);
+            Assert.assertTrue(matrix[0][0] == 0);
+            Assert.assertTrue(matrix[0][1] == 0);
+            Assert.assertTrue(matrix[0][2] == 1);
+            Assert.assertTrue(matrix[1][0] == 1);
+            Assert.assertTrue(matrix[1][1] == 0);
+            Assert.assertTrue(matrix[1][2] == 0);
+            Assert.assertTrue(matrix[2][0] == 0);
+            Assert.assertTrue(matrix[2][1] == 1);
+            Assert.assertTrue(matrix[2][2] == 0);
         } catch (SingularMatrixException e) {
-            fail("Singular matrix !");
+            Assert.fail("Singular matrix !");
         }
     }
 
@@ -121,12 +127,12 @@ public class MatrixMethodTest extends TestCase {
      */
     @Test
     public void testDeterminant() {
-        Vector3d vect = new Vector3d(0, 0, 1);
+        final Vector3d vect = new Vector3d(0, 0, 1);
         try {
-            double[][] matrix = MatrixMethod.createOrthoBase(vect);
-            assertTrue(MatrixMethod.determinant(matrix) == 1);
+            final double[][] matrix = MatrixMethod.createOrthoBase(vect);
+            Assert.assertTrue(MatrixMethod.determinant(matrix) == 1);
         } catch (SingularMatrixException e) {
-            fail("Singular matrix !");
+            Assert.fail("Singular matrix !");
         }
     }
 
@@ -136,21 +142,21 @@ public class MatrixMethodTest extends TestCase {
      */
     @Test
     public void testGetInversMatrix() {
-        Vector3d vect = new Vector3d(0, 0, 1);
+        final Vector3d vect = new Vector3d(0, 0, 1);
         try {
-            double[][] matrix = MatrixMethod.createOrthoBase(vect);
-            double[][] matrixInv = MatrixMethod.getInversMatrix(matrix);
-            assertTrue(matrixInv[0][0] == -1);
-            assertTrue(matrixInv[0][1] == 0);
-            assertTrue(matrixInv[0][2] == 0);
-            assertTrue(matrixInv[1][0] == 0);
-            assertTrue(matrixInv[1][1] == -1);
-            assertTrue(matrixInv[1][2] == 0);
-            assertTrue(matrixInv[2][0] == 0);
-            assertTrue(matrixInv[2][1] == 0);
-            assertTrue(matrixInv[2][2] == 1);
+            final double[][] matrix = MatrixMethod.createOrthoBase(vect);
+            final double[][] matrixInv = MatrixMethod.getInversMatrix(matrix);
+            Assert.assertTrue(matrixInv[0][0] == -1);
+            Assert.assertTrue(matrixInv[0][1] == 0);
+            Assert.assertTrue(matrixInv[0][2] == 0);
+            Assert.assertTrue(matrixInv[1][0] == 0);
+            Assert.assertTrue(matrixInv[1][1] == -1);
+            Assert.assertTrue(matrixInv[1][2] == 0);
+            Assert.assertTrue(matrixInv[2][0] == 0);
+            Assert.assertTrue(matrixInv[2][1] == 0);
+            Assert.assertTrue(matrixInv[2][2] == 1);
         } catch (SingularMatrixException e) {
-            fail("Singular matrix !");
+            Assert.fail("Singular matrix !");
         }
     }
 }

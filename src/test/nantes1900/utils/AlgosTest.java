@@ -3,6 +3,7 @@
  */
 package test.nantes1900.utils;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -10,7 +11,13 @@ import org.junit.Test;
 /**
  * @author Daniel Lefevre
  */
-public class AlgosTest extends TestCase {
+public final class AlgosTest extends TestCase {
+
+    /**
+     * Private constructor.
+     */
+    private AlgosTest() {
+    }
 
     /**
      * Test method for
@@ -18,7 +25,8 @@ public class AlgosTest extends TestCase {
      */
     @Test
     public void testBlockExtract() {
-        fail("Not yet implemented"); // TODO
+        Assert.fail("Not yet implemented");
+        // TODO
     }
 
     /**
@@ -28,7 +36,8 @@ public class AlgosTest extends TestCase {
      */
     @Test
     public void testBlockOrientedExtract() {
-        fail("Not yet implemented"); // TODO
+        Assert.fail("Not yet implemented");
+        // TODO
     }
 
     /**
@@ -38,7 +47,8 @@ public class AlgosTest extends TestCase {
      */
     @Test
     public void testBlockTreatOrientedNoise() {
-        fail("Not yet implemented"); // TODO
+        Assert.fail("Not yet implemented");
+        // TODO
     }
 
     /**
@@ -48,7 +58,8 @@ public class AlgosTest extends TestCase {
      */
     @Test
     public void testFloorExtract() {
-        fail("Not yet implemented"); // TODO
+        Assert.fail("Not yet implemented");
+        // TODO
     }
 
 }

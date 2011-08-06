@@ -312,8 +312,7 @@ public class Town {
      */
     private void treatResidentials(String directoryName,
         Vector3d normalGravityOriented) {
-        // /FIXME : put it to 1 and not 2 !
-        int counterResidentials = 4;
+        int counterResidentials = 1;
 
         while (new File(directoryName + "residential - " + counterResidentials
             + ".stl").exists()) {

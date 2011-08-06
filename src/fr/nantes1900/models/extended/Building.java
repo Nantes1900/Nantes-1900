@@ -70,22 +70,29 @@ public class Building {
         final List<Mesh> wallList,
         final List<Mesh> roofList, final Mesh floors) {
 
+        System.out.println("Determinate neighbours :");
+
         final List<Polyline> wallsBoundsList = new ArrayList<Polyline>();
         final List<Polyline> roofsBoundsList = new ArrayList<Polyline>();
+
         final Polyline floorsBounds = floors
             .returnUnsortedBounds();
-        final List<Polyline> wholeBoundsList = new ArrayList<Polyline>(
-            wallsBoundsList);
-        wholeBoundsList.addAll(roofsBoundsList);
-        final List<Mesh> wholeList = new ArrayList<Mesh>(
-            wallList);
+
+        final List<Mesh> wholeList = new ArrayList<Mesh>();
+        wholeList.addAll(wallList);
         wholeList.addAll(roofList);
+
         for (Mesh w : wallList) {
             wallsBoundsList.add(w.returnUnsortedBounds());
         }
         for (Mesh r : roofList) {
             roofsBoundsList.add(r.returnUnsortedBounds());
         }
+
+        final List<Polyline> wholeBoundsList = new ArrayList<Polyline>();
+        wholeBoundsList.addAll(wallsBoundsList);
+        wholeBoundsList.addAll(roofsBoundsList);
+
         for (int i = 0; i < wholeBoundsList.size(); i = i + 1) {
             final Polyline polyline1 = wholeBoundsList.get(i);
             for (int j = 0; j < wholeBoundsList.size(); j = j + 1) {
@@ -108,7 +115,8 @@ public class Building {
             for (Mesh surface : mesh.getNeighbours()) {
                 if (Building.listIntersection(
                     mesh.getNeighbours(),
-                    surface.getNeighbours()).size() == 1) {
+                    surface.getNeighbours())
+                    .size() == 1) {
                     list.add(surface);
                 }
             }
@@ -118,9 +126,16 @@ public class Building {
                 list.get(0).addNeighbour(list.get(1));
                 System.out.println("Case well treated !");
             } else if (list.size() == 1) {
+                mesh.writeSTL("mesh.stl");
+                int counter = 0;
+                for (Mesh m : mesh.getNeighbours()) {
+                    m.writeSTL("error" + counter + ".stl");
+                    counter++;
+                }
                 System.out.println("Error !");
+                System.exit(1);
             } else if (list.size() == 0) {
-                System.out.println("There was no problem !");
+                // System.out.println("There was no problem !");
             } else {
                 System.out
                     .println("Impossible to treat for now !");
@@ -143,6 +158,8 @@ public class Building {
         final List<Mesh> roofList,
         final Vector3d normalFloor) {
 
+        System.out.println("Find common edges :");
+
         final Map<Point, Point> pointMap = new HashMap<Point, Point>();
         final Map<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
 
@@ -154,11 +171,7 @@ public class Building {
             try {
                 p = m.findEdges(wallList, pointMap, edgeMap,
                     normalFloor);
-                if (!p.isEmpty()) {
-                    this.roofs.add(p);
-                } else {
-                    counterError++;
-                }
+                this.roofs.add(p);
             } catch (InvalidSurfaceException e) {
                 // If this exception is catched, do not treat the surface.
                 // FIXME
@@ -172,11 +185,7 @@ public class Building {
             try {
                 p = m.findEdges(wallList, pointMap, edgeMap,
                     normalFloor);
-                if (!p.isEmpty()) {
-                    walls.add(p);
-                } else {
-                    counterError++;
-                }
+                this.walls.add(p);
             } catch (InvalidSurfaceException e) {
                 // If this exception is catched, do not treat the surface.
                 // FIXME
@@ -308,8 +317,10 @@ public class Building {
      */
     private void treatNoise(final ArrayList<Mesh> wallList,
         final ArrayList<Mesh> roofList, final Mesh noise) {
+
         // Add the oriented and neighbour noise to the walls.
         try {
+
             Algos.blockTreatOrientedNoise(
                 wallList,
                 noise,
@@ -320,12 +331,13 @@ public class Building {
                 noise,
                 SeparationTreatmentWallsRoofs.LARGE_ANGLE_ERROR);
         } catch (MoreThanTwoTrianglesPerEdgeException e) {
+            // TODO
             e.printStackTrace();
         }
-        // After the noise add, if some of the alls or some of the roofs are now
-        // neighbours (they share an edge) and have the same orientation, then
-        // they are added to form only one
-        // wall or roof.
+
+        // After the noise add, if some of the walls or some of the roofs are
+        // now neighbours (they share an edge) and have the same orientation,
+        // then they are added to form only one wall or roof.
         for (int i = 0; i < wallList.size(); i++) {
             Mesh w1 = wallList.get(i);
             for (int j = i + 1; j < wallList.size(); j++) {
@@ -333,22 +345,24 @@ public class Building {
                 if (w1.isNeighbour(w2)
                     && w1.isOrientedAs(
                         w2,
-                        SeparationTreatmentWallsRoofs.ANGLE_WALL_ERROR)) {
+                        SeparationTreatmentWallsRoofs.LARGE_ANGLE_ERROR)) {
                     w1.addAll(w2);
                     wallList.remove(w2);
                 }
             }
+
             for (int j = 0; j < roofList.size(); j++) {
                 Mesh r2 = roofList.get(j);
                 if (w1.isNeighbour(r2)
                     && w1.isOrientedAs(
                         r2,
-                        SeparationTreatmentWallsRoofs.ANGLE_WALL_ERROR)) {
+                        SeparationTreatmentWallsRoofs.LARGE_ANGLE_ERROR)) {
                     w1.addAll(r2);
                     roofList.remove(r2);
                 }
             }
         }
+
         // See above.
         for (int i = 0; i < roofList.size(); i++) {
             Mesh r1 = roofList.get(i);
@@ -357,7 +371,7 @@ public class Building {
                 if (r1.isNeighbour(r2)
                     && r1.isOrientedAs(
                         r2,
-                        SeparationTreatmentWallsRoofs.ANGLE_ROOF_ERROR)) {
+                        SeparationTreatmentWallsRoofs.LARGE_ANGLE_ERROR)) {
                     r1.addAll(r2);
                     roofList.remove(r2);
                 }

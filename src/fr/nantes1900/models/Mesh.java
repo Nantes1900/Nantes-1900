@@ -90,6 +90,7 @@ public class Mesh extends HashSet<Triangle> {
             computedWallPlane.add(new Triangle(p1, p2, p3, e1,
                 e2, e3, vect));
         } catch (MoreThanTwoTrianglesPerEdgeException e) {
+            // TODO
             e.printStackTrace();
         }
 
@@ -218,9 +219,9 @@ public class Mesh extends HashSet<Triangle> {
                                 .returnVerticalPlane(normalFloor);
                         }
 
-                        // If there is two neighbours oriented the same, then
+                        // If there is two neighbours same-oriented, then
                         // don't try to cumpute the intersection of the two
-                        // planes, but don't compute the edge.
+                        // planes, and don't compute the edge.
                         if (this.isOrientedAs(plane2, 10)) {
                             throw new ParallelPlanesException();
                         }
@@ -245,11 +246,13 @@ public class Mesh extends HashSet<Triangle> {
                             points.add(p);
 
                         } catch (SingularMatrixException e1) {
+                            System.out.println("Matrix exc!");
                             throw new InvalidSurfaceException();
                         }
                     }
                 }
             } catch (ParallelPlanesException e) {
+                System.out.println("Parrallel planes !");
                 throw new InvalidSurfaceException();
             }
 
@@ -273,34 +276,18 @@ public class Mesh extends HashSet<Triangle> {
         }
 
         if (edges.edgeSize() == this.getNeighbours().size()) {
-
             edges.setNormal(this.averageNormal());
-            edges.order();
-            return edges;
-
-        } else if (edges.edgeSize() == this.getNeighbours()
-            .size() - 1) {
-
-            edges.setNormal(this.averageNormal());
-
-            // Complete the last edge
-            final List<Point> list = new ArrayList<Point>();
-
-            for (Point p : edges.getPointList()) {
-                if (edges.getNumNeighbours(p) == 1) {
-                    list.add(p);
-                }
-            }
-
-            if (list.size() == 2) {
-                edges.add(new Edge(list.get(0), list.get(1)));
-            } else {
-                throw new InvalidSurfaceException();
-            }
-
             edges.order();
             return edges;
         } else {
+            this.writeSTL("mesh.stl");
+            int counter = 0;
+            for (Mesh m : this.getNeighbours()) {
+                m.writeSTL("file" + counter + ".stl");
+                counter++;
+            }
+            System.exit(1);
+            System.out.println("Else !");
             throw new InvalidSurfaceException();
         }
     }

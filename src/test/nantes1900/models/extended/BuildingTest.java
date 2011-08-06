@@ -3,6 +3,7 @@
  */
 package test.nantes1900.models.extended;
 
+import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.junit.Test;
@@ -10,7 +11,13 @@ import org.junit.Test;
 /**
  * @author Daniel Lefevre
  */
-public class BuildingTest extends TestCase {
+public final class BuildingTest extends TestCase {
+
+    /**
+     * Private constructor.
+     */
+    private BuildingTest() {
+    }
 
     /**
      * Test method for
@@ -19,6 +26,7 @@ public class BuildingTest extends TestCase {
      */
     @Test
     public void testBuildFromMesh() {
-        fail("Not yet implemented"); // TODO
+        Assert.fail("Not yet implemented");
+        // TODO
     }
 }

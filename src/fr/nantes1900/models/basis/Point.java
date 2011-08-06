@@ -62,7 +62,7 @@ public class Point {
      *            hashCode after this operation...
      */
     public final void changeBase(final double[][] matrix) {
-        final double[] coords = {this.x, this.y, this.z
+        final double[] coords = {this.x, this.y, this.z,
         };
         this.set(MatrixMethod.changeBase(coords, matrix));
     }
@@ -74,8 +74,8 @@ public class Point {
      * @return the distance
      */
     public final double distance(final Point p) {
-        return Math.sqrt(Math.pow(p.x - x, 2)
-            + Math.pow(p.y - y, 2) + Math.pow(p.z - z, 2));
+        return Math.sqrt(Math.pow(p.x - this.x, 2)
+            + Math.pow(p.y - this.y, 2) + Math.pow(p.z - this.z, 2));
     }
 
     /*
@@ -90,19 +90,19 @@ public class Point {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (this.getClass() != obj.getClass()) {
             return false;
         }
-        Point other = (Point) obj;
-        if (Double.doubleToLongBits((float) x) != Double
+        final Point other = (Point) obj;
+        if (Double.doubleToLongBits((float) this.x) != Double
             .doubleToLongBits((float) other.x)) {
             return false;
         }
-        if (Double.doubleToLongBits((float) y) != Double
+        if (Double.doubleToLongBits((float) this.y) != Double
             .doubleToLongBits((float) other.y)) {
             return false;
         }
-        if (Double.doubleToLongBits((float) z) != Double
+        if (Double.doubleToLongBits((float) this.z) != Double
             .doubleToLongBits((float) other.z)) {
             return false;
         }
@@ -114,7 +114,7 @@ public class Point {
      * @return a table of double
      */
     public final double[] getPointAsCoordinates() {
-        return new double[] {this.x, this.y, this.z
+        return new double[] {this.x, this.y, this.z,
         };
     }
 
@@ -123,7 +123,7 @@ public class Point {
      * @return the x coordinate
      */
     public final double getX() {
-        return x;
+        return this.x;
     }
 
     /**
@@ -131,7 +131,7 @@ public class Point {
      * @return the y coordinate
      */
     public final double getY() {
-        return y;
+        return this.y;
     }
 
     /**
@@ -139,7 +139,7 @@ public class Point {
      * @return the z coordinate
      */
     public final double getZ() {
-        return z;
+        return this.z;
     }
 
     /*
@@ -151,11 +151,11 @@ public class Point {
         final int prime = 31;
         int result = 1;
         long temp;
-        temp = Double.doubleToLongBits((float) x);
+        temp = Double.doubleToLongBits((float) this.x);
         result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits((float) y);
+        temp = Double.doubleToLongBits((float) this.y);
         result = prime * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits((float) z);
+        temp = Double.doubleToLongBits((float) this.z);
         result = prime * result + (int) (temp ^ (temp >>> 32));
         return result;
     }
@@ -220,6 +220,6 @@ public class Point {
      */
     @Override
     public final String toString() {
-        return new String("(" + x + ", " + y + ", " + z + ")");
+        return new String("(" + this.x + ", " + this.y + ", " + this.z + ")");
     }
 }

@@ -151,7 +151,7 @@ public class Edge {
      * @return true if p is contained, and false otherwise
      */
     public final boolean contains(final Point point) {
-        return (this.points[0] == point || this.points[1] == point);
+        return this.points[0] == point || this.points[1] == point;
     }
 
     /**
@@ -178,11 +178,11 @@ public class Edge {
         if (obj == null) {
             return false;
         }
-        if (getClass() != obj.getClass()) {
+        if (this.getClass() != obj.getClass()) {
             return false;
         }
-        return (((Edge) obj).contains(this.points[0]) && ((Edge) obj)
-            .contains(this.points[1]));
+        return ((Edge) obj).contains(this.points[0]) && ((Edge) obj)
+            .contains(this.points[1]);
     }
 
     /**
@@ -206,7 +206,7 @@ public class Edge {
         int counter = 0;
         for (Edge e : polyline.getEdgeList()) {
             if (this.isNeighboor(e)) {
-                counter++;
+                counter = counter + 1;
             }
         }
         return counter;
@@ -250,8 +250,8 @@ public class Edge {
      */
     @Override
     public final int hashCode() {
-        return (this.points[0].hashCode() + this.points[1]
-            .hashCode());
+        return this.points[0].hashCode() + this.points[1]
+            .hashCode();
     }
 
     /**
@@ -266,23 +266,29 @@ public class Edge {
     public final boolean isInCylinder3D(final Point point,
         final double error) {
 
-        final double x1 = this.getP1().getX(), x2 = this.getP2()
-            .getX(), x3 = point.getX();
-        final double y1 = this.getP1().getY(), y2 = this.getP2()
-            .getY(), y3 = point.getY();
-        final double z1 = this.getP1().getZ(), z2 = this.getP2()
-            .getZ(), z3 = point.getZ();
+        final double x1 = this.getP1().getX();
+        final double x2 = this.getP2().getX();
+        final double x3 = point.getX();
+
+        final double y1 = this.getP1().getY();
+        final double y2 = this.getP2().getY();
+        final double y3 = point.getY();
+
+        final double z1 = this.getP1().getZ();
+        final double z2 = this.getP2().getZ();
+        final double z3 = point.getZ();
 
         final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1)
             * (y2 - y1) + (z3 - z1) * (z2 - z1))
             / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
                 * (z2 - z1));
 
-        final double x4 = lambda * (x2 - x1) + x1, y4 = lambda
-            * (y2 - y1) + y1, z4 = lambda * (z2 - z1) + z1;
+        final double x4 = lambda * (x2 - x1) + x1;
+        final double y4 = lambda * (y2 - y1) + y1;
+        final double z4 = lambda * (z2 - z1) + z1;
 
-        return (lambda >= 0 && lambda <= 1 && point
-            .distance(new Point(x4, y4, z4)) <= error);
+        return lambda >= 0 && lambda <= 1 && point
+            .distance(new Point(x4, y4, z4)) <= error;
     }
 
     /**
@@ -298,7 +304,10 @@ public class Edge {
      */
     public final boolean isInInfiniteCylinder2D(
         final Point point, final double error) {
-        double a, b, c, cPlus, cMinus;
+
+        double a;
+        double b;
+        double c;
 
         final Point p1 = this.getP1();
         final Point p2 = this.getP2();
@@ -316,11 +325,8 @@ public class Edge {
             c = -p1.getY() - a * p1.getX();
         }
 
-        cPlus = -c + error;
-        cMinus = -c - error;
-
-        return (a * point.getX() + b * point.getY() < cPlus && a
-            * point.getX() + b * point.getY() > cMinus);
+        return a * point.getX() + b * point.getY() < -c + error && a
+            * point.getX() + b * point.getY() > -c - error;
     }
 
     /**
@@ -336,25 +342,30 @@ public class Edge {
     public final boolean isInInfiniteCylinder3D(
         final Point point, final double error) {
 
-        double x1 = this.getP1().getX(), x2 = this.getP2()
-            .getX(), x3 = point.getX();
-        double y1 = this.getP1().getY(), y2 = this.getP2()
-            .getY(), y3 = point.getY();
-        double z1 = this.getP1().getZ(), z2 = this.getP2()
-            .getZ(), z3 = point.getZ();
+        final double x1 = this.getP1().getX();
+        final double x2 = this.getP2().getX();
+        final double x3 = point.getX();
 
-        double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1)
+        final double y1 = this.getP1().getY();
+        final double y2 = this.getP2().getY();
+        final double y3 = point.getY();
+
+        final double z1 = this.getP1().getZ();
+        final double z2 = this.getP2().getZ();
+        final double z3 = point.getZ();
+
+        final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1)
             * (y2 - y1) + (z3 - z1) * (z2 - z1))
             / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
                 * (z2 - z1));
 
-        double x4 = lambda * (x2 - x1) + x1;
-        double y4 = lambda * (y2 - y1) + y1;
-        double z4 = lambda * (z2 - z1) + z1;
+        final double x4 = lambda * (x2 - x1) + x1;
+        final double y4 = lambda * (y2 - y1) + y1;
+        final double z4 = lambda * (z2 - z1) + z1;
 
-        Point p4 = new Point(x4, y4, z4);
+        final Point p4 = new Point(x4, y4, z4);
 
-        return (point.distance(p4) <= error);
+        return point.distance(p4) <= error;
     }
 
     /**
@@ -368,8 +379,8 @@ public class Edge {
         if (this == e) {
             return false;
         } else {
-            return (this.contains(e.points[0]) || this
-                .contains(e.points[1]));
+            return this.contains(e.points[0]) || this
+                .contains(e.points[1]);
         }
     }
 
@@ -391,16 +402,19 @@ public class Edge {
      */
     public final boolean orientedAs(final Edge e,
         final double error) {
-        Vector3d vect1 = new Vector3d(e.getP2().getX()
+
+        final Vector3d vect1 = new Vector3d(e.getP2().getX()
             - e.getP1().getX(), e.getP2().getY()
             - e.getP1().getY(), e.getP2().getZ()
             - e.getP1().getZ());
         vect1.normalize();
-        Vector3d vect2 = new Vector3d(this.getP2().getX()
+
+        final Vector3d vect2 = new Vector3d(this.getP2().getX()
             - this.getP1().getX(), this.getP2().getY()
             - this.getP1().getY(), this.getP2().getZ()
             - this.getP1().getZ());
         vect2.normalize();
+
         final double convertDegreeRadian = 180 / Math.PI;
         return (vect1.angle(vect2) < (error / convertDegreeRadian))
             || vect1.angle(vect2) > (((180 - error) / convertDegreeRadian));
@@ -414,21 +428,30 @@ public class Edge {
      */
     public final Point project(final Point point) {
 
-        Point p1 = this.getP1(), p2 = this.getP2();
-        Point p3 = point;
+        final Point p1 = this.getP1();
+        final Point p2 = this.getP2();
+        final Point p3 = point;
 
-        double x1 = p1.getX(), x2 = p2.getX(), x3 = p3.getX();
-        double y1 = p1.getY(), y2 = p2.getY(), y3 = p3.getY();
-        double z1 = p1.getZ(), z2 = p2.getZ(), z3 = p3.getZ();
+        final double x1 = p1.getX();
+        final double x2 = p2.getX();
+        final double x3 = p3.getX();
 
-        double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1)
+        final double y1 = p1.getY();
+        final double y2 = p2.getY();
+        final double y3 = p3.getY();
+
+        final double z1 = p1.getZ();
+        final double z2 = p2.getZ();
+        final double z3 = p3.getZ();
+
+        final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1)
             * (y2 - y1) + (z3 - z1) * (z2 - z1))
             / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
                 * (z2 - z1));
 
-        double x4 = lambda * (x2 - x1) + x1;
-        double y4 = lambda * (y2 - y1) + y1;
-        double z4 = lambda * (z2 - z1) + z1;
+        final double x4 = lambda * (x2 - x1) + x1;
+        final double y4 = lambda * (y2 - y1) + y1;
+        final double z4 = lambda * (z2 - z1) + z1;
 
         return new Point(x4, y4, z4);
     }
@@ -452,7 +475,7 @@ public class Edge {
         final Point p, final Vector3d normalFloor)
         throws BadFormedPolylineException {
 
-        ArrayList<Edge> list = b.getNeighbours(p);
+        final List<Edge> list = b.getNeighbours(p);
 
         if (list.size() > 3) {
             return this.returnTheLeftOne(b.getNeighbours(p), p,
@@ -480,7 +503,7 @@ public class Edge {
     public final Edge returnNeighbour(final Polyline b,
         final Point p) throws BadFormedPolylineException {
 
-        ArrayList<Edge> list = b.getNeighbours(p);
+        final List<Edge> list = b.getNeighbours(p);
 
         if (list.size() == 2) {
             list.remove(this);
@@ -518,19 +541,22 @@ public class Edge {
      */
     public final Triangle returnOther(final Triangle t)
         throws MoreThanTwoTrianglesPerEdgeException {
+
         if (this.triangles.size() > 2) {
             throw new MoreThanTwoTrianglesPerEdgeException();
         }
-        if (this.triangles.size() < 2) {
-            return null;
+
+        Triangle triangle = null;
+        if (this.triangles.size() > 2) {
+            if (this.triangles.get(0) == t) {
+                triangle = this.triangles.get(1);
+            }
+            if (this.triangles.get(1) == t) {
+                triangle = this.triangles.get(0);
+            }
         }
-        if (this.triangles.get(0) == t) {
-            return this.triangles.get(1);
-        } else if (this.triangles.get(1) == t) {
-            return this.triangles.get(0);
-        } else {
-            return null;
-        }
+
+        return triangle;
     }
 
     /**
@@ -560,13 +586,15 @@ public class Edge {
      * @return the point shared by this and e
      */
     public final Point sharedPoint(final Edge e) {
+        // = null is not necessary isn't it ?
+        Point point = null;
         if (this.contains(e.getP1())) {
-            return e.getP1();
-        } else if (this.contains(e.getP2())) {
-            return e.getP2();
-        } else {
-            return null;
+            point = e.getP1();
         }
+        if (this.contains(e.getP2())) {
+            point = e.getP2();
+        }
+        return point;
     }
 
     /*
@@ -583,13 +611,19 @@ public class Edge {
      * Implement a exception used when the polyline is bad formed.
      * @author Daniel Lefevre
      */
-    public static class BadFormedPolylineException extends
+    public static final class BadFormedPolylineException extends
         Exception {
 
         /**
          * Version attribute.
          */
         private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        private BadFormedPolylineException() {
+        }
     }
 
     /**
@@ -597,12 +631,18 @@ public class Edge {
      * triangles.
      * @author Daniel Lefevre
      */
-    public static class MoreThanTwoTrianglesPerEdgeException
+    public static final class MoreThanTwoTrianglesPerEdgeException
         extends Exception {
 
         /**
          * Version attribute.
          */
         private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        private MoreThanTwoTrianglesPerEdgeException() {
+        }
     }
 }
