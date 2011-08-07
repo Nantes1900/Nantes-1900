@@ -1,7 +1,7 @@
 /**
  * 
  */
-package test.nantes1900.models.extended;
+package test.fr.nantes1900.models.extended;
 
 import junit.framework.TestCase;
 

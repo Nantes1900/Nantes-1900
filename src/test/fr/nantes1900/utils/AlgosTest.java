@@ -1,7 +1,7 @@
 /**
  * 
  */
-package test.nantes1900.utils;
+package test.fr.nantes1900.utils;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;

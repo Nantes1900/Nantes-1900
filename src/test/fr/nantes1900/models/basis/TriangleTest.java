@@ -1,4 +1,4 @@
-package test.nantes1900.models.basis;
+package test.fr.nantes1900.models.basis;
 
 import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.basis.Edge;

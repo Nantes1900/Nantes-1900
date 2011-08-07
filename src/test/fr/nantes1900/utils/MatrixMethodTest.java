@@ -1,4 +1,4 @@
-package test.nantes1900.utils;
+package test.fr.nantes1900.utils;
 
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;

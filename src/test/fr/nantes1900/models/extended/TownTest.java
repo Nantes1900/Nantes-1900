@@ -1,7 +1,7 @@
 /**
  * 
  */
-package test.nantes1900.models.extended;
+package test.fr.nantes1900.models.extended;
 
 import junit.framework.TestCase;
 
@@ -10,16 +10,15 @@ import org.junit.Test;
 /**
  * @author Daniel Lefevre
  */
-public class SpecialBuildingTest extends TestCase {
+public class TownTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.extended.SpecialBuilding#buildFromMesh(fr.nantes1900.models.Mesh)}
+     * {@link fr.nantes1900.models.extended.Town#buildFromMesh(java.lang.String)}
      * .
      */
     @Test
     public void testBuildFromMesh() {
         fail("Not yet implemented"); // TODO
     }
-
 }

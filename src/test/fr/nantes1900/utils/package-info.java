@@ -1,5 +1,5 @@
 /**
  * This is a package. TODO
  */
-package test.nantes1900;
+package test.fr.nantes1900.utils;
 
