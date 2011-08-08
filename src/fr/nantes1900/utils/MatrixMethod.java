@@ -4,6 +4,7 @@ import javax.vecmath.Vector3d;
 
 /**
  * A set of methods to create and change base.
+ * 
  * @author Eric Berthe, Valentin Roger, Daniel Lefevre
  */
 public final class MatrixMethod {
@@ -19,7 +20,14 @@ public final class MatrixMethod {
     private static final int MATRIX_DIMENSION = 3;
 
     /**
+     * Private constructor.
+     */
+    private MatrixMethod() {
+    }
+
+    /**
      * Compute the result of a base change of a double[].
+     * 
      * @param coord
      *            the coordinates to base change
      * @param matrix
@@ -43,20 +51,21 @@ public final class MatrixMethod {
     /**
      * Compute the result of a base change of a Vector3d. vect is modified to
      * contain the result of the compute.
+     * 
      * @param vect
      *            the vector to base change
      * @param matrix
      *            the base change matrix
      */
     public static void changeBase(final Vector3d vect, final double[][] matrix) {
-        final double[] coord = {vect.x, vect.y, vect.z,
-        };
+        final double[] coord = {vect.x, vect.y, vect.z, };
         vect.set(MatrixMethod.changeBase(coord, matrix));
     }
 
     /**
      * Create an orthobase from one vector. The baseVector will be the z-axis
      * after the base change. The matrix will have a determinant equals to 1.
+     * 
      * @param baseVector
      *            the vector which will be the z-axis after the base change
      * @return a double[][] as a matrix
@@ -99,6 +108,7 @@ public final class MatrixMethod {
      * Create an orthobase from three vectors. Create the matrix which pass from
      * the actual base ((1,0,0),(0,1,0),(0,0,1)) to the parameter base (vect1,
      * vect2, vect3).
+     * 
      * @param vect1
      *            the first vector of the base
      * @param vect2
@@ -110,8 +120,8 @@ public final class MatrixMethod {
      *             if the matrix is singular
      */
     public static double[][] createOrthoBase(final Vector3d vect1,
-        final Vector3d vect2,
-        final Vector3d vect3) throws SingularMatrixException {
+        final Vector3d vect2, final Vector3d vect3)
+        throws SingularMatrixException {
 
         final Vector3d b = new Vector3d(vect1);
         final Vector3d c = new Vector3d(vect2);
@@ -136,6 +146,7 @@ public final class MatrixMethod {
 
     /**
      * Returns the matrix determinant.
+     * 
      * @param matrix
      *            the matrix to compute
      * @return the determinant
@@ -157,6 +168,7 @@ public final class MatrixMethod {
 
     /**
      * Returns the invers of the matrix.
+     * 
      * @param matrix
      *            the matrix to invers
      * @return the invers matrix
@@ -197,13 +209,8 @@ public final class MatrixMethod {
     }
 
     /**
-     * Private constructor.
-     */
-    private MatrixMethod() {
-    }
-
-    /**
      * An exception sub-class to signal a singular matrix.
+     * 
      * @author Daniel Lefevre
      */
     public static final class SingularMatrixException extends Exception {

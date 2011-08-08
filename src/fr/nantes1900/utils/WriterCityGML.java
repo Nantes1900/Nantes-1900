@@ -91,9 +91,8 @@ public class WriterCityGML {
      * @param buildingToAdd
      *            the Edifice to write
      */
-    public final void
-        addBuilding(
-            final fr.nantes1900.models.extended.Building buildingToAdd) {
+    public final void addBuilding(
+        final fr.nantes1900.models.extended.Building buildingToAdd) {
         final Building building = this.citygml.createBuilding();
 
         // LOD2 solid
@@ -114,14 +113,15 @@ public class WriterCityGML {
 
         try {
             for (Polyline surface : buildingToAdd.getWalls()) {
-                final Polygon geometry = this.geom.createLinearPolygon(
-                    surface.getPointsAsCoordinates(), 3);
+                final Polygon geometry =
+                    this.geom.createLinearPolygon(
+                        surface.getPointsAsCoordinates(), 3);
                 geometry.setId(this.gmlIdManager.generateGmlId());
                 surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
                     .getId()));
 
-                AbstractBoundarySurface boundarySurface = this.citygml
-                    .createWallSurface();
+                final AbstractBoundarySurface boundarySurface =
+                    this.citygml.createWallSurface();
 
                 boundarySurface.setLod2MultiSurface(gml
                     .createMultiSurfaceProperty(gml
@@ -132,20 +132,21 @@ public class WriterCityGML {
             }
 
             for (Polyline surface : buildingToAdd.getRoofs()) {
-                final Polygon geometry = this.geom.createLinearPolygon(
-                    surface.getPointsAsCoordinates(), 3);
+                final Polygon geometry =
+                    this.geom.createLinearPolygon(
+                        surface.getPointsAsCoordinates(), 3);
                 geometry.setId(this.gmlIdManager.generateGmlId());
                 surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
                     .getId()));
 
-                AbstractBoundarySurface boundarySurface = citygml
-                    .createRoofSurface();
+                final AbstractBoundarySurface boundarySurface =
+                    this.citygml.createRoofSurface();
 
-                boundarySurface.setLod2MultiSurface(gml
-                    .createMultiSurfaceProperty(gml
+                boundarySurface.setLod2MultiSurface(this.gml
+                    .createMultiSurfaceProperty(this.gml
                         .createMultiSurface(geometry)));
 
-                boundedBy.add(citygml
+                boundedBy.add(this.citygml
                     .createBoundarySurfaceProperty(boundarySurface));
             }
         } catch (DimensionMismatchException e) {
@@ -198,15 +199,17 @@ public class WriterCityGML {
 
         try {
             for (Triangle t : floor.getMesh()) {
-                final Polygon geometry = geom.createLinearPolygon(
-                    t.getPointsAsCoordinates(), 3);
+                final Polygon geometry =
+                    this.geom
+                        .createLinearPolygon(t.getPointsAsCoordinates(), 3);
                 geometry.setId(this.gmlIdManager.generateGmlId());
                 surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
                     .getId()));
-                // TODO : peut-être classer en WALL et ROOF SURFACE !
+                // TODO : peut-être classer en WALL et ROOF
+                // SURFACE !
 
-                AbstractBoundarySurface boundarySurface = this.citygml
-                    .createRoofSurface();
+                final AbstractBoundarySurface boundarySurface =
+                    this.citygml.createRoofSurface();
 
                 boundarySurface.setLod2MultiSurface(this.gml
                     .createMultiSurfaceProperty(this.gml
@@ -238,7 +241,8 @@ public class WriterCityGML {
     }
 
     /**
-     * Create a CityGMLBuilding, and add the special building as a mesh.
+     * Create a CityGMLBuilding, and add the special
+     * building as a mesh.
      * @param specialBuilding
      *            the mesh of the special building
      */
@@ -263,15 +267,17 @@ public class WriterCityGML {
 
         try {
             for (Triangle t : specialBuilding.getMesh()) {
-                final Polygon geometry = this.geom.createLinearPolygon(
-                    t.getPointsAsCoordinates(), 3);
+                final Polygon geometry =
+                    this.geom
+                        .createLinearPolygon(t.getPointsAsCoordinates(), 3);
                 geometry.setId(this.gmlIdManager.generateGmlId());
                 surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
                     .getId()));
-                // TODO : peut-être classer en WALL et ROOF SURFACE !
+                // TODO : peut-être classer en WALL et ROOF
+                // SURFACE !
 
-                AbstractBoundarySurface boundarySurface = citygml
-                    .createRoofSurface();
+                final AbstractBoundarySurface boundarySurface =
+                    citygml.createRoofSurface();
 
                 boundarySurface.setLod2MultiSurface(this.gml
                     .createMultiSurfaceProperty(this.gml
@@ -312,8 +318,8 @@ public class WriterCityGML {
         try {
             out =
                 this.builder.createCityGMLOutputFactory(CityGMLVersion.v1_0_0);
-            final CityGMLWriter writer = out.createCityGMLWriter(new File(
-                this.fileName));
+            final CityGMLWriter writer =
+                out.createCityGMLWriter(new File(this.fileName));
 
             writer.setPrefixes(CityGMLVersion.v1_0_0);
             writer.setSchemaLocations(CityGMLVersion.v1_0_0);

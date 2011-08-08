@@ -36,8 +36,7 @@ public class Point {
      * @param zNew
      *            coordinate
      */
-    public Point(final double xNew, final double yNew,
-        final double zNew) {
+    public Point(final double xNew, final double yNew, final double zNew) {
         this.x = xNew;
         this.y = yNew;
         this.z = zNew;
@@ -62,8 +61,7 @@ public class Point {
      *            hashCode after this operation...
      */
     public final void changeBase(final double[][] matrix) {
-        final double[] coords = {this.x, this.y, this.z,
-        };
+        final double[] coords = {this.x, this.y, this.z, };
         this.set(MatrixMethod.changeBase(coords, matrix));
     }
 
@@ -74,8 +72,8 @@ public class Point {
      * @return the distance
      */
     public final double distance(final Point p) {
-        return Math.sqrt(Math.pow(p.x - this.x, 2)
-            + Math.pow(p.y - this.y, 2) + Math.pow(p.z - this.z, 2));
+        return Math.sqrt(Math.pow(p.x - this.x, 2) + Math.pow(p.y - this.y, 2)
+            + Math.pow(p.z - this.z, 2));
     }
 
     /*
@@ -114,8 +112,7 @@ public class Point {
      * @return a table of double
      */
     public final double[] getPointAsCoordinates() {
-        return new double[] {this.x, this.y, this.z,
-        };
+        return new double[] {this.x, this.y, this.z, };
     }
 
     /**

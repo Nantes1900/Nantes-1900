@@ -80,16 +80,17 @@ public class WriterSTL {
             // Write facet normal : to begin a triangle with writing its normal.
             String s1 = "\nfacet normal";
 
-            s1 += " " + face.getNormal().x + " " + face.getNormal().y + " "
-                + face.getNormal().z;
+            s1 +=
+                " " + face.getNormal().x + " " + face.getNormal().y + " "
+                    + face.getNormal().z;
 
             // Write outer loop : to begin to write the three points.
             fw.write(s1 + "\nouter loop");
             // Write the three points.
             for (Point p : face.getPoints()) {
 
-                fw.write("\nvertex" + " " + p.getX() + " "
-                    + p.getY() + " " + p.getZ());
+                fw.write("\nvertex" + " " + p.getX() + " " + p.getY() + " "
+                    + p.getZ());
             }
 
             // Write the end of the facet.
@@ -189,8 +190,8 @@ public class WriterSTL {
     private void writeSTLB() throws IOException {
         BufferedOutputStream stream = null;
         try {
-            stream = new BufferedOutputStream(new FileOutputStream(
-                this.fileName));
+            stream =
+                new BufferedOutputStream(new FileOutputStream(this.fileName));
 
             // Write a 80-byte long header. Possibility to write the name of the
             // author.
