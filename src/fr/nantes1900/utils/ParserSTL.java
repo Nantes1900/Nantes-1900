@@ -1,5 +1,6 @@
 package fr.nantes1900.utils;
 
+import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
@@ -7,7 +8,6 @@ import fr.nantes1900.models.basis.Triangle;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,146 +16,212 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.vecmath.Vector3d;
 
 /**
- * Parse a STL file : detect if it is a ASCII or a binary file, and parse it.
- * During the parsing, it builds the Mesh, giving to the same points the same
- * references (and to the edges), and avoiding the bad-formed triangles to be
- * used and to create errors further.
+ * Parse a STL file : detect if it is a ASCII or a binary
+ * file, and parse it. During the parsing, it builds the
+ * Mesh, giving to the same points the same references (and
+ * to the edges), and avoiding the bad-formed triangles to
+ * be used and to create errors further.
+ * 
  * @author Eric Berthe, Valentin Roger, Daniel Lefèvre
  */
+
+// TODO : refactor this class : make a non-static parser,
+// and respect the style conditions.
 public class ParserSTL {
 
+    /**
+     * Vector attribute used for ASCII parser method.
+     */
     private static Vector3d currentVector;
 
-    private static ArrayList<Point> currentPoints;
+    /**
+     * Points attribute used for ASCII parser method.
+     */
+    private static List<Point> currentPoints;
 
     /**
-     * Read one line of the file. If a point is out of bounds, it removes it. If
-     * a triangle is flat, it removes it. It doesn't create double points for
-     * points which have the same values, but give to the two triangles the same
-     * references to the point (and same work for the edges).
-     * @param facesFromSTL
+     * The list of triangles to stock all the triangles read in the file.
+     */
+    private Set<Triangle> triangleSet;
+    /**
+     * The map of point to compute the references of the points.
+     */
+    private Map<Point, Point> pointMap;
+    /**
+     * The map of edge to compute the references of the edges.
+     */
+    private Map<Edge, Edge> edgeMap;
+
+    /**
+     * The name of the file to read.
+     */
+    private String fileName;
+
+    /**
+     * Private constructor.
+     * 
+     * @param fileNameRead
+     *            the name of the file to read
+     */
+    public ParserSTL(
+        final String fileNameRead) {
+        this.fileName = fileNameRead;
+    }
+
+    /**
+     * Detect the format of the STL file, and read it using
+     * the good method.
+     * 
+     * @return a HashSet of triangle to build a mesh with
+     * @throws IOException
+     *             if the file is bad formed or if there is
+     *             an error during the reading
+     */
+    public final Mesh read() throws IOException {
+        final Scanner scanner = new Scanner(new FileReader(this.fileName));
+
+        // Reading the file
+        try {
+            if (scanner.hasNextLine()) {
+                final StringTokenizer brokenLine =
+                    new StringTokenizer(scanner.nextLine(), " ");
+                final String openingWord = brokenLine.nextToken();
+
+                Set<Triangle> triangleMap;
+                this.pointMap = new HashMap<Point, Point>();
+                this.edgeMap = new HashMap<Edge, Edge>();
+
+                // If the first word is solid, this means it's an ASCII file.
+                // If it's a binary file, it will not be found.
+                if ("solid".equals(openingWord)) {
+                    triangleMap = this.readSTLA();
+                } else {
+                    triangleMap = this.readSTLB();
+                }
+                return new Mesh(triangleMap);
+            } else {
+                return null;
+            }
+        } finally {
+            scanner.close();
+        }
+
+    }
+
+    /**
+     * Reads one line of the file. If a point is out of
+     * bounds, it removes it. If a triangle is flat, it
+     * removes it. It doesn't create double points for
+     * points which have the same values, but give to the
+     * two triangles the same references to the point (and
+     * same work for the edges).
+     * 
+     * @param mesh
      *            the HashSet of triangle to complete
      * @param line
      *            the line as a String
-     * @param pointMap
-     *            the map of points to check if the point already exists
-     * @param edgeMapthe
-     *            map of edges to check if the edge already exists
      * @throws FlatTriangleException
-     *             if the triangle is flat (two points equals)
+     *             if the triangle is flat (two points
+     *             equals)
      * @throws OutOfBoundsPointException
      *             if one point has a coordinate > 1e5
      * @throws BadFormedFileException
      *             if the file is not well formed
      */
-    private static void processLineA(HashSet<Triangle> facesFromSTL,
-        String line, HashMap<Point, Point> pointMap,
-        HashMap<Edge, Edge> edgeMap) throws FlatTriangleException,
+    private void processLineA(final String line) throws FlatTriangleException,
         OutOfBoundsPointException, BadFormedFileException {
 
         if (line.isEmpty()) {
             throw new BadFormedFileException();
         } else {
             // Select the first word of the line.
-            StringTokenizer brokenLine = new StringTokenizer(line, " ");
-            String openingWord = brokenLine.nextToken();
+            final StringTokenizer brokenLine = new StringTokenizer(line, " ");
+            final String openingWord = brokenLine.nextToken();
 
             // If the word is facet normal, read the vetor.
-            if (openingWord.equals("facet")) {
-                if (brokenLine.nextToken().equals("normal")) {
-                    currentVector = new Vector3d(Double.parseDouble(brokenLine
-                        .nextToken()), Double.parseDouble(brokenLine
-                        .nextToken()), Double.parseDouble(brokenLine
-                        .nextToken()));
+            if ("facet".equals(openingWord)) {
+                if ("normal".equals(brokenLine.nextToken())) {
+                    ParserSTL.currentVector =
+                        new Vector3d(
+                            Double.parseDouble(brokenLine.nextToken()), Double
+                                .parseDouble(brokenLine.nextToken()), Double
+                                .parseDouble(brokenLine.nextToken()));
 
-                    currentVector.normalize();
+                    ParserSTL.currentVector.normalize();
                 } else {
                     throw new BadFormedFileException();
                 }
             } else {
-                // If the word is vertex, read one of the three points.
-                if (openingWord.equals("vertex")) {
-                    Point p = new Point((float) Double.parseDouble(brokenLine
-                        .nextToken()),
-                        (float) Double.parseDouble(brokenLine.nextToken()),
-                        (float) Double.parseDouble(brokenLine.nextToken()));
+                // If the word is vertex, read one of the
+                // three points.
+                if ("vertex".equals(openingWord)) {
+                    Point p =
+                        new Point((float) Double.parseDouble(brokenLine
+                            .nextToken()), (float) Double
+                            .parseDouble(brokenLine.nextToken()),
+                            (float) Double.parseDouble(brokenLine.nextToken()));
 
-                    // If the point has one coordinate > 1e5, throws and
-                    // Exception. It can cause an error further in the program.
-                    double maxLimit = OutOfBoundsPointException.BOUND_LIMIT;
-                    if (p.getX() > maxLimit || p.getY() > maxLimit
-                        || p.getZ() > maxLimit)
-                        throw new OutOfBoundsPointException();
+                    p = this.treatPoint(p);
 
-                    Point mapP = pointMap.get(p);
-
-                    // Checks in the HashSet of points if this point doesn't
-                    // already exist. If it already exists, it doesn't create
-                    // another point, but keep the same reference.
-                    if (mapP == null)
-                        pointMap.put(p, p);
-                    else
-                        p = mapP;
-
-                    currentPoints.add(p);
+                    ParserSTL.currentPoints.add(p);
                 } else {
-                    // If the the points are read, create the triangle and add
+                    // If the the points are read, create
+                    // the triangle and add
                     // it to the HashSet.
-                    if (openingWord.equals("endfacet")) {
-                        Edge e1 = new Edge(currentPoints.get(0),
-                            currentPoints.get(1));
-                        Edge e2 = new Edge(currentPoints.get(1),
-                            currentPoints.get(2));
-                        Edge e3 = new Edge(currentPoints.get(2),
-                            currentPoints.get(0));
+                    if ("endfacet".equals(openingWord)) {
+                        Edge e1 =
+                            new Edge(ParserSTL.currentPoints.get(0),
+                                ParserSTL.currentPoints.get(1));
+                        Edge e2 =
+                            new Edge(ParserSTL.currentPoints.get(1),
+                                ParserSTL.currentPoints.get(2));
+                        Edge e3 =
+                            new Edge(ParserSTL.currentPoints.get(2),
+                                ParserSTL.currentPoints.get(0));
 
                         // Checks in the HashSet of edges if this edge doesn't
                         // already exist. If it already exists, it doesn't
-                        // create
-                        // another edge, but keep the same reference.
-                        Edge e = edgeMap.get(e1);
-                        if (e == null)
-                            edgeMap.put(e1, e1);
-                        else
-                            e1 = e;
-
-                        e = edgeMap.get(e2);
-                        if (e == null)
-                            edgeMap.put(e2, e2);
-                        else
-                            e2 = e;
-
-                        e = edgeMap.get(e3);
-                        if (e == null)
-                            edgeMap.put(e3, e3);
-                        else
-                            e3 = e;
+                        // create another edge, but keep the same reference.
+                        e1 = this.treatEdge(e1);
+                        e2 = this.treatEdge(e2);
+                        e3 = this.treatEdge(e3);
 
                         // Check for the flat triangles.
-                        if (e1 == e2 || e2 == e3 || e1 == e3)
+                        if (e1 == e2 || e2 == e3 || e1 == e3) {
                             throw new FlatTriangleException();
+                        }
 
                         try {
-                            facesFromSTL.add(new Triangle(currentPoints.get(0),
-                                currentPoints.get(1), currentPoints.get(2),
-                                e1, e2, e3, currentVector));
+                            this.triangleSet.add(new Triangle(
+                                ParserSTL.currentPoints.get(0),
+                                ParserSTL.currentPoints.get(1),
+                                ParserSTL.currentPoints.get(2), e1, e2, e3,
+                                ParserSTL.currentVector));
                         } catch (MoreThanTwoTrianglesPerEdgeException e4) {
-                            // Do nothing : it will not add the Triangle to the
-                            // mesh.
+                            // Do nothing : it will not add
+                            // the Triangle to the mesh.
                             // TODO? Select the good triangle to remove ?
                         }
+                        // TODO : test in the ParserSTLTest the bad points and
+                        // edges, and etc...
                     } else {
-                        // If the triangle is read, clear the currentPoints
-                        // static ArrayList for the next triangle.
-                        if (openingWord.equals("outer")) {
-                            if (brokenLine.nextToken().equals("loop")) {
-                                currentPoints = new ArrayList<Point>();
+                        // If the triangle is read, clear
+                        // the currentPoints
+                        // static ArrayList for the next
+                        // triangle.
+                        if ("outer".equals(openingWord)) {
+                            if ("loop".equals(brokenLine.nextToken())) {
+                                ParserSTL.currentPoints =
+                                    new ArrayList<Point>();
                             }
                         }
                     }
@@ -165,106 +231,61 @@ public class ParserSTL {
     }
 
     /**
-     * Read one line of the file. If a point is out of bounds, it removes it. If
-     * a triangle is flat, it removes it. It doesn't create double points for
-     * points which have the same values, but give to the two triangles the same
-     * references to the point (and same work for the edges).
+     * Read one line of the file. If a point is out of
+     * bounds, it removes it. If a triangle is flat, it
+     * removes it. It doesn't create double points for
+     * points which have the same values, but give to the
+     * two triangles the same references to the point (and
+     * same work for the edges).
+     * 
      * @param bBuf
      *            the bytebuffer to read in
-     * @param pointMap
-     *            the map of points to check if the point already exists
-     * @param edgeMap
-     *            the map of edges to check if the edge already exists
      * @return the triangle read
      * @throws FlatTriangleException
-     *             if the triangle is flat (two points equals)
+     *             if the triangle is flat (two points
+     *             equals)
      * @throws OutOfBoundsPointException
      *             if one point has a coordinate > 1e5
      * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if one edge of the new triangle contains already two
-     *             triangles
+     *             if one edge of the new triangle contains
+     *             already two triangles
      */
-    private static Triangle processLineB(ByteBuffer bBuf,
-        HashMap<Point, Point> pointMap, HashMap<Edge, Edge> edgeMap)
+    private Triangle processLineB(final ByteBuffer bBuf)
         throws FlatTriangleException, OutOfBoundsPointException,
         MoreThanTwoTrianglesPerEdgeException {
 
         // Read in the ByteBuffer the floats.
-        Vector3d norm = new Vector3d(bBuf.getFloat(), bBuf.getFloat(),
-            bBuf.getFloat());
+        final Vector3d norm =
+            new Vector3d(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
         norm.normalize();
 
-        Point p1 = new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
-            (float) bBuf.getFloat());
-        Point p2 = new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
-            (float) bBuf.getFloat());
-        Point p3 = new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
-            (float) bBuf.getFloat());
+        Point p1 =
+            new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
+                (float) bBuf.getFloat());
+        Point p2 =
+            new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
+                (float) bBuf.getFloat());
+        Point p3 =
+            new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
+                (float) bBuf.getFloat());
 
-        // If the point is out of bounds, it's maybe an error when the file was
-        // written. But it could cause error further in the program. Thus we
-        // remove the triangles which contain thos points.
-        double maxLimit = OutOfBoundsPointException.BOUND_LIMIT;
-        if (p1.getX() > maxLimit || p1.getY() > maxLimit
-            || p1.getZ() > maxLimit)
-            throw new OutOfBoundsPointException();
-        if (p2.getX() > maxLimit || p2.getY() > maxLimit
-            || p2.getZ() > maxLimit)
-            throw new OutOfBoundsPointException();
-        if (p3.getX() > maxLimit || p3.getY() > maxLimit
-            || p3.getZ() > maxLimit)
-            throw new OutOfBoundsPointException();
+        p1 = this.treatPoint(p1);
+        p2 = this.treatPoint(p2);
+        p3 = this.treatPoint(p3);
 
-        // Add the point to the HashSet using get : if null is returned, it
-        // means that the HashSet doesn't contain any point with the same
-        // values.
-        // The good thing is that it search on the values, and not only on the
-        // references, because we implemented the hashCode method in the class
-        // Point.
-        Point p = pointMap.get(p1);
-        if (p == null)
-            pointMap.put(p1, p1);
-        else
-            p1 = p;
-
-        p = pointMap.get(p2);
-        if (p == null)
-            pointMap.put(p2, p2);
-        else
-            p2 = p;
-
-        p = pointMap.get(p3);
-        if (p == null)
-            pointMap.put(p3, p3);
-        else
-            p3 = p;
-
-        // If two points are the same, throw a FlatTriangleException.
-        if (p1 == p2 || p2 == p3 || p1 == p3)
+        // If two points are the same, throws a FlatTriangleException.
+        if (p1 == p2 || p2 == p3 || p1 == p3) {
             throw new FlatTriangleException();
+        }
 
         // Same verification for the edges : using the method get of a HashSet.
         Edge e1 = new Edge(p1, p2);
         Edge e2 = new Edge(p2, p3);
         Edge e3 = new Edge(p3, p1);
 
-        Edge e = edgeMap.get(e1);
-        if (e == null)
-            edgeMap.put(e1, e1);
-        else
-            e1 = e;
-
-        e = edgeMap.get(e2);
-        if (e == null)
-            edgeMap.put(e2, e2);
-        else
-            e2 = e;
-
-        e = edgeMap.get(e3);
-        if (e == null)
-            edgeMap.put(e3, e3);
-        else
-            e3 = e;
+        e1 = this.treatEdge(e1);
+        e2 = this.treatEdge(e2);
+        e3 = this.treatEdge(e3);
 
         // Add two bytes to respect the binary format. Those bytes can be used
         // to put a color to the triangle. But we don't use them.
@@ -275,169 +296,234 @@ public class ParserSTL {
     }
 
     /**
-     * Read an ASCII STL file. Create a HashSet of triangle to put them in. If a
-     * point is found equals with another, only one point is created, and the
-     * references is given to the two triangles. This work is done to the edges
-     * too. Flat triangles (two points equals) are removed. Points out of bounds
-     * (containing coordinate > 1e5) are removed and their triangles too.
-     * @param fileName
-     *            the name if the file to read
+     * Read an ASCII STL file. Create a HashSet of triangle
+     * to put them in. If a point is found equals with
+     * another, only one point is created, and the
+     * references is given to the two triangles. This work
+     * is done to the edges too. Flat triangles (two points
+     * equals) are removed. Points out of bounds (containing
+     * coordinate > 1e5) are removed and their triangles
+     * too.
+     * 
      * @return the HashSet containing all the triangles
      * @throws IOException
-     *             if the file is badformed
-     * @throws FileNotFoundException
-     *             if the file doesn't exist
+     *             if the file is badformed or if the file doesn't exist
      */
-    private static HashSet<Triangle> readSTLA(String fileName)
-        throws FileNotFoundException, BadFormedFileException {
+    private Set<Triangle> readSTLA() throws IOException {
 
-        Scanner scanner = new Scanner(new FileReader(fileName));
-        HashSet<Triangle> mesh = new HashSet<Triangle>();
+        final Scanner scanner = new Scanner(new FileReader(this.fileName));
 
-        HashMap<Point, Point> pointMap = new HashMap<Point, Point>();
-        HashMap<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
+        this.triangleSet = new HashSet<Triangle>();
 
         // Reading the file
         try {
             while (scanner.hasNextLine()) {
                 // Reacting to the line
                 try {
-                    // If a Triangle exists already, and if the Parser read
-                    // another Triangle with the same values,
-                    // only one of those Triangles will be added to the Mesh.
-                    processLineA(mesh, scanner.nextLine(), pointMap, edgeMap);
+                    // If a Triangle exists already, and if
+                    // the Parser read another Triangle with the same
+                    // values, only one of those Triangles will be added to the
+                    // Mesh.
+                    this.processLineA(scanner.nextLine());
                 } catch (FlatTriangleException e) {
-                    // If it is a flat Triangle : 2 identical Points, then 2
-                    // identical Edge, it is not added to the Mesh.
+                    // If it is a flat Triangle : 2
+                    // identical Points, then 2 identical Edge, it is not added
+                    // to the Mesh.
                 } catch (OutOfBoundsPointException e) {
-                    // The coordinates of the Point are unbounded, then the
-                    // Triangle is not added to the Mesh.
+                    // The coordinates of the Point are
+                    // unbounded, then the Triangle is not added to the Mesh.
                 }
             }
         } finally {
             scanner.close();
         }
 
-        return new HashSet<Triangle>(mesh);
+        return this.triangleSet;
     }
 
     /**
-     * Read a binary STL file. Create a HashSet of triangle to put them in. If a
-     * point is found equals with another, only one point is created, and the
-     * references is given to the two triangles. This work is done to the edges
-     * too. Flat triangles (two points equals) are removed. Points out of bounds
-     * (containing coordinate > 1e5) are removed and their triangles too.
-     * @param fileName
-     *            the name if the file to read
+     * Read a binary STL file. Create a HashSet of triangle
+     * to put them in. If a point is found equals with
+     * another, only one point is created, and the
+     * references is given to the two triangles. This work
+     * is done to the edges too. Flat triangles (two points
+     * equals) are removed. Points out of bounds (containing
+     * coordinate > 1e5) are removed and their triangles
+     * too.
+     * 
      * @return the HashSet containing all the triangles
      * @throws IOException
      *             if the file is badformed
      */
-    private static HashSet<Triangle> readSTLB(String fileName)
-        throws IOException {
-        InputStream stream = new BufferedInputStream(new FileInputStream(
-            fileName));
+    private Set<Triangle> readSTLB() throws IOException {
+        final InputStream stream =
+            new BufferedInputStream(new FileInputStream(this.fileName));
 
-        HashMap<Point, Point> pointMap = new HashMap<Point, Point>();
-        HashMap<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
-        HashSet<Triangle> mesh = new HashSet<Triangle>();
+        this.triangleSet = new HashSet<Triangle>();
 
-        byte[] header = new byte[80];
-        stream.read(header, 0, 80);
-        byte[] sizeBytes = new byte[4];
-        stream.read(sizeBytes, 0, 4);
+        final int headerSize = 80;
+
+        final byte[] header = new byte[headerSize];
+        stream.read(header, 0, headerSize);
+
+        final byte[] sizeBytes = new byte[Byte.SIZE / 2];
+        stream.read(sizeBytes, 0, Byte.SIZE / 2);
+
         ByteBuffer bBuf = ByteBuffer.wrap(sizeBytes);
         bBuf.order(ByteOrder.nativeOrder());
-        int size = bBuf.getInt();
+        final int meshSize = bBuf.getInt();
 
-        byte[] fileContent = new byte[50 * size];
+        final int triangleSTLSize = 50;
+
+        final byte[] fileContent = new byte[triangleSTLSize * meshSize];
         stream.read(fileContent);
         bBuf = ByteBuffer.wrap(fileContent);
         bBuf.order(ByteOrder.nativeOrder());
 
-        for (int i = 0; i < size; i++) {
+        for (int i = 0; i < meshSize; i = i + 1) {
             try {
-                // If a Triangle exists already, and if the Parser read another
+                // If a Triangle exists already, and if the
+                // Parser read another
                 // Triangle with the same values,
-                // only one of those Triangles will be added to the Mesh.
-                mesh.add(processLineB(bBuf, pointMap, edgeMap));
+                // only one of those Triangles will be added
+                // to the Mesh.
+                this.triangleSet.add(this.processLineB(bBuf));
             } catch (FlatTriangleException e) {
-                // If it is a flat Triangle : 2 identical Points, then 2
-                // identical Edge, it is not added to the Mesh.
+                // If it is a flat Triangle : 2 identical
+                // Points, then 2
+                // identical Edge, it is not added to the
+                // Mesh.
             } catch (OutOfBoundsPointException e) {
-                // The coordinates of the Point are unbounded, then the Triangle
+                // The coordinates of the Point are
+                // unbounded, then the Triangle
                 // is not added to the Mesh.
             } catch (MoreThanTwoTrianglesPerEdgeException e) {
-                // If one edge of the new triangle contains already two
-                // triangles, then the new triangle is removed from the mesh.
-                // TODO? Try to improve that by removing the triangle which is
+                // If one edge of the new triangle contains
+                // already two
+                // triangles, then the new triangle is
+                // removed from the mesh.
+                // TODO? Try to improve that by removing the
+                // triangle which is
                 // the worst.
             }
         }
 
         stream.close();
-        return mesh;
+        return this.triangleSet;
     }
 
-    /**
-     * Detect the format of the STL file, and read it using the good method.
-     * @param fileName
-     *            the file to read
-     * @return a HashSet of triangle to build a mesh with
-     * @throws BadFormedFileException
-     *             if the file is not well formed
-     * @throws IOException
-     */
-    public static HashSet<Triangle> readSTL(String fileName)
-        throws BadFormedFileException, IOException {
-        Scanner scanner = new Scanner(new FileReader(fileName));
+    private Edge treatEdge(Edge edge) {
 
-        // Reading the file
-        try {
-            if (scanner.hasNextLine()) {
-                StringTokenizer brokenLine = new StringTokenizer(
-                    scanner.nextLine(), " ");
-                String openingWord = brokenLine.nextToken();
-
-                // If the first word is solid, this means it's an ASCII file
-                // If it's a binary file, it will not be found
-                if (openingWord.equals("solid"))
-                    return readSTLA(fileName);
-                else
-                    return readSTLB(fileName);
-            } else
-                return null;
-        } finally {
-            scanner.close();
+        final Edge eNew = this.edgeMap.get(edge);
+        if (eNew == null) {
+            this.edgeMap.put(edge, edge);
+        } else {
+            edge = eNew;
         }
 
+        return edge;
     }
 
     /**
-     * A sub-class for the exception when a triangle has two points identical.
-     * @author Daniel Lefevre
+     * @param point
+     * @throws OutOfBoundsPointException
      */
-    private static class FlatTriangleException extends Exception {
+    private Point treatPoint(Point point) throws OutOfBoundsPointException {
 
-        private static final long serialVersionUID = 1L;
+        // If the point has one coordinate >
+        // 1e5, throws an Exception. It can cause an error
+        // further in the program.
+        final double maxLimit = OutOfBoundsPointException.BOUND_LIMIT;
+
+        if (point.getX() > maxLimit || point.getY() > maxLimit
+            || point.getZ() > maxLimit) {
+            throw new OutOfBoundsPointException();
+        }
+
+        final Point mapP = this.pointMap.get(point);
+
+        // Checks in the HashSet of points if this point doesn't already exist.
+        // If it already exists, it doesn't create another point, but keep the
+        // same reference.
+        if (mapP == null) {
+            this.pointMap.put(point, point);
+            return point;
+        } else {
+            return mapP;
+        }
     }
 
     /**
-     * A sub-class for the exception when a point has one coordinate too high.
+     * A sub-class for the exception when the file is bad
+     * formed.
+     * 
      * @author Daniel Lefevre
      */
-    private static class OutOfBoundsPointException extends Exception {
+    public static final class BadFormedFileException extends IOException {
 
+        /**
+         * Version attribute.
+         */
         private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        private BadFormedFileException() {
+        }
+    }
+
+    /**
+     * A sub-class for the exception when a triangle has two
+     * points identical.
+     * 
+     * @author Daniel Lefevre
+     */
+    private static final class FlatTriangleException extends BadMeshException {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        private FlatTriangleException() {
+        }
+    }
+
+    private static class BadMeshException extends Exception {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+    }
+
+    /**
+     * A sub-class for the exception when a point has one
+     * coordinate too high.
+     * 
+     * @author Daniel Lefevre
+     */
+    private static final class OutOfBoundsPointException extends
+        BadMeshException {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+        /**
+         * Bound limit attribute.
+         */
         private static final double BOUND_LIMIT = 1e5;
-    }
 
-    /**
-     * A sub-class for the exception when the file is bad formed.
-     * @author Daniel Lefevre
-     */
-    public static class BadFormedFileException extends Exception {
-
-        private static final long serialVersionUID = 1L;
+        /**
+         * Private constructor.
+         */
+        private OutOfBoundsPointException() {
+        }
     }
 }

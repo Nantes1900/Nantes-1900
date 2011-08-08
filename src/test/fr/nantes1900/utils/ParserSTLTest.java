@@ -23,19 +23,20 @@ import org.junit.Test;
 
 /**
  * A set of tests for the class Parser.
+ * 
  * @author Daniel Lefevre
  */
-public class ParserSTLTest extends TestCase {
+public final class ParserSTLTest extends TestCase {
 
-    /**
-     * Private constructor.
-     */
-    private ParserSTLTest() {
-    }
+    // /**
+    // * Private constructor.
+    // */
+    // private ParserSTLTest() {
+    // }
 
     /**
      * Test method for
-     * {@link nantes1900pjct.utils.ParserSTL#readSTL(java.lang.String)} and
+     * {@link nantes1900pjct.utils.ParserSTL#read(java.lang.String)} and
      * {@link nantes1900.utils.WriteSTL#writeSTL(java.lang.String)} Same test as
      * write in WriterTest.
      */
@@ -77,8 +78,8 @@ public class ParserSTLTest extends TestCase {
             writerB.write();
 
             try {
-                final Mesh readA =
-                    new Mesh(ParserSTL.readSTL("WriterTestA.stl"));
+                ParserSTL parserA = new ParserSTL("WriterTestA.stl");
+                final Mesh readA = parserA.read();
                 Assert.assertTrue(readA.size() == 2);
                 final List<Triangle> readListA = new ArrayList<Triangle>(readA);
                 Assert.assertTrue(readListA.get(0).equals(t1)
@@ -86,14 +87,15 @@ public class ParserSTLTest extends TestCase {
                 Assert.assertTrue(readListA.get(1).equals(t1)
                     || readListA.get(1).equals(t2));
 
-                final Mesh readB =
-                    new Mesh(ParserSTL.readSTL("WriterTestB.stl"));
+                ParserSTL parserB = new ParserSTL("WriterTestB.stl");
+                final Mesh readB = parserB.read();
                 Assert.assertTrue(readB.size() == 2);
                 final List<Triangle> readListB = new ArrayList<Triangle>(readB);
                 Assert.assertTrue(readListB.get(0).equals(t1)
                     || readListB.get(0).equals(t2));
                 Assert.assertTrue(readListB.get(1).equals(t1)
                     || readListB.get(1).equals(t2));
+
             } catch (BadFormedFileException e) {
                 Assert.fail("BadFormedFileException !");
             } catch (IOException e) {
