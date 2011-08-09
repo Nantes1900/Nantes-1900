@@ -10,7 +10,8 @@ import javax.vecmath.Vector3d;
 public final class MatrixMethod {
 
     /**
-     * Double precision to see if a matrix determinant is too close to 0 or not.
+     * Precision (as a double) to check if a matrix determinant is too close to
+     * zero or not.
      */
     private static final double ERROR_PRECISION = 0.01;
 
@@ -79,8 +80,12 @@ public final class MatrixMethod {
         final Vector3d b = new Vector3d(baseVector);
         b.normalize();
 
-        if (b.z < 1 - MatrixMethod.ERROR_PRECISION
-            && b.z > 1 + MatrixMethod.ERROR_PRECISION) {
+        if (b.z > -1 - MatrixMethod.ERROR_PRECISION
+            && b.z < -1 + MatrixMethod.ERROR_PRECISION) {
+            throw new SingularMatrixException();
+        }
+
+        if (new Double(b.x).isNaN() || new Double(b.y).isNaN() || new Double(b.z).isNaN()) {
             throw new SingularMatrixException();
         }
 

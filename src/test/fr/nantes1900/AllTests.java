@@ -9,7 +9,6 @@ import test.fr.nantes1900.models.PolylineTest;
 import test.fr.nantes1900.models.basis.EdgeTest;
 import test.fr.nantes1900.models.basis.PointTest;
 import test.fr.nantes1900.models.basis.TriangleTest;
-import test.fr.nantes1900.utils.AlgosTest;
 import test.fr.nantes1900.utils.MatrixMethodTest;
 import test.fr.nantes1900.utils.ParserSTLTest;
 
@@ -19,11 +18,11 @@ import test.fr.nantes1900.utils.ParserSTLTest;
  * @author Daniel Lefevre
  */
 @RunWith(Suite.class)
-@SuiteClasses(
-    value = {EdgeTest.class, PointTest.class, TriangleTest.class,
+@SuiteClasses(value = {
+        EdgeTest.class, PointTest.class, TriangleTest.class,
         PolylineTest.class, MeshTest.class,
 
-        AlgosTest.class, MatrixMethodTest.class, ParserSTLTest.class })
+        MatrixMethodTest.class, ParserSTLTest.class })
 public final class AllTests {
 
     /**

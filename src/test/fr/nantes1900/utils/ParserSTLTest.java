@@ -29,9 +29,9 @@ import org.junit.Test;
 public final class ParserSTLTest extends TestCase {
 
     /**
-     * Private constructor.
+     * Constructor.
      */
-    private ParserSTLTest() {
+    public ParserSTLTest() {
     }
 
     /**

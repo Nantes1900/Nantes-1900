@@ -18,9 +18,9 @@ import org.junit.Test;
 public final class PointTest extends TestCase {
 
     /**
-     * Private constructor.
+     * Constructor.
      */
-    private PointTest() {
+    public PointTest() {
     }
 
     /**

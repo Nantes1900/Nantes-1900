@@ -11,6 +11,7 @@ import javax.vecmath.Vector3d;
 
 /**
  * Implement an edge : two points, and the triangles it belongs to.
+ * 
  * @author Daniel Lefevre
  */
 public class Edge {
@@ -28,6 +29,7 @@ public class Edge {
     /**
      * Copy constructor. Caution : use it very cautiously because it creates new
      * Edges with same values and not the same references.
+     * 
      * @param edge
      *            the polyline to copy
      */
@@ -39,6 +41,7 @@ public class Edge {
 
     /**
      * Constructor.
+     * 
      * @param point1
      *            the first point
      * @param point2
@@ -51,6 +54,7 @@ public class Edge {
 
     /**
      * Add a triangle to the edge.
+     * 
      * @param triangle
      *            the triangle to add
      * @throws MoreThanTwoTrianglesPerEdgeException
@@ -69,6 +73,7 @@ public class Edge {
 
     /**
      * Create another edge with the opposite points of the two parameters.
+     * 
      * @param edge
      *            the edge to compose with
      * @return a new edge formed with the opposite points of the two parameters
@@ -80,6 +85,7 @@ public class Edge {
 
     /**
      * Compute the point which is the middle of an edge.
+     * 
      * @return that point
      */
     public final Point computeMiddle() {
@@ -90,6 +96,7 @@ public class Edge {
 
     /**
      * Contains method.
+     * 
      * @param point
      *            the point to check
      * @return true if p is contained, and false otherwise
@@ -101,12 +108,13 @@ public class Edge {
     /**
      * Convert the edge to a vector. This vector is from the first point to the
      * second one.
+     * 
      * @return this vector
      */
     public final Vector3d convertToVector3d() {
         return new Vector3d(this.getP2().getX() - this.getP1().getX(), this
-            .getP2().getY() - this.getP1().getY(), this.getP2().getZ()
-            - this.getP1().getZ());
+            .getP2().getY()
+            - this.getP1().getY(), this.getP2().getZ() - this.getP1().getZ());
     }
 
     /*
@@ -130,6 +138,7 @@ public class Edge {
 
     /**
      * Return the number of triangles.
+     * 
      * @return the number of triangles
      */
     public final int getNumberTriangles() {
@@ -138,6 +147,7 @@ public class Edge {
 
     /**
      * Returns the number of neighbours of this contained in the polyline p.
+     * 
      * @param polyline
      *            the polyline in which the edges have to be
      * @return the number of neighbours
@@ -157,6 +167,7 @@ public class Edge {
 
     /**
      * Getter.
+     * 
      * @return the first point
      */
     public final Point getP1() {
@@ -165,6 +176,7 @@ public class Edge {
 
     /**
      * Getter.
+     * 
      * @return the second point
      */
     public final Point getP2() {
@@ -173,6 +185,7 @@ public class Edge {
 
     /**
      * Getter.
+     * 
      * @return a list of points with the two points of the edge
      */
     public final List<Point> getPoints() {
@@ -181,6 +194,7 @@ public class Edge {
 
     /**
      * Getter.
+     * 
      * @return the list of triangles the edge belongs to
      */
     public final List<Triangle> getTriangles() {
@@ -199,6 +213,7 @@ public class Edge {
     /**
      * Check if p is contained in the cylinder which axis is this edge, which
      * bounds are the two points of this edge, and which radius is error.
+     * 
      * @param point
      *            the point to check
      * @param error
@@ -237,6 +252,7 @@ public class Edge {
      * Check if p is contained in the frame constitued by two segments parallels
      * to this edge with a coefficient. Caution : this method expects to be in
      * the plane (x,y). Thus a change base must be made before.
+     * 
      * @param point
      *            the point to check
      * @param error
@@ -273,6 +289,7 @@ public class Edge {
     /**
      * Check if p is contained in the infinite cylinder which axis is this edge,
      * and which radius is error.
+     * 
      * @param point
      *            the point to check
      * @param error
@@ -312,6 +329,7 @@ public class Edge {
 
     /**
      * Check if an edge is a neighboor of this.
+     * 
      * @param e
      *            the edge to check
      * @return true if e shares one point with this, false if e is this, and if
@@ -327,6 +345,7 @@ public class Edge {
 
     /**
      * Compute the length of the edge.
+     * 
      * @return the length of the edge
      */
     public final double length() {
@@ -335,6 +354,7 @@ public class Edge {
 
     /**
      * Check if this is oriented as another edge, with an orientation error.
+     * 
      * @param e
      *            the other edge
      * @param error
@@ -350,7 +370,8 @@ public class Edge {
 
         final Vector3d vect2 =
             new Vector3d(this.getP2().getX() - this.getP1().getX(), this
-                .getP2().getY() - this.getP1().getY(), this.getP2().getZ()
+                .getP2().getY()
+                - this.getP1().getY(), this.getP2().getZ()
                 - this.getP1().getZ());
         vect2.normalize();
 
@@ -361,6 +382,7 @@ public class Edge {
 
     /**
      * Project a point on the edge.
+     * 
      * @param point
      *            the point to project
      * @return the point projected
@@ -400,6 +422,7 @@ public class Edge {
      * Returns the edge neighbour of this which contains p and which belongs to
      * b. If there is a point which belongs to 4 edges, the method will take the
      * left one, using vector considerations.
+     * 
      * @param p
      *            the point shared by the two edges
      * @param b
@@ -430,6 +453,7 @@ public class Edge {
      * Returns the edge neighbour of this which contains p and which belongs to
      * b. If there is a point which does not belong to 2 edges, throw an
      * exception.
+     * 
      * @param p
      *            the point shared by the two edges
      * @param b
@@ -453,6 +477,7 @@ public class Edge {
 
     /**
      * Return the other point of the edge.
+     * 
      * @param p
      *            one point of the edge
      * @return the other point which forms the edge
@@ -470,6 +495,7 @@ public class Edge {
 
     /**
      * Return the other triangle this belongs to.
+     * 
      * @param t
      *            one triangle which contains the edge
      * @return the other triangle which contains the edge Return an exception if
@@ -480,12 +506,13 @@ public class Edge {
     public final Triangle returnOther(final Triangle t)
         throws MoreThanTwoTrianglesPerEdgeException {
 
+        Triangle triangle = null;
+        // Maybe remove this Exception, because it's treated earlier... and it
+        // shouldn't happen here !
         if (this.triangles.size() > 2) {
             throw new MoreThanTwoTrianglesPerEdgeException();
         }
-
-        Triangle triangle = null;
-        if (this.triangles.size() > 2) {
+        if (this.triangles.size() == 2) {
             if (this.triangles.get(0) == t) {
                 triangle = this.triangles.get(1);
             }
@@ -499,6 +526,7 @@ public class Edge {
 
     /**
      * Setter.
+     * 
      * @param point
      *            the first point
      */
@@ -509,6 +537,7 @@ public class Edge {
 
     /**
      * Setter.
+     * 
      * @param point
      *            the second point
      */
@@ -519,6 +548,7 @@ public class Edge {
     /**
      * Return the point shared by the two edges. Return null if the two edges
      * don't share any point.
+     * 
      * @param e
      *            the edge to search in
      * @return the point shared by this and e
@@ -546,6 +576,7 @@ public class Edge {
 
     /**
      * On many edges, return the one which is the most at the left.
+     * 
      * @param weirdEdges
      *            the list of edges to choose in.
      * @param weirdPoint
@@ -598,6 +629,7 @@ public class Edge {
 
     /**
      * Implement a exception used when the polyline is bad formed.
+     * 
      * @author Daniel Lefevre
      */
     public static final class BadFormedPolylineException extends Exception {
@@ -617,6 +649,7 @@ public class Edge {
     /**
      * Implement an exception used when an edge belongs to more than two
      * triangles.
+     * 
      * @author Daniel Lefevre
      */
     public static final class MoreThanTwoTrianglesPerEdgeException extends

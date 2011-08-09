@@ -12,14 +12,15 @@ import org.junit.Test;
 
 /**
  * A set of tests for the class MatrixMethod.
+ * 
  * @author Daniel Lefevre
  */
 public final class MatrixMethodTest extends TestCase {
 
     /**
-     * Private constructor.
+     * Constructor.
      */
-    private MatrixMethodTest() {
+    public MatrixMethodTest() {
     }
 
     /**
@@ -157,6 +158,15 @@ public final class MatrixMethodTest extends TestCase {
             Assert.assertTrue(matrixInv[2][2] == 1);
         } catch (SingularMatrixException e) {
             Assert.fail("Singular matrix !");
+        }
+
+        final Vector3d vect2 = new Vector3d(0, 0, 0);
+        try {
+            final double[][] matrix = MatrixMethod.createOrthoBase(vect2);
+            MatrixMethod.getInversMatrix(matrix);
+            Assert.fail("Should throw an exception !");
+        } catch (SingularMatrixException e) {
+            // This exception must be catched.
         }
     }
 }
