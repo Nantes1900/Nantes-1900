@@ -119,7 +119,7 @@ public class Building {
                 int counter = 0;
                 for (Mesh m : mesh.getNeighbours()) {
                     m.writeSTL("error" + counter + ".stl");
-                    counter++;
+                    ++counter;
                 }
                 System.out.println("Error !");
                 System.exit(1);
@@ -343,7 +343,7 @@ public class Building {
         // See above.
         for (int i = 0; i < roofList.size(); i = i + 1) {
             final Mesh r1 = roofList.get(i);
-            for (int j = i + 1; j < roofList.size(); j++) {
+            for (int j = i + 1; j < roofList.size(); j = j + 1) {
                 final Mesh r2 = roofList.get(j);
                 if (r1.isNeighbour(r2)
                     && r1.isOrientedAs(r2,

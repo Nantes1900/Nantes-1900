@@ -28,11 +28,11 @@ import org.junit.Test;
  */
 public final class ParserSTLTest extends TestCase {
 
-    // /**
-    // * Private constructor.
-    // */
-    // private ParserSTLTest() {
-    // }
+    /**
+     * Private constructor.
+     */
+    private ParserSTLTest() {
+    }
 
     /**
      * Test method for
@@ -78,7 +78,7 @@ public final class ParserSTLTest extends TestCase {
             writerB.write();
 
             try {
-                ParserSTL parserA = new ParserSTL("WriterTestA.stl");
+                final ParserSTL parserA = new ParserSTL("WriterTestA.stl");
                 final Mesh readA = parserA.read();
                 Assert.assertTrue(readA.size() == 2);
                 final List<Triangle> readListA = new ArrayList<Triangle>(readA);
@@ -87,7 +87,7 @@ public final class ParserSTLTest extends TestCase {
                 Assert.assertTrue(readListA.get(1).equals(t1)
                     || readListA.get(1).equals(t2));
 
-                ParserSTL parserB = new ParserSTL("WriterTestB.stl");
+                final ParserSTL parserB = new ParserSTL("WriterTestB.stl");
                 final Mesh readB = parserB.read();
                 Assert.assertTrue(readB.size() == 2);
                 final List<Triangle> readListB = new ArrayList<Triangle>(readB);

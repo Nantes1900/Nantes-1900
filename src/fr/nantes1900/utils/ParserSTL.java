@@ -72,8 +72,7 @@ public class ParserSTL {
      * @param fileNameRead
      *            the name of the file to read
      */
-    public ParserSTL(
-        final String fileNameRead) {
+    public ParserSTL(final String fileNameRead) {
         this.fileName = fileNameRead;
     }
 
@@ -125,8 +124,6 @@ public class ParserSTL {
      * two triangles the same references to the point (and
      * same work for the edges).
      * 
-     * @param mesh
-     *            the HashSet of triangle to complete
      * @param line
      *            the line as a String
      * @throws FlatTriangleException
@@ -412,23 +409,40 @@ public class ParserSTL {
         return this.triangleSet;
     }
 
-    private Edge treatEdge(Edge edge) {
+    /**
+     * Check if the edge doesn't already exists, and if it does, return only one
+     * references for edges which have the same values.
+     * 
+     * @param edge
+     *            the edge to check
+     * @return the edge parameter if it doesn't already exists, otherwise the
+     *         edge which already exists and have the same values
+     */
+    private Edge treatEdge(final Edge edge) {
 
         final Edge eNew = this.edgeMap.get(edge);
         if (eNew == null) {
             this.edgeMap.put(edge, edge);
+            return edge;
         } else {
-            edge = eNew;
+            return eNew;
         }
-
-        return edge;
     }
 
     /**
+     * Check if the point doesn't already exists, and if it does, return only
+     * one
+     * references for points which have the same values.
+     * 
      * @param point
-     * @throws OutOfBoundsPointException
+     *            the point to check
+     * @return the point parameter if it doesn't already exists, otherwise the
+     *         point which already exists and have the same values
+     * @exception OutOfBoundsPointException
+     *                if the point have incorrect values
      */
-    private Point treatPoint(Point point) throws OutOfBoundsPointException {
+    private Point treatPoint(final Point point)
+        throws OutOfBoundsPointException {
 
         // If the point has one coordinate >
         // 1e5, throws an Exception. It can cause an error
@@ -479,7 +493,8 @@ public class ParserSTL {
      * 
      * @author Daniel Lefevre
      */
-    private static final class FlatTriangleException extends BadMeshException {
+    private static final class FlatTriangleException extends
+        ParserSTL.BadMeshException {
 
         /**
          * Version attribute.
@@ -493,12 +508,24 @@ public class ParserSTL {
         }
     }
 
-    private static class BadMeshException extends Exception {
+    /**
+     * Implements an exception when a triangle, a point, or an edge is bad
+     * formed.
+     * 
+     * @author Daniel Lefevre
+     */
+    public static class BadMeshException extends Exception {
 
         /**
          * Version attribute.
          */
         private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        private BadMeshException() {
+        }
 
     }
 
@@ -509,7 +536,7 @@ public class ParserSTL {
      * @author Daniel Lefevre
      */
     private static final class OutOfBoundsPointException extends
-        BadMeshException {
+        ParserSTL.BadMeshException {
 
         /**
          * Version attribute.

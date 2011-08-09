@@ -17,6 +17,7 @@ import java.nio.ByteOrder;
  * Write a STL file containing the faces, list of faces or buildings. This
  * writer use the ASCII or the binary format, depending on the static attribute
  * MODE.
+ * 
  * @author Eric Berthe, Valentin Roger, Daniel Lefèvre
  */
 
@@ -50,21 +51,25 @@ public class WriterSTL {
 
     /**
      * Constructor.
+     * 
      * @param fileNameWrite
      *            the name of the file to write in
      */
-    public WriterSTL(final String fileNameWrite) {
+    public WriterSTL(
+        final String fileNameWrite) {
         this.fileName = fileNameWrite;
     }
 
     /**
      * Constructor.
+     * 
      * @param fileNameWrite
      *            the name of the file to write in
      * @param mode
      *            the mode of the writer
      */
-    public WriterSTL(final String fileNameWrite, final int mode) {
+    public WriterSTL(
+        final String fileNameWrite, final int mode) {
         this.fileName = fileNameWrite;
         this.writingMode = mode;
     }
@@ -102,6 +107,7 @@ public class WriterSTL {
 
     /**
      * Write a triangle in the binary format.
+     * 
      * @param writer
      *            the writer which writes in the file
      * @param face
@@ -136,6 +142,7 @@ public class WriterSTL {
 
     /**
      * Write a double in the good order (LITTLE_ENDIAN) in the writer.
+     * 
      * @param writer
      *            the writer which writes in the file
      * @param a
@@ -154,6 +161,7 @@ public class WriterSTL {
 
     /**
      * Write a mesh in an ASCII file.
+     * 
      * @throws IOException
      *             if there is a problem in the opening or the closing operation
      */
@@ -184,6 +192,7 @@ public class WriterSTL {
 
     /**
      * Write a mesh in an binary file.
+     * 
      * @throws IOException
      *             if there is a problem in the opening of the closing operation
      */
@@ -221,6 +230,7 @@ public class WriterSTL {
 
     /**
      * Allows to know the value of the attribute MODE.
+     * 
      * @return the attribute MODE
      */
     public final int getWriteMode() {
@@ -229,6 +239,7 @@ public class WriterSTL {
 
     /**
      * Setter.
+     * 
      * @param m
      *            the mesh to write
      */
@@ -238,6 +249,7 @@ public class WriterSTL {
 
     /**
      * Allows to change the writing mode attribute : MODE.
+     * 
      * @param mode
      *            the new mode
      */
@@ -267,6 +279,7 @@ public class WriterSTL {
 
     /**
      * Implements an exception when no mesh is found on the writer.
+     * 
      * @author Daniel Lefevre
      */
     public final class NoMeshException extends Exception {

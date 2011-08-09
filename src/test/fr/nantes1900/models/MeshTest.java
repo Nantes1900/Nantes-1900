@@ -641,6 +641,6 @@ public class MeshTest extends TestCase {
      */
     @Test
     public final void testZMinFace() {
-        Assert.assertTrue(m.zMinFace() == t2);
+        Assert.assertTrue(this.m.zMinFace() == this.t2);
     }
 }

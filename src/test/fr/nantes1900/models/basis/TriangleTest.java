@@ -18,6 +18,7 @@ import org.junit.Test;
 
 /**
  * A set of tests for the class Triangle.
+ * 
  * @author Daniel Lefevre
  */
 public class TriangleTest extends TestCase {
@@ -74,6 +75,7 @@ public class TriangleTest extends TestCase {
      * . Test method for
      * {@link nantes1900pjct.models.basis.Triangle#angularTolerance(nantes1900pjct.models.basis.Triangle, double)}
      * .
+     * 
      * @throws MoreThanTwoTrianglesPerEdgeException
      */
     @Test
@@ -258,6 +260,7 @@ public class TriangleTest extends TestCase {
      * Test method for
      * {@link nantes1900pjct.models.basis.Triangle#returnNeighbours(nantes1900pjct.models.Mesh, nantes1900pjct.models.Mesh)}
      * .
+     * 
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if an edge is bad formed
      */

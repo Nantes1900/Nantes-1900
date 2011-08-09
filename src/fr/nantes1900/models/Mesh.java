@@ -60,8 +60,7 @@ public class Mesh extends HashSet<Triangle> {
      * @param c
      *            the collection
      */
-    public Mesh(
-        final Collection<? extends Triangle> c) {
+    public Mesh(final Collection<? extends Triangle> c) {
         super(c);
         this.iD = ++Mesh.currentID;
     }
@@ -203,6 +202,23 @@ public class Mesh extends HashSet<Triangle> {
         return null;
     }
 
+    /**
+     * Find the edges of a mesh (which is a surface of a building : wall or
+     * roof).
+     * 
+     * @param wallList
+     *            the list of walls to check if the surface is a wall or not
+     * @param pointMap
+     *            the map of points
+     * @param edgeMap
+     *            the map of edges
+     * @param normalFloor
+     *            the normal to the floor
+     * @return a polyline made from all the edges of this surface, and which
+     *         perfectly fit to its neighbours.
+     * @throws InvalidSurfaceException
+     *             if anything bad happens in the algorithm
+     */
     public final Polyline findEdges(final List<Mesh> wallList,
         final Map<Point, Point> pointMap, final Map<Edge, Edge> edgeMap,
         final Vector3d normalFloor) throws InvalidSurfaceException {

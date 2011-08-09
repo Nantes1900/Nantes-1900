@@ -123,8 +123,8 @@ public class WriterCityGML {
                 final AbstractBoundarySurface boundarySurface =
                     this.citygml.createWallSurface();
 
-                boundarySurface.setLod2MultiSurface(gml
-                    .createMultiSurfaceProperty(gml
+                boundarySurface.setLod2MultiSurface(this.gml
+                    .createMultiSurfaceProperty(this.gml
                         .createMultiSurface(geometry)));
 
                 boundedBy.add(this.citygml
@@ -277,7 +277,7 @@ public class WriterCityGML {
                 // SURFACE !
 
                 final AbstractBoundarySurface boundarySurface =
-                    citygml.createRoofSurface();
+                    this.citygml.createRoofSurface();
 
                 boundarySurface.setLod2MultiSurface(this.gml
                     .createMultiSurfaceProperty(this.gml

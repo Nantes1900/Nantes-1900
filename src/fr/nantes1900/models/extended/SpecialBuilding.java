@@ -2,8 +2,16 @@ package fr.nantes1900.models.extended;
 
 import fr.nantes1900.models.Mesh;
 
+/**
+ * Implements a special building object as a container of a mesh.
+ * 
+ * @author Daniel Lefevre
+ */
 public class SpecialBuilding {
 
+    /**
+     * The mesh describing the surface of the special building.
+     */
     private Mesh mesh = new Mesh();
 
     /**
@@ -14,18 +22,20 @@ public class SpecialBuilding {
 
     /**
      * Build a special building from a mesh.
+     * 
      * @param m
      *            the special building as a mesh
      */
-    public void buildFromMesh(Mesh m) {
+    public final void buildFromMesh(final Mesh m) {
         this.mesh = m;
     }
 
-    public Mesh getMesh() {
-        return mesh;
-    }
-
-    public void setMesh(Mesh mesh) {
-        this.mesh = mesh;
+    /**
+     * Getter.
+     * 
+     * @return the mesh
+     */
+    public final Mesh getMesh() {
+        return this.mesh;
     }
 }
