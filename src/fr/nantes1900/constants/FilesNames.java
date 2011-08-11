@@ -3,9 +3,12 @@ package fr.nantes1900.constants;
 /**
  * Implements a final class to define some constants. Are defined here the
  * strings and names of the files and directories used in the algorithm.
+ * 
  * @author Daniel Lefevre
  */
 public final class FilesNames {
+
+    // FIXME : introduce these constants in the classes.
 
     /**
      * Directory name for the floors.
@@ -47,6 +50,21 @@ public final class FilesNames {
      * Prefix name for the special building files.
      */
     public static final String SPECIAL_BUILDING_FILENAME = "special_building";
+
+    /**
+     * Separator in the name of the files.
+     */
+    public static final String SEPARATOR = " - ";
+
+    /**
+     * Extension of a STL file.
+     */
+    public static final String EXTENSION = ".stl";
+
+    /**
+     * Directory name for the results datas.
+     */
+    public static final String RESULT_DIRECTORY = "/results/";
 
     /**
      * Private constructor.

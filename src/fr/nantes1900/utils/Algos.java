@@ -95,7 +95,7 @@ public final class Algos {
      * and which have the same orientation. It thus adds it to the mesh.
      * 
      * @param list
-     *            the list of mesh to complete with noise
+     *            the list of meshes to complete with noise
      * @param noise
      *            the whole noise
      * @param largeAngleNormalErrorFactor
@@ -103,6 +103,8 @@ public final class Algos {
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if the edge is bad formed
      */
+    // LOOK : we can maybe gain speed in this method, which completely lacks of
+    // velocity.
     public static void blockTreatOrientedNoise(final List<Mesh> list,
         final Mesh noise, final double largeAngleNormalErrorFactor)
         throws MoreThanTwoTrianglesPerEdgeException {
@@ -125,51 +127,7 @@ public final class Algos {
         list.addAll(m);
     }
 
-    /**
-     * Extract the floor in a mesh. Receiving a mesh of triangles oriented as
-     * the floor, tt searches the lowest altitude as the lowest z, and take a
-     * stripe of triangles that are contained in the lowest altitude and an
-     * error. In this stripe, it takes one triangle, and returns all its
-     * neighbours. FIXME : find the altitude factor automatically.
-     * 
-     * @param meshOriented
-     *            the floor-oriented triangles that will be treated
-     * @param altitudeErrorFactor
-     *            the error on the altitude
-     * @return the mesh containing the floor extracted
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if the edge is bad formed
-     */
-    public static Mesh floorExtract(final Mesh meshOriented,
-        final double altitudeErrorFactor)
-        throws MoreThanTwoTrianglesPerEdgeException {
-        final Mesh floors = new Mesh();
-
-        try {
-            Triangle lowestTriangle = meshOriented.zMinFace();
-            final double lowestZ = lowestTriangle.zMin();
-
-            final Mesh stripe =
-                meshOriented.zBetween(lowestZ, lowestZ + altitudeErrorFactor);
-
-            final Mesh temp = new Mesh();
-
-            while (!stripe.isEmpty()) {
-
-                lowestTriangle = stripe.getOne();
-                temp.clear();
-                lowestTriangle.returnNeighbours(temp, meshOriented);
-                floors.addAll(temp);
-                meshOriented.remove(temp);
-                stripe.remove(temp);
-            }
-
-            return floors;
-        } catch (InvalidParameterException e) {
-            return null;
-        }
-    }
-
+    //TODO : there is maybe no need of this exception.
     /**
      * Implements an exception when the floor is empty.
      * 

@@ -1,8 +1,11 @@
 package fr.nantes1900.models.extended;
 
+import fr.nantes1900.constants.FilesNames;
 import fr.nantes1900.constants.SeparationFloorBuilding;
 import fr.nantes1900.models.Mesh;
+import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
+import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.utils.Algos;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
@@ -60,7 +63,8 @@ public class Town {
     /**
      * Change base matrix to a base which is floor-like oriented.
      */
-    private double[][] matrix = new double[3][3];
+    private double[][] matrix =
+        new double[MatrixMethod.MATRIX_DIMENSION][MatrixMethod.MATRIX_DIMENSION];
 
     /**
      * Constructor.
@@ -218,7 +222,8 @@ public class Town {
         int counterFloor = 1;
 
         for (Floor f : this.floors) {
-            f.writeSTL(directoryName + "floor - " + counterFloor + ".stl");
+            f.writeSTL(directoryName + FilesNames.FLOOR_FILENAME
+                + FilesNames.SEPARATOR + counterFloor + FilesNames.EXTENSION);
             ++counterFloor;
         }
     }
@@ -233,7 +238,8 @@ public class Town {
         int buildingCounter = 1;
 
         for (Building m : this.industrials) {
-            m.writeSTL(directoryName + "building - " + buildingCounter + ".stl");
+            m.writeSTL(directoryName + FilesNames.INDUSTRIAL_FILENAME
+                + FilesNames.SEPARATOR + buildingCounter + FilesNames.EXTENSION);
             ++buildingCounter;
         }
     }
@@ -248,8 +254,8 @@ public class Town {
         int buildingCounter = 1;
 
         for (Building m : this.residentials) {
-            m.writeSTL(directoryName + "/building - " + buildingCounter
-                + ".stl");
+            m.writeSTL(directoryName + FilesNames.RESIDENTIAL_FILENAME
+                + FilesNames.SEPARATOR + buildingCounter + FilesNames.EXTENSION);
             ++buildingCounter;
         }
     }
@@ -265,8 +271,9 @@ public class Town {
 
         for (SpecialBuilding m : this.specialBuildings) {
             m.getMesh().writeSTL(
-                directoryName + "special_building - " + buildingCounter
-                    + ".stl");
+                directoryName + FilesNames.SPECIAL_BUILDING_FILENAME
+                    + FilesNames.SEPARATOR + buildingCounter
+                    + FilesNames.EXTENSION);
             ++buildingCounter;
         }
     }
@@ -281,7 +288,8 @@ public class Town {
         int counterWateries = 1;
 
         for (Floor f : this.wateries) {
-            f.writeSTL(directoryName + "/watery - " + counterWateries + ".stl");
+            f.writeSTL(directoryName + FilesNames.WATERY_FILENAME
+                + FilesNames.SEPARATOR + counterWateries + FilesNames.EXTENSION);
             ++counterWateries;
         }
     }
@@ -319,14 +327,8 @@ public class Town {
         }
 
         // Algorithm : detection of buildings considering their size
-        int number = 0;
         for (Mesh m : thingsList) {
-            number += m.size();
-        }
-
-        for (Mesh m : thingsList) {
-            if (m.size() >= SeparationFloorBuilding.BLOCK_SIZE_ERROR
-                * (double) number / (double) thingsList.size()) {
+            if (m.size() >= SeparationFloorBuilding.BLOCK_BUILDING_SIZE_ERROR) {
 
                 buildingList.add(m);
 
@@ -345,28 +347,28 @@ public class Town {
     }
 
     /**
-     * Cleans the directory "/results/" to put the results in it.
+     * Cleans the directory "results" to put the results in it.
      * 
      * @param directoryName
      *            the name of the working directory
      */
     private void cleanResultDirectory(final String directoryName) {
-        if (new File(directoryName + "/results/").exists()) {
-            final File[] fileList =
-                new File(directoryName + "/results/").listFiles();
-            for (int i = 0; i < fileList.length; i = i + 1) {
+        if (new File(directoryName + FilesNames.RESULT_DIRECTORY).exists()) {
 
-                // Delete only the files, and the empty directories. Then it's
-                // safe to put something in a directory Archives for example.
-                fileList[i].delete();
+            // List all the files of the directory
+            final File[] fileList =
+                new File(directoryName + FilesNames.RESULT_DIRECTORY)
+                    .listFiles();
+
+            for (File f : fileList) {
+                // Delete only the files, and the empty directories. Then
+                // it's
+                // safe to put something in a directory Archives for
+                // example.
+                f.delete();
             }
         } else {
-            // Create the directory results if not already existing.
-            try {
-                new File(directoryName + "/results/").createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            new File(directoryName + FilesNames.RESULT_DIRECTORY).mkdir();
         }
     }
 
@@ -399,19 +401,10 @@ public class Town {
      */
     private Vector3d extractFloorNormal(final String fileName) {
 
-        try {
-            final ParserSTL parser = new ParserSTL(fileName);
-            final Mesh floorBrut = parser.read();
+        final Mesh floorBrut = this.parseFile(fileName);
 
-            // Extract of the normal of the floor
-            return floorBrut.averageNormal();
-
-        } catch (IOException e) {
-            Town.LOG
-                .severe("Error : the file is badly formed, not found or unreadable !");
-            System.exit(1);
-            return null;
-        }
+        // Extract of the normal of the floor
+        return floorBrut.averageNormal();
     }
 
     /**
@@ -420,37 +413,107 @@ public class Town {
      * @param mesh
      *            the mesh to extract from
      * @param normalFloor
-     *            the normal to the floor
+     *            the normal to the floor (not the gravity-oriented normal, of
+     *            course...)
      * @return a mesh containing the floor
      */
     private Mesh floorExtraction(final Mesh mesh, final Vector3d normalFloor) {
         // TODO? Return an exception if there is no floor in the mesh, such as :
-        // please get some floors during the previous cut !
+        // please get some floors during the previous cut ! Write it in the
+        // préparation du découpage document.
 
-        // Searching for floor-oriented triangles with an error :
-        // angleNormalErrorFactor
-        final Mesh meshOriented =
+        // Searching for floor-oriented triangles with an error (defined in
+        // constants/SeparationFloorBuilding
+        Mesh meshOriented =
             mesh.orientedAs(normalFloor,
                 SeparationFloorBuilding.ANGLE_FLOOR_ERROR);
+        meshOriented.writeSTL("mesh1.stl");
 
-        // Floor-search algorithm
-        // Select the lowest Triangle : it belongs to the floor
-        // Take all of its neighbours
-        // Select another Triangle which is not too high and repeat the above
-        // step
-        Mesh floorsMesh;
+        List<Mesh> thingsList;
+        List<Mesh> floorsList = new ArrayList<Mesh>();
         try {
-            floorsMesh =
-                Algos.floorExtract(meshOriented,
-                    SeparationFloorBuilding.ALTITUDE_ERROR);
+            thingsList = Algos.blockExtract(meshOriented);
 
-            mesh.remove(floorsMesh);
+            // We consider their size : if they're big enough, they're keeped.
+            // This is to avoid the parts of roofs, walls, etc...
+            for (Mesh m : thingsList) {
+                if (m.size() > SeparationFloorBuilding.BLOCK_FLOORS_SIZE_ERROR) {
+                    floorsList.add(m);
+                }
+            }
 
-            return floorsMesh;
+            final Mesh wholeFloor = new Mesh();
+            for (Mesh f : floorsList) {
+                wholeFloor.addAll(f);
+            }
+            wholeFloor.writeSTL("mesh2.stl");
+
+            // We consider the altitude of the blocks on an axis parallel to the
+            // normal floor.
+            // final double highDiff = mesh.zMax() - mesh.zMin();
+            //
+            // FIXME : this doesn't work.
+            // final Mesh wholeFloor = new Mesh();for (Mesh f : floorsList)
+            // {mesh.remove(f);wholeFloor.addAll(f);}
+            //
+            // final Edge axisNormalFloor =
+            // new Edge(new Point(0, 0, 0), new Point(normalFloor.x,
+            // normalFloor.y, normalFloor.z));
+            // final Point pAverage =
+            // axisNormalFloor.project(wholeFloor.getCentroid());
+            //
+            // thingsList = new ArrayList<Mesh>();
+            // for (Mesh m : floorsList) {
+            // if (axisNormalFloor.project(m.getCentroid()).distance(pAverage) <
+            // highDiff
+            // * SeparationFloorBuilding.ALTITUDE_ERROR) {
+            //
+            // thingsList.add(m);
+            // } else {
+            // System.out.println(axisNormalFloor.project(m.getCentroid())
+            // .distance(pAverage));
+            // System.out.println(highDiff
+            // * SeparationFloorBuilding.ALTITUDE_ERROR);
+            // }
+            // }
+            // FIXME END
+            //
+            // Now that we found the real floors, we extract the other triangles
+            // which are almost floor-oriented to add them.
+            meshOriented =
+                mesh.orientedAs(normalFloor,
+                    SeparationFloorBuilding.LARGE_ANGLE_FLOOR_ERROR);
+            meshOriented.writeSTL("mesh3.stl");
+
+            // If the new floors are neighbours from the old ones, they are
+            // added to the real floors.
+            thingsList = new ArrayList<Mesh>();
+            for (Mesh m : floorsList) {
+
+                final Mesh temp = new Mesh(m);
+                temp.addAll(meshOriented);
+                final Mesh ret = new Mesh();
+                // TODO : care : if m doesn't belong anymore to meshOriented ?
+                // Because it's already contained in another part computed
+                // before ?
+                m.getOne().returnNeighbours(ret, temp);
+                meshOriented.remove(ret);
+                thingsList.add(ret);
+            }
+            floorsList = thingsList;
         } catch (MoreThanTwoTrianglesPerEdgeException e) {
+            // TODO
             e.printStackTrace();
-            return null;
         }
+
+        final Mesh wholeFloor = new Mesh();
+        for (Mesh f : floorsList) {
+            mesh.remove(f);
+            wholeFloor.addAll(f);
+        }
+        wholeFloor.writeSTL("mesh4.stl");
+
+        return wholeFloor;
     }
 
     /**
@@ -517,13 +580,15 @@ public class Town {
     private void treatFloors(final String directoryName) {
         int counterFloors = 1;
 
-        while (new File(directoryName + "floor - " + counterFloors + ".stl")
+        while (new File(directoryName + FilesNames.FLOOR_FILENAME
+            + FilesNames.SEPARATOR + counterFloors + FilesNames.EXTENSION)
             .exists()) {
 
             final Floor floor = new Floor("floor");
 
-            floor.buildFromMesh(this.parseFile(directoryName + "floor - "
-                + counterFloors + ".stl"));
+            floor.buildFromMesh(this.parseFile(directoryName
+                + FilesNames.FLOOR_FILENAME + FilesNames.SEPARATOR
+                + counterFloors + FilesNames.EXTENSION));
 
             floor.getMesh().changeBase(this.matrix);
 
@@ -566,20 +631,27 @@ public class Town {
         final Vector3d normalGravityOriented) {
         int counterResidentials = 1;
 
-        while (new File(directoryName + "residential - " + counterResidentials
-            + ".stl").exists()) {
+        while (new File(directoryName + FilesNames.RESIDENTIAL_FILENAME
+            + FilesNames.SEPARATOR + counterResidentials + FilesNames.EXTENSION)
+            .exists()) {
 
             final Mesh mesh =
-                this.parseFile(directoryName + "residential - "
-                    + counterResidentials + ".stl");
+                this.parseFile(directoryName + FilesNames.RESIDENTIAL_FILENAME
+                    + FilesNames.SEPARATOR + counterResidentials
+                    + FilesNames.EXTENSION);
 
             Vector3d realNormalToTheFloor;
-            if (new File(directoryName + "floor - " + counterResidentials
-                + ".stl").exists()) {
+            if (new File(directoryName + FilesNames.FLOOR_FILENAME
+                + FilesNames.SEPARATOR + counterResidentials
+                + FilesNames.EXTENSION).exists()) {
+
                 realNormalToTheFloor =
-                    this.extractFloorNormal(directoryName + "floor - "
-                        + counterResidentials + ".stl");
+                    this.extractFloorNormal(directoryName
+                        + FilesNames.FLOOR_FILENAME + FilesNames.SEPARATOR
+                        + counterResidentials + FilesNames.EXTENSION);
+
                 MatrixMethod.changeBase(realNormalToTheFloor, this.matrix);
+
             } else {
                 realNormalToTheFloor = normalGravityOriented;
             }
@@ -597,34 +669,43 @@ public class Town {
             final Mesh noise = new Mesh();
 
             Mesh wholeFloor = this.floorExtraction(mesh, realNormalToTheFloor);
+
             final List<Mesh> buildings = this.buildingsExtraction(mesh, noise);
+            final Mesh wholeBuilding = new Mesh();
+            for (Mesh m : buildings) {
+                wholeBuilding.addAll(m);
+            }
+            wholeBuilding.writeSTL("building" + counterResidentials + ".stl");
 
             final List<Mesh> floorsMesh =
                 this.noiseTreatment(wholeFloor, noise);
+
+            wholeFloor = new Mesh();
+            for (Mesh m : floorsMesh) {
+                wholeFloor.addAll(m);
+            }
+            wholeFloor.writeSTL("floor" + counterResidentials + ".stl");
 
             // FIXME : code this method !
             // ArrayList<Mesh> formsList =
             // this.carveRealBuildings(buildings);
 
-            for (Mesh m : buildings) {
+            // TODO : put that out of commentaries
+            // for (Mesh m : buildings) {
 
-                final Building e = new Building();
-                e.buildFromMesh(m, wholeFloor, normalGravityOriented);
-                this.addResidential(e);
-            }
+            // final Building e = new Building();
+            // e.buildFromMesh(m, wholeFloor, normalGravityOriented);
+            // this.addResidential(e);
+            // }
 
             wholeFloor = new Mesh();
             for (Mesh m : floorsMesh) {
                 wholeFloor.addAll(m);
             }
 
-            int counterFloor = 1;
             for (Mesh m : floorsMesh) {
-                m.writeSTL("Files/floor - " + counterFloor + ".stl");
                 final Floor floor = new Floor("street");
                 floor.buildFromMesh(m);
-                this.addFloor(floor);
-                ++counterFloor;
             }
 
             // FIXME : I don't know what to do with the formsList : little
@@ -644,12 +725,15 @@ public class Town {
     private void treatSpecialBuildings(final String directoryName) {
         int counterSpecialBuildings = 1;
 
-        while (new File(directoryName + "special_building - "
-            + counterSpecialBuildings + ".stl").exists()) {
+        while (new File(directoryName + FilesNames.SPECIAL_BUILDING_FILENAME
+            + FilesNames.SEPARATOR + counterSpecialBuildings
+            + FilesNames.EXTENSION).exists()) {
 
             final Mesh meshSpecialBuilding =
-                this.parseFile(directoryName + "special_building - "
-                    + counterSpecialBuildings + ".stl");
+                this.parseFile(directoryName
+                    + FilesNames.SPECIAL_BUILDING_FILENAME
+                    + FilesNames.SEPARATOR + counterSpecialBuildings
+                    + FilesNames.EXTENSION);
 
             meshSpecialBuilding.changeBase(this.matrix);
 

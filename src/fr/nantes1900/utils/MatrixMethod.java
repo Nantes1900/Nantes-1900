@@ -18,7 +18,7 @@ public final class MatrixMethod {
     /**
      * The dimension of the matrix used in some algorithms. Here, it's 3.
      */
-    private static final int MATRIX_DIMENSION = 3;
+    public static final int MATRIX_DIMENSION = 3;
 
     /**
      * Private constructor.

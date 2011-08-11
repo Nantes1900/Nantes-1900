@@ -237,6 +237,8 @@ public class Mesh extends HashSet<Triangle> {
                         Mesh plane2 = m2;
                         Mesh plane3 = m3;
 
+                        // If this, or m2, or m3 is a wall, then treat it as a
+                        // vertical plane first, and after find the edges.
                         if (wallList.contains(this)) {
                             plane1 = this.returnVerticalPlane(normalFloor);
                         }
@@ -281,7 +283,14 @@ public class Mesh extends HashSet<Triangle> {
                     }
                 }
             } catch (ParallelPlanesException e) {
-                System.out.println("Parrallel planes !");
+                // this.writeSTL("Files/mesh.stl");
+                // int counter = 0;
+                // for (Mesh m : this.getNeighbours()) {
+                // m.writeSTL("Files/error" + counter + ".stl");
+                // ++counter;
+                // }
+                System.out.println("Parallel planes !");
+                // System.exit(1);
                 throw new InvalidSurfaceException();
             }
 
@@ -783,6 +792,37 @@ public class Mesh extends HashSet<Triangle> {
             }
         }
         return t;
+    }
+
+    /**
+     * Compute the point centroid : average of x, y, and z.
+     * 
+     * @return this point
+     */
+    public final Point getCentroid() {
+        return new Point(this.xAverage(), this.yAverage(), this.zAverage());
+    }
+
+    /**
+     * Returns the meshes belonging to contain which are neighbours of this in
+     * the list ret. Recursive method.
+     * 
+     * @param ret
+     *            the list returned which contains the neighbours
+     * @param contain
+     *            the list which must contain the neighbours
+     */
+    public final void returnNeighbours(final List<Mesh> ret,
+        final List<Mesh> contain) {
+
+        ret.add(this);
+
+        for (Mesh m : this.getNeighbours()) {
+            if (!ret.contains(m) && contain.contains(m)) {
+                m.returnNeighbours(ret, contain);
+            }
+        }
+
     }
 
     /**

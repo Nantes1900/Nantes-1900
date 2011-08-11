@@ -24,6 +24,7 @@ import org.junit.Test;
 
 /**
  * A set of tests for the class Mesh.
+ * 
  * @author Daniel Lefevre
  */
 public class MeshTest extends TestCase {
@@ -341,7 +342,7 @@ public class MeshTest extends TestCase {
             final Point point2 = new Point(0, 0, 0);
             final Vector3d vector2 = new Vector3d(0, 0.1, 1.1);
             final Edge edge2 = new Edge(point1, point1);
-            final Triangle triangle2 =
+            Triangle triangle2 =
                 new Triangle(point2, point2, point2, edge2, edge2, edge2,
                     vector2);
 
@@ -352,6 +353,12 @@ public class MeshTest extends TestCase {
 
             Assert.assertTrue(mesh1.isOrientedAs(mesh2, 15));
             Assert.assertFalse(mesh1.isOrientedAs(mesh2, 2));
+
+            triangle2 =
+                new Triangle(point2, point2, point2, edge2, edge2, edge2,
+                    new Vector3d(0, 0, -1));
+
+            Assert.assertTrue(mesh1.isOrientedAs(mesh2, 15));
         } catch (MoreThanTwoTrianglesPerEdgeException e) {
             Assert.fail();
         }

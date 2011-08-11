@@ -314,39 +314,6 @@ public class EdgeTest extends TestCase {
 
     /**
      * Test method for
-     * {@link modeles.Edge#returnNeighbour(modeles.Point, modeles.Polyline)} .
-     */
-    @Test
-    public final void testReturnLeftNeighbour() {
-
-        final Point p1 = new Point(0, 0, 0);
-        final Point p2 = new Point(0, 1, 0);
-        final Point p3 = new Point(-1, 2, 0);
-        final Point p4 = new Point(2, 2, 0);
-        final Point p5 = new Point(4, 2, 0);
-
-        final Edge e1 = new Edge(p1, p2);
-        final Edge e2 = new Edge(p1, p3);
-        final Edge e3 = new Edge(p1, p4);
-        final Edge e4 = new Edge(p1, p5);
-
-        final Vector3d normalFloor = new Vector3d(0, 0, 1);
-
-        final Polyline b = new Polyline();
-        b.add(e1);
-        b.add(e2);
-        b.add(e3);
-        b.add(e4);
-
-        try {
-            Assert.assertTrue(e1.returnLeftNeighbour(b, p1, normalFloor) == e3);
-        } catch (BadFormedPolylineException e) {
-            Assert.fail();
-        }
-    }
-
-    /**
-     * Test method for
      * {@link fr.nantes1900.models.basis.Edge#returnNeighbour(fr.nantes1900.models.Polyline, fr.nantes1900.models.basis.Point)}
      * .
      */

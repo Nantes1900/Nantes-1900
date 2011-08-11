@@ -420,37 +420,6 @@ public class Edge {
 
     /**
      * Returns the edge neighbour of this which contains p and which belongs to
-     * b. If there is a point which belongs to 4 edges, the method will take the
-     * left one, using vector considerations.
-     * 
-     * @param p
-     *            the point shared by the two edges
-     * @param b
-     *            the polyline in which must be the edge returned
-     * @param normalFloor
-     *            the normal to the floor, to select the left edge
-     * @return the edge belonging to b which contains p
-     * @throws BadFormedPolylineException
-     *             if a point in the polyline belongs nor to 2 edge neither to 4
-     *             edges
-     */
-    public final Edge returnLeftNeighbour(final Polyline b, final Point p,
-        final Vector3d normalFloor) throws BadFormedPolylineException {
-
-        final List<Edge> list = b.getNeighbours(p);
-
-        if (list.size() > 3) {
-            return this.returnTheLeftOne(b.getNeighbours(p), p, normalFloor);
-        } else if (list.size() == 2) {
-            list.remove(this);
-            return list.get(0);
-        } else {
-            throw new BadFormedPolylineException();
-        }
-    }
-
-    /**
-     * Returns the edge neighbour of this which contains p and which belongs to
      * b. If there is a point which does not belong to 2 edges, throw an
      * exception.
      * 
@@ -572,59 +541,6 @@ public class Edge {
     @Override
     public final String toString() {
         return new String("(" + this.getP1() + ", " + this.getP2() + ")");
-    }
-
-    /**
-     * On many edges, return the one which is the most at the left.
-     * 
-     * @param weirdEdges
-     *            the list of edges to choose in.
-     * @param weirdPoint
-     *            the point shared by all these edges.
-     * @param normalFloor
-     *            the normal to the floor.
-     * @return the edge which is at the left.
-     */
-    private Edge returnTheLeftOne(final List<Edge> weirdEdges,
-        final Point weirdPoint, final Vector3d normalFloor) {
-
-        final Vector3d vector = new Vector3d();
-
-        vector.x = -this.returnOther(weirdPoint).getX() + weirdPoint.getX();
-        vector.y = -this.returnOther(weirdPoint).getY() + weirdPoint.getY();
-        vector.z = -this.returnOther(weirdPoint).getZ() + weirdPoint.getZ();
-
-        final Vector3d cross = new Vector3d();
-        cross.cross(normalFloor, vector);
-
-        cross.normalize();
-
-        Edge ref = null;
-        double max = Double.NEGATIVE_INFINITY;
-        final Vector3d vect = new Vector3d();
-
-        for (Edge edge : weirdEdges) {
-            if (edge != this) {
-                vect.x =
-                    edge.returnOther(weirdPoint).getX() - weirdPoint.getX();
-                vect.y =
-                    edge.returnOther(weirdPoint).getY() - weirdPoint.getY();
-                vect.z =
-                    edge.returnOther(weirdPoint).getZ() - weirdPoint.getZ();
-
-                vect.normalize();
-
-                if (vector.angle(vect) * cross.dot(vect)
-                    / Math.abs(cross.dot(vect)) > max) {
-                    max =
-                        vector.angle(vect) * cross.dot(vect)
-                            / Math.abs(cross.dot(vect));
-                    ref = edge;
-                }
-            }
-        }
-
-        return ref;
     }
 
     /**
