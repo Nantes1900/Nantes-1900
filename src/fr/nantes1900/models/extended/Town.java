@@ -420,70 +420,57 @@ public class Town {
     private Mesh floorExtraction(final Mesh mesh, final Vector3d normalFloor) {
         // TODO? Return an exception if there is no floor in the mesh, such as :
         // please get some floors during the previous cut ! Write it in the
-        // préparation du découpage document.
+        // "préparation du découpage" document.
 
-        // Searching for floor-oriented triangles with an error (defined in
-        // constants/SeparationFloorBuilding
+        // Searching for floor-oriented triangles with an error
         Mesh meshOriented =
             mesh.orientedAs(normalFloor,
                 SeparationFloorBuilding.ANGLE_FLOOR_ERROR);
-        meshOriented.writeSTL("mesh1.stl");
 
         List<Mesh> thingsList;
         List<Mesh> floorsList = new ArrayList<Mesh>();
         try {
             thingsList = Algos.blockExtract(meshOriented);
 
+            Mesh wholeFloor = new Mesh();
+            for (Mesh f : thingsList) {
+                wholeFloor.addAll(f);
+            }
+
+            // We consider the altitude of the blocks on an axis parallel to the
+            // normal floor.
+            final double highDiff = mesh.zMax() - mesh.zMin();
+
+            final Edge axisNormalFloor =
+                new Edge(new Point(0, 0, 0), new Point(normalFloor.x,
+                    normalFloor.y, normalFloor.z));
+
+            final Point pAverage =
+                axisNormalFloor.project(wholeFloor.getCentroid());
+
+            for (Mesh m : thingsList) {
+                if (axisNormalFloor.project(m.getCentroid()).distance(pAverage) < highDiff
+                    * SeparationFloorBuilding.ALTITUDE_ERROR) {
+
+                    floorsList.add(m);
+                }
+            }
+
             // We consider their size : if they're big enough, they're keeped.
             // This is to avoid the parts of roofs, walls, etc...
+            thingsList = new ArrayList<Mesh>(floorsList);
+            floorsList = new ArrayList<Mesh>();
             for (Mesh m : thingsList) {
                 if (m.size() > SeparationFloorBuilding.BLOCK_FLOORS_SIZE_ERROR) {
                     floorsList.add(m);
                 }
             }
 
-            final Mesh wholeFloor = new Mesh();
-            for (Mesh f : floorsList) {
-                wholeFloor.addAll(f);
-            }
-            wholeFloor.writeSTL("mesh2.stl");
-
-            // We consider the altitude of the blocks on an axis parallel to the
-            // normal floor.
-            // final double highDiff = mesh.zMax() - mesh.zMin();
-            //
-            // FIXME : this doesn't work.
-            // final Mesh wholeFloor = new Mesh();for (Mesh f : floorsList)
-            // {mesh.remove(f);wholeFloor.addAll(f);}
-            //
-            // final Edge axisNormalFloor =
-            // new Edge(new Point(0, 0, 0), new Point(normalFloor.x,
-            // normalFloor.y, normalFloor.z));
-            // final Point pAverage =
-            // axisNormalFloor.project(wholeFloor.getCentroid());
-            //
-            // thingsList = new ArrayList<Mesh>();
-            // for (Mesh m : floorsList) {
-            // if (axisNormalFloor.project(m.getCentroid()).distance(pAverage) <
-            // highDiff
-            // * SeparationFloorBuilding.ALTITUDE_ERROR) {
-            //
-            // thingsList.add(m);
-            // } else {
-            // System.out.println(axisNormalFloor.project(m.getCentroid())
-            // .distance(pAverage));
-            // System.out.println(highDiff
-            // * SeparationFloorBuilding.ALTITUDE_ERROR);
-            // }
-            // }
-            // FIXME END
-            //
             // Now that we found the real floors, we extract the other triangles
             // which are almost floor-oriented to add them.
             meshOriented =
                 mesh.orientedAs(normalFloor,
                     SeparationFloorBuilding.LARGE_ANGLE_FLOOR_ERROR);
-            meshOriented.writeSTL("mesh3.stl");
 
             // If the new floors are neighbours from the old ones, they are
             // added to the real floors.
@@ -495,7 +482,10 @@ public class Town {
                 final Mesh ret = new Mesh();
                 // TODO : care : if m doesn't belong anymore to meshOriented ?
                 // Because it's already contained in another part computed
-                // before ?
+                // before ? This is not a real problem because the doublons will
+                // be removed at the last lines : when every triangles are put
+                // in the same mesh, there is no doublons possible. But it
+                // should be improved.
                 m.getOne().returnNeighbours(ret, temp);
                 meshOriented.remove(ret);
                 thingsList.add(ret);
@@ -511,7 +501,6 @@ public class Town {
             mesh.remove(f);
             wholeFloor.addAll(f);
         }
-        wholeFloor.writeSTL("mesh4.stl");
 
         return wholeFloor;
     }

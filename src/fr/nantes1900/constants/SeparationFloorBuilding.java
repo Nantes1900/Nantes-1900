@@ -10,7 +10,7 @@ public final class SeparationFloorBuilding {
     /**
      * Error factor for the floor extraction algorithm.
      */
-    public static final double ALTITUDE_ERROR = 0.5;
+    public static final double ALTITUDE_ERROR = 0.1;
     /**
      * TODO.
      */
@@ -29,7 +29,7 @@ public final class SeparationFloorBuilding {
      * Coefficient used after the extraction of the building, to determine if a
      * building has enough triangle to be considered as a real building.
      */
-    public static final double BLOCK_FLOORS_SIZE_ERROR = 100;
+    public static final double BLOCK_FLOORS_SIZE_ERROR = 50;
 
     /**
      * Constructor.
