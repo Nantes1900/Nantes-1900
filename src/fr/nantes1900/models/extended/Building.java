@@ -281,7 +281,6 @@ public class Building {
         // Cut the mesh in parts, considering their orientation.
         List<Mesh> thingsList;
         try {
-
             thingsList =
                 Algos.blockOrientedExtract(wallOriented,
                     SeparationTreatmentWallsRoofs.ANGLE_WALL_ERROR);
@@ -308,7 +307,6 @@ public class Building {
             for (Mesh w : wallList) {
                 wholeWall.addAll(w);
             }
-
         } catch (MoreThanTwoTrianglesPerEdgeException e1) {
             e1.printStackTrace();
         }
@@ -379,7 +377,6 @@ public class Building {
 
             surface.returnNeighbours(ret, oriented);
 
-
             for (Mesh m : ret) {
                 if (m != surface) {
 
@@ -445,13 +442,15 @@ public class Building {
     public final void buildFromMesh(final Mesh building, final Mesh floors,
         final Vector3d normalFloor) {
 
+        building.writeSTL("files/St-Similien/m02/results/building.stl");
+
         // Creates new meshes.
         final Mesh wholeWall = new Mesh();
         final Mesh wholeRoof = new Mesh();
         final Mesh noise = new Mesh();
 
-        // Applies the first algorithms : extract the walls, and after extract
-        // the roofs.
+        // Applies the first algorithms : extract the walls, and after this,
+        // extract the roofs.
         final List<Mesh> wallList =
             this.sortWalls(building, normalFloor, wholeWall, noise);
         final List<Mesh> roofList =
@@ -460,18 +459,11 @@ public class Building {
         // Treats the noise.
         this.treatNoise(wallList, roofList, noise);
 
-        // Find the neighbours.
-        this.determinateNeighbours(wallList, roofList, floors);
-
-        // Treat the new neighbours.
-        this.treatNewNeighbours(wallList, roofList);
-
         // Sums all the walls to build the wholeWall.
         int counter = 0;
         for (Mesh w : wallList) {
             wholeWall.addAll(w);
-            w.writeSTL("Tests/St-Similien/m01/results/wall - " + counter
-                + FilesNames.EXTENSION);
+            w.writeSTL("files/St-Similien/m02/results/wall" + counter + ".stl");
             counter = counter + 1;
         }
 
@@ -479,10 +471,32 @@ public class Building {
         counter = 0;
         for (Mesh r : roofList) {
             wholeRoof.addAll(r);
-            r.writeSTL("Tests/St-Similien/m01/results/roof - " + counter
-                + FilesNames.EXTENSION);
+            r.writeSTL("files/St-Similien/m02/results/roof" + counter + ".stl");
             counter = counter + 1;
         }
+        // Finds the neighbours.
+        this.determinateNeighbours(wallList, roofList, floors);
+
+        // Treats the new neighbours.
+        this.treatNewNeighbours(wallList, roofList);
+
+        // Sums all the walls to build the wholeWall.
+        // int counter = 0;
+        for (Mesh w : wallList) {
+            wholeWall.addAll(w);
+            w.writeSTL("wall" + counter + ".stl");
+            counter = counter + 1;
+        }
+
+        // Sums all the roofs to build the wholeRoof.
+        counter = 0;
+        for (Mesh r : roofList) {
+            wholeRoof.addAll(r);
+            r.writeSTL("roof" + counter + ".stl");
+            counter = counter + 1;
+        }
+
+        System.exit(1);
 
         // FIXME : if some roofs are neighbours to the floors, remove them...
         // because it's noise. TODO ? Because if they are not noise ?
@@ -493,12 +507,9 @@ public class Building {
         // If we can complete them, then complete.
         this.completeNeighbours(wallList, roofList);
 
-        // From all the neighbours, compute the wrap line and return surfaces as
-        // polylines.
+        // From all the neighbours, computes the wrap line and return surfaces
+        // as polylines.
         this.findCommonEdges(wallList, roofList, normalFloor);
-
-        // Debugging use.
-        this.writeSTL("Tests/St-Similien/m01/results/");
     }
 
     /**

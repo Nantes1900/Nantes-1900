@@ -28,11 +28,11 @@ public final class SeparationTreatmentWallsRoofs {
     /**
      * TODO .
      */
-    public static final double WALL_SIZE_ERROR = 1;
+    public static final double WALL_SIZE_ERROR = 5;
     /**
      * TODO .
      */
-    public static final double ROOF_SIZE_ERROR = 5;
+    public static final double ROOF_SIZE_ERROR = 10;
 
     /**
      * Private constructor.

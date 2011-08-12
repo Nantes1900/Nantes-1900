@@ -25,11 +25,10 @@ import java.util.StringTokenizer;
 import javax.vecmath.Vector3d;
 
 /**
- * Parse a STL file : detect if it is a ASCII or a binary
- * file, and parse it. During the parsing, it builds the
- * Mesh, giving to the same points the same references (and
- * to the edges), and avoiding the bad-formed triangles to
- * be used and to create errors further.
+ * Parse a STL file : detect if it is a ASCII or a binary file, and parse it.
+ * During the parsing, it builds the Mesh, giving to the same points the same
+ * references (and to the edges), and avoiding the bad-formed triangles to be
+ * used and to create errors further.
  * 
  * @author Eric Berthe, Valentin Roger, Daniel Lefèvre
  */
@@ -77,13 +76,12 @@ public class ParserSTL {
     }
 
     /**
-     * Detect the format of the STL file, and read it using
-     * the good method.
+     * Detect the format of the STL file, and read it using the good method.
      * 
      * @return a HashSet of triangle to build a mesh with
      * @throws IOException
-     *             if the file is bad formed or if there is
-     *             an error during the reading
+     *             if the file is bad formed or if there is an error during the
+     *             reading
      */
     public final Mesh read() throws IOException {
         final Scanner scanner = new Scanner(new FileReader(this.fileName));
@@ -117,23 +115,22 @@ public class ParserSTL {
     }
 
     /**
-     * Reads one line of the file. If a point is out of
-     * bounds, it removes it. If a triangle is flat, it
-     * removes it. It doesn't create double points for
-     * points which have the same values, but give to the
-     * two triangles the same references to the point (and
-     * same work for the edges).
+     * Reads one line of the file. If a point is out of bounds, it removes it.
+     * If a triangle is flat, it removes it. It doesn't create double points for
+     * points which have the same values, but give to the two triangles the same
+     * references to the point (and same work for the edges).
      * 
      * @param line
      *            the line as a String
      * @throws FlatTriangleException
-     *             if the triangle is flat (two points
-     *             equals)
+     *             if the triangle is flat (two points equals)
      * @throws OutOfBoundsPointException
      *             if one point has a coordinate > 1e5
      * @throws BadFormedFileException
      *             if the file is not well formed
      */
+    // FIXME : consider refactoring this method : too many "if" and too much
+    // complexity.
     private void processLineA(final String line) throws FlatTriangleException,
         OutOfBoundsPointException, BadFormedFileException {
 
@@ -228,33 +225,28 @@ public class ParserSTL {
     }
 
     /**
-     * Read one line of the file. If a point is out of
-     * bounds, it removes it. If a triangle is flat, it
-     * removes it. It doesn't create double points for
-     * points which have the same values, but give to the
-     * two triangles the same references to the point (and
-     * same work for the edges).
+     * Read one line of the file. If a point is out of bounds, it removes it. If
+     * a triangle is flat, it removes it. It doesn't create double points for
+     * points which have the same values, but give to the two triangles the same
+     * references to the point (and same work for the edges).
      * 
      * @param bBuf
      *            the bytebuffer to read in
      * @return the triangle read
-     * @throws FlatTriangleException
-     *             if the triangle is flat (two points
-     *             equals)
-     * @throws OutOfBoundsPointException
-     *             if one point has a coordinate > 1e5
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if one edge of the new triangle contains
-     *             already two triangles
+     * @throws BadMeshException
+     *             if the triangle is flat (two points equals) or if one point
+     *             has a coordinate > 1e5 or if one edge of the new triangle
+     *             contains already two triangles
      */
     private Triangle processLineB(final ByteBuffer bBuf)
-        throws FlatTriangleException, OutOfBoundsPointException,
-        MoreThanTwoTrianglesPerEdgeException {
+        throws BadMeshException {
 
         // Read in the ByteBuffer the floats.
         final Vector3d norm =
             new Vector3d(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
         norm.normalize();
+        // FIXME : bug detected : the normal can be 0, 0, 0. Then it may cause
+        // an error when the program tries to read the next lines...
 
         Point p1 =
             new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
@@ -293,14 +285,11 @@ public class ParserSTL {
     }
 
     /**
-     * Read an ASCII STL file. Create a HashSet of triangle
-     * to put them in. If a point is found equals with
-     * another, only one point is created, and the
-     * references is given to the two triangles. This work
-     * is done to the edges too. Flat triangles (two points
-     * equals) are removed. Points out of bounds (containing
-     * coordinate > 1e5) are removed and their triangles
-     * too.
+     * Read an ASCII STL file. Create a HashSet of triangle to put them in. If a
+     * point is found equals with another, only one point is created, and the
+     * references is given to the two triangles. This work is done to the edges
+     * too. Flat triangles (two points equals) are removed. Points out of bounds
+     * (containing coordinate > 1e5) are removed and their triangles too.
      * 
      * @return the HashSet containing all the triangles
      * @throws IOException
@@ -339,14 +328,11 @@ public class ParserSTL {
     }
 
     /**
-     * Read a binary STL file. Create a HashSet of triangle
-     * to put them in. If a point is found equals with
-     * another, only one point is created, and the
-     * references is given to the two triangles. This work
-     * is done to the edges too. Flat triangles (two points
-     * equals) are removed. Points out of bounds (containing
-     * coordinate > 1e5) are removed and their triangles
-     * too.
+     * Read a binary STL file. Create a HashSet of triangle to put them in. If a
+     * point is found equals with another, only one point is created, and the
+     * references is given to the two triangles. This work is done to the edges
+     * too. Flat triangles (two points equals) are removed. Points out of bounds
+     * (containing coordinate > 1e5) are removed and their triangles too.
      * 
      * @return the HashSet containing all the triangles
      * @throws IOException
@@ -377,6 +363,7 @@ public class ParserSTL {
         bBuf = ByteBuffer.wrap(fileContent);
         bBuf.order(ByteOrder.nativeOrder());
 
+        int counterError = 0;
         for (int i = 0; i < meshSize; i = i + 1) {
             try {
                 // If a Triangle exists already, and if the
@@ -390,10 +377,12 @@ public class ParserSTL {
                 // Points, then 2
                 // identical Edge, it is not added to the
                 // Mesh.
+                ++counterError;
             } catch (OutOfBoundsPointException e) {
                 // The coordinates of the Point are
                 // unbounded, then the Triangle
                 // is not added to the Mesh.
+                ++counterError;
             } catch (MoreThanTwoTrianglesPerEdgeException e) {
                 // If one edge of the new triangle contains
                 // already two
@@ -402,8 +391,14 @@ public class ParserSTL {
                 // TODO? Try to improve that by removing the
                 // triangle which is
                 // the worst.
+                ++counterError;
+            } catch (BadMeshException e) {
+                // FIXME
+                ++counterError;
             }
         }
+
+        // TODO : send the counterError through a logger.
 
         stream.close();
         return this.triangleSet;
@@ -431,8 +426,7 @@ public class ParserSTL {
 
     /**
      * Check if the point doesn't already exists, and if it does, return only
-     * one
-     * references for points which have the same values.
+     * one references for points which have the same values.
      * 
      * @param point
      *            the point to check
@@ -468,8 +462,7 @@ public class ParserSTL {
     }
 
     /**
-     * A sub-class for the exception when the file is bad
-     * formed.
+     * A sub-class for the exception when the file is bad formed.
      * 
      * @author Daniel Lefevre
      */
@@ -488,8 +481,7 @@ public class ParserSTL {
     }
 
     /**
-     * A sub-class for the exception when a triangle has two
-     * points identical.
+     * A sub-class for the exception when a triangle has two points identical.
      * 
      * @author Daniel Lefevre
      */
@@ -524,14 +516,13 @@ public class ParserSTL {
         /**
          * Private constructor.
          */
-        private BadMeshException() {
+        public BadMeshException() {
         }
 
     }
 
     /**
-     * A sub-class for the exception when a point has one
-     * coordinate too high.
+     * A sub-class for the exception when a point has one coordinate too high.
      * 
      * @author Daniel Lefevre
      */

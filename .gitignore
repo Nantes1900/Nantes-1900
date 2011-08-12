@@ -1,13 +1,10 @@
-/Files
+/lib
+/doc
+/files
 /*.xml
 /*.stl
-/Tests
+/*.cld
 /.classpath
 /.project
 /.settings
-/lib
-/resources
-/Nantes 1900.cld
-/reports
 /.checkstyle
-/doc

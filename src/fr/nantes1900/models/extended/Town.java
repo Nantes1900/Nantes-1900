@@ -331,11 +331,8 @@ public class Town {
             if (m.size() >= SeparationFloorBuilding.BLOCK_BUILDING_SIZE_ERROR) {
 
                 buildingList.add(m);
-
             } else {
-
                 noise.addAll(m);
-
             }
         }
 
@@ -432,7 +429,7 @@ public class Town {
         try {
             thingsList = Algos.blockExtract(meshOriented);
 
-            Mesh wholeFloor = new Mesh();
+            final Mesh wholeFloor = new Mesh();
             for (Mesh f : thingsList) {
                 wholeFloor.addAll(f);
             }
@@ -449,8 +446,11 @@ public class Town {
                 axisNormalFloor.project(wholeFloor.getCentroid());
 
             for (Mesh m : thingsList) {
-                if (axisNormalFloor.project(m.getCentroid()).distance(pAverage) < highDiff
-                    * SeparationFloorBuilding.ALTITUDE_ERROR) {
+                final Point projectedPoint =
+                    axisNormalFloor.project(m.getCentroid());
+                if (projectedPoint.getZ() < pAverage.getZ()
+                    || projectedPoint.distance(pAverage) < highDiff
+                        * SeparationFloorBuilding.ALTITUDE_ERROR) {
 
                     floorsList.add(m);
                 }
@@ -480,12 +480,12 @@ public class Town {
                 final Mesh temp = new Mesh(m);
                 temp.addAll(meshOriented);
                 final Mesh ret = new Mesh();
-                // TODO : care : if m doesn't belong anymore to meshOriented ?
-                // Because it's already contained in another part computed
-                // before ? This is not a real problem because the doublons will
-                // be removed at the last lines : when every triangles are put
-                // in the same mesh, there is no doublons possible. But it
-                // should be improved.
+                // TODO : care : if the mesh m doesn't belong anymore to
+                // meshOriented ? Because it's already contained in another part
+                // computed before ? This is not a real problem because the
+                // doublons will be removed at the last lines : when every
+                // triangles are put in the same mesh, there is no doublons
+                // possible. But it should be improved.
                 m.getOne().returnNeighbours(ret, temp);
                 meshOriented.remove(ret);
                 thingsList.add(ret);
@@ -620,16 +620,20 @@ public class Town {
         final Vector3d normalGravityOriented) {
         int counterResidentials = 1;
 
+        // While there is files correctly named...
         while (new File(directoryName + FilesNames.RESIDENTIAL_FILENAME
             + FilesNames.SEPARATOR + counterResidentials + FilesNames.EXTENSION)
             .exists()) {
 
+            // ...Parse the meshes of these files
             final Mesh mesh =
                 this.parseFile(directoryName + FilesNames.RESIDENTIAL_FILENAME
                     + FilesNames.SEPARATOR + counterResidentials
                     + FilesNames.EXTENSION);
 
             Vector3d realNormalToTheFloor;
+            // If another floor normal is available, extract it. Otherwise, keep
+            // the normal gravity-oriented as the normal to the floor.
             if (new File(directoryName + FilesNames.FLOOR_FILENAME
                 + FilesNames.SEPARATOR + counterResidentials
                 + FilesNames.EXTENSION).exists()) {
@@ -651,47 +655,39 @@ public class Town {
             // Then the real normalFloor will not be confonded.
             // Make it on all the source codes !
 
-            // FIXME FIXME FIXME : the zMinPoint method is not adapted to
-            // extract the floor... It should be a new realNormalToTheFloor z...
+            // Base change in the gravity-oriented base.
             mesh.changeBase(this.matrix);
 
-            final Mesh noise = new Mesh();
-
+            // Extraction of the floor.
             Mesh wholeFloor = this.floorExtraction(mesh, realNormalToTheFloor);
 
+            // Extraction of the buildings : the blocks which are left.
+            final Mesh noise = new Mesh();
             final List<Mesh> buildings = this.buildingsExtraction(mesh, noise);
-            final Mesh wholeBuilding = new Mesh();
-            for (Mesh m : buildings) {
-                wholeBuilding.addAll(m);
-            }
-            wholeBuilding.writeSTL("building" + counterResidentials + ".stl");
 
+            // Treatment of the noise : other blocks are added to the floors if
+            // possible.
             final List<Mesh> floorsMesh =
                 this.noiseTreatment(wholeFloor, noise);
 
-            wholeFloor = new Mesh();
-            for (Mesh m : floorsMesh) {
-                wholeFloor.addAll(m);
-            }
-            wholeFloor.writeSTL("floor" + counterResidentials + ".stl");
+            // FIXME : code this method ! Cut the little walls, and other things
+            // that are not buildings.
+            // ArrayList<Mesh> formsList = this.carveRealBuildings(buildings);
 
-            // FIXME : code this method !
-            // ArrayList<Mesh> formsList =
-            // this.carveRealBuildings(buildings);
+            // Foreach building, create an object, call the algorithm to build
+            // it and add it to the list of this town.
+            for (Mesh m : buildings) {
+                final Building e = new Building();
+                e.buildFromMesh(m, wholeFloor, normalGravityOriented);
 
-            // TODO : put that out of commentaries
-            // for (Mesh m : buildings) {
+                // FIXME
+                System.exit(1);
 
-            // final Building e = new Building();
-            // e.buildFromMesh(m, wholeFloor, normalGravityOriented);
-            // this.addResidential(e);
-            // }
-
-            wholeFloor = new Mesh();
-            for (Mesh m : floorsMesh) {
-                wholeFloor.addAll(m);
+                this.addResidential(e);
             }
 
+            // Foreach ground found, call the algorithm of ground treatment, and
+            // add it to the list of this town with an attribute : street.
             for (Mesh m : floorsMesh) {
                 final Floor floor = new Floor("street");
                 floor.buildFromMesh(m);

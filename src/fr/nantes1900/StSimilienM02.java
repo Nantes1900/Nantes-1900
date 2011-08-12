@@ -8,12 +8,12 @@ import fr.nantes1900.models.extended.Town;
  * 
  * @author Daniel Lefevre
  */
-public final class StSimilienM01 {
+public final class StSimilienM02 {
 
     /**
      * Private constructor.
      */
-    private StSimilienM01() {
+    private StSimilienM02() {
     }
 
     /**
@@ -27,9 +27,9 @@ public final class StSimilienM01 {
         // Create new town
         final Town town = new Town();
         // Apply the algorithm to it
-        town.buildFromMesh("files/St-Similien/m01");
+        town.buildFromMesh("files/St-Similien/m02");
         // Write the results
         // town.writeCityGML("Tests/St-Similien/m01/results/StSimilienM01.gml");
-        town.writeSTL("files/St-Similien/m01/results/");
+        town.writeSTL("files/St-Similien/m02/results/");
     }
 }

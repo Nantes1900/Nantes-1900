@@ -318,13 +318,13 @@ public class Mesh extends HashSet<Triangle> {
             edges.order();
             return edges;
         } else {
-            this.writeSTL("mesh.stl");
-            int counter = 0;
-            for (Mesh m : this.getNeighbours()) {
-                m.writeSTL("file" + counter + ".stl");
-                ++counter;
-            }
-            System.exit(1);
+            // this.writeSTL("mesh.stl");
+            // int counter = 0;
+            // for (Mesh m : this.getNeighbours()) {
+            // m.writeSTL("file" + counter + ".stl");
+            // ++counter;
+            // }
+            // System.exit(1);
             System.out.println("Else !");
             throw new InvalidSurfaceException();
         }

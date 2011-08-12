@@ -1,6 +1,8 @@
 package fr.nantes1900.models.basis;
 
 import fr.nantes1900.models.Polyline;
+import fr.nantes1900.utils.ParserSTL;
+import fr.nantes1900.utils.ParserSTL.BadMeshException;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -569,7 +571,7 @@ public class Edge {
      * @author Daniel Lefevre
      */
     public static final class MoreThanTwoTrianglesPerEdgeException extends
-        Exception {
+        ParserSTL.BadMeshException {
 
         /**
          * Version attribute.
@@ -580,6 +582,7 @@ public class Edge {
          * Private constructor.
          */
         private MoreThanTwoTrianglesPerEdgeException() {
+            super();
         }
     }
 }

@@ -10,11 +10,11 @@ public final class SeparationFloorBuilding {
     /**
      * Error factor for the floor extraction algorithm.
      */
-    public static final double ALTITUDE_ERROR = 0.1;
+    public static final double ALTITUDE_ERROR = 0.2;
     /**
      * TODO.
      */
-    public static final double ANGLE_FLOOR_ERROR = 5;
+    public static final double ANGLE_FLOOR_ERROR = 8;
     /**
      * Angle factor considered as the maximum angle from the normal
      * (gravity-oriented) to the floor that can describe a floor triangle.

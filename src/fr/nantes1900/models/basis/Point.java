@@ -29,6 +29,7 @@ public class Point {
 
     /**
      * Constructor.
+     * 
      * @param xNew
      *            coordinate
      * @param yNew
@@ -45,6 +46,7 @@ public class Point {
     /**
      * Copy constructor. To use very cautiously : it can create two Points with
      * equal Values and different references in the Mesh !
+     * 
      * @param point
      *            the point to copy
      */
@@ -56,6 +58,7 @@ public class Point {
 
     /**
      * Operate a change base on the point.
+     * 
      * @param matrix
      *            of base change Be careful : the point doesn't have the same
      *            hashCode after this operation...
@@ -67,6 +70,7 @@ public class Point {
 
     /**
      * Compute the distance between two points.
+     * 
      * @param p
      *            the other point
      * @return the distance
@@ -109,6 +113,7 @@ public class Point {
 
     /**
      * Getter of the coordinates of the point.
+     * 
      * @return a table of double
      */
     public final double[] getPointAsCoordinates() {
@@ -117,6 +122,7 @@ public class Point {
 
     /**
      * Getter.
+     * 
      * @return the x coordinate
      */
     public final double getX() {
@@ -125,6 +131,7 @@ public class Point {
 
     /**
      * Getter.
+     * 
      * @return the y coordinate
      */
     public final double getY() {
@@ -133,6 +140,7 @@ public class Point {
 
     /**
      * Getter.
+     * 
      * @return the z coordinate
      */
     public final double getZ() {
@@ -147,18 +155,20 @@ public class Point {
     public final int hashCode() {
         final int prime = 31;
         int result = 1;
+        final int hashTemp = 32;
         long temp;
         temp = Double.doubleToLongBits((float) this.x);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + (int) (temp ^ (temp >>> hashTemp));
         temp = Double.doubleToLongBits((float) this.y);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + (int) (temp ^ (temp >>> hashTemp));
         temp = Double.doubleToLongBits((float) this.z);
-        result = prime * result + (int) (temp ^ (temp >>> 32));
+        result = prime * result + (int) (temp ^ (temp >>> hashTemp));
         return result;
     }
 
     /**
      * Setter method.
+     * 
      * @param xNew
      *            the new x coordinate
      * @param yNew
@@ -175,6 +185,7 @@ public class Point {
 
     /**
      * Setter.
+     * 
      * @param coords
      *            the three coordinates
      */
@@ -186,6 +197,7 @@ public class Point {
 
     /**
      * Setter.
+     * 
      * @param xNew
      *            : the x coordinate
      */
@@ -195,6 +207,7 @@ public class Point {
 
     /**
      * Setter.
+     * 
      * @param yNew
      *            coordinate
      */
@@ -204,6 +217,7 @@ public class Point {
 
     /**
      * Setter.
+     * 
      * @param zNew
      *            coordinate
      */
