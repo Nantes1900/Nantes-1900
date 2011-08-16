@@ -155,10 +155,13 @@ public class Town {
         // the datas in.
         this.cleanResultDirectory(directoryName);
 
+        // Extract the normal gravity oriented and change it to the new
+        // base.
         final Vector3d normalFloor =
             this.extractFloorNormal(directoryName + "/floor.stl");
         this.createChangeBaseMatrix(normalFloor);
 
+        // Treat every kind of surfaces put in the algorithms.
         this.treatFloors(directoryName + "/floors/");
         Town.LOG.info("Numbers of floors : " + this.floors.size());
 
@@ -306,41 +309,32 @@ public class Town {
     private List<Mesh> buildingsExtraction(final Mesh mesh, final Mesh noise) {
 
         final List<Mesh> buildingList = new ArrayList<Mesh>();
-        final List<Mesh> thingsList = new ArrayList<Mesh>();
 
-        // Extraction of the buildings
-        List<Mesh> formsList;
+        List<Mesh> thingsList;
         try {
-            formsList = Algos.blockExtract(mesh);
+            // Extraction of the buildings.
+            thingsList = Algos.blockExtract(mesh);
 
-            // Separation of the little noises
-            for (Mesh m : formsList) {
-                if (m.size() > 1) {
-                    thingsList.add(m);
+            // Algorithm : detection of buildings considering their size.
+            for (Mesh m : thingsList) {
+                if (m.size() >= SeparationFloorBuilding.BLOCK_BUILDING_SIZE_ERROR) {
+
+                    buildingList.add(m);
                 } else {
                     noise.addAll(m);
                 }
             }
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
 
-        // Algorithm : detection of buildings considering their size
-        for (Mesh m : thingsList) {
-            if (m.size() >= SeparationFloorBuilding.BLOCK_BUILDING_SIZE_ERROR) {
-
-                buildingList.add(m);
-            } else {
-                noise.addAll(m);
+            if (buildingList.size() == 0) {
+                Town.LOG.severe("Error : no building found !");
             }
-        }
 
-        if (buildingList.size() == 0) {
-            Town.LOG.severe("Error !");
-        }
+            return buildingList;
 
-        return buildingList;
+        } catch (MoreThanTwoTrianglesPerEdgeException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -359,8 +353,7 @@ public class Town {
 
             for (File f : fileList) {
                 // Delete only the files, and the empty directories. Then
-                // it's
-                // safe to put something in a directory Archives for
+                // it's safe to put something in a directory Archives for
                 // example.
                 f.delete();
             }
@@ -417,9 +410,9 @@ public class Town {
     private Mesh floorExtraction(final Mesh mesh, final Vector3d normalFloor) {
         // TODO? Return an exception if there is no floor in the mesh, such as :
         // please get some floors during the previous cut ! Write it in the
-        // "préparation du découpage" document.
+        // "protocole de découpage" document.
 
-        // Searching for floor-oriented triangles with an error
+        // Searches for floor-oriented triangles with an error.
         Mesh meshOriented =
             mesh.orientedAs(normalFloor,
                 SeparationFloorBuilding.ANGLE_FLOOR_ERROR);
@@ -427,6 +420,7 @@ public class Town {
         List<Mesh> thingsList;
         List<Mesh> floorsList = new ArrayList<Mesh>();
         try {
+            // Extracts the blocks in the oriented triangles.
             thingsList = Algos.blockExtract(meshOriented);
 
             final Mesh wholeFloor = new Mesh();
@@ -438,13 +432,18 @@ public class Town {
             // normal floor.
             final double highDiff = mesh.zMax() - mesh.zMin();
 
+            // Builds an axis normal to the current floor.
             final Edge axisNormalFloor =
                 new Edge(new Point(0, 0, 0), new Point(normalFloor.x,
                     normalFloor.y, normalFloor.z));
 
+            // Project the current whole floor centroid on this axis.
             final Point pAverage =
                 axisNormalFloor.project(wholeFloor.getCentroid());
 
+            // After this, for each block, consider the distance (on the
+            // axisNormalFloor) as an altitude distance. If it is greater than
+            // the error, then it's not considered as ground.
             for (Mesh m : thingsList) {
                 final Point projectedPoint =
                     axisNormalFloor.project(m.getCentroid());
@@ -456,8 +455,9 @@ public class Town {
                 }
             }
 
-            // We consider their size : if they're big enough, they're keeped.
-            // This is to avoid the parts of roofs, walls, etc...
+            // We consider the size of the blocks : if they're big enough,
+            // they're keeped. This is to avoid the parts of roofs, walls,
+            // etc...
             thingsList = new ArrayList<Mesh>(floorsList);
             floorsList = new ArrayList<Mesh>();
             for (Mesh m : thingsList) {
@@ -480,7 +480,7 @@ public class Town {
                 final Mesh temp = new Mesh(m);
                 temp.addAll(meshOriented);
                 final Mesh ret = new Mesh();
-                // TODO : care : if the mesh m doesn't belong anymore to
+                // FIXME : care : if the mesh m doesn't belong anymore to
                 // meshOriented ? Because it's already contained in another part
                 // computed before ? This is not a real problem because the
                 // doublons will be removed at the last lines : when every
@@ -492,7 +492,6 @@ public class Town {
             }
             floorsList = thingsList;
         } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            // TODO
             e.printStackTrace();
         }
 
@@ -516,23 +515,17 @@ public class Town {
      *            the noise mesh computed by former algorithms
      * @return a list of floors completed with noise
      */
+    // TODO : check if this method works, and then commit this class.
     private List<Mesh> noiseTreatment(final Mesh floorsMesh, final Mesh noise) {
 
-        final Mesh floorsAndNoise = new Mesh(floorsMesh);
-        floorsAndNoise.addAll(noise);
-        List<Mesh> floorsList;
+        List<Mesh> list;
         try {
-            floorsList = Algos.blockExtract(floorsAndNoise);
 
-            floorsMesh.clear();
-            for (Mesh e : floorsList) {
-                floorsMesh.addAll(e);
-                noise.remove(e);
-            }
-
-            return floorsList;
-        } catch (MoreThanTwoTrianglesPerEdgeException e1) {
-            e1.printStackTrace();
+            list = Algos.blockExtract(floorsMesh);
+            Algos.blockTreatNoise(list, noise);
+            return list;
+        } catch (MoreThanTwoTrianglesPerEdgeException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -659,9 +652,11 @@ public class Town {
             mesh.changeBase(this.matrix);
 
             // Extraction of the floor.
-            Mesh wholeFloor = this.floorExtraction(mesh, realNormalToTheFloor);
+            final Mesh wholeFloor =
+                this.floorExtraction(mesh, realNormalToTheFloor);
 
-            // Extraction of the buildings : the blocks which are left.
+            // Extraction of the buildings : the blocks which are left after the
+            // floor extraction.
             final Mesh noise = new Mesh();
             final List<Mesh> buildings = this.buildingsExtraction(mesh, noise);
 
@@ -670,12 +665,12 @@ public class Town {
             final List<Mesh> floorsMesh =
                 this.noiseTreatment(wholeFloor, noise);
 
-            // FIXME : code this method ! Cut the little walls, and other things
+            // FIXME : code this method : cut the little walls, and other things
             // that are not buildings.
             // ArrayList<Mesh> formsList = this.carveRealBuildings(buildings);
 
-            // Foreach building, create an object, call the algorithm to build
-            // it and add it to the list of this town.
+            // Foreach building, create an building object, call the algorithm
+            // to build it and add it to the list of this town.
             for (Mesh m : buildings) {
                 final Building e = new Building();
                 e.buildFromMesh(m, wholeFloor, normalGravityOriented);
@@ -693,8 +688,8 @@ public class Town {
                 floor.buildFromMesh(m);
             }
 
-            // FIXME : I don't know what to do with the formsList : little
-            // walls, forms on the ground...
+            // TODO : treat the not real buildings : the formsList which
+            // contains trains, boats, forms.
 
             ++counterResidentials;
         }
@@ -721,8 +716,6 @@ public class Town {
                     + FilesNames.EXTENSION);
 
             meshSpecialBuilding.changeBase(this.matrix);
-
-            // TODO : improve this by extracting floors.
 
             final SpecialBuilding specialBuilding = new SpecialBuilding();
 

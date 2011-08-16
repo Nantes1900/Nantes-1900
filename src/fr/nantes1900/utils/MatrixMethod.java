@@ -10,15 +10,15 @@ import javax.vecmath.Vector3d;
 public final class MatrixMethod {
 
     /**
+     * The dimension of the matrix used in some algorithms. Here, it's 3.
+     */
+    public static final int MATRIX_DIMENSION = 3;
+
+    /**
      * Precision (as a double) to check if a matrix determinant is too close to
      * zero or not.
      */
     private static final double ERROR_PRECISION = 0.01;
-
-    /**
-     * The dimension of the matrix used in some algorithms. Here, it's 3.
-     */
-    public static final int MATRIX_DIMENSION = 3;
 
     /**
      * Private constructor.
@@ -85,7 +85,8 @@ public final class MatrixMethod {
             throw new SingularMatrixException();
         }
 
-        if (new Double(b.x).isNaN() || new Double(b.y).isNaN() || new Double(b.z).isNaN()) {
+        if (new Double(b.x).isNaN() || new Double(b.y).isNaN()
+            || new Double(b.z).isNaN()) {
             throw new SingularMatrixException();
         }
 

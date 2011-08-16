@@ -6,6 +6,7 @@ import fr.nantes1900.models.basis.Triangle;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -55,8 +56,7 @@ public class WriterSTL {
      * @param fileNameWrite
      *            the name of the file to write in
      */
-    public WriterSTL(
-        final String fileNameWrite) {
+    public WriterSTL(final String fileNameWrite) {
         this.fileName = fileNameWrite;
     }
 
@@ -68,8 +68,7 @@ public class WriterSTL {
      * @param mode
      *            the mode of the writer
      */
-    public WriterSTL(
-        final String fileNameWrite, final int mode) {
+    public WriterSTL(final String fileNameWrite, final int mode) {
         this.fileName = fileNameWrite;
         this.writingMode = mode;
     }
@@ -110,32 +109,30 @@ public class WriterSTL {
      * 
      * @param writer
      *            the writer which writes in the file
-     * @param face
+     * @param triangle
      *            the triangle to write
      * @throws IOException
      *             if the writer throws an error
      */
-    // TODO : rename face in triangle here and above.
-    private void
-        writeBinaryFace(final OutputStream writer, final Triangle face)
-            throws IOException {
+    private void writeBinaryFace(final OutputStream writer,
+        final Triangle triangle) throws IOException {
         // Write first the normal.
-        this.writeInGoodOrder(writer, face.getNormal().getX());
-        this.writeInGoodOrder(writer, face.getNormal().getY());
-        this.writeInGoodOrder(writer, face.getNormal().getZ());
+        this.writeInGoodOrder(writer, triangle.getNormal().getX());
+        this.writeInGoodOrder(writer, triangle.getNormal().getY());
+        this.writeInGoodOrder(writer, triangle.getNormal().getZ());
 
         // And the three points after.
-        this.writeInGoodOrder(writer, face.getP1().getX());
-        this.writeInGoodOrder(writer, face.getP1().getY());
-        this.writeInGoodOrder(writer, face.getP1().getZ());
+        this.writeInGoodOrder(writer, triangle.getP1().getX());
+        this.writeInGoodOrder(writer, triangle.getP1().getY());
+        this.writeInGoodOrder(writer, triangle.getP1().getZ());
 
-        this.writeInGoodOrder(writer, face.getP2().getX());
-        this.writeInGoodOrder(writer, face.getP2().getY());
-        this.writeInGoodOrder(writer, face.getP2().getZ());
+        this.writeInGoodOrder(writer, triangle.getP2().getX());
+        this.writeInGoodOrder(writer, triangle.getP2().getY());
+        this.writeInGoodOrder(writer, triangle.getP2().getZ());
 
-        this.writeInGoodOrder(writer, face.getP3().getX());
-        this.writeInGoodOrder(writer, face.getP3().getY());
-        this.writeInGoodOrder(writer, face.getP3().getZ());
+        this.writeInGoodOrder(writer, triangle.getP3().getX());
+        this.writeInGoodOrder(writer, triangle.getP3().getY());
+        this.writeInGoodOrder(writer, triangle.getP3().getZ());
 
         writer.write(new byte[2]);
     }
@@ -152,6 +149,7 @@ public class WriterSTL {
      */
     private void writeInGoodOrder(final OutputStream writer, final double a)
         throws IOException {
+
         // Write the double : must order it in the LITTLE_ENDIAN format.
         final ByteBuffer bBuf = ByteBuffer.allocate(Float.SIZE);
         bBuf.order(ByteOrder.LITTLE_ENDIAN);
@@ -221,9 +219,9 @@ public class WriterSTL {
 
             // Finish to write the last datas before closing the writer.
             stream.flush();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
         } finally {
-            // FIXME : if the directory is not created, then throw an exception
-            // or create it !
             stream.close();
         }
     }

@@ -32,12 +32,15 @@ public final class SeparationTreatmentWallsRoofs {
      * Error factor : minimum triangle number for a block to be considered as a
      * real wall.
      */
-    public static final double WALL_SIZE_ERROR = 500;
+    public static final double WALL_SIZE_ERROR = 250;
     /**
      * Error factor : minimum triangle number for a block to be considered as a
      * real roof.
      */
-    public static final double ROOF_SIZE_ERROR = 200;
+    public static final double ROOF_SIZE_ERROR = 250;
+
+    // TODO : doc !
+    public static final double ERROR_PLANES = 1;
 
     /**
      * Private constructor.

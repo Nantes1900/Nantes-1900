@@ -32,20 +32,7 @@ import javax.vecmath.Vector3d;
  * 
  * @author Eric Berthe, Valentin Roger, Daniel Lefèvre
  */
-
-// TODO : refactor this class : make a non-static parser,
-// and respect the style conditions.
 public class ParserSTL {
-
-    /**
-     * Vector attribute used for ASCII parser method.
-     */
-    private static Vector3d currentVector;
-
-    /**
-     * Points attribute used for ASCII parser method.
-     */
-    private static List<Point> currentPoints;
 
     /**
      * The list of triangles to stock all the triangles read in the file.
@@ -122,6 +109,8 @@ public class ParserSTL {
      * 
      * @param line
      *            the line as a String
+     * @param currentPoints
+     * @param currentVector
      * @throws FlatTriangleException
      *             if the triangle is flat (two points equals)
      * @throws OutOfBoundsPointException
@@ -131,7 +120,8 @@ public class ParserSTL {
      */
     // FIXME : consider refactoring this method : too many "if" and too much
     // complexity.
-    private void processLineA(final String line) throws FlatTriangleException,
+    private void processLineA(final String line, Vector3d currentVector,
+        List<Point> currentPoints) throws FlatTriangleException,
         OutOfBoundsPointException, BadFormedFileException {
 
         if (line.isEmpty()) {
@@ -144,13 +134,13 @@ public class ParserSTL {
             // If the word is facet normal, read the vetor.
             if ("facet".equals(openingWord)) {
                 if ("normal".equals(brokenLine.nextToken())) {
-                    ParserSTL.currentVector =
+                    currentVector =
                         new Vector3d(
                             Double.parseDouble(brokenLine.nextToken()), Double
                                 .parseDouble(brokenLine.nextToken()), Double
                                 .parseDouble(brokenLine.nextToken()));
 
-                    ParserSTL.currentVector.normalize();
+                    currentVector.normalize();
                 } else {
                     throw new BadFormedFileException();
                 }
@@ -166,21 +156,18 @@ public class ParserSTL {
 
                     p = this.treatPoint(p);
 
-                    ParserSTL.currentPoints.add(p);
+                    currentPoints.add(p);
                 } else {
                     // If the the points are read, create
                     // the triangle and add
                     // it to the HashSet.
                     if ("endfacet".equals(openingWord)) {
                         Edge e1 =
-                            new Edge(ParserSTL.currentPoints.get(0),
-                                ParserSTL.currentPoints.get(1));
+                            new Edge(currentPoints.get(0), currentPoints.get(1));
                         Edge e2 =
-                            new Edge(ParserSTL.currentPoints.get(1),
-                                ParserSTL.currentPoints.get(2));
+                            new Edge(currentPoints.get(1), currentPoints.get(2));
                         Edge e3 =
-                            new Edge(ParserSTL.currentPoints.get(2),
-                                ParserSTL.currentPoints.get(0));
+                            new Edge(currentPoints.get(2), currentPoints.get(0));
 
                         // Checks in the HashSet of edges if this edge doesn't
                         // already exist. If it already exists, it doesn't
@@ -195,11 +182,9 @@ public class ParserSTL {
                         }
 
                         try {
-                            this.triangleSet.add(new Triangle(
-                                ParserSTL.currentPoints.get(0),
-                                ParserSTL.currentPoints.get(1),
-                                ParserSTL.currentPoints.get(2), e1, e2, e3,
-                                ParserSTL.currentVector));
+                            this.triangleSet.add(new Triangle(currentPoints
+                                .get(0), currentPoints.get(1), currentPoints
+                                .get(2), e1, e2, e3, currentVector));
                         } catch (MoreThanTwoTrianglesPerEdgeException e4) {
                             // Do nothing : it will not add
                             // the Triangle to the mesh.
@@ -214,8 +199,7 @@ public class ParserSTL {
                         // triangle.
                         if ("outer".equals(openingWord)) {
                             if ("loop".equals(brokenLine.nextToken())) {
-                                ParserSTL.currentPoints =
-                                    new ArrayList<Point>();
+                                currentPoints = new ArrayList<Point>();
                             }
                         }
                     }
@@ -301,6 +285,9 @@ public class ParserSTL {
 
         this.triangleSet = new HashSet<Triangle>();
 
+        Vector3d currentVector = null;
+        List<Point> currentPoints = null;
+
         // Reading the file
         try {
             while (scanner.hasNextLine()) {
@@ -310,7 +297,8 @@ public class ParserSTL {
                     // the Parser read another Triangle with the same
                     // values, only one of those Triangles will be added to the
                     // Mesh.
-                    this.processLineA(scanner.nextLine());
+                    this.processLineA(scanner.nextLine(), currentVector,
+                        currentPoints);
                 } catch (FlatTriangleException e) {
                     // If it is a flat Triangle : 2
                     // identical Points, then 2 identical Edge, it is not added

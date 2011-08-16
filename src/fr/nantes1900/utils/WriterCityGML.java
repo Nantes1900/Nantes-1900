@@ -177,6 +177,7 @@ public class WriterCityGML {
      * @param floor
      *            the mesh to write
      */
+    //TODO : make this method again, with the correct types.
     public final void addFloor(final Floor floor) {
         // FIXME : make a real ground...
         final Building building = this.citygml.createBuilding();

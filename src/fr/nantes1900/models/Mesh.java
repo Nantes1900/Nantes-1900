@@ -797,6 +797,19 @@ public class Mesh extends HashSet<Triangle> {
         return t;
     }
 
+    // TODO : doc, test !
+    public Mesh inPlanes(Triangle t, double error) {
+        Mesh ret = new Mesh();
+
+        for (Triangle triangle : this) {
+            if (triangle.isInPlane(t, error)) {
+                ret.add(triangle);
+            }
+        }
+
+        return ret;
+    }
+
     /**
      * Compute the point centroid : average of x, y, and z.
      * 

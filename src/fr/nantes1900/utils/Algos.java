@@ -4,7 +4,6 @@ import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Triangle;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -57,8 +56,8 @@ public final class Algos {
      * This method takes one triangle and use returnNeighbours to find the
      * triangles which are oriented as the first one (with an error) and find
      * into them its neighbours, and put it in a new mesh into the arraylist.
-     * Thus, it takes another triangle and redo the same operation until there
-     * is no more triangle. This method does not destroy the mesh in parameter.
+     * Then it takes another triangle and redo the same operation until there is
+     * no more triangle. This method does not destroy the mesh in parameter.
      * 
      * @param m
      *            the mesh to divide
@@ -66,7 +65,7 @@ public final class Algos {
      *            the error on the orientation
      * @return an array of the blocks-meshs
      * @throws MoreThanTwoTrianglesPerEdgeException
-     *             uf the edge is bad formed
+     *             if the edge is bad formed
      */
     public static List<Mesh> blockOrientedExtract(final Mesh m,
         final double angleNormalErrorFactor)
@@ -127,7 +126,39 @@ public final class Algos {
         list.addAll(m);
     }
 
-    //TODO : there is maybe no need of this exception.
+    /**
+     * Treat a list of mesh to add the noise which is part of the mesh. This
+     * method try to find a block of noise which complete the mesh (of the
+     * list). It thus adds it to the mesh.
+     * 
+     * @param list
+     *            the list of meshes to complete with noise
+     * @param noise
+     *            the whole noise
+     * @throws MoreThanTwoTrianglesPerEdgeException
+     *             if the edge is bad formed
+     */
+    // LOOK : we can maybe gain speed in this method, which completely lacks of
+    // velocity.
+    public static void blockTreatNoise(final List<Mesh> list, final Mesh noise)
+        throws MoreThanTwoTrianglesPerEdgeException {
+
+        final List<Mesh> m = new ArrayList<Mesh>();
+
+        for (Mesh e : list) {
+            final Mesh meshAndNoise = new Mesh(e);
+            meshAndNoise.addAll(noise);
+            final Mesh mes = new Mesh();
+            e.getOne().returnNeighbours(mes, meshAndNoise);
+            m.add(mes);
+            noise.remove(mes);
+        }
+
+        list.clear();
+        list.addAll(m);
+    }
+
+    // TODO : there is maybe no need of this exception.
     /**
      * Implements an exception when the floor is empty.
      * 
