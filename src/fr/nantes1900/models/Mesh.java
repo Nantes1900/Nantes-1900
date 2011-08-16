@@ -100,7 +100,6 @@ public class Mesh extends HashSet<Triangle> {
         try {
             computedWallPlane.add(new Triangle(p1, p2, p3, e1, e2, e3, vect));
         } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            // TODO
             e.printStackTrace();
         }
 
@@ -154,6 +153,7 @@ public class Mesh extends HashSet<Triangle> {
         final Set<Point> set = new HashSet<Point>();
         final Set<Triangle> mesh = new HashSet<Triangle>();
 
+        // Make a list of all the points, and base change them.
         for (Triangle f : this) {
             set.addAll(f.getPoints());
             MatrixMethod.changeBase(f.getNormal(), matrix);
@@ -219,6 +219,7 @@ public class Mesh extends HashSet<Triangle> {
      * @throws InvalidSurfaceException
      *             if anything bad happens in the algorithm
      */
+    // TODO : comment !
     public final Polyline findEdges(final List<Mesh> wallList,
         final Map<Point, Point> pointMap, final Map<Edge, Edge> edgeMap,
         final Vector3d normalFloor) throws InvalidSurfaceException {
@@ -382,6 +383,7 @@ public class Mesh extends HashSet<Triangle> {
         // FIXME : verifications : if they are colinear... ? This problem is
         // linked with the singular matrix problem !
 
+        // Creates three planes from the three meshes.
         final double a1 = vect1.x;
         final double b1 = vect1.y;
         final double c1 = vect1.z;
@@ -400,6 +402,7 @@ public class Mesh extends HashSet<Triangle> {
         final double d3 =
             -m3.xAverage() * a3 - m3.yAverage() * b3 - m3.zAverage() * c3;
 
+        // Inverse the matrix to find the intersection point.
         final double[][] matrix =
             MatrixMethod.createOrthoBase(vect1, vect2, vect3);
         final double[][] matrixInv = MatrixMethod.getInversMatrix(matrix);
@@ -815,8 +818,11 @@ public class Mesh extends HashSet<Triangle> {
     public final void returnNeighbours(final List<Mesh> ret,
         final List<Mesh> contain) {
 
+        // Add this to the ret list.
         ret.add(this);
 
+        // If this is not contained by ret and if this is contained in contain,
+        // then call this method.
         for (Mesh m : this.getNeighbours()) {
             if (!ret.contains(m) && contain.contains(m)) {
                 m.returnNeighbours(ret, contain);
@@ -826,8 +832,8 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Implements an execption used un algorithms. TODO : complete this
-     * description.
+     * Implements an execption used in findEdges method when surfaces can not be
+     * vectorized.
      * 
      * @author Daniel Lefevre
      */
@@ -846,8 +852,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Implements an exception used in algorithms when planes are parallel. TODO
-     * : complete.
+     * Implements an exception used in algorithms when planes are parallel.
      * 
      * @author Daniel Lefevre
      */

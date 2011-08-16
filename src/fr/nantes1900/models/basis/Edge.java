@@ -2,7 +2,6 @@ package fr.nantes1900.models.basis;
 
 import fr.nantes1900.models.Polyline;
 import fr.nantes1900.utils.ParserSTL;
-import fr.nantes1900.utils.ParserSTL.BadMeshException;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -224,6 +223,7 @@ public class Edge {
      */
     public final boolean isInCylinder3D(final Point point, final double error) {
 
+        // Basic projection of a point on a line.
         final double x1 = this.getP1().getX();
         final double x2 = this.getP2().getX();
         final double x3 = point.getX();
@@ -365,6 +365,7 @@ public class Edge {
      */
     public final boolean orientedAs(final Edge e, final double error) {
 
+        // Builds two vectors and normalize them.
         final Vector3d vect1 =
             new Vector3d(e.getP2().getX() - e.getP1().getX(), e.getP2().getY()
                 - e.getP1().getY(), e.getP2().getZ() - e.getP1().getZ());
@@ -377,6 +378,7 @@ public class Edge {
                 - this.getP1().getZ());
         vect2.normalize();
 
+        // Then calls the angle function to check their orientation.
         final double convertDegreeRadian = 180 / Math.PI;
         return (vect1.angle(vect2) < (error / convertDegreeRadian))
             || vect1.angle(vect2) > (((180 - error) / convertDegreeRadian));
@@ -391,6 +393,7 @@ public class Edge {
      */
     public final Point project(final Point point) {
 
+        // Basic projection of a point on a line.
         final Point p1 = this.getP1();
         final Point p2 = this.getP2();
         final Point p3 = point;
@@ -478,8 +481,9 @@ public class Edge {
         throws MoreThanTwoTrianglesPerEdgeException {
 
         Triangle triangle = null;
-        // Maybe remove this Exception, because it's treated earlier... and it
-        // shouldn't happen here !
+
+        // LOOK : Maybe remove this Exception, because it's treated earlier...
+        // and it shouldn't happen here !
         if (this.triangles.size() > 2) {
             throw new MoreThanTwoTrianglesPerEdgeException();
         }
@@ -525,7 +529,7 @@ public class Edge {
      * @return the point shared by this and e
      */
     public final Point sharedPoint(final Edge e) {
-        // = null is not necessary isn't it ?
+
         Point point = null;
         if (this.contains(e.getP1())) {
             point = e.getP1();

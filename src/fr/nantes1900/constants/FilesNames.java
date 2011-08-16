@@ -8,8 +8,6 @@ package fr.nantes1900.constants;
  */
 public final class FilesNames {
 
-    // FIXME : introduce these constants in the classes.
-
     /**
      * Directory name for the floors.
      */

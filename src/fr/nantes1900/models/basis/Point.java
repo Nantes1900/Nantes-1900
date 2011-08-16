@@ -3,8 +3,9 @@ package fr.nantes1900.models.basis;
 import fr.nantes1900.utils.MatrixMethod;
 
 /**
- * @author Daniel Lefèvre, Elsa Arroud-Vignod Implement a point, composed of
- *         three coordinates.
+ * Implements a point, composed of three coordinates.
+ * 
+ * @author Daniel Lefèvre, Elsa Arroud-Vignod
  */
 public class Point {
 
@@ -18,10 +19,12 @@ public class Point {
      * x coordinate.
      */
     private double x;
+
     /**
      * y coordinate.
      */
     private double y;
+
     /**
      * z coordinate.
      */

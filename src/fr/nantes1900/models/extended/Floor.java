@@ -48,7 +48,7 @@ public class Floor {
      *            the floor to decimate as a mesh
      */
     public void decimate(final Mesh floor) {
-        // FIXME
+        // TODO : code this method.
     }
 
     /**

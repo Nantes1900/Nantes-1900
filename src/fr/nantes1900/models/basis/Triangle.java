@@ -11,7 +11,7 @@ import java.util.List;
 import javax.vecmath.Vector3d;
 
 /**
- * Implement a triangle, composed of three points, three edges, and one vector
+ * Implements a triangle, composed of three points, three edges, and one vector
  * as a normal.
  * 
  * @author Daniel Lefevre, Eric Berthe, Valentin Roger, Elsa Arroud-Vignod
@@ -22,10 +22,12 @@ public class Triangle {
      * List of 3 points of the triangle.
      */
     private final Point[] points = new Point[3];
+
     /**
      * Normal of the triangle.
      */
     private final Vector3d normal = new Vector3d();
+
     /**
      * List of 3 edges of the triangle.
      */
@@ -51,7 +53,6 @@ public class Triangle {
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if one edge already contains 2 triangles
      */
-    // TODO : reduce this constructor by making the edge inside.
     public Triangle(final Point point0, final Point point1, final Point point2,
         final Edge edge1, final Edge edge2, final Edge edge3,
         final Vector3d normalNew) throws MoreThanTwoTrianglesPerEdgeException {
@@ -247,7 +248,13 @@ public class Triangle {
      */
     public final int getNumNeighbours()
         throws MoreThanTwoTrianglesPerEdgeException {
-        return this.getNeighbours().size();
+
+        int number = 0;
+        for (Edge e : this.edges) {
+            number += e.getNumberTriangles() - 1;
+        }
+
+        return number;
     }
 
     /**
@@ -321,11 +328,18 @@ public class Triangle {
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if an edge is bad formed
      */
-    // TODO : code again this method : you don't need to call the big
-    // getNeighbours to check that little thing.
     public final boolean isNeighboor(final Triangle triangle)
         throws MoreThanTwoTrianglesPerEdgeException {
-        return this.getNeighbours().contains(triangle);
+
+        Triangle other;
+        for (Edge e : this.edges) {
+            other = e.returnOther(this);
+            if (other != triangle) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -356,14 +370,20 @@ public class Triangle {
      */
     public final void returnNeighbours(final Mesh ret, final Mesh container)
         throws MoreThanTwoTrianglesPerEdgeException {
+
+        // Add this triangle.
         ret.add(this);
 
         Triangle other;
 
+        // For each neighbour, ...
         for (Edge e : this.edges) {
             other = e.returnOther(this);
+            // ... Which is not yet in ret, and which belongs to container ...
             if (other != null && container.contains(other)
                 && !ret.contains(other)) {
+
+                // ... Calls this method on this neighbour.
                 other.returnNeighbours(ret, container);
             }
         }

@@ -60,9 +60,10 @@ public class Polyline {
      * @param a
      *            the list of edges
      */
-    public Polyline(
-        final List<Edge> a) {
+    public Polyline(final List<Edge> a) {
         for (Edge e : a) {
+            // Checks if the objects added are not already contained in the
+            // list.
             if (!this.edgeList.contains(e)) {
                 this.edgeList.add(e);
             }
@@ -85,8 +86,7 @@ public class Polyline {
      * @param p
      *            the polyline to copy
      */
-    public Polyline(
-        final Polyline p) {
+    public Polyline(final Polyline p) {
         this(p.getEdgeList());
 
         // For each point, make the list of the edges which contain this point.
@@ -179,6 +179,7 @@ public class Polyline {
             throw new InvalidParameterException();
         }
 
+        // For each point of the list, base change it.
         for (Point p : this.pointList) {
             p.changeBase(matrix);
         }
@@ -285,6 +286,7 @@ public class Polyline {
         if (p == null) {
             throw new InvalidParameterException();
         }
+
         final List<Edge> list = new ArrayList<Edge>();
         for (Edge e : this.edgeList) {
             if (e.contains(p)) {
@@ -408,7 +410,8 @@ public class Polyline {
 
     /**
      * Order the polyline. Each edge in the edge list will be surrounded by its
-     * neighbours
+     * neighbours. The polyline must be well formed and must be able to be
+     * ordered.
      */
     public final void order() {
         if (!this.isEmpty()) {
@@ -421,6 +424,7 @@ public class Polyline {
                 Edge e = first.returnNeighbour(this, p);
                 p = e.returnOther(p);
 
+                // While we are not back to the beginning, add it to ret.
                 while (e != first) {
                     ret.add(e);
                     e = e.returnNeighbour(this, p);
@@ -515,6 +519,7 @@ public class Polyline {
      * 
      * @return a mesh representing the surface of the polyline
      */
+    // TODO : replace by something better.
     public final Mesh returnCentroidMesh() {
         final Mesh ens = new Mesh();
 
