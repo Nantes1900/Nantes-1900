@@ -278,7 +278,7 @@ public class Mesh extends HashSet<Triangle> {
                             points.add(p);
 
                         } catch (SingularMatrixException e1) {
-                            System.out.println("Matrix exc!");
+                            System.out.println("Singular matrix !");
                             throw new InvalidSurfaceException();
                         }
                     }
@@ -308,10 +308,6 @@ public class Mesh extends HashSet<Triangle> {
 
                 edges.add(e);
             }
-            // We let the exception for below : if they can complete the
-            // last edge, it's ok, if not, then they throw themselves the
-            // exception.
-
         }
 
         if (edges.edgeSize() == this.getNeighbours().size()) {
@@ -319,6 +315,8 @@ public class Mesh extends HashSet<Triangle> {
             edges.order();
             return edges;
         } else {
+            System.out.println(edges.edgeSize() + " on "
+                + this.getNeighbours().size());
             // this.writeSTL("mesh.stl");
             // int counter = 0;
             // for (Mesh m : this.getNeighbours()) {
@@ -326,8 +324,16 @@ public class Mesh extends HashSet<Triangle> {
             // ++counter;
             // }
             // System.exit(1);
-            System.out.println("Else !");
-            throw new InvalidSurfaceException();
+            edges.setNormal(this.averageNormal());
+            if (edges.canBeOrdered()) {
+                edges.order();
+                // } else {
+                // edges.orderAsYouCan();
+            }
+            return edges;
+
+            // System.out.println("Else !");
+            // throw new InvalidSurfaceException();
         }
     }
 
@@ -798,11 +804,11 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     // TODO : doc, test !
-    public Mesh inPlanes(Triangle t, double error) {
+    public Mesh inPlanes(Vector3d vect, Point p, double error) {
         Mesh ret = new Mesh();
 
         for (Triangle triangle : this) {
-            if (triangle.isInPlane(t, error)) {
+            if (triangle.isInPlanes(vect, p, error)) {
                 ret.add(triangle);
             }
         }
@@ -841,7 +847,6 @@ public class Mesh extends HashSet<Triangle> {
                 m.returnNeighbours(ret, contain);
             }
         }
-
     }
 
     /**

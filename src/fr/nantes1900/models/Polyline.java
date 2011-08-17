@@ -441,6 +441,53 @@ public class Polyline {
         }
     }
 
+    public final void orderAsYouCan() {
+        if (!this.isEmpty()) {
+            final Polyline ret = new Polyline();
+
+            try {
+                final Edge first = this.getEdgeList().get(0);
+                Point p = first.getP1();
+                Edge e = first.returnNeighbour(this, p);
+                p = e.returnOther(p);
+
+                // While we are not back to the beginning, add it to ret.
+                while (e != first) {
+                    ret.add(e);
+                    e = e.returnNeighbour(this, p);
+                    p = e.returnOther(p);
+                }
+                ret.add(e);
+
+                this.edgeList.clear();
+                this.pointList.clear();
+                this.addAll(ret.getEdgeList());
+
+            } catch (BadFormedPolylineException e1) {
+                e1.printStackTrace();
+            }
+        }
+    }
+
+    public final boolean canBeOrdered() {
+        if (!this.isEmpty()) {
+            for (Edge e1 : this.edgeList) {
+                int counter = 0;
+                for (Edge e2 : this.edgeList) {
+                    if (e1.isNeighboor(e2)) {
+                        ++counter;
+                    }
+                }
+                if (counter != 2) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Return the edges that are oriented as the edge e, with an orientation
      * error.
@@ -595,9 +642,10 @@ public class Polyline {
      * 
      * @param string
      *            the name of the file to write in
-     * @throws EmptyPolylineException 
+     * @throws EmptyPolylineException
      */
-    public final void writeCentroidMesh(final String string) throws EmptyPolylineException {
+    public final void writeCentroidMesh(final String string)
+        throws EmptyPolylineException {
         this.returnCentroidMesh().writeSTL(string);
     }
 

@@ -69,6 +69,43 @@ public class TriangleTest extends TestCase {
         }
     }
 
+    public final void testIsInPlanes() {
+        Point p1 = new Point(0, 0, 0);
+        Point p2 = new Point(0, 1, 0);
+        Point p3 = new Point(1, 0, 0);
+        Edge e1 = new Edge(p1, p2);
+        Edge e2 = new Edge(p2, p3);
+        Edge e3 = new Edge(p1, p3);
+        Vector3d normal1 = new Vector3d(0, 0, 1);
+
+        Point p4 = new Point(0, 0, 1);
+        Point p5 = new Point(0, 1, 1);
+        Point p6 = new Point(1, 0, 1);
+        Edge e4 = new Edge(p1, p2);
+        Edge e5 = new Edge(p2, p3);
+        Edge e6 = new Edge(p1, p3);
+        Vector3d normal2 = new Vector3d(0, 0, 1);
+
+        Point p7 = new Point(0, 0, 2);
+        Point p8 = new Point(0, 1, 2);
+        Point p9 = new Point(1, 0, 2);
+        Edge e7 = new Edge(p1, p2);
+        Edge e8 = new Edge(p2, p3);
+        Edge e9 = new Edge(p1, p3);
+        Vector3d normal3 = new Vector3d(0, 0, 1);
+        try {
+            Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, normal1);
+            Triangle t2 = new Triangle(p4, p5, p6, e4, e5, e6, normal2);
+            Triangle t3 = new Triangle(p7, p8, p9, e7, e8, e9, normal3);
+
+            Assert.assertTrue(t1.isInPlanes(t2.getNormal(), t2.getP1(), 1.1));
+            Assert.assertFalse(t1.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
+            Assert.assertTrue(t2.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
+        } catch (MoreThanTwoTrianglesPerEdgeException e) {
+            Assert.fail();
+        }
+    }
+
     /**
      * Test method for
      * {@link nantes1900pjct.models.basis.Triangle#angularTolerance(javax.vecmath.Vector3d, double)}

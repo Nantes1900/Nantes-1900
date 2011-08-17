@@ -1,5 +1,6 @@
 package fr.nantes1900.utils;
 
+import fr.nantes1900.constants.SeparationTreatmentWallsRoofs;
 import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Triangle;
@@ -67,23 +68,68 @@ public final class Algos {
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if the edge is bad formed
      */
-    public static List<Mesh> blockOrientedExtract(final Mesh m,
+    // FIXME : optimize the velocity.
+    // FIXME : the time of orientedAs is too high...
+    public static List<Mesh> blockOrientedAndPlaneExtract(final Mesh m,
         final double angleNormalErrorFactor)
         throws MoreThanTwoTrianglesPerEdgeException {
         final List<Mesh> thingsList = new ArrayList<Mesh>();
         final Mesh mesh = new Mesh(m);
 
+        // long timeTotal = System.nanoTime();
+        // long time;
+
         while (!mesh.isEmpty()) {
 
+            // time = System.nanoTime();
+
             final Mesh e = new Mesh();
+
+            // System.out.println("Temps écoulé pour new mesh : "
+            // + (System.nanoTime() - time));
+            // time = System.nanoTime();
+
             final Triangle tri = mesh.getOne();
+
+            // System.out.println("Temps écoulé pour get one : "
+            // + (System.nanoTime() - time));
+            // time = System.nanoTime();
+
             final Mesh oriented =
                 mesh.orientedAs(tri.getNormal(), angleNormalErrorFactor);
-            tri.returnNeighbours(e, oriented);
-            mesh.remove(e);
-            thingsList.add(e);
 
+            // System.out.println("Temps écoulé pour orientedAs : "
+            // + (System.nanoTime() - time));
+            // time = System.nanoTime();
+
+            tri.returnNeighbours(e, oriented);
+
+            // System.out.println("Temps écoulé pour returnNeighbours : "
+            // + (System.nanoTime() - time));
+            // time = System.nanoTime();
+
+            Mesh eReal =
+                e.inPlanes(e.averageNormal(), e.getCentroid(),
+                    SeparationTreatmentWallsRoofs.PLANES_ERROR);
+
+            // System.out.println("Temps écoulé pour inPlanes : "
+            // + (System.nanoTime() - time));
+            // time = System.nanoTime();
+
+            mesh.remove(eReal);
+
+            // System.out.println("Temps écoulé pour remove : "
+            // + (System.nanoTime() - time));
+            // time = System.nanoTime();
+
+            thingsList.add(eReal);
+
+            // System.out.println("Temps écoulé pour add : "
+            // + (System.nanoTime() - time));
         }
+
+        // System.out.println("Temps écoulé pour blockOriented : "
+        // + (System.nanoTime() - timeTotal));
 
         return thingsList;
     }

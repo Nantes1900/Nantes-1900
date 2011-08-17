@@ -1,6 +1,5 @@
 package fr.nantes1900.models.basis;
 
-import fr.nantes1900.constants.SeparationFloorBuilding;
 import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 
@@ -587,13 +586,12 @@ public class Triangle {
      * @return
      */
     // TODO : doc ! test !
-    public boolean isInPlane(Triangle t, double error) {
+    public boolean isInPlanes(Vector3d vect, Point p, double error) {
 
         final Edge axisNormalFloor =
-            new Edge(new Point(0, 0, 0), new Point(t.getNormal().x, t
-                .getNormal().y, t.getNormal().z));
+            new Edge(new Point(0, 0, 0), new Point(vect.x, vect.y, vect.z));
 
-        final Point pAverage = axisNormalFloor.project(t.getP1());
+        final Point pAverage = axisNormalFloor.project(p);
 
         final Point projectedPoint = axisNormalFloor.project(this.getP1());
 

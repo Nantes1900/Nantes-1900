@@ -618,6 +618,8 @@ public class Town {
             + FilesNames.SEPARATOR + counterResidentials + FilesNames.EXTENSION)
             .exists()) {
 
+            long time = System.nanoTime();
+
             // ...Parse the meshes of these files
             final Mesh mesh =
                 this.parseFile(directoryName + FilesNames.RESIDENTIAL_FILENAME
@@ -673,11 +675,11 @@ public class Town {
             // to build it and add it to the list of this town.
             for (Mesh m : buildings) {
                 final Building e = new Building();
+
+                System.out
+                    .println("Temps écoulé au début du traitement du building : "
+                        + (System.nanoTime() - time) / 1000000000);
                 e.buildFromMesh(m, wholeFloor, normalGravityOriented);
-
-                // FIXME
-                System.exit(1);
-
                 this.addResidential(e);
             }
 
