@@ -134,11 +134,10 @@ public class ParserSTL {
             // If the word is facet normal, read the vetor.
             if ("facet".equals(openingWord)) {
                 if ("normal".equals(brokenLine.nextToken())) {
-                    currentVector =
-                        new Vector3d(
-                            Double.parseDouble(brokenLine.nextToken()), Double
-                                .parseDouble(brokenLine.nextToken()), Double
-                                .parseDouble(brokenLine.nextToken()));
+                    currentVector.set(Double
+                        .parseDouble(brokenLine.nextToken()), Double
+                        .parseDouble(brokenLine.nextToken()), Double
+                        .parseDouble(brokenLine.nextToken()));
 
                     currentVector.normalize();
                 } else {
@@ -199,7 +198,7 @@ public class ParserSTL {
                         // triangle.
                         if ("outer".equals(openingWord)) {
                             if ("loop".equals(brokenLine.nextToken())) {
-                                currentPoints = new ArrayList<Point>();
+                                currentPoints.clear();
                             }
                         }
                     }
@@ -285,8 +284,8 @@ public class ParserSTL {
 
         this.triangleSet = new HashSet<Triangle>();
 
-        Vector3d currentVector = null;
-        List<Point> currentPoints = null;
+        Vector3d currentVector = new Vector3d();
+        List<Point> currentPoints = new ArrayList<Point>();
 
         // Reading the file
         try {

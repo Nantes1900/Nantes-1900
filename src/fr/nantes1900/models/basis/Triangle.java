@@ -320,8 +320,7 @@ public class Triangle {
     }
 
     /**
-     * Check if a triangle is a neighbours of this. This method calls the
-     * getNeighbours method.
+     * Check if a triangle is a neighbours of this.
      * 
      * @param triangle
      *            the triangle to check
@@ -335,7 +334,7 @@ public class Triangle {
         Triangle other;
         for (Edge e : this.edges) {
             other = e.returnOther(this);
-            if (other != triangle) {
+            if (other == triangle) {
                 return true;
             }
         }

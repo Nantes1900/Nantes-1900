@@ -1,7 +1,6 @@
 package fr.nantes1900.models;
 
 import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Edge.BadFormedPolylineException;
 import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
@@ -518,9 +517,13 @@ public class Polyline {
      * but it's enough for debugging.
      * 
      * @return a mesh representing the surface of the polyline
+     * @throws EmptyPolylineException
      */
     // TODO : replace by something better.
-    public final Mesh returnCentroidMesh() {
+    public final Mesh returnCentroidMesh() throws EmptyPolylineException {
+        if (this.isEmpty()) {
+            throw new EmptyPolylineException();
+        }
         final Mesh ens = new Mesh();
 
         final Point centroid =
@@ -551,8 +554,10 @@ public class Polyline {
      * @param m
      *            the mesh where all the edges are expected to belong
      * @return the mesh composed all the triangles the edges belong to
+     * @throws EmptyPolylineException
      */
-    public final Mesh returnExistingMesh(final Mesh m) {
+    public final Mesh returnExistingMesh(final Mesh m)
+        throws EmptyPolylineException {
 
         // If there is Edges which have not triangles associated, the method
         // calls the returnCentroidMesh.
@@ -590,8 +595,9 @@ public class Polyline {
      * 
      * @param string
      *            the name of the file to write in
+     * @throws EmptyPolylineException 
      */
-    public final void writeCentroidMesh(final String string) {
+    public final void writeCentroidMesh(final String string) throws EmptyPolylineException {
         this.returnCentroidMesh().writeSTL(string);
     }
 
@@ -868,6 +874,39 @@ public class Polyline {
     public final void zProjection(final double z) {
         for (Point p : this.pointList) {
             p.setZ(z);
+        }
+    }
+
+    /**
+     * Implement a exception used when the polyline is bad formed.
+     * 
+     * @author Daniel Lefevre
+     */
+    public static final class BadFormedPolylineException extends Exception {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        public BadFormedPolylineException() {
+        }
+    }
+
+    public static class EmptyPolylineException extends Exception {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        public EmptyPolylineException() {
         }
     }
 }

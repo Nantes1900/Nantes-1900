@@ -1,6 +1,7 @@
 package fr.nantes1900.models.basis;
 
 import fr.nantes1900.models.Polyline;
+import fr.nantes1900.models.Polyline.BadFormedPolylineException;
 import fr.nantes1900.utils.ParserSTL;
 
 import java.security.InvalidParameterException;
@@ -547,25 +548,6 @@ public class Edge {
     @Override
     public final String toString() {
         return new String("(" + this.getP1() + ", " + this.getP2() + ")");
-    }
-
-    /**
-     * Implement a exception used when the polyline is bad formed.
-     * 
-     * @author Daniel Lefevre
-     */
-    public static final class BadFormedPolylineException extends Exception {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        private BadFormedPolylineException() {
-        }
     }
 
     /**

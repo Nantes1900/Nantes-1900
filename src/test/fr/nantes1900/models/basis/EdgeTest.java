@@ -1,8 +1,8 @@
 package test.fr.nantes1900.models.basis;
 
 import fr.nantes1900.models.Polyline;
+import fr.nantes1900.models.Polyline.BadFormedPolylineException;
 import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Edge.BadFormedPolylineException;
 import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
