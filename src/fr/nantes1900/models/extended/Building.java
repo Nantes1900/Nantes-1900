@@ -3,9 +3,10 @@ package fr.nantes1900.models.extended;
 import fr.nantes1900.constants.FilesNames;
 import fr.nantes1900.constants.SeparationTreatmentWallsRoofs;
 import fr.nantes1900.models.Mesh;
-import fr.nantes1900.models.Mesh.InvalidSurfaceException;
 import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.Polyline.EmptyPolylineException;
+import fr.nantes1900.models.Surface;
+import fr.nantes1900.models.Surface.InvalidSurfaceException;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
@@ -44,16 +45,17 @@ public class Building {
     /**
      * Returns the intersection of two lists of meshes.
      * 
-     * @param list1
+     * @param list
      *            the first list of meshes
      * @param list2
      *            the second list of meshes
      * @return a list containing the elements shared by the two lists
      */
-    private static List<Mesh> listIntersection(final List<Mesh> list1,
-        final List<Mesh> list2) {
+    // FIXME : put that i don't know where but not here...
+    public static List<Mesh> listIntersection(final List<Surface> list,
+        final List<Surface> list2) {
         final List<Mesh> ret = new ArrayList<Mesh>();
-        for (Mesh mesh : list1) {
+        for (Mesh mesh : list) {
             if (list2.contains(mesh)) {
                 ret.add(mesh);
             }
@@ -102,7 +104,7 @@ public class Building {
     }
 
     /**
-     * Build the building from a mesh, by computingthe algorithms.
+     * Build the building from a mesh, by computing the algorithms.
      * 
      * @param building
      *            the mesh to compute
@@ -114,126 +116,44 @@ public class Building {
     public final void buildFromMesh(final Mesh building, final Mesh floors,
         final Vector3d normalFloor) {
 
-        long time = System.nanoTime();
-
-        // FIXME : remove this line :
-        building.writeSTL("files/St-Similien/m02/results/building.stl");
-
-        System.out.println("Temps écoulé writer building: "
-            + (System.nanoTime() - time) / 1000000000);
-
         // Creates new meshes.
-        final Mesh wholeWall = new Mesh();
-        final Mesh wholeRoof = new Mesh();
         final Mesh noise = new Mesh();
 
-        time = System.nanoTime();
         // Applies the first algorithms : extract the walls, and after this,
         // extract the roofs.
+        // FIXME : improve the speed of sortWalls and sortRoofs...
         final List<Mesh> wallList =
-            this.sortWalls(building, normalFloor, wholeWall, noise);
+            this.sortWalls(building, normalFloor, noise);
 
-        System.out.println("Temps écoulé separation walls : "
-            + (System.nanoTime() - time) / 1000000000);
-
-        time = System.nanoTime();
         final List<Mesh> roofList =
-            this.sortRoofs(building, normalFloor, wholeRoof, noise);
+            this.sortRoofs(building, normalFloor, noise);
 
-        System.out.println("Temps écoulé separation roofs : "
-            + (System.nanoTime() - time) / 1000000000);
+        // Treats the noise, search deeply for new neighbours, find them, and
+        // merge them if they belong to the same surface.
+        this.treatNoise(wallList, roofList, noise, floors);
 
-        // FIXME
-        int counter;
+        final List<Surface> wallTreatedList = new ArrayList<Surface>();
+        final List<Surface> roofTreatedList = new ArrayList<Surface>();
+        this.vectorizeSurfaces(wallList, roofList, wallTreatedList,
+            roofTreatedList);
+        final Surface floorsTreated = new Surface(floors);
 
-        // time = System.nanoTime();
-        //
-        // counter = 0;
-        // for (Mesh m : wallList) {
-        // m.writeSTL("files/St-Similien/m02/results/brutWall" + counter
-        // + ".stl");
-        // counter++;
-        // }
-        // counter = 0;
-        // for (Mesh m : roofList) {
-        // m.writeSTL("files/St-Similien/m02/results/brutRoof" + counter
-        // + ".stl");
-        // counter++;
-        // }
-        //
-        // System.out.println("Temps écoulé writer walls roofs : "
-        // + (System.nanoTime() - time) / 1000000000);
-
-        time = System.nanoTime();
-
-        // Treats the noise.
-        this.treatNoise(wallList, roofList, noise);
-
-        System.out.println("Temps écoulé treat noise : "
-            + (System.nanoTime() - time) / 1000000000);
-
-        // time = System.nanoTime();
-        //
-        // counter = 0;
-        // for (Mesh m : wallList) {
-        // m.writeSTL("files/St-Similien/m02/results/treatedWall" + counter
-        // + ".stl");
-        // counter++;
-        // }
-        // counter = 0;
-        // for (Mesh m : roofList) {
-        // m.writeSTL("files/St-Similien/m02/results/treatedRoof" + counter
-        // + ".stl");
-        // counter++;
-        // }
-        //
-        // System.out.println("Temps écoulé writer walls roofs : "
-        // + (System.nanoTime() - time) / 1000000000);
-
-        time = System.nanoTime();
-
-        // Finds the neighbours, searching deeply (add noise to the walls and
-        // roofs to add every edge to one of these surface. Then find the
-        // surfaces which share one edge.
-        this.searchForNeighbours(wallList, roofList, floors, noise);
+        // Finds the neighbours, searching deeply (add noise to the walls
+        // and roofs to add every edge to one of these surface. Then find
+        // the surfaces which share one edge.
+        this.searchForNeighbours(wallTreatedList, roofTreatedList,
+            floorsTreated, noise);
 
         // Treats the new neighbours.
-        this.treatNewNeighbours(wallList, roofList);
+        this.treatNewNeighbours(wallTreatedList, roofTreatedList);
 
-        System.out
-            .println("Temps écoulé separation search treat new neighbours : "
-                + (System.nanoTime() - time) / 1000000000);
+        // Find the neighbours of each roof and wall (and the floors).
+        this.determinateNeighbours(wallTreatedList, roofTreatedList,
+            floorsTreated);
 
-        time = System.nanoTime();
-
-        counter = 0;
-        for (Mesh m : wallList) {
-            m.writeSTL("files/St-Similien/m02/results/newWall" + counter
-                + ".stl");
-            counter++;
-        }
-        counter = 0;
-        for (Mesh m : roofList) {
-            m.writeSTL("files/St-Similien/m02/results/newRoof" + counter
-                + ".stl");
-            counter++;
-        }
-
-        System.out.println("Temps écoulé writer walls roofs : "
-            + (System.nanoTime() - time) / 1000000000);
-
-        // FIXME : if some roofs are neighbours to the floors, remove them...
-        // because it's noise. TODO ? Because if they are not noise ?
-
-        // Computes the neighbours of each roof and wall (and the floors).
-        this.determinateNeighbours(wallList, roofList, floors);
-
-        // If we can complete them, then complete.
-        this.completeNeighbours(wallList, roofList);
-
-        // From all the neighbours, computes the wrap line and return
+        // From all the neighbours, computes the wrap line and returns the
         // surfaces as polylines.
-        this.findCommonEdges(wallList, roofList, normalFloor);
+        this.findCommonEdges(wallTreatedList, roofTreatedList, normalFloor);
 
         this.writeSTL("files/St-Similien/m02/results/");
 
@@ -241,50 +161,20 @@ public class Building {
         System.exit(1);
     }
 
-    public final void completeNeighbours(final List<Mesh> wallList,
-        final List<Mesh> roofList) {
+    /**
+     * @param wallList
+     * @param roofList
+     * @param wallTreatedList
+     * @param roofTreatedList
+     */
+    private void vectorizeSurfaces(List<Mesh> wallList, List<Mesh> roofList,
+        List<Surface> wallTreatedList, List<Surface> roofTreatedList) {
 
-        // TODO : is this method useful ? Look at it ... Try and test on some
-        // methods...
-
-        final List<Mesh> wholeList = new ArrayList<Mesh>();
-        wholeList.addAll(wallList);
-        wholeList.addAll(roofList);
-
-        // Verification after the first search. If the neighbours of one surface
-        // are not 2 per 2 neighbours each other, then correct it.
-        for (Mesh mesh : wholeList) {
-            final List<Mesh> list = new ArrayList<Mesh>();
-            if (mesh.getNeighbours().size() == 0) {
-                System.out.println("No neighbours !");
-            }
-            for (Mesh surface : mesh.getNeighbours()) {
-                if (Building.listIntersection(mesh.getNeighbours(),
-                    surface.getNeighbours()).size() == 1) {
-                    list.add(surface);
-                }
-            }
-
-            // TODO : translate this !
-            // S'il y a deux surfaces qui n'ont pas 2 voisins chacune, alors ces
-            // deux-là doivent forcément être voisines. On les ajoute donc.
-            if (list.size() == 2) {
-                list.get(0).addNeighbour(list.get(1));
-                System.out.println("Case well treated !");
-            } else if (list.size() == 1) {
-                // mesh.writeSTL("mesh.stl");
-                // int counter = 0;
-                // for (Mesh m : mesh.getNeighbours()) {
-                // m.writeSTL("neighbour" + counter + ".stl");
-                // ++counter;
-                // }
-                // System.exit(1);
-                System.out.println("Error !");
-            } else if (list.size() == 0) {
-                // No problem !
-            } else {
-                System.out.println("Impossible to treat for now !");
-            }
+        for (Mesh m : wallList) {
+            wallTreatedList.add(new Surface(m));
+        }
+        for (Mesh m : roofList) {
+            roofTreatedList.add(new Surface(m));
         }
     }
 
@@ -361,36 +251,37 @@ public class Building {
      * Determinate the neighbours of each meshes. Two meshes are neighbours if
      * they share an edge.
      * 
-     * @param wallList
+     * @param wallTreatedList
      *            the list of walls as meshes
-     * @param roofList
+     * @param roofTreatedList
      *            the list of roofs as meshes
      * @param floors
      *            the floors as one mesh
      * @param noise
      */
-    private void determinateNeighbours(final List<Mesh> wallList,
-        final List<Mesh> roofList, final Mesh floors) {
+    private void determinateNeighbours(final List<Surface> wallTreatedList,
+        final List<Surface> roofTreatedList, final Surface floors) {
 
         final List<Polyline> wallsBoundsList = new ArrayList<Polyline>();
         final List<Polyline> roofsBoundsList = new ArrayList<Polyline>();
 
         final Polyline floorsBounds = floors.returnUnsortedBounds();
 
-        final List<Mesh> wholeList = new ArrayList<Mesh>();
-        wholeList.addAll(wallList);
-        wholeList.addAll(roofList);
+        final List<Surface> wholeList = new ArrayList<Surface>();
+        wholeList.addAll(wallTreatedList);
+        wholeList.addAll(roofTreatedList);
 
-        // First we clear the neighbours.
-        for (Mesh m : wholeList) {
-            m.getNeighbours().clear();
-        }
+        // FIXME
+        // // First we clear the neighbours.
+        // for (Mesh m : wholeList) {
+        // m.getNeighbours().clear();
+        // }
 
         // We compute the bounds to check if they share a common edge.
-        for (Mesh w : wallList) {
+        for (Mesh w : wallTreatedList) {
             wallsBoundsList.add(w.returnUnsortedBounds());
         }
-        for (Mesh r : roofList) {
+        for (Mesh r : roofTreatedList) {
             roofsBoundsList.add(r.returnUnsortedBounds());
         }
 
@@ -420,28 +311,28 @@ public class Building {
      * Determinate the neighbours of each meshes. Two meshes are neighbours if
      * they share an edge.
      * 
-     * @param wallList
+     * @param wallTreatedList
      *            the list of walls as meshes
-     * @param roofList
+     * @param roofTreatedList
      *            the list of roofs as meshes
      * @param floors
      *            the floors as one mesh
      * @param noise
      */
-    private void searchForNeighbours(final List<Mesh> wallList,
-        final List<Mesh> roofList, final Mesh floors, Mesh noise) {
+    private void searchForNeighbours(final List<Surface> wallTreatedList,
+        final List<Surface> roofTreatedList, final Surface floors, Mesh noise) {
 
         final List<Polyline> wallsBoundsList = new ArrayList<Polyline>();
         final List<Polyline> roofsBoundsList = new ArrayList<Polyline>();
 
         final Polyline floorsBounds = floors.returnUnsortedBounds();
 
-        final List<Mesh> wholeList = new ArrayList<Mesh>();
-        wholeList.addAll(wallList);
-        wholeList.addAll(roofList);
+        final List<Surface> wholeList = new ArrayList<Surface>();
+        wholeList.addAll(wallTreatedList);
+        wholeList.addAll(roofTreatedList);
 
         // First we clear the neighbours.
-        for (Mesh m : wholeList) {
+        for (Surface m : wholeList) {
             m.getNeighbours().clear();
         }
 
@@ -451,11 +342,11 @@ public class Building {
         List<Mesh> listFakesWalls = new ArrayList<Mesh>();
         List<Mesh> listFakesRoofs = new ArrayList<Mesh>();
 
-        for (Mesh m : wallList) {
+        for (Mesh m : wallTreatedList) {
             Mesh fakeM = new Mesh(m);
             listFakesWalls.add(fakeM);
         }
-        for (Mesh m : roofList) {
+        for (Mesh m : roofTreatedList) {
             Mesh fakeM = new Mesh(m);
             listFakesRoofs.add(fakeM);
         }
@@ -471,10 +362,10 @@ public class Building {
         }
 
         // We compute the bounds to check if they share a common edge.
-        for (Mesh w : wallList) {
+        for (Mesh w : wallTreatedList) {
             wallsBoundsList.add(w.returnUnsortedBounds());
         }
-        for (Mesh r : roofList) {
+        for (Mesh r : roofTreatedList) {
             roofsBoundsList.add(r.returnUnsortedBounds());
         }
 
@@ -505,46 +396,49 @@ public class Building {
      * computing the common edges between them, and put them into the list of
      * polylines walls and roofs.
      * 
-     * @param wallList
+     * @param wallTreatedList
      *            the list of walls as meshes
-     * @param roofList
+     * @param roofTreatedList
      *            the list of roofs as meshe
      * @param normalFloor
      *            the normal to the floor
      */
-    private void findCommonEdges(final List<Mesh> wallList,
-        final List<Mesh> roofList, final Vector3d normalFloor) {
+    private void findCommonEdges(final List<Surface> wallTreatedList,
+        final List<Surface> roofTreatedList, final Vector3d normalFloor) {
 
         final Map<Point, Point> pointMap = new HashMap<Point, Point>();
         final Map<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
 
         int counterError = 0;
 
-        for (Mesh m : roofList) {
+        for (Surface s : roofTreatedList) {
             Polyline p;
 
             try {
-                p = m.findEdges(wallList, pointMap, edgeMap, normalFloor);
+                p =
+                    s.findEdges(wallTreatedList, pointMap, edgeMap, normalFloor);
                 this.roofs.add(p);
             } catch (InvalidSurfaceException e) {
                 // If this exception is catched, do not treat the surface.
                 // FIXME
-                counterError = counterError + 1;
+                ++counterError;
             }
         }
 
-        for (Mesh m : wallList) {
+        for (Surface s : wallTreatedList) {
             Polyline p;
 
             try {
-                p = m.findEdges(wallList, pointMap, edgeMap, normalFloor);
+                p =
+                    s.findEdges(wallTreatedList, pointMap, edgeMap, normalFloor);
                 this.walls.add(p);
             } catch (InvalidSurfaceException e) {
                 // If this exception is catched, do not treat the surface.
                 // FIXME
-                counterError = counterError + 1;
+                ++counterError;
             }
         }
+        // FIXME : logger.
         System.out.println("Nombre de surfaces non traitées : " + counterError);
     }
 
@@ -563,7 +457,7 @@ public class Building {
      * @return the list of roofs
      */
     private List<Mesh> sortRoofs(final Mesh building,
-        final Vector3d normalFloor, final Mesh wholeRoof, final Mesh noise) {
+        final Vector3d normalFloor, final Mesh noise) {
         final List<Mesh> roofList = new ArrayList<Mesh>();
 
         // Cut the mesh in parts, considering their orientation.
@@ -584,12 +478,6 @@ public class Building {
                 } else {
                     noise.addAll(e);
                 }
-            }
-
-            // TODO : put it after
-            // Add the roofs to the wholeRoof mesh.
-            for (Mesh r : roofList) {
-                wholeRoof.addAll(r);
             }
         } catch (MoreThanTwoTrianglesPerEdgeException e1) {
             e1.printStackTrace();
@@ -612,7 +500,7 @@ public class Building {
      * @return the list of walls
      */
     private List<Mesh> sortWalls(final Mesh building,
-        final Vector3d normalFloor, final Mesh wholeWall, final Mesh noise) {
+        final Vector3d normalFloor, final Mesh noise) {
         final List<Mesh> wallList = new ArrayList<Mesh>();
 
         // Select the triangles which are oriented normal to normalFloor.
@@ -635,12 +523,6 @@ public class Building {
                     noise.addAll(e);
                 }
             }
-
-            // TODO put it after
-            // Add the walls to the wholeWall mesh.
-            for (Mesh w : wallList) {
-                wholeWall.addAll(w);
-            }
         } catch (MoreThanTwoTrianglesPerEdgeException e1) {
             e1.printStackTrace();
         }
@@ -649,8 +531,8 @@ public class Building {
 
     // FIXME : improve the velocity of this method.
     // Needs to call determinateNeighbours first...
-    private void treatNewNeighbours(final List<Mesh> wallList,
-        final List<Mesh> roofList) {
+    private void treatNewNeighbours(final List<Surface> wallList,
+        final List<Surface> roofList) {
 
         // After the noise addition, if some of the walls or some of the roofs
         // are now neighbours (they share an edge) and have the same
@@ -659,17 +541,17 @@ public class Building {
         // Wall is prioritary : it means that if a roof touch a wall, this roof
         // is added to the wall, and not the inverse.
 
-        final List<Mesh> wholeList = new ArrayList<Mesh>();
+        final List<Surface> wholeList = new ArrayList<Surface>();
         wholeList.addAll(wallList);
         wholeList.addAll(roofList);
 
         for (int i = 0; i < wholeList.size(); i = i + 1) {
-            final Mesh surface = wholeList.get(i);
+            final Surface surface = wholeList.get(i);
 
-            final List<Mesh> oriented = new ArrayList<Mesh>();
-            final List<Mesh> ret = new ArrayList<Mesh>();
+            final List<Surface> oriented = new ArrayList<Surface>();
+            final List<Surface> ret = new ArrayList<Surface>();
 
-            for (Mesh m : wholeList) {
+            for (Surface m : wholeList) {
                 if (m.isOrientedAs(surface,
                     SeparationTreatmentWallsRoofs.MIDDLE_ANGLE_ERROR)) {
                     oriented.add(m);
@@ -678,7 +560,7 @@ public class Building {
 
             surface.returnNeighbours(ret, oriented);
 
-            for (Mesh m : ret) {
+            for (Surface m : ret) {
                 if (m != surface) {
 
                     surface.addAll(m);
@@ -703,7 +585,7 @@ public class Building {
      *            the mesh containing the noise
      */
     private void treatNoise(final List<Mesh> wallList,
-        final List<Mesh> roofList, final Mesh noise) {
+        final List<Mesh> roofList, final Mesh noise, final Mesh floors) {
 
         try {
             // Add the oriented and neighbour noise to the walls.
@@ -714,6 +596,9 @@ public class Building {
             Algos.blockTreatOrientedNoise(roofList, noise,
                 SeparationTreatmentWallsRoofs.LARGE_ANGLE_ERROR);
 
+            // FIXME : if some roofs are neighbours to the floors, remove
+            // them...
+            // because it's noise. TODO ? Because if they are not noise ?
         } catch (MoreThanTwoTrianglesPerEdgeException e) {
             // TODO : this exception shouldn't happen. Maybe remove this try
             // catch.

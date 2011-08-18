@@ -37,11 +37,6 @@ public class Polyline {
     private Vector3d normal = new Vector3d();
 
     /**
-     * Other Polyline which are neighbours of this.
-     */
-    private List<Polyline> neighbours = new ArrayList<Polyline>();
-
-    /**
      * ID of the polyline.
      */
     private final int iD;
@@ -153,19 +148,6 @@ public class Polyline {
     }
 
     /**
-     * Add a neighbours to the attribute neighbours. Check if it is not
-     * contained.
-     * 
-     * @param p
-     *            the polyline as neighbour to add
-     */
-    public final void addNeighbour(final Polyline p) {
-        if (!this.neighbours.contains(p)) {
-            this.neighbours.add(p);
-        }
-    }
-
-    /**
      * Apply the base change to all the points contained, without changing the
      * references. Caution : this method changes the hashCode, then be careful
      * with the hashTables which contains points
@@ -263,15 +245,6 @@ public class Polyline {
      */
     public final int getID() {
         return this.iD;
-    }
-
-    /**
-     * Getter.
-     * 
-     * @return the neighbours
-     */
-    public final List<Polyline> getNeighbours() {
-        return this.neighbours;
     }
 
     /**
