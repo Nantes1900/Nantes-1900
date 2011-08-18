@@ -11,23 +11,24 @@ import java.util.List;
 import java.util.Set;
 
 /**
- * Implements a class containing some little algorithms used in the other
- * classes.
+ * Contains some algorithms used in the other classes.
  * 
  * @author Daniel Lefevre
  */
 public final class Algos {
 
-    /** Private constructor. */
+    /**
+     * Private constructor.
+     */
     private Algos() {
     }
 
     /**
-     * Divide the mesh in block of neighbours. This method use returnNeighbours
-     * to find the neighbours of one triangle, and put it into a new mesh into
-     * the arraylist. Thus, it takes another triangle and redo the same
-     * operation until there is no more triangle. This method does not destroy
-     * the mesh in parameter.
+     * Divides the mesh in block of neighbours. This method uses
+     * returnNeighbours to find the neighbours of one triangle, and puts it into
+     * a new mesh into the arraylist. Thus, it takes another triangle and make
+     * again the same operation until there is no more triangle. This method
+     * does not destroy the mesh in parameter.
      * 
      * @param m
      *            the mesh to divide
@@ -53,12 +54,12 @@ public final class Algos {
     }
 
     /**
-     * Divide the mesh in block of neighbours depending on their orientations.
+     * Divides the mesh in block of neighbours depending on their orientations.
      * This method takes one triangle and use returnNeighbours to find the
-     * triangles which are oriented as the first one (with an error) and find
-     * into them its neighbours, and put it in a new mesh into the arraylist.
-     * Then it takes another triangle and redo the same operation until there is
-     * no more triangle. This method does not destroy the mesh in parameter.
+     * triangles which are oriented as the first one (with an error) finds into
+     * them its neighbours, and puts it in a new mesh into the arraylist. Then
+     * it takes another triangle and make again the same operation until there
+     * is no more triangle. This method does not destroy the mesh in parameter.
      * 
      * @param m
      *            the mesh to divide
@@ -135,9 +136,9 @@ public final class Algos {
     }
 
     /**
-     * Treat a list of mesh to add the noise which is part of the mesh. This
-     * method try to find a block of noise which complete the mesh (of the list)
-     * and which have the same orientation. It thus adds it to the mesh.
+     * Treats a list of mesh to add the noise which is part of the mesh. This
+     * method tries to find a block of noise which complete the mesh (of the
+     * list) and which have the same orientation. It thus adds it to the mesh.
      * 
      * @param list
      *            the list of meshes to complete with noise
@@ -173,8 +174,8 @@ public final class Algos {
     }
 
     /**
-     * Treat a list of mesh to add the noise which is part of the mesh. This
-     * method try to find a block of noise which complete the mesh (of the
+     * Treats a list of mesh to add the noise which is part of the mesh. This
+     * method tries to find a block of noise which complete the mesh (of the
      * list). It thus adds it to the mesh.
      * 
      * @param list
@@ -202,23 +203,5 @@ public final class Algos {
 
         list.clear();
         list.addAll(m);
-    }
-
-    // TODO : there is maybe no need of this exception.
-    /**
-     * Implements an exception when the floor is empty.
-     * 
-     * @author Daniel Lefevre
-     */
-    public static final class NoFloorException extends Exception {
-
-        /** Version attribute. */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        private NoFloorException() {
-        }
     }
 }

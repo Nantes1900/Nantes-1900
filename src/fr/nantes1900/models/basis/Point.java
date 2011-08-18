@@ -3,17 +3,11 @@ package fr.nantes1900.models.basis;
 import fr.nantes1900.utils.MatrixMethod;
 
 /**
- * Implements a point, composed of three coordinates.
+ * Implements a point, composed of three double coordinates.
  * 
  * @author Daniel Lefèvre, Elsa Arroud-Vignod
  */
 public class Point {
-
-    // LOOK : maybe truncate those doubles to reduce useless precision... :
-    // maybe cast it in the parser. But it can be dangerous. And this conversion
-    // is weird in JAVA... See also then the hashCode AND equals method. For
-    // now, these methods truncate, but it could be useful to have a further
-    // look to see if everything walk on perfectly.
 
     /**
      * x coordinate.
@@ -48,7 +42,7 @@ public class Point {
 
     /**
      * Copy constructor. To use very cautiously : it can create two Points with
-     * equal Values and different references in the Mesh !
+     * equal values and different references !
      * 
      * @param point
      *            the point to copy
@@ -60,11 +54,11 @@ public class Point {
     }
 
     /**
-     * Operate a change base on the point.
+     * Operates a change base on the point. Be careful : the point doesn't have
+     * the same hashCode after this operation...
      * 
      * @param matrix
-     *            of base change Be careful : the point doesn't have the same
-     *            hashCode after this operation...
+     *            of base change
      */
     public final void changeBase(final double[][] matrix) {
         final double[] coords = {this.x, this.y, this.z, };
@@ -72,7 +66,7 @@ public class Point {
     }
 
     /**
-     * Compute the distance between two points.
+     * Calculates the distance between two points.
      * 
      * @param p
      *            the other point
@@ -117,7 +111,7 @@ public class Point {
     /**
      * Getter of the coordinates of the point.
      * 
-     * @return a table of double
+     * @return an array of doubles
      */
     public final double[] getPointAsCoordinates() {
         return new double[] {this.x, this.y, this.z, };
@@ -170,7 +164,7 @@ public class Point {
     }
 
     /**
-     * Setter method.
+     * Setter.
      * 
      * @param xNew
      *            the new x coordinate

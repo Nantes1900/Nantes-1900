@@ -34,7 +34,8 @@ import org.citygml4j.xml.io.writer.CityGMLWriteException;
 import org.citygml4j.xml.io.writer.CityGMLWriter;
 
 /**
- * Implement a writer of a town to a CityGML file.
+ * Implements a CityGML writer of a Town.
+ * 
  * @author Daniel Lefevre
  */
 public class WriterCityGML {
@@ -71,6 +72,7 @@ public class WriterCityGML {
 
     /**
      * Constructor.
+     * 
      * @param fileNameWrite
      *            the file to write in
      */
@@ -87,9 +89,10 @@ public class WriterCityGML {
     }
 
     /**
-     * Add a building to the CityGMLFactory.
+     * Adds a building to the CityGMLFactory.
+     * 
      * @param buildingToAdd
-     *            the Edifice to write
+     *            the building to write
      */
     public final void addBuilding(
         final fr.nantes1900.models.extended.Building buildingToAdd) {
@@ -114,8 +117,8 @@ public class WriterCityGML {
         try {
             for (Polyline surface : buildingToAdd.getWalls()) {
                 final Polygon geometry =
-                    this.geom.createLinearPolygon(
-                        surface.getPointsAsCoordinates(), 3);
+                    this.geom.createLinearPolygon(surface
+                        .getPointsAsCoordinates(), 3);
                 geometry.setId(this.gmlIdManager.generateGmlId());
                 surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
                     .getId()));
@@ -133,8 +136,8 @@ public class WriterCityGML {
 
             for (Polyline surface : buildingToAdd.getRoofs()) {
                 final Polygon geometry =
-                    this.geom.createLinearPolygon(
-                        surface.getPointsAsCoordinates(), 3);
+                    this.geom.createLinearPolygon(surface
+                        .getPointsAsCoordinates(), 3);
                 geometry.setId(this.gmlIdManager.generateGmlId());
                 surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
                     .getId()));
@@ -162,6 +165,7 @@ public class WriterCityGML {
 
     /**
      * Adds a list of edifices to the CityGMLFactory.
+     * 
      * @param buildings
      *            the list of buildings to add
      */
@@ -173,11 +177,12 @@ public class WriterCityGML {
     }
 
     /**
-     * Add a ground to the CityGMLFactory.
+     * Adds a floor to the CityGMLFactory.
+     * 
      * @param floor
-     *            the mesh to write
+     *            the floor to add
      */
-    //TODO : make this method again, with the correct types.
+    // TODO : make this method again, with the correct types.
     public final void addFloor(final Floor floor) {
         // FIXME : make a real ground...
         final Building building = this.citygml.createBuilding();
@@ -231,9 +236,10 @@ public class WriterCityGML {
     }
 
     /**
-     * Adds a list of grounds to the CityGMLFactory.
+     * Adds a list of floors to the CityGMLFactory.
+     * 
      * @param floors
-     *            the list of meshes to write
+     *            the list of floors to add
      */
     public final void addFloors(final List<Floor> floors) {
         for (Floor floor : floors) {
@@ -242,8 +248,8 @@ public class WriterCityGML {
     }
 
     /**
-     * Create a CityGMLBuilding, and add the special
-     * building as a mesh.
+     * Creates a CityGML Building, and adds the special building as a mesh.
+     * 
      * @param specialBuilding
      *            the mesh of the special building
      */
@@ -299,7 +305,8 @@ public class WriterCityGML {
     }
 
     /**
-     * Add a list of special Buildings as meshes.
+     * Adds a list of special buildings as meshes.
+     * 
      * @param specialBuildings
      *            the list of the special buildings
      */
@@ -311,7 +318,7 @@ public class WriterCityGML {
     }
 
     /**
-     * Write the CityGML file with the CityGMLFactory.
+     * Writes the CityGML file with the CityGMLFactory.
      */
     public final void write() {
 

@@ -19,7 +19,7 @@ import javax.vecmath.Vector3d;
 public class Triangle {
 
     /**
-     * List of 3 points of the triangle.
+     * Array of three points of the triangle.
      */
     private final Point[] points = new Point[3];
 
@@ -29,7 +29,7 @@ public class Triangle {
     private final Vector3d normal = new Vector3d();
 
     /**
-     * List of 3 edges of the triangle.
+     * Array of three edges of the triangle.
      */
     private final Edge[] edges = new Edge[3];
 
@@ -56,6 +56,9 @@ public class Triangle {
     public Triangle(final Point point0, final Point point1, final Point point2,
         final Edge edge1, final Edge edge2, final Edge edge3,
         final Vector3d normalNew) throws MoreThanTwoTrianglesPerEdgeException {
+
+        // LOOK : check if the edges are correctly made : well composed of the
+        // given points.
         this.points[0] = point0;
         this.points[1] = point1;
         this.points[2] = point2;
@@ -76,7 +79,7 @@ public class Triangle {
      * @param triangle
      *            the triangle to copy
      * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if one edge already contains 2 triangles
+     *             if one edge already contains two triangles
      */
     public Triangle(final Triangle triangle)
         throws MoreThanTwoTrianglesPerEdgeException {
@@ -93,14 +96,14 @@ public class Triangle {
     }
 
     /**
-     * Check if the this face is oriented as face with an error on the angle.
-     * The error is in degree.
+     * Checks if the this triangle is oriented as the other triangle with an
+     * angle error. The error is in degree.
      * 
      * @param face
      *            the other triangle to compare with
      * @param error
-     *            the orientation error
-     * @return true if it is oriented as face, false otherwise
+     *            the angle error
+     * @return true if they have the same orientation, false otherwise
      */
     public final boolean angularTolerance(final Triangle face,
         final double error) {
@@ -108,14 +111,15 @@ public class Triangle {
     }
 
     /**
-     * Check if the this face is oriented as vector with an error on the angle.
-     * The error is in degree.
+     * Checks if this triangle is oriented as the vector with an error on the
+     * angle. The error is in degree.
      * 
      * @param vector
      *            the vector to compare with
      * @param error
      *            the orientation error
-     * @return true if it is oriented as vector, false otherwise
+     * @return true if its normal and the vector have the same orientation,
+     *         false otherwise
      */
     public final boolean angularTolerance(final Vector3d vector,
         final double error) {
@@ -123,18 +127,19 @@ public class Triangle {
     }
 
     /**
-     * Check if the triangle contains the edge e.
+     * Checks if this triangle contains the edge e.
      * 
      * @param e
      *            the edge to check
-     * @return true if the edge e is one of the edges of this, false otherwise.
+     * @return true if the edge e is one of the edges of this triangle, false
+     *         otherwise.
      */
     public final boolean contains(final Edge e) {
         return this.getEdges().contains(e);
     }
 
     /**
-     * Check if p is one of the three points of this. Use the method equals of
+     * Checks if p is one of the three points of this. Use the method equals of
      * this class.
      * 
      * @param point
@@ -208,7 +213,7 @@ public class Triangle {
     }
 
     /**
-     * Return the neighbours of this triangle. Look in the edges to find the
+     * Returns the neighbours of this triangle. Look in the edges to find the
      * other triangles which share those edges.
      * 
      * @return a list of the neighbours triangles
@@ -240,7 +245,8 @@ public class Triangle {
     }
 
     /**
-     * Return the number of neighbours of this triangle.
+     * Returns the number of neighbours of this triangle. Two triangles are
+     * neighbours if they share one edge.
      * 
      * @return the number of neighbours
      * @throws MoreThanTwoTrianglesPerEdgeException
@@ -294,7 +300,7 @@ public class Triangle {
     }
 
     /**
-     * Returns a collection of the coordinates of the points.
+     * Returns a collection of Double composed of the coordinates of the points.
      * 
      * @return a collection of the coordinates of the points
      */
@@ -319,11 +325,11 @@ public class Triangle {
     }
 
     /**
-     * Check if a triangle is a neighbours of this.
+     * Checks if a triangle is a neighbour of this triangle.
      * 
      * @param triangle
      *            the triangle to check
-     * @return true if it is neighbours, false otherwise.
+     * @return true if they share an edge, false otherwise.
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if an edge is bad formed
      */
@@ -342,28 +348,30 @@ public class Triangle {
     }
 
     /**
-     * Check if norm is normal to the normal of this triangle, with an error.
-     * Caution : this error is not in degrees ! The error is compared with the
-     * result of a dot product. Then this error must be between 0 and 1.
+     * Checks if the vector is normal to the normal of this triangle, with an
+     * error. Caution : this error is not in degrees ! The error is compared
+     * with the result of a dot product. Then it must be between 0 and 1.
      * 
      * @param norm
-     *            the vector to compare
+     *            the vector to compare with
      * @param error
-     *            the error of orientation
-     * @return true if this triangle is oriented normal to norm with an error,
-     *         false otherwise.
+     *            the orientation error
+     * @return true if this triangle is normal to norm with an error, false
+     *         otherwise.
      */
     public final boolean isNormalTo(final Vector3d norm, final double error) {
         return this.normal.dot(norm) < error && this.normal.dot(norm) > -error;
     }
 
     /**
-     * Returns in ret the neighbours of this which belongs to m.
+     * Recursive method which returns in ret all the neighbours (and the
+     * neighbours of these neighbours...) of this triangle which belong to the
+     * container.
      * 
      * @param ret
-     *            the returned mesh in which are the neighbours
+     *            the mesh in which are returned the triangles
      * @param container
-     *            the mesh which all neighbours have to belong to
+     *            the mesh which must contain all the triangles
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if an edge is bad formed
      */
@@ -399,7 +407,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the average x-coordinate of the three points.
+     * Calculates the average x-coordinate of the three points.
      * 
      * @return the average x-coordinate of the three points
      */
@@ -409,7 +417,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the x-maximum of the three points.
+     * Calculates the x-maximum of the three points.
      * 
      * @return the x-maximum of the three points
      */
@@ -419,7 +427,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the point at the x-maximum of the three points.
+     * Calculates the point at the x-maximum of the three points.
      * 
      * @return the point at the x-maximum of the three points.
      */
@@ -434,7 +442,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the x-minimum of the three points.
+     * Calculates the x-minimum of the three points.
      * 
      * @return the x-minimum of the three points
      */
@@ -444,7 +452,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the point at the x-minimum of the three points.
+     * Calculates the point at the x-minimum of the three points.
      * 
      * @return the point at the x-minimum of the three points.
      */
@@ -459,7 +467,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the average y-coordinate of the three points.
+     * Calculates the average y-coordinate of the three points.
      * 
      * @return the average y-coordinate of the three points
      */
@@ -469,7 +477,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the y-maximum of the three points.
+     * Calculates the y-maximum of the three points.
      * 
      * @return the y-maximum of the three points
      */
@@ -479,7 +487,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the point at the y-maximum of the three points.
+     * Calculates the point at the y-maximum of the three points.
      * 
      * @return the point at the y-maximum of the three points.
      */
@@ -494,7 +502,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the y-minimum of the three points.
+     * Calculates the y-minimum of the three points.
      * 
      * @return the y-minimum of the three points
      */
@@ -504,7 +512,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the point at the y-minimum of the three points.
+     * Calculates the point at the y-minimum of the three points.
      * 
      * @return the point at the y-minimum of the three points.
      */
@@ -519,7 +527,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the average z-coordinate of the three points.
+     * Calculates the average z-coordinate of the three points.
      * 
      * @return the average z-coordinate of the three points
      */
@@ -531,7 +539,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the z-maximum of the three points.
+     * Calculates the z-maximum of the three points.
      * 
      * @return the z-maximum of the three points
      */
@@ -541,7 +549,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the point at the z-maximum of the three points.
+     * Calculates the point at the z-maximum of the three points.
      * 
      * @return the point at the z-maximum of the three points.
      */
@@ -556,7 +564,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the z-minimum of the three points.
+     * Calculates the z-minimum of the three points.
      * 
      * @return the z-minimum of the three points
      */
@@ -566,7 +574,7 @@ public class Triangle {
     }
 
     /**
-     * Compute the point at the z-minimum of the three points.
+     * Calculates the point at the z-minimum of the three points.
      * 
      * @return the point at the z-minimum of the three points.
      */
@@ -581,13 +589,21 @@ public class Triangle {
     }
 
     /**
-     * @param t
+     * Checks if this triangle is located between two planes. These planes are
+     * normal to the vector, and are located from each side of the point with a
+     * distance to the point equal to the error.
+     * 
+     * @param vect
+     *            the vector normal of the two planes
+     * @param p
+     *            the point which locates the planes in space. It's at the
+     *            middle of the two planes.
      * @param error
-     * @return
+     *            the distance between the planes and the point
+     * @return true if the first point of the triangle is located between those
+     *         two planes, false otherwise.
      */
-    // TODO : doc ! test !
     public boolean isInPlanes(Vector3d vect, Point p, double error) {
-
         final Edge axisNormalFloor =
             new Edge(new Point(0, 0, 0), new Point(vect.x, vect.y, vect.z));
 

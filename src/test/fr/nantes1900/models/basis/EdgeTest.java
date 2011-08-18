@@ -95,18 +95,6 @@ public class EdgeTest extends TestCase {
     }
 
     /**
-     * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#compose(fr.nantes1900.models.basis.Edge)}
-     * .
-     */
-    @Test
-    public final void testCompose() {
-        final Edge e = this.edge1.compose(this.edge2);
-        Assert.assertSame(e.getP1(), this.point1);
-        Assert.assertSame(e.getP2(), this.point3);
-    }
-
-    /**
      * Test method for {@link fr.nantes1900.models.basis.Edge#computeMiddle()} .
      */
     @Test

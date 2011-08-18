@@ -3,20 +3,20 @@ package fr.nantes1900.utils;
 import javax.vecmath.Vector3d;
 
 /**
- * A set of methods to create and change base.
+ * Contains a set of methods to create and change bases.
  * 
  * @author Eric Berthe, Valentin Roger, Daniel Lefevre
  */
 public final class MatrixMethod {
 
     /**
-     * The dimension of the matrix used in some algorithms. Here, it's 3.
+     * The dimension of the matrix used in the methods. Here, it's always 3.
      */
     public static final int MATRIX_DIMENSION = 3;
 
     /**
-     * Precision (as a double) to check if a matrix determinant is too close to
-     * zero or not.
+     * Precision (as a double) to check if a matrix determinant is equal to
+     * zero.
      */
     private static final double ERROR_PRECISION = 0.01;
 
@@ -27,7 +27,7 @@ public final class MatrixMethod {
     }
 
     /**
-     * Compute the result of a base change of a double[].
+     * Computes the result of the base change of a double[].
      * 
      * @param coord
      *            the coordinates to base change
@@ -50,8 +50,8 @@ public final class MatrixMethod {
     }
 
     /**
-     * Compute the result of a base change of a Vector3d. vect is modified to
-     * contain the result of the compute.
+     * Computes the result of a base change of a Vector3d. The Vector3D is
+     * modified to contain the result of the computing.
      * 
      * @param vect
      *            the vector to base change
@@ -64,8 +64,9 @@ public final class MatrixMethod {
     }
 
     /**
-     * Create an orthobase from one vector. The baseVector will be the z-axis
-     * after the base change. The matrix will have a determinant equals to 1.
+     * Creates an orthobase from one vector. The vector parameter will be the
+     * z-axis after the base change. The matrix will have a determinant equals
+     * to 1.
      * 
      * @param baseVector
      *            the vector which will be the z-axis after the base change
@@ -111,9 +112,9 @@ public final class MatrixMethod {
     }
 
     /**
-     * Create an orthobase from three vectors. Create the matrix which pass from
-     * the actual base ((1,0,0),(0,1,0),(0,0,1)) to the parameter base (vect1,
-     * vect2, vect3).
+     * Creates an orthobase from three vectors. Creates the matrix which passes
+     * from the actual base ((1,0,0),(0,1,0),(0,0,1)) to the parameter base
+     * (vect1, vect2, vect3).
      * 
      * @param vect1
      *            the first vector of the base
@@ -173,10 +174,10 @@ public final class MatrixMethod {
     }
 
     /**
-     * Returns the invers of the matrix.
+     * Returns the inverse of the matrix.
      * 
      * @param matrix
-     *            the matrix to invers
+     *            the matrix to inverse
      * @return the invers matrix
      * @throws SingularMatrixException
      *             if the matrix is singular.
@@ -215,7 +216,7 @@ public final class MatrixMethod {
     }
 
     /**
-     * An exception sub-class to signal a singular matrix.
+     * Implements an exception to signal a singular matrix.
      * 
      * @author Daniel Lefevre
      */
