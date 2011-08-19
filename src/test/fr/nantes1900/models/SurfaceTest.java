@@ -6,7 +6,7 @@ package test.fr.nantes1900.models;
 import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.Surface;
 import fr.nantes1900.models.Surface.InvalidSurfaceException;
-import fr.nantes1900.models.Surface.MissingNeighbourException;
+import fr.nantes1900.models.Surface.ImpossibleNeighboursOrderException;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
@@ -100,7 +100,7 @@ public class SurfaceTest extends TestCase {
 
             Surface floors = new Surface();
 
-            s1.orderMyNeighbour(wholeList, floors);
+            s1.orderNeighbours(wholeList, floors);
 
             assertTrue(s1.getNeighbours().get(0) == s7);
             assertTrue(s1.getNeighbours().get(1) == s2);
@@ -111,7 +111,7 @@ public class SurfaceTest extends TestCase {
 
         } catch (MoreThanTwoTrianglesPerEdgeException e1) {
             Assert.fail();
-        } catch (MissingNeighbourException e) {
+        } catch (ImpossibleNeighboursOrderException e) {
             Assert.fail();
         }
     }

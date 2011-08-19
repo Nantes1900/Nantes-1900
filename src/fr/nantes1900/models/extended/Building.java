@@ -7,7 +7,7 @@ import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.Polyline.EmptyPolylineException;
 import fr.nantes1900.models.Surface;
 import fr.nantes1900.models.Surface.InvalidSurfaceException;
-import fr.nantes1900.models.Surface.MissingNeighbourException;
+import fr.nantes1900.models.Surface.ImpossibleNeighboursOrderException;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
@@ -136,21 +136,7 @@ public class Building {
         this.findEdgesFromNeighbours(wallTreatedList, roofTreatedList,
             normalFloor, floorsTreated);
 
-        int counter = 0;
-        for (Surface s : wallTreatedList) {
-            s.writeSTL("files/St-Similien/m02/results/wall" + counter + ".stl");
-            counter++;
-        }
-        counter = 0;
-        for (Surface s : roofTreatedList) {
-            s.writeSTL("files/St-Similien/m02/results/roof" + counter + ".stl");
-            counter++;
-        }
-
         this.writeSTL("files/St-Similien/m02/results/");
-
-        // FIXME
-        System.exit(1);
     }
 
     /**
@@ -181,15 +167,16 @@ public class Building {
         wholeTreatedList.addAll(wallTreatedList);
         wholeTreatedList.addAll(roofTreatedList);
 
-        int counterGood = 0;
-        int counterBad = 0;
+        int counterWellTreated = 0;
+        int counterNotTreated = 0;
 
-        // Verification after the first search. If the neighbours of one surface
-        // are not 2 per 2 neighbours each other, then correct it.
         for (Surface surface : wholeTreatedList) {
             try {
+
                 // We order its neighbours in order to treat them.
-                surface.orderMyNeighbour(wholeTreatedList, floors);
+                // If the neighbours of one surface are not 2 per 2 neighbours
+                // each other, then it tries to correct it.
+                surface.orderNeighbours(wholeTreatedList, floors);
 
                 // When the neighbours are sorted, we find the intersection of
                 // them to find the edges of this surface.
@@ -198,24 +185,32 @@ public class Building {
                         normalFloor);
 
                 // If it is a wall, we add it to the wall list, otherwise to the
-                // roof list.
+                // roof list (trivial...).
                 if (wallTreatedList.contains(surface)) {
                     this.walls.add(p);
                 } else {
                     this.roofs.add(p);
                 }
-                counterGood++;
+
+                counterWellTreated++;
+
+            } catch (ImpossibleNeighboursOrderException e) {
+                // If there is a problem, we cannot continue the treatment.
+                // LOOK : maybe return the unsorted bounds to have a little
+                // result.
+                counterNotTreated++;
+
             } catch (InvalidSurfaceException e) {
-                System.out.println("Error in vectorization !");
-                counterBad++;
-            } catch (MissingNeighbourException e) {
-                System.out.println("Error in the neighbours order !");
-                counterBad++;
+                // If there is a problem, we cannot continue the treatment.
+                // LOOK : maybe return the unsorted bounds to have a little
+                // result.
+                counterNotTreated++;
             }
         }
 
-        System.out.println("Parts correctly treated : " + counterGood);
-        System.out.println("Parts not treated : " + counterBad);
+        // FIXME : logger.
+        System.out.println("Parts correctly treated : " + counterWellTreated);
+        System.out.println("Parts not treated : " + counterNotTreated);
     }
 
     /**

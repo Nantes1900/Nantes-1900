@@ -17,10 +17,14 @@ import javax.vecmath.Vector3d;
  */
 public class Surface extends Mesh {
 
+    // FIXME : treat the case where the surface has no or one or two
+    // neighbours...
+
     /**
-     * 
+     * Version attribute.
      */
     private static final long serialVersionUID = 1L;
+
     /**
      * List of the neighbours of this surface. Used in the algorithms of
      * separation between walls and roofs.
@@ -34,6 +38,12 @@ public class Surface extends Mesh {
         super();
     }
 
+    /**
+     * Constructor from a collection of triangles. See the HashSet constructor.
+     * 
+     * @param c
+     *            a collection of triangles
+     */
     public Surface(final Collection<? extends Triangle> c) {
         super(c);
     }
@@ -57,7 +67,8 @@ public class Surface extends Mesh {
 
     /**
      * Finds the edges of a surface. Create these edges by calculating the
-     * intersection of its neighbours two by two.
+     * intersection of its neighbours two by two. Caution : this method needs
+     * the neighbours to be treated first (using orderNeighbours).
      * 
      * @param wallList
      *            the list of walls to check if the surface is a wall or not
@@ -70,9 +81,8 @@ public class Surface extends Mesh {
      * @return a polyline made from all the edges of this surface, and which
      *         perfectly fits to its neighbours.
      * @throws InvalidSurfaceException
-     *             if a surface has not been treated
+     *             if a problem happened
      */
-    // FIXME : needs the neighbours to be sorted before...
     public final Polyline findEdges(final List<Surface> wallList,
         final Map<Point, Point> pointMap, final Map<Edge, Edge> edgeMap,
         final Vector3d normalFloor) throws InvalidSurfaceException {
@@ -92,18 +102,13 @@ public class Surface extends Mesh {
         final int size = this.getNeighbours().size();
 
         // We add the last missing edges which where not treated in the loop.
-        try {
-            edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
-                .getNeighbours().get(size - 1), this.getNeighbours().get(0),
-                pointMap, edgeMap, wallList, normalFloor));
+        edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
+            .getNeighbours().get(size - 1), this.getNeighbours().get(0),
+            pointMap, edgeMap, wallList, normalFloor));
 
-            edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
-                .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
-                edgeMap, wallList, normalFloor));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            System.out.println(this.getNeighbours().size());
-            System.out.println(size);
-        }
+        edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
+            .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
+            edgeMap, wallList, normalFloor));
 
         return edges;
     }
@@ -117,24 +122,43 @@ public class Surface extends Mesh {
         return this.neighbours;
     }
 
-    // FIXME : treat the case where the surface has no or one or two
-    // neighbours...
-
     /**
-     * @param wallList
-     * @param roofList
-     * @throws MissingNeighbourException
+     * Order the neighbours of this surface. The list of neighbours of this
+     * surface will then be sorted such as two surfaces neighbours in the list
+     * are neigbhours in the mesh each other. The algorithm searches for each
+     * neighbour N the two neighbours that N shares with this surface. Then, it
+     * goes on the not-still-treated direction. There can be problems such as :
+     * there is less that two common neighbours. Then the algorithm selects as
+     * neighbour the closest (in terms of distance) neighbour not still treated.
+     * If there is too much common neighbours, then the algorithm removes the
+     * still-treated neighbours. It often resolves the problem.
+     * 
+     * @param wholeList
+     *            the list of every surfaces
+     * @param floors
+     *            the floors
+     * @throws ImpossibleNeighboursOrderException
+     *             if a problem happens in the algorithm that can not be treated
+     *             as said in the description
      */
-    public final void orderMyNeighbour(final List<Surface> wholeList,
-        final Surface floors) throws MissingNeighbourException {
+    public final void orderNeighbours(final List<Surface> wholeList,
+        final Surface floors) throws ImpossibleNeighboursOrderException {
+
+        final List<Surface> neighboursOrdered = new ArrayList<Surface>();
 
         final int neighboursNumber = this.getNeighbours().size();
         int counter = 0;
 
-        final List<Surface> neighboursOrdered = new ArrayList<Surface>();
-
+        // If the floor is the neighbour of this surface, then we begin with the
+        // floor, to avoid some problems in the future. Otherwise, we begin
+        // where we want.
         Surface current = this.getNeighbours().get(0);
+        if (this.getNeighbours().contains(floors)) {
+            current = this.getCommonNeighbours(floors).get(0);
+        }
 
+        // We find the surfaces that are common to this surface and current.
+        // There must be two surfaces, but there always are some problems...
         List<Surface> commonNeighbours = this.getCommonNeighbours(current);
 
         while (counter < neighboursNumber - 1) {
@@ -142,70 +166,32 @@ public class Surface extends Mesh {
             // Adds the current surface to the ordered list.
             neighboursOrdered.add(current);
 
-            // Resolving problems : not enough neighbours or too much...
+            // Resolving problems : not enough common neighbours or too much...
             if (commonNeighbours.size() < 2) {
 
                 // If there is not enough, it probably means that two surfaces
-                // which effectively are neighbours don't touch each other. We
-                // will find which one our current surface is the closest to,
+                // are effectively neighbours, but don't touch each other.
+                // We will find which one our current surface is the closest to,
                 // and it will be our next neighbour !
                 commonNeighbours.add(this.findPossibleNeighbour(current,
                     neighboursOrdered));
 
-            } else if (commonNeighbours.size() > 2) {
-
-                // If there is too much neighbour, it probably means that two of
-                // these neighbours touch themselves at another point that on
-                // this surface.
-                // It is often the floor... :(
-                if (commonNeighbours.contains(floors)) {
-
-                    // If the floors is a neighbour, then it can be a third
-                    // common
-                    // neighbour...
-                    // FIXME : look if the solution found up can be applied
-                    // here...
-                    commonNeighbours.remove(floors);
-
-                } else {
-                    // System.out.println("More than 3 neighbours problem !");
-                    // if (commonNeighbours.size() == 4) {
-                    // FIXME : enlever ce bazar et traiter le cas !
-                    // this.writeSTL("files/St-Similien/m02/results/mesh.stl");
-                    // int counter1 = 0;
-                    // for (Surface s : this.getNeighbours()) {
-                    // s.writeSTL("files/St-Similien/m02/results/neigh"
-                    // + counter1 + ".stl");
-                    // counter1++;
-                    // }
-                    // counter1 = 0;
-                    // for (Surface s : commonNeighbours) {
-                    // s.writeSTL("files/St-Similien/m02/results/common"
-                    // + counter1 + ".stl");
-                    // counter1++;
-                    // }
-                    // current
-                    // .writeSTL("files/St-Similien/m02/results/current.stl");
-                    // System.exit(1);
-                    // }
-                    throw new MissingNeighbourException();
-                }
             }
 
-            // Takes the next one. If this one has already been treated, take
+            // Selects the next one. If this one has already been treated, take
             // another one, not to retrace our steps.
-            int i = 0;
-            while (neighboursOrdered.contains(commonNeighbours.get(i))) {
-                ++i;
-                if (i == commonNeighbours.size()) {
-                    // FIXME
-                    System.out.println("Impossible problem !");
-                    throw new MissingNeighbourException();
-                }
+
+            // If there is too much neighbours, this step can resolve it.
+            // The floor often causes that kind of problem, that's why we begin
+            // by treating the floor first (see at the beginning of the method).
+            for (Surface s : neighboursOrdered) {
+                commonNeighbours.remove(s);
+            }
+            if (commonNeighbours.isEmpty()) {
+                throw new ImpossibleNeighboursOrderException();
             }
 
-            // Selects this one.
-            current = commonNeighbours.get(i);
+            current = commonNeighbours.get(0);
 
             // Continues with this one.
             commonNeighbours = this.getCommonNeighbours(current);
@@ -330,15 +316,9 @@ public class Surface extends Mesh {
         }
     }
 
-    /**
-     * @param current
-     * @param wholeList
-     * @return
-     */
-    // FIXME : improve the speed...
     private Surface findPossibleNeighbour(final Surface current,
         final List<Surface> neighboursOrdered) {
-
+        // FIXME : improve the speed...
         Surface possible = null;
         double distanceMin = Double.POSITIVE_INFINITY;
 
@@ -400,7 +380,8 @@ public class Surface extends Mesh {
      * 
      * @author Daniel Lefevre
      */
-    public static final class MissingNeighbourException extends Exception {
+    public static final class ImpossibleNeighboursOrderException extends
+        Exception {
 
         /**
          * Version attribute.
@@ -410,7 +391,7 @@ public class Surface extends Mesh {
         /**
          * Private constructor.
          */
-        private MissingNeighbourException() {
+        private ImpossibleNeighboursOrderException() {
         }
     }
 
