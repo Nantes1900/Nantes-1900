@@ -17,9 +17,6 @@ import javax.vecmath.Vector3d;
  */
 public class Surface extends Mesh {
 
-    // FIXME : treat the case where the surface has no or one or two
-    // neighbours...
-
     /**
      * Version attribute.
      */
@@ -66,9 +63,10 @@ public class Surface extends Mesh {
     }
 
     /**
-     * Finds the edges of a surface. Create these edges by calculating the
-     * intersection of its neighbours two by two. Caution : this method needs
-     * the neighbours to be treated first (using orderNeighbours).
+     * Finds the edges of a surface. Caution : this method needs the neighbours
+     * to be treated first (using orderNeighbours). Since the neighbours are
+     * sorted, call the method createEdge for each neighbours and builds the
+     * polyline with the edges returned.
      * 
      * @param wallList
      *            the list of walls to check if the surface is a wall or not
@@ -89,26 +87,36 @@ public class Surface extends Mesh {
 
         final Polyline edges = new Polyline();
 
-        // FIXME : treat walls to have them verticals !
-
         // The neighbours are sorted, then it's easy to make the edges and
         // points.
         for (int i = 0; i < this.getNeighbours().size() - 2; i++) {
-            edges.add(this.createEdge(this.getNeighbours().get(i), this
-                .getNeighbours().get(i + 1), this.getNeighbours().get(i + 2),
-                pointMap, edgeMap, wallList, normalFloor));
+            try {
+                edges.add(this.createEdge(this.getNeighbours().get(i), this
+                    .getNeighbours().get(i + 1), this.getNeighbours()
+                    .get(i + 2), pointMap, edgeMap, wallList, normalFloor));
+            } catch (BadNeighbourException e) {
+                this.getNeighbours().remove(e.getNeighbourError());
+            }
         }
 
         final int size = this.getNeighbours().size();
 
         // We add the last missing edges which where not treated in the loop.
-        edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
-            .getNeighbours().get(size - 1), this.getNeighbours().get(0),
-            pointMap, edgeMap, wallList, normalFloor));
+        try {
+            edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
+                .getNeighbours().get(size - 1), this.getNeighbours().get(0),
+                pointMap, edgeMap, wallList, normalFloor));
+        } catch (BadNeighbourException e) {
+            // If this error happens, we don't add the edge. FIXME.
+        }
 
-        edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
-            .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
-            edgeMap, wallList, normalFloor));
+        try {
+            edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
+                .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
+                edgeMap, wallList, normalFloor));
+        } catch (BadNeighbourException e) {
+            // If this error happens, we don't add the edge. FIXME.
+        }
 
         return edges;
     }
@@ -154,7 +162,12 @@ public class Surface extends Mesh {
         // where we want.
         Surface current = this.getNeighbours().get(0);
         if (this.getNeighbours().contains(floors)) {
-            current = this.getCommonNeighbours(floors).get(0);
+
+            try {
+                current = this.getCommonNeighbours(floors).get(0);
+            } catch (IndexOutOfBoundsException e) {
+                throw new ImpossibleNeighboursOrderException();
+            }
         }
 
         // We find the surfaces that are common to this surface and current.
@@ -231,13 +244,14 @@ public class Surface extends Mesh {
     private final Edge createEdge(final Surface s1, final Surface s2,
         final Surface s3, final Map<Point, Point> pointMap,
         final Map<Edge, Edge> edgeMap, final List<Surface> wallList,
-        final Vector3d normalFloor) throws InvalidSurfaceException {
+        final Vector3d normalFloor) throws InvalidSurfaceException,
+        BadNeighbourException {
 
+        // LOOK : maybe remove that list : it is not really useful.
         final List<Surface> surfaces = new ArrayList<Surface>();
         surfaces.add(s1);
         surfaces.add(s2);
         surfaces.add(s3);
-
         surfaces.add(this);
 
         try {
@@ -246,17 +260,24 @@ public class Surface extends Mesh {
 
             // If there is two neighbours which have the same orientation, then
             // throw an exception.
-            for (Surface surface1 : surfaces) {
-                for (Surface surface2 : surfaces) {
-                    if (surface1 != surface2) {
-                        if (surface1.isOrientedAs(surface2, isOrientedFactor)) {
-                            throw new ParallelPlanesException();
-                        }
-                    }
-                }
+            // FIXME : try to improve that mess ?
+            if (this.isOrientedAs(s1, isOrientedFactor)) {
+                throw new ParallelPlanesException();
+            }
+            if (this.isOrientedAs(s2, isOrientedFactor)) {
+                throw new ParallelPlanesException();
+            }
+            if (this.isOrientedAs(s3, isOrientedFactor)) {
+                throw new ParallelPlanesException();
+            }
+            if (s1.isOrientedAs(s2, isOrientedFactor)) {
+                throw new ParallelPlanesException();
+            }
+            if (s2.isOrientedAs(s3, isOrientedFactor)) {
+                throw new ParallelPlanesException();
             }
 
-            // If one of the surfaces is a wall then rectifies its normal to be
+            // If one of the surfaces is a wall, rectifies its normal to be
             // vertical, and after finds the edges.
             final List<Mesh> list = new ArrayList<Mesh>();
             for (Surface s : surfaces) {
@@ -274,11 +295,11 @@ public class Surface extends Mesh {
                 mesh = this.returnVerticalPlane(normalFloor);
             }
 
-            // Find the intersection of the three surfaces.
+            // Finds the intersection of the three surfaces.
             Point p1 = mesh.intersection(list.get(0), list.get(1));
             Point p2 = mesh.intersection(list.get(1), list.get(2));
 
-            // We search in the map to find if another point with the same value
+            // Searches in the map to find if another point with the same value
             // doesn't already exist.
             Point pTemp = pointMap.get(p1);
             if (pTemp == null) {
@@ -309,9 +330,10 @@ public class Surface extends Mesh {
 
         } catch (SingularMatrixException e) {
             // System.out.println("Singular matrix !");
+            // FIXME : try this new exception...
+            // throw new BadNeighbourException();
             throw new InvalidSurfaceException();
         } catch (ParallelPlanesException e) {
-            // System.out.println("Parallel planes !");
             throw new InvalidSurfaceException();
         }
     }
@@ -376,7 +398,8 @@ public class Surface extends Mesh {
     }
 
     /**
-     * Implements an exception used in algorithms when one neigbhour is missing.
+     * Implements an exception used in algorithms when the neighbours cannot be
+     * ordered.
      * 
      * @author Daniel Lefevre
      */
@@ -392,6 +415,46 @@ public class Surface extends Mesh {
          * Private constructor.
          */
         private ImpossibleNeighboursOrderException() {
+        }
+    }
+
+    /**
+     * Implements an exception used in algorithms when a neighbour provoques
+     * errors and must be removed of the list of neighbours. Used when a
+     * SingularMatrixException happens. Contains the neighbours surface which
+     * caused the error.
+     * 
+     * @author Daniel Lefevre
+     */
+    public static final class BadNeighbourException extends Exception {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * The neighbour which caused the error.
+         */
+        private Surface errorNeighbour;
+
+        /**
+         * Private constructor.
+         * 
+         * @param s
+         *            the neighbour which caused the error.
+         */
+        private BadNeighbourException(Surface s) {
+            this.errorNeighbour = s;
+        }
+
+        /**
+         * Returns the neighbour which caused the error.
+         * 
+         * @return one of the neighbour
+         */
+        public Surface getNeighbourError() {
+            return this.errorNeighbour;
         }
     }
 

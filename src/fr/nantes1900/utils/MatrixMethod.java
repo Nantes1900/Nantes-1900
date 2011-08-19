@@ -15,12 +15,6 @@ public final class MatrixMethod {
     public static final int MATRIX_DIMENSION = 3;
 
     /**
-     * Precision (as a double) to check if a matrix determinant is equal to
-     * zero.
-     */
-    private static final double ERROR_PRECISION = 0.01;
-
-    /**
      * Private constructor.
      */
     private MatrixMethod() {
@@ -81,8 +75,8 @@ public final class MatrixMethod {
         final Vector3d b = new Vector3d(baseVector);
         b.normalize();
 
-        if (b.z > -1 - MatrixMethod.ERROR_PRECISION
-            && b.z < -1 + MatrixMethod.ERROR_PRECISION) {
+        if (b.z > -1 - SingularMatrixException.ERROR_PRECISION
+            && b.z < -1 + SingularMatrixException.ERROR_PRECISION) {
             throw new SingularMatrixException();
         }
 
@@ -187,8 +181,8 @@ public final class MatrixMethod {
         final double[][] matrix1 =
             new double[MatrixMethod.MATRIX_DIMENSION][MatrixMethod.MATRIX_DIMENSION];
 
-        if (MatrixMethod.determinant(matrix) < MatrixMethod.ERROR_PRECISION
-            && MatrixMethod.determinant(matrix) > -MatrixMethod.ERROR_PRECISION) {
+        if (MatrixMethod.determinant(matrix) < SingularMatrixException.ERROR_PRECISION
+            && MatrixMethod.determinant(matrix) > -SingularMatrixException.ERROR_PRECISION) {
             throw new SingularMatrixException();
         }
 
@@ -228,10 +222,15 @@ public final class MatrixMethod {
         private static final long serialVersionUID = 1L;
 
         /**
+         * Precision (as a double) to check if a matrix determinant is equal to
+         * zero.
+         */
+        public static final double ERROR_PRECISION = 0.1;
+
+        /**
          * Private constructor.
          */
-        // TODO : change this visibility to private !
-        public SingularMatrixException() {
+        private SingularMatrixException() {
         }
     }
 }

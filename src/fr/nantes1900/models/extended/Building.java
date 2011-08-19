@@ -112,11 +112,14 @@ public class Building {
         // merge them if they belong to the same surface.
         this.treatNoise(wallList, roofList, noise, floors);
 
-        final List<Surface> wallTreatedList = new ArrayList<Surface>();
-        final List<Surface> roofTreatedList = new ArrayList<Surface>();
-        this.vectorizeSurfaces(wallList, roofList, wallTreatedList,
-            roofTreatedList);
+        // TODO : maybe convert in surfaces from the beginning to avoid this
+        // step.
+        final List<Surface> wallTreatedList = this.vectorizeSurfaces(wallList);
+        final List<Surface> roofTreatedList = this.vectorizeSurfaces(roofList);
         final Surface floorsTreated = new Surface(floors);
+
+        // TODO : voir si on peut pas réduire le nombre de fonctions dans ce
+        // bazar.
 
         // Finds the neighbours, searching deeply (add noise to the walls
         // and roofs to add every edge to one of these surface. Then find
@@ -131,30 +134,29 @@ public class Building {
         this.determinateNeighbours(wallTreatedList, roofTreatedList,
             floorsTreated);
 
+        int counter = 0;
+        for (Mesh s : wallTreatedList) {
+            s.writeSTL("files/St-Similien/m02/results/treatedWall" + counter
+                + ".stl");
+            counter++;
+        }
+        counter = 0;
+        for (Mesh s : roofTreatedList) {
+            s.writeSTL("files/St-Similien/m02/results/treatedRoof" + counter
+                + ".stl");
+            counter++;
+        }
+
+        // Find all the surface which have 0, or 1, or 2 neigbhours and then
+        // cannot be treated.
+        this.sortSurfaces(wallTreatedList, roofTreatedList);
+
         // From all the neighbours, computes the wrap line and returns the
         // surfaces as polylines.
         this.findEdgesFromNeighbours(wallTreatedList, roofTreatedList,
             normalFloor, floorsTreated);
 
         this.writeSTL("files/St-Similien/m02/results/");
-    }
-
-    /**
-     * Getter.
-     * 
-     * @return the list of roofs
-     */
-    public final List<Polyline> getRoofs() {
-        return this.roofs;
-    }
-
-    /**
-     * Getter.
-     * 
-     * @return the list of walls
-     */
-    public final List<Polyline> getWalls() {
-        return this.walls;
     }
 
     public void findEdgesFromNeighbours(List<Surface> wallTreatedList,
@@ -198,12 +200,14 @@ public class Building {
                 // If there is a problem, we cannot continue the treatment.
                 // LOOK : maybe return the unsorted bounds to have a little
                 // result.
+                System.err.println("Impossible order !");
                 counterNotTreated++;
 
             } catch (InvalidSurfaceException e) {
                 // If there is a problem, we cannot continue the treatment.
                 // LOOK : maybe return the unsorted bounds to have a little
                 // result.
+                System.err.println("Invalid surface !");
                 counterNotTreated++;
             }
         }
@@ -211,6 +215,24 @@ public class Building {
         // FIXME : logger.
         System.out.println("Parts correctly treated : " + counterWellTreated);
         System.out.println("Parts not treated : " + counterNotTreated);
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the list of roofs
+     */
+    public final List<Polyline> getRoofs() {
+        return this.roofs;
+    }
+
+    /**
+     * Getter.
+     * 
+     * @return the list of walls
+     */
+    public final List<Polyline> getWalls() {
+        return this.walls;
     }
 
     /**
@@ -222,46 +244,6 @@ public class Building {
     public final void writeSTL(final String directoryName) {
         this.writeSTLWalls(directoryName);
         this.writeSTLRoofs(directoryName);
-    }
-
-    /**
-     * Writes the roofs in STL files. Used for debugging.
-     * 
-     * @param directoryName
-     *            the directory to write in
-     */
-    private final void writeSTLRoofs(final String directoryName) {
-        int counterRoof = 0;
-        for (Polyline p : this.roofs) {
-            try {
-                p.returnCentroidMesh().writeSTL(
-                    directoryName + "computedRoof" + counterRoof
-                        + FilesNames.EXTENSION);
-                counterRoof = counterRoof + 1;
-            } catch (EmptyPolylineException e) {
-                System.out.println("Empty polyline : care !");
-            }
-        }
-    }
-
-    /**
-     * Writes the walls in STL files. Used for debugging.
-     * 
-     * @param directoryName
-     *            the directory to write in
-     */
-    private final void writeSTLWalls(final String directoryName) {
-        int counterWall = 0;
-        for (Polyline p : this.walls) {
-            try {
-                p.returnCentroidMesh().writeSTL(
-                    directoryName + "computedWall" + counterWall
-                        + FilesNames.EXTENSION);
-                counterWall = counterWall + 1;
-            } catch (EmptyPolylineException e) {
-                System.out.println("Empty polyline : care !");
-            }
-        }
     }
 
     /**
@@ -288,6 +270,8 @@ public class Building {
         wholeList.addAll(wallTreatedList);
         wholeList.addAll(roofTreatedList);
 
+        // TODO : improve that mess method...
+
         // LOOK : maybe clear those neighbours after the treatNewNeighbours,
         // because they still stay in memory otherwise...
 
@@ -295,6 +279,8 @@ public class Building {
         for (Surface s : wholeList) {
             s.getNeighbours().clear();
         }
+        // And we clear the neighbours of the floors.
+        floors.getNeighbours().clear();
 
         // We compute the bounds to check if they share a common edge.
         for (Mesh w : wallTreatedList) {
@@ -351,8 +337,10 @@ public class Building {
         for (Surface m : wholeList) {
             m.getNeighbours().clear();
         }
+        // And we clear the neighbours of the floors.
+        floors.getNeighbours().clear();
 
-        // FIXME : try this thing...
+        // FIXME : try this thing... IN DETERMINATE NEIGHBOURS, NOT HERE !
         // To find every neighbours, we complete every holes between roofs
         // and walls by adding all the noise.
         // List<Mesh> listFakesWalls = new ArrayList<Mesh>();
@@ -377,6 +365,8 @@ public class Building {
         // e.printStackTrace();
         // }
 
+        // FIXME : vérifier que la méthode n'existe pas déjà dans Mesh, Polyline
+        // ou Surface... pour améliorer la lisibilité de cette méthode.
         final List<Polyline> wallsBoundsList = new ArrayList<Polyline>();
         final List<Polyline> roofsBoundsList = new ArrayList<Polyline>();
 
@@ -451,6 +441,21 @@ public class Building {
             e1.printStackTrace();
         }
         return roofList;
+    }
+
+    private void sortSurfaces(List<Surface> wallTreatedList,
+        List<Surface> roofTreatedList) {
+
+        for (int i = 0; i < wallTreatedList.size(); i++) {
+            if (wallTreatedList.get(i).getNeighbours().size() < 3) {
+                wallTreatedList.remove(wallTreatedList.get(i));
+            }
+        }
+        for (int i = 0; i < roofTreatedList.size(); i++) {
+            if (roofTreatedList.get(i).getNeighbours().size() < 3) {
+                roofTreatedList.remove(roofTreatedList.get(i));
+            }
+        }
     }
 
     /**
@@ -580,14 +585,54 @@ public class Building {
      * @param roofTreatedList
      */
     // TODO ; change this name !
-    private void vectorizeSurfaces(List<Mesh> wallList, List<Mesh> roofList,
-        List<Surface> wallTreatedList, List<Surface> roofTreatedList) {
+    private List<Surface> vectorizeSurfaces(List<Mesh> list) {
 
-        for (Mesh m : wallList) {
-            wallTreatedList.add(new Surface(m));
+        List<Surface> treatedList = new ArrayList<Surface>();
+
+        for (Mesh m : list) {
+            treatedList.add(new Surface(m));
         }
-        for (Mesh m : roofList) {
-            roofTreatedList.add(new Surface(m));
+
+        return treatedList;
+    }
+
+    /**
+     * Writes the roofs in STL files. Used for debugging.
+     * 
+     * @param directoryName
+     *            the directory to write in
+     */
+    private final void writeSTLRoofs(final String directoryName) {
+        int counterRoof = 0;
+        for (Polyline p : this.roofs) {
+            try {
+                p.returnCentroidMesh().writeSTL(
+                    directoryName + "computedRoof" + counterRoof
+                        + FilesNames.EXTENSION);
+                counterRoof = counterRoof + 1;
+            } catch (EmptyPolylineException e) {
+                System.out.println("Empty polyline : care !");
+            }
+        }
+    }
+
+    /**
+     * Writes the walls in STL files. Used for debugging.
+     * 
+     * @param directoryName
+     *            the directory to write in
+     */
+    private final void writeSTLWalls(final String directoryName) {
+        int counterWall = 0;
+        for (Polyline p : this.walls) {
+            try {
+                p.returnCentroidMesh().writeSTL(
+                    directoryName + "computedWall" + counterWall
+                        + FilesNames.EXTENSION);
+                counterWall = counterWall + 1;
+            } catch (EmptyPolylineException e) {
+                System.out.println("Empty polyline : care !");
+            }
         }
     }
 }

@@ -42,18 +42,22 @@ public class Town {
      * List of industrials.
      */
     private List<Building> industrials = new ArrayList<Building>();
+
     /**
      * List of residentials.
      */
     private List<Building> residentials = new ArrayList<Building>();
+
     /**
      * List of floors.
      */
     private List<Floor> floors = new ArrayList<Floor>();
+
     /**
      * List of wateries.
      */
     private List<Floor> wateries = new ArrayList<Floor>();
+
     /**
      * List of special buildings.
      */
