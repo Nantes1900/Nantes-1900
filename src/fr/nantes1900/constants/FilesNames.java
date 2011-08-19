@@ -1,8 +1,8 @@
 package fr.nantes1900.constants;
 
 /**
- * Implements a final class to define some constants. Are defined here the
- * strings and names of the files and directories used in the algorithm.
+ * Contains some constants. It defines the strings and names of the files and
+ * directories used in the program.
  * 
  * @author Daniel Lefevre
  */

@@ -69,68 +69,31 @@ public final class Algos {
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if the edge is bad formed
      */
-    // FIXME : optimize the velocity.
-    // FIXME : the time of orientedAs is too high...
+    // FIXME : optimize the velocity. The time of orientedAs is too high...
     public static List<Mesh> blockOrientedAndPlaneExtract(final Mesh m,
         final double angleNormalErrorFactor)
         throws MoreThanTwoTrianglesPerEdgeException {
         final List<Mesh> thingsList = new ArrayList<Mesh>();
         final Mesh mesh = new Mesh(m);
 
-        // long timeTotal = System.nanoTime();
-        // long time;
-
         while (!mesh.isEmpty()) {
 
-            // time = System.nanoTime();
-
             final Mesh e = new Mesh();
-
-            // System.out.println("Temps écoulé pour new mesh : "
-            // + (System.nanoTime() - time));
-            // time = System.nanoTime();
-
             final Triangle tri = mesh.getOne();
-
-            // System.out.println("Temps écoulé pour get one : "
-            // + (System.nanoTime() - time));
-            // time = System.nanoTime();
 
             final Mesh oriented =
                 mesh.orientedAs(tri.getNormal(), angleNormalErrorFactor);
 
-            // System.out.println("Temps écoulé pour orientedAs : "
-            // + (System.nanoTime() - time));
-            // time = System.nanoTime();
-
             tri.returnNeighbours(e, oriented);
 
-            // System.out.println("Temps écoulé pour returnNeighbours : "
-            // + (System.nanoTime() - time));
-            // time = System.nanoTime();
-
+            // FIXME : put that error in the parameters of the function.
             Mesh eReal =
                 e.inPlanes(e.averageNormal(), e.getCentroid(),
                     SeparationTreatmentWallsRoofs.PLANES_ERROR);
 
-            // System.out.println("Temps écoulé pour inPlanes : "
-            // + (System.nanoTime() - time));
-            // time = System.nanoTime();
-
             mesh.remove(eReal);
-
-            // System.out.println("Temps écoulé pour remove : "
-            // + (System.nanoTime() - time));
-            // time = System.nanoTime();
-
             thingsList.add(eReal);
-
-            // System.out.println("Temps écoulé pour add : "
-            // + (System.nanoTime() - time));
         }
-
-        // System.out.println("Temps écoulé pour blockOriented : "
-        // + (System.nanoTime() - timeTotal));
 
         return thingsList;
     }

@@ -230,7 +230,8 @@ public final class MatrixMethod {
         /**
          * Private constructor.
          */
-        private SingularMatrixException() {
+        // TODO : change this visibility to private !
+        public SingularMatrixException() {
         }
     }
 }
