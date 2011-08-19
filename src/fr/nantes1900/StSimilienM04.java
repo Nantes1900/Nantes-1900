@@ -29,7 +29,6 @@ public final class StSimilienM04 {
         // Apply the algorithm to it
         town.buildFromMesh("files/St-Similien/m04");
         // Write the results
-        // town.writeCityGML("Tests/St-Similien/m01/results/StSimilienM01.gml");
-        town.writeSTL("files/St-Similien/m04/results/");
+        town.writeCityGML("files/St-Similien/m04/results/StSimilienM04.gml");
     }
 }
