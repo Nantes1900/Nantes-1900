@@ -334,8 +334,7 @@ public class MeshTest extends TestCase {
 
         try {
             // We create points, but no matter their coordinates, if they are
-            // not
-            // equals.
+            // not equals.
             final Point point1 = new Point(1, 0, -1);
             final Point point2 = new Point(0, 1, 0);
             final Point point3 = new Point(-1, 2, 1);

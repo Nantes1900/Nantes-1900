@@ -1,5 +1,6 @@
 package fr.nantes1900.models.basis;
 
+import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.Polyline.BadFormedPolylineException;
 import fr.nantes1900.utils.ParserSTL;
@@ -563,5 +564,15 @@ public class Edge {
         private MoreThanTwoTrianglesPerEdgeException() {
             super();
         }
+    }
+
+    public final boolean isBound(Mesh m) {
+        int counter = 0;
+        for (Triangle triangle : this.triangles) {
+            if (m.contains(triangle)) {
+                counter++;
+            }
+        }
+        return counter == 1;
     }
 }

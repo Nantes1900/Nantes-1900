@@ -337,36 +337,24 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Search for all the edges which belong to the bounds. If an edge contain
-     * only one triangle in this, then it is part of the bounds.
+     * Search for all the edges which belong to the bounds. If an edge contains
+     * only one triangle in this mesh, then it is part of the bounds.
      * 
      * @return the polyline containing these edges
      */
+    // FIXME : improve this method speed !
     public final Polyline returnUnsortedBounds() {
         final Polyline bounds = new Polyline();
-        final Set<Edge> edges = new HashSet<Edge>();
 
         // Select every edges of the mesh.
         for (Triangle tri : this) {
-            edges.addAll(tri.getEdges());
-        }
-
-        // On each edges, select the ones that have only one triangle associated
-        // in this, ie they are part of the bounds.
-        for (Edge e : edges) {
-            int counter = 0;
-            for (Triangle t : e.getTriangles()) {
-                if (this.contains(t)) {
-                    ++counter;
+            for (Edge edge : tri.getEdges()) {
+                if (edge.isBound(this)) {
+                    bounds.add(edge);
                 }
             }
-
-            // Add the edges which belong to only one triangle in this are
-            // selected as part of the bounds.
-            if (counter == 1) {
-                bounds.add(e);
-            }
         }
+
         return bounds;
     }
 
@@ -653,5 +641,30 @@ public class Mesh extends HashSet<Triangle> {
      */
     public final Point getCentroid() {
         return new Point(this.xAverage(), this.yAverage(), this.zAverage());
+    }
+
+    // TODO : doc, test !
+    // FIXME : improve the speed... a lot !
+    public double minimalDistance(Surface surface) {
+
+        HashSet<Point> hash1 = new HashSet<Point>();
+        Polyline poly1 = this.returnUnsortedBounds();
+        hash1.addAll(poly1.getPointList());
+
+        HashSet<Point> hash2 = new HashSet<Point>();
+        Polyline poly2 = surface.returnUnsortedBounds();
+        hash2.addAll(poly2.getPointList());
+
+        double minDistance = Double.POSITIVE_INFINITY;
+
+        for (Point p1 : hash1) {
+            for (Point p2 : hash2) {
+                if (p1.distance(p2) < minDistance) {
+                    minDistance = p1.distance(p2);
+                }
+            }
+        }
+
+        return minDistance;
     }
 }

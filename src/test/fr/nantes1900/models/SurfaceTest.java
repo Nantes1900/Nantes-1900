@@ -6,6 +6,7 @@ package test.fr.nantes1900.models;
 import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.Surface;
 import fr.nantes1900.models.Surface.InvalidSurfaceException;
+import fr.nantes1900.models.Surface.MissingNeighbourException;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
@@ -27,6 +28,93 @@ import org.junit.Test;
  * @author Daniel Lefevre
  */
 public class SurfaceTest extends TestCase {
+
+    // TODO : change name.
+    @Test
+    public final void testOrdering() {
+        Vector3d normal = new Vector3d(0, 0, 1);
+        try {
+            Point p1 = new Point(1, 1, 0);
+            Edge e1 = new Edge(p1, p1);
+            final Triangle t1 = new Triangle(p1, p1, p1, e1, e1, e1, normal);
+            Point p2 = new Point(2, 2, 0);
+            Edge e2 = new Edge(p1, p1);
+            final Triangle t2 = new Triangle(p2, p2, p2, e2, e2, e2, normal);
+            Point p3 = new Point(2, 1, 0);
+            Edge e3 = new Edge(p1, p1);
+            final Triangle t3 = new Triangle(p3, p3, p3, e3, e3, e3, normal);
+            Point p4 = new Point(1, 0, 0);
+            Edge e4 = new Edge(p1, p1);
+            final Triangle t4 = new Triangle(p4, p4, p4, e4, e4, e4, normal);
+            Point p5 = new Point(0, 0, 0);
+            Edge e5 = new Edge(p1, p1);
+            final Triangle t5 = new Triangle(p5, p5, p5, e5, e5, e5, normal);
+            Point p6 = new Point(-1, 1, 0);
+            Edge e6 = new Edge(p1, p1);
+            final Triangle t6 = new Triangle(p6, p6, p6, e6, e6, e6, normal);
+            Point p7 = new Point(0, 1, 0);
+            Edge e7 = new Edge(p1, p1);
+            final Triangle t7 = new Triangle(p7, p7, p7, e7, e7, e7, normal);
+
+            final Surface s1 = new Surface();
+            s1.add(t1);
+            final Surface s2 = new Surface();
+            s2.add(t2);
+            final Surface s3 = new Surface();
+            s3.add(t3);
+            final Surface s4 = new Surface();
+            s4.add(t4);
+            final Surface s5 = new Surface();
+            s5.add(t5);
+            final Surface s6 = new Surface();
+            s6.add(t6);
+            final Surface s7 = new Surface();
+            s7.add(t7);
+
+            s1.addNeighbour(s7);
+            s1.addNeighbour(s2);
+            s1.addNeighbour(s5);
+            s1.addNeighbour(s3);
+            s1.addNeighbour(s6);
+            s1.addNeighbour(s4);
+
+            s2.addNeighbour(s3);
+            s2.addNeighbour(s7);
+            s3.addNeighbour(s4);
+
+            // We introduce a mistake : s4 is not for the moment neighbour to
+            // s5.
+
+            // Other mistake : s5 is not yet neighbour to s6.
+
+            s6.addNeighbour(s7);
+
+            final List<Surface> wholeList = new ArrayList<Surface>();
+            wholeList.add(s1);
+            wholeList.add(s2);
+            wholeList.add(s3);
+            wholeList.add(s4);
+            wholeList.add(s5);
+            wholeList.add(s6);
+            wholeList.add(s7);
+
+            Surface floors = new Surface();
+
+            s1.orderMyNeighbour(wholeList, floors);
+
+            assertTrue(s1.getNeighbours().get(0) == s7);
+            assertTrue(s1.getNeighbours().get(1) == s2);
+            assertTrue(s1.getNeighbours().get(2) == s3);
+            assertTrue(s1.getNeighbours().get(3) == s4);
+            assertTrue(s1.getNeighbours().get(4) == s5);
+            assertTrue(s1.getNeighbours().get(5) == s6);
+
+        } catch (MoreThanTwoTrianglesPerEdgeException e1) {
+            Assert.fail();
+        } catch (MissingNeighbourException e) {
+            Assert.fail();
+        }
+    }
 
     /**
      * Test method for

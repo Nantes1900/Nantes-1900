@@ -618,8 +618,6 @@ public class Town {
             + FilesNames.SEPARATOR + counterResidentials + FilesNames.EXTENSION)
             .exists()) {
 
-            long time = System.nanoTime();
-
             // ...Parse the meshes of these files
             final Mesh mesh =
                 this.parseFile(directoryName + FilesNames.RESIDENTIAL_FILENAME
@@ -644,7 +642,7 @@ public class Town {
                 realNormalToTheFloor = normalGravityOriented;
             }
 
-            // FIXME FIXME FIXME : after extracting the
+            // LOOK : after extracting the
             // normalGravityOriented, then make the change base on each mesh
             // and assume that this normal is (0, 0, 1).
             // Then the real normalFloor will not be confonded.
@@ -675,10 +673,6 @@ public class Town {
             // to build it and add it to the list of this town.
             for (Mesh m : buildings) {
                 final Building e = new Building();
-
-                System.out
-                    .println("Temps écoulé au début du traitement du building : "
-                        + (System.nanoTime() - time) / 1000000000);
                 e.buildFromMesh(m, wholeFloor, normalGravityOriented);
                 this.addResidential(e);
             }
@@ -691,7 +685,7 @@ public class Town {
             }
 
             // TODO : treat the not real buildings : the formsList which
-            // contains trains, boats, forms.
+            // contains walls, chimneys, maybe trains, boats, and other forms.
 
             ++counterResidentials;
         }

@@ -37,7 +37,7 @@ public final class ParserSTLTest extends TestCase {
     /**
      * Test method for
      * {@link nantes1900pjct.utils.ParserSTL#read(java.lang.String)} and
-     * {@link nantes1900.utils.WriteSTL#writeSTL(java.lang.String)} Same test as
+     * {@link nantes1900.utils.WriteSTL#writeFinalSurfacesSTL(java.lang.String)} Same test as
      * write in WriterTest.
      */
     @Test

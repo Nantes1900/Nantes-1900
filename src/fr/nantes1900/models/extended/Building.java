@@ -7,6 +7,7 @@ import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.Polyline.EmptyPolylineException;
 import fr.nantes1900.models.Surface;
 import fr.nantes1900.models.Surface.InvalidSurfaceException;
+import fr.nantes1900.models.Surface.MissingNeighbourException;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
@@ -40,27 +41,6 @@ public class Building {
      * Constructor. Create the lists of walls and lists of roofs.
      */
     public Building() {
-    }
-
-    /**
-     * Returns the intersection of two lists of meshes.
-     * 
-     * @param list
-     *            the first list of meshes
-     * @param list2
-     *            the second list of meshes
-     * @return a list containing the elements shared by the two lists
-     */
-    // FIXME : put that i don't know where but not here...
-    public static List<Mesh> listIntersection(final List<Surface> list,
-        final List<Surface> list2) {
-        final List<Mesh> ret = new ArrayList<Mesh>();
-        for (Mesh mesh : list) {
-            if (list2.contains(mesh)) {
-                ret.add(mesh);
-            }
-        }
-        return ret;
     }
 
     /**
@@ -153,29 +133,24 @@ public class Building {
 
         // From all the neighbours, computes the wrap line and returns the
         // surfaces as polylines.
-        this.findCommonEdges(wallTreatedList, roofTreatedList, normalFloor);
+        this.findEdgesFromNeighbours(wallTreatedList, roofTreatedList,
+            normalFloor, floorsTreated);
+
+        int counter = 0;
+        for (Surface s : wallTreatedList) {
+            s.writeSTL("files/St-Similien/m02/results/wall" + counter + ".stl");
+            counter++;
+        }
+        counter = 0;
+        for (Surface s : roofTreatedList) {
+            s.writeSTL("files/St-Similien/m02/results/roof" + counter + ".stl");
+            counter++;
+        }
 
         this.writeSTL("files/St-Similien/m02/results/");
 
         // FIXME
         System.exit(1);
-    }
-
-    /**
-     * @param wallList
-     * @param roofList
-     * @param wallTreatedList
-     * @param roofTreatedList
-     */
-    private void vectorizeSurfaces(List<Mesh> wallList, List<Mesh> roofList,
-        List<Surface> wallTreatedList, List<Surface> roofTreatedList) {
-
-        for (Mesh m : wallList) {
-            wallTreatedList.add(new Surface(m));
-        }
-        for (Mesh m : roofList) {
-            roofTreatedList.add(new Surface(m));
-        }
     }
 
     /**
@@ -196,11 +171,58 @@ public class Building {
         return this.walls;
     }
 
+    public void findEdgesFromNeighbours(List<Surface> wallTreatedList,
+        List<Surface> roofTreatedList, Vector3d normalFloor, Surface floors) {
+
+        final Map<Point, Point> pointMap = new HashMap<Point, Point>();
+        final Map<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
+
+        final List<Surface> wholeTreatedList = new ArrayList<Surface>();
+        wholeTreatedList.addAll(wallTreatedList);
+        wholeTreatedList.addAll(roofTreatedList);
+
+        int counterGood = 0;
+        int counterBad = 0;
+
+        // Verification after the first search. If the neighbours of one surface
+        // are not 2 per 2 neighbours each other, then correct it.
+        for (Surface surface : wholeTreatedList) {
+            try {
+                // We order its neighbours in order to treat them.
+                surface.orderMyNeighbour(wholeTreatedList, floors);
+
+                // When the neighbours are sorted, we find the intersection of
+                // them to find the edges of this surface.
+                Polyline p =
+                    surface.findEdges(wallTreatedList, pointMap, edgeMap,
+                        normalFloor);
+
+                // If it is a wall, we add it to the wall list, otherwise to the
+                // roof list.
+                if (wallTreatedList.contains(surface)) {
+                    this.walls.add(p);
+                } else {
+                    this.roofs.add(p);
+                }
+                counterGood++;
+            } catch (InvalidSurfaceException e) {
+                System.out.println("Error in vectorization !");
+                counterBad++;
+            } catch (MissingNeighbourException e) {
+                System.out.println("Error in the neighbours order !");
+                counterBad++;
+            }
+        }
+
+        System.out.println("Parts correctly treated : " + counterGood);
+        System.out.println("Parts not treated : " + counterBad);
+    }
+
     /**
-     * Write the building in STL files. Use for debugging.
+     * Writes the walls and roofs in STL files. Used for debugging.
      * 
      * @param directoryName
-     *            the directory name to write in
+     *            the directory to write in
      */
     public final void writeSTL(final String directoryName) {
         this.writeSTLWalls(directoryName);
@@ -208,12 +230,12 @@ public class Building {
     }
 
     /**
-     * Write the roofs in STL files. Use for debugging.
+     * Writes the roofs in STL files. Used for debugging.
      * 
      * @param directoryName
-     *            the directory name to write in
+     *            the directory to write in
      */
-    public final void writeSTLRoofs(final String directoryName) {
+    private final void writeSTLRoofs(final String directoryName) {
         int counterRoof = 0;
         for (Polyline p : this.roofs) {
             try {
@@ -228,12 +250,12 @@ public class Building {
     }
 
     /**
-     * Write the walls in STL files. Use for debugging.
+     * Writes the walls in STL files. Used for debugging.
      * 
      * @param directoryName
-     *            the directory name to write in
+     *            the directory to write in
      */
-    public final void writeSTLWalls(final String directoryName) {
+    private final void writeSTLWalls(final String directoryName) {
         int counterWall = 0;
         for (Polyline p : this.walls) {
             try {
@@ -248,7 +270,7 @@ public class Building {
     }
 
     /**
-     * Determinate the neighbours of each meshes. Two meshes are neighbours if
+     * Determinates the neighbours of each meshes. Two meshes are neighbours if
      * they share an edge.
      * 
      * @param wallTreatedList
@@ -271,11 +293,13 @@ public class Building {
         wholeList.addAll(wallTreatedList);
         wholeList.addAll(roofTreatedList);
 
-        // FIXME
-        // // First we clear the neighbours.
-        // for (Mesh m : wholeList) {
-        // m.getNeighbours().clear();
-        // }
+        // LOOK : maybe clear those neighbours after the treatNewNeighbours,
+        // because they still stay in memory otherwise...
+
+        // First we clear the neighbours.
+        for (Surface s : wholeList) {
+            s.getNeighbours().clear();
+        }
 
         // We compute the bounds to check if they share a common edge.
         for (Mesh w : wallTreatedList) {
@@ -308,64 +332,64 @@ public class Building {
     }
 
     /**
-     * Determinate the neighbours of each meshes. Two meshes are neighbours if
+     * Determinates the neighbours of each meshes. Two meshes are neighbours if
      * they share an edge.
      * 
-     * @param wallTreatedList
+     * @param wallList
      *            the list of walls as meshes
-     * @param roofTreatedList
+     * @param roofList
      *            the list of roofs as meshes
      * @param floors
      *            the floors as one mesh
      * @param noise
      */
-    private void searchForNeighbours(final List<Surface> wallTreatedList,
-        final List<Surface> roofTreatedList, final Surface floors, Mesh noise) {
-
-        final List<Polyline> wallsBoundsList = new ArrayList<Polyline>();
-        final List<Polyline> roofsBoundsList = new ArrayList<Polyline>();
+    private void searchForNeighbours(final List<Surface> wallList,
+        final List<Surface> roofList, final Surface floors, Mesh noise) {
 
         final Polyline floorsBounds = floors.returnUnsortedBounds();
 
         final List<Surface> wholeList = new ArrayList<Surface>();
-        wholeList.addAll(wallTreatedList);
-        wholeList.addAll(roofTreatedList);
+        wholeList.addAll(wallList);
+        wholeList.addAll(roofList);
 
         // First we clear the neighbours.
         for (Surface m : wholeList) {
             m.getNeighbours().clear();
         }
 
-        // FIXME :
+        // FIXME : try this thing...
         // To find every neighbours, we complete every holes between roofs
-        // and walls by adding noise.
-        List<Mesh> listFakesWalls = new ArrayList<Mesh>();
-        List<Mesh> listFakesRoofs = new ArrayList<Mesh>();
+        // and walls by adding all the noise.
+        // List<Mesh> listFakesWalls = new ArrayList<Mesh>();
+        // List<Mesh> listFakesRoofs = new ArrayList<Mesh>();
+        //
+        // for (Mesh m : wallList) {
+        // Mesh fakeM = new Mesh(m);
+        // listFakesWalls.add(fakeM);
+        // }
+        // for (Mesh m : roofList) {
+        // Mesh fakeM = new Mesh(m);
+        // listFakesRoofs.add(fakeM);
+        // }
+        // try {
+        // // Add the neighbour noise to the walls.
+        // Algos.blockTreatNoise(listFakesWalls, noise);
+        //
+        // // Add the neighbour noise to the roofs.
+        // Algos.blockTreatNoise(listFakesRoofs, noise);
+        //
+        // } catch (MoreThanTwoTrianglesPerEdgeException e) {
+        // e.printStackTrace();
+        // }
 
-        for (Mesh m : wallTreatedList) {
-            Mesh fakeM = new Mesh(m);
-            listFakesWalls.add(fakeM);
-        }
-        for (Mesh m : roofTreatedList) {
-            Mesh fakeM = new Mesh(m);
-            listFakesRoofs.add(fakeM);
-        }
-        try {
-            // Add the neighbour noise to the walls.
-            Algos.blockTreatNoise(listFakesWalls, noise);
-
-            // Add the neighbour noise to the roofs.
-            Algos.blockTreatNoise(listFakesRoofs, noise);
-
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            e.printStackTrace();
-        }
+        final List<Polyline> wallsBoundsList = new ArrayList<Polyline>();
+        final List<Polyline> roofsBoundsList = new ArrayList<Polyline>();
 
         // We compute the bounds to check if they share a common edge.
-        for (Mesh w : wallTreatedList) {
+        for (Mesh w : wallList) {
             wallsBoundsList.add(w.returnUnsortedBounds());
         }
-        for (Mesh r : roofTreatedList) {
+        for (Mesh r : roofList) {
             roofsBoundsList.add(r.returnUnsortedBounds());
         }
 
@@ -389,57 +413,6 @@ public class Building {
                 wholeList.get(i).addNeighbour(floors);
             }
         }
-    }
-
-    /**
-     * Build the polyline. With all the neighbours, build the polyline by
-     * computing the common edges between them, and put them into the list of
-     * polylines walls and roofs.
-     * 
-     * @param wallTreatedList
-     *            the list of walls as meshes
-     * @param roofTreatedList
-     *            the list of roofs as meshe
-     * @param normalFloor
-     *            the normal to the floor
-     */
-    private void findCommonEdges(final List<Surface> wallTreatedList,
-        final List<Surface> roofTreatedList, final Vector3d normalFloor) {
-
-        final Map<Point, Point> pointMap = new HashMap<Point, Point>();
-        final Map<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
-
-        int counterError = 0;
-
-        for (Surface s : roofTreatedList) {
-            Polyline p;
-
-            try {
-                p =
-                    s.findEdges(wallTreatedList, pointMap, edgeMap, normalFloor);
-                this.roofs.add(p);
-            } catch (InvalidSurfaceException e) {
-                // If this exception is catched, do not treat the surface.
-                // FIXME
-                ++counterError;
-            }
-        }
-
-        for (Surface s : wallTreatedList) {
-            Polyline p;
-
-            try {
-                p =
-                    s.findEdges(wallTreatedList, pointMap, edgeMap, normalFloor);
-                this.walls.add(p);
-            } catch (InvalidSurfaceException e) {
-                // If this exception is catched, do not treat the surface.
-                // FIXME
-                ++counterError;
-            }
-        }
-        // FIXME : logger.
-        System.out.println("Nombre de surfaces non traitées : " + counterError);
     }
 
     /**
@@ -562,7 +535,6 @@ public class Building {
 
             for (Surface m : ret) {
                 if (m != surface) {
-
                     surface.addAll(m);
                     wholeList.remove(m);
                     wallList.remove(m);
@@ -603,6 +575,24 @@ public class Building {
             // TODO : this exception shouldn't happen. Maybe remove this try
             // catch.
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param wallList
+     * @param roofList
+     * @param wallTreatedList
+     * @param roofTreatedList
+     */
+    // TODO ; change this name !
+    private void vectorizeSurfaces(List<Mesh> wallList, List<Mesh> roofList,
+        List<Surface> wallTreatedList, List<Surface> roofTreatedList) {
+
+        for (Mesh m : wallList) {
+            wallTreatedList.add(new Surface(m));
+        }
+        for (Mesh m : roofList) {
+            roofTreatedList.add(new Surface(m));
         }
     }
 }
