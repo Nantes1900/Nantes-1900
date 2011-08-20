@@ -21,11 +21,14 @@ import java.util.Map;
 import javax.vecmath.Vector3d;
 
 /**
- * Implements a building as a list of surfaces : walls and roofs.
+ * Implements a building as two lists of surfaces : walls and roofs.
  * 
  * @author Daniel Lefevre
  */
 public class Building {
+
+    // FIXME : consider refactoring this class : less methods, more clean,
+    // quicker.
 
     /**
      * List of walls as polylines.
@@ -38,13 +41,13 @@ public class Building {
     private final List<Polyline> roofs = new ArrayList<Polyline>();
 
     /**
-     * Constructor. Create the lists of walls and lists of roofs.
+     * Constructor. Creates the lists of walls and roofs.
      */
     public Building() {
     }
 
     /**
-     * Add a roof to the attribute list of roofs.
+     * Adds a roof to the attribute list of roofs.
      * 
      * @param roof
      *            the roof to add
@@ -54,7 +57,7 @@ public class Building {
     }
 
     /**
-     * Add a list of roofs to the attribute list of roofs.
+     * Adds a list of roofs to the attribute list of roofs.
      * 
      * @param addRoofs
      *            the list of roofs to add
@@ -64,7 +67,7 @@ public class Building {
     }
 
     /**
-     * Add a wall to the attribute list of walls.
+     * Adds a wall to the attribute list of walls.
      * 
      * @param wall
      *            the wall to add
@@ -74,7 +77,7 @@ public class Building {
     }
 
     /**
-     * Add a list of walls to the attribute list of walls.
+     * Adds a list of walls to the attribute list of walls.
      * 
      * @param addWalls
      *            the wall to add
@@ -84,7 +87,11 @@ public class Building {
     }
 
     /**
-     * Build the building from a mesh, by computing the algorithms.
+     * Builds the building from a mesh, by computing the algorithms. Sort first
+     * the walls, then the roofs, and treatNoise. It then converts the meshes to
+     * surfaces, and search and treat the new neighbours. After that, it
+     * determinates neighbours, sort the uncomputable surfaces, and finally
+     * order the neighbours and compute the edges.
      * 
      * @param building
      *            the mesh to compute
@@ -96,7 +103,7 @@ public class Building {
     public final void buildFromMesh(final Mesh building, final Mesh floors,
         final Vector3d normalFloor) {
 
-        // Creates new meshes.
+        // Creates a new mesh.
         final Mesh noise = new Mesh();
 
         // Applies the first algorithms : extract the walls, and after this,
@@ -104,12 +111,10 @@ public class Building {
         // FIXME : improve the speed of sortWalls and sortRoofs...
         final List<Mesh> wallList =
             this.sortWalls(building, normalFloor, noise);
-
         final List<Mesh> roofList =
             this.sortRoofs(building, normalFloor, noise);
 
-        // Treats the noise, search deeply for new neighbours, find them, and
-        // merge them if they belong to the same surface.
+        // Treats the noise.
         this.treatNoise(wallList, roofList, noise, floors);
 
         // TODO : maybe convert in surfaces from the beginning to avoid this
@@ -118,6 +123,7 @@ public class Building {
         final List<Surface> roofTreatedList = this.vectorizeSurfaces(roofList);
         final Surface floorsTreated = new Surface(floors);
 
+        // TODO : translate this.
         // TODO : voir si on peut pas réduire le nombre de fonctions dans ce
         // bazar.
 
@@ -130,22 +136,9 @@ public class Building {
         // Treats the new neighbours.
         this.treatNewNeighbours(wallTreatedList, roofTreatedList);
 
-        // Find the neighbours of each roof and wall (and the floors).
+        // Finds the neighbours of each roof and wall (and the floors).
         this.determinateNeighbours(wallTreatedList, roofTreatedList,
             floorsTreated);
-
-        int counter = 0;
-        for (Mesh s : wallTreatedList) {
-            s.writeSTL("files/St-Similien/m02/results/treatedWall" + counter
-                + ".stl");
-            counter++;
-        }
-        counter = 0;
-        for (Mesh s : roofTreatedList) {
-            s.writeSTL("files/St-Similien/m02/results/treatedRoof" + counter
-                + ".stl");
-            counter++;
-        }
 
         // Find all the surface which have 0, or 1, or 2 neigbhours and then
         // cannot be treated.
@@ -156,15 +149,31 @@ public class Building {
         this.findEdgesFromNeighbours(wallTreatedList, roofTreatedList,
             normalFloor, floorsTreated);
 
+        // FIXME : remove when possible.
         this.writeSTL("files/St-Similien/m02/results/");
     }
 
+    /**
+     * For each surface (wall or roof), orders the neighbours, and after this,
+     * computes the edges. If an exception is throwed by these two methods, the
+     * surface is not treated at all.
+     * 
+     * @param wallTreatedList
+     *            the list of walls as surfaces
+     * @param roofTreatedList
+     *            the list of roofs as surfaces
+     * @param normalFloor
+     *            the normal to the floor
+     * @param floors
+     *            the mesh containing the floors
+     */
     public void findEdgesFromNeighbours(List<Surface> wallTreatedList,
         List<Surface> roofTreatedList, Vector3d normalFloor, Surface floors) {
 
         final Map<Point, Point> pointMap = new HashMap<Point, Point>();
         final Map<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
 
+        // Adds all the surfaces
         final List<Surface> wholeTreatedList = new ArrayList<Surface>();
         wholeTreatedList.addAll(wallTreatedList);
         wholeTreatedList.addAll(roofTreatedList);
@@ -175,19 +184,19 @@ public class Building {
         for (Surface surface : wholeTreatedList) {
             try {
 
-                // We order its neighbours in order to treat them.
+                // Orders its neighbours in order to treat them.
                 // If the neighbours of one surface are not 2 per 2 neighbours
                 // each other, then it tries to correct it.
                 surface.orderNeighbours(wholeTreatedList, floors);
 
-                // When the neighbours are sorted, we find the intersection of
+                // When the neighbours are sorted, finds the intersection of
                 // them to find the edges of this surface.
                 Polyline p =
                     surface.findEdges(wallTreatedList, pointMap, edgeMap,
                         normalFloor);
 
-                // If it is a wall, we add it to the wall list, otherwise to the
-                // roof list (trivial...).
+                // If it is a wall, adds it to the wall list, otherwise to the
+                // roof list (obvious...).
                 if (wallTreatedList.contains(surface)) {
                     this.walls.add(p);
                 } else {
@@ -197,17 +206,17 @@ public class Building {
                 counterWellTreated++;
 
             } catch (ImpossibleNeighboursOrderException e) {
-                // If there is a problem, we cannot continue the treatment.
-                // LOOK : maybe return the unsorted bounds to have a little
-                // result.
+                // If there is a problem, the treatment cannot continue.
+                // LOOK : maybe return the unsorted bounds to have a result.
+                // FIXME : remove that syso
                 System.err.println("Impossible order !");
                 counterNotTreated++;
 
             } catch (InvalidSurfaceException e) {
                 // If there is a problem, we cannot continue the treatment.
-                // LOOK : maybe return the unsorted bounds to have a little
-                // result.
-                System.err.println("Invalid surface !");
+                // LOOK : maybe return the unsorted bounds to have a result.
+                // FIXME : remove that syso
+                System.err.println("Invalid edge computing !");
                 counterNotTreated++;
             }
         }
@@ -401,7 +410,7 @@ public class Building {
     }
 
     /**
-     * Cut the rest (after the extraction of the walls) of the mesh in roofs
+     * Cuts the rest (after the extraction of the walls) of the mesh in roofs
      * considering the orientation of the triangles.
      * 
      * @param building
@@ -426,7 +435,8 @@ public class Building {
                     SeparationTreatmentWallsRoofs.ROOF_ANGLE_ERROR);
 
             // Considering their size and their orientation, sort the blocks in
-            // roofs or noise.
+            // roofs or noise. If a wall is oriented in direction of the ground,
+            // it is not keeped.
             for (Mesh e : thingsList) {
 
                 if ((e.size() >= SeparationTreatmentWallsRoofs.ROOF_SIZE_ERROR)
@@ -443,6 +453,16 @@ public class Building {
         return roofList;
     }
 
+    /**
+     * Removes the surfaces which have two neighbours or less : they can't be
+     * treated. It's isolated surfaces for example. //FIXME : try to make
+     * something of them.
+     * 
+     * @param wallTreatedList
+     *            the list of walls as surfaces
+     * @param roofTreatedList
+     *            the list of roofs as surfaces
+     */
     private void sortSurfaces(List<Surface> wallTreatedList,
         List<Surface> roofTreatedList) {
 
@@ -459,7 +479,7 @@ public class Building {
     }
 
     /**
-     * Cut the normal-to-the-floor mesh in walls considering the orientation of
+     * Cuts the normal-to-the-floor mesh in walls considering the orientation of
      * the triangles.
      * 
      * @param building
@@ -502,10 +522,21 @@ public class Building {
         return wallList;
     }
 
+    /**
+     * Treats the new neighbours : if some surfaces are neighbours, are have the
+     * same orientation, then it merges it to form only one surface. FIXME :
+     * Needs to call determinateNeighbours first... FIXME : make only one
+     * method.
+     * 
+     * @param wallTreatedList
+     *            the list of walls as surfaces
+     * @param roofTreatedList
+     *            the list of roofs as surfaces
+     */
     // FIXME : improve the velocity of this method.
-    // Needs to call determinateNeighbours first...
-    private void treatNewNeighbours(final List<Surface> wallList,
-        final List<Surface> roofList) {
+    // FIXME : comment more.
+    private void treatNewNeighbours(final List<Surface> wallTreatedList,
+        final List<Surface> roofTreatedList) {
 
         // After the noise addition, if some of the walls or some of the roofs
         // are now neighbours (they share an edge) and have the same
@@ -515,8 +546,8 @@ public class Building {
         // is added to the wall, and not the inverse.
 
         final List<Surface> wholeList = new ArrayList<Surface>();
-        wholeList.addAll(wallList);
-        wholeList.addAll(roofList);
+        wholeList.addAll(wallTreatedList);
+        wholeList.addAll(roofTreatedList);
 
         for (int i = 0; i < wholeList.size(); i = i + 1) {
             final Surface surface = wholeList.get(i);
@@ -537,15 +568,15 @@ public class Building {
                 if (m != surface) {
                     surface.addAll(m);
                     wholeList.remove(m);
-                    wallList.remove(m);
-                    roofList.remove(m);
+                    wallTreatedList.remove(m);
+                    roofTreatedList.remove(m);
                 }
             }
         }
     }
 
     /**
-     * Add the noise to the surface which is its neighbour, and which has the
+     * Adds the noise to the surface which is its neighbour, and which has the
      * same orientation. The error orientation is determined by the
      * LARGE_ANGLE_ERROR.
      * 
@@ -579,12 +610,13 @@ public class Building {
     }
 
     /**
-     * @param wallList
-     * @param roofList
-     * @param wallTreatedList
-     * @param roofTreatedList
+     * Change the meshes into surfaces.
+     * 
+     * @param list
+     *            the list of meshes
+     * @return the list of surfaces created from the meshes
      */
-    // TODO ; change this name !
+    // TODO : change this name !
     private List<Surface> vectorizeSurfaces(List<Mesh> list) {
 
         List<Surface> treatedList = new ArrayList<Surface>();

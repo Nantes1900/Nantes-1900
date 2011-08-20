@@ -19,7 +19,7 @@ public class Floor {
     private Mesh mesh = new Mesh();
 
     /**
-     * Constructor. Build the Floor with an attribute as a String.
+     * Constructor. Builds the Floor with an attribute as a String.
      * 
      * @param type
      *            the attribute
@@ -30,7 +30,7 @@ public class Floor {
     }
 
     /**
-     * Build a floor from a mesh, by computing the algorithms.
+     * Builds a floor from a mesh, by computing the algorithms.
      * 
      * @param m
      *            the mesh to convert
@@ -42,13 +42,13 @@ public class Floor {
     }
 
     /**
-     * Decimate the floor.
+     * Decimates the floor. Not implemented.
      * 
      * @param floor
      *            the floor to decimate as a mesh
      */
     public void decimate(final Mesh floor) {
-        // TODO : code this method.
+        // TODO : implement this method.
     }
 
     /**
@@ -80,7 +80,7 @@ public class Floor {
     }
 
     /**
-     * Write the floor as a mesh in a STL file.
+     * Writes the floor as a mesh in a STL file.
      * 
      * @param fileName
      *            the name of the file to write in

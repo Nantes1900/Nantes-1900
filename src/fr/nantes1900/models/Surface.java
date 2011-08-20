@@ -13,6 +13,10 @@ import java.util.Map;
 import javax.vecmath.Vector3d;
 
 /**
+ * Implements a surface, extending a mesh, and containing a list of surfaces as
+ * neighbours. Contains some algorithms for the separation between walls and
+ * roofs.
+ * 
  * @author Daniel Lefevre
  */
 public class Surface extends Mesh {
@@ -23,8 +27,7 @@ public class Surface extends Mesh {
     private static final long serialVersionUID = 1L;
 
     /**
-     * List of the neighbours of this surface. Used in the algorithms of
-     * separation between walls and roofs.
+     * List of the neighbours of this surface.
      */
     private List<Surface> neighbours = new ArrayList<Surface>();
 
@@ -46,8 +49,8 @@ public class Surface extends Mesh {
     }
 
     /**
-     * Add a neighbour to the attribute neighbours. Check if it is not
-     * contained. Add also this to the m neighbours, also checking if not
+     * Adds a neighbour to the attribute neighbours. Checks if it is not
+     * contained. Adds also this to the m neighbours, also checking if not
      * already contained.
      * 
      * @param m
@@ -65,7 +68,7 @@ public class Surface extends Mesh {
     /**
      * Finds the edges of a surface. Caution : this method needs the neighbours
      * to be treated first (using orderNeighbours). Since the neighbours are
-     * sorted, call the method createEdge for each neighbours and builds the
+     * sorted, calls the method createEdge for each neighbours and builds the
      * polyline with the edges returned.
      * 
      * @param wallList
@@ -90,33 +93,33 @@ public class Surface extends Mesh {
         // The neighbours are sorted, then it's easy to make the edges and
         // points.
         for (int i = 0; i < this.getNeighbours().size() - 2; i++) {
-            try {
-                edges.add(this.createEdge(this.getNeighbours().get(i), this
-                    .getNeighbours().get(i + 1), this.getNeighbours()
-                    .get(i + 2), pointMap, edgeMap, wallList, normalFloor));
-            } catch (BadNeighbourException e) {
-                this.getNeighbours().remove(e.getNeighbourError());
-            }
+            // try {
+            edges.add(this.createEdge(this.getNeighbours().get(i), this
+                .getNeighbours().get(i + 1), this.getNeighbours().get(i + 2),
+                pointMap, edgeMap, wallList, normalFloor));
+            // } catch (BadNeighbourException e) {
+            // this.getNeighbours().remove(e.getNeighbourError());
+            // }
         }
 
         final int size = this.getNeighbours().size();
 
         // We add the last missing edges which where not treated in the loop.
-        try {
-            edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
-                .getNeighbours().get(size - 1), this.getNeighbours().get(0),
-                pointMap, edgeMap, wallList, normalFloor));
-        } catch (BadNeighbourException e) {
-            // If this error happens, we don't add the edge. FIXME.
-        }
+        // try {
+        edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
+            .getNeighbours().get(size - 1), this.getNeighbours().get(0),
+            pointMap, edgeMap, wallList, normalFloor));
+        // } catch (BadNeighbourException e) {
+        // // If this error happens, we don't add the edge. FIXME.
+        // }
 
-        try {
-            edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
-                .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
-                edgeMap, wallList, normalFloor));
-        } catch (BadNeighbourException e) {
-            // If this error happens, we don't add the edge. FIXME.
-        }
+        // try {
+        edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
+            .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
+            edgeMap, wallList, normalFloor));
+        // } catch (BadNeighbourException e) {
+        // // If this error happens, we don't add the edge. FIXME.
+        // }
 
         return edges;
     }
@@ -131,7 +134,7 @@ public class Surface extends Mesh {
     }
 
     /**
-     * Order the neighbours of this surface. The list of neighbours of this
+     * Orders the neighbours of this surface. The list of neighbours of this
      * surface will then be sorted such as two surfaces neighbours in the list
      * are neigbhours in the mesh each other. The algorithm searches for each
      * neighbour N the two neighbours that N shares with this surface. Then, it
@@ -241,11 +244,35 @@ public class Surface extends Mesh {
         }
     }
 
+    /**
+     * With four planes (the three in parameters plus this), builds an edge.
+     * Computes the intersection of the first three planes, and the three next.
+     * If one plane is wall, rectifies its normal to be vertical. If one point
+     * or one edge has already been created before, use the two hashmaps to find
+     * it.
+     * 
+     * @param s1
+     *            the first plane
+     * @param s2
+     *            the second plane
+     * @param s3
+     *            the third plane
+     * @param pointMap
+     *            the map of existing points
+     * @param edgeMap
+     *            the map of existing edges
+     * @param wallList
+     *            the list of the walls
+     * @param normalFloor
+     *            the normal to the floor
+     * @return the edge created by these four planes
+     * @throws InvalidSurfaceException
+     *             if the algorithm cannot comput the edge
+     */
     private final Edge createEdge(final Surface s1, final Surface s2,
         final Surface s3, final Map<Point, Point> pointMap,
         final Map<Edge, Edge> edgeMap, final List<Surface> wallList,
-        final Vector3d normalFloor) throws InvalidSurfaceException,
-        BadNeighbourException {
+        final Vector3d normalFloor) throws InvalidSurfaceException {
 
         // LOOK : maybe remove that list : it is not really useful.
         final List<Surface> surfaces = new ArrayList<Surface>();
@@ -338,6 +365,18 @@ public class Surface extends Mesh {
         }
     }
 
+    /**
+     * Finds in the list of neighbours of this except the list of surfaces the
+     * closest to the surface.
+     * 
+     * @param current
+     *            the surface to check
+     * @param neighboursOrdered
+     *            the list of surfaces not to search
+     * @return the closest surface of current belonging to the neighbours of
+     *         this, not belonging to the list neighboursOrdered
+     */
+    // FIXME : refactor this method...
     private Surface findPossibleNeighbour(final Surface current,
         final List<Surface> neighboursOrdered) {
         // FIXME : improve the speed...

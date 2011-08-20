@@ -25,9 +25,10 @@ import java.util.logging.StreamHandler;
 import javax.vecmath.Vector3d;
 
 /**
- * Implements a class of town describing all the algorithms to parse and build a
- * town, using the building, mesh, floor, and other classes. Allows to write a
- * CityGML file containing this town.
+ * Implements a town containing five types of zones : industrials, residentials,
+ * floors, wateries, and special buildings. Contains all the algorithms to parse
+ * and build a town, using the building, mesh, floor, and other classes. Allows
+ * to write a CityGML file containing this town.
  * 
  * @author Daniel Lefevre
  */
@@ -39,22 +40,22 @@ public class Town {
     private static final Logger LOG = Logger.getLogger("logger");
 
     /**
-     * List of industrials.
+     * List of industrial zones.
      */
     private List<Building> industrials = new ArrayList<Building>();
 
     /**
-     * List of residentials.
+     * List of residential zones.
      */
     private List<Building> residentials = new ArrayList<Building>();
 
     /**
-     * List of floors.
+     * List of floor zones.
      */
     private List<Floor> floors = new ArrayList<Floor>();
 
     /**
-     * List of wateries.
+     * List of watery zones.
      */
     private List<Floor> wateries = new ArrayList<Floor>();
 
@@ -65,7 +66,8 @@ public class Town {
         new ArrayList<SpecialBuilding>();
 
     /**
-     * Change base matrix to a base which is floor-like oriented.
+     * Change base matrix from the current base to a base which is floor-like
+     * oriented.
      */
     private double[][] matrix =
         new double[MatrixMethod.MATRIX_DIMENSION][MatrixMethod.MATRIX_DIMENSION];
@@ -83,7 +85,7 @@ public class Town {
     }
 
     /**
-     * Add a floor to the attribute list of floors.
+     * Adds a floor to the attribute list of floors.
      * 
      * @param floor
      *            the floor to add
@@ -95,7 +97,7 @@ public class Town {
     }
 
     /**
-     * Add an industrial building to the attribute list of industrials.
+     * Adds an industrial building to the attribute list of industrials.
      * 
      * @param building
      *            the industrial to add
@@ -107,7 +109,7 @@ public class Town {
     }
 
     /**
-     * Add a residential building to the attribute list of residentials.
+     * Adds a residential building to the attribute list of residentials.
      * 
      * @param building
      *            the residential to add
@@ -119,7 +121,7 @@ public class Town {
     }
 
     /**
-     * Add a special building to the attribute list of special buildings.
+     * Adds a special building to the attribute list of special buildings.
      * 
      * @param specialBuilding
      *            the special building to add
@@ -131,7 +133,7 @@ public class Town {
     }
 
     /**
-     * Add a watery to the attribute list of wateries.
+     * Adds a watery to the attribute list of wateries.
      * 
      * @param watery
      *            the watery to add
@@ -143,10 +145,10 @@ public class Town {
     }
 
     /**
-     * Build a town by computing all the files in the directory. Search in the
-     * directory name the fives directories : inductrials, residentials, floors,
-     * wateries, and specialBuildings, and treat each files and put them in the
-     * lists.
+     * Builds a town by computing all the files in the directory. Searches in
+     * the directory name the fives directories : inductrials, residentials,
+     * floors, wateries, and special_buildings, treats each files and puts the
+     * results in the lists.
      * 
      * @param directoryName
      *            the directory name where are the five directories
@@ -188,7 +190,7 @@ public class Town {
     }
 
     /**
-     * Write the town in a CityGML file. Use the WriterCityGML.
+     * Writes the town in a CityGML file. Uses the WriterCityGML.
      * 
      * @param fileName
      *            the name of the file to write in
@@ -206,7 +208,7 @@ public class Town {
     }
 
     /**
-     * Write every members of the lists as STL files.
+     * Writes every members of the lists as STL files.
      * 
      * @param directoryName
      *            the name of the directory to write in
@@ -220,7 +222,7 @@ public class Town {
     }
 
     /**
-     * Write the floors as STL files. Use for debugging.
+     * Writes the floors as STL files. Used for debugging.
      * 
      * @param directoryName
      *            the name of the directory to write in
@@ -236,7 +238,7 @@ public class Town {
     }
 
     /**
-     * Write the industrial buildings as STL files. Use for debugging.
+     * Writes the industrial buildings as STL files. Used for debugging.
      * 
      * @param directoryName
      *            the name of the directory to write in
@@ -252,7 +254,7 @@ public class Town {
     }
 
     /**
-     * Write the residential buildings as STL files. Use for debugging.
+     * Writes the residential buildings as STL files. Used for debugging.
      * 
      * @param directoryName
      *            the name of the directory to write in
@@ -268,7 +270,7 @@ public class Town {
     }
 
     /**
-     * Write the special buildings as STL files. Use for debugging.
+     * Writes the special buildings as STL files. Used for debugging.
      * 
      * @param directoryName
      *            the name of the directory to write in
@@ -286,7 +288,7 @@ public class Town {
     }
 
     /**
-     * Write the wateries as STL files. Use for debugging.
+     * Writes the wateries as STL files. Used for debugging.
      * 
      * @param directoryName
      *            the name of the directory to write in
@@ -302,12 +304,12 @@ public class Town {
     }
 
     /**
-     * Extract buildings by extracting the blocks after the floor extraction.
+     * Extracts buildings by extracting the blocks after the floor extraction.
      * 
      * @param mesh
-     *            the mesh to extract building in
+     *            the mesh containing the buildinfs
      * @param noise
-     *            the noise mesh to stock the noise
+     *            the mesh to stock the noise
      * @return a list of buildings as meshes
      */
     private List<Mesh> buildingsExtraction(final Mesh mesh, final Mesh noise) {
@@ -367,8 +369,8 @@ public class Town {
     }
 
     /**
-     * Create a change base matrix with the normal to the floor. See the
-     * MatrixMethod for more informations.
+     * Creates a change base matrix with the normal to the floor. See the
+     * MatrixMethod class for more informations.
      * 
      * @param normalFloor
      *            the vector to build the matrix.
@@ -387,7 +389,7 @@ public class Town {
     }
 
     /**
-     * Read the floor file and return the average normal as floor normal.
+     * Reads the floor file and returns the average normal as floor normal.
      * 
      * @param fileName
      *            the name of the floor file
@@ -402,7 +404,7 @@ public class Town {
     }
 
     /**
-     * Extract the floors, using the floorExtract method.
+     * Extracts the floors, using the floorExtract method.
      * 
      * @param mesh
      *            the mesh to extract from
@@ -509,9 +511,9 @@ public class Town {
     }
 
     /**
-     * Add the maximum of noise on floors to complete them. See block extract
-     * method in Algos. After the completion of the floors, triangles are
-     * removed from noise.
+     * Adds the maximum of noise on floors to complete them. See block extract
+     * method in the Algos class. After the completion of the floors, triangles
+     * are removed from noise.
      * 
      * @param floorsMesh
      *            the floor
@@ -535,7 +537,7 @@ public class Town {
     }
 
     /**
-     * Parse a STL file. Use the ParserSTL methods.
+     * Parses a STL file. Uses the ParserSTL class.
      * 
      * @param fileName
      *            the name of the file
@@ -556,9 +558,9 @@ public class Town {
     }
 
     /**
-     * Treat the files of floors which are in the directory. Create Floor
-     * objects for each files, put an attribute, and call the buildFromMesh
-     * method of Floor. Then add it to the list of floors.
+     * Treats the files of floors which are in the directory. Creates Floor
+     * objects for each files, puts an attribute, and calls the buildFromMesh
+     * method of Floor. Then adds it to the list of floors.
      * 
      * @param directoryName
      *            the directory name to find the floors.
@@ -585,10 +587,10 @@ public class Town {
     }
 
     /**
-     * Treat the files of industrial zones which are in the directory. Separate
-     * floors and buildings, build a Floor object and call buildFromMesh method,
-     * build Building objects, put the buildings in and call the buildFromMesh
-     * methods.
+     * Treats the files of industrial zones which are in the directory.
+     * Separates floors and buildings, builds a Floor object and calls
+     * buildFromMesh method, builds Building objects, puts the buildings in and
+     * calls the buildFromMesh methods.
      * 
      * @param directoryName
      *            the name of the directory where are the files
@@ -603,10 +605,10 @@ public class Town {
     }
 
     /**
-     * Treat the files of residential zones which are in the directory. Separate
-     * floors and buildings, build a Floor object and call buildFromMesh method,
-     * build Building objects, put the buildings in and call the buildFromMesh
-     * methods.
+     * Treats the files of residential zones which are in the directory.
+     * Separates floors and buildings, builds a Floor object and calls
+     * buildFromMesh method, builds Building objects, puts the buildings in and
+     * calls the buildFromMesh methods.
      * 
      * @param directoryName
      *            the name of the directory where are the files
@@ -696,8 +698,8 @@ public class Town {
     }
 
     /**
-     * Treat the files of special buildings which are in the directory. Put them
-     * as meshes in the specialBuilding list.
+     * Treats the files of special buildings which are in the directory. Puts
+     * them as meshes in the specialBuilding list.
      * 
      * @param directoryName
      *            the name of the directory where are the files
@@ -728,9 +730,9 @@ public class Town {
     }
 
     /**
-     * Treat the files of wateries which are in the directory. Create Floor
-     * objects for each files, put an attribute : Water, and call the
-     * buildFromMesh method of Floor. Then add it to the list of wateries.
+     * Treats the files of wateries which are in the directory. Creates Floor
+     * objects for each files, puts an attribute : Water, and calls the
+     * buildFromMesh method of Floor. Then adds it to the list of wateries.
      * 
      * @param directoryName
      *            the directory name to find the wateries.

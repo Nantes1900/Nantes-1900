@@ -21,13 +21,14 @@ public class SpecialBuilding {
     }
 
     /**
-     * Build a special building from a mesh.
+     * Builds a special building from a mesh. Not implemented.
      * 
      * @param m
      *            the special building as a mesh
      */
     public final void buildFromMesh(final Mesh m) {
         this.mesh = m;
+        // TODO : implement this method.
     }
 
     /**

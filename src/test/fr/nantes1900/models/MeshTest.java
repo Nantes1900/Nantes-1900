@@ -454,14 +454,6 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#xLengthAverage()}.
-     */
-    @Test
-    public final void testXLengthAverage() {
-        Assert.assertTrue(this.m.xLengthAverage() == 4);
-    }
-
-    /**
      * Test method for {@link fr.nantes1900.models.Mesh#xMax()}.
      */
     @Test
@@ -497,14 +489,6 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#yLengthAverage()}.
-     */
-    @Test
-    public final void testYLengthAverage() {
-        Assert.assertTrue(this.m.yLengthAverage() == 5);
-    }
-
-    /**
      * Test method for {@link fr.nantes1900.models.Mesh#yMax()}.
      */
     @Test
@@ -537,14 +521,6 @@ public class MeshTest extends TestCase {
         final Mesh zBet = this.m.zBetween(10, -10);
         Assert.assertTrue(zBet.contains(this.t1));
         Assert.assertTrue(zBet.contains(this.t2));
-    }
-
-    /**
-     * Test method for {@link fr.nantes1900.models.Mesh#zLengthAverage()}.
-     */
-    @Test
-    public final void testZLengthAverage() {
-        Assert.assertTrue(this.m.zLengthAverage() == 5.5);
     }
 
     /**

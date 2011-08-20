@@ -16,7 +16,7 @@ import java.util.Set;
 import javax.vecmath.Vector3d;
 
 /**
- * Implement a mesh as a HashSet of Triangle.
+ * Implements a mesh as extending a HashSet of Triangle.
  * 
  * @author Daniel Lefevre, Eric Berthe, Valentin Roger, Elsa Arroud-Vignod
  */
@@ -57,7 +57,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Returns a mesh composed of only one triangle which represent a plane in
+     * Returns a mesh composed of only one triangle which represents a plane in
      * 3D space.
      * 
      * @param normalFloor
@@ -98,7 +98,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Compute the average normal of all triangles composing this mesh.
+     * Computes the average normal of all triangles composing this mesh.
      * 
      * @return average The average Vector3d normal.
      */
@@ -114,7 +114,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Change the base of all the points contained in the mesh.
+     * Changes the base of all the points contained in the mesh.
      * 
      * @param matrix
      *            the change base matrix
@@ -143,7 +143,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Check if an edge is contained in this.
+     * Checks if an edge is contained in this.
      * 
      * @param e
      *            the edge to search
@@ -160,8 +160,8 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Search for one triangle which is under zMax. It means that all its points
-     * are under zMax.
+     * Searchs for one triangle which is under zMax. It means that all its
+     * points are under zMax.
      * 
      * @param zMax
      *            the bound
@@ -186,7 +186,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Get one triangle. It returns iterator().next(), it means the triangle
+     * Gets one triangle. It returns iterator().next() : it means the triangle
      * which has the first hashCode. This method is just a confortable way to
      * access a triangle without order.
      * 
@@ -197,9 +197,9 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Compute the intersection of three planes in 3D. Create three planes with
-     * the average normal of eazch mesh, and the centroid of each mesh, and then
-     * solve a 3*3 system by inversing a matrix.
+     * Computes the intersection of three planes in 3D. Creates three planes
+     * with the average normal and the centroid of each mesh, and then solve a
+     * 3*3 system by inversing a matrix.
      * 
      * @param m2
      *            the second plane
@@ -207,7 +207,7 @@ public class Mesh extends HashSet<Triangle> {
      *            the third plane
      * @return the point which is the intersection of the three planes
      * @throws SingularMatrixException
-     *             //FIXME : treat it in the method !
+     *             if the planes are not well oriented
      */
     public final Point intersection(final Mesh m2, final Mesh m3)
         throws SingularMatrixException {
@@ -238,7 +238,7 @@ public class Mesh extends HashSet<Triangle> {
         final double d3 =
             -m3.xAverage() * a3 - m3.yAverage() * b3 - m3.zAverage() * c3;
 
-        // Inverse the matrix to find the intersection point.
+        // Inverses the matrix to find the intersection point.
         final double[][] matrix =
             MatrixMethod.createOrthoBase(vect1, vect2, vect3);
         final double[][] matrixInv = MatrixMethod.getInversMatrix(matrix);
@@ -249,14 +249,14 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Check if two meshes share an edge.
+     * Checks if two meshes share an edge.
      * 
      * @param mesh
      *            the mesh to compare with
-     * @return tru if one edge at least is shared between this and mesh, and
+     * @return true if one edge at least is shared between this and mesh, and
      *         false otherwise.
      */
-    // FIXME : too long method. Optimize it.
+    // FIXME : too speedless method. Optimize it.
     public final boolean isNeighbour(final Mesh mesh) {
         if (mesh != this) {
             for (Edge e : this.returnUnsortedBounds().getEdgeList()) {
@@ -269,8 +269,8 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Returns the mesh composed of all the triangles of this which are oriented
-     * as the other mesh with an error.
+     * Checks if this mesh is oriented as the other one, with an error. Compares
+     * the average normals of the two meshes.
      * 
      * @param w2
      *            the other mesh to compare with
@@ -287,7 +287,8 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Return the triangles which are oriented as normal, with an error.
+     * Returns the triangles of this mesh which are oriented as normal, with an
+     * error.
      * 
      * @param normal
      *            the vector to compare with
@@ -306,9 +307,9 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Return the triangle which are normal to vect, with an error. The error is
-     * compared with the result of a dot product (vectors are normalized, then
-     * this result is between 0 and 1).
+     * Returns the triangles of this mesh which are normal to vect, with an
+     * error. The error is compared with the result of a dot product (vectors
+     * are normalized, then this result is between 0 and 1).
      * 
      * @param vect
      *            the vector to compare with
@@ -327,18 +328,18 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Remove the triangles of m in this.
+     * Removes from this mesh the triangles contained in the mesh.
      * 
      * @param m
-     *            the mesh which contains the triangle to remove from this
+     *            the mesh containing the triangles to remove
      */
     public final void remove(final Mesh m) {
         this.removeAll(m);
     }
 
     /**
-     * Search for all the edges which belong to the bounds. If an edge contains
-     * only one triangle in this mesh, then it is part of the bounds.
+     * Searches for all the edges which belong to the bounds. If an edge
+     * contains only one triangle in this mesh, then it is part of the bounds.
      * 
      * @return the polyline containing these edges
      */
@@ -359,7 +360,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Write the mesh in a STL file using the class ParserSTL.
+     * Writes the mesh in a STL file using the ParserSTL class.
      * 
      * @param fileName
      *            the name of the file
@@ -371,7 +372,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Compute the average x-coordinate of all points of all faces from this
+     * Computes the average x-coordinate of all points of all faces from this
      * mesh.
      * 
      * @return the average x-coordinate of all points
@@ -385,7 +386,8 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Return a Mesh containing only the triangle whose x is between m1 and m2.
+     * Returns a mesh containing only the triangles whose x is between m1 and
+     * m2.
      * 
      * @param m1
      *            the first bound
@@ -404,21 +406,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Compute the average length on x of all points of all faces from this
-     * mesh.
-     * 
-     * @return the average length on x of all points of all faces from this mesh
-     */
-    public final double xLengthAverage() {
-        double xLengthAve = 0;
-        for (Triangle t : this) {
-            xLengthAve += t.xMax() - t.xMin();
-        }
-        return xLengthAve / (double) this.size();
-    }
-
-    /**
-     * Compute the x-maximum of all points of all faces from this mesh.
+     * Computes the x-maximum of all points of all faces from this mesh.
      * 
      * @return the x-maximum of all points of all faces from this mesh
      */
@@ -433,7 +421,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Compute the x-minimum of all points of all faces from this mesh.
+     * Computes the x-minimum of all points of all faces from this mesh.
      * 
      * @return the x-minimum of all points of all faces from this mesh
      */
@@ -448,7 +436,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Compute the average y-coordinate of all points of all faces from this
+     * Computes the average y-coordinate of all points of all faces from this
      * mesh.
      * 
      * @return the average y-coordinate of all points
@@ -462,7 +450,8 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Return a Mesh containing only the triangle whose y is between m1 and m2.
+     * Returns a mesh containing only the triangles whose y is between m1 and
+     * m2.
      * 
      * @param m1
      *            the first bound
@@ -481,21 +470,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Compute the average length on y of all points of all faces from this
-     * mesh.
-     * 
-     * @return the average length on y of all points of all faces from this mesh
-     */
-    public final double yLengthAverage() {
-        double yLengthAve = 0;
-        for (Triangle t : this) {
-            yLengthAve += t.yMax() - t.yMin();
-        }
-        return yLengthAve / (double) this.size();
-    }
-
-    /**
-     * Compute the y-maximum of all points of all faces from this mesh.
+     * Computes the y-maximum of all points of all faces from this mesh.
      * 
      * @return the y-maximum of all points of all faces from this mesh
      */
@@ -510,7 +485,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Compute the y-minimum of all points of all faces from this mesh.
+     * Computes the y-minimum of all points of all faces from this mesh.
      * 
      * @return the y-minimum of all points of all faces from this mesh
      */
@@ -525,7 +500,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Compute the average z-coordinate of all points of all faces from this
+     * Computes the average z-coordinate of all points of all faces from this
      * mesh.
      * 
      * @return the average z-coordinate of all points
@@ -539,7 +514,8 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Return a Mesh containing only the triangle whose z is between m1 and m2.
+     * Returns a mesh containing only the triangles whose z is between m1 and
+     * m2.
      * 
      * @param m1
      *            the first bound
@@ -558,21 +534,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Compute the average length on z of all points of all faces from this
-     * mesh.
-     * 
-     * @return the average length on z of all points of all faces from this mesh
-     */
-    public final double zLengthAverage() {
-        double zLengthAve = 0;
-        for (Triangle t : this) {
-            zLengthAve += t.zMax() - t.zMin();
-        }
-        return zLengthAve / (double) this.size();
-    }
-
-    /**
-     * Compute the z-maximum of all points of all faces from this mesh.
+     * Computes the z-maximum of all points of all faces from this mesh.
      * 
      * @return the z-maximum of all points of all faces from this mesh
      */
@@ -587,7 +549,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Compute the z-minimum of all points of all faces from this mesh.
+     * Computes the z-minimum of all points of all faces from this mesh.
      * 
      * @return the z-minimum of all points of all faces from this mesh
      */
@@ -602,7 +564,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Return the triangle which has the lowest z.
+     * Returns the triangle which has the lowest z.
      * 
      * @return the triangle which has the lowest z
      */
@@ -621,7 +583,20 @@ public class Mesh extends HashSet<Triangle> {
         return t;
     }
 
-    // TODO : doc, test !
+    /**
+     * Returns the triangles of this meshes which are contained in two meshes.
+     * The two meshes have the same normal : vect, and are spaced on each side
+     * of the point p, distants of the error from p.
+     * 
+     * @param vect
+     *            the normal of the two planes
+     * @param p
+     *            the location in space for the two planes
+     * @param error
+     *            the distance between the two planes and p
+     * @return the triangles which are between those two planes
+     */
+    // TODO : test !
     public Mesh inPlanes(Vector3d vect, Point p, double error) {
         Mesh ret = new Mesh();
 
@@ -635,7 +610,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Compute the point centroid : average of x, y, and z.
+     * Computes the point centroid : average of x, y, and z.
      * 
      * @return this point
      */
@@ -643,7 +618,14 @@ public class Mesh extends HashSet<Triangle> {
         return new Point(this.xAverage(), this.yAverage(), this.zAverage());
     }
 
-    // TODO : doc, test !
+    /**
+     * Return the minimal distance between two meshes. Searches for all the
+     * points the one which are the closest and returns their distance.
+     * 
+     * @param surface
+     * @return
+     */
+    // TODO : test !
     // FIXME : improve the speed... a lot !
     public double minimalDistance(Surface surface) {
 

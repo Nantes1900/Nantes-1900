@@ -12,7 +12,7 @@ import java.util.List;
 import javax.vecmath.Vector3d;
 
 /**
- * Implement a polyline : a closed suite of points.
+ * Implements a polyline : a suite of edges.
  * 
  * @author Daniel Lefevre
  */
@@ -22,17 +22,19 @@ public class Polyline {
      * ID counter.
      */
     private static int currentID;
+
     /**
-     * List of point of the polyline.
+     * List of the points of the polyline.
      */
     private List<Point> pointList = new ArrayList<Point>();
+
     /**
-     * List of edges of the polyline.
+     * List of the edges of the polyline.
      */
     private List<Edge> edgeList = new ArrayList<Edge>();
 
     /**
-     * Normal vector to the polyline.
+     * Normal of the polyline.
      */
     private Vector3d normal = new Vector3d();
 
@@ -109,8 +111,8 @@ public class Polyline {
     }
 
     /**
-     * Add an edge. Add the edge only if it is not already contained, and add
-     * the points with the method add(Point)
+     * Adds an edge. Adds the edge only if it is not already contained, and adds
+     * the points with the method add(Point).
      * 
      * @param e
      *            the edge to add
@@ -124,7 +126,7 @@ public class Polyline {
     }
 
     /**
-     * Add a point. Add the point only if it is not already contained
+     * Adds a point. Add sthe point only if it is not already contained.
      * 
      * @param p
      *            the point to add
@@ -136,7 +138,7 @@ public class Polyline {
     }
 
     /**
-     * Add all the edges of the list.
+     * Adds all the edges of the list.
      * 
      * @param l
      *            the list
@@ -148,9 +150,9 @@ public class Polyline {
     }
 
     /**
-     * Apply the base change to all the points contained, without changing the
-     * references. Caution : this method changes the hashCode, then be careful
-     * with the hashTables which contains points
+     * Applies the base change to all the points contained, without changing the
+     * references. Caution : this method changes the hashCode of the points,
+     * then be careful with the HashSets which contains points.
      * 
      * @param matrix
      *            the change base matrix
@@ -167,7 +169,7 @@ public class Polyline {
     }
 
     /**
-     * Clear the edges and the points of the polyline.
+     * Clears the two lists of the polyline.
      */
     public final void clear() {
         this.edgeList.clear();
@@ -175,7 +177,7 @@ public class Polyline {
     }
 
     /**
-     * Check if e is contained in the polyline.
+     * Checks if the edge is contained in the polyline.
      * 
      * @param e
      *            the edge to check
@@ -186,7 +188,7 @@ public class Polyline {
     }
 
     /**
-     * Check if p is contained in the polyline.
+     * Check if the point is contained in the polyline.
      * 
      * @param p
      *            the point to check
@@ -206,9 +208,9 @@ public class Polyline {
     }
 
     /**
-     * Build a cylinder, with the edge e as central axe, with error as radius,
-     * and framed into the two points of the edge, and select only the points of
-     * this which are inside.
+     * Builds a cylinder, with the edge e as central axe, with error as radius,
+     * and framed into the two points of the edge, and selects only the points
+     * of this which are inside.
      * 
      * @param e
      *            the edge which will be the axe, and the two points will close
@@ -248,7 +250,7 @@ public class Polyline {
     }
 
     /**
-     * Returns the edges contained in this that contain the point p.
+     * Returns the edges belonging to this polyline that contain the point p.
      * 
      * @param p
      *            the point considered
@@ -278,7 +280,7 @@ public class Polyline {
     }
 
     /**
-     * Returns the number of edges contained in this that contain the point p.
+     * Returns the number of edges belonging to this that contain the point p.
      * 
      * @param p
      *            the point considered
@@ -295,7 +297,7 @@ public class Polyline {
     }
 
     /**
-     * Return one edge of the list.
+     * Returns one edge of the list.
      * 
      * @return one edge of the list Use iterator().next()
      */
@@ -313,7 +315,7 @@ public class Polyline {
     }
 
     /**
-     * Convert the list of points in a list of coordinates as doubles.
+     * Converts the list of points in a list of coordinates as doubles.
      * 
      * @return a list of double as coordinates.
      */
@@ -328,7 +330,7 @@ public class Polyline {
     }
 
     /**
-     * Check if the edge list is empty.
+     * Checks if the edge list is empty.
      * 
      * @return true if it's empty, false otherwise
      */
@@ -337,13 +339,11 @@ public class Polyline {
     }
 
     /**
-     * Check if the two polylines has at least one point of one close to one
-     * point of the other.
+     * Checks if the two polylines have at least one point in common.
      * 
      * @param p
      *            the polyline to search in
-     * @return true if one point is find close to another of the other polyline,
-     *         false otherwise
+     * @return true if one point belongs to the other polyline, false otherwise
      */
     public final boolean isNeighbour(final Polyline p) {
         if (p != this) {
@@ -357,7 +357,7 @@ public class Polyline {
     }
 
     /**
-     * Compute the length of the polyline.
+     * Computes the length of the polyline.
      * 
      * @return the sum of all the edges that compose the polyline
      */
@@ -381,7 +381,7 @@ public class Polyline {
     }
 
     /**
-     * Order the polyline. Each edge in the edge list will be surrounded by its
+     * Orders the polyline. Each edge in the edge list will be surrounded by its
      * neighbours. The polyline must be well formed and must be able to be
      * ordered.
      */
@@ -409,60 +409,14 @@ public class Polyline {
                 this.addAll(ret.getEdgeList());
 
             } catch (BadFormedPolylineException e1) {
+                // FIXME : make something.
                 e1.printStackTrace();
             }
-        }
-    }
-
-    public final void orderAsYouCan() {
-        if (!this.isEmpty()) {
-            final Polyline ret = new Polyline();
-
-            try {
-                final Edge first = this.getEdgeList().get(0);
-                Point p = first.getP1();
-                Edge e = first.returnNeighbour(this, p);
-                p = e.returnOther(p);
-
-                // While we are not back to the beginning, add it to ret.
-                while (e != first) {
-                    ret.add(e);
-                    e = e.returnNeighbour(this, p);
-                    p = e.returnOther(p);
-                }
-                ret.add(e);
-
-                this.edgeList.clear();
-                this.pointList.clear();
-                this.addAll(ret.getEdgeList());
-
-            } catch (BadFormedPolylineException e1) {
-                e1.printStackTrace();
-            }
-        }
-    }
-
-    public final boolean canBeOrdered() {
-        if (!this.isEmpty()) {
-            for (Edge e1 : this.edgeList) {
-                int counter = 0;
-                for (Edge e2 : this.edgeList) {
-                    if (e1.isNeighboor(e2)) {
-                        ++counter;
-                    }
-                }
-                if (counter != 2) {
-                    return false;
-                }
-            }
-            return true;
-        } else {
-            return false;
         }
     }
 
     /**
-     * Return the edges that are oriented as the edge e, with an orientation
+     * Returns the edges that are oriented as the edge e, with an orientation
      * error.
      * 
      * @param e
@@ -493,7 +447,7 @@ public class Polyline {
     }
 
     /**
-     * Refresh the list of points, when some edges have disappeared and when
+     * Refreshes the list of points, when some edges have disappeared and when
      * some points are still belonging to this but not belonging to one edge.
      */
     public final void refresh() {
@@ -503,7 +457,7 @@ public class Polyline {
     }
 
     /**
-     * Remove the occurences of e contained in this.
+     * Removes the occurences of e contained in this.
      * 
      * @param e
      *            the edge to remove Caution : it doesn't remove the points
@@ -516,7 +470,7 @@ public class Polyline {
     }
 
     /**
-     * Remove the edges of del contained in this. Caution : it doesn't remove
+     * Removes the edges of del contained in this. Caution : it doesn't remove
      * the points. This method uses the remove(Edge) method
      * 
      * @param p
@@ -532,12 +486,13 @@ public class Polyline {
     }
 
     /**
-     * Return a mesh composed of the triangles formed by each edges and the
+     * Returns a mesh composed of the triangles formed by each edges and the
      * point centroid of the polyline. This is not really beautiful at the end,
-     * but it's enough for debugging.
+     * but it's enough for debugging. Used for debugging.
      * 
      * @return a mesh representing the surface of the polyline
      * @throws EmptyPolylineException
+     *             if the polyline is empty
      */
     // TODO : replace by something better.
     public final Mesh returnCentroidMesh() throws EmptyPolylineException {
@@ -575,6 +530,7 @@ public class Polyline {
      *            the mesh where all the edges are expected to belong
      * @return the mesh composed all the triangles the edges belong to
      * @throws EmptyPolylineException
+     *             if the polyline is empty
      */
     public final Mesh returnExistingMesh(final Mesh m)
         throws EmptyPolylineException {
@@ -608,18 +564,6 @@ public class Polyline {
      */
     public final void setNormal(final Vector3d normalNew) {
         this.normal = normalNew;
-    }
-
-    /**
-     * Write the mesh returned by returnCentroidMesh.
-     * 
-     * @param string
-     *            the name of the file to write in
-     * @throws EmptyPolylineException
-     */
-    public final void writeCentroidMesh(final String string)
-        throws EmptyPolylineException {
-        this.returnCentroidMesh().writeSTL(string);
     }
 
     /**
@@ -673,9 +617,9 @@ public class Polyline {
     }
 
     /**
-     * Returns the maximum of the x coordinate.
+     * Returns the maximum of the x coordinates.
      * 
-     * @return the maximum of the x coordinate
+     * @return the maximum of the x coordinates
      */
     public final double xMax() {
         double xMaxi = Double.NEGATIVE_INFINITY;
@@ -688,9 +632,9 @@ public class Polyline {
     }
 
     /**
-     * Returns the minimum of the x coordinate.
+     * Returns the minimum of the x coordinates.
      * 
-     * @return the minimum of the x coordinate
+     * @return the minimum of the x coordinates
      */
     public final double xMin() {
         double xMini = Double.POSITIVE_INFINITY;
@@ -703,9 +647,9 @@ public class Polyline {
     }
 
     /**
-     * Returns the average of the y coordinate all of the points.
+     * Returns the average of the y coordinate of all the points.
      * 
-     * @return the average of the y coordinate all of the points
+     * @return the average of the y coordinate of all the points
      */
     public final double yAverage() {
         double yAverage = 0;
@@ -753,9 +697,9 @@ public class Polyline {
     }
 
     /**
-     * Returns the maximum of the y coordinate.
+     * Returns the maximum of the y coordinates.
      * 
-     * @return the maximum of the y coordinate
+     * @return the maximum of the y coordinates
      */
     public final double yMax() {
         double yMaxi = Double.NEGATIVE_INFINITY;
@@ -768,9 +712,9 @@ public class Polyline {
     }
 
     /**
-     * Returns the minimum of the y coordinate.
+     * Returns the minimum of the y coordinates.
      * 
-     * @return the minimum of the y coordinate
+     * @return the minimum of the y coordinates
      */
     public final double yMin() {
         double yMini = Double.POSITIVE_INFINITY;
@@ -783,9 +727,9 @@ public class Polyline {
     }
 
     /**
-     * Returns the average of the z coordinate all of the points.
+     * Returns the average of the z coordinate of all the points.
      * 
-     * @return the average of the z coordinate all of the points
+     * @return the average of the z coordinate of all the points
      */
     public final double zAverage() {
         double zAverage = 0;
@@ -833,9 +777,9 @@ public class Polyline {
     }
 
     /**
-     * Returns the maximum of the z coordinate.
+     * Returns the maximum of the z coordinates.
      * 
-     * @return the maximum of the z coordinate
+     * @return the maximum of the z coordinates
      */
     public final double zMax() {
         double zMaxi = Double.NEGATIVE_INFINITY;
@@ -868,9 +812,9 @@ public class Polyline {
     }
 
     /**
-     * Returns the minimum of the z coordinate.
+     * Returns the minimum of the z coordinates.
      * 
-     * @return the minimum of the z coordinate
+     * @return the minimum of the z coordinates
      */
     public final double zMin() {
         double zMini = Double.POSITIVE_INFINITY;
@@ -883,9 +827,9 @@ public class Polyline {
     }
 
     /**
-     * Return a polyline that is the copy of this, but where all points have the
-     * same z. Caution : it modifies the points, then it must be a copy of the
-     * points. Otherwise, the Mesh containing these points, and using the
+     * Returns a polyline that is the copy of this, but where all points have
+     * the same z. Caution : it modifies the points, then it must be a copy of
+     * the points. Otherwise, the mesh containing these points, and using the
      * hashCode will be lost (because the hashCode of the points would have been
      * modified without the hash table of the mesh refreshed).
      * 
@@ -899,7 +843,7 @@ public class Polyline {
     }
 
     /**
-     * Implement a exception used when the polyline is bad formed.
+     * Implements an exception used when the polyline is bad formed.
      * 
      * @author Daniel Lefevre
      */
@@ -917,6 +861,12 @@ public class Polyline {
         }
     }
 
+    /**
+     * Implements an exception used when the polyline is empty.
+     * 
+     * @author Daniel Lefevre
+     */
+    // FIXME : make something nicer...
     public static class EmptyPolylineException extends Exception {
 
         /**

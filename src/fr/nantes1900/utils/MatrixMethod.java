@@ -75,6 +75,8 @@ public final class MatrixMethod {
         final Vector3d b = new Vector3d(baseVector);
         b.normalize();
 
+        // FIXME : improve this. If the condition is verified, find another
+        // matrix which don't have this problem.
         if (b.z > -1 - SingularMatrixException.ERROR_PRECISION
             && b.z < -1 + SingularMatrixException.ERROR_PRECISION) {
             throw new SingularMatrixException();
@@ -225,7 +227,7 @@ public final class MatrixMethod {
          * Precision (as a double) to check if a matrix determinant is equal to
          * zero.
          */
-        public static final double ERROR_PRECISION = 0.1;
+        public static final double ERROR_PRECISION = 0.02;
 
         /**
          * Private constructor.
