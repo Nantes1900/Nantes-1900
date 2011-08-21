@@ -205,6 +205,24 @@ public class Edge {
     }
 
     /**
+     * Checks if this edge is part of the bound of the mesh m.
+     * 
+     * @param m
+     *            the mesh
+     * @return true if this edge contains only one triangle belonging to m,
+     *         false otherwise.
+     */
+    public final boolean isBound(final Mesh m) {
+        int counter = 0;
+        for (Triangle triangle : this.triangles) {
+            if (m.contains(triangle)) {
+                ++counter;
+            }
+        }
+        return counter == 1;
+    }
+
+    /**
      * Checks if the point is contained in the cylinder which axis is this edge,
      * which bounds are the two points of this edge, and which radius is the
      * error.
@@ -450,8 +468,6 @@ public class Edge {
      * @param p
      *            one point of the edge
      * @return the other point which forms the edge
-     * @throws InvalidParameterException
-     *             if the point does not belong to the edge
      */
     public final Point returnOther(final Point p) {
         if (this.getP1() == p) {
@@ -564,15 +580,5 @@ public class Edge {
         private MoreThanTwoTrianglesPerEdgeException() {
             super();
         }
-    }
-
-    public final boolean isBound(Mesh m) {
-        int counter = 0;
-        for (Triangle triangle : this.triangles) {
-            if (m.contains(triangle)) {
-                counter++;
-            }
-        }
-        return counter == 1;
     }
 }

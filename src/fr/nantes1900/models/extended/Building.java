@@ -6,8 +6,8 @@ import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.Polyline.EmptyPolylineException;
 import fr.nantes1900.models.Surface;
-import fr.nantes1900.models.Surface.InvalidSurfaceException;
 import fr.nantes1900.models.Surface.ImpossibleNeighboursOrderException;
+import fr.nantes1900.models.Surface.InvalidSurfaceException;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
@@ -167,8 +167,10 @@ public class Building {
      * @param grounds
      *            the mesh containing the grounds
      */
-    public void findEdgesFromNeighbours(List<Surface> wallTreatedList,
-        List<Surface> roofTreatedList, Vector3d normalFloor, Surface grounds) {
+    public final void findEdgesFromNeighbours(
+        final List<Surface> wallTreatedList,
+        final List<Surface> roofTreatedList, final Vector3d normalFloor,
+        final Surface grounds) {
 
         final Map<Point, Point> pointMap = new HashMap<Point, Point>();
         final Map<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
@@ -191,7 +193,7 @@ public class Building {
 
                 // When the neighbours are sorted, finds the intersection of
                 // them to find the edges of this surface.
-                Polyline p =
+                final Polyline p =
                     surface.findEdges(wallTreatedList, pointMap, edgeMap,
                         normalFloor);
 
@@ -203,21 +205,21 @@ public class Building {
                     this.roofs.add(p);
                 }
 
-                counterWellTreated++;
+                ++counterWellTreated;
 
             } catch (ImpossibleNeighboursOrderException e) {
                 // If there is a problem, the treatment cannot continue.
                 // LOOK : maybe return the unsorted bounds to have a result.
                 // FIXME : remove that syso
                 System.err.println("Impossible order !");
-                counterNotTreated++;
+                ++counterNotTreated;
 
             } catch (InvalidSurfaceException e) {
                 // If there is a problem, we cannot continue the treatment.
                 // LOOK : maybe return the unsorted bounds to have a result.
                 // FIXME : remove that syso
                 System.err.println("Invalid edge computing !");
-                counterNotTreated++;
+                ++counterNotTreated;
             }
         }
 
@@ -332,9 +334,10 @@ public class Building {
      * @param grounds
      *            the grounds as one mesh
      * @param noise
+     *            the mesh containing the noise
      */
     private void searchForNeighbours(final List<Surface> wallList,
-        final List<Surface> roofList, final Surface grounds, Mesh noise) {
+        final List<Surface> roofList, final Surface grounds, final Mesh noise) {
 
         final Polyline groundsBounds = grounds.returnUnsortedBounds();
 
@@ -417,8 +420,6 @@ public class Building {
      *            the building to carve
      * @param normalFloor
      *            the normal to the ground
-     * @param wholeRoof
-     *            the whole roof
      * @param noise
      *            the noise as mesh
      * @return the list of roofs
@@ -463,15 +464,15 @@ public class Building {
      * @param roofTreatedList
      *            the list of roofs as surfaces
      */
-    private void sortSurfaces(List<Surface> wallTreatedList,
-        List<Surface> roofTreatedList) {
+    private void sortSurfaces(final List<Surface> wallTreatedList,
+        final List<Surface> roofTreatedList) {
 
-        for (int i = 0; i < wallTreatedList.size(); i++) {
+        for (int i = 0; i < wallTreatedList.size(); ++i) {
             if (wallTreatedList.get(i).getNeighbours().size() < 3) {
                 wallTreatedList.remove(wallTreatedList.get(i));
             }
         }
-        for (int i = 0; i < roofTreatedList.size(); i++) {
+        for (int i = 0; i < roofTreatedList.size(); ++i) {
             if (roofTreatedList.get(i).getNeighbours().size() < 3) {
                 roofTreatedList.remove(roofTreatedList.get(i));
             }
@@ -479,8 +480,8 @@ public class Building {
     }
 
     /**
-     * Cuts the normal-to-the-ground mesh in walls considering the orientation of
-     * the triangles.
+     * Cuts the normal-to-the-ground mesh in walls considering the orientation
+     * of the triangles.
      * 
      * @param building
      *            the building to carve
@@ -586,6 +587,8 @@ public class Building {
      *            the list of roofs as meshes
      * @param noise
      *            the mesh containing the noise
+     * @param grounds
+     *            the mesh containing the grounds
      */
     private void treatNoise(final List<Mesh> wallList,
         final List<Mesh> roofList, final Mesh noise, final Mesh grounds) {
@@ -617,9 +620,9 @@ public class Building {
      * @return the list of surfaces created from the meshes
      */
     // TODO : change this name !
-    private List<Surface> vectorizeSurfaces(List<Mesh> list) {
+    private List<Surface> vectorizeSurfaces(final List<Mesh> list) {
 
-        List<Surface> treatedList = new ArrayList<Surface>();
+        final List<Surface> treatedList = new ArrayList<Surface>();
 
         for (Mesh m : list) {
             treatedList.add(new Surface(m));
@@ -634,7 +637,7 @@ public class Building {
      * @param directoryName
      *            the directory to write in
      */
-    private final void writeSTLRoofs(final String directoryName) {
+    private void writeSTLRoofs(final String directoryName) {
         int counterRoof = 0;
         for (Polyline p : this.roofs) {
             try {
@@ -643,6 +646,7 @@ public class Building {
                         + FilesNames.EXTENSION);
                 counterRoof = counterRoof + 1;
             } catch (EmptyPolylineException e) {
+                // FIXME
                 System.out.println("Empty polyline : care !");
             }
         }
@@ -654,7 +658,7 @@ public class Building {
      * @param directoryName
      *            the directory to write in
      */
-    private final void writeSTLWalls(final String directoryName) {
+    private void writeSTLWalls(final String directoryName) {
         int counterWall = 0;
         for (Polyline p : this.walls) {
             try {
@@ -663,6 +667,7 @@ public class Building {
                         + FilesNames.EXTENSION);
                 counterWall = counterWall + 1;
             } catch (EmptyPolylineException e) {
+                // FIXME
                 System.out.println("Empty polyline : care !");
             }
         }

@@ -92,7 +92,7 @@ public class Surface extends Mesh {
 
         // The neighbours are sorted, then it's easy to make the edges and
         // points.
-        for (int i = 0; i < this.getNeighbours().size() - 2; i++) {
+        for (int i = 0; i < this.getNeighbours().size() - 2; ++i) {
             // try {
             edges.add(this.createEdge(this.getNeighbours().get(i), this
                 .getNeighbours().get(i + 1), this.getNeighbours().get(i + 2),
@@ -160,7 +160,8 @@ public class Surface extends Mesh {
         final int neighboursNumber = this.getNeighbours().size();
         int counter = 0;
 
-        // If the ground is the neighbour of this surface, then we begin with the
+        // If the ground is the neighbour of this surface, then we begin with
+        // the
         // ground, to avoid some problems in the future. Otherwise, we begin
         // where we want.
         Surface current = this.getNeighbours().get(0);
@@ -199,7 +200,8 @@ public class Surface extends Mesh {
 
             // If there is too much neighbours, this step can resolve it.
             // The ground often causes that kind of problem, that's why we begin
-            // by treating the ground first (see at the beginning of the method).
+            // by treating the ground first (see at the beginning of the
+            // method).
             for (Surface s : neighboursOrdered) {
                 commonNeighbours.remove(s);
             }
@@ -269,7 +271,7 @@ public class Surface extends Mesh {
      * @throws InvalidSurfaceException
      *             if the algorithm cannot comput the edge
      */
-    private final Edge createEdge(final Surface s1, final Surface s2,
+    private Edge createEdge(final Surface s1, final Surface s2,
         final Surface s3, final Map<Point, Point> pointMap,
         final Map<Edge, Edge> edgeMap, final List<Surface> wallList,
         final Vector3d normalFloor) throws InvalidSurfaceException {
@@ -400,10 +402,8 @@ public class Surface extends Mesh {
     /**
      * Returns the intersection of two lists of neighbours.
      * 
-     * @param list
-     *            the first list of meshes
-     * @param list2
-     *            the second list of meshes
+     * @param surface
+     *            the other surface
      * @return a list containing the elements shared by the two lists
      */
     private List<Surface> getCommonNeighbours(final Surface surface) {
@@ -475,7 +475,7 @@ public class Surface extends Mesh {
         /**
          * The neighbour which caused the error.
          */
-        private Surface errorNeighbour;
+        private final Surface errorNeighbour;
 
         /**
          * Private constructor.
@@ -483,7 +483,7 @@ public class Surface extends Mesh {
          * @param s
          *            the neighbour which caused the error.
          */
-        private BadNeighbourException(Surface s) {
+        private BadNeighbourException(final Surface s) {
             this.errorNeighbour = s;
         }
 

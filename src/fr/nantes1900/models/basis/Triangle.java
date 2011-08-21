@@ -603,7 +603,7 @@ public class Triangle {
      * @return true if the first point of the triangle is located between those
      *         two planes, false otherwise.
      */
-    public boolean isInPlanes(Vector3d vect, Point p, double error) {
+    public final boolean isInPlanes(final Vector3d vect, final Point p, final double error) {
         final Edge axisNormalFloor =
             new Edge(new Point(0, 0, 0), new Point(vect.x, vect.y, vect.z));
 

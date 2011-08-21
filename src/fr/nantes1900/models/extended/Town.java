@@ -594,7 +594,7 @@ public class Town {
      * 
      * @param directoryName
      *            the name of the directory where are the files
-     * @param normalFloor
+     * @param normalGravityOriented
      *            the normal gravity-oriented
      */
     private void treatIndustrials(final String directoryName,

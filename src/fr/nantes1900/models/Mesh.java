@@ -65,8 +65,8 @@ public class Mesh extends HashSet<Triangle> {
      * @return the mesh with only one triangle
      */
     // TODO create a plane class or look in Java3D ?
-    //TODO : put this in Surface ?
-    public Mesh returnVerticalPlane(final Vector3d normalFloor) {
+    // TODO : put this in Surface ?
+    public final Mesh returnVerticalPlane(final Vector3d normalFloor) {
 
         final Vector3d averageNormal = this.averageNormal();
 
@@ -598,8 +598,9 @@ public class Mesh extends HashSet<Triangle> {
      * @return the triangles which are between those two planes
      */
     // TODO : test !
-    public Mesh inPlanes(Vector3d vect, Point p, double error) {
-        Mesh ret = new Mesh();
+    public final Mesh inPlanes(final Vector3d vect, final Point p,
+        final double error) {
+        final Mesh ret = new Mesh();
 
         for (Triangle triangle : this) {
             if (triangle.isInPlanes(vect, p, error)) {
@@ -620,22 +621,22 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Return the minimal distance between two meshes. Searches for all the
+     * Returns the minimal distance between two meshes. Searches for all the
      * points the one which are the closest and returns their distance.
      * 
-     * @param surface
-     * @return
+     * @param mesh the other mesh
+     * @return the minimal distance between those two meshes
      */
     // TODO : test !
     // FIXME : improve the speed... a lot !
-    public double minimalDistance(Surface surface) {
+    public final double minimalDistance(final Mesh mesh) {
 
-        HashSet<Point> hash1 = new HashSet<Point>();
-        Polyline poly1 = this.returnUnsortedBounds();
+        final Set<Point> hash1 = new HashSet<Point>();
+        final Polyline poly1 = this.returnUnsortedBounds();
         hash1.addAll(poly1.getPointList());
 
-        HashSet<Point> hash2 = new HashSet<Point>();
-        Polyline poly2 = surface.returnUnsortedBounds();
+        final Set<Point> hash2 = new HashSet<Point>();
+        final Polyline poly2 = mesh.returnUnsortedBounds();
         hash2.addAll(poly2.getPointList());
 
         double minDistance = Double.POSITIVE_INFINITY;
