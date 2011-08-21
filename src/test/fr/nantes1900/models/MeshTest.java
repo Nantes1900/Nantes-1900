@@ -3,7 +3,6 @@ package test.fr.nantes1900.models;
 import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.utils.MatrixMethod;
@@ -99,18 +98,14 @@ public class MeshTest extends TestCase {
      * example.
      */
     public MeshTest() {
-        try {
-            this.t1 =
-                new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2,
-                    this.e3, this.vect1);
-            this.t2 =
-                new Triangle(this.p4, this.p5, this.p6, this.e4, this.e5,
-                    this.e6, this.vect2);
-            this.m.add(this.t1);
-            this.m.add(this.t2);
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.fail("More than two triangles per edge exception !");
-        }
+        this.t1 =
+            new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2, this.e3,
+                this.vect1);
+        this.t2 =
+            new Triangle(this.p4, this.p5, this.p6, this.e4, this.e5, this.e6,
+                this.vect2);
+        this.m.add(this.t1);
+        this.m.add(this.t2);
     }
 
     /**
@@ -160,8 +155,6 @@ public class MeshTest extends TestCase {
             Assert.assertTrue(point2.equals(new Point(0, 1, 0)));
             Assert.assertTrue(point3.equals(new Point(-1, 2, 1)));
         } catch (SingularMatrixException e) {
-            Assert.fail();
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
             Assert.fail();
         }
     }
@@ -226,9 +219,6 @@ public class MeshTest extends TestCase {
 
             Assert.assertTrue(m1.intersection(m2, m3)
                 .equals(new Point(0, 0, 0)));
-
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.fail();
         } catch (SingularMatrixException e) {
             Assert.fail();
         }
@@ -252,37 +242,31 @@ public class MeshTest extends TestCase {
      */
     @Test
     public final void testIsOrientedAs() {
-        try {
-            final Point point1 = new Point(0, 0, 0);
-            final Vector3d vector1 = new Vector3d(0, 0, 1);
-            final Edge edge1 = new Edge(point1, point1);
-            final Triangle triangle1 =
-                new Triangle(point1, point1, point1, edge1, edge1, edge1,
-                    vector1);
+        final Point point1 = new Point(0, 0, 0);
+        final Vector3d vector1 = new Vector3d(0, 0, 1);
+        final Edge edge1 = new Edge(point1, point1);
+        final Triangle triangle1 =
+            new Triangle(point1, point1, point1, edge1, edge1, edge1, vector1);
 
-            final Point point2 = new Point(0, 0, 0);
-            final Vector3d vector2 = new Vector3d(0, 0.1, 1.1);
-            final Edge edge2 = new Edge(point1, point1);
-            Triangle triangle2 =
-                new Triangle(point2, point2, point2, edge2, edge2, edge2,
-                    vector2);
+        final Point point2 = new Point(0, 0, 0);
+        final Vector3d vector2 = new Vector3d(0, 0.1, 1.1);
+        final Edge edge2 = new Edge(point1, point1);
+        Triangle triangle2 =
+            new Triangle(point2, point2, point2, edge2, edge2, edge2, vector2);
 
-            final Mesh mesh1 = new Mesh();
-            mesh1.add(triangle1);
-            final Mesh mesh2 = new Mesh();
-            mesh2.add(triangle2);
+        final Mesh mesh1 = new Mesh();
+        mesh1.add(triangle1);
+        final Mesh mesh2 = new Mesh();
+        mesh2.add(triangle2);
 
-            Assert.assertTrue(mesh1.isOrientedAs(mesh2, 15));
-            Assert.assertFalse(mesh1.isOrientedAs(mesh2, 2));
+        Assert.assertTrue(mesh1.isOrientedAs(mesh2, 15));
+        Assert.assertFalse(mesh1.isOrientedAs(mesh2, 2));
 
-            triangle2 =
-                new Triangle(point2, point2, point2, edge2, edge2, edge2,
-                    new Vector3d(0, 0, -1));
+        triangle2 =
+            new Triangle(point2, point2, point2, edge2, edge2, edge2,
+                new Vector3d(0, 0, -1));
 
-            Assert.assertTrue(mesh1.isOrientedAs(mesh2, 15));
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.fail();
-        }
+        Assert.assertTrue(mesh1.isOrientedAs(mesh2, 15));
     }
 
     /**
@@ -332,106 +316,94 @@ public class MeshTest extends TestCase {
     @Test
     public final void testReturnUnsortedBounds() {
 
-        try {
-            // We create points, but no matter their coordinates, if they are
-            // not equals.
-            final Point point1 = new Point(1, 0, -1);
-            final Point point2 = new Point(0, 1, 0);
-            final Point point3 = new Point(-1, 2, 1);
-            final Point point4 = new Point(1, 1, 1);
-            final Point point5 = new Point(2, 2, 2);
-            final Point point6 = new Point(-1, 3, 1);
-            final Point point7 = new Point(-2, 1, 0);
-            final Point point8 = new Point(3, 4, 5);
-            final Point point9 = new Point(3, -2, -2);
+        // We create points, but no matter their coordinates, if they are
+        // not equals.
+        final Point point1 = new Point(1, 0, -1);
+        final Point point2 = new Point(0, 1, 0);
+        final Point point3 = new Point(-1, 2, 1);
+        final Point point4 = new Point(1, 1, 1);
+        final Point point5 = new Point(2, 2, 2);
+        final Point point6 = new Point(-1, 3, 1);
+        final Point point7 = new Point(-2, 1, 0);
+        final Point point8 = new Point(3, 4, 5);
+        final Point point9 = new Point(3, -2, -2);
 
-            final Vector3d vector = new Vector3d(0, 0, 1);
+        final Vector3d vector = new Vector3d(0, 0, 1);
 
-            final Edge edge1 = new Edge(point1, point2);
-            final Edge edge2 = new Edge(point2, point3);
-            final Edge edge3 = new Edge(point3, point1);
-            final Edge edge4 = new Edge(point1, point4);
-            final Edge edge5 = new Edge(point3, point4);
-            final Edge edge6 = new Edge(point4, point5);
-            final Edge edge7 = new Edge(point1, point5);
+        final Edge edge1 = new Edge(point1, point2);
+        final Edge edge2 = new Edge(point2, point3);
+        final Edge edge3 = new Edge(point3, point1);
+        final Edge edge4 = new Edge(point1, point4);
+        final Edge edge5 = new Edge(point3, point4);
+        final Edge edge6 = new Edge(point4, point5);
+        final Edge edge7 = new Edge(point1, point5);
 
-            final Edge edge8 = new Edge(point1, point6);
-            final Edge edge9 = new Edge(point5, point6);
-            final Edge edge10 = new Edge(point6, point7);
-            final Edge edge11 = new Edge(point6, point9);
-            final Edge edge12 = new Edge(point7, point9);
-            final Edge edge13 = new Edge(point8, point9);
-            final Edge edge14 = new Edge(point7, point8);
-            final Edge edge15 = new Edge(point2, point7);
-            final Edge edge16 = new Edge(point1, point7);
-            final Edge edge17 = new Edge(point2, point8);
+        final Edge edge8 = new Edge(point1, point6);
+        final Edge edge9 = new Edge(point5, point6);
+        final Edge edge10 = new Edge(point6, point7);
+        final Edge edge11 = new Edge(point6, point9);
+        final Edge edge12 = new Edge(point7, point9);
+        final Edge edge13 = new Edge(point8, point9);
+        final Edge edge14 = new Edge(point7, point8);
+        final Edge edge15 = new Edge(point2, point7);
+        final Edge edge16 = new Edge(point1, point7);
+        final Edge edge17 = new Edge(point2, point8);
 
-            final Triangle triangle1 =
-                new Triangle(point1, point2, point3, edge1, edge2, edge3,
-                    vector);
-            final Triangle triangle2 =
-                new Triangle(point1, point3, point4, edge3, edge4, edge5,
-                    vector);
-            final Triangle triangle3 =
-                new Triangle(point1, point4, point5, edge4, edge6, edge7,
-                    vector);
-            final Triangle triangle4 =
-                new Triangle(point1, point5, point6, edge7, edge8, edge9,
-                    vector);
-            final Triangle triangle5 =
-                new Triangle(point1, point6, point7, edge8, edge10, edge16,
-                    vector);
-            final Triangle triangle6 =
-                new Triangle(point6, point7, point9, edge10, edge11, edge12,
-                    vector);
-            final Triangle triangle7 =
-                new Triangle(point7, point8, point9, edge12, edge13, edge14,
-                    vector);
-            final Triangle triangle8 =
-                new Triangle(point2, point7, point8, edge14, edge15, edge17,
-                    vector);
+        final Triangle triangle1 =
+            new Triangle(point1, point2, point3, edge1, edge2, edge3, vector);
+        final Triangle triangle2 =
+            new Triangle(point1, point3, point4, edge3, edge4, edge5, vector);
+        final Triangle triangle3 =
+            new Triangle(point1, point4, point5, edge4, edge6, edge7, vector);
+        final Triangle triangle4 =
+            new Triangle(point1, point5, point6, edge7, edge8, edge9, vector);
+        final Triangle triangle5 =
+            new Triangle(point1, point6, point7, edge8, edge10, edge16, vector);
+        final Triangle triangle6 =
+            new Triangle(point6, point7, point9, edge10, edge11, edge12, vector);
+        final Triangle triangle7 =
+            new Triangle(point7, point8, point9, edge12, edge13, edge14, vector);
+        final Triangle triangle8 =
+            new Triangle(point2, point7, point8, edge14, edge15, edge17, vector);
 
-            final Mesh mesh = new Mesh();
-            mesh.add(triangle1);
-            mesh.add(triangle2);
-            mesh.add(triangle3);
-            mesh.add(triangle4);
-            mesh.add(triangle5);
-            mesh.add(triangle6);
-            mesh.add(triangle7);
-            mesh.add(triangle8);
+        final Mesh mesh = new Mesh();
+        mesh.add(triangle1);
+        mesh.add(triangle2);
+        mesh.add(triangle3);
+        mesh.add(triangle4);
+        mesh.add(triangle5);
+        mesh.add(triangle6);
+        mesh.add(triangle7);
+        mesh.add(triangle8);
 
-            final Polyline bounds = mesh.returnUnsortedBounds();
-            Assert.assertTrue(bounds.contains(point1));
-            Assert.assertTrue(bounds.contains(point2));
-            Assert.assertTrue(bounds.contains(point3));
-            Assert.assertTrue(bounds.contains(point4));
-            Assert.assertTrue(bounds.contains(point5));
-            Assert.assertTrue(bounds.contains(point6));
-            Assert.assertTrue(bounds.contains(point7));
-            Assert.assertTrue(bounds.contains(point8));
-            Assert.assertTrue(bounds.contains(point9));
+        final Polyline bounds = mesh.returnUnsortedBounds();
+        Assert.assertTrue(bounds.contains(point1));
+        Assert.assertTrue(bounds.contains(point2));
+        Assert.assertTrue(bounds.contains(point3));
+        Assert.assertTrue(bounds.contains(point4));
+        Assert.assertTrue(bounds.contains(point5));
+        Assert.assertTrue(bounds.contains(point6));
+        Assert.assertTrue(bounds.contains(point7));
+        Assert.assertTrue(bounds.contains(point8));
+        Assert.assertTrue(bounds.contains(point9));
 
-            Assert.assertTrue(bounds.contains(edge1));
-            Assert.assertTrue(bounds.contains(edge2));
-            Assert.assertFalse(bounds.contains(edge3));
-            Assert.assertFalse(bounds.contains(edge4));
-            Assert.assertTrue(bounds.contains(edge5));
-            Assert.assertTrue(bounds.contains(edge6));
-            Assert.assertFalse(bounds.contains(edge7));
-            Assert.assertFalse(bounds.contains(edge8));
-            Assert.assertTrue(bounds.contains(edge9));
-            Assert.assertFalse(bounds.contains(edge10));
-            Assert.assertTrue(bounds.contains(edge11));
-            Assert.assertFalse(bounds.contains(edge12));
-            Assert.assertTrue(bounds.contains(edge13));
-            Assert.assertFalse(bounds.contains(edge14));
-            Assert.assertTrue(bounds.contains(edge15));
-            Assert.assertTrue(bounds.contains(edge16));
-            Assert.assertTrue(bounds.contains(edge17));
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.fail();
-        }
+        Assert.assertTrue(bounds.contains(edge1));
+        Assert.assertTrue(bounds.contains(edge2));
+        Assert.assertFalse(bounds.contains(edge3));
+        Assert.assertFalse(bounds.contains(edge4));
+        Assert.assertTrue(bounds.contains(edge5));
+        Assert.assertTrue(bounds.contains(edge6));
+        Assert.assertFalse(bounds.contains(edge7));
+        Assert.assertFalse(bounds.contains(edge8));
+        Assert.assertTrue(bounds.contains(edge9));
+        Assert.assertFalse(bounds.contains(edge10));
+        Assert.assertTrue(bounds.contains(edge11));
+        Assert.assertFalse(bounds.contains(edge12));
+        Assert.assertTrue(bounds.contains(edge13));
+        Assert.assertFalse(bounds.contains(edge14));
+        Assert.assertTrue(bounds.contains(edge15));
+        Assert.assertTrue(bounds.contains(edge16));
+        Assert.assertTrue(bounds.contains(edge17));
     }
 
     /**

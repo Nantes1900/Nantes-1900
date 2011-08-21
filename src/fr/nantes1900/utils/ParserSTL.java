@@ -2,9 +2,9 @@ package fr.nantes1900.utils;
 
 import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.extended.Town;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -187,14 +187,18 @@ public class ParserSTL {
                         }
 
                         try {
+                            if (e1.getNumberTriangles() == 2
+                                || e2.getNumberTriangles() == 2
+                                || e3.getNumberTriangles() == 2) {
+                                throw new MoreThanTwoTrianglesPerEdgeException();
+                            }
                             this.triangleSet.add(new Triangle(currentPoints
                                 .get(0), currentPoints.get(1), currentPoints
                                 .get(2), e1, e2, e3, currentVector));
-                        } catch (MoreThanTwoTrianglesPerEdgeException e4) {
-                            // Do nothing : it will not add
-                            // the Triangle to the mesh.
-                            // TODO? Select the good triangle to remove ?
+                        } catch (MoreThanTwoTrianglesPerEdgeException e) {
+                            // Make nothing : we can't add this triangle.
                         }
+
                         // TODO : test in the ParserSTLTest the bad points and
                         // edges, and etc...
                     } else {
@@ -234,8 +238,9 @@ public class ParserSTL {
         final Vector3d norm =
             new Vector3d(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
         norm.normalize();
-        // FIXME : bug detected : the normal can be 0, 0, 0. Then it may cause
-        // an error when the program tries to read the next lines...
+        if (norm.x == 0 && norm.y == 0 && norm.z == 0) {
+            throw new BadMeshException();
+        }
 
         Point p1 =
             new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
@@ -264,6 +269,11 @@ public class ParserSTL {
         e1 = this.treatEdge(e1);
         e2 = this.treatEdge(e2);
         e3 = this.treatEdge(e3);
+
+        if (e1.getNumberTriangles() == 2 || e2.getNumberTriangles() == 2
+            || e3.getNumberTriangles() == 2) {
+            throw new MoreThanTwoTrianglesPerEdgeException();
+        }
 
         // Add two bytes to respect the binary format. Those bytes can be used
         // to put a color to the triangle. But we don't use them.
@@ -304,6 +314,8 @@ public class ParserSTL {
                     // Mesh.
                     this.processLineA(scanner.nextLine(), currentVector,
                         currentPoints);
+                    // FIXME : I don't know if the exception must be here......
+                    // Treat them inside !
                 } catch (FlatTriangleException e) {
                     // If it is a flat Triangle : 2
                     // identical Points, then 2 identical Edge, it is not added
@@ -356,6 +368,8 @@ public class ParserSTL {
         bBuf = ByteBuffer.wrap(fileContent);
         bBuf.order(ByteOrder.nativeOrder());
 
+        int counterError = 0;
+
         for (int i = 0; i < meshSize; i = i + 1) {
             try {
                 // If a Triangle exists already, and if the
@@ -369,24 +383,23 @@ public class ParserSTL {
                 // Points, then 2
                 // identical Edge, it is not added to the
                 // Mesh.
+                ++counterError;
             } catch (OutOfBoundsPointException e) {
                 // The coordinates of the Point are
                 // unbounded, then the Triangle
                 // is not added to the Mesh.
+                ++counterError;
             } catch (MoreThanTwoTrianglesPerEdgeException e) {
                 // If one edge of the new triangle contains
-                // already two
-                // triangles, then the new triangle is
+                // already two triangles, then the new triangle is
                 // removed from the mesh.
-                // TODO? Try to improve that by removing the
-                // triangle which is
-                // the worst.
+                ++counterError;
             } catch (BadMeshException e) {
-                // TODO
             }
         }
 
-        // TODO : send the number of error through a logger.
+        Town.LOG.info(counterError
+            + " triangles removed from the mesh during the parsing !");
 
         stream.close();
         return this.triangleSet;
@@ -469,26 +482,6 @@ public class ParserSTL {
     }
 
     /**
-     * Implements an exception when a triangle has two points identical.
-     * 
-     * @author Daniel Lefevre
-     */
-    private static final class FlatTriangleException extends
-        ParserSTL.BadMeshException {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        private FlatTriangleException() {
-        }
-    }
-
-    /**
      * Implements an exception when a triangle, a point, or an edge is bad
      * formed.
      * 
@@ -507,6 +500,26 @@ public class ParserSTL {
         public BadMeshException() {
         }
 
+    }
+
+    /**
+     * Implements an exception when a triangle has two points identical.
+     * 
+     * @author Daniel Lefevre
+     */
+    private static final class FlatTriangleException extends
+        ParserSTL.BadMeshException {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        private FlatTriangleException() {
+        }
     }
 
     /**
@@ -530,6 +543,27 @@ public class ParserSTL {
          * Private constructor.
          */
         private OutOfBoundsPointException() {
+        }
+    }
+
+    /**
+     * Implements an exception when an edge has more than two triangles which
+     * contain it.
+     * 
+     * @author Daniel Lefevre
+     */
+    private static final class MoreThanTwoTrianglesPerEdgeException extends
+        ParserSTL.BadMeshException {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        private MoreThanTwoTrianglesPerEdgeException() {
         }
     }
 }

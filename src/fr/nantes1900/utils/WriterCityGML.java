@@ -183,7 +183,7 @@ public class WriterCityGML {
      *            the ground to add
      */
     // TODO : make this method again, with the correct types.
-    public final void addFloor(final Ground ground) {
+    public final void addGround(final Ground ground) {
         // FIXME : make a real ground...
         final Building building = this.citygml.createBuilding();
 
@@ -211,8 +211,6 @@ public class WriterCityGML {
                 geometry.setId(this.gmlIdManager.generateGmlId());
                 surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
                     .getId()));
-                // TODO : peut-être classer en WALL et ROOF
-                // SURFACE !
 
                 final AbstractBoundarySurface boundarySurface =
                     this.citygml.createRoofSurface();
@@ -241,9 +239,9 @@ public class WriterCityGML {
      * @param grounds
      *            the list of grounds to add
      */
-    public final void addFloors(final List<Ground> grounds) {
+    public final void addGrounds(final List<Ground> grounds) {
         for (Ground ground : grounds) {
-            this.addFloor(ground);
+            this.addGround(ground);
         }
     }
 
@@ -280,8 +278,6 @@ public class WriterCityGML {
                 geometry.setId(this.gmlIdManager.generateGmlId());
                 surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
                     .getId()));
-                // TODO : peut-être classer en WALL et ROOF
-                // SURFACE !
 
                 final AbstractBoundarySurface boundarySurface =
                     this.citygml.createRoofSurface();

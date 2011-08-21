@@ -72,6 +72,57 @@ public class WriterSTL {
     }
 
     /**
+     * Returns the value of the attribute MODE.
+     * 
+     * @return the attribute MODE
+     */
+    public final int getWriteMode() {
+        return this.writingMode;
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param m
+     *            the mesh to write
+     */
+    public final void setMesh(final Mesh m) {
+        this.mesh = m;
+    }
+
+    /**
+     * Changes the writing mode attribute : MODE.
+     * 
+     * @param mode
+     *            the new mode
+     */
+    public final void setWriteMode(final int mode) {
+        this.writingMode = mode;
+    }
+
+    /**
+     * Writes a mesh, the format depending on the attribute MODE.
+     */
+    public final void write() {
+        try {
+            if (this.mesh == null) {
+                throw new NoMeshException();
+            }
+
+            if (this.writingMode == WriterSTL.ASCII_MODE) {
+                this.writeSTLA();
+            } else if (this.writingMode == WriterSTL.BINARY_MODE) {
+                this.writeSTLB();
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (NoMeshException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
      * Writes a triangle in ASCII.
      * 
      * @param writer
@@ -227,57 +278,6 @@ public class WriterSTL {
             e.printStackTrace();
         } finally {
             stream.close();
-        }
-    }
-
-    /**
-     * Returns the value of the attribute MODE.
-     * 
-     * @return the attribute MODE
-     */
-    public final int getWriteMode() {
-        return this.writingMode;
-    }
-
-    /**
-     * Setter.
-     * 
-     * @param m
-     *            the mesh to write
-     */
-    public final void setMesh(final Mesh m) {
-        this.mesh = m;
-    }
-
-    /**
-     * Changes the writing mode attribute : MODE.
-     * 
-     * @param mode
-     *            the new mode
-     */
-    public final void setWriteMode(final int mode) {
-        this.writingMode = mode;
-    }
-
-    /**
-     * Writes a mesh, the format depending on the attribute MODE.
-     */
-    public final void write() {
-        try {
-            if (this.mesh == null) {
-                throw new NoMeshException();
-            }
-
-            if (this.writingMode == WriterSTL.ASCII_MODE) {
-                this.writeSTLA();
-            } else if (this.writingMode == WriterSTL.BINARY_MODE) {
-                this.writeSTLB();
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (NoMeshException e) {
-            e.printStackTrace();
         }
     }
 

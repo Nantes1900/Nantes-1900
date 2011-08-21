@@ -4,7 +4,6 @@ import fr.nantes1900.constants.FilesNames;
 import fr.nantes1900.constants.SeparationGroundBuilding;
 import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.utils.Algos;
 import fr.nantes1900.utils.MatrixMethod;
@@ -26,9 +25,9 @@ import javax.vecmath.Vector3d;
 
 /**
  * Implements a town containing five types of zones : industrials, residentials,
- * grounds, wateries, and special buildings. Contains all the algorithms to parse
- * and build a town, using the building, mesh, ground, and other classes. Allows
- * to write a CityGML file containing this town.
+ * grounds, wateries, and special buildings. Contains all the algorithms to
+ * parse and build a town, using the building, mesh, ground, and other classes.
+ * Allows to write a CityGML file containing this town.
  * 
  * @author Daniel Lefevre
  */
@@ -37,7 +36,7 @@ public class Town {
     /**
      * Logger.
      */
-    private static final Logger LOG = Logger.getLogger("logger");
+    public static final Logger LOG = Logger.getLogger("logger");
 
     /**
      * List of industrial zones.
@@ -90,7 +89,7 @@ public class Town {
      * @param ground
      *            the ground to add
      */
-    public final void addFloor(final Ground ground) {
+    public final void addGround(final Ground ground) {
         if (!this.grounds.contains(ground)) {
             this.grounds.add(ground);
         }
@@ -105,6 +104,18 @@ public class Town {
     public final void addIndustrial(final Building building) {
         if (!this.industrials.contains(building)) {
             this.industrials.add(building);
+        }
+    }
+
+    /**
+     * Adds a list of buildings to the industrial list.
+     * 
+     * @param listBuildings
+     *            the list of buildings to add
+     */
+    public void addIndustrials(List<Building> listBuildings) {
+        for (Building b : listBuildings) {
+            this.addIndustrial(b);
         }
     }
 
@@ -163,12 +174,12 @@ public class Town {
 
         // Extract the normal gravity oriented and change it to the new
         // base.
-        final Vector3d normalFloor =
-            this.extractFloorNormal(directoryName + "/ground.stl");
-        this.createChangeBaseMatrix(normalFloor);
+        final Vector3d normalGround =
+            this.extractGroundNormal(directoryName + "/ground.stl");
+        this.createChangeBaseMatrix(normalGround);
 
         // Treat every kind of surfaces put in the algorithms.
-        this.treatFloors(directoryName + "/grounds/");
+        this.treatGrounds(directoryName + "/grounds/");
         Town.LOG.info("Numbers of grounds : " + this.grounds.size());
 
         this.treatWateries(directoryName + "/wateries/");
@@ -178,11 +189,11 @@ public class Town {
         Town.LOG.info("Numbers of special buildings : "
             + this.specialBuildings.size());
 
-        this.treatIndustrials(directoryName + "/industrials/", normalFloor);
+        this.treatIndustrials(directoryName + "/industrials/", normalGround);
         Town.LOG.info("Numbers of industrials zones : "
             + this.industrials.size());
 
-        this.treatResidentials(directoryName + "/residentials/", normalFloor);
+        this.treatResidentials(directoryName + "/residentials/", normalGround);
         Town.LOG.info("Numbers of residentials zones : "
             + this.residentials.size());
 
@@ -200,8 +211,8 @@ public class Town {
 
         writer.addBuildings(this.residentials);
         writer.addBuildings(this.industrials);
-        writer.addFloors(this.grounds);
-        writer.addFloors(this.wateries);
+        writer.addGrounds(this.grounds);
+        writer.addGrounds(this.wateries);
         writer.addSpecialBuildings(this.specialBuildings);
 
         writer.write();
@@ -214,7 +225,7 @@ public class Town {
      *            the name of the directory to write in
      */
     public final void writeSTL(final String directoryName) {
-        this.writeSTLFloors(directoryName);
+        this.writeSTLGrounds(directoryName);
         this.writeSTLIndustrials(directoryName);
         this.writeSTLResidentials(directoryName);
         this.writeSTLSpecialBuildings(directoryName);
@@ -227,13 +238,13 @@ public class Town {
      * @param directoryName
      *            the name of the directory to write in
      */
-    public final void writeSTLFloors(final String directoryName) {
-        int counterFloor = 1;
+    public final void writeSTLGrounds(final String directoryName) {
+        int counterGround = 1;
 
         for (Ground f : this.grounds) {
             f.writeSTL(directoryName + FilesNames.GROUND_FILENAME
-                + FilesNames.SEPARATOR + counterFloor + FilesNames.EXTENSION);
-            ++counterFloor;
+                + FilesNames.SEPARATOR + counterGround + FilesNames.EXTENSION);
+            ++counterGround;
         }
     }
 
@@ -304,6 +315,18 @@ public class Town {
     }
 
     /**
+     * Adds a list of buildings to the residential list.
+     * 
+     * @param listBuildings
+     *            the list of buildings to add
+     */
+    private void addResidentials(List<Building> listBuildings) {
+        for (Building b : listBuildings) {
+            this.addIndustrial(b);
+        }
+    }
+
+    /**
      * Extracts buildings by extracting the blocks after the ground extraction.
      * 
      * @param mesh
@@ -317,30 +340,24 @@ public class Town {
         final List<Mesh> buildingList = new ArrayList<Mesh>();
 
         List<Mesh> thingsList;
-        try {
-            // Extraction of the buildings.
-            thingsList = Algos.blockExtract(mesh);
+        // Extraction of the buildings.
+        thingsList = Algos.blockExtract(mesh);
 
-            // Algorithm : detection of buildings considering their size.
-            for (Mesh m : thingsList) {
-                if (m.size() >= SeparationGroundBuilding.BLOCK_BUILDING_SIZE_ERROR) {
+        // Algorithm : detection of buildings considering their size.
+        for (Mesh m : thingsList) {
+            if (m.size() >= SeparationGroundBuilding.BLOCK_BUILDING_SIZE_ERROR) {
 
-                    buildingList.add(m);
-                } else {
-                    noise.addAll(m);
-                }
+                buildingList.add(m);
+            } else {
+                noise.addAll(m);
             }
-
-            if (buildingList.size() == 0) {
-                Town.LOG.severe("Error : no building found !");
-            }
-
-            return buildingList;
-
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            e.printStackTrace();
-            return null;
         }
+
+        if (buildingList.size() == 0) {
+            Town.LOG.severe("Error : no building found !");
+        }
+
+        return buildingList;
     }
 
     /**
@@ -372,15 +389,15 @@ public class Town {
      * Creates a change base matrix with the normal to the ground. See the
      * MatrixMethod class for more informations.
      * 
-     * @param normalFloor
+     * @param normalGround
      *            the vector to build the matrix.
      */
-    private void createChangeBaseMatrix(final Vector3d normalFloor) {
+    private void createChangeBaseMatrix(final Vector3d normalGround) {
 
         try {
             // Base change
-            this.matrix = MatrixMethod.createOrthoBase(normalFloor);
-            MatrixMethod.changeBase(normalFloor, this.matrix);
+            this.matrix = MatrixMethod.createOrthoBase(normalGround);
+            MatrixMethod.changeBase(normalGround, this.matrix);
 
         } catch (SingularMatrixException e) {
             Town.LOG.severe("Error : the matrix is badly formed !");
@@ -395,7 +412,7 @@ public class Town {
      *            the name of the ground file
      * @return the normal to the ground as Vector3d
      */
-    private Vector3d extractFloorNormal(final String fileName) {
+    private Vector3d extractGroundNormal(final String fileName) {
 
         final Mesh groundBrut = this.parseFile(fileName);
 
@@ -408,106 +425,98 @@ public class Town {
      * 
      * @param mesh
      *            the mesh to extract from
-     * @param normalFloor
+     * @param normalGround
      *            the normal to the ground (not the gravity-oriented normal, of
      *            course...)
      * @return a mesh containing the ground
      */
-    private Mesh groundExtraction(final Mesh mesh, final Vector3d normalFloor) {
-        // TODO? Return an exception if there is no ground in the mesh, such as :
+    private Mesh groundExtraction(final Mesh mesh, final Vector3d normalGround) {
+        // TODO? Return an exception if there is no ground in the mesh, such as
+        // :
         // please get some grounds during the previous cut ! Write it in the
         // "protocole de découpage" document.
 
         // Searches for ground-oriented triangles with an error.
         Mesh meshOriented =
-            mesh.orientedAs(normalFloor,
+            mesh.orientedAs(normalGround,
                 SeparationGroundBuilding.ANGLE_GROUND_ERROR);
 
         List<Mesh> thingsList;
         List<Mesh> groundsList = new ArrayList<Mesh>();
-        try {
-            // Extracts the blocks in the oriented triangles.
-            thingsList = Algos.blockExtract(meshOriented);
+        // Extracts the blocks in the oriented triangles.
+        thingsList = Algos.blockExtract(meshOriented);
 
-            final Mesh wholeFloor = new Mesh();
-            for (Mesh f : thingsList) {
-                wholeFloor.addAll(f);
-            }
-
-            // We consider the altitude of the blocks on an axis parallel to the
-            // normal ground.
-            final double highDiff = mesh.zMax() - mesh.zMin();
-
-            // Builds an axis normal to the current ground.
-            final Edge axisNormalFloor =
-                new Edge(new Point(0, 0, 0), new Point(normalFloor.x,
-                    normalFloor.y, normalFloor.z));
-
-            // Project the current whole ground centroid on this axis.
-            final Point pAverage =
-                axisNormalFloor.project(wholeFloor.getCentroid());
-
-            // After this, for each block, consider the distance (on the
-            // axisNormalFloor) as an altitude distance. If it is greater than
-            // the error, then it's not considered as ground.
-            for (Mesh m : thingsList) {
-                final Point projectedPoint =
-                    axisNormalFloor.project(m.getCentroid());
-                if (projectedPoint.getZ() < pAverage.getZ()
-                    || projectedPoint.distance(pAverage) < highDiff
-                        * SeparationGroundBuilding.ALTITUDE_ERROR) {
-
-                    groundsList.add(m);
-                }
-            }
-
-            // We consider the size of the blocks : if they're big enough,
-            // they're keeped. This is to avoid the parts of roofs, walls,
-            // etc...
-            thingsList = new ArrayList<Mesh>(groundsList);
-            groundsList = new ArrayList<Mesh>();
-            for (Mesh m : thingsList) {
-                if (m.size() > SeparationGroundBuilding.BLOCK_GROUNDS_SIZE_ERROR) {
-                    groundsList.add(m);
-                }
-            }
-
-            // Now that we found the real grounds, we extract the other triangles
-            // which are almost ground-oriented to add them.
-            meshOriented =
-                mesh.orientedAs(normalFloor,
-                    SeparationGroundBuilding.LARGE_ANGLE_GROUND_ERROR);
-
-            // If the new grounds are neighbours from the old ones, they are
-            // added to the real grounds.
-            thingsList = new ArrayList<Mesh>();
-            for (Mesh m : groundsList) {
-
-                final Mesh temp = new Mesh(m);
-                temp.addAll(meshOriented);
-                final Mesh ret = new Mesh();
-                // FIXME : care : if the mesh m doesn't belong anymore to
-                // meshOriented ? Because it's already contained in another part
-                // computed before ? This is not a real problem because the
-                // doublons will be removed at the last lines : when every
-                // triangles are put in the same mesh, there is no doublons
-                // possible. But it should be improved.
-                m.getOne().returnNeighbours(ret, temp);
-                meshOriented.remove(ret);
-                thingsList.add(ret);
-            }
-            groundsList = thingsList;
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            e.printStackTrace();
+        Mesh wholeGround = new Mesh();
+        for (Mesh f : thingsList) {
+            wholeGround.addAll(f);
         }
 
-        final Mesh wholeFloor = new Mesh();
+        // We consider the altitude of the blocks on an axis parallel to the
+        // normal ground.
+        final double highDiff = mesh.zMax() - mesh.zMin();
+
+        // Builds an axis normal to the current ground.
+        final Edge axisNormalGround =
+            new Edge(new Point(0, 0, 0), new Point(normalGround.x,
+                normalGround.y, normalGround.z));
+
+        // Project the current whole ground centroid on this axis.
+        final Point pAverage =
+            axisNormalGround.project(wholeGround.getCentroid());
+
+        // After this, for each block, consider the distance (on the
+        // axisNormalGround) as an altitude distance. If it is greater than
+        // the error, then it's not considered as ground.
+        for (Mesh m : thingsList) {
+            final Point projectedPoint =
+                axisNormalGround.project(m.getCentroid());
+            if (projectedPoint.getZ() < pAverage.getZ()
+                || projectedPoint.distance(pAverage) < highDiff
+                    * SeparationGroundBuilding.ALTITUDE_ERROR) {
+
+                groundsList.add(m);
+            }
+        }
+
+        // We consider the size of the blocks : if they're big enough,
+        // they're keeped. This is to avoid the parts of roofs, walls,
+        // etc...
+        thingsList = new ArrayList<Mesh>(groundsList);
+        groundsList = new ArrayList<Mesh>();
+        for (Mesh m : thingsList) {
+            if (m.size() > SeparationGroundBuilding.BLOCK_GROUNDS_SIZE_ERROR) {
+                groundsList.add(m);
+            }
+        }
+
+        // Now that we found the real grounds, we extract the other
+        // triangles
+        // which are almost ground-oriented to add them.
+        meshOriented =
+            mesh.orientedAs(normalGround,
+                SeparationGroundBuilding.LARGE_ANGLE_GROUND_ERROR);
+
+        // If the new grounds are neighbours from the old ones, they are
+        // added to the real grounds.
+        thingsList = new ArrayList<Mesh>();
+        for (Mesh m : groundsList) {
+
+            final Mesh temp = new Mesh(m);
+            temp.addAll(meshOriented);
+            final Mesh ret = new Mesh();
+            m.getOne().returnNeighbours(ret, temp);
+            meshOriented.remove(ret);
+            thingsList.add(ret);
+        }
+        groundsList = thingsList;
+
+        wholeGround = new Mesh();
         for (Mesh f : groundsList) {
             mesh.remove(f);
-            wholeFloor.addAll(f);
+            wholeGround.addAll(f);
         }
 
-        return wholeFloor;
+        return wholeGround;
     }
 
     /**
@@ -525,15 +534,10 @@ public class Town {
     private List<Mesh> noiseTreatment(final Mesh groundsMesh, final Mesh noise) {
 
         List<Mesh> list;
-        try {
 
-            list = Algos.blockExtract(groundsMesh);
-            Algos.blockTreatNoise(list, noise);
-            return list;
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            e.printStackTrace();
-            return null;
-        }
+        list = Algos.blockExtract(groundsMesh);
+        Algos.blockTreatNoise(list, noise);
+        return list;
     }
 
     /**
@@ -558,6 +562,58 @@ public class Town {
     }
 
     /**
+     * Treat a building zone by calling all the algorithms. Returns a list of
+     * buildings.
+     * 
+     * @param normalGround
+     *            the normal to the current ground
+     * @param building
+     */
+    private List<Building> treatBuildingZone(final Vector3d normalGround,
+        Mesh building) {
+        // Base change in the gravity-oriented base.
+        building.changeBase(this.matrix);
+
+        // Extraction of the ground.
+        final Mesh wholeGround = this.groundExtraction(building, normalGround);
+
+        // Extraction of the buildings : the blocks which are left after the
+        // ground extraction.
+        final Mesh noise = new Mesh();
+        final List<Mesh> buildings = this.buildingsExtraction(building, noise);
+
+        // Treatment of the noise : other blocks are added to the grounds if
+        // possible.
+        final List<Mesh> groundsMesh = this.noiseTreatment(wholeGround, noise);
+
+        // FIXME : code this method : cut the little walls, and other things
+        // that are not buildings.
+        // ArrayList<Mesh> formsList = this.carveRealBuildings(buildings);
+
+        // Foreach building, create an building object, call the algorithm
+        // to build it and add it to the list of this town.
+        List<Building> listBuildings = new ArrayList<Building>();
+
+        for (Mesh m : buildings) {
+            final Building e = new Building();
+            e.buildFromMesh(m, wholeGround, normalGround);
+            listBuildings.add(e);
+        }
+
+        // Foreach ground found, call the algorithm of ground treatment, and
+        // add it to the list of this town with an attribute : street.
+        for (Mesh m : groundsMesh) {
+            final Ground ground = new Ground("street");
+            ground.buildFromMesh(m);
+        }
+
+        // TODO : treat the not real buildings : the formsList which
+        // contains walls, chimneys, maybe trains, boats, and other forms.
+
+        return listBuildings;
+    }
+
+    /**
      * Treats the files of grounds which are in the directory. Creates Ground
      * objects for each files, puts an attribute, and calls the buildFromMesh
      * method of Ground. Then adds it to the list of grounds.
@@ -565,24 +621,24 @@ public class Town {
      * @param directoryName
      *            the directory name to find the grounds.
      */
-    private void treatFloors(final String directoryName) {
-        int counterFloors = 1;
+    private void treatGrounds(final String directoryName) {
+        int counterGrounds = 1;
 
         while (new File(directoryName + FilesNames.GROUND_FILENAME
-            + FilesNames.SEPARATOR + counterFloors + FilesNames.EXTENSION)
+            + FilesNames.SEPARATOR + counterGrounds + FilesNames.EXTENSION)
             .exists()) {
 
             final Ground ground = new Ground("ground");
 
             ground.buildFromMesh(this.parseFile(directoryName
                 + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
-                + counterFloors + FilesNames.EXTENSION));
+                + counterGrounds + FilesNames.EXTENSION));
 
             ground.getMesh().changeBase(this.matrix);
 
-            this.addFloor(ground);
+            this.addGround(ground);
 
-            ++counterFloors;
+            ++counterGrounds;
         }
     }
 
@@ -614,68 +670,32 @@ public class Town {
                     + FilesNames.SEPARATOR + counterIndustrials
                     + FilesNames.EXTENSION);
 
-            Vector3d realNormalToTheFloor;
-            // If another ground normal is available, extract it. Otherwise, keep
+            Vector3d realNormalToTheGround;
+            // If another ground normal is available, extract it. Otherwise,
+            // keep
             // the normal gravity-oriented as the normal to the ground.
             if (new File(directoryName + FilesNames.GROUND_FILENAME
                 + FilesNames.SEPARATOR + counterIndustrials
                 + FilesNames.EXTENSION).exists()) {
 
-                realNormalToTheFloor =
-                    this.extractFloorNormal(directoryName
+                realNormalToTheGround =
+                    this.extractGroundNormal(directoryName
                         + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
                         + counterIndustrials + FilesNames.EXTENSION);
 
-                MatrixMethod.changeBase(realNormalToTheFloor, this.matrix);
+                MatrixMethod.changeBase(realNormalToTheGround, this.matrix);
 
             } else {
-                realNormalToTheFloor = normalGravityOriented;
+                realNormalToTheGround = normalGravityOriented;
             }
 
             // LOOK : after extracting the
             // normalGravityOriented, then make the change base on each mesh
             // and assume that this normal is (0, 0, 1).
-            // Then the real normalFloor will not be confonded.
+            // Then the real normalGround will not be confonded.
             // Make it on all the source codes !
-
-            // Base change in the gravity-oriented base.
-            mesh.changeBase(this.matrix);
-
-            // Extraction of the ground.
-            final Mesh wholeFloor =
-                this.groundExtraction(mesh, realNormalToTheFloor);
-
-            // Extraction of the buildings : the blocks which are left after the
-            // ground extraction.
-            final Mesh noise = new Mesh();
-            final List<Mesh> buildings = this.buildingsExtraction(mesh, noise);
-
-            // Treatment of the noise : other blocks are added to the grounds if
-            // possible.
-            final List<Mesh> groundsMesh =
-                this.noiseTreatment(wholeFloor, noise);
-
-            // FIXME : code this method : cut the little walls, and other things
-            // that are not buildings.
-            // ArrayList<Mesh> formsList = this.carveRealBuildings(buildings);
-
-            // Foreach building, create an building object, call the algorithm
-            // to build it and add it to the list of this town.
-            for (Mesh m : buildings) {
-                final Building e = new Building();
-                e.buildFromMesh(m, wholeFloor, normalGravityOriented);
-                this.addIndustrial(e);
-            }
-
-            // Foreach ground found, call the algorithm of ground treatment, and
-            // add it to the list of this town with an attribute : street.
-            for (Mesh m : groundsMesh) {
-                final Ground ground = new Ground("street");
-                ground.buildFromMesh(m);
-            }
-
-            // TODO : treat the not real buildings : the formsList which
-            // contains walls, chimneys, maybe trains, boats, and other forms.
+            this.addIndustrials(this.treatBuildingZone(realNormalToTheGround,
+                mesh));
 
             ++counterIndustrials;
         }
@@ -707,68 +727,27 @@ public class Town {
                     + FilesNames.SEPARATOR + counterResidentials
                     + FilesNames.EXTENSION);
 
-            Vector3d realNormalToTheFloor;
-            // If another ground normal is available, extract it. Otherwise, keep
+            Vector3d realNormalToTheGround;
+            // If another ground normal is available, extract it. Otherwise,
+            // keep
             // the normal gravity-oriented as the normal to the ground.
             if (new File(directoryName + FilesNames.GROUND_FILENAME
                 + FilesNames.SEPARATOR + counterResidentials
                 + FilesNames.EXTENSION).exists()) {
 
-                realNormalToTheFloor =
-                    this.extractFloorNormal(directoryName
+                realNormalToTheGround =
+                    this.extractGroundNormal(directoryName
                         + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
                         + counterResidentials + FilesNames.EXTENSION);
 
-                MatrixMethod.changeBase(realNormalToTheFloor, this.matrix);
+                MatrixMethod.changeBase(realNormalToTheGround, this.matrix);
 
             } else {
-                realNormalToTheFloor = normalGravityOriented;
+                realNormalToTheGround = normalGravityOriented;
             }
 
-            // LOOK : after extracting the normalGravityOriented, then make the
-            // change base on each mesh
-            // and assume that this normal is (0, 0, 1).
-            // Then the real normalFloor will not be confonded.
-            // Make it on all the source codes !
-
-            // Base change in the gravity-oriented base.
-            mesh.changeBase(this.matrix);
-
-            // Extraction of the ground.
-            final Mesh wholeFloor =
-                this.groundExtraction(mesh, realNormalToTheFloor);
-
-            // Extraction of the buildings : the blocks which are left after the
-            // ground extraction.
-            final Mesh noise = new Mesh();
-            final List<Mesh> buildings = this.buildingsExtraction(mesh, noise);
-
-            // Treatment of the noise : other blocks are added to the grounds if
-            // possible.
-            final List<Mesh> groundsMesh =
-                this.noiseTreatment(wholeFloor, noise);
-
-            // FIXME : code this method : cut the little walls, and other things
-            // that are not buildings.
-            // ArrayList<Mesh> formsList = this.carveRealBuildings(buildings);
-
-            // Foreach building, create an building object, call the algorithm
-            // to build it and add it to the list of this town.
-            for (Mesh m : buildings) {
-                final Building e = new Building();
-                e.buildFromMesh(m, wholeFloor, normalGravityOriented);
-                this.addResidential(e);
-            }
-
-            // Foreach ground found, call the algorithm of ground treatment, and
-            // add it to the list of this town with an attribute : street.
-            for (Mesh m : groundsMesh) {
-                final Ground ground = new Ground("street");
-                ground.buildFromMesh(m);
-            }
-
-            // TODO : treat the not real buildings : the formsList which
-            // contains walls, chimneys, maybe trains, boats, and other forms.
+            this.addResidentials(this.treatBuildingZone(realNormalToTheGround,
+                mesh));
 
             ++counterResidentials;
         }
@@ -815,7 +794,7 @@ public class Town {
      *            the directory name to find the wateries.
      */
     private void treatWateries(final String directoryName) {
-        // FIXME : see in treatFloors, it's the same. Maybe create a private
+        // FIXME : see in treatGrounds, it's the same. Maybe create a private
         // common shared method.
 
         int counterWateries = 1;

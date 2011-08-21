@@ -3,7 +3,6 @@ package fr.nantes1900.models.basis;
 import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.Polyline.BadFormedPolylineException;
-import fr.nantes1900.utils.ParserSTL;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -64,12 +63,9 @@ public class Edge {
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if the edge already contains two triangles
      */
-    public final void addTriangle(final Triangle triangle)
-        throws MoreThanTwoTrianglesPerEdgeException {
+    public final void addTriangle(final Triangle triangle) {
         if (!this.triangles.contains(triangle)) {
-            if (this.triangles.size() >= 2) {
-                throw new MoreThanTwoTrianglesPerEdgeException();
-            } else {
+            if (this.triangles.size() <= 2) {
                 this.triangles.add(triangle);
             }
         }
@@ -488,16 +484,10 @@ public class Edge {
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if the edge contains more than two triangles
      */
-    public final Triangle returnOther(final Triangle t)
-        throws MoreThanTwoTrianglesPerEdgeException {
+    public final Triangle returnOther(final Triangle t) {
 
         Triangle triangle = null;
 
-        // LOOK : Maybe remove everywhere this Exception, because it's treated
-        // earlier... and it shouldn't happen here !
-        if (this.triangles.size() > 2) {
-            throw new MoreThanTwoTrianglesPerEdgeException();
-        }
         if (this.triangles.size() == 2) {
             if (this.triangles.get(0) == t) {
                 triangle = this.triangles.get(1);
@@ -558,27 +548,5 @@ public class Edge {
     @Override
     public final String toString() {
         return new String("(" + this.getP1() + ", " + this.getP2() + ")");
-    }
-
-    /**
-     * Implements an exception used when an edge belongs to more than two
-     * triangles.
-     * 
-     * @author Daniel Lefevre
-     */
-    public static final class MoreThanTwoTrianglesPerEdgeException extends
-        ParserSTL.BadMeshException {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        private MoreThanTwoTrianglesPerEdgeException() {
-            super();
-        }
     }
 }

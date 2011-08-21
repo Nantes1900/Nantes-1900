@@ -1,7 +1,6 @@
 package fr.nantes1900.models.basis;
 
 import fr.nantes1900.models.Mesh;
-import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -55,7 +54,7 @@ public class Triangle {
      */
     public Triangle(final Point point0, final Point point1, final Point point2,
         final Edge edge1, final Edge edge2, final Edge edge3,
-        final Vector3d normalNew) throws MoreThanTwoTrianglesPerEdgeException {
+        final Vector3d normalNew) {
 
         // LOOK : check if the edges are correctly made : well composed of the
         // given points.
@@ -81,8 +80,7 @@ public class Triangle {
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if one edge already contains two triangles
      */
-    public Triangle(final Triangle triangle)
-        throws MoreThanTwoTrianglesPerEdgeException {
+    public Triangle(final Triangle triangle) {
         this.points[0] = new Point(triangle.points[0]);
         this.points[1] = new Point(triangle.points[1]);
         this.points[2] = new Point(triangle.points[2]);
@@ -217,11 +215,8 @@ public class Triangle {
      * other triangles which share those edges.
      * 
      * @return a list of the neighbours triangles
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if an edge is bad formed
      */
-    public final List<Triangle> getNeighbours()
-        throws MoreThanTwoTrianglesPerEdgeException {
+    public final List<Triangle> getNeighbours() {
         final List<Triangle> list = new ArrayList<Triangle>();
         Triangle other;
 
@@ -249,11 +244,8 @@ public class Triangle {
      * neighbours if they share one edge.
      * 
      * @return the number of neighbours
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if an edge is bad formed
      */
-    public final int getNumNeighbours()
-        throws MoreThanTwoTrianglesPerEdgeException {
+    public final int getNumNeighbours() {
 
         int number = 0;
         for (Edge e : this.edges) {
@@ -325,16 +317,40 @@ public class Triangle {
     }
 
     /**
+     * Checks if this triangle is located between two planes. These planes are
+     * normal to the vector, and are located from each side of the point with a
+     * distance to the point equal to the error.
+     * 
+     * @param vect
+     *            the vector normal of the two planes
+     * @param p
+     *            the point which locates the planes in space. It's at the
+     *            middle of the two planes.
+     * @param error
+     *            the distance between the planes and the point
+     * @return true if the first point of the triangle is located between those
+     *         two planes, false otherwise.
+     */
+    public final boolean isInPlanes(final Vector3d vect, final Point p,
+        final double error) {
+        final Edge axisNormalFloor =
+            new Edge(new Point(0, 0, 0), new Point(vect.x, vect.y, vect.z));
+
+        final Point pAverage = axisNormalFloor.project(p);
+
+        final Point projectedPoint = axisNormalFloor.project(this.getP1());
+
+        return projectedPoint.distance(pAverage) < error;
+    }
+
+    /**
      * Checks if a triangle is a neighbour of this triangle.
      * 
      * @param triangle
      *            the triangle to check
      * @return true if they share an edge, false otherwise.
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if an edge is bad formed
      */
-    public final boolean isNeighboor(final Triangle triangle)
-        throws MoreThanTwoTrianglesPerEdgeException {
+    public final boolean isNeighboor(final Triangle triangle) {
 
         Triangle other;
         for (Edge e : this.edges) {
@@ -372,11 +388,8 @@ public class Triangle {
      *            the mesh in which are returned the triangles
      * @param container
      *            the mesh which must contain all the triangles
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if an edge is bad formed
      */
-    public final void returnNeighbours(final Mesh ret, final Mesh container)
-        throws MoreThanTwoTrianglesPerEdgeException {
+    public final void returnNeighbours(final Mesh ret, final Mesh container) {
 
         // Add this triangle.
         ret.add(this);
@@ -586,31 +599,5 @@ public class Triangle {
             }
         }
         return null;
-    }
-
-    /**
-     * Checks if this triangle is located between two planes. These planes are
-     * normal to the vector, and are located from each side of the point with a
-     * distance to the point equal to the error.
-     * 
-     * @param vect
-     *            the vector normal of the two planes
-     * @param p
-     *            the point which locates the planes in space. It's at the
-     *            middle of the two planes.
-     * @param error
-     *            the distance between the planes and the point
-     * @return true if the first point of the triangle is located between those
-     *         two planes, false otherwise.
-     */
-    public final boolean isInPlanes(final Vector3d vect, final Point p, final double error) {
-        final Edge axisNormalFloor =
-            new Edge(new Point(0, 0, 0), new Point(vect.x, vect.y, vect.z));
-
-        final Point pAverage = axisNormalFloor.project(p);
-
-        final Point projectedPoint = axisNormalFloor.project(this.getP1());
-
-        return projectedPoint.distance(pAverage) < error;
     }
 }

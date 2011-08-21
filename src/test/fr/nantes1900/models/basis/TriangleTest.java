@@ -2,7 +2,6 @@ package test.fr.nantes1900.models.basis;
 
 import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
 
@@ -60,50 +59,9 @@ public class TriangleTest extends TestCase {
      * Constructor.
      */
     public TriangleTest() {
-        try {
-            this.t =
-                new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2,
-                    this.e3, this.vect);
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.fail();
-        }
-    }
-
-    public final void testIsInPlanes() {
-        Point p1 = new Point(0, 0, 0);
-        Point p2 = new Point(0, 1, 0);
-        Point p3 = new Point(1, 0, 0);
-        Edge e1 = new Edge(p1, p2);
-        Edge e2 = new Edge(p2, p3);
-        Edge e3 = new Edge(p1, p3);
-        Vector3d normal1 = new Vector3d(0, 0, 1);
-
-        Point p4 = new Point(0, 0, 1);
-        Point p5 = new Point(0, 1, 1);
-        Point p6 = new Point(1, 0, 1);
-        Edge e4 = new Edge(p1, p2);
-        Edge e5 = new Edge(p2, p3);
-        Edge e6 = new Edge(p1, p3);
-        Vector3d normal2 = new Vector3d(0, 0, 1);
-
-        Point p7 = new Point(0, 0, 2);
-        Point p8 = new Point(0, 1, 2);
-        Point p9 = new Point(1, 0, 2);
-        Edge e7 = new Edge(p1, p2);
-        Edge e8 = new Edge(p2, p3);
-        Edge e9 = new Edge(p1, p3);
-        Vector3d normal3 = new Vector3d(0, 0, 1);
-        try {
-            Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, normal1);
-            Triangle t2 = new Triangle(p4, p5, p6, e4, e5, e6, normal2);
-            Triangle t3 = new Triangle(p7, p8, p9, e7, e8, e9, normal3);
-
-            Assert.assertTrue(t1.isInPlanes(t2.getNormal(), t2.getP1(), 1.1));
-            Assert.assertFalse(t1.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
-            Assert.assertTrue(t2.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.fail();
-        }
+        this.t =
+            new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2, this.e3,
+                this.vect);
     }
 
     /**
@@ -117,20 +75,16 @@ public class TriangleTest extends TestCase {
      */
     @Test
     public final void testAngularTolerance() {
-        try {
-            final Vector3d vector = new Vector3d(0, 1, 0);
-            final Triangle tBis =
-                new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2,
-                    this.e3, vector);
+        final Vector3d vector = new Vector3d(0, 1, 0);
+        final Triangle tBis =
+            new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2, this.e3,
+                vector);
 
-            Assert.assertFalse(this.t.angularTolerance(vector, 60));
-            Assert.assertFalse(this.t.angularTolerance(tBis, 60));
+        Assert.assertFalse(this.t.angularTolerance(vector, 60));
+        Assert.assertFalse(this.t.angularTolerance(tBis, 60));
 
-            Assert.assertTrue(this.t.angularTolerance(vector, 100));
-            Assert.assertTrue(this.t.angularTolerance(tBis, 100));
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.fail();
-        }
+        Assert.assertTrue(this.t.angularTolerance(vector, 100));
+        Assert.assertTrue(this.t.angularTolerance(tBis, 100));
     }
 
     /**
@@ -163,15 +117,11 @@ public class TriangleTest extends TestCase {
      */
     @Test
     public final void testEqualsObject() {
-        try {
-            final Triangle tBis =
-                new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2,
-                    this.e3, this.vect);
-            Assert.assertTrue(this.t.equals(tBis));
-            Assert.assertTrue(tBis.equals(this.t));
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.fail();
-        }
+        final Triangle tBis =
+            new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2, this.e3,
+                this.vect);
+        Assert.assertTrue(this.t.equals(tBis));
+        Assert.assertTrue(tBis.equals(this.t));
     }
 
     /**
@@ -189,24 +139,20 @@ public class TriangleTest extends TestCase {
         final Edge e7 = new Edge(this.p2, p5);
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
-        try {
 
-            final Triangle t2 =
-                new Triangle(this.p1, this.p2, p4, this.e1, e4, e5, this.vect);
-            final Triangle t3 =
-                new Triangle(this.p1, this.p3, p5, this.e3, e6, e7, this.vect);
-            final Triangle t4 =
-                new Triangle(this.p2, this.p3, p6, this.e2, e8, e9, this.vect);
+        final Triangle t2 =
+            new Triangle(this.p1, this.p2, p4, this.e1, e4, e5, this.vect);
+        final Triangle t3 =
+            new Triangle(this.p1, this.p3, p5, this.e3, e6, e7, this.vect);
+        final Triangle t4 =
+            new Triangle(this.p2, this.p3, p6, this.e2, e8, e9, this.vect);
 
-            final List<Triangle> l = this.t.getNeighbours();
+        final List<Triangle> l = this.t.getNeighbours();
 
-            Assert.assertFalse(l.contains(this.t));
-            Assert.assertTrue(l.contains(t2));
-            Assert.assertTrue(l.contains(t3));
-            Assert.assertTrue(l.contains(t4));
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.fail();
-        }
+        Assert.assertFalse(l.contains(this.t));
+        Assert.assertTrue(l.contains(t2));
+        Assert.assertTrue(l.contains(t3));
+        Assert.assertTrue(l.contains(t4));
     }
 
     /**
@@ -225,15 +171,11 @@ public class TriangleTest extends TestCase {
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
 
-        try {
-            new Triangle(this.p1, this.p2, p4, this.e1, e4, e5, this.vect);
-            new Triangle(this.p1, this.p3, p5, this.e3, e6, e7, this.vect);
-            new Triangle(this.p2, this.p3, p6, this.e2, e8, e9, this.vect);
+        new Triangle(this.p1, this.p2, p4, this.e1, e4, e5, this.vect);
+        new Triangle(this.p1, this.p3, p5, this.e3, e6, e7, this.vect);
+        new Triangle(this.p2, this.p3, p6, this.e2, e8, e9, this.vect);
 
-            Assert.assertTrue(this.t.getNumNeighbours() == 3);
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.fail();
-        }
+        Assert.assertTrue(this.t.getNumNeighbours() == 3);
     }
 
     /**
@@ -247,36 +189,67 @@ public class TriangleTest extends TestCase {
         Assert.assertTrue(pointList.get(2) == this.p3);
     }
 
+    public final void testIsInPlanes() {
+        Point p1 = new Point(0, 0, 0);
+        Point p2 = new Point(0, 1, 0);
+        Point p3 = new Point(1, 0, 0);
+        Edge e1 = new Edge(p1, p2);
+        Edge e2 = new Edge(p2, p3);
+        Edge e3 = new Edge(p1, p3);
+        Vector3d normal1 = new Vector3d(0, 0, 1);
+
+        Point p4 = new Point(0, 0, 1);
+        Point p5 = new Point(0, 1, 1);
+        Point p6 = new Point(1, 0, 1);
+        Edge e4 = new Edge(p1, p2);
+        Edge e5 = new Edge(p2, p3);
+        Edge e6 = new Edge(p1, p3);
+        Vector3d normal2 = new Vector3d(0, 0, 1);
+
+        Point p7 = new Point(0, 0, 2);
+        Point p8 = new Point(0, 1, 2);
+        Point p9 = new Point(1, 0, 2);
+        Edge e7 = new Edge(p1, p2);
+        Edge e8 = new Edge(p2, p3);
+        Edge e9 = new Edge(p1, p3);
+        Vector3d normal3 = new Vector3d(0, 0, 1);
+
+        Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, normal1);
+        Triangle t2 = new Triangle(p4, p5, p6, e4, e5, e6, normal2);
+        Triangle t3 = new Triangle(p7, p8, p9, e7, e8, e9, normal3);
+
+        Assert.assertTrue(t1.isInPlanes(t2.getNormal(), t2.getP1(), 1.1));
+        Assert.assertFalse(t1.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
+        Assert.assertTrue(t2.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
+    }
+
     /**
      * Test method for
      * {@link nantes1900pjct.models.basis.Triangle#isNeighboor(nantes1900pjct.models.basis.Triangle)}
      * .
      */
     public final void testIsNeighboor() {
-        try {
-            final Point p4 = new Point(3, 4, 5);
-            final Point p5 = new Point(-3, -4, -5);
-            final Point p6 = new Point(-3.5, -1.2, 5.9);
-            final Edge e4 = new Edge(this.p1, p4);
-            final Edge e5 = new Edge(this.p2, p4);
-            final Edge e6 = new Edge(this.p1, p5);
-            final Edge e7 = new Edge(this.p2, p5);
-            final Edge e8 = new Edge(this.p1, p6);
-            final Edge e9 = new Edge(this.p2, p6);
-            final Triangle t2 =
-                new Triangle(this.p1, this.p2, p4, this.e1, e4, e5, this.vect);
-            final Triangle t3 =
-                new Triangle(this.p1, this.p3, p5, this.e3, e6, e7, this.vect);
-            final Triangle t4 =
-                new Triangle(this.p2, this.p3, p6, this.e2, e8, e9, this.vect);
 
-            Assert.assertFalse(this.t.isNeighboor(this.t));
-            Assert.assertTrue(this.t.isNeighboor(t2));
-            Assert.assertTrue(this.t.isNeighboor(t3));
-            Assert.assertTrue(this.t.isNeighboor(t4));
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.fail();
-        }
+        final Point p4 = new Point(3, 4, 5);
+        final Point p5 = new Point(-3, -4, -5);
+        final Point p6 = new Point(-3.5, -1.2, 5.9);
+        final Edge e4 = new Edge(this.p1, p4);
+        final Edge e5 = new Edge(this.p2, p4);
+        final Edge e6 = new Edge(this.p1, p5);
+        final Edge e7 = new Edge(this.p2, p5);
+        final Edge e8 = new Edge(this.p1, p6);
+        final Edge e9 = new Edge(this.p2, p6);
+        final Triangle t2 =
+            new Triangle(this.p1, this.p2, p4, this.e1, e4, e5, this.vect);
+        final Triangle t3 =
+            new Triangle(this.p1, this.p3, p5, this.e3, e6, e7, this.vect);
+        final Triangle t4 =
+            new Triangle(this.p2, this.p3, p6, this.e2, e8, e9, this.vect);
+
+        Assert.assertFalse(this.t.isNeighboor(this.t));
+        Assert.assertTrue(this.t.isNeighboor(t2));
+        Assert.assertTrue(this.t.isNeighboor(t3));
+        Assert.assertTrue(this.t.isNeighboor(t4));
     }
 
     /**
@@ -302,8 +275,7 @@ public class TriangleTest extends TestCase {
      *             if an edge is bad formed
      */
     @Test
-    public final void testReturnNeighbours()
-        throws MoreThanTwoTrianglesPerEdgeException {
+    public final void testReturnNeighbours() {
         final Point p4 = new Point(3, 4, 5);
         final Point p5 = new Point(-3, -4, -5);
         final Point p6 = new Point(-3.5, -1.2, 5.9);

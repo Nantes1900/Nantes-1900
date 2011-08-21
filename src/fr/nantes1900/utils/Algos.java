@@ -2,7 +2,7 @@ package fr.nantes1900.utils;
 
 import fr.nantes1900.constants.SeparationTreatmentWallsRoofs;
 import fr.nantes1900.models.Mesh;
-import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
+import fr.nantes1900.models.Surface;
 import fr.nantes1900.models.basis.Triangle;
 
 import java.util.ArrayList;
@@ -36,8 +36,7 @@ public final class Algos {
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if the edge is bad formed
      */
-    public static List<Mesh> blockExtract(final Mesh m)
-        throws MoreThanTwoTrianglesPerEdgeException {
+    public static List<Mesh> blockExtract(final Mesh m) {
         final Set<Mesh> thingsList = new HashSet<Mesh>();
         final Mesh mesh = new Mesh(m);
 
@@ -71,8 +70,8 @@ public final class Algos {
      */
     // FIXME : optimize the velocity. The time of orientedAs is too high...
     public static List<Mesh> blockOrientedAndPlaneExtract(final Mesh m,
-        final double angleNormalErrorFactor)
-        throws MoreThanTwoTrianglesPerEdgeException {
+        final double angleNormalErrorFactor) {
+
         final List<Mesh> thingsList = new ArrayList<Mesh>();
         final Mesh mesh = new Mesh(m);
 
@@ -101,44 +100,6 @@ public final class Algos {
     /**
      * Treats a list of mesh to add the noise which is part of the mesh. This
      * method tries to find a block of noise which complete the mesh (of the
-     * list) and which have the same orientation. It thus adds it to the mesh.
-     * 
-     * @param list
-     *            the list of meshes to complete with noise
-     * @param noise
-     *            the whole noise
-     * @param largeAngleNormalErrorFactor
-     *            the error on the orientation
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if the edge is bad formed
-     */
-    // LOOK : we can maybe gain speed in this method, which completely lacks of
-    // velocity.
-    public static void blockTreatOrientedNoise(final List<Mesh> list,
-        final Mesh noise, final double largeAngleNormalErrorFactor)
-        throws MoreThanTwoTrianglesPerEdgeException {
-
-        final List<Mesh> m = new ArrayList<Mesh>();
-
-        for (Mesh e : list) {
-            final Mesh meshAndNoise = new Mesh(e);
-            final Mesh noiseOriented =
-                noise
-                    .orientedAs(e.averageNormal(), largeAngleNormalErrorFactor);
-            meshAndNoise.addAll(noiseOriented);
-            final Mesh mes = new Mesh();
-            e.getOne().returnNeighbours(mes, meshAndNoise);
-            m.add(mes);
-            noise.remove(mes);
-        }
-
-        list.clear();
-        list.addAll(m);
-    }
-
-    /**
-     * Treats a list of mesh to add the noise which is part of the mesh. This
-     * method tries to find a block of noise which complete the mesh (of the
      * list). It thus adds it to the mesh.
      * 
      * @param list
@@ -150,8 +111,7 @@ public final class Algos {
      */
     // LOOK : we can maybe gain speed in this method, which completely lacks of
     // velocity.
-    public static void blockTreatNoise(final List<Mesh> list, final Mesh noise)
-        throws MoreThanTwoTrianglesPerEdgeException {
+    public static void blockTreatNoise(final List<Mesh> list, final Mesh noise) {
 
         final List<Mesh> m = new ArrayList<Mesh>();
 
@@ -166,5 +126,42 @@ public final class Algos {
 
         list.clear();
         list.addAll(m);
+    }
+
+    /**
+     * Treats a list of mesh to add the noise which is part of the mesh. This
+     * method tries to find a block of noise which complete the mesh (of the
+     * list) and which have the same orientation. It thus adds it to the mesh.
+     * 
+     * @param wallList
+     *            the list of meshes to complete with noise
+     * @param noise
+     *            the whole noise
+     * @param largeAngleNormalErrorFactor
+     *            the error on the orientation
+     * @throws MoreThanTwoTrianglesPerEdgeException
+     *             if the edge is bad formed
+     */
+    // LOOK : we can maybe gain speed in this method, which completely lacks of
+    // velocity.
+    public static void blockTreatOrientedNoise(final List<Surface> wallList,
+        final Mesh noise, final double largeAngleNormalErrorFactor) {
+
+        final List<Surface> m = new ArrayList<Surface>();
+
+        for (Mesh e : wallList) {
+            final Mesh meshAndNoise = new Mesh(e);
+            final Mesh noiseOriented =
+                noise
+                    .orientedAs(e.averageNormal(), largeAngleNormalErrorFactor);
+            meshAndNoise.addAll(noiseOriented);
+            final Surface mes = new Surface();
+            e.getOne().returnNeighbours(mes, meshAndNoise);
+            m.add(mes);
+            noise.remove(mes);
+        }
+
+        wallList.clear();
+        wallList.addAll(m);
     }
 }

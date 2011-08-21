@@ -2,9 +2,7 @@ package test.fr.nantes1900.models;
 
 import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.Polyline;
-import fr.nantes1900.models.Polyline.EmptyPolylineException;
 import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.utils.MatrixMethod;
@@ -344,22 +342,18 @@ public class PolylineTest extends TestCase {
         polyline.add(edge1);
 
         Mesh m;
-        try {
-            m = polyline.returnCentroidMesh();
-            final Point centroid = new Point(0.5, 0.5, -0.5);
+        m = polyline.returnCentroidMesh();
+        final Point centroid = new Point(0.5, 0.5, -0.5);
 
-            Assert.assertTrue(m.getOne().getP1() == point1
-                || m.getOne().getP1() == point2
-                || m.getOne().getP1().equals(centroid));
-            Assert.assertTrue(m.getOne().getP2() == point1
-                || m.getOne().getP2() == point2
-                || m.getOne().getP2().equals(centroid));
-            Assert.assertTrue(m.getOne().getP3() == point1
-                || m.getOne().getP3() == point2
-                || m.getOne().getP3().equals(centroid));
-        } catch (EmptyPolylineException e) {
-            Assert.fail();
-        }
+        Assert.assertTrue(m.getOne().getP1() == point1
+            || m.getOne().getP1() == point2
+            || m.getOne().getP1().equals(centroid));
+        Assert.assertTrue(m.getOne().getP2() == point1
+            || m.getOne().getP2() == point2
+            || m.getOne().getP2().equals(centroid));
+        Assert.assertTrue(m.getOne().getP3() == point1
+            || m.getOne().getP3() == point2
+            || m.getOne().getP3().equals(centroid));
     }
 
     /**
@@ -369,44 +363,39 @@ public class PolylineTest extends TestCase {
      */
     @Test
     public final void testReturnExistingMesh() {
-        try {
-            final Point point1 = new Point(1, 0, -1);
-            final Point point2 = new Point(0, 1, 0);
-            final Point point3 = new Point(-1, 2, 1);
-            final Point point4 = new Point(2, 2, 2);
 
-            final Edge edge1 = new Edge(point1, point2);
-            final Edge edge2 = new Edge(point2, point3);
-            final Edge edge3 = new Edge(point3, point1);
-            final Triangle t1 =
-                new Triangle(point1, point2, point3, edge1, edge2, edge3,
-                    new Vector3d(0, 0, 0));
+        final Point point1 = new Point(1, 0, -1);
+        final Point point2 = new Point(0, 1, 0);
+        final Point point3 = new Point(-1, 2, 1);
+        final Point point4 = new Point(2, 2, 2);
 
-            final Edge edge4 = new Edge(point1, point4);
-            final Edge edge5 = new Edge(point2, point4);
-            final Triangle t2 =
-                new Triangle(point1, point2, point4, edge1, edge4, edge5,
-                    new Vector3d(0, 0, 1));
+        final Edge edge1 = new Edge(point1, point2);
+        final Edge edge2 = new Edge(point2, point3);
+        final Edge edge3 = new Edge(point3, point1);
+        final Triangle t1 =
+            new Triangle(point1, point2, point3, edge1, edge2, edge3,
+                new Vector3d(0, 0, 0));
 
-            final Polyline polyline = new Polyline();
-            polyline.add(edge1);
-            polyline.add(edge2);
-            polyline.add(edge3);
-            polyline.add(edge4);
-            polyline.add(edge5);
+        final Edge edge4 = new Edge(point1, point4);
+        final Edge edge5 = new Edge(point2, point4);
+        final Triangle t2 =
+            new Triangle(point1, point2, point4, edge1, edge4, edge5,
+                new Vector3d(0, 0, 1));
 
-            final Mesh belongTo = new Mesh();
-            belongTo.add(t1);
-            belongTo.add(t2);
+        final Polyline polyline = new Polyline();
+        polyline.add(edge1);
+        polyline.add(edge2);
+        polyline.add(edge3);
+        polyline.add(edge4);
+        polyline.add(edge5);
 
-            final Mesh m = polyline.returnExistingMesh(belongTo);
-            Assert.assertTrue(m.contains(t1));
-            Assert.assertTrue(m.contains(t2));
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.fail();
-        } catch (EmptyPolylineException e) {
-            Assert.fail();
-        }
+        final Mesh belongTo = new Mesh();
+        belongTo.add(t1);
+        belongTo.add(t2);
+
+        final Mesh m = polyline.returnExistingMesh(belongTo);
+        Assert.assertTrue(m.contains(t1));
+        Assert.assertTrue(m.contains(t2));
     }
 
     /**

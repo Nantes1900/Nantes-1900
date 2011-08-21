@@ -1,7 +1,6 @@
 package fr.nantes1900.models;
 
 import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
 
@@ -491,13 +490,10 @@ public class Polyline {
      * but it's enough for debugging. Used for debugging.
      * 
      * @return a mesh representing the surface of the polyline
-     * @throws EmptyPolylineException
-     *             if the polyline is empty
      */
-    // TODO : replace by something better.
-    public final Mesh returnCentroidMesh() throws EmptyPolylineException {
+    public final Mesh returnCentroidMesh() {
         if (this.isEmpty()) {
-            throw new EmptyPolylineException();
+            return new Mesh();
         }
         final Mesh ens = new Mesh();
 
@@ -508,13 +504,9 @@ public class Polyline {
         Point before = this.pointList.get(this.pointSize() - 1);
 
         for (Point p : this.pointList) {
-            try {
-                ens.add(new Triangle(before, centroid, p, new Edge(centroid,
-                    before), new Edge(before, p), new Edge(p, centroid),
-                    normalVect));
-            } catch (MoreThanTwoTrianglesPerEdgeException e) {
-                e.printStackTrace();
-            }
+            ens.add(new Triangle(before, centroid, p,
+                new Edge(centroid, before), new Edge(before, p), new Edge(p,
+                    centroid), normalVect));
             before = p;
         }
 
@@ -532,8 +524,7 @@ public class Polyline {
      * @throws EmptyPolylineException
      *             if the polyline is empty
      */
-    public final Mesh returnExistingMesh(final Mesh m)
-        throws EmptyPolylineException {
+    public final Mesh returnExistingMesh(final Mesh m) {
 
         // If there is Edges which have not triangles associated, the method
         // calls the returnCentroidMesh.
@@ -858,26 +849,6 @@ public class Polyline {
          * Private constructor.
          */
         public BadFormedPolylineException() {
-        }
-    }
-
-    /**
-     * Implements an exception used when the polyline is empty.
-     * 
-     * @author Daniel Lefevre
-     */
-    // FIXME : make something nicer...
-    public static class EmptyPolylineException extends Exception {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        public EmptyPolylineException() {
         }
     }
 }

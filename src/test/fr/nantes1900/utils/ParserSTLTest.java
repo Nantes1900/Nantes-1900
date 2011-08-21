@@ -2,7 +2,6 @@ package test.fr.nantes1900.utils;
 
 import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.utils.ParserSTL;
@@ -37,8 +36,8 @@ public final class ParserSTLTest extends TestCase {
     /**
      * Test method for
      * {@link nantes1900pjct.utils.ParserSTL#read(java.lang.String)} and
-     * {@link nantes1900.utils.WriteSTL#writeFinalSurfacesSTL(java.lang.String)} Same test as
-     * write in WriterTest.
+     * {@link nantes1900.utils.WriteSTL#writeFinalSurfacesSTL(java.lang.String)}
+     * Same test as write in WriterTest.
      */
     @Test
     public void testReadWriteSTL() {
@@ -77,32 +76,28 @@ public final class ParserSTLTest extends TestCase {
             writerB.setMesh(write);
             writerB.write();
 
-            try {
-                final ParserSTL parserA = new ParserSTL("WriterTestA.stl");
-                final Mesh readA = parserA.read();
-                Assert.assertTrue(readA.size() == 2);
-                final List<Triangle> readListA = new ArrayList<Triangle>(readA);
-                Assert.assertTrue(readListA.get(0).equals(t1)
-                    || readListA.get(0).equals(t2));
-                Assert.assertTrue(readListA.get(1).equals(t1)
-                    || readListA.get(1).equals(t2));
+            final ParserSTL parserA = new ParserSTL("WriterTestA.stl");
+            final Mesh readA = parserA.read();
+            Assert.assertTrue(readA.size() == 2);
+            final List<Triangle> readListA = new ArrayList<Triangle>(readA);
+            Assert.assertTrue(readListA.get(0).equals(t1)
+                || readListA.get(0).equals(t2));
+            Assert.assertTrue(readListA.get(1).equals(t1)
+                || readListA.get(1).equals(t2));
 
-                final ParserSTL parserB = new ParserSTL("WriterTestB.stl");
-                final Mesh readB = parserB.read();
-                Assert.assertTrue(readB.size() == 2);
-                final List<Triangle> readListB = new ArrayList<Triangle>(readB);
-                Assert.assertTrue(readListB.get(0).equals(t1)
-                    || readListB.get(0).equals(t2));
-                Assert.assertTrue(readListB.get(1).equals(t1)
-                    || readListB.get(1).equals(t2));
+            final ParserSTL parserB = new ParserSTL("WriterTestB.stl");
+            final Mesh readB = parserB.read();
+            Assert.assertTrue(readB.size() == 2);
+            final List<Triangle> readListB = new ArrayList<Triangle>(readB);
+            Assert.assertTrue(readListB.get(0).equals(t1)
+                || readListB.get(0).equals(t2));
+            Assert.assertTrue(readListB.get(1).equals(t1)
+                || readListB.get(1).equals(t2));
 
-            } catch (BadFormedFileException e) {
-                Assert.fail("BadFormedFileException !");
-            } catch (IOException e) {
-                Assert.fail("IOException !");
-            }
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.fail("More than two triangles per edge exception !");
+        } catch (BadFormedFileException e) {
+            Assert.fail("BadFormedFileException !");
+        } catch (IOException e) {
+            Assert.fail("IOException !");
         }
 
         Assert.assertTrue(new File("WriterTestA.stl").delete());

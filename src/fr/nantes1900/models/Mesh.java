@@ -1,7 +1,6 @@
 package fr.nantes1900.models;
 
 import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.utils.MatrixMethod;
@@ -54,48 +53,6 @@ public class Mesh extends HashSet<Triangle> {
     public Mesh(final Collection<? extends Triangle> c) {
         super(c);
         this.iD = ++Mesh.currentID;
-    }
-
-    /**
-     * Returns a mesh composed of only one triangle which represents a plane in
-     * 3D space.
-     * 
-     * @param normalFloor
-     *            the normal to the ground
-     * @return the mesh with only one triangle
-     */
-    // TODO create a plane class or look in Java3D ?
-    // TODO : put this in Surface ?
-    public final Mesh returnVerticalPlane(final Vector3d normalFloor) {
-
-        final Vector3d averageNormal = this.averageNormal();
-
-        final Mesh computedWallPlane = new Mesh();
-
-        final Point centroid =
-            new Point(this.xAverage(), this.yAverage(), this.zAverage());
-
-        // TODO : if normal.getY() == 0 ?
-        final Point p1 =
-            new Point(centroid.getX() + 1, centroid.getY()
-                - averageNormal.getX() / averageNormal.getY(), centroid.getZ());
-        final Point p2 = p1;
-        final Point p3 = centroid;
-
-        final Edge e1 = new Edge(p1, p2);
-        final Edge e2 = new Edge(p2, p3);
-        final Edge e3 = new Edge(p1, p3);
-
-        final Vector3d vect = new Vector3d();
-        vect.cross(normalFloor, e3.convertToVector3d());
-
-        try {
-            computedWallPlane.add(new Triangle(p1, p2, p3, e1, e2, e3, vect));
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            e.printStackTrace();
-        }
-
-        return computedWallPlane;
     }
 
     /**
@@ -178,6 +135,15 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
+     * Computes the point centroid : average of x, y, and z.
+     * 
+     * @return this point
+     */
+    public final Point getCentroid() {
+        return new Point(this.xAverage(), this.yAverage(), this.zAverage());
+    }
+
+    /**
      * Getter.
      * 
      * @return the ID of the object
@@ -195,6 +161,33 @@ public class Mesh extends HashSet<Triangle> {
      */
     public final Triangle getOne() {
         return this.iterator().next();
+    }
+
+    /**
+     * Returns the triangles of this meshes which are contained in two meshes.
+     * The two meshes have the same normal : vect, and are spaced on each side
+     * of the point p, distants of the error from p.
+     * 
+     * @param vect
+     *            the normal of the two planes
+     * @param p
+     *            the location in space for the two planes
+     * @param error
+     *            the distance between the two planes and p
+     * @return the triangles which are between those two planes
+     */
+    // TODO : test !
+    public final Mesh inPlanes(final Vector3d vect, final Point p,
+        final double error) {
+        final Mesh ret = new Mesh();
+
+        for (Triangle triangle : this) {
+            if (triangle.isInPlanes(vect, p, error)) {
+                ret.add(triangle);
+            }
+        }
+
+        return ret;
     }
 
     /**
@@ -285,6 +278,39 @@ public class Mesh extends HashSet<Triangle> {
         final double convertDegreesToRadian = 180 / Math.PI;
         return this.averageNormal().angle(w2.averageNormal()) < littleAngleNormalErrorFactor
             / convertDegreesToRadian;
+    }
+
+    /**
+     * Returns the minimal distance between two meshes. Searches for all the
+     * points the one which are the closest and returns their distance.
+     * 
+     * @param mesh
+     *            the other mesh
+     * @return the minimal distance between those two meshes
+     */
+    // TODO : test !
+    // FIXME : improve the speed... a lot !
+    public final double minimalDistance(final Mesh mesh) {
+
+        final Set<Point> hash1 = new HashSet<Point>();
+        final Polyline poly1 = this.returnUnsortedBounds();
+        hash1.addAll(poly1.getPointList());
+
+        final Set<Point> hash2 = new HashSet<Point>();
+        final Polyline poly2 = mesh.returnUnsortedBounds();
+        hash2.addAll(poly2.getPointList());
+
+        double minDistance = Double.POSITIVE_INFINITY;
+
+        for (Point p1 : hash1) {
+            for (Point p2 : hash2) {
+                if (p1.distance(p2) < minDistance) {
+                    minDistance = p1.distance(p2);
+                }
+            }
+        }
+
+        return minDistance;
     }
 
     /**
@@ -582,73 +608,5 @@ public class Mesh extends HashSet<Triangle> {
             }
         }
         return t;
-    }
-
-    /**
-     * Returns the triangles of this meshes which are contained in two meshes.
-     * The two meshes have the same normal : vect, and are spaced on each side
-     * of the point p, distants of the error from p.
-     * 
-     * @param vect
-     *            the normal of the two planes
-     * @param p
-     *            the location in space for the two planes
-     * @param error
-     *            the distance between the two planes and p
-     * @return the triangles which are between those two planes
-     */
-    // TODO : test !
-    public final Mesh inPlanes(final Vector3d vect, final Point p,
-        final double error) {
-        final Mesh ret = new Mesh();
-
-        for (Triangle triangle : this) {
-            if (triangle.isInPlanes(vect, p, error)) {
-                ret.add(triangle);
-            }
-        }
-
-        return ret;
-    }
-
-    /**
-     * Computes the point centroid : average of x, y, and z.
-     * 
-     * @return this point
-     */
-    public final Point getCentroid() {
-        return new Point(this.xAverage(), this.yAverage(), this.zAverage());
-    }
-
-    /**
-     * Returns the minimal distance between two meshes. Searches for all the
-     * points the one which are the closest and returns their distance.
-     * 
-     * @param mesh the other mesh
-     * @return the minimal distance between those two meshes
-     */
-    // TODO : test !
-    // FIXME : improve the speed... a lot !
-    public final double minimalDistance(final Mesh mesh) {
-
-        final Set<Point> hash1 = new HashSet<Point>();
-        final Polyline poly1 = this.returnUnsortedBounds();
-        hash1.addAll(poly1.getPointList());
-
-        final Set<Point> hash2 = new HashSet<Point>();
-        final Polyline poly2 = mesh.returnUnsortedBounds();
-        hash2.addAll(poly2.getPointList());
-
-        double minDistance = Double.POSITIVE_INFINITY;
-
-        for (Point p1 : hash1) {
-            for (Point p2 : hash2) {
-                if (p1.distance(p2) < minDistance) {
-                    minDistance = p1.distance(p2);
-                }
-            }
-        }
-
-        return minDistance;
     }
 }

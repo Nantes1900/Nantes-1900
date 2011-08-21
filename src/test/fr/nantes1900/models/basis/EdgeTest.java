@@ -3,7 +3,6 @@ package test.fr.nantes1900.models.basis;
 import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.Polyline.BadFormedPolylineException;
 import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Edge.MoreThanTwoTrianglesPerEdgeException;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
 
@@ -64,7 +63,7 @@ public class EdgeTest extends TestCase {
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             exception if one edge has more than two triangles
      */
-    public EdgeTest() throws MoreThanTwoTrianglesPerEdgeException {
+    public EdgeTest() {
 
         this.triangle1 =
             new Triangle(this.point1, this.point2, this.point3, this.edge1,
@@ -76,22 +75,6 @@ public class EdgeTest extends TestCase {
         this.polyline.add(this.edge2);
         this.polyline.add(this.edge4);
         this.polyline.add(this.edge6);
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.basis. Edge#addTriangle(fr.nantes1900.models.basis.Triangle)}
-     * .
-     */
-    @Test
-    public final void testAddTriangle() {
-        final Triangle t3 = null;
-        try {
-            this.edge1.addTriangle(t3);
-            Assert.fail();
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.assertFalse(this.edge1.getTriangles().contains(t3));
-        }
     }
 
     /**
@@ -344,15 +327,11 @@ public class EdgeTest extends TestCase {
      */
     @Test
     public final void testReturnOtherTriangle() {
-        try {
-            Assert
-                .assertTrue(this.edge1.returnOther(this.triangle1) == this.triangle2);
-            Assert
-                .assertTrue(this.edge1.returnOther(this.triangle2) == this.triangle1);
-            Assert.assertTrue(this.edge2.returnOther(this.triangle1) == null);
-        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-            Assert.fail();
-        }
+        Assert
+            .assertTrue(this.edge1.returnOther(this.triangle1) == this.triangle2);
+        Assert
+            .assertTrue(this.edge1.returnOther(this.triangle2) == this.triangle1);
+        Assert.assertTrue(this.edge2.returnOther(this.triangle1) == null);
     }
 
     /**

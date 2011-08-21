@@ -247,6 +247,43 @@ public class Surface extends Mesh {
     }
 
     /**
+     * Returns a mesh composed of only one triangle which represents a plane in
+     * 3D space.
+     * 
+     * @param normalFloor
+     *            the normal to the ground
+     * @return the mesh with only one triangle
+     */
+    // TODO : put this in Surface ?
+    public final Surface returnVerticalPlane(final Vector3d normalFloor) {
+
+        final Vector3d averageNormal = this.averageNormal();
+
+        final Surface computedWallPlane = new Surface();
+
+        final Point centroid =
+            new Point(this.xAverage(), this.yAverage(), this.zAverage());
+
+        // TODO : if normal.getY() == 0 ?
+        final Point p1 =
+            new Point(centroid.getX() + 1, centroid.getY()
+                - averageNormal.getX() / averageNormal.getY(), centroid.getZ());
+        final Point p2 = p1;
+        final Point p3 = centroid;
+
+        final Edge e1 = new Edge(p1, p2);
+        final Edge e2 = new Edge(p2, p3);
+        final Edge e3 = new Edge(p1, p3);
+
+        final Vector3d vect = new Vector3d();
+        vect.cross(normalFloor, e3.convertToVector3d());
+
+        computedWallPlane.add(new Triangle(p1, p2, p3, e1, e2, e3, vect));
+
+        return computedWallPlane;
+    }
+
+    /**
      * With four planes (the three in parameters plus this), builds an edge.
      * Computes the intersection of the first three planes, and the three next.
      * If one plane is wall, rectifies its normal to be vertical. If one point
@@ -276,7 +313,6 @@ public class Surface extends Mesh {
         final Map<Edge, Edge> edgeMap, final List<Surface> wallList,
         final Vector3d normalFloor) throws InvalidSurfaceException {
 
-        // LOOK : maybe remove that list : it is not really useful.
         final List<Surface> surfaces = new ArrayList<Surface>();
         surfaces.add(s1);
         surfaces.add(s2);
@@ -417,47 +453,6 @@ public class Surface extends Mesh {
     }
 
     /**
-     * Implements an execption used in findEdges method when surfaces can not be
-     * vectorized.
-     * 
-     * @author Daniel Lefevre
-     */
-    public static final class InvalidSurfaceException extends Exception {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        private InvalidSurfaceException() {
-        }
-    }
-
-    /**
-     * Implements an exception used in algorithms when the neighbours cannot be
-     * ordered.
-     * 
-     * @author Daniel Lefevre
-     */
-    public static final class ImpossibleNeighboursOrderException extends
-        Exception {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        private ImpossibleNeighboursOrderException() {
-        }
-    }
-
-    /**
      * Implements an exception used in algorithms when a neighbour provoques
      * errors and must be removed of the list of neighbours. Used when a
      * SingularMatrixException happens. Contains the neighbours surface which
@@ -494,6 +489,47 @@ public class Surface extends Mesh {
          */
         public Surface getNeighbourError() {
             return this.errorNeighbour;
+        }
+    }
+
+    /**
+     * Implements an exception used in algorithms when the neighbours cannot be
+     * ordered.
+     * 
+     * @author Daniel Lefevre
+     */
+    public static final class ImpossibleNeighboursOrderException extends
+        Exception {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        private ImpossibleNeighboursOrderException() {
+        }
+    }
+
+    /**
+     * Implements an execption used in findEdges method when surfaces can not be
+     * vectorized.
+     * 
+     * @author Daniel Lefevre
+     */
+    public static final class InvalidSurfaceException extends Exception {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        private InvalidSurfaceException() {
         }
     }
 
