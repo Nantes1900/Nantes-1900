@@ -595,13 +595,90 @@ public class Town {
      * @param directoryName
      *            the name of the directory where are the files
      * @param normalFloor
-     *            the normal to the floor
+     *            the normal gravity-oriented
      */
     private void treatIndustrials(final String directoryName,
-        final Vector3d normalFloor) {
+        final Vector3d normalGravityOriented) {
         // FIXME : maybe create the same private method for things common with
         // treat residentials...
-        // TODO? different coefficients than residentials.
+        int counterIndustrials = 1;
+
+        // While there is files correctly named...
+        while (new File(directoryName + FilesNames.INDUSTRIAL_FILENAME
+            + FilesNames.SEPARATOR + counterIndustrials + FilesNames.EXTENSION)
+            .exists()) {
+
+            // ...Parse the meshes of these files
+            final Mesh mesh =
+                this.parseFile(directoryName + FilesNames.INDUSTRIAL_FILENAME
+                    + FilesNames.SEPARATOR + counterIndustrials
+                    + FilesNames.EXTENSION);
+
+            Vector3d realNormalToTheFloor;
+            // If another floor normal is available, extract it. Otherwise, keep
+            // the normal gravity-oriented as the normal to the floor.
+            if (new File(directoryName + FilesNames.FLOOR_FILENAME
+                + FilesNames.SEPARATOR + counterIndustrials
+                + FilesNames.EXTENSION).exists()) {
+
+                realNormalToTheFloor =
+                    this.extractFloorNormal(directoryName
+                        + FilesNames.FLOOR_FILENAME + FilesNames.SEPARATOR
+                        + counterIndustrials + FilesNames.EXTENSION);
+
+                MatrixMethod.changeBase(realNormalToTheFloor, this.matrix);
+
+            } else {
+                realNormalToTheFloor = normalGravityOriented;
+            }
+
+            // LOOK : after extracting the
+            // normalGravityOriented, then make the change base on each mesh
+            // and assume that this normal is (0, 0, 1).
+            // Then the real normalFloor will not be confonded.
+            // Make it on all the source codes !
+
+            // Base change in the gravity-oriented base.
+            mesh.changeBase(this.matrix);
+
+            // Extraction of the floor.
+            final Mesh wholeFloor =
+                this.floorExtraction(mesh, realNormalToTheFloor);
+
+            // Extraction of the buildings : the blocks which are left after the
+            // floor extraction.
+            final Mesh noise = new Mesh();
+            final List<Mesh> buildings = this.buildingsExtraction(mesh, noise);
+
+            // Treatment of the noise : other blocks are added to the floors if
+            // possible.
+            final List<Mesh> floorsMesh =
+                this.noiseTreatment(wholeFloor, noise);
+
+            // FIXME : code this method : cut the little walls, and other things
+            // that are not buildings.
+            // ArrayList<Mesh> formsList = this.carveRealBuildings(buildings);
+
+            // Foreach building, create an building object, call the algorithm
+            // to build it and add it to the list of this town.
+            for (Mesh m : buildings) {
+                final Building e = new Building();
+                e.buildFromMesh(m, wholeFloor, normalGravityOriented);
+                this.addIndustrial(e);
+            }
+
+            // Foreach ground found, call the algorithm of ground treatment, and
+            // add it to the list of this town with an attribute : street.
+            for (Mesh m : floorsMesh) {
+                final Floor floor = new Floor("street");
+                floor.buildFromMesh(m);
+            }
+
+            // TODO : treat the not real buildings : the formsList which
+            // contains walls, chimneys, maybe trains, boats, and other forms.
+
+            ++counterIndustrials;
+        }
     }
 
     /**
@@ -648,8 +725,8 @@ public class Town {
                 realNormalToTheFloor = normalGravityOriented;
             }
 
-            // LOOK : after extracting the
-            // normalGravityOriented, then make the change base on each mesh
+            // LOOK : after extracting the normalGravityOriented, then make the
+            // change base on each mesh
             // and assume that this normal is (0, 0, 1).
             // Then the real normalFloor will not be confonded.
             // Make it on all the source codes !
@@ -740,5 +817,24 @@ public class Town {
     private void treatWateries(final String directoryName) {
         // FIXME : see in treatFloors, it's the same. Maybe create a private
         // common shared method.
+
+        int counterWateries = 1;
+
+        while (new File(directoryName + FilesNames.WATERY_FILENAME
+            + FilesNames.SEPARATOR + counterWateries + FilesNames.EXTENSION)
+            .exists()) {
+
+            final Floor watery = new Floor("floor");
+
+            watery.buildFromMesh(this.parseFile(directoryName
+                + FilesNames.WATERY_FILENAME + FilesNames.SEPARATOR
+                + counterWateries + FilesNames.EXTENSION));
+
+            watery.getMesh().changeBase(this.matrix);
+
+            this.addWatery(watery);
+
+            ++counterWateries;
+        }
     }
 }
