@@ -61,10 +61,11 @@ public class Mesh extends HashSet<Triangle> {
      * 3D space.
      * 
      * @param normalFloor
-     *            the normal to the floor
+     *            the normal to the ground
      * @return the mesh with only one triangle
      */
     // TODO create a plane class or look in Java3D ?
+    //TODO : put this in Surface ?
     public Mesh returnVerticalPlane(final Vector3d normalFloor) {
 
         final Vector3d averageNormal = this.averageNormal();

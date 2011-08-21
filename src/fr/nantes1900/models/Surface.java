@@ -78,7 +78,7 @@ public class Surface extends Mesh {
      * @param edgeMap
      *            the map of edges
      * @param normalFloor
-     *            the normal to the floor
+     *            the normal to the ground
      * @return a polyline made from all the edges of this surface, and which
      *         perfectly fits to its neighbours.
      * @throws InvalidSurfaceException
@@ -146,28 +146,28 @@ public class Surface extends Mesh {
      * 
      * @param wholeList
      *            the list of every surfaces
-     * @param floors
-     *            the floors
+     * @param grounds
+     *            the grounds
      * @throws ImpossibleNeighboursOrderException
      *             if a problem happens in the algorithm that can not be treated
      *             as said in the description
      */
     public final void orderNeighbours(final List<Surface> wholeList,
-        final Surface floors) throws ImpossibleNeighboursOrderException {
+        final Surface grounds) throws ImpossibleNeighboursOrderException {
 
         final List<Surface> neighboursOrdered = new ArrayList<Surface>();
 
         final int neighboursNumber = this.getNeighbours().size();
         int counter = 0;
 
-        // If the floor is the neighbour of this surface, then we begin with the
-        // floor, to avoid some problems in the future. Otherwise, we begin
+        // If the ground is the neighbour of this surface, then we begin with the
+        // ground, to avoid some problems in the future. Otherwise, we begin
         // where we want.
         Surface current = this.getNeighbours().get(0);
-        if (this.getNeighbours().contains(floors)) {
+        if (this.getNeighbours().contains(grounds)) {
 
             try {
-                current = this.getCommonNeighbours(floors).get(0);
+                current = this.getCommonNeighbours(grounds).get(0);
             } catch (IndexOutOfBoundsException e) {
                 throw new ImpossibleNeighboursOrderException();
             }
@@ -198,8 +198,8 @@ public class Surface extends Mesh {
             // another one, not to retrace our steps.
 
             // If there is too much neighbours, this step can resolve it.
-            // The floor often causes that kind of problem, that's why we begin
-            // by treating the floor first (see at the beginning of the method).
+            // The ground often causes that kind of problem, that's why we begin
+            // by treating the ground first (see at the beginning of the method).
             for (Surface s : neighboursOrdered) {
                 commonNeighbours.remove(s);
             }
@@ -264,7 +264,7 @@ public class Surface extends Mesh {
      * @param wallList
      *            the list of the walls
      * @param normalFloor
-     *            the normal to the floor
+     *            the normal to the ground
      * @return the edge created by these four planes
      * @throws InvalidSurfaceException
      *             if the algorithm cannot comput the edge

@@ -3,14 +3,14 @@ package fr.nantes1900.models.extended;
 import fr.nantes1900.models.Mesh;
 
 /**
- * Implements a floor as a mesh with an associated String attribute.
+ * Implements a ground as a mesh with an associated String attribute.
  * 
  * @author Daniel Lefevre
  */
-public class Floor {
+public class Ground {
 
     /**
-     * The attribute describing the type of the floor.
+     * The attribute describing the type of the ground.
      */
     private String attribute;
     /**
@@ -19,18 +19,18 @@ public class Floor {
     private Mesh mesh = new Mesh();
 
     /**
-     * Constructor. Builds the Floor with an attribute as a String.
+     * Constructor. Builds the Ground with an attribute as a String.
      * 
      * @param type
      *            the attribute
      */
-    public Floor(final String type) {
+    public Ground(final String type) {
         super();
         this.attribute = type;
     }
 
     /**
-     * Builds a floor from a mesh, by computing the algorithms.
+     * Builds a ground from a mesh, by computing the algorithms.
      * 
      * @param m
      *            the mesh to convert
@@ -42,12 +42,12 @@ public class Floor {
     }
 
     /**
-     * Decimates the floor. Not implemented.
+     * Decimates the ground. Not implemented.
      * 
-     * @param floor
-     *            the floor to decimate as a mesh
+     * @param ground
+     *            the ground to decimate as a mesh
      */
-    public void decimate(final Mesh floor) {
+    public void decimate(final Mesh ground) {
         // TODO : implement this method.
     }
 
@@ -63,7 +63,7 @@ public class Floor {
     /**
      * Getter.
      * 
-     * @return the floor as a mesh
+     * @return the ground as a mesh
      */
     public final Mesh getMesh() {
         return this.mesh;
@@ -73,14 +73,14 @@ public class Floor {
      * Setter.
      * 
      * @param type
-     *            the attribute of the Floor
+     *            the attribute of the Ground
      */
     public final void setAttribute(final String type) {
         this.attribute = type;
     }
 
     /**
-     * Writes the floor as a mesh in a STL file.
+     * Writes the ground as a mesh in a STL file.
      * 
      * @param fileName
      *            the name of the file to write in

@@ -2,7 +2,7 @@ package fr.nantes1900.utils;
 
 import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.extended.Floor;
+import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.SpecialBuilding;
 
 import java.io.File;
@@ -177,13 +177,13 @@ public class WriterCityGML {
     }
 
     /**
-     * Adds a floor to the CityGMLFactory.
+     * Adds a ground to the CityGMLFactory.
      * 
-     * @param floor
-     *            the floor to add
+     * @param ground
+     *            the ground to add
      */
     // TODO : make this method again, with the correct types.
-    public final void addFloor(final Floor floor) {
+    public final void addFloor(final Ground ground) {
         // FIXME : make a real ground...
         final Building building = this.citygml.createBuilding();
 
@@ -204,7 +204,7 @@ public class WriterCityGML {
             new ArrayList<BoundarySurfaceProperty>();
 
         try {
-            for (Triangle t : floor.getMesh()) {
+            for (Triangle t : ground.getMesh()) {
                 final Polygon geometry =
                     this.geom
                         .createLinearPolygon(t.getPointsAsCoordinates(), 3);
@@ -236,14 +236,14 @@ public class WriterCityGML {
     }
 
     /**
-     * Adds a list of floors to the CityGMLFactory.
+     * Adds a list of grounds to the CityGMLFactory.
      * 
-     * @param floors
-     *            the list of floors to add
+     * @param grounds
+     *            the list of grounds to add
      */
-    public final void addFloors(final List<Floor> floors) {
-        for (Floor floor : floors) {
-            this.addFloor(floor);
+    public final void addFloors(final List<Ground> grounds) {
+        for (Ground ground : grounds) {
+            this.addFloor(ground);
         }
     }
 

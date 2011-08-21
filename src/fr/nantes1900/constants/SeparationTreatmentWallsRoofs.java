@@ -35,7 +35,7 @@ public final class SeparationTreatmentWallsRoofs {
 
     /**
      * Error factor : coefficient compared to a dot product to determine if a
-     * triangle normal is normal to the floor (to determine if it's a wall). Not
+     * triangle normal is normal to the ground (to determine if it's a wall). Not
      * in degrees !
      */
     public static final double NORMALTO_ERROR = 0.2;

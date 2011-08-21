@@ -9,9 +9,9 @@ package fr.nantes1900.constants;
 public final class FilesNames {
 
     /**
-     * Directory name for the floors.
+     * Directory name for the grounds.
      */
-    public static final String FLOORS_NAME = "/floors/";
+    public static final String GROUNDS_NAME = "/grounds/";
     /**
      * Directory name for the industrials.
      */
@@ -33,9 +33,9 @@ public final class FilesNames {
      */
     public static final String RESIDENTIAL_FILENAME = "residential";
     /**
-     * Prefix name for the floor files.
+     * Prefix name for the ground files.
      */
-    public static final String FLOOR_FILENAME = "floor";
+    public static final String GROUND_FILENAME = "ground";
     /**
      * Prefix name for the industrial files.
      */
