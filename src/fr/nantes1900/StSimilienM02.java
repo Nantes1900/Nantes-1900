@@ -24,11 +24,11 @@ public final class StSimilienM02 {
      */
     public static void main(final String[] args) {
 
-        // Create new town
+        // Creates a new town.
         final Town town = new Town();
-        // Apply the algorithm to it
+        // Applies the algorithm to it.
         town.buildFromMesh("files/St-Similien/m02");
-        // Write the results
-        town.writeCityGML("files/St-Similien/m02/results/StSimilienM02.gml");
+        // Writes the results under STL
+        town.writeSTL("files/St-Similien/m02/results/");
     }
 }

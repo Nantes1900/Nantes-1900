@@ -333,6 +333,7 @@ public class Triangle {
      */
     public final boolean isInPlanes(final Vector3d vect, final Point p,
         final double error) {
+        
         final Edge axisNormalFloor =
             new Edge(new Point(0, 0, 0), new Point(vect.x, vect.y, vect.z));
 

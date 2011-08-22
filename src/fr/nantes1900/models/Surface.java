@@ -75,8 +75,6 @@ public class Surface extends Mesh {
      *            the list of walls to check if the surface is a wall or not
      * @param pointMap
      *            the map of points
-     * @param edgeMap
-     *            the map of edges
      * @param normalGround
      *            the normal to the ground
      * @return a polyline made from all the edges of this surface, and which
@@ -85,14 +83,8 @@ public class Surface extends Mesh {
      *             if a problem happened
      */
     public final Polyline findEdges(final List<Surface> wallList,
-        final Map<Point, Point> pointMap, final Map<Edge, Edge> edgeMap,
-        final Vector3d normalGround) throws InvalidSurfaceException {
-
-        if (this.getNeighbours().size() < 2) {
-            // FIXME : this shouldn't happen... The surfaces which don't have
-            // enough neighbours are sorted and eliminated before.
-            throw new InvalidSurfaceException();
-        }
+        final Map<Point, Point> pointMap, final Vector3d normalGround)
+        throws InvalidSurfaceException {
 
         final Polyline edges = new Polyline();
 
@@ -102,7 +94,7 @@ public class Surface extends Mesh {
 
             edges.add(this.createEdge(this.getNeighbours().get(i), this
                 .getNeighbours().get(i + 1), this.getNeighbours().get(i + 2),
-                pointMap, edgeMap, wallList, normalGround));
+                pointMap, wallList, normalGround));
         }
 
         final int size = this.getNeighbours().size();
@@ -111,11 +103,11 @@ public class Surface extends Mesh {
         // loop.
         edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
             .getNeighbours().get(size - 1), this.getNeighbours().get(0),
-            pointMap, edgeMap, wallList, normalGround));
+            pointMap, wallList, normalGround));
 
         edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
             .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
-            edgeMap, wallList, normalGround));
+            wallList, normalGround));
 
         return edges;
     }
@@ -154,7 +146,6 @@ public class Surface extends Mesh {
         final List<Surface> neighboursOrdered = new ArrayList<Surface>();
 
         final int neighboursNumber = this.getNeighbours().size();
-        int counter = 0;
 
         // If the ground is the neighbour of this surface, then we begin with
         // the ground, to avoid some problems in the future. Otherwise, we begin
@@ -172,8 +163,9 @@ public class Surface extends Mesh {
         // We find the surfaces that are common to this surface and current.
         // There must be two surfaces, but there always are some problems...
         List<Surface> commonNeighbours = this.getCommonNeighbours(current);
+        int counter = 0;
 
-        while (counter < neighboursNumber - 1) {
+        while (counter < neighboursNumber - 2) {
 
             // Adds the current surface to the ordered list.
             neighboursOrdered.add(current);
@@ -187,11 +179,7 @@ public class Surface extends Mesh {
                 // and it will be our next neighbour !
                 commonNeighbours.add(this.findPossibleNeighbour(current,
                     neighboursOrdered));
-
             }
-
-            // Selects the next one. If this one has already been treated, take
-            // another one, not to retrace our steps.
 
             // If there is too much neighbours, this step can resolve it.
             // The ground often causes that kind of problem, that's why we begin
@@ -204,6 +192,7 @@ public class Surface extends Mesh {
                 throw new ImpossibleNeighboursOrderException();
             }
 
+            // Selects the next one (without retracing our steps).
             current = commonNeighbours.get(0);
 
             // Continues with this one.
@@ -211,7 +200,20 @@ public class Surface extends Mesh {
             ++counter;
         }
 
+        // Adds the current surface to the ordered list.
         neighboursOrdered.add(current);
+
+        // No need to end the algorithm : the last one is found because he is
+        // the last one...
+        List<Surface> last = this.getNeighbours();
+        for (Surface s : neighboursOrdered) {
+            last.remove(s);
+        }
+        if (last.size() > 1) {
+            throw new ImpossibleNeighboursOrderException();
+        }
+        // We thus complete the list of ordered neighbours.
+        neighboursOrdered.add(last.get(0));
 
         this.neighbours.clear();
         this.neighbours.addAll(neighboursOrdered);
@@ -281,8 +283,7 @@ public class Surface extends Mesh {
      * With four planes (the three in parameters plus this), builds an edge.
      * Computes the intersection of the first three planes, and the three next.
      * If one plane is wall, rectifies its normal to be vertical. If one point
-     * or one edge has already been created before, use the two hashmaps to find
-     * it.
+     * has already been created before, use the hashmap to find it.
      * 
      * @param s1
      *            the first plane
@@ -292,8 +293,6 @@ public class Surface extends Mesh {
      *            the third plane
      * @param pointMap
      *            the map of existing points
-     * @param edgeMap
-     *            the map of existing edges
      * @param wallList
      *            the list of the walls
      * @param normalGround
@@ -304,8 +303,8 @@ public class Surface extends Mesh {
      */
     private Edge createEdge(final Surface s1, final Surface s2,
         final Surface s3, final Map<Point, Point> pointMap,
-        final Map<Edge, Edge> edgeMap, final List<Surface> wallList,
-        final Vector3d normalGround) throws InvalidSurfaceException {
+        final List<Surface> wallList, final Vector3d normalGround)
+        throws InvalidSurfaceException {
 
         final List<Surface> surfaces = new ArrayList<Surface>();
         surfaces.add(s1);
@@ -315,7 +314,7 @@ public class Surface extends Mesh {
 
         try {
             // TODO : put that factor in the constants package.
-            final double isOrientedFactor = 5;
+            final double isOrientedFactor = 30;
 
             // If there is two neighbours which have the same orientation, then
             // throw an exception.
@@ -370,13 +369,15 @@ public class Surface extends Mesh {
 
             Edge e = new Edge(p1, p2);
 
-            // Idem with the map of edges.
-            final Edge eTemp = edgeMap.get(e);
-            if (eTemp == null) {
-                edgeMap.put(e, e);
-            } else {
-                e = eTemp;
-            }
+            // If we keep this hashmap, some edges which don't have the same
+            // orientation are confused.
+            // // Idem with the map of edges.
+            // final Edge eTemp = edgeMap.get(e);
+            // if (eTemp == null) {
+            // edgeMap.put(e, e);
+            // } else {
+            // e = eTemp;
+            // }
 
             return e;
 
@@ -400,14 +401,14 @@ public class Surface extends Mesh {
      */
     private Surface findPossibleNeighbour(final Surface current,
         final List<Surface> neighboursOrdered) {
-        // FIXME : improve the speed...
         Surface possible = null;
         double distanceMin = Double.POSITIVE_INFINITY;
 
         // From all the neighbours which are not still ordered, select the
         // closest one.
         for (Surface s : this.getNeighbours()) {
-            if (!neighboursOrdered.contains(s)) {
+            if (!neighboursOrdered.contains(s)
+                && !current.getNeighbours().contains(s)) {
                 if (current.minimalDistance(s) < distanceMin) {
                     possible = s;
                     distanceMin = current.minimalDistance(s);

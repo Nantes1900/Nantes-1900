@@ -31,12 +31,12 @@ public final class SeparationTreatmentWallsRoofs {
      * triangles to determine that they belong to the same wall or roof. In
      * degrees.
      */
-    public static final double LARGE_ANGLE_ERROR = 40;
+    public static final double LARGE_ANGLE_ERROR = 25;
 
     /**
      * Error factor : coefficient compared to a dot product to determine if a
-     * triangle normal is normal to the ground (to determine if it's a wall). Not
-     * in degrees !
+     * triangle normal is normal to the ground (to determine if it's a wall).
+     * Not in degrees !
      */
     public static final double NORMALTO_ERROR = 0.2;
 

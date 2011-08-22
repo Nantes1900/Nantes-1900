@@ -246,7 +246,6 @@ public class Mesh extends HashSet<Triangle> {
      * @return true if one edge at least is shared between this and mesh, and
      *         false otherwise.
      */
-    // FIXME : too speedless method. Optimize it.
     public final boolean isNeighbour(final Mesh mesh) {
         if (mesh != this) {
             for (Edge e : this.returnUnsortedBounds().getEdgeList()) {
@@ -284,7 +283,6 @@ public class Mesh extends HashSet<Triangle> {
      *            the other mesh
      * @return the minimal distance between those two meshes
      */
-    // FIXME : improve the speed... a lot !
     public final double minimalDistance(final Mesh mesh) {
 
         final Set<Point> hash1 = new HashSet<Point>();
@@ -365,7 +363,6 @@ public class Mesh extends HashSet<Triangle> {
      * 
      * @return the polyline containing these edges
      */
-    // FIXME : improve this method speed !
     public final Polyline returnUnsortedBounds() {
         final Polyline bounds = new Polyline();
 

@@ -259,7 +259,7 @@ public class Town {
 
         for (Building m : this.industrials) {
             m.writeSTL(directoryName + FilesNames.INDUSTRIAL_FILENAME
-                + FilesNames.SEPARATOR + buildingCounter + FilesNames.EXTENSION);
+                + FilesNames.SEPARATOR + buildingCounter);
             ++buildingCounter;
         }
     }
@@ -275,7 +275,7 @@ public class Town {
 
         for (Building m : this.residentials) {
             m.writeSTL(directoryName + FilesNames.RESIDENTIAL_FILENAME
-                + FilesNames.SEPARATOR + buildingCounter + FilesNames.EXTENSION);
+                + FilesNames.SEPARATOR + buildingCounter);
             ++buildingCounter;
         }
     }

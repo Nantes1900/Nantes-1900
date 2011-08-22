@@ -84,10 +84,9 @@ public class SurfaceTest extends TestCase {
             final List<Surface> wallList = new ArrayList<Surface>();
 
             final Map<Point, Point> pointMap = new HashMap<Point, Point>();
-            final Map<Edge, Edge> edgeMap = new HashMap<Edge, Edge>();
 
             final Polyline p =
-                m5.findEdges(wallList, pointMap, edgeMap, new Vector3d(0, 0, 1));
+                m5.findEdges(wallList, pointMap, new Vector3d(0, 0, 1));
 
             Assert.assertTrue(p.edgeSize() == 4);
             Assert.assertTrue(p.pointSize() == 4);

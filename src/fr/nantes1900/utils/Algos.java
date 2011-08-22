@@ -67,30 +67,30 @@ public final class Algos {
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if the edge is bad formed
      */
-    // FIXME : optimize the velocity. The time of orientedAs is too high...
     public static List<Mesh> blockOrientedAndPlaneExtract(final Mesh m,
         final double angleNormalErrorFactor,
         final double lengthPlanesErrorFactor) {
 
         final List<Mesh> thingsList = new ArrayList<Mesh>();
-        final Mesh mesh = new Mesh(m);
+        List<Mesh> meshList = Algos.blockExtract(m);
 
-        while (!mesh.isEmpty()) {
+        for (Mesh mesh : meshList) {
+            while (!mesh.isEmpty()) {
+                Mesh e = new Mesh();
+                final Triangle tri = mesh.getOne();
 
-            final Mesh e = new Mesh();
-            final Triangle tri = mesh.getOne();
+                final Mesh oriented =
+                    mesh.orientedAs(tri.getNormal(), angleNormalErrorFactor);
 
-            final Mesh oriented =
-                mesh.orientedAs(tri.getNormal(), angleNormalErrorFactor);
+                tri.returnNeighbours(e, oriented);
 
-            tri.returnNeighbours(e, oriented);
+                e =
+                    e.inPlanes(e.averageNormal(), e.getCentroid(),
+                        lengthPlanesErrorFactor);
 
-            Mesh eReal =
-                e.inPlanes(e.averageNormal(), e.getCentroid(),
-                    lengthPlanesErrorFactor);
-
-            mesh.remove(eReal);
-            thingsList.add(eReal);
+                mesh.remove(e);
+                thingsList.add(e);
+            }
         }
 
         return thingsList;

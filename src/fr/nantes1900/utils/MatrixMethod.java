@@ -91,16 +91,9 @@ public final class MatrixMethod {
         matrix1[2][1] = b.y;
 
         // If this condition is found, then we change the matrix.
-        if (b.z > -1 - SingularMatrixException.ERROR_PRECISION
-            && b.z < -1 + SingularMatrixException.ERROR_PRECISION) {
+        if (b.z > -1.01 && b.z < -0.99) {
 
-            // This matrix is choosen as the next one to fulfill the condition
-            // of a good change base, but with different coefficient, to avoid
-            // the division by zero.
-            matrix1[1][1] = 1 + (1 / (b.z - 1)) * b.y * b.y;
-            matrix1[0][1] = (1 / (b.z - 1)) * b.y * b.x;
-            matrix1[1][0] = (1 / (b.z - 1)) * b.y * b.x;
-            matrix1[0][0] = 1 + (1 / (b.z - 1)) * b.x * b.x;
+            throw new SingularMatrixException();
 
         } else {
 
