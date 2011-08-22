@@ -380,41 +380,6 @@ public class Polyline {
     }
 
     /**
-     * Orders the polyline. Each edge in the edge list will be surrounded by its
-     * neighbours. The polyline must be well formed and must be able to be
-     * ordered.
-     */
-    public final void order() {
-        if (!this.isEmpty()) {
-            final Polyline ret = new Polyline();
-
-            try {
-
-                final Edge first = this.getEdgeList().get(0);
-                Point p = first.getP1();
-                Edge e = first.returnNeighbour(this, p);
-                p = e.returnOther(p);
-
-                // While we are not back to the beginning, add it to ret.
-                while (e != first) {
-                    ret.add(e);
-                    e = e.returnNeighbour(this, p);
-                    p = e.returnOther(p);
-                }
-                ret.add(e);
-
-                this.edgeList.clear();
-                this.pointList.clear();
-                this.addAll(ret.getEdgeList());
-
-            } catch (BadFormedPolylineException e1) {
-                // FIXME : make something.
-                e1.printStackTrace();
-            }
-        }
-    }
-
-    /**
      * Returns the edges that are oriented as the edge e, with an orientation
      * error.
      * 

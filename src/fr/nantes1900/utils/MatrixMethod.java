@@ -75,13 +75,6 @@ public final class MatrixMethod {
         final Vector3d b = new Vector3d(baseVector);
         b.normalize();
 
-        // FIXME : improve this. If the condition is verified, find another
-        // matrix which don't have this problem.
-        if (b.z > -1 - SingularMatrixException.ERROR_PRECISION
-            && b.z < -1 + SingularMatrixException.ERROR_PRECISION) {
-            throw new SingularMatrixException();
-        }
-
         if (new Double(b.x).isNaN() || new Double(b.y).isNaN()
             || new Double(b.z).isNaN()) {
             throw new SingularMatrixException();
@@ -97,12 +90,27 @@ public final class MatrixMethod {
         matrix1[2][0] = b.x;
         matrix1[2][1] = b.y;
 
-        // The next base is choosen to have the baseVector as z-axis, and an
-        // orthobase matrix.
-        matrix1[1][1] = -1 + (1 / (b.z + 1)) * b.y * b.y;
-        matrix1[0][1] = (1 / (b.z + 1)) * b.y * b.x;
-        matrix1[1][0] = (1 / (b.z + 1)) * b.y * b.x;
-        matrix1[0][0] = -1 + (1 / (b.z + 1)) * b.x * b.x;
+        // If this condition is found, then we change the matrix.
+        if (b.z > -1 - SingularMatrixException.ERROR_PRECISION
+            && b.z < -1 + SingularMatrixException.ERROR_PRECISION) {
+
+            // This matrix is choosen as the next one to fulfill the condition
+            // of a good change base, but with different coefficient, to avoid
+            // the division by zero.
+            matrix1[1][1] = 1 + (1 / (b.z - 1)) * b.y * b.y;
+            matrix1[0][1] = (1 / (b.z - 1)) * b.y * b.x;
+            matrix1[1][0] = (1 / (b.z - 1)) * b.y * b.x;
+            matrix1[0][0] = 1 + (1 / (b.z - 1)) * b.x * b.x;
+
+        } else {
+
+            // The next base is choosen to have the baseVector as z-axis, and an
+            // orthobase matrix.
+            matrix1[1][1] = -1 + (1 / (b.z + 1)) * b.y * b.y;
+            matrix1[0][1] = (1 / (b.z + 1)) * b.y * b.x;
+            matrix1[1][0] = (1 / (b.z + 1)) * b.y * b.x;
+            matrix1[0][0] = -1 + (1 / (b.z + 1)) * b.x * b.x;
+        }
 
         return matrix1;
     }
@@ -227,7 +235,7 @@ public final class MatrixMethod {
          * Precision (as a double) to check if a matrix determinant is equal to
          * zero.
          */
-        public static final double ERROR_PRECISION = 0.02;
+        public static final double ERROR_PRECISION = 0.05;
 
         /**
          * Private constructor.

@@ -25,7 +25,7 @@ import javax.vecmath.Vector3d;
  */
 public class Building {
 
-    // FIXME : consider refactoring this class : less methods, more clean,
+    // TODO : consider refactoring this class : less methods, more clean,
     // quicker.
 
     /**
@@ -169,7 +169,6 @@ public class Building {
 
         for (Surface surface : wholeTreatedList) {
             try {
-
                 // Orders its neighbours in order to treat them.
                 // If the neighbours of one surface are not 2 per 2 neighbours
                 // each other, then it tries to correct it.
@@ -250,12 +249,10 @@ public class Building {
      * @param grounds
      *            the grounds as one mesh
      * @param noise
+     *            the mesh containing the noise
      */
     private void determinateNeighbours(final List<Surface> wallTreatedList,
         final List<Surface> roofTreatedList, final Surface grounds) {
-
-        final List<Polyline> wallsBoundsList = new ArrayList<Polyline>();
-        final List<Polyline> roofsBoundsList = new ArrayList<Polyline>();
 
         final Polyline groundsBounds = grounds.returnUnsortedBounds();
 
@@ -263,7 +260,18 @@ public class Building {
         wholeList.addAll(wallTreatedList);
         wholeList.addAll(roofTreatedList);
 
-        // TODO : improve that mess method...
+        // FIXME : try this thing...
+        // To find every neighbours, we complete every holes between roofs
+        // and walls by adding all the noise.
+        // List<Mesh> listFakesWalls = new ArrayList<Mesh>(); List<Mesh>
+        // listFakesRoofs = new ArrayList<Mesh>();for (Mesh m : wallList) {Mesh
+        // fakeM = new Mesh(m);listFakesWalls.add(fakeM);} for (Mesh m :
+        // roofList) { Mesh fakeM = new Mesh(m); listFakesRoofs.add(fakeM); }try
+        // { // Add the neighbour noise to the walls.
+        // Algos.blockTreatNoise(listFakesWalls, noise); // Add the neighbour
+        // noise to the roofs.
+        // Algos.blockTreatNoise(listFakesRoofs, noise); } catch
+        // (MoreThanTwoTrianglesPerEdgeException e) { e.printStackTrace(); }
 
         // First we clear the neighbours.
         for (Surface s : wholeList) {
@@ -273,24 +281,19 @@ public class Building {
         grounds.getNeighbours().clear();
 
         // We compute the bounds to check if they share a common edge.
-        for (Mesh w : wallTreatedList) {
-            wallsBoundsList.add(w.returnUnsortedBounds());
-        }
-        for (Mesh r : roofTreatedList) {
-            roofsBoundsList.add(r.returnUnsortedBounds());
-        }
-
         final List<Polyline> wholeBoundsList = new ArrayList<Polyline>();
-        wholeBoundsList.addAll(wallsBoundsList);
-        wholeBoundsList.addAll(roofsBoundsList);
+        for (Mesh m : wholeList) {
+            wholeBoundsList.add(m.returnUnsortedBounds());
+        }
 
         // Then we check every edge of the bounds to see if some are shared by
         // two meshes. If they do, they are neighbours.
         for (int i = 0; i < wholeBoundsList.size(); i = i + 1) {
             final Polyline polyline1 = wholeBoundsList.get(i);
-            // TODO : maybe go from j = i + 1 only ?
-            for (int j = 0; j < wholeBoundsList.size(); j = j + 1) {
+
+            for (int j = i + 1; j < wholeBoundsList.size(); j = j + 1) {
                 final Polyline polyline2 = wholeBoundsList.get(j);
+
                 if (polyline1.isNeighbour(polyline2)) {
                     wholeList.get(i).addNeighbour(wholeList.get(j));
                 }
@@ -331,32 +334,6 @@ public class Building {
         // And we clear the neighbours of the grounds.
         grounds.getNeighbours().clear();
 
-        // FIXME : try this thing... IN DETERMINATE NEIGHBOURS, NOT HERE !
-        // To find every neighbours, we complete every holes between roofs
-        // and walls by adding all the noise.
-        // List<Mesh> listFakesWalls = new ArrayList<Mesh>();
-        // List<Mesh> listFakesRoofs = new ArrayList<Mesh>();
-        //
-        // for (Mesh m : wallList) {
-        // Mesh fakeM = new Mesh(m);
-        // listFakesWalls.add(fakeM);
-        // }
-        // for (Mesh m : roofList) {
-        // Mesh fakeM = new Mesh(m);
-        // listFakesRoofs.add(fakeM);
-        // }
-        // try {
-        // // Add the neighbour noise to the walls.
-        // Algos.blockTreatNoise(listFakesWalls, noise);
-        //
-        // // Add the neighbour noise to the roofs.
-        // Algos.blockTreatNoise(listFakesRoofs, noise);
-        //
-        // } catch (MoreThanTwoTrianglesPerEdgeException e) {
-        // e.printStackTrace();
-        // }
-
-        // FIXME : vérifier que la méthode n'existe pas déjà dans Mesh, Polyline
         // ou Surface... pour améliorer la lisibilité de cette méthode.
         final List<Polyline> wallsBoundsList = new ArrayList<Polyline>();
         final List<Polyline> roofsBoundsList = new ArrayList<Polyline>();
@@ -410,7 +387,8 @@ public class Building {
         // Cut the mesh in parts, considering their orientation.
         final List<Mesh> thingsList =
             Algos.blockOrientedAndPlaneExtract(building,
-                SeparationTreatmentWallsRoofs.ROOF_ANGLE_ERROR);
+                SeparationTreatmentWallsRoofs.ROOF_ANGLE_ERROR,
+                SeparationTreatmentWallsRoofs.PLANES_ERROR);
 
         // Considering their size and their orientation, sort the blocks in
         // roofs or noise. If a wall is oriented in direction of the ground,
@@ -479,7 +457,8 @@ public class Building {
         // Cut the mesh in parts, considering their orientation.
         final List<Mesh> thingsList =
             Algos.blockOrientedAndPlaneExtract(wallOriented,
-                SeparationTreatmentWallsRoofs.WALL_ANGLE_ERROR);
+                SeparationTreatmentWallsRoofs.WALL_ANGLE_ERROR,
+                SeparationTreatmentWallsRoofs.PLANES_ERROR);
 
         // Considering their size, sort the blocks in walls or noise.
         for (Mesh e : thingsList) {

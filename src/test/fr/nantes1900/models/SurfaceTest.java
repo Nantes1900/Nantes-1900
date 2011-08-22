@@ -33,7 +33,6 @@ public class SurfaceTest extends TestCase {
      * {@link fr.nantes1900.models.Mesh#findEdges(java.util.ArrayList, java.util.HashMap, java.util.HashMap, javax.vecmath.Vector3d)}
      * .
      */
-    // TODO : check this method...
     @Test
     public final void testFindEdges() {
         try {
@@ -100,9 +99,8 @@ public class SurfaceTest extends TestCase {
         }
     }
 
-    // TODO : change name.
     @Test
-    public final void testOrdering() {
+    public final void testOrderNeighbours() {
         Vector3d normal = new Vector3d(0, 0, 1);
         try {
             Point p1 = new Point(1, 1, 0);

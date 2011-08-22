@@ -88,8 +88,16 @@ public final class MatrixMethodTest extends TestCase {
 
         vect = new Vector3d(0, 0, -1);
         try {
-            MatrixMethod.createOrthoBase(vect);
-            Assert.fail("Should throw an exception !");
+            final double[][] matrix = MatrixMethod.createOrthoBase(vect);
+            Assert.assertTrue(matrix[0][0] == 1);
+            Assert.assertTrue(matrix[0][1] == 0);
+            Assert.assertTrue(matrix[0][2] == 0);
+            Assert.assertTrue(matrix[1][0] == 0);
+            Assert.assertTrue(matrix[1][1] == 1);
+            Assert.assertTrue(matrix[1][2] == 0);
+            Assert.assertTrue(matrix[2][0] == 0);
+            Assert.assertTrue(matrix[2][1] == 0);
+            Assert.assertTrue(matrix[2][2] == -1);
         } catch (SingularMatrixException e) {
             // If the exception is reached, it's good.
         }

@@ -215,22 +215,6 @@ public class PolylineTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#order()}.
-     */
-    @Test
-    public final void testOrder() {
-        final Polyline pol = new Polyline();
-        pol.add(this.e1);
-        pol.add(this.e2);
-        pol.add(this.e3);
-
-        pol.order();
-        Assert.assertTrue(pol.getEdgeList().get(0) == this.e3);
-        Assert.assertTrue(pol.getEdgeList().get(1) == this.e2);
-        Assert.assertTrue(pol.getEdgeList().get(2) == this.e1);
-    }
-
-    /**
      * Test method for
      * {@link fr.nantes1900.models.Polyline#orientedAs(fr.nantes1900.models.basis.Edge, double)}
      * .

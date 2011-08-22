@@ -518,4 +518,78 @@ public class MeshTest extends TestCase {
     public final void testZMinFace() {
         Assert.assertTrue(this.m.zMinFace() == this.t2);
     }
+
+    /**
+     * Test method for {@link fr.nantes1900.models.Mesh#inPlanes()}.
+     */
+    @Test
+    public final void testInPlanes() {
+        final Point point1 = new Point(1, 0, 0);
+        final Point point2 = new Point(0, 1, 0);
+        final Point point3 = new Point(0, 0, 0);
+
+        final Point point4 = new Point(1, 0, 1);
+        final Point point5 = new Point(0, 1, 1);
+        final Point point6 = new Point(0, 0, 1);
+
+        final Vector3d vector = new Vector3d(0, 0, 1);
+
+        final Edge edge1 = new Edge(point1, point2);
+        final Edge edge2 = new Edge(point2, point3);
+        final Edge edge3 = new Edge(point3, point1);
+
+        final Edge edge4 = new Edge(point4, point5);
+        final Edge edge5 = new Edge(point5, point6);
+        final Edge edge6 = new Edge(point4, point6);
+
+        final Triangle triangle1 =
+            new Triangle(point1, point2, point3, edge1, edge2, edge3, vector);
+        final Triangle triangle2 =
+            new Triangle(point4, point5, point6, edge4, edge5, edge6, vector);
+
+        final Mesh mesh = new Mesh();
+        mesh.add(triangle1);
+        mesh.add(triangle2);
+
+        Mesh mesh2 = mesh.inPlanes(vector, point1, 2.0);
+        Assert.assertTrue(mesh2.contains(triangle1));
+        Assert.assertTrue(mesh2.contains(triangle2));
+
+        Mesh mesh3 = mesh.inPlanes(vector, point1, 0.5);
+        Assert.assertTrue(mesh3.contains(triangle1));
+        Assert.assertFalse(mesh3.contains(triangle2));
+    }
+    
+    @Test
+    public final void testMinimalDistance() {
+        final Point point1 = new Point(1, 0, 0);
+        final Point point2 = new Point(0, 1, 0);
+        final Point point3 = new Point(0, 0, 0);
+
+        final Point point4 = new Point(1, 0, 1);
+        final Point point5 = new Point(0, 1, 1);
+        final Point point6 = new Point(0, 0, 1);
+
+        final Vector3d vector = new Vector3d(0, 0, 1);
+
+        final Edge edge1 = new Edge(point1, point2);
+        final Edge edge2 = new Edge(point2, point3);
+        final Edge edge3 = new Edge(point3, point1);
+
+        final Edge edge4 = new Edge(point4, point5);
+        final Edge edge5 = new Edge(point5, point6);
+        final Edge edge6 = new Edge(point4, point6);
+
+        final Triangle triangle1 =
+            new Triangle(point1, point2, point3, edge1, edge2, edge3, vector);
+        final Triangle triangle2 =
+            new Triangle(point4, point5, point6, edge4, edge5, edge6, vector);
+
+        final Mesh mesh1 = new Mesh();
+        mesh1.add(triangle1);
+        final Mesh mesh2 = new Mesh();
+        mesh2.add(triangle2);
+
+        Assert.assertEquals(mesh1.minimalDistance(mesh2), 1.0);
+    }
 }

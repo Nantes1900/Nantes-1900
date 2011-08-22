@@ -102,6 +102,7 @@ public class WriterCityGML {
         final List<SurfaceProperty> surfaceMember =
             new ArrayList<SurfaceProperty>();
 
+        // Creates the surface object.
         final CompositeSurface compositeSurface =
             this.gml.createCompositeSurface();
         compositeSurface.setSurfaceMember(surfaceMember);
@@ -116,16 +117,21 @@ public class WriterCityGML {
 
         try {
             for (Polyline surface : buildingToAdd.getWalls()) {
+                // Creates the geometry as a suite of coordinates.
                 final Polygon geometry =
                     this.geom.createLinearPolygon(surface
                         .getPointsAsCoordinates(), 3);
+
+                // Adds an ID.
                 geometry.setId(this.gmlIdManager.generateGmlId());
                 surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
                     .getId()));
 
+                // Creates a surface.
                 final AbstractBoundarySurface boundarySurface =
                     this.citygml.createWallSurface();
 
+                // Adds the polygon as a surface.
                 boundarySurface.setLod2MultiSurface(this.gml
                     .createMultiSurfaceProperty(this.gml
                         .createMultiSurface(geometry)));
@@ -134,7 +140,9 @@ public class WriterCityGML {
                     .createBoundarySurfaceProperty(boundarySurface));
             }
 
+            // Idem for the roofs.
             for (Polyline surface : buildingToAdd.getRoofs()) {
+                // Creates the polygon.
                 final Polygon geometry =
                     this.geom.createLinearPolygon(surface
                         .getPointsAsCoordinates(), 3);
@@ -142,9 +150,11 @@ public class WriterCityGML {
                 surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
                     .getId()));
 
+                // Creates the roof.
                 final AbstractBoundarySurface boundarySurface =
                     this.citygml.createRoofSurface();
 
+                // Adds the polygon as the surface.
                 boundarySurface.setLod2MultiSurface(this.gml
                     .createMultiSurfaceProperty(this.gml
                         .createMultiSurface(geometry)));
@@ -182,9 +192,7 @@ public class WriterCityGML {
      * @param ground
      *            the ground to add
      */
-    // TODO : make this method again, with the correct types.
     public final void addGround(final Ground ground) {
-        // FIXME : make a real ground...
         final Building building = this.citygml.createBuilding();
 
         // LOD2 solid
@@ -205,6 +213,7 @@ public class WriterCityGML {
 
         try {
             for (Triangle t : ground.getMesh()) {
+                // Creates the polygon.
                 final Polygon geometry =
                     this.geom
                         .createLinearPolygon(t.getPointsAsCoordinates(), 3);
@@ -212,9 +221,11 @@ public class WriterCityGML {
                 surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
                     .getId()));
 
+                // Creates the ground surface.
                 final AbstractBoundarySurface boundarySurface =
-                    this.citygml.createRoofSurface();
+                    this.citygml.createGroundSurface();
 
+                // Adds the polygon as the surface.
                 boundarySurface.setLod2MultiSurface(this.gml
                     .createMultiSurfaceProperty(this.gml
                         .createMultiSurface(geometry)));
@@ -272,6 +283,7 @@ public class WriterCityGML {
 
         try {
             for (Triangle t : specialBuilding.getMesh()) {
+                // Creates the polygon.
                 final Polygon geometry =
                     this.geom
                         .createLinearPolygon(t.getPointsAsCoordinates(), 3);
@@ -279,9 +291,11 @@ public class WriterCityGML {
                 surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
                     .getId()));
 
+                // Creates the building as a surface.
                 final AbstractBoundarySurface boundarySurface =
-                    this.citygml.createRoofSurface();
+                    this.citygml.createWallSurface();
 
+                // Adds the polygon as the surface.
                 boundarySurface.setLod2MultiSurface(this.gml
                     .createMultiSurfaceProperty(this.gml
                         .createMultiSurface(geometry)));

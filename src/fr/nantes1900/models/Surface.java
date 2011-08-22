@@ -77,7 +77,7 @@ public class Surface extends Mesh {
      *            the map of points
      * @param edgeMap
      *            the map of edges
-     * @param normalFloor
+     * @param normalGround
      *            the normal to the ground
      * @return a polyline made from all the edges of this surface, and which
      *         perfectly fits to its neighbours.
@@ -86,40 +86,36 @@ public class Surface extends Mesh {
      */
     public final Polyline findEdges(final List<Surface> wallList,
         final Map<Point, Point> pointMap, final Map<Edge, Edge> edgeMap,
-        final Vector3d normalFloor) throws InvalidSurfaceException {
+        final Vector3d normalGround) throws InvalidSurfaceException {
+
+        if (this.getNeighbours().size() < 2) {
+            // FIXME : this shouldn't happen... The surfaces which don't have
+            // enough neighbours are sorted and eliminated before.
+            throw new InvalidSurfaceException();
+        }
 
         final Polyline edges = new Polyline();
 
         // The neighbours are sorted, then it's easy to make the edges and
         // points.
         for (int i = 0; i < this.getNeighbours().size() - 2; ++i) {
-            // try {
+
             edges.add(this.createEdge(this.getNeighbours().get(i), this
                 .getNeighbours().get(i + 1), this.getNeighbours().get(i + 2),
-                pointMap, edgeMap, wallList, normalFloor));
-            // } catch (BadNeighbourException e) {
-            // this.getNeighbours().remove(e.getNeighbourError());
-            // }
+                pointMap, edgeMap, wallList, normalGround));
         }
 
         final int size = this.getNeighbours().size();
 
-        // We add the last missing edges which where not treated in the loop.
-        // try {
+        // We add the last missing edges which where not treated in the
+        // loop.
         edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
             .getNeighbours().get(size - 1), this.getNeighbours().get(0),
-            pointMap, edgeMap, wallList, normalFloor));
-        // } catch (BadNeighbourException e) {
-        // // If this error happens, we don't add the edge. FIXME.
-        // }
+            pointMap, edgeMap, wallList, normalGround));
 
-        // try {
         edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
             .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
-            edgeMap, wallList, normalFloor));
-        // } catch (BadNeighbourException e) {
-        // // If this error happens, we don't add the edge. FIXME.
-        // }
+            edgeMap, wallList, normalGround));
 
         return edges;
     }
@@ -161,17 +157,16 @@ public class Surface extends Mesh {
         int counter = 0;
 
         // If the ground is the neighbour of this surface, then we begin with
-        // the
-        // ground, to avoid some problems in the future. Otherwise, we begin
+        // the ground, to avoid some problems in the future. Otherwise, we begin
         // where we want.
-        Surface current = this.getNeighbours().get(0);
-        if (this.getNeighbours().contains(grounds)) {
-
-            try {
+        Surface current = null;
+        try {
+            current = this.getNeighbours().get(0);
+            if (this.getNeighbours().contains(grounds)) {
                 current = this.getCommonNeighbours(grounds).get(0);
-            } catch (IndexOutOfBoundsException e) {
-                throw new ImpossibleNeighboursOrderException();
             }
+        } catch (IndexOutOfBoundsException e) {
+            throw new ImpossibleNeighboursOrderException();
         }
 
         // We find the surfaces that are common to this surface and current.
@@ -250,12 +245,11 @@ public class Surface extends Mesh {
      * Returns a mesh composed of only one triangle which represents a plane in
      * 3D space.
      * 
-     * @param normalFloor
+     * @param normalGround
      *            the normal to the ground
      * @return the mesh with only one triangle
      */
-    // TODO : put this in Surface ?
-    public final Surface returnVerticalPlane(final Vector3d normalFloor) {
+    public final Surface returnVerticalPlane(final Vector3d normalGround) {
 
         final Vector3d averageNormal = this.averageNormal();
 
@@ -264,10 +258,10 @@ public class Surface extends Mesh {
         final Point centroid =
             new Point(this.xAverage(), this.yAverage(), this.zAverage());
 
-        // TODO : if normal.getY() == 0 ?
-        final Point p1 =
+        Point p1 =
             new Point(centroid.getX() + 1, centroid.getY()
                 - averageNormal.getX() / averageNormal.getY(), centroid.getZ());
+
         final Point p2 = p1;
         final Point p3 = centroid;
 
@@ -276,7 +270,7 @@ public class Surface extends Mesh {
         final Edge e3 = new Edge(p1, p3);
 
         final Vector3d vect = new Vector3d();
-        vect.cross(normalFloor, e3.convertToVector3d());
+        vect.cross(normalGround, e3.convertToVector3d());
 
         computedWallPlane.add(new Triangle(p1, p2, p3, e1, e2, e3, vect));
 
@@ -302,7 +296,7 @@ public class Surface extends Mesh {
      *            the map of existing edges
      * @param wallList
      *            the list of the walls
-     * @param normalFloor
+     * @param normalGround
      *            the normal to the ground
      * @return the edge created by these four planes
      * @throws InvalidSurfaceException
@@ -311,7 +305,7 @@ public class Surface extends Mesh {
     private Edge createEdge(final Surface s1, final Surface s2,
         final Surface s3, final Map<Point, Point> pointMap,
         final Map<Edge, Edge> edgeMap, final List<Surface> wallList,
-        final Vector3d normalFloor) throws InvalidSurfaceException {
+        final Vector3d normalGround) throws InvalidSurfaceException {
 
         final List<Surface> surfaces = new ArrayList<Surface>();
         surfaces.add(s1);
@@ -320,25 +314,18 @@ public class Surface extends Mesh {
         surfaces.add(this);
 
         try {
-            // LOOK : put that factor in the constants package.
+            // TODO : put that factor in the constants package.
             final double isOrientedFactor = 5;
 
             // If there is two neighbours which have the same orientation, then
             // throw an exception.
-            // FIXME : try to improve that mess ?
-            if (this.isOrientedAs(s1, isOrientedFactor)) {
+            if (this.isOrientedAs(s1, isOrientedFactor)
+                || this.isOrientedAs(s2, isOrientedFactor)
+                || this.isOrientedAs(s3, isOrientedFactor)) {
                 throw new ParallelPlanesException();
             }
-            if (this.isOrientedAs(s2, isOrientedFactor)) {
-                throw new ParallelPlanesException();
-            }
-            if (this.isOrientedAs(s3, isOrientedFactor)) {
-                throw new ParallelPlanesException();
-            }
-            if (s1.isOrientedAs(s2, isOrientedFactor)) {
-                throw new ParallelPlanesException();
-            }
-            if (s2.isOrientedAs(s3, isOrientedFactor)) {
+            if (s1.isOrientedAs(s2, isOrientedFactor)
+                || s2.isOrientedAs(s3, isOrientedFactor)) {
                 throw new ParallelPlanesException();
             }
 
@@ -348,7 +335,7 @@ public class Surface extends Mesh {
             for (Surface s : surfaces) {
                 if (s != this) {
                     if (wallList.contains(s)) {
-                        list.add(s.returnVerticalPlane(normalFloor));
+                        list.add(s.returnVerticalPlane(normalGround));
                     } else {
                         list.add(s);
                     }
@@ -357,7 +344,7 @@ public class Surface extends Mesh {
 
             Mesh mesh = this;
             if (wallList.contains(this)) {
-                mesh = this.returnVerticalPlane(normalFloor);
+                mesh = this.returnVerticalPlane(normalGround);
             }
 
             // Finds the intersection of the three surfaces.
@@ -394,9 +381,6 @@ public class Surface extends Mesh {
             return e;
 
         } catch (SingularMatrixException e) {
-            // System.out.println("Singular matrix !");
-            // FIXME : try this new exception...
-            // throw new BadNeighbourException();
             throw new InvalidSurfaceException();
         } catch (ParallelPlanesException e) {
             throw new InvalidSurfaceException();
@@ -414,7 +398,6 @@ public class Surface extends Mesh {
      * @return the closest surface of current belonging to the neighbours of
      *         this, not belonging to the list neighboursOrdered
      */
-    // FIXME : refactor this method...
     private Surface findPossibleNeighbour(final Surface current,
         final List<Surface> neighboursOrdered) {
         // FIXME : improve the speed...
@@ -450,46 +433,6 @@ public class Surface extends Mesh {
             }
         }
         return ret;
-    }
-
-    /**
-     * Implements an exception used in algorithms when a neighbour provoques
-     * errors and must be removed of the list of neighbours. Used when a
-     * SingularMatrixException happens. Contains the neighbours surface which
-     * caused the error.
-     * 
-     * @author Daniel Lefevre
-     */
-    public static final class BadNeighbourException extends Exception {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * The neighbour which caused the error.
-         */
-        private final Surface errorNeighbour;
-
-        /**
-         * Private constructor.
-         * 
-         * @param s
-         *            the neighbour which caused the error.
-         */
-        private BadNeighbourException(final Surface s) {
-            this.errorNeighbour = s;
-        }
-
-        /**
-         * Returns the neighbour which caused the error.
-         * 
-         * @return one of the neighbour
-         */
-        public Surface getNeighbourError() {
-            return this.errorNeighbour;
-        }
     }
 
     /**

@@ -176,7 +176,6 @@ public class Mesh extends HashSet<Triangle> {
      *            the distance between the two planes and p
      * @return the triangles which are between those two planes
      */
-    // TODO : test !
     public final Mesh inPlanes(final Vector3d vect, final Point p,
         final double error) {
         final Mesh ret = new Mesh();
@@ -209,9 +208,6 @@ public class Mesh extends HashSet<Triangle> {
         final Vector3d vect1 = this.averageNormal();
         final Vector3d vect2 = m2.averageNormal();
         final Vector3d vect3 = m3.averageNormal();
-
-        // FIXME : verifications : if they are colinear... ? This problem is
-        // linked with the singular matrix problem !
 
         // Creates three planes from the three meshes.
         final double a1 = vect1.x;
@@ -288,7 +284,6 @@ public class Mesh extends HashSet<Triangle> {
      *            the other mesh
      * @return the minimal distance between those two meshes
      */
-    // TODO : test !
     // FIXME : improve the speed... a lot !
     public final double minimalDistance(final Mesh mesh) {
 

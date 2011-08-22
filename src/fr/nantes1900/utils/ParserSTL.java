@@ -104,10 +104,8 @@ public class ParserSTL {
     }
 
     /**
-     * Reads one line of the file. If a point is out of bounds, it removes it.
-     * If a triangle is flat, it removes it. It doesn't create double points for
-     * points which have the same values, but give to the two triangles the same
-     * reference to the point (and same work for the edges).
+     * Reads one line of the file, considering the beginning of the line.
+     * Returns true when an entire has been read, and false otherwise.
      * 
      * @param line
      *            the line as a String
@@ -117,104 +115,46 @@ public class ParserSTL {
      * @param currentVector
      *            temporary parameter to stock the read vector of the current
      *            triangle
-     * @throws FlatTriangleException
-     *             if the triangle is flat (two points equals)
-     * @throws OutOfBoundsPointException
-     *             if one point has a coordinate > 1e5
-     * @throws BadFormedFileException
-     *             if the file is not well formed
+     * @return true when an entire has been read, and false otherwise.
      */
-    // FIXME : consider refactoring this method : too many "if" and too much
-    // complexity.
-    private void processLineA(final String line, Vector3d currentVector,
-        List<Point> currentPoints) throws FlatTriangleException,
-        OutOfBoundsPointException, BadFormedFileException {
+    private boolean processLineA(final String line, Vector3d currentVector,
+        List<Point> currentPoints) {
 
-        if (line.isEmpty()) {
-            throw new BadFormedFileException();
-        } else {
+        // If the line is empty, the parser passes to the next line.
+        if (!line.isEmpty()) {
+
             // Select the first word of the line.
             final StringTokenizer brokenLine = new StringTokenizer(line, " ");
             final String openingWord = brokenLine.nextToken();
 
-            // If the word is facet normal, read the vetor.
-            if ("facet".equals(openingWord)) {
-                if ("normal".equals(brokenLine.nextToken())) {
-                    currentVector.set(Double
-                        .parseDouble(brokenLine.nextToken()), Double
-                        .parseDouble(brokenLine.nextToken()), Double
+            // If the word is facet normal, read the vector.
+            if ("facet".equals(openingWord)
+                && "normal".equals(brokenLine.nextToken())) {
+                currentVector.set(Double.parseDouble(brokenLine.nextToken()),
+                    Double.parseDouble(brokenLine.nextToken()), Double
                         .parseDouble(brokenLine.nextToken()));
 
-                    currentVector.normalize();
-                } else {
-                    throw new BadFormedFileException();
-                }
-            } else {
-                // If the word is vertex, read one of the
-                // three points.
-                if ("vertex".equals(openingWord)) {
-                    Point p =
-                        new Point((float) Double.parseDouble(brokenLine
-                            .nextToken()), (float) Double
-                            .parseDouble(brokenLine.nextToken()),
-                            (float) Double.parseDouble(brokenLine.nextToken()));
+                currentVector.normalize();
+            }
 
-                    p = this.treatPoint(p);
+            // If the word is vertex, read one of the three points.
+            else if ("vertex".equals(openingWord)) {
+                Point p =
+                    new Point((float) Double
+                        .parseDouble(brokenLine.nextToken()), (float) Double
+                        .parseDouble(brokenLine.nextToken()), (float) Double
+                        .parseDouble(brokenLine.nextToken()));
 
-                    currentPoints.add(p);
-                } else {
-                    // If the the points are read, create
-                    // the triangle and add
-                    // it to the HashSet.
-                    if ("endfacet".equals(openingWord)) {
-                        Edge e1 =
-                            new Edge(currentPoints.get(0), currentPoints.get(1));
-                        Edge e2 =
-                            new Edge(currentPoints.get(1), currentPoints.get(2));
-                        Edge e3 =
-                            new Edge(currentPoints.get(2), currentPoints.get(0));
+                currentPoints.add(p);
+            }
 
-                        // Checks in the HashSet of edges if this edge doesn't
-                        // already exist. If it already exists, it doesn't
-                        // create another edge, but keep the same reference.
-                        e1 = this.treatEdge(e1);
-                        e2 = this.treatEdge(e2);
-                        e3 = this.treatEdge(e3);
-
-                        // Check for the flat triangles.
-                        if (e1 == e2 || e2 == e3 || e1 == e3) {
-                            throw new FlatTriangleException();
-                        }
-
-                        try {
-                            if (e1.getNumberTriangles() == 2
-                                || e2.getNumberTriangles() == 2
-                                || e3.getNumberTriangles() == 2) {
-                                throw new MoreThanTwoTrianglesPerEdgeException();
-                            }
-                            this.triangleSet.add(new Triangle(currentPoints
-                                .get(0), currentPoints.get(1), currentPoints
-                                .get(2), e1, e2, e3, currentVector));
-                        } catch (MoreThanTwoTrianglesPerEdgeException e) {
-                            // Make nothing : we can't add this triangle.
-                        }
-
-                        // TODO : test in the ParserSTLTest the bad points and
-                        // edges, and etc...
-                    } else {
-                        // If the triangle is read, clear
-                        // the currentPoints
-                        // static ArrayList for the next
-                        // triangle.
-                        if ("outer".equals(openingWord)) {
-                            if ("loop".equals(brokenLine.nextToken())) {
-                                currentPoints.clear();
-                            }
-                        }
-                    }
-                }
+            // If the the points are read, return true so that readSTLA builds
+            // the triangle.
+            else if ("endfacet".equals(openingWord)) {
+                return true;
             }
         }
+        return false;
     }
 
     /**
@@ -300,29 +240,60 @@ public class ParserSTL {
 
         this.triangleSet = new HashSet<Triangle>();
 
-        Vector3d currentVector = new Vector3d();
-        List<Point> currentPoints = new ArrayList<Point>();
+        final Vector3d currentVector = new Vector3d();
+        final List<Point> currentPoints = new ArrayList<Point>();
 
         // Reading the file
         try {
             while (scanner.hasNextLine()) {
-                // Reacting to the line
-                try {
-                    // If a Triangle exists already, and if
-                    // the Parser read another Triangle with the same
-                    // values, only one of those Triangles will be added to the
-                    // Mesh.
-                    this.processLineA(scanner.nextLine(), currentVector,
-                        currentPoints);
-                    // FIXME : I don't know if the exception must be here......
-                    // Treat them inside !
-                } catch (FlatTriangleException e) {
-                    // If it is a flat Triangle : 2
-                    // identical Points, then 2 identical Edge, it is not added
-                    // to the Mesh.
-                } catch (OutOfBoundsPointException e) {
-                    // The coordinates of the Point are
-                    // unbounded, then the Triangle is not added to the Mesh.
+
+                // If the processLineA have finished to read an entire triangle,
+                // it proceeds to the treatment.
+                if (this.processLineA(scanner.nextLine(), currentVector,
+                    currentPoints)) {
+
+                    try {
+                        // From the points read, checks in the hashset if they
+                        // doesn't already exist.
+                        Point p1 = this.treatPoint(currentPoints.get(0));
+                        Point p2 = this.treatPoint(currentPoints.get(1));
+                        Point p3 = this.treatPoint(currentPoints.get(2));
+
+                        // Checks in the HashSet of edges if this edge doesn't
+                        // already exist. If it already exists, it doesn't
+                        // create another edge, but keep the same reference.
+                        Edge e1 = this.treatEdge(new Edge(p1, p2));
+                        Edge e2 = this.treatEdge(new Edge(p2, p3));
+                        Edge e3 = this.treatEdge(new Edge(p3, p1));
+
+                        // Checks for the flat triangles.
+                        if (e1 == e2 || e2 == e3 || e1 == e3) {
+                            throw new FlatTriangleException();
+                        }
+
+                        if (e1.getNumberTriangles() == 2
+                            || e2.getNumberTriangles() == 2
+                            || e3.getNumberTriangles() == 2) {
+                            throw new MoreThanTwoTrianglesPerEdgeException();
+                        }
+
+                        this.triangleSet.add(new Triangle(p1, p2, p3, e1, e2,
+                            e3, currentVector));
+
+                        System.out.println(this.triangleSet.size());
+
+                    } catch (MoreThanTwoTrianglesPerEdgeException e) {
+                        // This triangle can't be add : three triangles per edge
+                        // will cause problems in the program.
+                    } catch (FlatTriangleException e) {
+                        // If it is a flat Triangle : 2 identical Points, then 2
+                        // identical Edge, it is not added to the Mesh.
+                    } catch (OutOfBoundsPointException e) {
+                        // The coordinates of the Point are unbounded, then the
+                        // Triangle is not added to the Mesh.
+                    } finally {
+                        currentPoints.clear();
+                    }
                 }
             }
         } finally {
@@ -459,25 +430,6 @@ public class ParserSTL {
             return point;
         } else {
             return mapP;
-        }
-    }
-
-    /**
-     * Implements an exception when the file is bad formed.
-     * 
-     * @author Daniel Lefevre
-     */
-    public static final class BadFormedFileException extends IOException {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        private BadFormedFileException() {
         }
     }
 

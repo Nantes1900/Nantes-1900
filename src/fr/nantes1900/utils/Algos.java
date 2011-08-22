@@ -1,6 +1,5 @@
 package fr.nantes1900.utils;
 
-import fr.nantes1900.constants.SeparationTreatmentWallsRoofs;
 import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.Surface;
 import fr.nantes1900.models.basis.Triangle;
@@ -70,7 +69,8 @@ public final class Algos {
      */
     // FIXME : optimize the velocity. The time of orientedAs is too high...
     public static List<Mesh> blockOrientedAndPlaneExtract(final Mesh m,
-        final double angleNormalErrorFactor) {
+        final double angleNormalErrorFactor,
+        final double lengthPlanesErrorFactor) {
 
         final List<Mesh> thingsList = new ArrayList<Mesh>();
         final Mesh mesh = new Mesh(m);
@@ -85,10 +85,9 @@ public final class Algos {
 
             tri.returnNeighbours(e, oriented);
 
-            // FIXME : put that error in the parameters of the function.
             Mesh eReal =
                 e.inPlanes(e.averageNormal(), e.getCentroid(),
-                    SeparationTreatmentWallsRoofs.PLANES_ERROR);
+                    lengthPlanesErrorFactor);
 
             mesh.remove(eReal);
             thingsList.add(eReal);
@@ -109,8 +108,6 @@ public final class Algos {
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if the edge is bad formed
      */
-    // LOOK : we can maybe gain speed in this method, which completely lacks of
-    // velocity.
     public static void blockTreatNoise(final List<Mesh> list, final Mesh noise) {
 
         final List<Mesh> m = new ArrayList<Mesh>();
@@ -142,8 +139,6 @@ public final class Algos {
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if the edge is bad formed
      */
-    // LOOK : we can maybe gain speed in this method, which completely lacks of
-    // velocity.
     public static void blockTreatOrientedNoise(final List<Surface> wallList,
         final Mesh noise, final double largeAngleNormalErrorFactor) {
 

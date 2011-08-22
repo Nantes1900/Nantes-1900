@@ -3,14 +3,14 @@ package fr.nantes1900.models.extended;
 import fr.nantes1900.models.Mesh;
 
 /**
- * Implements a ground as a mesh with an associated String attribute.
+ * Implements a floor as a mesh with an associated String attribute.
  * 
  * @author Daniel Lefevre
  */
 public class Ground {
 
     /**
-     * The attribute describing the type of the ground.
+     * The attribute describing the type of the floor.
      */
     private String attribute;
     /**
@@ -30,7 +30,7 @@ public class Ground {
     }
 
     /**
-     * Builds a ground from a mesh, by computing the algorithms.
+     * Builds a floor from a mesh, by computing the algorithms.
      * 
      * @param m
      *            the mesh to convert
@@ -42,12 +42,12 @@ public class Ground {
     }
 
     /**
-     * Decimates the ground. Not implemented.
+     * Decimates the floor. Not implemented.
      * 
-     * @param ground
-     *            the ground to decimate as a mesh
+     * @param floor
+     *            the floor to decimate as a mesh
      */
-    public void decimate(final Mesh ground) {
+    public void decimate(final Mesh floor) {
         // TODO : implement this method.
     }
 
@@ -63,7 +63,7 @@ public class Ground {
     /**
      * Getter.
      * 
-     * @return the ground as a mesh
+     * @return the floor as a mesh
      */
     public final Mesh getMesh() {
         return this.mesh;
@@ -80,7 +80,7 @@ public class Ground {
     }
 
     /**
-     * Writes the ground as a mesh in a STL file.
+     * Writes the floor as a mesh in a STL file.
      * 
      * @param fileName
      *            the name of the file to write in

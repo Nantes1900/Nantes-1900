@@ -431,10 +431,6 @@ public class Town {
      * @return a mesh containing the ground
      */
     private Mesh groundExtraction(final Mesh mesh, final Vector3d normalGround) {
-        // TODO? Return an exception if there is no ground in the mesh, such as
-        // :
-        // please get some grounds during the previous cut ! Write it in the
-        // "protocole de découpage" document.
 
         // Searches for ground-oriented triangles with an error.
         Mesh meshOriented =
@@ -530,7 +526,6 @@ public class Town {
      *            the noise mesh computed by former algorithms
      * @return a list of grounds completed with noise
      */
-    // TODO : check if this method works, and then commit this class.
     private List<Mesh> noiseTreatment(final Mesh groundsMesh, final Mesh noise) {
 
         List<Mesh> list;
@@ -586,12 +581,12 @@ public class Town {
         // possible.
         final List<Mesh> groundsMesh = this.noiseTreatment(wholeGround, noise);
 
-        // FIXME : code this method : cut the little walls, and other things
-        // that are not buildings.
+        // Cut the little walls, and other things that are not buildings.
+        // TODO : not implemented.
         // ArrayList<Mesh> formsList = this.carveRealBuildings(buildings);
 
-        // Foreach building, create an building object, call the algorithm
-        // to build it and add it to the list of this town.
+        // Foreach building, create an building object, call the algorithm to
+        // build it and add it to the list of this town.
         List<Building> listBuildings = new ArrayList<Building>();
 
         for (Mesh m : buildings) {
@@ -605,12 +600,24 @@ public class Town {
         for (Mesh m : groundsMesh) {
             final Ground ground = new Ground("street");
             ground.buildFromMesh(m);
+            this.addGround(ground);
         }
 
-        // TODO : treat the not real buildings : the formsList which
-        // contains walls, chimneys, maybe trains, boats, and other forms.
-
         return listBuildings;
+    }
+
+    /**
+     * Cut in a building zone the forms which are not buildings : little walls,
+     * chimneys. Method not implemented.
+     * 
+     * @param buildings
+     *            the list of buildings to treat
+     * @return the list of the forms
+     */
+    @SuppressWarnings("unused")
+    private ArrayList<Mesh> carveRealBuildings(List<Mesh> buildings) {
+        // TODO : implement this method.
+        return null;
     }
 
     /**
@@ -634,9 +641,7 @@ public class Town {
                 + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
                 + counterGrounds + FilesNames.EXTENSION));
 
-            ground.getMesh().changeBase(this.matrix);
-
-            this.addGround(ground);
+            this.addGround(this.treatGroundZone(ground));
 
             ++counterGrounds;
         }
@@ -655,8 +660,6 @@ public class Town {
      */
     private void treatIndustrials(final String directoryName,
         final Vector3d normalGravityOriented) {
-        // FIXME : maybe create the same private method for things common with
-        // treat residentials...
         int counterIndustrials = 1;
 
         // While there is files correctly named...
@@ -671,9 +674,9 @@ public class Town {
                     + FilesNames.EXTENSION);
 
             Vector3d realNormalToTheGround;
+
             // If another ground normal is available, extract it. Otherwise,
-            // keep
-            // the normal gravity-oriented as the normal to the ground.
+            // keep the normal gravity-oriented as the normal to the ground.
             if (new File(directoryName + FilesNames.GROUND_FILENAME
                 + FilesNames.SEPARATOR + counterIndustrials
                 + FilesNames.EXTENSION).exists()) {
@@ -689,11 +692,6 @@ public class Town {
                 realNormalToTheGround = normalGravityOriented;
             }
 
-            // LOOK : after extracting the
-            // normalGravityOriented, then make the change base on each mesh
-            // and assume that this normal is (0, 0, 1).
-            // Then the real normalGround will not be confonded.
-            // Make it on all the source codes !
             this.addIndustrials(this.treatBuildingZone(realNormalToTheGround,
                 mesh));
 
@@ -786,6 +784,20 @@ public class Town {
     }
 
     /**
+     * Treats the ground object. For the moment, it just changes base.
+     * 
+     * @param groundZone
+     *            the ground to treat
+     * @return the ground treated
+     */
+    private Ground treatGroundZone(Ground groundZone) {
+
+        groundZone.getMesh().changeBase(this.matrix);
+
+        return groundZone;
+    }
+
+    /**
      * Treats the files of wateries which are in the directory. Creates Ground
      * objects for each files, puts an attribute : Water, and calls the
      * buildFromMesh method of Ground. Then adds it to the list of wateries.
@@ -794,8 +806,6 @@ public class Town {
      *            the directory name to find the wateries.
      */
     private void treatWateries(final String directoryName) {
-        // FIXME : see in treatGrounds, it's the same. Maybe create a private
-        // common shared method.
 
         int counterWateries = 1;
 
@@ -809,9 +819,7 @@ public class Town {
                 + FilesNames.WATERY_FILENAME + FilesNames.SEPARATOR
                 + counterWateries + FilesNames.EXTENSION));
 
-            watery.getMesh().changeBase(this.matrix);
-
-            this.addWatery(watery);
+            this.addWatery(this.treatGroundZone(watery));
 
             ++counterWateries;
         }

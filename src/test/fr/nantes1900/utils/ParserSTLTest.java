@@ -5,7 +5,6 @@ import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.utils.ParserSTL;
-import fr.nantes1900.utils.ParserSTL.BadFormedFileException;
 import fr.nantes1900.utils.WriterSTL;
 
 import java.io.File;
@@ -34,15 +33,16 @@ public final class ParserSTLTest extends TestCase {
     }
 
     /**
-     * Test method for
-     * {@link nantes1900pjct.utils.ParserSTL#read(java.lang.String)} and
+     * Test method for {@link nantes1900.utils.ParserSTL#read(java.lang.String)}
+     * and
      * {@link nantes1900.utils.WriteSTL#writeFinalSurfacesSTL(java.lang.String)}
-     * Same test as write in WriterTest.
+     * This method also tests the class WriterSTL.
      */
     @Test
     public void testReadWriteSTL() {
 
         try {
+            // TODO : add some errors to see if they are well treated.
             final Point p1 = new Point(1, 0, -1);
             final Point p2 = new Point(0, 1, 0);
             final Point p3 = new Point(-1, 2, 1);
@@ -94,8 +94,6 @@ public final class ParserSTLTest extends TestCase {
             Assert.assertTrue(readListB.get(1).equals(t1)
                 || readListB.get(1).equals(t2));
 
-        } catch (BadFormedFileException e) {
-            Assert.fail("BadFormedFileException !");
         } catch (IOException e) {
             Assert.fail("IOException !");
         }
