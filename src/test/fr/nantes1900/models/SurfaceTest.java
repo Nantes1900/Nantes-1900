@@ -29,6 +29,12 @@ import org.junit.Test;
 public class SurfaceTest extends TestCase {
 
     /**
+     * Void constructor.
+     */
+    public SurfaceTest() {
+    }
+
+    /**
      * Test method for
      * {@link fr.nantes1900.models.Mesh#findEdges(java.util.ArrayList, java.util.HashMap, java.util.HashMap, javax.vecmath.Vector3d)}
      * .
@@ -98,6 +104,11 @@ public class SurfaceTest extends TestCase {
         }
     }
 
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.Surface#orderNeighbours(java.util.List, fr.nantes1900.models.Surface)}
+     * .
+     */
     @Test
     public final void testOrderNeighbours() {
         final Vector3d normal = new Vector3d(0, 0, 1);
@@ -152,7 +163,6 @@ public class SurfaceTest extends TestCase {
 
             // We introduce a mistake : s4 is not for the moment neighbour to
             // s5.
-
             // Other mistake : s5 is not yet neighbour to s6.
 
             s6.addNeighbour(s7);
@@ -180,5 +190,74 @@ public class SurfaceTest extends TestCase {
         } catch (final ImpossibleNeighboursOrderException e) {
             Assert.fail();
         }
+    }
+
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.Surface#returnNeighbours(java.util.List, java.util.List)}
+     * .
+     */
+    @Test
+    public final void testReturnNeighbours() {
+
+        final Vector3d normal = new Vector3d(0, 0, 1);
+        final Point p1 = new Point(1, 1, 0);
+        final Edge e1 = new Edge(p1, p1);
+        final Triangle t1 = new Triangle(p1, p1, p1, e1, e1, e1, normal);
+        final Point p2 = new Point(2, 2, 0);
+        final Edge e2 = new Edge(p1, p1);
+        final Triangle t2 = new Triangle(p2, p2, p2, e2, e2, e2, normal);
+        final Point p3 = new Point(2, 1, 0);
+        final Edge e3 = new Edge(p1, p1);
+        final Triangle t3 = new Triangle(p3, p3, p3, e3, e3, e3, normal);
+        final Point p4 = new Point(1, 0, 0);
+        final Edge e4 = new Edge(p1, p1);
+        final Triangle t4 = new Triangle(p4, p4, p4, e4, e4, e4, normal);
+
+        final Surface s1 = new Surface();
+        s1.add(t1);
+        final Surface s2 = new Surface();
+        s2.add(t2);
+        final Surface s3 = new Surface();
+        s3.add(t3);
+        final Surface s4 = new Surface();
+        s4.add(t4);
+
+        s1.addNeighbour(s2);
+        s1.addNeighbour(s3);
+
+        List<Surface> ret = new ArrayList<Surface>();
+        List<Surface> contain = new ArrayList<Surface>();
+        contain.add(s1);
+        contain.add(s2);
+        contain.add(s3);
+        contain.add(s4);
+
+        s3.returnNeighbours(ret, contain);
+
+        Assert.assertTrue(ret.contains(s1));
+        Assert.assertTrue(ret.contains(s2));
+        Assert.assertTrue(ret.contains(s3));
+        Assert.assertFalse(ret.contains(s4));
+    }
+
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.Surface#returnVerticalPlane(javax.vecmath.Vector3d)}
+     * .
+     */
+    @Test
+    public final void testReturnVerticalPlane() {
+
+        final Vector3d normal = new Vector3d(0.95, 0.01, 0);
+        final Vector3d normalGround = new Vector3d(0, 0, 1);
+        final Point p1 = new Point(1, 1, 0);
+        final Edge e1 = new Edge(p1, p1);
+        final Triangle t1 = new Triangle(p1, p1, p1, e1, e1, e1, normal);
+        final Surface s1 = new Surface();
+        s1.add(t1);
+
+        Surface s2 = s1.returnVerticalPlane(normalGround);
+        Assert.assertTrue(s2.averageNormal().dot(normalGround) == 0);
     }
 }

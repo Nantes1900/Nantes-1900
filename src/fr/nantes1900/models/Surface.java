@@ -264,17 +264,15 @@ public class Surface extends Mesh {
             new Point(centroid.getX() + 1, centroid.getY()
                 - averageNormal.getX() / averageNormal.getY(), centroid.getZ());
 
-        final Point p2 = p1;
         final Point p3 = centroid;
 
-        final Edge e1 = new Edge(p1, p2);
-        final Edge e2 = new Edge(p2, p3);
-        final Edge e3 = new Edge(p1, p3);
+        final Edge e1 = new Edge(p1, p1);
+        final Edge e2 = new Edge(p1, p3);
 
         final Vector3d vect = new Vector3d();
-        vect.cross(normalGround, e3.convertToVector3d());
+        vect.cross(normalGround, e2.convertToVector3d());
 
-        computedWallPlane.add(new Triangle(p1, p2, p3, e1, e2, e3, vect));
+        computedWallPlane.add(new Triangle(p1, p1, p3, e1, e2, e2, vect));
 
         return computedWallPlane;
     }
