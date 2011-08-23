@@ -56,8 +56,6 @@ public class Triangle {
         final Edge edge1, final Edge edge2, final Edge edge3,
         final Vector3d normalNew) {
 
-        // LOOK : check if the edges are correctly made : well composed of the
-        // given points.
         this.points[0] = point0;
         this.points[1] = point1;
         this.points[2] = point2;
@@ -333,7 +331,7 @@ public class Triangle {
      */
     public final boolean isInPlanes(final Vector3d vect, final Point p,
         final double error) {
-        
+
         final Edge axisNormalFloor =
             new Edge(new Point(0, 0, 0), new Point(vect.x, vect.y, vect.z));
 

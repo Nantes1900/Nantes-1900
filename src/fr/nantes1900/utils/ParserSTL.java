@@ -174,13 +174,11 @@ public class ParserSTL {
     private Triangle processLineB(final ByteBuffer bBuf)
         throws BadMeshException {
 
-        // Read in the ByteBuffer the floats.
+        // Reading part.
+
+        // Reads in the ByteBuffer the floats.
         final Vector3d norm =
             new Vector3d(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
-        norm.normalize();
-        if (norm.x == 0 && norm.y == 0 && norm.z == 0) {
-            throw new BadMeshException();
-        }
 
         Point p1 =
             new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
@@ -192,9 +190,22 @@ public class ParserSTL {
             new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
                 (float) bBuf.getFloat());
 
+        // Adds two bytes to respect the binary format. Those bytes can be used
+        // to put a color to the triangle. But we don't use them.
+        bBuf.get();
+        bBuf.get();
+
+        // Treatment part.
+
+        // Treats the points.
         p1 = this.treatPoint(p1);
         p2 = this.treatPoint(p2);
         p3 = this.treatPoint(p3);
+
+        if (norm.x == 0 && norm.y == 0 && norm.z == 0) {
+            throw new BadMeshException();
+        }
+        norm.normalize();
 
         // If two points are the same, throws a FlatTriangleException.
         if (p1 == p2 || p2 == p3 || p1 == p3) {
@@ -214,11 +225,6 @@ public class ParserSTL {
             || e3.getNumberTriangles() == 2) {
             throw new MoreThanTwoTrianglesPerEdgeException();
         }
-
-        // Add two bytes to respect the binary format. Those bytes can be used
-        // to put a color to the triangle. But we don't use them.
-        bBuf.get();
-        bBuf.get();
 
         return new Triangle(p1, p2, p3, e1, e2, e3, norm);
     }

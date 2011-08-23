@@ -209,7 +209,7 @@ public class Surface extends Mesh {
         for (Surface s : neighboursOrdered) {
             last.remove(s);
         }
-        if (last.size() > 1) {
+        if (last.size() > 1 || last.isEmpty()) {
             throw new ImpossibleNeighboursOrderException();
         }
         // We thus complete the list of ordered neighbours.

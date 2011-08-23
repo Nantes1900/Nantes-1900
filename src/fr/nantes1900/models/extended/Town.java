@@ -582,7 +582,6 @@ public class Town {
         final List<Mesh> groundsMesh = this.noiseTreatment(wholeGround, noise);
 
         // Cut the little walls, and other things that are not buildings.
-        // TODO : not implemented.
         // ArrayList<Mesh> formsList = this.carveRealBuildings(buildings);
 
         // Foreach building, create an building object, call the algorithm to

@@ -84,9 +84,9 @@ public final class Algos {
 
                 tri.returnNeighbours(e, oriented);
 
-                e =
-                    e.inPlanes(e.averageNormal(), e.getCentroid(),
-                        lengthPlanesErrorFactor);
+                // e =
+                // e.inPlanes(e.averageNormal(), e.getCentroid(),
+                // lengthPlanesErrorFactor);
 
                 mesh.remove(e);
                 thingsList.add(e);
@@ -142,7 +142,7 @@ public final class Algos {
     public static void blockTreatOrientedNoise(final List<Surface> wallList,
         final Mesh noise, final double largeAngleNormalErrorFactor) {
 
-        final List<Surface> m = new ArrayList<Surface>();
+        final List<Surface> list = new ArrayList<Surface>();
 
         for (Mesh e : wallList) {
             final Mesh meshAndNoise = new Mesh(e);
@@ -152,11 +152,12 @@ public final class Algos {
             meshAndNoise.addAll(noiseOriented);
             final Surface mes = new Surface();
             e.getOne().returnNeighbours(mes, meshAndNoise);
-            m.add(mes);
+            list.add(mes);
+
             noise.remove(mes);
         }
 
         wallList.clear();
-        wallList.addAll(m);
+        wallList.addAll(list);
     }
 }
