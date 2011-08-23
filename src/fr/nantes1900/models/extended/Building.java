@@ -1,5 +1,6 @@
 package fr.nantes1900.models.extended;
 
+import fr.nantes1900.constants.Configuration;
 import fr.nantes1900.constants.FilesNames;
 import fr.nantes1900.constants.SeparationTreatmentWallsRoofs;
 import fr.nantes1900.models.Mesh;
@@ -98,32 +99,93 @@ public class Building {
      *            the mesh containing all the grounds
      */
     public final void buildFromMesh(final Mesh building, final Mesh grounds,
-        final Vector3d normalFloor) {
+        final Vector3d normalFloor, final String directoryName,
+        final int counter) {
 
         final Surface groundsTreated = new Surface(grounds);
+        List<Surface> wallList;
+        List<Surface> roofList;
+        Mesh noise;
 
-        // Creates a new mesh.
-        final Mesh noise = new Mesh();
+        do {
+            // Loads the new coefficients from the config file.
+            Configuration.loadCoefficients();
 
-        // Applies the first algorithms : extract the walls, and after this,
-        // extract the roofs.
-        final List<Surface> wallList =
-            this.sortWalls(building, normalFloor, noise);
-        final List<Surface> roofList =
-            this.sortRoofs(building, normalFloor, noise);
+            // Creates a new mesh.
+            noise = new Mesh();
 
-        // Treats the noise.
-        this.treatNoise(wallList, roofList, noise, groundsTreated);
+            // Applies the first algorithms : extract the walls, and after this,
+            // extract the roofs.
+            wallList = this.sortWalls(building, normalFloor, noise);
+            roofList = this.sortRoofs(building, normalFloor, noise);
 
-        // Finds the neighbours, searching deeply (add noise to the walls
-        // and roofs to add every edge to one of these surface. Then find
-        // the surfaces which share one edge, and treat the neighbours.
-        this.treatNewNeighbours(wallList, roofList, groundsTreated);
+            // Treats the noise.
+            this.treatNoise(wallList, roofList, noise, groundsTreated);
 
-        // From all the neighbours, computes the wrap line and returns the
-        // surfaces as polylines.
-        this.findEdgesFromNeighbours(wallList, roofList, normalFloor,
-            groundsTreated, noise);
+            // Finds the neighbours, searching deeply (add noise to the walls
+            // and roofs to add every edge to one of these surface. Then find
+            // the surfaces which share one edge, and treat the neighbours.
+            this.treatNewNeighbours(wallList, roofList, groundsTreated);
+
+            if (Town.stepByStep) {
+                System.out
+                    .println("2nd step executed : you will find the result in : "
+                        + directoryName
+                        + FilesNames.TEMPORARY_DIRECTORY
+                        + FilesNames.RESIDENTIAL_FILENAME
+                        + FilesNames.SEPARATOR + counter);
+
+                int counterWall = 0;
+                for (Mesh m : wallList) {
+                    m.writeSTL(directoryName + FilesNames.TEMPORARY_DIRECTORY
+                        + FilesNames.RESIDENTIAL_FILENAME
+                        + FilesNames.SEPARATOR + counter + FilesNames.SEPARATOR
+                        + "wall" + FilesNames.SEPARATOR + counterWall
+                        + FilesNames.EXTENSION);
+                    counterWall++;
+                }
+                int counterRoof = 0;
+                for (Mesh m : roofList) {
+                    m.writeSTL(directoryName + FilesNames.TEMPORARY_DIRECTORY
+                        + FilesNames.RESIDENTIAL_FILENAME
+                        + FilesNames.SEPARATOR + counter + FilesNames.SEPARATOR
+                        + "roof" + FilesNames.SEPARATOR + counterRoof
+                        + FilesNames.EXTENSION);
+                    counterRoof++;
+                }
+            }
+        } while (Town.stepByStep && !Town.askForAnswer());
+
+        do {
+            // Loads the new coefficients from the config file.
+            Configuration.loadCoefficients();
+
+            // From all the neighbours, computes the wrap line and returns the
+            // surfaces as polylines.
+            this.findEdgesFromNeighbours(wallList, roofList, normalFloor,
+                groundsTreated, noise);
+
+            if (Town.stepByStep) {
+                System.out
+                    .println("3rd step executed : you will find the result in : "
+                        + directoryName
+                        + FilesNames.TEMPORARY_DIRECTORY
+                        + FilesNames.RESIDENTIAL_FILENAME
+                        + FilesNames.SEPARATOR
+                        + counter
+                        + FilesNames.EXTENSION
+                        + "and in : "
+                        + directoryName
+                        + FilesNames.TEMPORARY_DIRECTORY
+                        + FilesNames.GROUND_FILENAME
+                        + FilesNames.SEPARATOR
+                        + counter + FilesNames.EXTENSION);
+
+                this.writeSTL(directoryName + FilesNames.TEMPORARY_DIRECTORY
+                    + FilesNames.RESIDENTIAL_FILENAME + FilesNames.SEPARATOR
+                    + counter);
+            }
+        } while (Town.stepByStep && !Town.askForAnswer());
     }
 
     /**
@@ -195,8 +257,8 @@ public class Building {
             }
         }
 
-        Town.LOG.info("Surfaces correctly treated : " + counterWellTreated);
-        Town.LOG.info("Surfaces not treated : "
+        Town.LOG.finest("Surfaces correctly treated : " + counterWellTreated);
+        Town.LOG.finest("Surfaces not treated : "
             + (wholeList.size() - counterWellTreated));
     }
 
@@ -415,7 +477,7 @@ public class Building {
                 counter++;
             }
         }
-        Town.LOG.info(" Isolated surfaces (not treated) : " + counter);
+        Town.LOG.finest(" Isolated surfaces (not treated) : " + counter);
     }
 
     /**

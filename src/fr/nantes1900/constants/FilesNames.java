@@ -65,6 +65,12 @@ public final class FilesNames {
     public static final String RESULT_DIRECTORY = "/results/";
 
     /**
+     * Directory name for the temporary datas : used in the step by step
+     * execution.
+     */
+    public static final String TEMPORARY_DIRECTORY = "/temporary/";
+
+    /**
      * Private constructor.
      */
     private FilesNames() {

@@ -1,5 +1,6 @@
 package fr.nantes1900.models.extended;
 
+import fr.nantes1900.constants.Configuration;
 import fr.nantes1900.constants.FilesNames;
 import fr.nantes1900.constants.SeparationGroundBuilding;
 import fr.nantes1900.models.Mesh;
@@ -11,8 +12,10 @@ import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.utils.WriterCityGML;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Handler;
@@ -32,6 +35,13 @@ import javax.vecmath.Vector3d;
  * @author Daniel Lefevre
  */
 public class Town {
+
+    /**
+     * Step by step mode : it activated, the program writes the datas after each
+     * parts, asks user to check them, and continues if the user agrees, or
+     * makes again the step if the user changed coefficients.
+     */
+    public static boolean stepByStep = false;
 
     /**
      * Logger.
@@ -166,34 +176,40 @@ public class Town {
      */
     public final void buildFromMesh(final String directoryName) {
 
+        Configuration.setConfigFileName(directoryName + "config.properties");
+
         final long time = System.nanoTime();
 
         // Create or clean the directory : directoryName + "/results/" to put
         // the datas in.
-        this.cleanResultDirectory(directoryName);
+        this.cleanDirectory(directoryName + FilesNames.RESULT_DIRECTORY);
 
         // Extract the normal gravity oriented and change it to the new
         // base.
         final Vector3d normalGround =
-            this.extractGroundNormal(directoryName + "/ground.stl");
+            this.extractGroundNormal(directoryName + FilesNames.GROUND_FILENAME
+                + FilesNames.EXTENSION);
         this.createChangeBaseMatrix(normalGround);
 
         // Treat every kind of surfaces put in the algorithms.
-        this.treatGrounds(directoryName + "/grounds/");
+        this.treatGrounds(directoryName + FilesNames.GROUNDS_NAME);
         Town.LOG.info("Numbers of grounds : " + this.grounds.size());
 
-        this.treatWateries(directoryName + "/wateries/");
+        this.treatWateries(directoryName + FilesNames.WATERIES_NAME);
         Town.LOG.info("Numbers of wateries : " + this.wateries.size());
 
-        this.treatSpecialBuildings(directoryName + "/special_buildings/");
+        this.treatSpecialBuildings(directoryName
+            + FilesNames.SPECIAL_BUILDINGS_NAME);
         Town.LOG.info("Numbers of special buildings : "
             + this.specialBuildings.size());
 
-        this.treatIndustrials(directoryName + "/industrials/", normalGround);
+        this.treatIndustrials(directoryName + FilesNames.INDUSTRIALS_NAME,
+            normalGround);
         Town.LOG.info("Numbers of industrials zones : "
             + this.industrials.size());
 
-        this.treatResidentials(directoryName + "/residentials/", normalGround);
+        this.treatResidentials(directoryName + FilesNames.RESIDENTIALS_NAME,
+            normalGround);
         Town.LOG.info("Numbers of residentials zones : "
             + this.residentials.size());
 
@@ -361,18 +377,16 @@ public class Town {
     }
 
     /**
-     * Cleans the directory "results" to put the results in it.
+     * Cleans the directory in parameter, or creates it if it doesn't exist.
      * 
      * @param directoryName
-     *            the name of the working directory
+     *            the name of the directory
      */
-    private void cleanResultDirectory(final String directoryName) {
-        if (new File(directoryName + FilesNames.RESULT_DIRECTORY).exists()) {
+    private void cleanDirectory(final String directoryName) {
+        if (new File(directoryName).exists()) {
 
             // List all the files of the directory
-            final File[] fileList =
-                new File(directoryName + FilesNames.RESULT_DIRECTORY)
-                    .listFiles();
+            final File[] fileList = new File(directoryName).listFiles();
 
             for (File f : fileList) {
                 // Delete only the files, and the empty directories. Then
@@ -381,7 +395,7 @@ public class Town {
                 f.delete();
             }
         } else {
-            new File(directoryName + FilesNames.RESULT_DIRECTORY).mkdir();
+            new File(directoryName).mkdir();
         }
     }
 
@@ -557,55 +571,6 @@ public class Town {
     }
 
     /**
-     * Treat a building zone by calling all the algorithms. Returns a list of
-     * buildings.
-     * 
-     * @param normalGround
-     *            the normal to the current ground
-     * @param building
-     */
-    private List<Building> treatBuildingZone(final Vector3d normalGround,
-        Mesh building) {
-        // Base change in the gravity-oriented base.
-        building.changeBase(this.matrix);
-
-        // Extraction of the ground.
-        final Mesh wholeGround = this.groundExtraction(building, normalGround);
-
-        // Extraction of the buildings : the blocks which are left after the
-        // ground extraction.
-        final Mesh noise = new Mesh();
-        final List<Mesh> buildings = this.buildingsExtraction(building, noise);
-
-        // Treatment of the noise : other blocks are added to the grounds if
-        // possible.
-        final List<Mesh> groundsMesh = this.noiseTreatment(wholeGround, noise);
-
-        // Cut the little walls, and other things that are not buildings.
-        // ArrayList<Mesh> formsList = this.carveRealBuildings(buildings);
-
-        // Foreach building, create an building object, call the algorithm to
-        // build it and add it to the list of this town.
-        List<Building> listBuildings = new ArrayList<Building>();
-
-        for (Mesh m : buildings) {
-            final Building e = new Building();
-            e.buildFromMesh(m, wholeGround, normalGround);
-            listBuildings.add(e);
-        }
-
-        // Foreach ground found, call the algorithm of ground treatment, and
-        // add it to the list of this town with an attribute : street.
-        for (Mesh m : groundsMesh) {
-            final Ground ground = new Ground("street");
-            ground.buildFromMesh(m);
-            this.addGround(ground);
-        }
-
-        return listBuildings;
-    }
-
-    /**
      * Cut in a building zone the forms which are not buildings : little walls,
      * chimneys. Method not implemented.
      * 
@@ -653,7 +618,7 @@ public class Town {
      * calls the buildFromMesh methods.
      * 
      * @param directoryName
-     *            the name of the directory where are the files
+     *            the name of the working directory
      * @param normalGravityOriented
      *            the normal gravity-oriented
      */
@@ -667,32 +632,14 @@ public class Town {
             .exists()) {
 
             // ...Parse the meshes of these files
-            final Mesh mesh =
-                this.parseFile(directoryName + FilesNames.INDUSTRIAL_FILENAME
-                    + FilesNames.SEPARATOR + counterIndustrials
-                    + FilesNames.EXTENSION);
+            // final Mesh mesh =
+            // this.parseFile(directoryName + FilesNames.INDUSTRIAL_FILENAME
+            // + FilesNames.SEPARATOR + counterIndustrials +
+            // FilesNames.EXTENSION);
 
-            Vector3d realNormalToTheGround;
+            // FIXME
 
-            // If another ground normal is available, extract it. Otherwise,
-            // keep the normal gravity-oriented as the normal to the ground.
-            if (new File(directoryName + FilesNames.GROUND_FILENAME
-                + FilesNames.SEPARATOR + counterIndustrials
-                + FilesNames.EXTENSION).exists()) {
-
-                realNormalToTheGround =
-                    this.extractGroundNormal(directoryName
-                        + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
-                        + counterIndustrials + FilesNames.EXTENSION);
-
-                MatrixMethod.changeBase(realNormalToTheGround, this.matrix);
-
-            } else {
-                realNormalToTheGround = normalGravityOriented;
-            }
-
-            this.addIndustrials(this.treatBuildingZone(realNormalToTheGround,
-                mesh));
+            // this.addIndustrials(listBuildings);
 
             ++counterIndustrials;
         }
@@ -705,7 +652,7 @@ public class Town {
      * calls the buildFromMesh methods.
      * 
      * @param directoryName
-     *            the name of the directory where are the files
+     *            the name of the working directory
      * @param normalGravityOriented
      *            the normal oriented as the gravity vector oriented to the sky
      */
@@ -718,36 +665,145 @@ public class Town {
             + FilesNames.SEPARATOR + counterResidentials + FilesNames.EXTENSION)
             .exists()) {
 
-            // ...Parse the meshes of these files
-            final Mesh mesh =
-                this.parseFile(directoryName + FilesNames.RESIDENTIAL_FILENAME
-                    + FilesNames.SEPARATOR + counterResidentials
-                    + FilesNames.EXTENSION);
-
-            Vector3d realNormalToTheGround;
-            // If another ground normal is available, extract it. Otherwise,
-            // keep
-            // the normal gravity-oriented as the normal to the ground.
-            if (new File(directoryName + FilesNames.GROUND_FILENAME
-                + FilesNames.SEPARATOR + counterResidentials
-                + FilesNames.EXTENSION).exists()) {
-
-                realNormalToTheGround =
-                    this.extractGroundNormal(directoryName
-                        + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
-                        + counterResidentials + FilesNames.EXTENSION);
-
-                MatrixMethod.changeBase(realNormalToTheGround, this.matrix);
-
-            } else {
-                realNormalToTheGround = normalGravityOriented;
+            if (Town.stepByStep) {
+                this.cleanDirectory(directoryName
+                    + FilesNames.TEMPORARY_DIRECTORY);
             }
 
-            this.addResidentials(this.treatBuildingZone(realNormalToTheGround,
-                mesh));
+            // Declarations.
+            List<Mesh> buildings;
+            Mesh wholeGround;
+            List<Mesh> groundsMesh;
+            Vector3d realNormalToTheGround;
+
+            do {
+                Configuration.loadCoefficients();
+
+                // ...Parse the meshes of these files.
+                final Mesh mesh =
+                    this.parseFile(directoryName
+                        + FilesNames.RESIDENTIAL_FILENAME
+                        + FilesNames.SEPARATOR + counterResidentials
+                        + FilesNames.EXTENSION);
+
+                // If another ground normal is available, extract it. Otherwise,
+                // keep the normal gravity-oriented as the normal to the ground.
+                if (new File(directoryName + FilesNames.GROUND_FILENAME
+                    + FilesNames.SEPARATOR + counterResidentials
+                    + FilesNames.EXTENSION).exists()) {
+
+                    realNormalToTheGround =
+                        this.extractGroundNormal(directoryName
+                            + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
+                            + counterResidentials + FilesNames.EXTENSION);
+
+                    MatrixMethod.changeBase(realNormalToTheGround, this.matrix);
+
+                } else {
+                    realNormalToTheGround = normalGravityOriented;
+                }
+
+                // Base change in the gravity-oriented base.
+                mesh.changeBase(this.matrix);
+
+                // Extraction of the ground.
+                wholeGround =
+                    this.groundExtraction(mesh, realNormalToTheGround);
+
+                // Extraction of the buildings : the blocks which are left after
+                // the ground extraction.
+                final Mesh noise = new Mesh();
+                buildings = this.buildingsExtraction(mesh, noise);
+
+                // Treatment of the noise : other blocks are added to the
+                // grounds if possible.
+                groundsMesh = this.noiseTreatment(wholeGround, noise);
+
+                if (Town.stepByStep) {
+                    System.out.println("Building n° " + counterResidentials
+                        + " : ");
+                    System.out
+                        .println("1st step executed : you will find the result in : "
+                            + directoryName
+                            + FilesNames.TEMPORARY_DIRECTORY
+                            + FilesNames.RESIDENTIAL_FILENAME
+                            + FilesNames.SEPARATOR
+                            + counterResidentials
+                            + FilesNames.EXTENSION
+                            + "and in : "
+                            + directoryName
+                            + FilesNames.TEMPORARY_DIRECTORY
+                            + FilesNames.GROUND_FILENAME
+                            + FilesNames.SEPARATOR
+                            + counterResidentials + FilesNames.EXTENSION);
+
+                    Mesh wholeBuildings = new Mesh();
+                    for (Mesh b : buildings) {
+                        wholeBuildings.addAll(b);
+                    }
+
+                    wholeBuildings.writeSTL(directoryName
+                        + FilesNames.TEMPORARY_DIRECTORY
+                        + FilesNames.RESIDENTIAL_FILENAME
+                        + FilesNames.SEPARATOR + counterResidentials
+                        + FilesNames.EXTENSION);
+                    wholeGround.writeSTL(directoryName
+                        + FilesNames.TEMPORARY_DIRECTORY
+                        + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
+                        + counterResidentials + FilesNames.EXTENSION);
+                }
+            } while (Town.stepByStep && !Town.askForAnswer());
+
+            // Cuts the little walls, and other things that are not buildings.
+            // ArrayList<Mesh> formsList = this.carveRealBuildings(buildings);
+
+            // Foreach building, create an building object, call the algorithm
+            // to build it and add it to the list of this town.
+            List<Building> listBuildings = new ArrayList<Building>();
+
+            for (Mesh m : buildings) {
+                final Building e = new Building();
+                e.buildFromMesh(m, wholeGround, realNormalToTheGround,
+                    directoryName, counterResidentials);
+                listBuildings.add(e);
+            }
+
+            // Foreach ground found, call the algorithm of ground treatment, and
+            // add it to the list of this town with an attribute : street.
+            for (Mesh m : groundsMesh) {
+                final Ground ground = new Ground("street");
+                ground.buildFromMesh(m);
+                this.addGround(ground);
+            }
+
+            this.addResidentials(listBuildings);
 
             ++counterResidentials;
         }
+    }
+
+    public static boolean askForAnswer() {
+        BufferedReader stdin =
+            new BufferedReader(new InputStreamReader(System.in));
+        System.out
+            .println("If the results please you, enter y, of you want to redo the operation, change the coefficients in the config file, and enter r");
+
+        try {
+            String answer;
+            while ((answer = stdin.readLine()) != null) {
+                if (answer.equals("y")) {
+                    return true;
+                } else if (answer.equals("r")) {
+                    return false;
+                } else {
+                    System.out.println("Enter a valid answer !");
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     /**
@@ -822,5 +878,14 @@ public class Town {
 
             ++counterWateries;
         }
+    }
+
+    /**
+     * Activates the step by step mode : the program writes the datas after each
+     * parts, asks user to check them, and continues if the user agrees, or
+     * makes again the step if the user changed coefficients.
+     */
+    public void setStepByStepMode() {
+        Town.stepByStep = true;
     }
 }

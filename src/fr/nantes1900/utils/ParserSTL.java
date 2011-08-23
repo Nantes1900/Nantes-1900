@@ -375,7 +375,7 @@ public class ParserSTL {
             }
         }
 
-        Town.LOG.info(counterError
+        Town.LOG.finest(counterError
             + " triangles removed from the mesh during the parsing !");
 
         stream.close();

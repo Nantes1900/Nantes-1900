@@ -26,9 +26,18 @@ public final class StSimilienM02 {
 
         // Creates a new town.
         final Town town = new Town();
-        // Applies the algorithm to it.
-        town.buildFromMesh("files/St-Similien/m02");
-        // Writes the results under STL
+
+        // Begins a step by step execution, waiting at each step that the user
+        // has finished to treat.
+        town.setStepByStepMode();
+
+        // Applies the algorithms to the directory.
+        town.buildFromMesh("files/St-Similien/m02/");
+
+        // Writes the results in STL files.
         town.writeSTL("files/St-Similien/m02/results/");
+
+        // Writes the results in cityGML files.
+        town.writeCityGML("files/St-Similien/m02/results/St-Similien - m02.gml");
     }
 }

@@ -46,7 +46,7 @@ public class WriterSTL {
     /**
      * The mode of writing. Use the two constants : ASCII_MODE or BINARY_MODE.
      */
-    private int writingMode = WriterSTL.ASCII_MODE;
+    private int writingMode = WriterSTL.BINARY_MODE;
 
     /**
      * Constructor.
