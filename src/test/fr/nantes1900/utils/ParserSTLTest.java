@@ -94,7 +94,7 @@ public final class ParserSTLTest extends TestCase {
             Assert.assertTrue(readListB.get(1).equals(t1)
                 || readListB.get(1).equals(t2));
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Assert.fail("IOException !");
         }
 

@@ -29,7 +29,7 @@ public class Surface extends Mesh {
     /**
      * List of the neighbours of this surface.
      */
-    private List<Surface> neighbours = new ArrayList<Surface>();
+    private final List<Surface> neighbours = new ArrayList<Surface>();
 
     /**
      * Void constructor.
@@ -156,7 +156,7 @@ public class Surface extends Mesh {
             if (this.getNeighbours().contains(grounds)) {
                 current = this.getCommonNeighbours(grounds).get(0);
             }
-        } catch (IndexOutOfBoundsException e) {
+        } catch (final IndexOutOfBoundsException e) {
             throw new ImpossibleNeighboursOrderException();
         }
 
@@ -185,7 +185,7 @@ public class Surface extends Mesh {
             // The ground often causes that kind of problem, that's why we begin
             // by treating the ground first (see at the beginning of the
             // method).
-            for (Surface s : neighboursOrdered) {
+            for (final Surface s : neighboursOrdered) {
                 commonNeighbours.remove(s);
             }
             if (commonNeighbours.isEmpty()) {
@@ -205,8 +205,8 @@ public class Surface extends Mesh {
 
         // No need to end the algorithm : the last one is found because he is
         // the last one...
-        List<Surface> last = this.getNeighbours();
-        for (Surface s : neighboursOrdered) {
+        final List<Surface> last = this.getNeighbours();
+        for (final Surface s : neighboursOrdered) {
             last.remove(s);
         }
         if (last.size() > 1 || last.isEmpty()) {
@@ -236,7 +236,7 @@ public class Surface extends Mesh {
 
         // If this is not contained by ret and if this is contained in contain,
         // then call this method.
-        for (Surface m : this.getNeighbours()) {
+        for (final Surface m : this.getNeighbours()) {
             if (!ret.contains(m) && contain.contains(m)) {
                 m.returnNeighbours(ret, contain);
             }
@@ -260,7 +260,7 @@ public class Surface extends Mesh {
         final Point centroid =
             new Point(this.xAverage(), this.yAverage(), this.zAverage());
 
-        Point p1 =
+        final Point p1 =
             new Point(centroid.getX() + 1, centroid.getY()
                 - averageNormal.getX() / averageNormal.getY(), centroid.getZ());
 
@@ -331,7 +331,7 @@ public class Surface extends Mesh {
             // If one of the surfaces is a wall, rectifies its normal to be
             // vertical, and after finds the edges.
             final List<Mesh> list = new ArrayList<Mesh>();
-            for (Surface s : surfaces) {
+            for (final Surface s : surfaces) {
                 if (s != this) {
                     if (wallList.contains(s)) {
                         list.add(s.returnVerticalPlane(normalGround));
@@ -367,7 +367,7 @@ public class Surface extends Mesh {
                 p2 = pTemp;
             }
 
-            Edge e = new Edge(p1, p2);
+            final Edge e = new Edge(p1, p2);
 
             // If we keep this hashmap, some edges which don't have the same
             // orientation are confused.
@@ -381,9 +381,9 @@ public class Surface extends Mesh {
 
             return e;
 
-        } catch (SingularMatrixException e) {
+        } catch (final SingularMatrixException e) {
             throw new InvalidSurfaceException();
-        } catch (ParallelPlanesException e) {
+        } catch (final ParallelPlanesException e) {
             throw new InvalidSurfaceException();
         }
     }
@@ -406,7 +406,7 @@ public class Surface extends Mesh {
 
         // From all the neighbours which are not still ordered, select the
         // closest one.
-        for (Surface s : this.getNeighbours()) {
+        for (final Surface s : this.getNeighbours()) {
             if (!neighboursOrdered.contains(s)
                 && !current.getNeighbours().contains(s)) {
                 if (current.minimalDistance(s) < distanceMin) {
@@ -428,7 +428,7 @@ public class Surface extends Mesh {
      */
     private List<Surface> getCommonNeighbours(final Surface surface) {
         final List<Surface> ret = new ArrayList<Surface>();
-        for (Surface s : this.getNeighbours()) {
+        for (final Surface s : this.getNeighbours()) {
             if (surface.getNeighbours().contains(s)) {
                 ret.add(s);
             }

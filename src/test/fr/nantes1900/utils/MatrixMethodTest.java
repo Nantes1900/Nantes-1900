@@ -38,7 +38,7 @@ public final class MatrixMethodTest extends TestCase {
             Assert.assertTrue(newCoords[0] == 0);
             Assert.assertTrue(newCoords[1] == -1);
             Assert.assertTrue(newCoords[2] == 0);
-        } catch (SingularMatrixException e) {
+        } catch (final SingularMatrixException e) {
             Assert.fail("Singular matrix !");
         }
     }
@@ -58,7 +58,7 @@ public final class MatrixMethodTest extends TestCase {
             Assert.assertTrue(vect.x == 0);
             Assert.assertTrue(vect.y == -1);
             Assert.assertTrue(vect.z == 0);
-        } catch (SingularMatrixException e) {
+        } catch (final SingularMatrixException e) {
             Assert.fail("Singular matrix !");
         }
     }
@@ -82,7 +82,7 @@ public final class MatrixMethodTest extends TestCase {
             Assert.assertTrue(matrix[2][0] == 0);
             Assert.assertTrue(matrix[2][1] == 0);
             Assert.assertTrue(matrix[2][2] == 1);
-        } catch (SingularMatrixException e) {
+        } catch (final SingularMatrixException e) {
             Assert.fail("Singular matrix !");
         }
 
@@ -98,7 +98,7 @@ public final class MatrixMethodTest extends TestCase {
             Assert.assertTrue(matrix[2][0] == 0);
             Assert.assertTrue(matrix[2][1] == 0);
             Assert.assertTrue(matrix[2][2] == -1);
-        } catch (SingularMatrixException e) {
+        } catch (final SingularMatrixException e) {
             // If the exception is reached, it's good.
         }
     }
@@ -125,7 +125,7 @@ public final class MatrixMethodTest extends TestCase {
             Assert.assertTrue(matrix[2][0] == 0);
             Assert.assertTrue(matrix[2][1] == 1);
             Assert.assertTrue(matrix[2][2] == 0);
-        } catch (SingularMatrixException e) {
+        } catch (final SingularMatrixException e) {
             Assert.fail("Singular matrix !");
         }
     }
@@ -140,7 +140,7 @@ public final class MatrixMethodTest extends TestCase {
         try {
             final double[][] matrix = MatrixMethod.createOrthoBase(vect);
             Assert.assertTrue(MatrixMethod.determinant(matrix) == 1);
-        } catch (SingularMatrixException e) {
+        } catch (final SingularMatrixException e) {
             Assert.fail("Singular matrix !");
         }
     }
@@ -164,7 +164,7 @@ public final class MatrixMethodTest extends TestCase {
             Assert.assertTrue(matrixInv[2][0] == 0);
             Assert.assertTrue(matrixInv[2][1] == 0);
             Assert.assertTrue(matrixInv[2][2] == 1);
-        } catch (SingularMatrixException e) {
+        } catch (final SingularMatrixException e) {
             Assert.fail("Singular matrix !");
         }
 
@@ -173,7 +173,7 @@ public final class MatrixMethodTest extends TestCase {
             final double[][] matrix = MatrixMethod.createOrthoBase(vect2);
             MatrixMethod.getInversMatrix(matrix);
             Assert.fail("Should throw an exception !");
-        } catch (SingularMatrixException e) {
+        } catch (final SingularMatrixException e) {
             // This exception must be catched.
         }
     }

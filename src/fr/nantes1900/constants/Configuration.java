@@ -1,5 +1,7 @@
 package fr.nantes1900.constants;
 
+import fr.nantes1900.models.extended.Town;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -7,25 +9,29 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
+ * Implements a static configuration builder. Provides a method to load the
+ * configuration file.
+ * 
  * @author Daniel Lefevre
  */
-public class Configuration {
+public final class Configuration {
 
-    // FIXME : doc
+    /**
+     * The name of the configuration file.
+     */
     private static String configFile;
 
-    public static void setConfigFileName(String name) {
-        Configuration.configFile = name;
-        if (new File(name).exists()) {
-            System.out.println("Configuration file found !");
-        }
+    /**
+     * Private constructor.
+     */
+    private Configuration() {
     }
 
     /**
      * Loads the coefficients from the configuration file, if it exists.
      */
     public static void loadCoefficients() {
-        Properties properties = new Properties();
+        final Properties properties = new Properties();
 
         try {
             properties.load(new FileInputStream(Configuration.configFile));
@@ -58,14 +64,26 @@ public class Configuration {
             SeparationTreatmentWallsRoofs.PLANES_ERROR =
                 new Double(properties.getProperty("PLANES_ERROR"));
 
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
             // If the file does not exist, keeps the actual coefficients.
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (NullPointerException e) {
-            System.out.println("The config.properties file is not complete !");
+        } catch (final IOException e) {
+            // If the file does not exist, keeps the actual coefficients.
+        } catch (final NullPointerException e) {
+            Town.LOG.severe("The config.properties file is not complete !");
             System.exit(1);
+        }
+    }
+
+    /**
+     * Setter.
+     * 
+     * @param name
+     *            the name of the configuration file
+     */
+    public static void setConfigFileName(final String name) {
+        Configuration.configFile = name;
+        if (new File(name).exists()) {
+            System.out.println("Configuration file found !");
         }
     }
 }

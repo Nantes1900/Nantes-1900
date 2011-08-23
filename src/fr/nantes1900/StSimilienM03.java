@@ -27,7 +27,7 @@ public final class StSimilienM03 {
         // Create new town
         final Town town = new Town();
         // Apply the algorithm to it
-        town.buildFromMesh("files/St-Similien/m03");
+        town.buildFromMesh("files/St-Similien/m03/");
         // Write the results
         town.writeCityGML("files/St-Similien/m03/results/StSimilienM03.gml");
     }

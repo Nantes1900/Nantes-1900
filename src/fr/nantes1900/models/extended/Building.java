@@ -97,6 +97,10 @@ public class Building {
      *            the normal to the ground
      * @param grounds
      *            the mesh containing all the grounds
+     * @param directoryName
+     *            the name of the residentials directory
+     * @param counter
+     *            the number of the current building
      */
     public final void buildFromMesh(final Mesh building, final Mesh grounds,
         final Vector3d normalFloor, final String directoryName,
@@ -136,21 +140,21 @@ public class Building {
                         + FilesNames.SEPARATOR + counter);
 
                 int counterWall = 0;
-                for (Mesh m : wallList) {
+                for (final Mesh m : wallList) {
                     m.writeSTL(directoryName + FilesNames.TEMPORARY_DIRECTORY
                         + FilesNames.RESIDENTIAL_FILENAME
                         + FilesNames.SEPARATOR + counter + FilesNames.SEPARATOR
-                        + "wall" + FilesNames.SEPARATOR + counterWall
-                        + FilesNames.EXTENSION);
+                        + FilesNames.WALL_NAME + FilesNames.SEPARATOR
+                        + counterWall + FilesNames.EXTENSION);
                     counterWall++;
                 }
                 int counterRoof = 0;
-                for (Mesh m : roofList) {
+                for (final Mesh m : roofList) {
                     m.writeSTL(directoryName + FilesNames.TEMPORARY_DIRECTORY
                         + FilesNames.RESIDENTIAL_FILENAME
                         + FilesNames.SEPARATOR + counter + FilesNames.SEPARATOR
-                        + "roof" + FilesNames.SEPARATOR + counterRoof
-                        + FilesNames.EXTENSION);
+                        + FilesNames.ROOF_NAME + FilesNames.SEPARATOR
+                        + counterRoof + FilesNames.EXTENSION);
                     counterRoof++;
                 }
             }
@@ -201,6 +205,8 @@ public class Building {
      *            the normal to the ground
      * @param grounds
      *            the mesh containing the grounds
+     * @param noise
+     *            the mesh containing the noise
      */
     public final void findEdgesFromNeighbours(final List<Surface> wallList,
         final List<Surface> roofList, final Vector3d normalFloor,
@@ -225,7 +231,7 @@ public class Building {
 
         int counterWellTreated = 0;
 
-        for (Surface surface : wholeList) {
+        for (final Surface surface : wholeList) {
             try {
 
                 // Orders its neighbours in order to treat them.
@@ -248,11 +254,11 @@ public class Building {
 
                 ++counterWellTreated;
 
-            } catch (ImpossibleNeighboursOrderException e) {
+            } catch (final ImpossibleNeighboursOrderException e) {
                 // If there is a problem, the treatment cannot continue.
                 // TODO : maybe we can compute the surface with the edges it
                 // shares after all the other surfaces have been treated.
-            } catch (InvalidSurfaceException e) {
+            } catch (final InvalidSurfaceException e) {
                 // If there is a problem, we cannot continue the treatment.
             }
         }
@@ -315,15 +321,15 @@ public class Building {
 
         // // To find every neighbours, we complete every holes between roofs
         // // and walls by adding all the noise.
-        List<Mesh> wholeListFakes = new ArrayList<Mesh>();
-        for (Mesh m : wholeList) {
-            Mesh fake = new Mesh(m);
+        final List<Mesh> wholeListFakes = new ArrayList<Mesh>();
+        for (final Mesh m : wholeList) {
+            final Mesh fake = new Mesh(m);
             wholeListFakes.add(fake);
         }
         Algos.blockTreatNoise(wholeListFakes, noise);
 
         // First we clear the neighbours.
-        for (Surface s : wholeList) {
+        for (final Surface s : wholeList) {
             s.getNeighbours().clear();
         }
         // And we clear the neighbours of the grounds.
@@ -331,7 +337,7 @@ public class Building {
 
         // We compute the bounds to check if they share a common edge.
         final List<Polyline> wholeBoundsList = new ArrayList<Polyline>();
-        for (Mesh m : wholeListFakes) {
+        for (final Mesh m : wholeListFakes) {
             wholeBoundsList.add(m.returnUnsortedBounds());
         }
 
@@ -364,8 +370,6 @@ public class Building {
      *            the list of roofs as meshes
      * @param grounds
      *            the grounds as one mesh
-     * @param noise
-     *            the mesh containing the noise
      */
     private void searchForNeighbours(final List<Surface> wallList,
         final List<Surface> roofList, final Surface grounds) {
@@ -377,7 +381,7 @@ public class Building {
         wholeList.addAll(roofList);
 
         // First we clear the neighbours.
-        for (Surface m : wholeList) {
+        for (final Surface m : wholeList) {
             m.getNeighbours().clear();
         }
         // And we clear the neighbours of the grounds.
@@ -386,7 +390,7 @@ public class Building {
         final List<Polyline> wholeBoundsList = new ArrayList<Polyline>();
 
         // We compute the bounds to check if they share a common edge.
-        for (Mesh m : wholeList) {
+        for (final Mesh m : wholeList) {
             wholeBoundsList.add(m.returnUnsortedBounds());
         }
 
@@ -427,13 +431,12 @@ public class Building {
         // Cut the mesh in parts, considering their orientation.
         final List<Mesh> thingsList =
             Algos.blockOrientedAndPlaneExtract(building,
-                SeparationTreatmentWallsRoofs.ROOF_ANGLE_ERROR,
-                SeparationTreatmentWallsRoofs.PLANES_ERROR);
+                SeparationTreatmentWallsRoofs.ROOF_ANGLE_ERROR);
 
         // Considering their size and their orientation, sort the blocks in
         // roofs or noise. If a wall is oriented in direction of the ground,
         // it is not keeped.
-        for (Mesh e : thingsList) {
+        for (final Mesh e : thingsList) {
             if ((e.size() >= SeparationTreatmentWallsRoofs.ROOF_SIZE_ERROR)
                 && (e.averageNormal().dot(normalFloor) > 0)) {
                 roofList.add(new Surface(e));
@@ -458,20 +461,20 @@ public class Building {
 
         int counter = 0;
         for (int i = 0; i < wallList.size(); i++) {
-            Surface s = wallList.get(i);
+            final Surface s = wallList.get(i);
             if (s.getNeighbours().size() < 3) {
                 wallList.remove(s);
-                for (Surface neighbour : s.getNeighbours()) {
+                for (final Surface neighbour : s.getNeighbours()) {
                     neighbour.getNeighbours().remove(s);
                 }
                 counter++;
             }
         }
         for (int i = 0; i < roofList.size(); i++) {
-            Surface s = roofList.get(i);
+            final Surface s = roofList.get(i);
             if (s.getNeighbours().size() < 3) {
                 roofList.remove(s);
-                for (Surface neighbour : s.getNeighbours()) {
+                for (final Surface neighbour : s.getNeighbours()) {
                     neighbour.getNeighbours().remove(s);
                 }
                 counter++;
@@ -488,8 +491,6 @@ public class Building {
      *            the building to carve
      * @param normalFloor
      *            the normal to the ground
-     * @param wholeWall
-     *            the whole wall
      * @param noise
      *            the noise as mesh
      * @return the list of walls
@@ -506,11 +507,10 @@ public class Building {
         // Cut the mesh in parts, considering their orientation.
         final List<Mesh> thingsList =
             Algos.blockOrientedAndPlaneExtract(wallOriented,
-                SeparationTreatmentWallsRoofs.WALL_ANGLE_ERROR,
-                SeparationTreatmentWallsRoofs.PLANES_ERROR);
+                SeparationTreatmentWallsRoofs.WALL_ANGLE_ERROR);
 
         // Considering their size, sort the blocks in walls or noise.
-        for (Mesh e : thingsList) {
+        for (final Mesh e : thingsList) {
             building.remove(e);
             if (e.size() >= SeparationTreatmentWallsRoofs.WALL_SIZE_ERROR) {
                 wallList.add(new Surface(e));
@@ -532,11 +532,9 @@ public class Building {
      *            the list of roofs as surfaces
      * @param grounds
      *            the grounds
-     * @param noise
-     *            the mesh containing the noise
      */
     private void treatNewNeighbours(final List<Surface> wallTreatedList,
-        final List<Surface> roofTreatedList, Surface grounds) {
+        final List<Surface> roofTreatedList, final Surface grounds) {
 
         this.searchForNeighbours(wallTreatedList, roofTreatedList, grounds);
 
@@ -557,7 +555,7 @@ public class Building {
             final List<Surface> oriented = new ArrayList<Surface>();
             final List<Surface> ret = new ArrayList<Surface>();
 
-            for (Surface m : wholeList) {
+            for (final Surface m : wholeList) {
                 if (m.isOrientedAs(surface,
                     SeparationTreatmentWallsRoofs.MIDDLE_ANGLE_ERROR)) {
                     oriented.add(m);
@@ -566,7 +564,7 @@ public class Building {
 
             surface.returnNeighbours(ret, oriented);
 
-            for (Surface m : ret) {
+            for (final Surface m : ret) {
                 if (m != surface) {
                     surface.addAll(m);
                     wholeList.remove(m);
@@ -611,7 +609,7 @@ public class Building {
      */
     private void writeSTLRoofs(final String fileName) {
         int counterRoof = 0;
-        for (Polyline p : this.roofs) {
+        for (final Polyline p : this.roofs) {
 
             p.returnCentroidMesh().writeSTL(
                 fileName + FilesNames.SEPARATOR + "roof" + FilesNames.SEPARATOR
@@ -629,7 +627,7 @@ public class Building {
      */
     private void writeSTLWalls(final String fileName) {
         int counterWall = 0;
-        for (Polyline p : this.walls) {
+        for (final Polyline p : this.walls) {
 
             p.returnCentroidMesh().writeSTL(
                 fileName + FilesNames.SEPARATOR + "wall" + FilesNames.SEPARATOR

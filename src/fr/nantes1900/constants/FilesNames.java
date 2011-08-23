@@ -48,6 +48,14 @@ public final class FilesNames {
      * Prefix name for the special building files.
      */
     public static final String SPECIAL_BUILDING_FILENAME = "special_building";
+    /**
+     * String to represent the walls.
+     */
+    public static final String WALL_NAME = "wall";
+    /**
+     * String to represent the roofs.
+     */
+    public static final String ROOF_NAME = "roof";
 
     /**
      * Separator in the name of the files.

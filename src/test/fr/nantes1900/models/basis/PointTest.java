@@ -13,6 +13,7 @@ import org.junit.Test;
 
 /**
  * A set of tests for the class Point.
+ * 
  * @author Daniel Lefevre
  */
 public final class PointTest extends TestCase {
@@ -48,7 +49,7 @@ public final class PointTest extends TestCase {
 
             Assert.assertTrue(p.equals(pChanged));
 
-        } catch (SingularMatrixException e) {
+        } catch (final SingularMatrixException e) {
             Assert.fail();
         }
     }
@@ -65,8 +66,8 @@ public final class PointTest extends TestCase {
         final double y = 435.23134144;
         final double z = -210.35681944;
         final Point p2 = new Point(x, y, z);
-        Assert.assertTrue(p1.distance(p2) == Math.sqrt(Math.pow(
-            p2.getX() - p1.getX(), 2)
+        Assert.assertTrue(p1.distance(p2) == Math.sqrt(Math.pow(p2.getX()
+            - p1.getX(), 2)
             + Math.pow(p2.getY() - p1.getY(), 2)
             + Math.pow(p2.getZ() - p1.getZ(), 2)));
     }

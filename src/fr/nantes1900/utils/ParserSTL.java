@@ -52,7 +52,7 @@ public class ParserSTL {
     /**
      * The name of the file to read.
      */
-    private String fileName;
+    private final String fileName;
 
     /**
      * Private constructor.
@@ -117,8 +117,8 @@ public class ParserSTL {
      *            triangle
      * @return true when an entire has been read, and false otherwise.
      */
-    private boolean processLineA(final String line, Vector3d currentVector,
-        List<Point> currentPoints) {
+    private boolean processLineA(final String line,
+        final Vector3d currentVector, final List<Point> currentPoints) {
 
         // If the line is empty, the parser passes to the next line.
         if (!line.isEmpty()) {
@@ -139,7 +139,7 @@ public class ParserSTL {
 
             // If the word is vertex, read one of the three points.
             else if ("vertex".equals(openingWord)) {
-                Point p =
+                final Point p =
                     new Point((float) Double
                         .parseDouble(brokenLine.nextToken()), (float) Double
                         .parseDouble(brokenLine.nextToken()), (float) Double
@@ -180,15 +180,9 @@ public class ParserSTL {
         final Vector3d norm =
             new Vector3d(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
 
-        Point p1 =
-            new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
-                (float) bBuf.getFloat());
-        Point p2 =
-            new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
-                (float) bBuf.getFloat());
-        Point p3 =
-            new Point((float) bBuf.getFloat(), (float) bBuf.getFloat(),
-                (float) bBuf.getFloat());
+        Point p1 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
+        Point p2 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
+        Point p3 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
 
         // Adds two bytes to respect the binary format. Those bytes can be used
         // to put a color to the triangle. But we don't use them.
@@ -261,16 +255,16 @@ public class ParserSTL {
                     try {
                         // From the points read, checks in the hashset if they
                         // doesn't already exist.
-                        Point p1 = this.treatPoint(currentPoints.get(0));
-                        Point p2 = this.treatPoint(currentPoints.get(1));
-                        Point p3 = this.treatPoint(currentPoints.get(2));
+                        final Point p1 = this.treatPoint(currentPoints.get(0));
+                        final Point p2 = this.treatPoint(currentPoints.get(1));
+                        final Point p3 = this.treatPoint(currentPoints.get(2));
 
                         // Checks in the HashSet of edges if this edge doesn't
                         // already exist. If it already exists, it doesn't
                         // create another edge, but keep the same reference.
-                        Edge e1 = this.treatEdge(new Edge(p1, p2));
-                        Edge e2 = this.treatEdge(new Edge(p2, p3));
-                        Edge e3 = this.treatEdge(new Edge(p3, p1));
+                        final Edge e1 = this.treatEdge(new Edge(p1, p2));
+                        final Edge e2 = this.treatEdge(new Edge(p2, p3));
+                        final Edge e3 = this.treatEdge(new Edge(p3, p1));
 
                         // Checks for the flat triangles.
                         if (e1 == e2 || e2 == e3 || e1 == e3) {
@@ -288,13 +282,13 @@ public class ParserSTL {
 
                         System.out.println(this.triangleSet.size());
 
-                    } catch (MoreThanTwoTrianglesPerEdgeException e) {
+                    } catch (final MoreThanTwoTrianglesPerEdgeException e) {
                         // This triangle can't be add : three triangles per edge
                         // will cause problems in the program.
-                    } catch (FlatTriangleException e) {
+                    } catch (final FlatTriangleException e) {
                         // If it is a flat Triangle : 2 identical Points, then 2
                         // identical Edge, it is not added to the Mesh.
-                    } catch (OutOfBoundsPointException e) {
+                    } catch (final OutOfBoundsPointException e) {
                         // The coordinates of the Point are unbounded, then the
                         // Triangle is not added to the Mesh.
                     } finally {
@@ -355,23 +349,23 @@ public class ParserSTL {
                 // only one of those Triangles will be added
                 // to the Mesh.
                 this.triangleSet.add(this.processLineB(bBuf));
-            } catch (FlatTriangleException e) {
+            } catch (final FlatTriangleException e) {
                 // If it is a flat Triangle : 2 identical
                 // Points, then 2
                 // identical Edge, it is not added to the
                 // Mesh.
                 ++counterError;
-            } catch (OutOfBoundsPointException e) {
+            } catch (final OutOfBoundsPointException e) {
                 // The coordinates of the Point are
                 // unbounded, then the Triangle
                 // is not added to the Mesh.
                 ++counterError;
-            } catch (MoreThanTwoTrianglesPerEdgeException e) {
+            } catch (final MoreThanTwoTrianglesPerEdgeException e) {
                 // If one edge of the new triangle contains
                 // already two triangles, then the new triangle is
                 // removed from the mesh.
                 ++counterError;
-            } catch (BadMeshException e) {
+            } catch (final BadMeshException e) {
             }
         }
 
@@ -481,6 +475,27 @@ public class ParserSTL {
     }
 
     /**
+     * Implements an exception when an edge has more than two triangles which
+     * contain it.
+     * 
+     * @author Daniel Lefevre
+     */
+    private static final class MoreThanTwoTrianglesPerEdgeException extends
+        ParserSTL.BadMeshException {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        private MoreThanTwoTrianglesPerEdgeException() {
+        }
+    }
+
+    /**
      * Implements an exception when a point has one coordinate too high.
      * 
      * @author Daniel Lefevre
@@ -501,27 +516,6 @@ public class ParserSTL {
          * Private constructor.
          */
         private OutOfBoundsPointException() {
-        }
-    }
-
-    /**
-     * Implements an exception when an edge has more than two triangles which
-     * contain it.
-     * 
-     * @author Daniel Lefevre
-     */
-    private static final class MoreThanTwoTrianglesPerEdgeException extends
-        ParserSTL.BadMeshException {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        private MoreThanTwoTrianglesPerEdgeException() {
         }
     }
 }

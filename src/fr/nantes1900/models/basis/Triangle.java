@@ -49,8 +49,6 @@ public class Triangle {
      *            one edge composed by two of the three points
      * @param normalNew
      *            the normal of the triangle
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if one edge already contains 2 triangles
      */
     public Triangle(final Point point0, final Point point1, final Point point2,
         final Edge edge1, final Edge edge2, final Edge edge3,
@@ -75,8 +73,6 @@ public class Triangle {
      * 
      * @param triangle
      *            the triangle to copy
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if one edge already contains two triangles
      */
     public Triangle(final Triangle triangle) {
         this.points[0] = new Point(triangle.points[0]);
@@ -143,7 +139,7 @@ public class Triangle {
      * @return true is one point is equal with p
      */
     public final boolean contains(final Point point) {
-        for (Point point2 : this.points) {
+        for (final Point point2 : this.points) {
             if (point.equals(point2)) {
                 return true;
             }
@@ -218,7 +214,7 @@ public class Triangle {
         final List<Triangle> list = new ArrayList<Triangle>();
         Triangle other;
 
-        for (Edge e : this.edges) {
+        for (final Edge e : this.edges) {
             other = e.returnOther(this);
             if (other != null) {
                 list.add(other);
@@ -246,7 +242,7 @@ public class Triangle {
     public final int getNumNeighbours() {
 
         int number = 0;
-        for (Edge e : this.edges) {
+        for (final Edge e : this.edges) {
             number += e.getNumberTriangles() - 1;
         }
 
@@ -296,8 +292,8 @@ public class Triangle {
      */
     public final List<Double> getPointsAsCoordinates() {
         final List<Double> list = new ArrayList<Double>();
-        for (Point p : this.points) {
-            for (double d : p.getPointAsCoordinates()) {
+        for (final Point p : this.points) {
+            for (final double d : p.getPointAsCoordinates()) {
                 list.add(d);
             }
         }
@@ -352,7 +348,7 @@ public class Triangle {
     public final boolean isNeighboor(final Triangle triangle) {
 
         Triangle other;
-        for (Edge e : this.edges) {
+        for (final Edge e : this.edges) {
             other = e.returnOther(this);
             if (other == triangle) {
                 return true;
@@ -396,7 +392,7 @@ public class Triangle {
         Triangle other;
 
         // For each neighbour, ...
-        for (Edge e : this.edges) {
+        for (final Edge e : this.edges) {
             other = e.returnOther(this);
             // ... Which is not yet in ret, and which belongs to container ...
             if (other != null && container.contains(other)
@@ -445,7 +441,7 @@ public class Triangle {
      */
     public final Point xMaxPoint() {
         final double xMax = this.xMax();
-        for (Point p : this.points) {
+        for (final Point p : this.points) {
             if (p.getX() == xMax) {
                 return p;
             }
@@ -470,7 +466,7 @@ public class Triangle {
      */
     public final Point xMinPoint() {
         final double xMin = this.xMin();
-        for (Point p : this.points) {
+        for (final Point p : this.points) {
             if (p.getX() == xMin) {
                 return p;
             }
@@ -505,7 +501,7 @@ public class Triangle {
      */
     public final Point yMaxPoint() {
         final double yMax = this.yMax();
-        for (Point p : this.points) {
+        for (final Point p : this.points) {
             if (p.getY() == yMax) {
                 return p;
             }
@@ -530,7 +526,7 @@ public class Triangle {
      */
     public final Point yMinPoint() {
         final double yMin = this.yMin();
-        for (Point p : this.points) {
+        for (final Point p : this.points) {
             if (p.getY() == yMin) {
                 return p;
             }
@@ -567,7 +563,7 @@ public class Triangle {
      */
     public final Point zMaxPoint() {
         final double zMax = this.zMax();
-        for (Point p : this.points) {
+        for (final Point p : this.points) {
             if (p.getZ() == zMax) {
                 return p;
             }
@@ -592,7 +588,7 @@ public class Triangle {
      */
     public final Point zMinPoint() {
         final double zMin = this.zMin();
-        for (Point p : this.points) {
+        for (final Point p : this.points) {
             if (p.getZ() == zMin) {
                 return p;
             }

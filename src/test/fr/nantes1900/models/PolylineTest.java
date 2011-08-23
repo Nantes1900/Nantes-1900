@@ -27,45 +27,45 @@ public class PolylineTest extends TestCase {
     /**
      * Test attribute.
      */
-    private Point p1 = new Point(1, 0, -1);
+    private final Point p1 = new Point(1, 0, -1);
     /**
      * Test attribute.
      */
-    private Point p2 = new Point(0, 1, 0);
+    private final Point p2 = new Point(0, 1, 0);
     /**
      * Test attribute.
      */
-    private Point p3 = new Point(-1, 2, 1);
+    private final Point p3 = new Point(-1, 2, 1);
     /**
      * Test attribute.
      */
-    private Point p4 = new Point(2, 2, 2);
+    private final Point p4 = new Point(2, 2, 2);
 
     /**
      * Test attribute.
      */
-    private Edge e1 = new Edge(this.p1, this.p2);
+    private final Edge e1 = new Edge(this.p1, this.p2);
     /**
      * Test attribute.
      */
-    private Edge e2 = new Edge(this.p2, this.p3);
+    private final Edge e2 = new Edge(this.p2, this.p3);
     /**
      * Test attribute.
      */
-    private Edge e3 = new Edge(this.p3, this.p1);
+    private final Edge e3 = new Edge(this.p3, this.p1);
     /**
      * Test attribute.
      */
-    private Edge e4 = new Edge(this.p1, this.p4);
+    private final Edge e4 = new Edge(this.p1, this.p4);
     /**
      * Test attribute.
      */
-    private Edge e5 = new Edge(this.p2, this.p4);
+    private final Edge e5 = new Edge(this.p2, this.p4);
 
     /**
      * Test attribute.
      */
-    private Polyline p = new Polyline();
+    private final Polyline p = new Polyline();
 
     /**
      * Constructor of the PolylineTest object : create a polyline by adding 3
@@ -101,7 +101,7 @@ public class PolylineTest extends TestCase {
             Assert.assertTrue(point1.equals(new Point(1, 0, -1)));
             Assert.assertTrue(point2.equals(new Point(0, 1, 0)));
             Assert.assertTrue(point3.equals(new Point(-1, 2, 1)));
-        } catch (SingularMatrixException e) {
+        } catch (final SingularMatrixException e) {
             Assert.fail();
         }
     }

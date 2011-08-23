@@ -59,9 +59,6 @@ public class EdgeTest extends TestCase {
     /**
      * Constructor of the test class EdgeTest : creates a polyline for the
      * following tests.
-     * 
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             exception if one edge has more than two triangles
      */
     public EdgeTest() {
 
@@ -146,7 +143,7 @@ public class EdgeTest extends TestCase {
         try {
             Assert.assertTrue(this.edge5.getNumNeighbours(p) == 0);
             Assert.fail();
-        } catch (InvalidParameterException e) {
+        } catch (final InvalidParameterException e) {
         }
     }
 
@@ -303,7 +300,7 @@ public class EdgeTest extends TestCase {
 
         try {
             Assert.assertTrue(e1.returnNeighbour(b, p1) == e2);
-        } catch (BadFormedPolylineException e) {
+        } catch (final BadFormedPolylineException e) {
             Assert.fail();
         }
     }

@@ -27,7 +27,7 @@ public class Edge {
     /**
      * Array of two points describing the edge.
      */
-    private Point[] points = new Point[2];
+    private final Point[] points = new Point[2];
 
     /**
      * Copy constructor. Caution : use it very cautiously, because it creates
@@ -60,8 +60,6 @@ public class Edge {
      * 
      * @param triangle
      *            the triangle to add
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if the edge already contains two triangles
      */
     public final void addTriangle(final Triangle triangle) {
         if (!this.triangles.contains(triangle)) {
@@ -147,7 +145,7 @@ public class Edge {
             throw new InvalidParameterException();
         }
         int counter = 0;
-        for (Edge e : polyline.getEdgeList()) {
+        for (final Edge e : polyline.getEdgeList()) {
             if (this.isNeighboor(e)) {
                 counter = counter + 1;
             }
@@ -210,7 +208,7 @@ public class Edge {
      */
     public final boolean isBound(final Mesh m) {
         int counter = 0;
-        for (Triangle triangle : this.triangles) {
+        for (final Triangle triangle : this.triangles) {
             if (m.contains(triangle)) {
                 ++counter;
             }
@@ -481,8 +479,6 @@ public class Edge {
      * @param t
      *            one triangle which contains the edge
      * @return the other triangle which contains the edge
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if the edge contains more than two triangles
      */
     public final Triangle returnOther(final Triangle t) {
 

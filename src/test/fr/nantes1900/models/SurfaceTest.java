@@ -90,38 +90,38 @@ public class SurfaceTest extends TestCase {
 
             Assert.assertTrue(p.edgeSize() == 4);
             Assert.assertTrue(p.pointSize() == 4);
-            for (Point point : p.getPointList()) {
+            for (final Point point : p.getPointList()) {
                 Assert.assertTrue(point.getZ() == 0);
             }
-        } catch (InvalidSurfaceException e) {
+        } catch (final InvalidSurfaceException e) {
             Assert.fail();
         }
     }
 
     @Test
     public final void testOrderNeighbours() {
-        Vector3d normal = new Vector3d(0, 0, 1);
+        final Vector3d normal = new Vector3d(0, 0, 1);
         try {
-            Point p1 = new Point(1, 1, 0);
-            Edge e1 = new Edge(p1, p1);
+            final Point p1 = new Point(1, 1, 0);
+            final Edge e1 = new Edge(p1, p1);
             final Triangle t1 = new Triangle(p1, p1, p1, e1, e1, e1, normal);
-            Point p2 = new Point(2, 2, 0);
-            Edge e2 = new Edge(p1, p1);
+            final Point p2 = new Point(2, 2, 0);
+            final Edge e2 = new Edge(p1, p1);
             final Triangle t2 = new Triangle(p2, p2, p2, e2, e2, e2, normal);
-            Point p3 = new Point(2, 1, 0);
-            Edge e3 = new Edge(p1, p1);
+            final Point p3 = new Point(2, 1, 0);
+            final Edge e3 = new Edge(p1, p1);
             final Triangle t3 = new Triangle(p3, p3, p3, e3, e3, e3, normal);
-            Point p4 = new Point(1, 0, 0);
-            Edge e4 = new Edge(p1, p1);
+            final Point p4 = new Point(1, 0, 0);
+            final Edge e4 = new Edge(p1, p1);
             final Triangle t4 = new Triangle(p4, p4, p4, e4, e4, e4, normal);
-            Point p5 = new Point(0, 0, 0);
-            Edge e5 = new Edge(p1, p1);
+            final Point p5 = new Point(0, 0, 0);
+            final Edge e5 = new Edge(p1, p1);
             final Triangle t5 = new Triangle(p5, p5, p5, e5, e5, e5, normal);
-            Point p6 = new Point(-1, 1, 0);
-            Edge e6 = new Edge(p1, p1);
+            final Point p6 = new Point(-1, 1, 0);
+            final Edge e6 = new Edge(p1, p1);
             final Triangle t6 = new Triangle(p6, p6, p6, e6, e6, e6, normal);
-            Point p7 = new Point(0, 1, 0);
-            Edge e7 = new Edge(p1, p1);
+            final Point p7 = new Point(0, 1, 0);
+            final Edge e7 = new Edge(p1, p1);
             final Triangle t7 = new Triangle(p7, p7, p7, e7, e7, e7, normal);
 
             final Surface s1 = new Surface();
@@ -166,18 +166,18 @@ public class SurfaceTest extends TestCase {
             wholeList.add(s6);
             wholeList.add(s7);
 
-            Surface floors = new Surface();
+            final Surface floors = new Surface();
 
             s1.orderNeighbours(wholeList, floors);
 
-            assertTrue(s1.getNeighbours().get(0) == s7);
-            assertTrue(s1.getNeighbours().get(1) == s2);
-            assertTrue(s1.getNeighbours().get(2) == s3);
-            assertTrue(s1.getNeighbours().get(3) == s4);
-            assertTrue(s1.getNeighbours().get(4) == s5);
-            assertTrue(s1.getNeighbours().get(5) == s6);
+            Assert.assertTrue(s1.getNeighbours().get(0) == s7);
+            Assert.assertTrue(s1.getNeighbours().get(1) == s2);
+            Assert.assertTrue(s1.getNeighbours().get(2) == s3);
+            Assert.assertTrue(s1.getNeighbours().get(3) == s4);
+            Assert.assertTrue(s1.getNeighbours().get(4) == s5);
+            Assert.assertTrue(s1.getNeighbours().get(5) == s6);
 
-        } catch (ImpossibleNeighboursOrderException e) {
+        } catch (final ImpossibleNeighboursOrderException e) {
             Assert.fail();
         }
     }

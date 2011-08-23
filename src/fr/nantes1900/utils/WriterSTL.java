@@ -36,7 +36,7 @@ public class WriterSTL {
     /**
      * The name of the file to write in.
      */
-    private String fileName;
+    private final String fileName;
 
     /**
      * The mesh to write.
@@ -115,9 +115,9 @@ public class WriterSTL {
                 this.writeSTLB();
             }
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             e.printStackTrace();
-        } catch (NoMeshException e) {
+        } catch (final NoMeshException e) {
             e.printStackTrace();
         }
     }
@@ -143,14 +143,14 @@ public class WriterSTL {
             // Write outer loop : to begin to write the three points.
             writer.write(s1 + "\nouter loop");
             // Write the three points.
-            for (Point p : triangle.getPoints()) {
+            for (final Point p : triangle.getPoints()) {
                 writer.write("\nvertex" + " " + p.getX() + " " + p.getY() + " "
                     + p.getZ());
             }
 
             // Write the end of the facet.
             writer.write("\nendloop\nendfacet");
-        } catch (java.io.IOException e) {
+        } catch (final java.io.IOException e) {
             e.printStackTrace();
         }
     }
@@ -224,7 +224,7 @@ public class WriterSTL {
             // Writes the header of the file : solid.
             writer = new BufferedWriter(new FileWriter(this.fileName));
             writer.write("solid");
-            for (Triangle f : this.mesh) {
+            for (final Triangle f : this.mesh) {
                 this.writeASCIITriangle(writer, f);
             }
 
@@ -268,13 +268,13 @@ public class WriterSTL {
             stream.write(bBuf.array(), 0, Integer.SIZE / Byte.SIZE);
 
             // Writes every triangle.
-            for (Triangle t : this.mesh) {
+            for (final Triangle t : this.mesh) {
                 this.writeBinaryTriangle(stream, t);
             }
 
             // Finishes to write the last datas before closing the writer.
             stream.flush();
-        } catch (FileNotFoundException e) {
+        } catch (final FileNotFoundException e) {
             e.printStackTrace();
         } finally {
             stream.close();

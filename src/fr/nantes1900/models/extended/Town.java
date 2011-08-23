@@ -37,41 +37,41 @@ import javax.vecmath.Vector3d;
 public class Town {
 
     /**
-     * Step by step mode : it activated, the program writes the datas after each
-     * parts, asks user to check them, and continues if the user agrees, or
-     * makes again the step if the user changed coefficients.
-     */
-    public static boolean stepByStep = false;
-
-    /**
      * Logger.
      */
     public static final Logger LOG = Logger.getLogger("logger");
 
     /**
+     * Step by step mode : it activated, the program writes the datas after each
+     * parts, asks user to check them, and continues if the user agrees, or
+     * makes again the step if the user changed coefficients.
+     */
+    public static boolean stepByStep;
+
+    /**
      * List of industrial zones.
      */
-    private List<Building> industrials = new ArrayList<Building>();
+    private final List<Building> industrials = new ArrayList<Building>();
 
     /**
      * List of residential zones.
      */
-    private List<Building> residentials = new ArrayList<Building>();
+    private final List<Building> residentials = new ArrayList<Building>();
 
     /**
      * List of ground zones.
      */
-    private List<Ground> grounds = new ArrayList<Ground>();
+    private final List<Ground> grounds = new ArrayList<Ground>();
 
     /**
      * List of watery zones.
      */
-    private List<Ground> wateries = new ArrayList<Ground>();
+    private final List<Ground> wateries = new ArrayList<Ground>();
 
     /**
      * List of special buildings.
      */
-    private List<SpecialBuilding> specialBuildings =
+    private final List<SpecialBuilding> specialBuildings =
         new ArrayList<SpecialBuilding>();
 
     /**
@@ -91,6 +91,37 @@ public class Town {
         handler.setLevel(Level.FINEST);
         Town.LOG.addHandler(handler);
         Town.LOG.setUseParentHandlers(false);
+    }
+
+    /**
+     * Pause the program and ask the user through the console if he wants to
+     * continue.
+     * 
+     * @return true if the user wants to continue the program, and false
+     *         otherwise.
+     */
+    public static boolean askForAnswer() {
+        final BufferedReader stdin =
+            new BufferedReader(new InputStreamReader(System.in));
+        System.out
+            .println("If the results please you, enter y, of you want to redo the operation, change the coefficients in the config file, and enter r");
+
+        try {
+            String answer;
+            while ((answer = stdin.readLine()) != null) {
+                if (answer.equals("y")) {
+                    return true;
+                } else if (answer.equals("r")) {
+                    return false;
+                } else {
+                    System.out.println("Enter a valid answer !");
+                }
+            }
+        } catch (final IOException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     /**
@@ -123,8 +154,8 @@ public class Town {
      * @param listBuildings
      *            the list of buildings to add
      */
-    public void addIndustrials(List<Building> listBuildings) {
-        for (Building b : listBuildings) {
+    public final void addIndustrials(final List<Building> listBuildings) {
+        for (final Building b : listBuildings) {
             this.addIndustrial(b);
         }
     }
@@ -217,6 +248,15 @@ public class Town {
     }
 
     /**
+     * Activates the step by step mode : the program writes the datas after each
+     * parts, asks user to check them, and continues if the user agrees, or
+     * makes again the step if the user changed coefficients.
+     */
+    public final void setStepByStepMode() {
+        Town.stepByStep = true;
+    }
+
+    /**
      * Writes the town in a CityGML file. Uses the WriterCityGML.
      * 
      * @param fileName
@@ -257,7 +297,7 @@ public class Town {
     public final void writeSTLGrounds(final String directoryName) {
         int counterGround = 1;
 
-        for (Ground f : this.grounds) {
+        for (final Ground f : this.grounds) {
             f.writeSTL(directoryName + FilesNames.GROUND_FILENAME
                 + FilesNames.SEPARATOR + counterGround + FilesNames.EXTENSION);
             ++counterGround;
@@ -273,7 +313,7 @@ public class Town {
     public final void writeSTLIndustrials(final String directoryName) {
         int buildingCounter = 1;
 
-        for (Building m : this.industrials) {
+        for (final Building m : this.industrials) {
             m.writeSTL(directoryName + FilesNames.INDUSTRIAL_FILENAME
                 + FilesNames.SEPARATOR + buildingCounter);
             ++buildingCounter;
@@ -289,7 +329,7 @@ public class Town {
     public final void writeSTLResidentials(final String directoryName) {
         int buildingCounter = 1;
 
-        for (Building m : this.residentials) {
+        for (final Building m : this.residentials) {
             m.writeSTL(directoryName + FilesNames.RESIDENTIAL_FILENAME
                 + FilesNames.SEPARATOR + buildingCounter);
             ++buildingCounter;
@@ -305,7 +345,7 @@ public class Town {
     public final void writeSTLSpecialBuildings(final String directoryName) {
         int buildingCounter = 1;
 
-        for (SpecialBuilding m : this.specialBuildings) {
+        for (final SpecialBuilding m : this.specialBuildings) {
             m.getMesh().writeSTL(
                 directoryName + FilesNames.SPECIAL_BUILDING_FILENAME
                     + FilesNames.SEPARATOR + buildingCounter
@@ -323,7 +363,7 @@ public class Town {
     public final void writeSTLWateries(final String directoryName) {
         int counterWateries = 1;
 
-        for (Ground f : this.wateries) {
+        for (final Ground f : this.wateries) {
             f.writeSTL(directoryName + FilesNames.WATERY_FILENAME
                 + FilesNames.SEPARATOR + counterWateries + FilesNames.EXTENSION);
             ++counterWateries;
@@ -336,8 +376,8 @@ public class Town {
      * @param listBuildings
      *            the list of buildings to add
      */
-    private void addResidentials(List<Building> listBuildings) {
-        for (Building b : listBuildings) {
+    private void addResidentials(final List<Building> listBuildings) {
+        for (final Building b : listBuildings) {
             this.addIndustrial(b);
         }
     }
@@ -360,7 +400,7 @@ public class Town {
         thingsList = Algos.blockExtract(mesh);
 
         // Algorithm : detection of buildings considering their size.
-        for (Mesh m : thingsList) {
+        for (final Mesh m : thingsList) {
             if (m.size() >= SeparationGroundBuilding.BLOCK_BUILDING_SIZE_ERROR) {
 
                 buildingList.add(m);
@@ -377,6 +417,20 @@ public class Town {
     }
 
     /**
+     * Cut in a building zone the forms which are not buildings : little walls,
+     * chimneys. Method not implemented.
+     * 
+     * @param buildings
+     *            the list of buildings to treat
+     * @return the list of the forms
+     */
+    @SuppressWarnings("unused")
+    private ArrayList<Mesh> carveRealBuildings(final List<Mesh> buildings) {
+        // TODO : implement this method.
+        return null;
+    }
+
+    /**
      * Cleans the directory in parameter, or creates it if it doesn't exist.
      * 
      * @param directoryName
@@ -388,7 +442,7 @@ public class Town {
             // List all the files of the directory
             final File[] fileList = new File(directoryName).listFiles();
 
-            for (File f : fileList) {
+            for (final File f : fileList) {
                 // Delete only the files, and the empty directories. Then
                 // it's safe to put something in a directory Archives for
                 // example.
@@ -413,7 +467,7 @@ public class Town {
             this.matrix = MatrixMethod.createOrthoBase(normalGround);
             MatrixMethod.changeBase(normalGround, this.matrix);
 
-        } catch (SingularMatrixException e) {
+        } catch (final SingularMatrixException e) {
             Town.LOG.severe("Error : the matrix is badly formed !");
             System.exit(1);
         }
@@ -457,7 +511,7 @@ public class Town {
         thingsList = Algos.blockExtract(meshOriented);
 
         Mesh wholeGround = new Mesh();
-        for (Mesh f : thingsList) {
+        for (final Mesh f : thingsList) {
             wholeGround.addAll(f);
         }
 
@@ -477,7 +531,7 @@ public class Town {
         // After this, for each block, consider the distance (on the
         // axisNormalGround) as an altitude distance. If it is greater than
         // the error, then it's not considered as ground.
-        for (Mesh m : thingsList) {
+        for (final Mesh m : thingsList) {
             final Point projectedPoint =
                 axisNormalGround.project(m.getCentroid());
             if (projectedPoint.getZ() < pAverage.getZ()
@@ -493,7 +547,7 @@ public class Town {
         // etc...
         thingsList = new ArrayList<Mesh>(groundsList);
         groundsList = new ArrayList<Mesh>();
-        for (Mesh m : thingsList) {
+        for (final Mesh m : thingsList) {
             if (m.size() > SeparationGroundBuilding.BLOCK_GROUNDS_SIZE_ERROR) {
                 groundsList.add(m);
             }
@@ -509,7 +563,7 @@ public class Town {
         // If the new grounds are neighbours from the old ones, they are
         // added to the real grounds.
         thingsList = new ArrayList<Mesh>();
-        for (Mesh m : groundsList) {
+        for (final Mesh m : groundsList) {
 
             final Mesh temp = new Mesh(m);
             temp.addAll(meshOriented);
@@ -521,7 +575,7 @@ public class Town {
         groundsList = thingsList;
 
         wholeGround = new Mesh();
-        for (Mesh f : groundsList) {
+        for (final Mesh f : groundsList) {
             mesh.remove(f);
             wholeGround.addAll(f);
         }
@@ -562,26 +616,12 @@ public class Town {
             final ParserSTL parser = new ParserSTL(fileName);
             return parser.read();
 
-        } catch (IOException e) {
+        } catch (final IOException e) {
             Town.LOG
                 .severe("Error : the file is badly formed, not found or unreadable !");
             System.exit(1);
             return null;
         }
-    }
-
-    /**
-     * Cut in a building zone the forms which are not buildings : little walls,
-     * chimneys. Method not implemented.
-     * 
-     * @param buildings
-     *            the list of buildings to treat
-     * @return the list of the forms
-     */
-    @SuppressWarnings("unused")
-    private ArrayList<Mesh> carveRealBuildings(List<Mesh> buildings) {
-        // TODO : implement this method.
-        return null;
     }
 
     /**
@@ -612,6 +652,20 @@ public class Town {
     }
 
     /**
+     * Treats the ground object. For the moment, it just changes base.
+     * 
+     * @param groundZone
+     *            the ground to treat
+     * @return the ground treated
+     */
+    private Ground treatGroundZone(final Ground groundZone) {
+
+        groundZone.getMesh().changeBase(this.matrix);
+
+        return groundZone;
+    }
+
+    /**
      * Treats the files of industrial zones which are in the directory.
      * Separates grounds and buildings, builds a Ground object and calls
      * buildFromMesh method, builds Building objects, puts the buildings in and
@@ -631,15 +685,116 @@ public class Town {
             + FilesNames.SEPARATOR + counterIndustrials + FilesNames.EXTENSION)
             .exists()) {
 
-            // ...Parse the meshes of these files
-            // final Mesh mesh =
-            // this.parseFile(directoryName + FilesNames.INDUSTRIAL_FILENAME
-            // + FilesNames.SEPARATOR + counterIndustrials +
-            // FilesNames.EXTENSION);
+            if (Town.stepByStep) {
+                this.cleanDirectory(directoryName
+                    + FilesNames.TEMPORARY_DIRECTORY);
+            }
 
-            // FIXME
+            // Declarations.
+            List<Mesh> buildings;
+            Mesh wholeGround;
+            List<Mesh> groundsMesh;
+            Vector3d realNormalToTheGround;
 
-            // this.addIndustrials(listBuildings);
+            do {
+                Configuration.loadCoefficients();
+
+                // ...Parse the meshes of these files.
+                final Mesh mesh =
+                    this.parseFile(directoryName
+                        + FilesNames.INDUSTRIAL_FILENAME + FilesNames.SEPARATOR
+                        + counterIndustrials + FilesNames.EXTENSION);
+
+                // If another ground normal is available, extract it. Otherwise,
+                // keep the normal gravity-oriented as the normal to the ground.
+                if (new File(directoryName + FilesNames.GROUND_FILENAME
+                    + FilesNames.SEPARATOR + counterIndustrials
+                    + FilesNames.EXTENSION).exists()) {
+
+                    realNormalToTheGround =
+                        this.extractGroundNormal(directoryName
+                            + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
+                            + counterIndustrials + FilesNames.EXTENSION);
+
+                    MatrixMethod.changeBase(realNormalToTheGround, this.matrix);
+
+                } else {
+                    realNormalToTheGround = normalGravityOriented;
+                }
+
+                // Base change in the gravity-oriented base.
+                mesh.changeBase(this.matrix);
+
+                // Extraction of the ground.
+                wholeGround =
+                    this.groundExtraction(mesh, realNormalToTheGround);
+
+                // Extraction of the buildings : the blocks which are left after
+                // the ground extraction.
+                final Mesh noise = new Mesh();
+                buildings = this.buildingsExtraction(mesh, noise);
+
+                // Treatment of the noise : other blocks are added to the
+                // grounds if possible.
+                groundsMesh = this.noiseTreatment(wholeGround, noise);
+
+                if (Town.stepByStep) {
+                    System.out.println("Building n° " + counterIndustrials
+                        + " : ");
+                    System.out
+                        .println("1st step executed : you will find the result in : "
+                            + directoryName
+                            + FilesNames.TEMPORARY_DIRECTORY
+                            + FilesNames.INDUSTRIAL_FILENAME
+                            + FilesNames.SEPARATOR
+                            + counterIndustrials
+                            + FilesNames.EXTENSION
+                            + "and in : "
+                            + directoryName
+                            + FilesNames.TEMPORARY_DIRECTORY
+                            + FilesNames.GROUND_FILENAME
+                            + FilesNames.SEPARATOR
+                            + counterIndustrials + FilesNames.EXTENSION);
+
+                    final Mesh wholeBuildings = new Mesh();
+                    for (final Mesh b : buildings) {
+                        wholeBuildings.addAll(b);
+                    }
+
+                    wholeBuildings.writeSTL(directoryName
+                        + FilesNames.TEMPORARY_DIRECTORY
+                        + FilesNames.INDUSTRIAL_FILENAME + FilesNames.SEPARATOR
+                        + counterIndustrials + FilesNames.EXTENSION);
+                    wholeGround.writeSTL(directoryName
+                        + FilesNames.TEMPORARY_DIRECTORY
+                        + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
+                        + counterIndustrials + FilesNames.EXTENSION);
+                }
+            } while (Town.stepByStep && !Town.askForAnswer());
+
+            // Cuts the little walls, and other things that are not buildings.
+            // ArrayList<Mesh> formsList = this.carveRealBuildings(buildings);
+
+            // Foreach building, create an building object, call the algorithm
+            // to build it and add it to the list of this town.
+            final List<Building> listBuildings = new ArrayList<Building>();
+
+            for (final Mesh m : buildings) {
+                final Building e = new Building();
+                e.buildFromMesh(m, wholeGround, realNormalToTheGround,
+                    directoryName, counterIndustrials);
+                listBuildings.add(e);
+            }
+
+            // Foreach ground found, call the algorithm of ground treatment, and
+            // add it to the list of this town with an attribute : street.
+            for (final Mesh m : groundsMesh) {
+                final Ground ground = new Ground("street");
+                ground.buildFromMesh(m);
+                this.addGround(ground);
+            }
+
+            this.addResidentials(listBuildings);
 
             ++counterIndustrials;
         }
@@ -737,8 +892,8 @@ public class Town {
                             + FilesNames.SEPARATOR
                             + counterResidentials + FilesNames.EXTENSION);
 
-                    Mesh wholeBuildings = new Mesh();
-                    for (Mesh b : buildings) {
+                    final Mesh wholeBuildings = new Mesh();
+                    for (final Mesh b : buildings) {
                         wholeBuildings.addAll(b);
                     }
 
@@ -759,9 +914,9 @@ public class Town {
 
             // Foreach building, create an building object, call the algorithm
             // to build it and add it to the list of this town.
-            List<Building> listBuildings = new ArrayList<Building>();
+            final List<Building> listBuildings = new ArrayList<Building>();
 
-            for (Mesh m : buildings) {
+            for (final Mesh m : buildings) {
                 final Building e = new Building();
                 e.buildFromMesh(m, wholeGround, realNormalToTheGround,
                     directoryName, counterResidentials);
@@ -770,7 +925,7 @@ public class Town {
 
             // Foreach ground found, call the algorithm of ground treatment, and
             // add it to the list of this town with an attribute : street.
-            for (Mesh m : groundsMesh) {
+            for (final Mesh m : groundsMesh) {
                 final Ground ground = new Ground("street");
                 ground.buildFromMesh(m);
                 this.addGround(ground);
@@ -780,30 +935,6 @@ public class Town {
 
             ++counterResidentials;
         }
-    }
-
-    public static boolean askForAnswer() {
-        BufferedReader stdin =
-            new BufferedReader(new InputStreamReader(System.in));
-        System.out
-            .println("If the results please you, enter y, of you want to redo the operation, change the coefficients in the config file, and enter r");
-
-        try {
-            String answer;
-            while ((answer = stdin.readLine()) != null) {
-                if (answer.equals("y")) {
-                    return true;
-                } else if (answer.equals("r")) {
-                    return false;
-                } else {
-                    System.out.println("Enter a valid answer !");
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return false;
     }
 
     /**
@@ -839,20 +970,6 @@ public class Town {
     }
 
     /**
-     * Treats the ground object. For the moment, it just changes base.
-     * 
-     * @param groundZone
-     *            the ground to treat
-     * @return the ground treated
-     */
-    private Ground treatGroundZone(Ground groundZone) {
-
-        groundZone.getMesh().changeBase(this.matrix);
-
-        return groundZone;
-    }
-
-    /**
      * Treats the files of wateries which are in the directory. Creates Ground
      * objects for each files, puts an attribute : Water, and calls the
      * buildFromMesh method of Ground. Then adds it to the list of wateries.
@@ -878,14 +995,5 @@ public class Town {
 
             ++counterWateries;
         }
-    }
-
-    /**
-     * Activates the step by step mode : the program writes the datas after each
-     * parts, asks user to check them, and continues if the user agrees, or
-     * makes again the step if the user changed coefficients.
-     */
-    public void setStepByStepMode() {
-        Town.stepByStep = true;
     }
 }

@@ -25,12 +25,12 @@ public class Polyline {
     /**
      * List of the points of the polyline.
      */
-    private List<Point> pointList = new ArrayList<Point>();
+    private final List<Point> pointList = new ArrayList<Point>();
 
     /**
      * List of the edges of the polyline.
      */
-    private List<Edge> edgeList = new ArrayList<Edge>();
+    private final List<Edge> edgeList = new ArrayList<Edge>();
 
     /**
      * Normal of the polyline.
@@ -56,7 +56,7 @@ public class Polyline {
      *            the list of edges
      */
     public Polyline(final List<Edge> a) {
-        for (Edge e : a) {
+        for (final Edge e : a) {
             // Checks if the objects added are not already contained in the
             // list.
             if (!this.edgeList.contains(e)) {
@@ -85,10 +85,10 @@ public class Polyline {
         this(p.getEdgeList());
 
         // For each point, make the list of the edges which contain this point.
-        for (Point point : p.pointList) {
+        for (final Point point : p.pointList) {
             final List<Edge> belongings = new ArrayList<Edge>();
 
-            for (Edge e : this.edgeList) {
+            for (final Edge e : this.edgeList) {
                 if (e.contains(point)) {
                     belongings.add(e);
                 }
@@ -99,7 +99,7 @@ public class Polyline {
             this.pointList.add(copy);
 
             // And then replace this point, with a copy of it, in every edges.
-            for (Edge e : belongings) {
+            for (final Edge e : belongings) {
                 if (e.getP1() == point) {
                     e.setP1(copy);
                 } else if (e.getP2() == point) {
@@ -143,7 +143,7 @@ public class Polyline {
      *            the list
      */
     public final void addAll(final List<Edge> l) {
-        for (Edge e : l) {
+        for (final Edge e : l) {
             this.add(e);
         }
     }
@@ -162,7 +162,7 @@ public class Polyline {
         }
 
         // For each point of the list, base change it.
-        for (Point p : this.pointList) {
+        for (final Point p : this.pointList) {
             p.changeBase(matrix);
         }
     }
@@ -221,7 +221,7 @@ public class Polyline {
     public final List<Point> getCylinder(final Edge e, final double error) {
         final List<Point> ret = new ArrayList<Point>();
 
-        for (Point p : this.pointList) {
+        for (final Point p : this.pointList) {
             if (e.isInCylinder3D(p, error)) {
                 ret.add(p);
             }
@@ -261,7 +261,7 @@ public class Polyline {
         }
 
         final List<Edge> list = new ArrayList<Edge>();
-        for (Edge e : this.edgeList) {
+        for (final Edge e : this.edgeList) {
             if (e.contains(p)) {
                 list.add(e);
             }
@@ -287,7 +287,7 @@ public class Polyline {
      */
     public final int getNumNeighbours(final Point p) {
         int counter = 0;
-        for (Edge e : this.edgeList) {
+        for (final Edge e : this.edgeList) {
             if (e.contains(p)) {
                 counter = counter + 1;
             }
@@ -320,8 +320,8 @@ public class Polyline {
      */
     public final List<Double> getPointsAsCoordinates() {
         final List<Double> list = new ArrayList<Double>();
-        for (Point p : this.pointList) {
-            for (double d : p.getPointAsCoordinates()) {
+        for (final Point p : this.pointList) {
+            for (final double d : p.getPointAsCoordinates()) {
                 list.add(new Double(d));
             }
         }
@@ -346,7 +346,7 @@ public class Polyline {
      */
     public final boolean isNeighbour(final Polyline p) {
         if (p != this) {
-            for (Edge e1 : this.edgeList) {
+            for (final Edge e1 : this.edgeList) {
                 if (p.contains(e1)) {
                     return true;
                 }
@@ -362,7 +362,7 @@ public class Polyline {
      */
     public final double length() {
         double length = 0;
-        for (Edge e : this.edgeList) {
+        for (final Edge e : this.edgeList) {
             length += e.length();
         }
         return length;
@@ -392,7 +392,7 @@ public class Polyline {
     public final Polyline orientedAs(final Edge e, final double error) {
         final Polyline ret = new Polyline();
 
-        for (Edge edge : this.edgeList) {
+        for (final Edge edge : this.edgeList) {
             if (edge.orientedAs(e, error)) {
                 ret.add(edge);
             }
@@ -442,7 +442,7 @@ public class Polyline {
      */
     public final void remove(final Polyline p) {
         final List<Edge> edges = new ArrayList<Edge>(this.edgeList);
-        for (Edge e : p.edgeList) {
+        for (final Edge e : p.edgeList) {
             edges.remove(e);
         }
         this.clear();
@@ -468,7 +468,7 @@ public class Polyline {
 
         Point before = this.pointList.get(this.pointSize() - 1);
 
-        for (Point p : this.pointList) {
+        for (final Point p : this.pointList) {
             ens.add(new Triangle(before, centroid, p,
                 new Edge(centroid, before), new Edge(before, p), new Edge(p,
                     centroid), normalVect));
@@ -493,7 +493,7 @@ public class Polyline {
 
         // If there is Edges which have not triangles associated, the method
         // calls the returnCentroidMesh.
-        for (Edge e : this.edgeList) {
+        for (final Edge e : this.edgeList) {
             if (e.getNumberTriangles() == 0) {
                 return this.returnCentroidMesh();
             }
@@ -502,8 +502,8 @@ public class Polyline {
         // Find every triangles which belong to the edges, and which belong to m
         // too.
         final Mesh ens = new Mesh();
-        for (Edge e : this.edgeList) {
-            for (Triangle t : e.getTriangles()) {
+        for (final Edge e : this.edgeList) {
+            for (final Triangle t : e.getTriangles()) {
                 if (m.contains(t)) {
                     ens.add(t);
                 }
@@ -529,7 +529,7 @@ public class Polyline {
      */
     public final double xAverage() {
         double xAverage = 0;
-        for (Point p : this.pointList) {
+        for (final Point p : this.pointList) {
             xAverage += p.getX();
         }
         return xAverage / this.pointList.size();
@@ -548,7 +548,7 @@ public class Polyline {
      */
     public final Polyline xBetween(final double m1, final double m2) {
         final Polyline b = new Polyline();
-        for (Edge e : this.edgeList) {
+        for (final Edge e : this.edgeList) {
             if (e.getP1().getX() > Math.min(m1, m2)
                 && e.getP1().getX() < Math.max(m1, m2)
                 && e.getP2().getX() > Math.min(m1, m2)
@@ -566,10 +566,10 @@ public class Polyline {
      */
     public final double xLengthAverage() {
         double xLengthAve = 0;
-        for (Edge e : this.edgeList) {
+        for (final Edge e : this.edgeList) {
             xLengthAve += Math.abs(e.getP1().getX() - e.getP2().getX());
         }
-        return xLengthAve / (double) this.edgeList.size();
+        return xLengthAve / this.edgeList.size();
     }
 
     /**
@@ -579,7 +579,7 @@ public class Polyline {
      */
     public final double xMax() {
         double xMaxi = Double.NEGATIVE_INFINITY;
-        for (Point p : this.pointList) {
+        for (final Point p : this.pointList) {
             if (p.getX() > xMaxi) {
                 xMaxi = p.getX();
             }
@@ -594,7 +594,7 @@ public class Polyline {
      */
     public final double xMin() {
         double xMini = Double.POSITIVE_INFINITY;
-        for (Point p : this.pointList) {
+        for (final Point p : this.pointList) {
             if (p.getX() < xMini) {
                 xMini = p.getX();
             }
@@ -609,7 +609,7 @@ public class Polyline {
      */
     public final double yAverage() {
         double yAverage = 0;
-        for (Point p : this.pointList) {
+        for (final Point p : this.pointList) {
             yAverage += p.getY();
         }
         return yAverage / this.pointList.size();
@@ -628,7 +628,7 @@ public class Polyline {
      */
     public final Polyline yBetween(final double m1, final double m2) {
         final Polyline b = new Polyline();
-        for (Edge e : this.edgeList) {
+        for (final Edge e : this.edgeList) {
             if (e.getP1().getY() > Math.min(m1, m2)
                 && e.getP1().getY() < Math.max(m1, m2)
                 && e.getP2().getY() > Math.min(m1, m2)
@@ -646,10 +646,10 @@ public class Polyline {
      */
     public final double yLengthAverage() {
         double yLengthAve = 0;
-        for (Edge e : this.edgeList) {
+        for (final Edge e : this.edgeList) {
             yLengthAve += Math.abs(e.getP1().getY() - e.getP2().getY());
         }
-        return yLengthAve / (double) this.edgeList.size();
+        return yLengthAve / this.edgeList.size();
     }
 
     /**
@@ -659,7 +659,7 @@ public class Polyline {
      */
     public final double yMax() {
         double yMaxi = Double.NEGATIVE_INFINITY;
-        for (Point p : this.pointList) {
+        for (final Point p : this.pointList) {
             if (p.getY() > yMaxi) {
                 yMaxi = p.getY();
             }
@@ -674,7 +674,7 @@ public class Polyline {
      */
     public final double yMin() {
         double yMini = Double.POSITIVE_INFINITY;
-        for (Point p : this.pointList) {
+        for (final Point p : this.pointList) {
             if (p.getY() < yMini) {
                 yMini = p.getY();
             }
@@ -689,7 +689,7 @@ public class Polyline {
      */
     public final double zAverage() {
         double zAverage = 0;
-        for (Point p : this.pointList) {
+        for (final Point p : this.pointList) {
             zAverage += p.getZ();
         }
         return zAverage / this.pointList.size();
@@ -708,7 +708,7 @@ public class Polyline {
      */
     public final Polyline zBetween(final double m1, final double m2) {
         final Polyline b = new Polyline();
-        for (Edge e : this.edgeList) {
+        for (final Edge e : this.edgeList) {
             if (e.getP1().getZ() > Math.min(m1, m2)
                 && e.getP1().getZ() < Math.max(m1, m2)
                 && e.getP2().getZ() > Math.min(m1, m2)
@@ -726,10 +726,10 @@ public class Polyline {
      */
     public final double zLengthAverage() {
         double zLengthAve = 0;
-        for (Edge e : this.edgeList) {
+        for (final Edge e : this.edgeList) {
             zLengthAve += Math.abs(e.getP1().getZ() - e.getP2().getZ());
         }
-        return zLengthAve / (double) this.edgeList.size();
+        return zLengthAve / this.edgeList.size();
     }
 
     /**
@@ -739,7 +739,7 @@ public class Polyline {
      */
     public final double zMax() {
         double zMaxi = Double.NEGATIVE_INFINITY;
-        for (Point p : this.pointList) {
+        for (final Point p : this.pointList) {
             if (p.getZ() > zMaxi) {
                 zMaxi = p.getZ();
             }
@@ -758,7 +758,7 @@ public class Polyline {
             throw new InvalidParameterException("Empty border !");
         }
         double zMax = Double.NEGATIVE_INFINITY;
-        for (Point p : this.pointList) {
+        for (final Point p : this.pointList) {
             if (p.getZ() > zMax) {
                 zMax = p.getZ();
                 point = p;
@@ -774,7 +774,7 @@ public class Polyline {
      */
     public final double zMin() {
         double zMini = Double.POSITIVE_INFINITY;
-        for (Point p : this.pointList) {
+        for (final Point p : this.pointList) {
             if (p.getZ() < zMini) {
                 zMini = p.getZ();
             }
@@ -793,7 +793,7 @@ public class Polyline {
      *            the value to project on
      */
     public final void zProjection(final double z) {
-        for (Point p : this.pointList) {
+        for (final Point p : this.pointList) {
             p.setZ(z);
         }
     }

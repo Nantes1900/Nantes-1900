@@ -31,9 +31,7 @@ public final class Algos {
      * 
      * @param m
      *            the mesh to divide
-     * @return an array of the blocks-meshs
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if the edge is bad formed
+     * @return an array of the blocks-meshes
      */
     public static List<Mesh> blockExtract(final Mesh m) {
         final Set<Mesh> thingsList = new HashSet<Mesh>();
@@ -64,29 +62,22 @@ public final class Algos {
      * @param angleNormalErrorFactor
      *            the error on the orientation
      * @return an array of the blocks-meshs
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if the edge is bad formed
      */
     public static List<Mesh> blockOrientedAndPlaneExtract(final Mesh m,
-        final double angleNormalErrorFactor,
-        final double lengthPlanesErrorFactor) {
+        final double angleNormalErrorFactor) {
 
         final List<Mesh> thingsList = new ArrayList<Mesh>();
-        List<Mesh> meshList = Algos.blockExtract(m);
+        final List<Mesh> meshList = Algos.blockExtract(m);
 
-        for (Mesh mesh : meshList) {
+        for (final Mesh mesh : meshList) {
             while (!mesh.isEmpty()) {
-                Mesh e = new Mesh();
+                final Mesh e = new Mesh();
                 final Triangle tri = mesh.getOne();
 
                 final Mesh oriented =
                     mesh.orientedAs(tri.getNormal(), angleNormalErrorFactor);
 
                 tri.returnNeighbours(e, oriented);
-
-                // e =
-                // e.inPlanes(e.averageNormal(), e.getCentroid(),
-                // lengthPlanesErrorFactor);
 
                 mesh.remove(e);
                 thingsList.add(e);
@@ -105,14 +96,12 @@ public final class Algos {
      *            the list of meshes to complete with noise
      * @param noise
      *            the whole noise
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if the edge is bad formed
      */
     public static void blockTreatNoise(final List<Mesh> list, final Mesh noise) {
 
         final List<Mesh> m = new ArrayList<Mesh>();
 
-        for (Mesh e : list) {
+        for (final Mesh e : list) {
             final Mesh meshAndNoise = new Mesh(e);
             meshAndNoise.addAll(noise);
             final Mesh mes = new Mesh();
@@ -136,15 +125,13 @@ public final class Algos {
      *            the whole noise
      * @param largeAngleNormalErrorFactor
      *            the error on the orientation
-     * @throws MoreThanTwoTrianglesPerEdgeException
-     *             if the edge is bad formed
      */
     public static void blockTreatOrientedNoise(final List<Surface> wallList,
         final Mesh noise, final double largeAngleNormalErrorFactor) {
 
         final List<Surface> list = new ArrayList<Surface>();
 
-        for (Mesh e : wallList) {
+        for (final Mesh e : wallList) {
             final Mesh meshAndNoise = new Mesh(e);
             final Mesh noiseOriented =
                 noise

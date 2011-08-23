@@ -43,23 +43,23 @@ public class WriterCityGML {
     /**
      * The city gml factory.
      */
-    private CityGMLFactory citygml = new CityGMLFactory();
+    private final CityGMLFactory citygml = new CityGMLFactory();
     /**
      * The gml factory.
      */
-    private GMLFactory gml = new GMLFactory();
+    private final GMLFactory gml = new GMLFactory();
     /**
      * The city model.
      */
-    private CityModel cityModel = this.citygml.createCityModel();
+    private final CityModel cityModel = this.citygml.createCityModel();
     /**
      * The gml ID manager.
      */
-    private GMLIdManager gmlIdManager = DefaultGMLIdManager.getInstance();
+    private final GMLIdManager gmlIdManager = DefaultGMLIdManager.getInstance();
     /**
      * The geometry factory.
      */
-    private GMLGeometryFactory geom = new GMLGeometryFactory();
+    private final GMLGeometryFactory geom = new GMLGeometryFactory();
     /**
      * The JAXB building.
      */
@@ -68,7 +68,7 @@ public class WriterCityGML {
     /**
      * The name of the file to write in.
      */
-    private String fileName;
+    private final String fileName;
 
     /**
      * Constructor.
@@ -81,7 +81,7 @@ public class WriterCityGML {
         try {
             final CityGMLContext ctx = new CityGMLContext();
             this.builder = ctx.createJAXBBuilder();
-        } catch (JAXBException e) {
+        } catch (final JAXBException e) {
             e.printStackTrace();
         }
 
@@ -116,7 +116,7 @@ public class WriterCityGML {
             new ArrayList<BoundarySurfaceProperty>();
 
         try {
-            for (Polyline surface : buildingToAdd.getWalls()) {
+            for (final Polyline surface : buildingToAdd.getWalls()) {
                 // Creates the geometry as a suite of coordinates.
                 final Polygon geometry =
                     this.geom.createLinearPolygon(surface
@@ -141,7 +141,7 @@ public class WriterCityGML {
             }
 
             // Idem for the roofs.
-            for (Polyline surface : buildingToAdd.getRoofs()) {
+            for (final Polyline surface : buildingToAdd.getRoofs()) {
                 // Creates the polygon.
                 final Polygon geometry =
                     this.geom.createLinearPolygon(surface
@@ -162,7 +162,7 @@ public class WriterCityGML {
                 boundedBy.add(this.citygml
                     .createBoundarySurfaceProperty(boundarySurface));
             }
-        } catch (DimensionMismatchException e) {
+        } catch (final DimensionMismatchException e) {
             e.printStackTrace();
         }
 
@@ -181,7 +181,7 @@ public class WriterCityGML {
      */
     public final void addBuildings(
         final List<fr.nantes1900.models.extended.Building> buildings) {
-        for (fr.nantes1900.models.extended.Building building : buildings) {
+        for (final fr.nantes1900.models.extended.Building building : buildings) {
             this.addBuilding(building);
         }
     }
@@ -212,7 +212,7 @@ public class WriterCityGML {
             new ArrayList<BoundarySurfaceProperty>();
 
         try {
-            for (Triangle t : ground.getMesh()) {
+            for (final Triangle t : ground.getMesh()) {
                 // Creates the polygon.
                 final Polygon geometry =
                     this.geom
@@ -233,7 +233,7 @@ public class WriterCityGML {
                 boundedBy.add(this.citygml
                     .createBoundarySurfaceProperty(boundarySurface));
             }
-        } catch (DimensionMismatchException e) {
+        } catch (final DimensionMismatchException e) {
             e.printStackTrace();
         }
 
@@ -251,7 +251,7 @@ public class WriterCityGML {
      *            the list of grounds to add
      */
     public final void addGrounds(final List<Ground> grounds) {
-        for (Ground ground : grounds) {
+        for (final Ground ground : grounds) {
             this.addGround(ground);
         }
     }
@@ -282,7 +282,7 @@ public class WriterCityGML {
             new ArrayList<BoundarySurfaceProperty>();
 
         try {
-            for (Triangle t : specialBuilding.getMesh()) {
+            for (final Triangle t : specialBuilding.getMesh()) {
                 // Creates the polygon.
                 final Polygon geometry =
                     this.geom
@@ -303,7 +303,7 @@ public class WriterCityGML {
                 boundedBy.add(this.citygml
                     .createBoundarySurfaceProperty(boundarySurface));
             }
-        } catch (DimensionMismatchException e) {
+        } catch (final DimensionMismatchException e) {
             e.printStackTrace();
         }
 
@@ -322,7 +322,7 @@ public class WriterCityGML {
      */
     public final void addSpecialBuildings(
         final List<SpecialBuilding> specialBuildings) {
-        for (SpecialBuilding specialBuilding : specialBuildings) {
+        for (final SpecialBuilding specialBuilding : specialBuildings) {
             this.addSpecialBuilding(specialBuilding);
         }
     }
@@ -344,9 +344,9 @@ public class WriterCityGML {
             writer.setIndentString("  ");
             writer.write(this.cityModel);
             writer.close();
-        } catch (CityGMLReadException e) {
+        } catch (final CityGMLReadException e) {
             e.printStackTrace();
-        } catch (CityGMLWriteException e) {
+        } catch (final CityGMLWriteException e) {
             e.printStackTrace();
         }
 

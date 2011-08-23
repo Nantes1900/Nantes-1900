@@ -25,35 +25,35 @@ public class TriangleTest extends TestCase {
     /**
      * Test attribute.
      */
-    private Point p1 = new Point(1, 0, -1);
+    private final Point p1 = new Point(1, 0, -1);
     /**
      * Test attribute.
      */
-    private Point p2 = new Point(0, 1, 0);
+    private final Point p2 = new Point(0, 1, 0);
     /**
      * Test attribute.
      */
-    private Point p3 = new Point(-1, 2, 1);
+    private final Point p3 = new Point(-1, 2, 1);
     /**
      * Test attribute.
      */
-    private Vector3d vect = new Vector3d(0, 0, 1);
+    private final Vector3d vect = new Vector3d(0, 0, 1);
     /**
      * Test attribute.
      */
-    private Edge e1 = new Edge(this.p1, this.p2);
+    private final Edge e1 = new Edge(this.p1, this.p2);
     /**
      * Test attribute.
      */
-    private Edge e2 = new Edge(this.p2, this.p3);
+    private final Edge e2 = new Edge(this.p2, this.p3);
     /**
      * Test attribute.
      */
-    private Edge e3 = new Edge(this.p3, this.p1);
+    private final Edge e3 = new Edge(this.p3, this.p1);
     /**
      * Test attribute.
      */
-    private Triangle t;
+    private final Triangle t;
 
     /**
      * Constructor.
@@ -66,9 +66,9 @@ public class TriangleTest extends TestCase {
 
     /**
      * Test method for
-     * {@link nantes1900pjct.models.basis.Triangle#angularTolerance(javax.vecmath.Vector3d, double)}
+     * {@link nantes1900.models.basis.Triangle#angularTolerance(javax.vecmath.Vector3d, double)}
      * . Test method for
-     * {@link nantes1900pjct.models.basis.Triangle#angularTolerance(nantes1900pjct.models.basis.Triangle, double)}
+     * {@link nantes1900.models.basis.Triangle#angularTolerance(nantes1900.models.basis.Triangle, double)}
      * .
      * 
      * @throws MoreThanTwoTrianglesPerEdgeException
@@ -89,7 +89,7 @@ public class TriangleTest extends TestCase {
 
     /**
      * Test method for
-     * {@link nantes1900pjct.models.basis.Triangle#contains(nantes1900pjct.models.basis.Edge)}
+     * {@link nantes1900.models.basis.Triangle#contains(nantes1900.models.basis.Edge)}
      * .
      */
     @Test
@@ -101,7 +101,7 @@ public class TriangleTest extends TestCase {
 
     /**
      * Test method for
-     * {@link nantes1900pjct.models.basis.Triangle#contains(nantes1900pjct.models.basis.Point)}
+     * {@link nantes1900.models.basis.Triangle#contains(nantes1900.models.basis.Point)}
      * .
      */
     @Test
@@ -113,7 +113,7 @@ public class TriangleTest extends TestCase {
 
     /**
      * Test method for
-     * {@link nantes1900pjct.models.basis.Triangle#equals(java.lang.Object)}.
+     * {@link nantes1900.models.basis.Triangle#equals(java.lang.Object)}.
      */
     @Test
     public final void testEqualsObject() {
@@ -125,8 +125,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for
-     * {@link nantes1900pjct.models.basis.Triangle#getNeighbours()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#getNeighbours()}.
      */
     @Test
     public final void testGetNeighbours() {
@@ -157,7 +156,7 @@ public class TriangleTest extends TestCase {
 
     /**
      * Test method for
-     * {@link nantes1900pjct.models.basis.Triangle#getNumNeighbours()}.
+     * {@link nantes1900.models.basis.Triangle#getNumNeighbours()}.
      */
     @Test
     public final void testGetNumNeighbours() {
@@ -179,7 +178,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#getPoints()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#getPoints()}.
      */
     @Test
     public final void testGetPoints() {
@@ -189,34 +188,37 @@ public class TriangleTest extends TestCase {
         Assert.assertTrue(pointList.get(2) == this.p3);
     }
 
+    /**
+     * Test method for {@link nantes1900.models.basis.Triangle#getPoints()}.
+     */
     public final void testIsInPlanes() {
-        Point p1 = new Point(0, 0, 0);
-        Point p2 = new Point(0, 1, 0);
-        Point p3 = new Point(1, 0, 0);
-        Edge e1 = new Edge(p1, p2);
-        Edge e2 = new Edge(p2, p3);
-        Edge e3 = new Edge(p1, p3);
-        Vector3d normal1 = new Vector3d(0, 0, 1);
+        final Point p1 = new Point(0, 0, 0);
+        final Point p2 = new Point(0, 1, 0);
+        final Point p3 = new Point(1, 0, 0);
+        final Edge e1 = new Edge(p1, p2);
+        final Edge e2 = new Edge(p2, p3);
+        final Edge e3 = new Edge(p1, p3);
+        final Vector3d normal1 = new Vector3d(0, 0, 1);
 
-        Point p4 = new Point(0, 0, 1);
-        Point p5 = new Point(0, 1, 1);
-        Point p6 = new Point(1, 0, 1);
-        Edge e4 = new Edge(p1, p2);
-        Edge e5 = new Edge(p2, p3);
-        Edge e6 = new Edge(p1, p3);
-        Vector3d normal2 = new Vector3d(0, 0, 1);
+        final Point p4 = new Point(0, 0, 1);
+        final Point p5 = new Point(0, 1, 1);
+        final Point p6 = new Point(1, 0, 1);
+        final Edge e4 = new Edge(p1, p2);
+        final Edge e5 = new Edge(p2, p3);
+        final Edge e6 = new Edge(p1, p3);
+        final Vector3d normal2 = new Vector3d(0, 0, 1);
 
-        Point p7 = new Point(0, 0, 2);
-        Point p8 = new Point(0, 1, 2);
-        Point p9 = new Point(1, 0, 2);
-        Edge e7 = new Edge(p1, p2);
-        Edge e8 = new Edge(p2, p3);
-        Edge e9 = new Edge(p1, p3);
-        Vector3d normal3 = new Vector3d(0, 0, 1);
+        final Point p7 = new Point(0, 0, 2);
+        final Point p8 = new Point(0, 1, 2);
+        final Point p9 = new Point(1, 0, 2);
+        final Edge e7 = new Edge(p1, p2);
+        final Edge e8 = new Edge(p2, p3);
+        final Edge e9 = new Edge(p1, p3);
+        final Vector3d normal3 = new Vector3d(0, 0, 1);
 
-        Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, normal1);
-        Triangle t2 = new Triangle(p4, p5, p6, e4, e5, e6, normal2);
-        Triangle t3 = new Triangle(p7, p8, p9, e7, e8, e9, normal3);
+        final Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, normal1);
+        final Triangle t2 = new Triangle(p4, p5, p6, e4, e5, e6, normal2);
+        final Triangle t3 = new Triangle(p7, p8, p9, e7, e8, e9, normal3);
 
         Assert.assertTrue(t1.isInPlanes(t2.getNormal(), t2.getP1(), 1.1));
         Assert.assertFalse(t1.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
@@ -225,7 +227,7 @@ public class TriangleTest extends TestCase {
 
     /**
      * Test method for
-     * {@link nantes1900pjct.models.basis.Triangle#isNeighboor(nantes1900pjct.models.basis.Triangle)}
+     * {@link nantes1900.models.basis.Triangle#isNeighboor(nantes1900.models.basis.Triangle)}
      * .
      */
     public final void testIsNeighboor() {
@@ -254,7 +256,7 @@ public class TriangleTest extends TestCase {
 
     /**
      * Test method for
-     * {@link nantes1900pjct.models.basis.Triangle#isNormalTo(javax.vecmath.Vector3d, double)}
+     * {@link nantes1900.models.basis.Triangle#isNormalTo(javax.vecmath.Vector3d, double)}
      * .
      */
     @Test
@@ -268,7 +270,7 @@ public class TriangleTest extends TestCase {
 
     /**
      * Test method for
-     * {@link nantes1900pjct.models.basis.Triangle#returnNeighbours(nantes1900pjct.models.Mesh, nantes1900pjct.models.Mesh)}
+     * {@link nantes1900.models.basis.Triangle#returnNeighbours(nantes1900.models.Mesh, nantes1900.models.Mesh)}
      * .
      * 
      * @throws MoreThanTwoTrianglesPerEdgeException
@@ -322,7 +324,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#xAverage()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#xAverage()}.
      */
     @Test
     public final void testXAverage() {
@@ -330,7 +332,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#xMax()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#xMax()}.
      */
     @Test
     public final void testXMax() {
@@ -338,7 +340,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#xMaxPoint()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#xMaxPoint()}.
      */
     @Test
     public final void testXMaxPoint() {
@@ -346,7 +348,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#xMin()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#xMin()}.
      */
     @Test
     public final void testXMin() {
@@ -354,7 +356,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#xMinPoint()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#xMinPoint()}.
      */
     @Test
     public final void testXMinPoint() {
@@ -362,7 +364,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#yAverage()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#yAverage()}.
      */
     @Test
     public final void testYAverage() {
@@ -370,7 +372,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#yMax()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#yMax()}.
      */
     @Test
     public final void testYMax() {
@@ -378,7 +380,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#yMaxPoint()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#yMaxPoint()}.
      */
     @Test
     public final void testYMaxPoint() {
@@ -386,7 +388,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#yMin()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#yMin()}.
      */
     @Test
     public final void testYMin() {
@@ -394,7 +396,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#yMinPoint()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#yMinPoint()}.
      */
     @Test
     public final void testYMinPoint() {
@@ -402,7 +404,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#zAverage()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#zAverage()}.
      */
     @Test
     public final void testZAverage() {
@@ -410,7 +412,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#zMax()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#zMax()}.
      */
     @Test
     public final void testZMax() {
@@ -418,7 +420,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#zMaxPoint()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#zMaxPoint()}.
      */
     @Test
     public final void testZMaxPoint() {
@@ -426,7 +428,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#zMin()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#zMin()}.
      */
     @Test
     public final void testZMin() {
@@ -434,7 +436,7 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900pjct.models.basis.Triangle#zMinPoint()}.
+     * Test method for {@link nantes1900.models.basis.Triangle#zMinPoint()}.
      */
     @Test
     public final void testZMinPoint() {
