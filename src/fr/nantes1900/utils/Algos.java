@@ -88,9 +88,9 @@ public final class Algos {
     }
 
     /**
-     * Treats a list of mesh to add the noise which is part of the mesh. This
-     * method tries to find a block of noise which complete the mesh (of the
-     * list). It thus adds it to the mesh.
+     * Treats a list of mesh to add the noise which is neighbour of the mesh.
+     * This method tries to find a block of noise which completes the mesh (of
+     * the list). It thus adds it to the mesh.
      * 
      * @param list
      *            the list of meshes to complete with noise
@@ -115,9 +115,42 @@ public final class Algos {
     }
 
     /**
-     * Treats a list of mesh to add the noise which is part of the mesh. This
-     * method tries to find a block of noise which complete the mesh (of the
-     * list) and which have the same orientation. It thus adds it to the mesh.
+     * Treats a list of mesh to add the noise which is neighbour of the mesh.
+     * This method tries to find a block of noise which completes the mesh (of
+     * the list) and which is contained between two planes parallel to the mesh.
+     * It thus adds it to the mesh.
+     * 
+     * @param list
+     *            the list of meshes to complete with noise
+     * @param noise
+     *            the whole noise
+     * @param errorPlanes
+     *            the distance between the two planes
+     */
+    public static void blockTreatPlanedNoise(final List<Mesh> list,
+        final Mesh noise, final double errorPlanes) {
+
+        final List<Mesh> m = new ArrayList<Mesh>();
+
+        for (final Mesh e : list) {
+            final Mesh meshAndNoise = new Mesh(e);
+            meshAndNoise.addAll(noise.inPlanes(e.averageNormal(), e
+                .getCentroid(), errorPlanes));
+            final Mesh mes = new Mesh();
+            e.getOne().returnNeighbours(mes, meshAndNoise);
+            m.add(mes);
+            noise.remove(mes);
+        }
+
+        list.clear();
+        list.addAll(m);
+    }
+
+    /**
+     * Treats a list of mesh to add the noise which is neighbour of the mesh.
+     * This method tries to find a block of noise which completes the mesh (of
+     * the list) and which have the same orientation. It thus adds it to the
+     * mesh.
      * 
      * @param wallList
      *            the list of meshes to complete with noise
@@ -133,10 +166,8 @@ public final class Algos {
 
         for (final Mesh e : wallList) {
             final Mesh meshAndNoise = new Mesh(e);
-            final Mesh noiseOriented =
-                noise
-                    .orientedAs(e.averageNormal(), largeAngleNormalErrorFactor);
-            meshAndNoise.addAll(noiseOriented);
+            meshAndNoise.addAll(noise.orientedAs(e.averageNormal(),
+                largeAngleNormalErrorFactor));
             final Surface mes = new Surface();
             e.getOne().returnNeighbours(mes, meshAndNoise);
             list.add(mes);

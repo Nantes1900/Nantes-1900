@@ -63,6 +63,8 @@ public final class Configuration {
                 new Double(properties.getProperty("ROOF_SIZE_ERROR"));
             SeparationTreatmentWallsRoofs.PLANES_ERROR =
                 new Double(properties.getProperty("PLANES_ERROR"));
+            SeparationTreatmentWallsRoofs.IS_ORIENTED_FACTOR =
+                new Double(properties.getProperty("IS_ORIENTED_FACTOR"));
 
         } catch (final FileNotFoundException e) {
             // If the file does not exist, keeps the actual coefficients.

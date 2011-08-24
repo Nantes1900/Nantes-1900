@@ -42,7 +42,6 @@ public final class ParserSTLTest extends TestCase {
     public void testReadWriteSTL() {
 
         try {
-            // TODO : add some errors to see if they are well treated.
             final Point p1 = new Point(1, 0, -1);
             final Point p2 = new Point(0, 1, 0);
             final Point p3 = new Point(-1, 2, 1);

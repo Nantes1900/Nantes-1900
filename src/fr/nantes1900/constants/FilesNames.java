@@ -56,6 +56,10 @@ public final class FilesNames {
      * String to represent the roofs.
      */
     public static final String ROOF_NAME = "roof";
+    /**
+     * String to represent the buildings.
+     */
+    public static final String BUILDING_NAME = "building";
 
     /**
      * Separator in the name of the files.

@@ -104,7 +104,7 @@ public class Town {
         final BufferedReader stdin =
             new BufferedReader(new InputStreamReader(System.in));
         System.out
-            .println("If the results please you, enter y, of you want to redo the operation, change the coefficients in the config file, and enter r");
+            .println("If the results please you, enter y, or if you want to redo the operation, change the coefficients in the config file, and enter r");
 
         try {
             String answer;
@@ -779,11 +779,13 @@ public class Town {
             // to build it and add it to the list of this town.
             final List<Building> listBuildings = new ArrayList<Building>();
 
+            int counterBuilding = 1;
             for (final Mesh m : buildings) {
                 final Building e = new Building();
                 e.buildFromMesh(m, wholeGround, realNormalToTheGround,
-                    directoryName, counterIndustrials);
+                    directoryName, counterIndustrials, counterBuilding);
                 listBuildings.add(e);
+                counterBuilding++;
             }
 
             // Foreach ground found, call the algorithm of ground treatment, and
@@ -794,7 +796,7 @@ public class Town {
                 this.addGround(ground);
             }
 
-            this.addResidentials(listBuildings);
+            this.addIndustrials(listBuildings);
 
             ++counterIndustrials;
         }
@@ -885,7 +887,7 @@ public class Town {
                             + FilesNames.SEPARATOR
                             + counterResidentials
                             + FilesNames.EXTENSION
-                            + "and in : "
+                            + " and in : "
                             + directoryName
                             + FilesNames.TEMPORARY_DIRECTORY
                             + FilesNames.GROUND_FILENAME
@@ -916,11 +918,13 @@ public class Town {
             // to build it and add it to the list of this town.
             final List<Building> listBuildings = new ArrayList<Building>();
 
+            int counterBuilding = 1;
             for (final Mesh m : buildings) {
                 final Building e = new Building();
                 e.buildFromMesh(m, wholeGround, realNormalToTheGround,
-                    directoryName, counterResidentials);
+                    directoryName, counterResidentials, counterBuilding);
                 listBuildings.add(e);
+                counterBuilding++;
             }
 
             // Foreach ground found, call the algorithm of ground treatment, and

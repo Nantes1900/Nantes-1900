@@ -1,5 +1,6 @@
 package fr.nantes1900.models;
 
+import fr.nantes1900.constants.SeparationTreatmentWallsRoofs;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
@@ -165,7 +166,7 @@ public class Surface extends Mesh {
         List<Surface> commonNeighbours = this.getCommonNeighbours(current);
         int counter = 0;
 
-        while (counter < neighboursNumber - 2) {
+        while (counter < neighboursNumber - 1) {
 
             // Adds the current surface to the ordered list.
             neighboursOrdered.add(current);
@@ -200,20 +201,7 @@ public class Surface extends Mesh {
             ++counter;
         }
 
-        // Adds the current surface to the ordered list.
         neighboursOrdered.add(current);
-
-        // No need to end the algorithm : the last one is found because he is
-        // the last one...
-        final List<Surface> last = this.getNeighbours();
-        for (final Surface s : neighboursOrdered) {
-            last.remove(s);
-        }
-        if (last.size() > 1 || last.isEmpty()) {
-            throw new ImpossibleNeighboursOrderException();
-        }
-        // We thus complete the list of ordered neighbours.
-        neighboursOrdered.add(last.get(0));
 
         this.neighbours.clear();
         this.neighbours.addAll(neighboursOrdered);
@@ -311,18 +299,21 @@ public class Surface extends Mesh {
         surfaces.add(this);
 
         try {
-            // TODO : put that factor in the constants package.
-            final double isOrientedFactor = 30;
 
             // If there is two neighbours which have the same orientation, then
             // throw an exception.
-            if (this.isOrientedAs(s1, isOrientedFactor)
-                || this.isOrientedAs(s2, isOrientedFactor)
-                || this.isOrientedAs(s3, isOrientedFactor)) {
+            if (this.isOrientedAs(s1,
+                SeparationTreatmentWallsRoofs.IS_ORIENTED_FACTOR)
+                || this.isOrientedAs(s2,
+                    SeparationTreatmentWallsRoofs.IS_ORIENTED_FACTOR)
+                || this.isOrientedAs(s3,
+                    SeparationTreatmentWallsRoofs.IS_ORIENTED_FACTOR)) {
                 throw new ParallelPlanesException();
             }
-            if (s1.isOrientedAs(s2, isOrientedFactor)
-                || s2.isOrientedAs(s3, isOrientedFactor)) {
+            if (s1.isOrientedAs(s2,
+                SeparationTreatmentWallsRoofs.IS_ORIENTED_FACTOR)
+                || s2.isOrientedAs(s3,
+                    SeparationTreatmentWallsRoofs.IS_ORIENTED_FACTOR)) {
                 throw new ParallelPlanesException();
             }
 
@@ -366,16 +357,6 @@ public class Surface extends Mesh {
             }
 
             final Edge e = new Edge(p1, p2);
-
-            // If we keep this hashmap, some edges which don't have the same
-            // orientation are confused.
-            // // Idem with the map of edges.
-            // final Edge eTemp = edgeMap.get(e);
-            // if (eTemp == null) {
-            // edgeMap.put(e, e);
-            // } else {
-            // e = eTemp;
-            // }
 
             return e;
 

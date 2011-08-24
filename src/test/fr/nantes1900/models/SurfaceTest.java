@@ -226,8 +226,8 @@ public class SurfaceTest extends TestCase {
         s1.addNeighbour(s2);
         s1.addNeighbour(s3);
 
-        List<Surface> ret = new ArrayList<Surface>();
-        List<Surface> contain = new ArrayList<Surface>();
+        final List<Surface> ret = new ArrayList<Surface>();
+        final List<Surface> contain = new ArrayList<Surface>();
         contain.add(s1);
         contain.add(s2);
         contain.add(s3);
@@ -257,7 +257,7 @@ public class SurfaceTest extends TestCase {
         final Surface s1 = new Surface();
         s1.add(t1);
 
-        Surface s2 = s1.returnVerticalPlane(normalGround);
+        final Surface s2 = s1.returnVerticalPlane(normalGround);
         Assert.assertTrue(s2.averageNormal().dot(normalGround) == 0);
     }
 }

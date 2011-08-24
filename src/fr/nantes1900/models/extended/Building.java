@@ -25,9 +25,6 @@ import javax.vecmath.Vector3d;
  */
 public class Building {
 
-    // TODO : consider refactoring this class : less methods, more clean,
-    // quicker.
-
     /**
      * List of walls as polylines.
      */
@@ -104,7 +101,16 @@ public class Building {
      */
     public final void buildFromMesh(final Mesh building, final Mesh grounds,
         final Vector3d normalFloor, final String directoryName,
-        final int counter) {
+        final int counterZone, final int counterBuilding) {
+
+        if (Town.stepByStep) {
+            building
+                .writeSTL(directoryName + FilesNames.TEMPORARY_DIRECTORY
+                    + FilesNames.RESIDENTIAL_FILENAME + FilesNames.SEPARATOR
+                    + counterZone + FilesNames.SEPARATOR
+                    + FilesNames.BUILDING_NAME + FilesNames.SEPARATOR
+                    + counterBuilding + FilesNames.EXTENSION);
+        }
 
         final Surface groundsTreated = new Surface(grounds);
         List<Surface> wallList;
@@ -137,32 +143,47 @@ public class Building {
                         + directoryName
                         + FilesNames.TEMPORARY_DIRECTORY
                         + FilesNames.RESIDENTIAL_FILENAME
-                        + FilesNames.SEPARATOR + counter);
+                        + FilesNames.SEPARATOR
+                        + counterZone
+                        + FilesNames.SEPARATOR
+                        + FilesNames.BUILDING_NAME
+                        + FilesNames.SEPARATOR + counterBuilding);
 
-                int counterWall = 0;
+                int counterWall = 1;
                 for (final Mesh m : wallList) {
                     m.writeSTL(directoryName + FilesNames.TEMPORARY_DIRECTORY
                         + FilesNames.RESIDENTIAL_FILENAME
-                        + FilesNames.SEPARATOR + counter + FilesNames.SEPARATOR
-                        + FilesNames.WALL_NAME + FilesNames.SEPARATOR
-                        + counterWall + FilesNames.EXTENSION);
+                        + FilesNames.SEPARATOR + counterZone
+                        + FilesNames.SEPARATOR + FilesNames.BUILDING_NAME
+                        + FilesNames.SEPARATOR + counterBuilding
+                        + FilesNames.SEPARATOR + FilesNames.WALL_NAME
+                        + FilesNames.SEPARATOR + counterWall
+                        + FilesNames.EXTENSION);
                     counterWall++;
                 }
-                int counterRoof = 0;
+                int counterRoof = 1;
                 for (final Mesh m : roofList) {
                     m.writeSTL(directoryName + FilesNames.TEMPORARY_DIRECTORY
                         + FilesNames.RESIDENTIAL_FILENAME
-                        + FilesNames.SEPARATOR + counter + FilesNames.SEPARATOR
-                        + FilesNames.ROOF_NAME + FilesNames.SEPARATOR
-                        + counterRoof + FilesNames.EXTENSION);
+                        + FilesNames.SEPARATOR + counterZone
+                        + FilesNames.SEPARATOR + FilesNames.BUILDING_NAME
+                        + FilesNames.SEPARATOR + counterBuilding
+                        + FilesNames.SEPARATOR + FilesNames.ROOF_NAME
+                        + FilesNames.SEPARATOR + counterRoof
+                        + FilesNames.EXTENSION);
                     counterRoof++;
                 }
             }
         } while (Town.stepByStep && !Town.askForAnswer());
 
         do {
-            // Loads the new coefficients from the config file.
-            Configuration.loadCoefficients();
+            if (Town.stepByStep) {
+                // Loads the new coefficients from the config file.
+                Configuration.loadCoefficients();
+
+                this.walls.clear();
+                this.roofs.clear();
+            }
 
             // From all the neighbours, computes the wrap line and returns the
             // surfaces as polylines.
@@ -176,20 +197,22 @@ public class Building {
                         + FilesNames.TEMPORARY_DIRECTORY
                         + FilesNames.RESIDENTIAL_FILENAME
                         + FilesNames.SEPARATOR
-                        + counter
-                        + FilesNames.EXTENSION
-                        + "and in : "
-                        + directoryName
-                        + FilesNames.TEMPORARY_DIRECTORY
-                        + FilesNames.GROUND_FILENAME
+                        + counterZone
                         + FilesNames.SEPARATOR
-                        + counter + FilesNames.EXTENSION);
+                        + FilesNames.BUILDING_NAME
+                        + FilesNames.SEPARATOR + counterBuilding);
 
                 this.writeSTL(directoryName + FilesNames.TEMPORARY_DIRECTORY
                     + FilesNames.RESIDENTIAL_FILENAME + FilesNames.SEPARATOR
-                    + counter);
+                    + counterZone + FilesNames.SEPARATOR
+                    + FilesNames.BUILDING_NAME + FilesNames.SEPARATOR
+                    + counterBuilding);
             }
         } while (Town.stepByStep && !Town.askForAnswer());
+
+        // Recompute the bounds between the grounds and the buildings, to avoid
+        // holes.
+        // this.reComputeBounds(grounds);
     }
 
     /**
@@ -233,6 +256,14 @@ public class Building {
 
         for (final Surface surface : wholeList) {
             try {
+                if (surface.size() == 1887) {
+                    int counter = 0;
+                    for (Surface s : surface.getNeighbours()) {
+                        counter++;
+                        s.writeSTL("neighbour" + counter + ".stl");
+                    }
+                    surface.writeSTL("surface.stl");
+                }
 
                 // Orders its neighbours in order to treat them.
                 // If the neighbours of one surface are not 2 per 2 neighbours
@@ -256,8 +287,6 @@ public class Building {
 
             } catch (final ImpossibleNeighboursOrderException e) {
                 // If there is a problem, the treatment cannot continue.
-                // TODO : maybe we can compute the surface with the edges it
-                // shares after all the other surfaces have been treated.
             } catch (final InvalidSurfaceException e) {
                 // If there is a problem, we cannot continue the treatment.
             }
@@ -319,14 +348,15 @@ public class Building {
         wholeList.addAll(wallList);
         wholeList.addAll(roofList);
 
-        // // To find every neighbours, we complete every holes between roofs
-        // // and walls by adding all the noise.
+        // To find every neighbours, we complete every holes between roofs
+        // and walls by adding all the noise.
         final List<Mesh> wholeListFakes = new ArrayList<Mesh>();
         for (final Mesh m : wholeList) {
             final Mesh fake = new Mesh(m);
             wholeListFakes.add(fake);
         }
-        Algos.blockTreatNoise(wholeListFakes, noise);
+        Algos.blockTreatPlanedNoise(wholeListFakes, noise,
+            SeparationTreatmentWallsRoofs.PLANES_ERROR);
 
         // First we clear the neighbours.
         for (final Surface s : wholeList) {
@@ -358,6 +388,18 @@ public class Building {
                 wholeList.get(i).addNeighbour(grounds);
             }
         }
+    }
+
+    /**
+     * Computes the grounds to fill holes between grounds and buildings. Not
+     * implemented.
+     * 
+     * @param grounds
+     *            the surface containing the grounds
+     */
+    @SuppressWarnings("unused")
+    private void reComputeBounds(final Mesh grounds) {
+        // TODO : implement this method.
     }
 
     /**
@@ -608,12 +650,14 @@ public class Building {
      *            the beginning of the name of the file to write in
      */
     private void writeSTLRoofs(final String fileName) {
-        int counterRoof = 0;
+        int counterRoof = 1;
         for (final Polyline p : this.roofs) {
 
-            p.returnCentroidMesh().writeSTL(
-                fileName + FilesNames.SEPARATOR + "roof" + FilesNames.SEPARATOR
-                    + counterRoof + FilesNames.EXTENSION);
+            p.returnCentroidMesh()
+                .writeSTL(
+                    fileName + FilesNames.SEPARATOR + "computedRoof"
+                        + FilesNames.SEPARATOR + counterRoof
+                        + FilesNames.EXTENSION);
             counterRoof = counterRoof + 1;
 
         }
@@ -626,12 +670,14 @@ public class Building {
      *            the beginning of the name of the file to write in
      */
     private void writeSTLWalls(final String fileName) {
-        int counterWall = 0;
+        int counterWall = 1;
         for (final Polyline p : this.walls) {
 
-            p.returnCentroidMesh().writeSTL(
-                fileName + FilesNames.SEPARATOR + "wall" + FilesNames.SEPARATOR
-                    + counterWall + FilesNames.EXTENSION);
+            p.returnCentroidMesh()
+                .writeSTL(
+                    fileName + FilesNames.SEPARATOR + "computedWall"
+                        + FilesNames.SEPARATOR + counterWall
+                        + FilesNames.EXTENSION);
             counterWall = counterWall + 1;
 
         }
