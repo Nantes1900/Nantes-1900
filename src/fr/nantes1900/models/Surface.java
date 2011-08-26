@@ -203,6 +203,12 @@ public class Surface extends Mesh {
 
         neighboursOrdered.add(current);
 
+        // If the last one is not neighbour to the first one, there is a
+        // problem.
+        if (!current.getNeighbours().contains(neighboursOrdered.get(0))) {
+            throw new ImpossibleNeighboursOrderException();
+        }
+
         this.neighbours.clear();
         this.neighbours.addAll(neighboursOrdered);
     }

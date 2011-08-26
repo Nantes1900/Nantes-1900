@@ -63,7 +63,7 @@ public final class Algos {
      *            the error on the orientation
      * @return an array of the blocks-meshs
      */
-    public static List<Mesh> blockOrientedAndPlaneExtract(final Mesh m,
+    public static List<Mesh> blockOrientedExtract(final Mesh m,
         final double angleNormalErrorFactor) {
 
         final List<Mesh> thingsList = new ArrayList<Mesh>();

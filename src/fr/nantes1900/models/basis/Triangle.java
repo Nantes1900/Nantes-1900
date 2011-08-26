@@ -328,12 +328,12 @@ public class Triangle {
     public final boolean isInPlanes(final Vector3d vect, final Point p,
         final double error) {
 
-        final Edge axisNormalFloor =
+        final Edge axisNormalGround =
             new Edge(new Point(0, 0, 0), new Point(vect.x, vect.y, vect.z));
 
-        final Point pAverage = axisNormalFloor.project(p);
+        final Point pAverage = axisNormalGround.project(p);
 
-        final Point projectedPoint = axisNormalFloor.project(this.getP1());
+        final Point projectedPoint = axisNormalGround.project(this.getP1());
 
         return projectedPoint.distance(pAverage) < error;
     }

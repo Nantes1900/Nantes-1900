@@ -198,9 +198,9 @@ public class Town {
 
     /**
      * Builds a town by computing all the files in the directory. Searches in
-     * the directory name the fives directories : inductrials, residentials,
+     * the directory name the fives directories : industrials, residentials,
      * grounds, wateries, and special_buildings, treats each files and puts the
-     * results in the lists.
+     * results in the attribute lists.
      * 
      * @param directoryName
      *            the directory name where are the five directories
@@ -218,7 +218,7 @@ public class Town {
         // Extract the normal gravity oriented and change it to the new
         // base.
         final Vector3d normalGround =
-            this.extractGroundNormal(directoryName + FilesNames.GROUND_FILENAME
+            this.extractGroundNormal(directoryName + FilesNames.GRAVITY_GROUND_FILENAME
                 + FilesNames.EXTENSION);
         this.createChangeBaseMatrix(normalGround);
 
@@ -510,6 +510,7 @@ public class Town {
         // Extracts the blocks in the oriented triangles.
         thingsList = Algos.blockExtract(meshOriented);
 
+        //FIXME : use meshOriented.
         Mesh wholeGround = new Mesh();
         for (final Mesh f : thingsList) {
             wholeGround.addAll(f);
@@ -645,6 +646,7 @@ public class Town {
                 + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
                 + counterGrounds + FilesNames.EXTENSION));
 
+            // FIXME
             this.addGround(this.treatGroundZone(ground));
 
             ++counterGrounds;

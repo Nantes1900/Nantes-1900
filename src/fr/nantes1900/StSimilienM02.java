@@ -35,9 +35,9 @@ public final class StSimilienM02 {
         town.buildFromMesh("files/St-Similien/m02/");
 
         // Writes the results in STL files.
-        // town.writeSTL("files/St-Similien/m02/results/");
+        town.writeSTL("files/St-Similien/m02/results/");
 
         // Writes the results in cityGML files.
-        // town.writeCityGML("files/St-Similien/m02/results/St-Similien - m02.gml");
+        town.writeCityGML("files/St-Similien/m02/results/St-Similien - m02.gml");
     }
 }

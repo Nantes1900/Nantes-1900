@@ -81,6 +81,11 @@ public final class FilesNames {
      * execution.
      */
     public static final String TEMPORARY_DIRECTORY = "/temporary/";
+    
+    /**
+     * The name of the gravity ground.
+     */
+    public static final String GRAVITY_GROUND_FILENAME = "gravity_ground";
 
     /**
      * Private constructor.

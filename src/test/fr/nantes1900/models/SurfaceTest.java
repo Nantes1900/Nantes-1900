@@ -176,9 +176,9 @@ public class SurfaceTest extends TestCase {
             wholeList.add(s6);
             wholeList.add(s7);
 
-            final Surface floors = new Surface();
+            final Surface grounds = new Surface();
 
-            s1.orderNeighbours(wholeList, floors);
+            s1.orderNeighbours(wholeList, grounds);
 
             Assert.assertTrue(s1.getNeighbours().get(0) == s7);
             Assert.assertTrue(s1.getNeighbours().get(1) == s2);

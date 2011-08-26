@@ -11,6 +11,7 @@ import fr.nantes1900.models.Surface.InvalidSurfaceException;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.utils.Algos;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -90,7 +91,7 @@ public class Building {
      * 
      * @param building
      *            the mesh to compute
-     * @param normalFloor
+     * @param normalGround
      *            the normal to the ground
      * @param grounds
      *            the mesh containing all the grounds
@@ -100,7 +101,7 @@ public class Building {
      *            the number of the current building
      */
     public final void buildFromMesh(final Mesh building, final Mesh grounds,
-        final Vector3d normalFloor, final String directoryName,
+        final Vector3d normalGround, final String directoryName,
         final int counterZone, final int counterBuilding) {
 
         if (Town.stepByStep) {
@@ -116,18 +117,62 @@ public class Building {
         List<Surface> wallList;
         List<Surface> roofList;
         Mesh noise;
+        Mesh tempBuilding;
 
         do {
+            tempBuilding = new Mesh(building);
+            
             // Loads the new coefficients from the config file.
             Configuration.loadCoefficients();
+
+            if (Town.stepByStep) {
+                // Removes the files if they exist, to avoid confusion between
+                // old and new files.
+                int counterWall = 1;
+                while (new File(directoryName + FilesNames.TEMPORARY_DIRECTORY
+                    + FilesNames.RESIDENTIAL_FILENAME + FilesNames.SEPARATOR
+                    + counterZone + FilesNames.SEPARATOR
+                    + FilesNames.BUILDING_NAME + FilesNames.SEPARATOR
+                    + counterBuilding + FilesNames.SEPARATOR
+                    + FilesNames.WALL_NAME + FilesNames.SEPARATOR + counterWall
+                    + FilesNames.EXTENSION).exists()) {
+                    new File(directoryName + FilesNames.TEMPORARY_DIRECTORY
+                        + FilesNames.RESIDENTIAL_FILENAME
+                        + FilesNames.SEPARATOR + counterZone
+                        + FilesNames.SEPARATOR + FilesNames.BUILDING_NAME
+                        + FilesNames.SEPARATOR + counterBuilding
+                        + FilesNames.SEPARATOR + FilesNames.WALL_NAME
+                        + FilesNames.SEPARATOR + counterWall
+                        + FilesNames.EXTENSION).delete();
+                    counterWall++;
+                }
+                int counterRoof = 1;
+                while (new File(directoryName + FilesNames.TEMPORARY_DIRECTORY
+                    + FilesNames.RESIDENTIAL_FILENAME + FilesNames.SEPARATOR
+                    + counterZone + FilesNames.SEPARATOR
+                    + FilesNames.BUILDING_NAME + FilesNames.SEPARATOR
+                    + counterBuilding + FilesNames.SEPARATOR
+                    + FilesNames.ROOF_NAME + FilesNames.SEPARATOR + counterRoof
+                    + FilesNames.EXTENSION).exists()) {
+                    new File(directoryName + FilesNames.TEMPORARY_DIRECTORY
+                        + FilesNames.RESIDENTIAL_FILENAME
+                        + FilesNames.SEPARATOR + counterZone
+                        + FilesNames.SEPARATOR + FilesNames.BUILDING_NAME
+                        + FilesNames.SEPARATOR + counterBuilding
+                        + FilesNames.SEPARATOR + FilesNames.ROOF_NAME
+                        + FilesNames.SEPARATOR + counterRoof
+                        + FilesNames.EXTENSION).delete();
+                    counterRoof++;
+                }
+            }
 
             // Creates a new mesh.
             noise = new Mesh();
 
             // Applies the first algorithms : extract the walls, and after this,
             // extract the roofs.
-            wallList = this.sortWalls(building, normalFloor, noise);
-            roofList = this.sortRoofs(building, normalFloor, noise);
+            wallList = this.sortWalls(tempBuilding, normalGround, noise);
+            roofList = this.sortRoofs(tempBuilding, normalGround, noise);
 
             // Treats the noise.
             this.treatNoise(wallList, roofList, noise, groundsTreated);
@@ -187,7 +232,7 @@ public class Building {
 
             // From all the neighbours, computes the wrap line and returns the
             // surfaces as polylines.
-            this.findEdgesFromNeighbours(wallList, roofList, normalFloor,
+            this.findEdgesFromNeighbours(wallList, roofList, normalGround,
                 groundsTreated, noise);
 
             if (Town.stepByStep) {
@@ -224,7 +269,7 @@ public class Building {
      *            the list of walls as surfaces
      * @param roofList
      *            the list of roofs as surfaces
-     * @param normalFloor
+     * @param normalGround
      *            the normal to the ground
      * @param grounds
      *            the mesh containing the grounds
@@ -232,7 +277,7 @@ public class Building {
      *            the mesh containing the noise
      */
     public final void findEdgesFromNeighbours(final List<Surface> wallList,
-        final List<Surface> roofList, final Vector3d normalFloor,
+        final List<Surface> roofList, final Vector3d normalGround,
         final Surface grounds, final Mesh noise) {
 
         // Determinates the neighbours.
@@ -256,15 +301,6 @@ public class Building {
 
         for (final Surface surface : wholeList) {
             try {
-                if (surface.size() == 1887) {
-                    int counter = 0;
-                    for (Surface s : surface.getNeighbours()) {
-                        counter++;
-                        s.writeSTL("neighbour" + counter + ".stl");
-                    }
-                    surface.writeSTL("surface.stl");
-                }
-
                 // Orders its neighbours in order to treat them.
                 // If the neighbours of one surface are not 2 per 2 neighbours
                 // each other, then it tries to correct it.
@@ -273,7 +309,7 @@ public class Building {
                 // When the neighbours are sorted, finds the intersection of
                 // them to find the edges of this surface.
                 final Polyline p =
-                    surface.findEdges(wallList, pointMap, normalFloor);
+                    surface.findEdges(wallList, pointMap, normalGround);
 
                 // If it is a wall, adds it to the wall list, otherwise to the
                 // roof list (obvious...).
@@ -460,19 +496,19 @@ public class Building {
      * 
      * @param building
      *            the building to carve
-     * @param normalFloor
+     * @param normalGround
      *            the normal to the ground
      * @param noise
      *            the noise as mesh
      * @return the list of roofs
      */
     private List<Surface> sortRoofs(final Mesh building,
-        final Vector3d normalFloor, final Mesh noise) {
+        final Vector3d normalGround, final Mesh noise) {
         final List<Surface> roofList = new ArrayList<Surface>();
 
         // Cut the mesh in parts, considering their orientation.
         final List<Mesh> thingsList =
-            Algos.blockOrientedAndPlaneExtract(building,
+            Algos.blockOrientedExtract(building,
                 SeparationTreatmentWallsRoofs.ROOF_ANGLE_ERROR);
 
         // Considering their size and their orientation, sort the blocks in
@@ -480,7 +516,7 @@ public class Building {
         // it is not keeped.
         for (final Mesh e : thingsList) {
             if ((e.size() >= SeparationTreatmentWallsRoofs.ROOF_SIZE_ERROR)
-                && (e.averageNormal().dot(normalFloor) > 0)) {
+                && (e.averageNormal().dot(normalGround) > 0)) {
                 roofList.add(new Surface(e));
             } else {
                 noise.addAll(e);
@@ -531,24 +567,24 @@ public class Building {
      * 
      * @param building
      *            the building to carve
-     * @param normalFloor
+     * @param normalGround
      *            the normal to the ground
      * @param noise
      *            the noise as mesh
      * @return the list of walls
      */
     private List<Surface> sortWalls(final Mesh building,
-        final Vector3d normalFloor, final Mesh noise) {
+        final Vector3d normalGround, final Mesh noise) {
         final List<Surface> wallList = new ArrayList<Surface>();
 
-        // Select the triangles which are oriented normal to normalFloor.
+        // Select the triangles which are oriented normal to normalGround.
         final Mesh wallOriented =
-            building.orientedNormalTo(normalFloor,
+            building.orientedNormalTo(normalGround,
                 SeparationTreatmentWallsRoofs.NORMALTO_ERROR);
 
         // Cut the mesh in parts, considering their orientation.
         final List<Mesh> thingsList =
-            Algos.blockOrientedAndPlaneExtract(wallOriented,
+            Algos.blockOrientedExtract(wallOriented,
                 SeparationTreatmentWallsRoofs.WALL_ANGLE_ERROR);
 
         // Considering their size, sort the blocks in walls or noise.
