@@ -171,16 +171,16 @@ public class Building {
 
             // Applies the first algorithms : extract the walls, and after this,
             // extract the roofs.
-            wallList = this.sortWalls(tempBuilding, normalGround, noise);
-            roofList = this.sortRoofs(tempBuilding, normalGround, noise);
+            wallList = Building.sortWalls(tempBuilding, normalGround, noise);
+            roofList = Building.sortRoofs(tempBuilding, normalGround, noise);
 
             // Treats the noise.
-            this.treatNoise(wallList, roofList, noise, groundsTreated);
+            Building.treatNoise(wallList, roofList, noise, groundsTreated);
 
             // Finds the neighbours, searching deeply (add noise to the walls
             // and roofs to add every edge to one of these surface. Then find
             // the surfaces which share one edge, and treat the neighbours.
-            this.treatNewNeighbours(wallList, roofList, groundsTreated);
+            Building.treatNewNeighbours(wallList, roofList, groundsTreated);
 
             if (Town.stepByStep) {
                 System.out
@@ -281,11 +281,11 @@ public class Building {
         final Surface grounds, final Mesh noise) {
 
         // Determinates the neighbours.
-        this.determinateNeighbours(wallList, roofList, grounds, noise);
+        Building.determinateNeighbours(wallList, roofList, grounds, noise);
 
         // Find all the surface which have 0, or 1, or 2 neigbhours and then
         // cannot be treated.
-        this.sortSurfaces(wallList, roofList);
+        Building.sortSurfaces(wallList, roofList);
 
         // Creates the map where the points and edges will be put : if one point
         // is created a second time, it will be given the same
@@ -375,7 +375,7 @@ public class Building {
      * @param noise
      *            the mesh containing the noise
      */
-    private void determinateNeighbours(final List<Surface> wallList,
+    private static void determinateNeighbours(final List<Surface> wallList,
         final List<Surface> roofList, final Surface grounds, final Mesh noise) {
 
         final Polyline groundsBounds = grounds.returnUnsortedBounds();
@@ -449,7 +449,7 @@ public class Building {
      * @param grounds
      *            the grounds as one mesh
      */
-    private void searchForNeighbours(final List<Surface> wallList,
+    private static void searchForNeighbours(final List<Surface> wallList,
         final List<Surface> roofList, final Surface grounds) {
 
         final Polyline groundsBounds = grounds.returnUnsortedBounds();
@@ -502,7 +502,7 @@ public class Building {
      *            the noise as mesh
      * @return the list of roofs
      */
-    private List<Surface> sortRoofs(final Mesh building,
+    private static List<Surface> sortRoofs(final Mesh building,
         final Vector3d normalGround, final Mesh noise) {
         final List<Surface> roofList = new ArrayList<Surface>();
 
@@ -534,7 +534,7 @@ public class Building {
      * @param roofList
      *            the list of roofs as surfaces
      */
-    private void sortSurfaces(final List<Surface> wallList,
+    private static void sortSurfaces(final List<Surface> wallList,
         final List<Surface> roofList) {
 
         int counter = 0;
@@ -573,7 +573,7 @@ public class Building {
      *            the noise as mesh
      * @return the list of walls
      */
-    private List<Surface> sortWalls(final Mesh building,
+    private static List<Surface> sortWalls(final Mesh building,
         final Vector3d normalGround, final Mesh noise) {
         final List<Surface> wallList = new ArrayList<Surface>();
 
@@ -611,10 +611,10 @@ public class Building {
      * @param grounds
      *            the grounds
      */
-    private void treatNewNeighbours(final List<Surface> wallTreatedList,
+    private static void treatNewNeighbours(final List<Surface> wallTreatedList,
         final List<Surface> roofTreatedList, final Surface grounds) {
 
-        this.searchForNeighbours(wallTreatedList, roofTreatedList, grounds);
+        Building.searchForNeighbours(wallTreatedList, roofTreatedList, grounds);
 
         // After the noise addition, if some of the walls or some of the roofs
         // are now neighbours (they share an edge) and have the same
@@ -667,7 +667,7 @@ public class Building {
      * @param grounds
      *            the mesh containing the grounds
      */
-    private void treatNoise(final List<Surface> wallList,
+    private static void treatNoise(final List<Surface> wallList,
         final List<Surface> roofList, final Mesh noise, final Mesh grounds) {
 
         // Adds the oriented and neighbour noise to the walls.

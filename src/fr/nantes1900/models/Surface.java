@@ -438,7 +438,7 @@ public class Surface extends Mesh {
         /**
          * Private constructor.
          */
-        private ImpossibleNeighboursOrderException() {
+        public ImpossibleNeighboursOrderException() {
         }
     }
 
@@ -458,7 +458,7 @@ public class Surface extends Mesh {
         /**
          * Private constructor.
          */
-        private InvalidSurfaceException() {
+        public InvalidSurfaceException() {
         }
     }
 
@@ -477,7 +477,7 @@ public class Surface extends Mesh {
         /**
          * Private constructor.
          */
-        private ParallelPlanesException() {
+        public ParallelPlanesException() {
         }
     }
 }

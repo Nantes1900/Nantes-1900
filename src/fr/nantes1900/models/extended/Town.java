@@ -213,12 +213,12 @@ public class Town {
 
         // Create or clean the directory : directoryName + "/results/" to put
         // the datas in.
-        this.cleanDirectory(directoryName + FilesNames.RESULT_DIRECTORY);
+        Town.cleanDirectory(directoryName + FilesNames.RESULT_DIRECTORY);
 
         // Extract the normal gravity oriented and change it to the new
         // base.
         final Vector3d normalGround =
-            this.extractGroundNormal(directoryName + FilesNames.GRAVITY_GROUND_FILENAME
+            Town.extractGroundNormal(directoryName + FilesNames.GRAVITY_GROUND_FILENAME
                 + FilesNames.EXTENSION);
         this.createChangeBaseMatrix(normalGround);
 
@@ -252,7 +252,7 @@ public class Town {
      * parts, asks user to check them, and continues if the user agrees, or
      * makes again the step if the user changed coefficients.
      */
-    public final void setStepByStepMode() {
+    public final static void setStepByStepMode() {
         Town.stepByStep = true;
     }
 
@@ -391,7 +391,7 @@ public class Town {
      *            the mesh to stock the noise
      * @return a list of buildings as meshes
      */
-    private List<Mesh> buildingsExtraction(final Mesh mesh, final Mesh noise) {
+    private static List<Mesh> buildingsExtraction(final Mesh mesh, final Mesh noise) {
 
         final List<Mesh> buildingList = new ArrayList<Mesh>();
 
@@ -425,7 +425,7 @@ public class Town {
      * @return the list of the forms
      */
     @SuppressWarnings("unused")
-    private ArrayList<Mesh> carveRealBuildings(final List<Mesh> buildings) {
+    private static ArrayList<Mesh> carveRealBuildings(final List<Mesh> buildings) {
         // TODO : implement this method.
         return null;
     }
@@ -436,7 +436,7 @@ public class Town {
      * @param directoryName
      *            the name of the directory
      */
-    private void cleanDirectory(final String directoryName) {
+    private static void cleanDirectory(final String directoryName) {
         if (new File(directoryName).exists()) {
 
             // List all the files of the directory
@@ -480,9 +480,9 @@ public class Town {
      *            the name of the ground file
      * @return the normal to the ground as Vector3d
      */
-    private Vector3d extractGroundNormal(final String fileName) {
+    private static Vector3d extractGroundNormal(final String fileName) {
 
-        final Mesh groundBrut = this.parseFile(fileName);
+        final Mesh groundBrut = Town.parseFile(fileName);
 
         // Extract of the normal of the ground
         return groundBrut.averageNormal();
@@ -498,7 +498,7 @@ public class Town {
      *            course...)
      * @return a mesh containing the ground
      */
-    private Mesh groundExtraction(final Mesh mesh, final Vector3d normalGround) {
+    private static Mesh groundExtraction(final Mesh mesh, final Vector3d normalGround) {
 
         // Searches for ground-oriented triangles with an error.
         Mesh meshOriented =
@@ -595,7 +595,7 @@ public class Town {
      *            the noise mesh computed by former algorithms
      * @return a list of grounds completed with noise
      */
-    private List<Mesh> noiseTreatment(final Mesh groundsMesh, final Mesh noise) {
+    private static List<Mesh> noiseTreatment(final Mesh groundsMesh, final Mesh noise) {
 
         List<Mesh> list;
 
@@ -611,7 +611,7 @@ public class Town {
      *            the name of the file
      * @return the mesh parsed
      */
-    private Mesh parseFile(final String fileName) {
+    private static Mesh parseFile(final String fileName) {
 
         try {
             final ParserSTL parser = new ParserSTL(fileName);
@@ -642,7 +642,7 @@ public class Town {
 
             final Ground ground = new Ground("ground");
 
-            ground.buildFromMesh(this.parseFile(directoryName
+            ground.buildFromMesh(Town.parseFile(directoryName
                 + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
                 + counterGrounds + FilesNames.EXTENSION));
 
@@ -688,7 +688,7 @@ public class Town {
             .exists()) {
 
             if (Town.stepByStep) {
-                this.cleanDirectory(directoryName
+                Town.cleanDirectory(directoryName
                     + FilesNames.TEMPORARY_DIRECTORY);
             }
 
@@ -703,7 +703,7 @@ public class Town {
 
                 // ...Parse the meshes of these files.
                 final Mesh mesh =
-                    this.parseFile(directoryName
+                    Town.parseFile(directoryName
                         + FilesNames.INDUSTRIAL_FILENAME + FilesNames.SEPARATOR
                         + counterIndustrials + FilesNames.EXTENSION);
 
@@ -714,7 +714,7 @@ public class Town {
                     + FilesNames.EXTENSION).exists()) {
 
                     realNormalToTheGround =
-                        this.extractGroundNormal(directoryName
+                        Town.extractGroundNormal(directoryName
                             + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
                             + counterIndustrials + FilesNames.EXTENSION);
 
@@ -729,16 +729,16 @@ public class Town {
 
                 // Extraction of the ground.
                 wholeGround =
-                    this.groundExtraction(mesh, realNormalToTheGround);
+                    Town.groundExtraction(mesh, realNormalToTheGround);
 
                 // Extraction of the buildings : the blocks which are left after
                 // the ground extraction.
                 final Mesh noise = new Mesh();
-                buildings = this.buildingsExtraction(mesh, noise);
+                buildings = Town.buildingsExtraction(mesh, noise);
 
                 // Treatment of the noise : other blocks are added to the
                 // grounds if possible.
-                groundsMesh = this.noiseTreatment(wholeGround, noise);
+                groundsMesh = Town.noiseTreatment(wholeGround, noise);
 
                 if (Town.stepByStep) {
                     System.out.println("Building n° " + counterIndustrials
@@ -825,7 +825,7 @@ public class Town {
             .exists()) {
 
             if (Town.stepByStep) {
-                this.cleanDirectory(directoryName
+                Town.cleanDirectory(directoryName
                     + FilesNames.TEMPORARY_DIRECTORY);
             }
 
@@ -840,7 +840,7 @@ public class Town {
 
                 // ...Parse the meshes of these files.
                 final Mesh mesh =
-                    this.parseFile(directoryName
+                    Town.parseFile(directoryName
                         + FilesNames.RESIDENTIAL_FILENAME
                         + FilesNames.SEPARATOR + counterResidentials
                         + FilesNames.EXTENSION);
@@ -852,7 +852,7 @@ public class Town {
                     + FilesNames.EXTENSION).exists()) {
 
                     realNormalToTheGround =
-                        this.extractGroundNormal(directoryName
+                        Town.extractGroundNormal(directoryName
                             + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
                             + counterResidentials + FilesNames.EXTENSION);
 
@@ -867,16 +867,16 @@ public class Town {
 
                 // Extraction of the ground.
                 wholeGround =
-                    this.groundExtraction(mesh, realNormalToTheGround);
+                    Town.groundExtraction(mesh, realNormalToTheGround);
 
                 // Extraction of the buildings : the blocks which are left after
                 // the ground extraction.
                 final Mesh noise = new Mesh();
-                buildings = this.buildingsExtraction(mesh, noise);
+                buildings = Town.buildingsExtraction(mesh, noise);
 
                 // Treatment of the noise : other blocks are added to the
                 // grounds if possible.
-                groundsMesh = this.noiseTreatment(wholeGround, noise);
+                groundsMesh = Town.noiseTreatment(wholeGround, noise);
 
                 if (Town.stepByStep) {
                     System.out.println("Building n° " + counterResidentials
@@ -958,7 +958,7 @@ public class Town {
             + FilesNames.EXTENSION).exists()) {
 
             final Mesh meshSpecialBuilding =
-                this.parseFile(directoryName
+                Town.parseFile(directoryName
                     + FilesNames.SPECIAL_BUILDING_FILENAME
                     + FilesNames.SEPARATOR + counterSpecialBuildings
                     + FilesNames.EXTENSION);
@@ -993,7 +993,7 @@ public class Town {
 
             final Ground watery = new Ground("ground");
 
-            watery.buildFromMesh(this.parseFile(directoryName
+            watery.buildFromMesh(Town.parseFile(directoryName
                 + FilesNames.WATERY_FILENAME + FilesNames.SEPARATOR
                 + counterWateries + FilesNames.EXTENSION));
 

@@ -94,9 +94,8 @@ public class ParserSTL {
                     triangleMap = this.readSTLB();
                 }
                 return new Mesh(triangleMap);
-            } else {
-                return null;
             }
+            return null;
         } finally {
             scanner.close();
         }
@@ -117,7 +116,7 @@ public class ParserSTL {
      *            triangle
      * @return true when an entire has been read, and false otherwise.
      */
-    private boolean processLineA(final String line,
+    private static boolean processLineA(final String line,
         final Vector3d currentVector, final List<Point> currentPoints) {
 
         // If the line is empty, the parser passes to the next line.
@@ -249,7 +248,7 @@ public class ParserSTL {
 
                 // If the processLineA have finished to read an entire triangle,
                 // it proceeds to the treatment.
-                if (this.processLineA(scanner.nextLine(), currentVector,
+                if (ParserSTL.processLineA(scanner.nextLine(), currentVector,
                     currentPoints)) {
 
                     try {
@@ -365,7 +364,9 @@ public class ParserSTL {
                 // already two triangles, then the new triangle is
                 // removed from the mesh.
                 ++counterError;
-            } catch (final BadMeshException e) {
+            } catch (BadMeshException e) {
+                // This execption is supposed to be treated in the three catch
+                // above.
             }
         }
 
@@ -391,9 +392,8 @@ public class ParserSTL {
         if (eNew == null) {
             this.edgeMap.put(edge, edge);
             return edge;
-        } else {
-            return eNew;
         }
+        return eNew;
     }
 
     /**
@@ -428,9 +428,8 @@ public class ParserSTL {
         if (mapP == null) {
             this.pointMap.put(point, point);
             return point;
-        } else {
-            return mapP;
         }
+        return mapP;
     }
 
     /**
@@ -470,7 +469,7 @@ public class ParserSTL {
         /**
          * Private constructor.
          */
-        private FlatTriangleException() {
+        public FlatTriangleException() {
         }
     }
 
@@ -491,7 +490,7 @@ public class ParserSTL {
         /**
          * Private constructor.
          */
-        private MoreThanTwoTrianglesPerEdgeException() {
+        public MoreThanTwoTrianglesPerEdgeException() {
         }
     }
 
@@ -515,7 +514,7 @@ public class ParserSTL {
         /**
          * Private constructor.
          */
-        private OutOfBoundsPointException() {
+        public OutOfBoundsPointException() {
         }
     }
 }

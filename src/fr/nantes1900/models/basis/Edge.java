@@ -346,9 +346,8 @@ public class Edge {
     public final boolean isNeighboor(final Edge e) {
         if (this == e) {
             return false;
-        } else {
-            return this.contains(e.points[0]) || this.contains(e.points[1]);
         }
+        return this.contains(e.points[0]) || this.contains(e.points[1]);
     }
 
     /**
@@ -451,9 +450,8 @@ public class Edge {
         if (list.size() == 2) {
             list.remove(this);
             return list.get(0);
-        } else {
-            throw new BadFormedPolylineException();
         }
+        throw new BadFormedPolylineException();
     }
 
     /**

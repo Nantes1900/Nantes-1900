@@ -29,7 +29,7 @@ public final class StSimilienM02 {
 
         // Begins a step by step execution, waiting at each step that the user
         // has finished to treat.
-        town.setStepByStepMode();
+        Town.setStepByStepMode();
 
         // Applies the algorithms to the directory.
         town.buildFromMesh("files/St-Similien/m02/");

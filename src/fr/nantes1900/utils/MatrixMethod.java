@@ -95,15 +95,13 @@ public final class MatrixMethod {
 
             throw new SingularMatrixException();
 
-        } else {
-
-            // The next base is choosen to have the baseVector as z-axis, and an
-            // orthobase matrix.
-            matrix1[1][1] = -1 + (1 / (b.z + 1)) * b.y * b.y;
-            matrix1[0][1] = (1 / (b.z + 1)) * b.y * b.x;
-            matrix1[1][0] = (1 / (b.z + 1)) * b.y * b.x;
-            matrix1[0][0] = -1 + (1 / (b.z + 1)) * b.x * b.x;
         }
+        // The next base is choosen to have the baseVector as z-axis, and an
+        // orthobase matrix.
+        matrix1[1][1] = -1 + (1 / (b.z + 1)) * b.y * b.y;
+        matrix1[0][1] = (1 / (b.z + 1)) * b.y * b.x;
+        matrix1[1][0] = (1 / (b.z + 1)) * b.y * b.x;
+        matrix1[0][0] = -1 + (1 / (b.z + 1)) * b.x * b.x;
 
         return matrix1;
     }
@@ -233,7 +231,7 @@ public final class MatrixMethod {
         /**
          * Private constructor.
          */
-        private SingularMatrixException() {
+        public SingularMatrixException() {
         }
     }
 }
