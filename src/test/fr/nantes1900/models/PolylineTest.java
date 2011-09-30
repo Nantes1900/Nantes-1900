@@ -19,59 +19,60 @@ import org.junit.Test;
 
 /**
  * A set of tests for the class Polyline.
- * 
  * @author Daniel Lefevre
  */
-public class PolylineTest extends TestCase {
+public class PolylineTest extends TestCase
+{
 
     /**
      * Test attribute.
      */
-    private final Point p1 = new Point(1, 0, -1);
+    private final Point    p1 = new Point(1, 0, -1);
     /**
      * Test attribute.
      */
-    private final Point p2 = new Point(0, 1, 0);
+    private final Point    p2 = new Point(0, 1, 0);
     /**
      * Test attribute.
      */
-    private final Point p3 = new Point(-1, 2, 1);
+    private final Point    p3 = new Point(-1, 2, 1);
     /**
      * Test attribute.
      */
-    private final Point p4 = new Point(2, 2, 2);
+    private final Point    p4 = new Point(2, 2, 2);
 
     /**
      * Test attribute.
      */
-    private final Edge e1 = new Edge(this.p1, this.p2);
+    private final Edge     e1 = new Edge(this.p1, this.p2);
     /**
      * Test attribute.
      */
-    private final Edge e2 = new Edge(this.p2, this.p3);
+    private final Edge     e2 = new Edge(this.p2, this.p3);
     /**
      * Test attribute.
      */
-    private final Edge e3 = new Edge(this.p3, this.p1);
+    private final Edge     e3 = new Edge(this.p3, this.p1);
     /**
      * Test attribute.
      */
-    private final Edge e4 = new Edge(this.p1, this.p4);
+    private final Edge     e4 = new Edge(this.p1, this.p4);
     /**
      * Test attribute.
      */
-    private final Edge e5 = new Edge(this.p2, this.p4);
+    private final Edge     e5 = new Edge(this.p2, this.p4);
 
     /**
      * Test attribute.
      */
-    private final Polyline p = new Polyline();
+    private final Polyline p  = new Polyline();
 
     /**
      * Constructor of the PolylineTest object : create a polyline by adding 3
      * edges.
      */
-    public PolylineTest() {
+    public PolylineTest()
+    {
         this.p.add(this.e1);
         this.p.add(this.e2);
         this.p.add(this.e3);
@@ -82,7 +83,8 @@ public class PolylineTest extends TestCase {
      * {@link fr.nantes1900.models.Polyline#changeBase(double[][])} .
      */
     @Test
-    public final void testChangeBase() {
+    public final static void testChangeBase()
+    {
         final Point point1 = new Point(1, 0, -1);
         final Point point2 = new Point(0, 1, 0);
         final Point point3 = new Point(-1, 2, 1);
@@ -95,13 +97,15 @@ public class PolylineTest extends TestCase {
         pol.add(edge2);
         pol.add(edge3);
 
-        try {
+        try
+        {
             pol.changeBase(MatrixMethod.createOrthoBase(new Vector3d(1, 0, 0),
-                new Vector3d(0, 1, 0), new Vector3d(0, 0, 1)));
+                    new Vector3d(0, 1, 0), new Vector3d(0, 0, 1)));
             Assert.assertTrue(point1.equals(new Point(1, 0, -1)));
             Assert.assertTrue(point2.equals(new Point(0, 1, 0)));
             Assert.assertTrue(point3.equals(new Point(-1, 2, 1)));
-        } catch (final SingularMatrixException e) {
+        } catch (final SingularMatrixException e)
+        {
             Assert.fail();
         }
     }
@@ -110,7 +114,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#edgeSize()}.
      */
     @Test
-    public final void testEdgeSize() {
+    public final void testEdgeSize()
+    {
         Assert.assertTrue(this.p.edgeSize() == 3);
     }
 
@@ -120,7 +125,8 @@ public class PolylineTest extends TestCase {
      * .
      */
     @Test
-    public final void testGetCylinder() {
+    public final static void testGetCylinder()
+    {
 
         final Point point1 = new Point(-1, -1, 0);
         final Point point2 = new Point(1, 1, 0);
@@ -151,7 +157,8 @@ public class PolylineTest extends TestCase {
      * .
      */
     @Test
-    public final void testGetNeighboursPoint() {
+    public final void testGetNeighboursPoint()
+    {
         Assert.assertTrue(this.p.getNeighbours(this.p1).contains(this.e1));
         Assert.assertFalse(this.p.getNeighbours(this.p1).contains(this.e2));
         Assert.assertTrue(this.p.getNeighbours(this.p1).contains(this.e3));
@@ -163,7 +170,8 @@ public class PolylineTest extends TestCase {
      * .
      */
     @Test
-    public final void testGetNumNeighbours() {
+    public final void testGetNumNeighbours()
+    {
         Assert.assertTrue(this.p.getNumNeighbours(this.p1) == 2);
     }
 
@@ -173,7 +181,8 @@ public class PolylineTest extends TestCase {
      * .
      */
     @Test
-    public final void testIsInCylinder2D() {
+    public final static void testIsInCylinder2D()
+    {
         final Point point1 = new Point(0, 0, 0);
         final Point point2 = new Point(1, 1, 0);
         final Point point3 = new Point(2.2, 2, 0);
@@ -191,7 +200,8 @@ public class PolylineTest extends TestCase {
      * .
      */
     @Test
-    public final void testIsNeighbour() {
+    public final void testIsNeighbour()
+    {
         final Polyline pol = new Polyline();
         pol.add(this.e1);
         Assert.assertTrue(this.p.isNeighbour(pol));
@@ -201,7 +211,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#length()}.
      */
     @Test
-    public final void testLength() {
+    public final void testLength()
+    {
         Assert.assertTrue(this.p.length() == 4.0 * Math.pow(3.0, 0.5));
     }
 
@@ -209,7 +220,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#lengthAverage()} .
      */
     @Test
-    public final void testLengthAverage() {
+    public final void testLengthAverage()
+    {
         final double d = 16.0 / 3.0;
         Assert.assertTrue(this.p.lengthAverage() == Math.sqrt(d));
     }
@@ -220,16 +232,16 @@ public class PolylineTest extends TestCase {
      * .
      */
     @Test
-    public final void testOrientedAs() {
+    public final void testOrientedAs()
+    {
         final Polyline polyline = new Polyline();
         polyline.add(this.e1);
         polyline.add(this.e2);
         polyline.add(this.e3);
         polyline.add(this.e4);
         polyline.add(this.e5);
-        final Polyline pol =
-            polyline.orientedAs(new Edge(new Point(0, -1, -2), new Point(1, 1,
-                1)), 0.5);
+        final Polyline pol = polyline.orientedAs(new Edge(new Point(0, -1, -2),
+                new Point(1, 1, 1)), 0.5);
 
         Assert.assertFalse(pol.contains(this.e1));
         Assert.assertFalse(pol.contains(this.e2));
@@ -242,7 +254,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#pointSize()}.
      */
     @Test
-    public final void testPointSize() {
+    public final void testPointSize()
+    {
         Assert.assertTrue(this.p.pointSize() == 3);
     }
 
@@ -250,7 +263,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#refresh()}.
      */
     @Test
-    public final void testRefresh() {
+    public final void testRefresh()
+    {
         final Polyline pol2 = new Polyline();
         pol2.add(this.e1);
         pol2.add(this.e2);
@@ -274,7 +288,8 @@ public class PolylineTest extends TestCase {
      * .
      */
     @Test
-    public final void testRemoveEdge() {
+    public final void testRemoveEdge()
+    {
         final Polyline pol2 = new Polyline();
         pol2.add(this.e1);
         pol2.add(this.e2);
@@ -295,7 +310,8 @@ public class PolylineTest extends TestCase {
      * .
      */
     @Test
-    public final void testRemovePolyline() {
+    public final void testRemovePolyline()
+    {
         final Polyline pol2 = new Polyline();
         pol2.add(this.e1);
         pol2.add(this.e2);
@@ -315,7 +331,8 @@ public class PolylineTest extends TestCase {
      * {@link fr.nantes1900.models.Polyline#returnCentroidMesh()} .
      */
     @Test
-    public final void testReturnCentroidMesh() {
+    public final static void testReturnCentroidMesh()
+    {
 
         final Point point1 = new Point(1, 0, -1);
         final Point point2 = new Point(0, 1, 0);
@@ -330,14 +347,14 @@ public class PolylineTest extends TestCase {
         final Point centroid = new Point(0.5, 0.5, -0.5);
 
         Assert.assertTrue(m.getOne().getP1() == point1
-            || m.getOne().getP1() == point2
-            || m.getOne().getP1().equals(centroid));
+                || m.getOne().getP1() == point2
+                || m.getOne().getP1().equals(centroid));
         Assert.assertTrue(m.getOne().getP2() == point1
-            || m.getOne().getP2() == point2
-            || m.getOne().getP2().equals(centroid));
+                || m.getOne().getP2() == point2
+                || m.getOne().getP2().equals(centroid));
         Assert.assertTrue(m.getOne().getP3() == point1
-            || m.getOne().getP3() == point2
-            || m.getOne().getP3().equals(centroid));
+                || m.getOne().getP3() == point2
+                || m.getOne().getP3().equals(centroid));
     }
 
     /**
@@ -346,8 +363,8 @@ public class PolylineTest extends TestCase {
      * .
      */
     @Test
-    public final void testReturnExistingMesh() {
-
+    public final static void testReturnExistingMesh()
+    {
         final Point point1 = new Point(1, 0, -1);
         final Point point2 = new Point(0, 1, 0);
         final Point point3 = new Point(-1, 2, 1);
@@ -356,15 +373,13 @@ public class PolylineTest extends TestCase {
         final Edge edge1 = new Edge(point1, point2);
         final Edge edge2 = new Edge(point2, point3);
         final Edge edge3 = new Edge(point3, point1);
-        final Triangle t1 =
-            new Triangle(point1, point2, point3, edge1, edge2, edge3,
-                new Vector3d(0, 0, 0));
+        final Triangle t1 = new Triangle(point1, point2, point3, edge1, edge2,
+                edge3, new Vector3d(0, 0, 0));
 
         final Edge edge4 = new Edge(point1, point4);
         final Edge edge5 = new Edge(point2, point4);
-        final Triangle t2 =
-            new Triangle(point1, point2, point4, edge1, edge4, edge5,
-                new Vector3d(0, 0, 1));
+        final Triangle t2 = new Triangle(point1, point2, point4, edge1, edge4,
+                edge5, new Vector3d(0, 0, 1));
 
         final Polyline polyline = new Polyline();
         polyline.add(edge1);
@@ -386,7 +401,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#xAverage()}.
      */
     @Test
-    public final void testXAverage() {
+    public final void testXAverage()
+    {
         Assert.assertTrue(this.p.xAverage() == 0);
     }
 
@@ -395,7 +411,8 @@ public class PolylineTest extends TestCase {
      * {@link fr.nantes1900.models.Polyline#xBetween(double, double)} .
      */
     @Test
-    public final void testXBetween() {
+    public final void testXBetween()
+    {
         final Polyline point2 = new Polyline();
         point2.add(this.e1);
         point2.add(this.e2);
@@ -414,7 +431,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#xLengthAverage()} .
      */
     @Test
-    public final void testXLengthAverage() {
+    public final void testXLengthAverage()
+    {
         Assert.assertTrue(this.p.xLengthAverage() == 4.0 / 3.0);
     }
 
@@ -422,7 +440,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#xMax()}.
      */
     @Test
-    public final void testXMax() {
+    public final void testXMax()
+    {
         Assert.assertTrue(this.p.xMax() == 1);
     }
 
@@ -430,7 +449,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#xMin()}.
      */
     @Test
-    public final void testXMin() {
+    public final void testXMin()
+    {
         Assert.assertTrue(this.p.xMin() == -1);
     }
 
@@ -438,7 +458,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#yAverage()}.
      */
     @Test
-    public final void testYAverage() {
+    public final void testYAverage()
+    {
         Assert.assertTrue(this.p.yAverage() == 1);
     }
 
@@ -447,7 +468,8 @@ public class PolylineTest extends TestCase {
      * {@link fr.nantes1900.models.Polyline#yBetween(double, double)} .
      */
     @Test
-    public final void testYBetween() {
+    public final void testYBetween()
+    {
         final Polyline point2 = new Polyline();
         point2.add(this.e1);
         point2.add(this.e2);
@@ -466,7 +488,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#yLengthAverage()} .
      */
     @Test
-    public final void testYLengthAverage() {
+    public final void testYLengthAverage()
+    {
         Assert.assertTrue(this.p.yLengthAverage() == 4.0 / 3.0);
     }
 
@@ -474,7 +497,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#yMax()}.
      */
     @Test
-    public final void testYMax() {
+    public final void testYMax()
+    {
         Assert.assertTrue(this.p.yMax() == 2);
     }
 
@@ -482,7 +506,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#yMin()}.
      */
     @Test
-    public final void testYMin() {
+    public final void testYMin()
+    {
         Assert.assertTrue(this.p.yMin() == 0);
     }
 
@@ -490,7 +515,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#zAverage()}.
      */
     @Test
-    public final void testZAverage() {
+    public final void testZAverage()
+    {
         Assert.assertTrue(this.p.zAverage() == 0);
     }
 
@@ -499,7 +525,8 @@ public class PolylineTest extends TestCase {
      * {@link fr.nantes1900.models.Polyline#zBetween(double, double)} .
      */
     @Test
-    public final void testZBetween() {
+    public final void testZBetween()
+    {
         final Polyline polyline2 = new Polyline();
         polyline2.add(this.e1);
         polyline2.add(this.e2);
@@ -518,7 +545,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#zLengthAverage()} .
      */
     @Test
-    public final void testZLengthAverage() {
+    public final void testZLengthAverage()
+    {
         Assert.assertTrue(this.p.zLengthAverage() == 4.0 / 3.0);
     }
 
@@ -526,7 +554,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#zMax()}.
      */
     @Test
-    public final void testZMax() {
+    public final void testZMax()
+    {
         Assert.assertTrue(this.p.zMax() == 1);
     }
 
@@ -534,7 +563,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#zMaxPoint()}.
      */
     @Test
-    public final void testZMaxPoint() {
+    public final void testZMaxPoint()
+    {
         Assert.assertTrue(this.p.zMaxPoint() == this.p3);
     }
 
@@ -542,7 +572,8 @@ public class PolylineTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Polyline#zMin()}.
      */
     @Test
-    public final void testZMin() {
+    public final void testZMin()
+    {
         Assert.assertTrue(this.p.zMin() == -1);
     }
 
@@ -551,7 +582,8 @@ public class PolylineTest extends TestCase {
      * .
      */
     @Test
-    public final void testZProjection() {
+    public final static void testZProjection()
+    {
         final Point point1 = new Point(0, 0, 0);
         final Point point2 = new Point(0, 1, 0);
 

@@ -21,15 +21,16 @@ import org.junit.Test;
 
 /**
  * A set of tests for the class Parser.
- * 
  * @author Daniel Lefevre
  */
-public final class ParserSTLTest extends TestCase {
+public final class ParserSTLTest extends TestCase
+{
 
     /**
      * Constructor.
      */
-    public ParserSTLTest() {
+    public ParserSTLTest()
+    {
     }
 
     /**
@@ -39,9 +40,10 @@ public final class ParserSTLTest extends TestCase {
      * This method also tests the class WriterSTL.
      */
     @Test
-    public void testReadWriteSTL() {
-
-        try {
+    public static void testReadWriteSTL()
+    {
+        try
+        {
             final Point p1 = new Point(1, 0, -1);
             final Point p2 = new Point(0, 1, 0);
             final Point p3 = new Point(-1, 2, 1);
@@ -65,13 +67,13 @@ public final class ParserSTLTest extends TestCase {
             write.add(t1);
             write.add(t2);
 
-            final WriterSTL writerA =
-                new WriterSTL("WriterTestA.stl", WriterSTL.ASCII_MODE);
+            final WriterSTL writerA = new WriterSTL("WriterTestA.stl",
+                    WriterSTL.ASCII_MODE);
             writerA.setMesh(write);
             writerA.write();
 
-            final WriterSTL writerB =
-                new WriterSTL("WriterTestB.stl", WriterSTL.BINARY_MODE);
+            final WriterSTL writerB = new WriterSTL("WriterTestB.stl",
+                    WriterSTL.BINARY_MODE);
             writerB.setMesh(write);
             writerB.write();
 
@@ -80,20 +82,21 @@ public final class ParserSTLTest extends TestCase {
             Assert.assertTrue(readA.size() == 2);
             final List<Triangle> readListA = new ArrayList<Triangle>(readA);
             Assert.assertTrue(readListA.get(0).equals(t1)
-                || readListA.get(0).equals(t2));
+                    || readListA.get(0).equals(t2));
             Assert.assertTrue(readListA.get(1).equals(t1)
-                || readListA.get(1).equals(t2));
+                    || readListA.get(1).equals(t2));
 
             final ParserSTL parserB = new ParserSTL("WriterTestB.stl");
             final Mesh readB = parserB.read();
             Assert.assertTrue(readB.size() == 2);
             final List<Triangle> readListB = new ArrayList<Triangle>(readB);
             Assert.assertTrue(readListB.get(0).equals(t1)
-                || readListB.get(0).equals(t2));
+                    || readListB.get(0).equals(t2));
             Assert.assertTrue(readListB.get(1).equals(t1)
-                || readListB.get(1).equals(t2));
+                    || readListB.get(1).equals(t2));
 
-        } catch (final IOException e) {
+        } catch (final IOException e)
+        {
             Assert.fail("IOException !");
         }
 

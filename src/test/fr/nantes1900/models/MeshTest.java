@@ -121,7 +121,7 @@ public class MeshTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Mesh#changeBase(double[][])}.
      */
     @Test
-    public final void testChangeBase() {
+    public final static void testChangeBase() {
         try {
             final Point point1 = new Point(1, 0, -1);
             final Point point2 = new Point(0, 1, 0);
@@ -185,7 +185,7 @@ public class MeshTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Mesh#inPlanes()}.
      */
     @Test
-    public final void testInPlanes() {
+    public final static void testInPlanes() {
         final Point point1 = new Point(1, 0, 0);
         final Point point2 = new Point(0, 1, 0);
         final Point point3 = new Point(0, 0, 0);
@@ -228,7 +228,7 @@ public class MeshTest extends TestCase {
      * .
      */
     @Test
-    public final void testIntersection() {
+    public final static void testIntersection() {
         try {
             final Point point1 = new Point(0, 0, 0);
             final Vector3d vector1 = new Vector3d(0, 0, 1);
@@ -282,7 +282,7 @@ public class MeshTest extends TestCase {
      * .
      */
     @Test
-    public final void testIsOrientedAs() {
+    public final static void testIsOrientedAs() {
         final Point point1 = new Point(0, 0, 0);
         final Vector3d vector1 = new Vector3d(0, 0, 1);
         final Edge edge1 = new Edge(point1, point1);
@@ -311,7 +311,7 @@ public class MeshTest extends TestCase {
     }
 
     @Test
-    public final void testMinimalDistance() {
+    public final static void testMinimalDistance() {
         final Point point1 = new Point(1, 0, 0);
         final Point point2 = new Point(0, 1, 0);
         final Point point3 = new Point(0, 0, 0);
@@ -388,7 +388,7 @@ public class MeshTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.Mesh#returnUnsortedBounds()}.
      */
     @Test
-    public final void testReturnUnsortedBounds() {
+    public final static void testReturnUnsortedBounds() {
 
         // We create points, but no matter their coordinates, if they are
         // not equals.
