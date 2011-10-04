@@ -11,7 +11,6 @@ import java.util.Properties;
 /**
  * Implements a static configuration builder. Provides a method to load the
  * configuration file.
- * 
  * @author Daniel Lefevre
  */
 public final class Configuration {
@@ -36,35 +35,35 @@ public final class Configuration {
         try {
             properties.load(new FileInputStream(Configuration.configFile));
 
-            SeparationGroundBuilding.ALTITUDE_ERROR =
-                new Double(properties.getProperty("ALTITUDE_ERROR"));
-            SeparationGroundBuilding.ANGLE_GROUND_ERROR =
-                new Double(properties.getProperty("ANGLE_GROUND_ERROR"));
-            SeparationGroundBuilding.LARGE_ANGLE_GROUND_ERROR =
-                new Double(properties.getProperty("LARGE_ANGLE_GROUND_ERROR"));
-            SeparationGroundBuilding.BLOCK_BUILDING_SIZE_ERROR =
-                new Double(properties.getProperty("BLOCK_BUILDING_SIZE_ERROR"));
-            SeparationGroundBuilding.BLOCK_GROUNDS_SIZE_ERROR =
-                new Double(properties.getProperty("BLOCK_GROUNDS_SIZE_ERROR"));
+            SeparationGroundBuilding.ALTITUDE_ERROR = new Double(
+                    properties.getProperty("ALTITUDE_ERROR"));
+            SeparationGroundBuilding.ANGLE_GROUND_ERROR = new Double(
+                    properties.getProperty("ANGLE_GROUND_ERROR"));
+            SeparationGroundBuilding.LARGE_ANGLE_GROUND_ERROR = new Double(
+                    properties.getProperty("LARGE_ANGLE_GROUND_ERROR"));
+            SeparationBuildings.BLOCK_BUILDING_SIZE_ERROR = new Double(
+                    properties.getProperty("BLOCK_BUILDING_SIZE_ERROR"));
+            SeparationGrounds.BLOCK_GROUNDS_SIZE_ERROR = new Double(
+                    properties.getProperty("BLOCK_GROUNDS_SIZE_ERROR"));
 
-            SeparationTreatmentWallsRoofs.WALL_ANGLE_ERROR =
-                new Double(properties.getProperty("WALL_ANGLE_ERROR"));
-            SeparationTreatmentWallsRoofs.ROOF_ANGLE_ERROR =
-                new Double(properties.getProperty("ROOF_ANGLE_ERROR"));
-            SeparationTreatmentWallsRoofs.MIDDLE_ANGLE_ERROR =
-                new Double(properties.getProperty("MIDDLE_ANGLE_ERROR"));
-            SeparationTreatmentWallsRoofs.LARGE_ANGLE_ERROR =
-                new Double(properties.getProperty("LARGE_ANGLE_ERROR"));
-            SeparationTreatmentWallsRoofs.NORMALTO_ERROR =
-                new Double(properties.getProperty("NORMALTO_ERROR"));
-            SeparationTreatmentWallsRoofs.WALL_SIZE_ERROR =
-                new Double(properties.getProperty("WALL_SIZE_ERROR"));
-            SeparationTreatmentWallsRoofs.ROOF_SIZE_ERROR =
-                new Double(properties.getProperty("ROOF_SIZE_ERROR"));
-            SeparationTreatmentWallsRoofs.PLANES_ERROR =
-                new Double(properties.getProperty("PLANES_ERROR"));
-            SeparationTreatmentWallsRoofs.IS_ORIENTED_FACTOR =
-                new Double(properties.getProperty("IS_ORIENTED_FACTOR"));
+            SeparationWallsSeparationRoofs.WALL_ANGLE_ERROR = new Double(
+                    properties.getProperty("WALL_ANGLE_ERROR"));
+            SeparationWallsSeparationRoofs.ROOF_ANGLE_ERROR = new Double(
+                    properties.getProperty("ROOF_ANGLE_ERROR"));
+            SeparationWallsSeparationRoofs.MIDDLE_ANGLE_ERROR = new Double(
+                    properties.getProperty("MIDDLE_ANGLE_ERROR"));
+            SeparationWallsSeparationRoofs.LARGE_ANGLE_ERROR = new Double(
+                    properties.getProperty("LARGE_ANGLE_ERROR"));
+            SeparationWallsRoofs.NORMALTO_ERROR = new Double(
+                    properties.getProperty("NORMALTO_ERROR"));
+            SeparationWallsSeparationRoofs.WALL_SIZE_ERROR = new Double(
+                    properties.getProperty("WALL_SIZE_ERROR"));
+            SeparationWallsSeparationRoofs.ROOF_SIZE_ERROR = new Double(
+                    properties.getProperty("ROOF_SIZE_ERROR"));
+            SeparationWallsSeparationRoofs.PLANES_ERROR = new Double(
+                    properties.getProperty("PLANES_ERROR"));
+            SimplificationWallsRoofs.IS_ORIENTED_FACTOR = new Double(
+                    properties.getProperty("IS_ORIENTED_FACTOR"));
 
         } catch (final FileNotFoundException e) {
             // If the file does not exist, keeps the actual coefficients.
@@ -78,7 +77,6 @@ public final class Configuration {
 
     /**
      * Setter.
-     * 
      * @param name
      *            the name of the configuration file
      */

@@ -2,10 +2,9 @@ package fr.nantes1900.constants;
 
 /**
  * Contains some coefficients used in the algorithms.
- * 
  * @author Daniel Lefevre
  */
-public final class SeparationTreatmentWallsRoofs {
+public final class SeparationWallsSeparationRoofs {
 
     /**
      * Error factor for the walls : maximum angle between two triangles to
@@ -34,13 +33,6 @@ public final class SeparationTreatmentWallsRoofs {
     public static double LARGE_ANGLE_ERROR = 40;
 
     /**
-     * Error factor : coefficient compared to a dot product to determine if a
-     * triangle normal is normal to the ground (to determine if it's a wall).
-     * Not in degrees !
-     */
-    public static double NORMALTO_ERROR = 0.2;
-
-    /**
      * Error factor for the walls : minimum number of triangles for a block to
      * be considered as a real wall.
      */
@@ -59,17 +51,11 @@ public final class SeparationTreatmentWallsRoofs {
      */
     public static double PLANES_ERROR = 1;
 
-    /**
-     * Minimum angle between two neighbours of a surface. Used in the edges
-     * search during the vectorization of the surfaces. If two neighbours have
-     * the same orientation, the intersection of them during the vectorization
-     * will often creates aberrant points.
-     */
-    public static double IS_ORIENTED_FACTOR = 30;
+
 
     /**
      * Private constructor.
      */
-    private SeparationTreatmentWallsRoofs() {
+    private SeparationWallsSeparationRoofs() {
     }
 }

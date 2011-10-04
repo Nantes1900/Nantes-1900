@@ -2,7 +2,9 @@ package fr.nantes1900.models.extended;
 
 import fr.nantes1900.constants.Configuration;
 import fr.nantes1900.constants.FilesNames;
+import fr.nantes1900.constants.SeparationBuildings;
 import fr.nantes1900.constants.SeparationGroundBuilding;
+import fr.nantes1900.constants.SeparationGrounds;
 import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
@@ -31,7 +33,6 @@ import javax.vecmath.Vector3d;
  * grounds, wateries, and special buildings. Contains all the algorithms to
  * parse and build a town, using the building, mesh, ground, and other classes.
  * Allows to write a CityGML file containing this town.
- * 
  * @author Daniel Lefevre
  */
 public class Town {
@@ -71,23 +72,21 @@ public class Town {
     /**
      * List of special buildings.
      */
-    private final List<SpecialBuilding> specialBuildings =
-        new ArrayList<SpecialBuilding>();
+    private final List<SpecialBuilding> specialBuildings = new ArrayList<SpecialBuilding>();
 
     /**
      * Change base matrix from the current base to a base which is ground-like
      * oriented.
      */
-    private double[][] matrix =
-        new double[MatrixMethod.MATRIX_DIMENSION][MatrixMethod.MATRIX_DIMENSION];
+    private double[][] matrix = new double[MatrixMethod.MATRIX_DIMENSION][MatrixMethod.MATRIX_DIMENSION];
 
     /**
      * Constructor.
      */
     public Town() {
         Town.LOG.setLevel(Level.FINEST);
-        final Handler handler =
-            new StreamHandler(System.out, new SimpleFormatter());
+        final Handler handler = new StreamHandler(System.out,
+                new SimpleFormatter());
         handler.setLevel(Level.FINEST);
         Town.LOG.addHandler(handler);
         Town.LOG.setUseParentHandlers(false);
@@ -96,15 +95,14 @@ public class Town {
     /**
      * Pause the program and ask the user through the console if he wants to
      * continue.
-     * 
      * @return true if the user wants to continue the program, and false
      *         otherwise.
      */
     public static boolean askForAnswer() {
-        final BufferedReader stdin =
-            new BufferedReader(new InputStreamReader(System.in));
+        final BufferedReader stdin = new BufferedReader(new InputStreamReader(
+                System.in));
         System.out
-            .println("If the results please you, enter y, or if you want to redo the operation, change the coefficients in the config file, and enter r");
+                .println("If the results please you, enter y, or if you want to redo the operation, change the coefficients in the config file, and enter r");
 
         try {
             String answer;
@@ -126,7 +124,6 @@ public class Town {
 
     /**
      * Adds a ground to the attribute list of grounds.
-     * 
      * @param ground
      *            the ground to add
      */
@@ -138,7 +135,6 @@ public class Town {
 
     /**
      * Adds an industrial building to the attribute list of industrials.
-     * 
      * @param building
      *            the industrial to add
      */
@@ -150,7 +146,6 @@ public class Town {
 
     /**
      * Adds a list of buildings to the industrial list.
-     * 
      * @param listBuildings
      *            the list of buildings to add
      */
@@ -162,7 +157,6 @@ public class Town {
 
     /**
      * Adds a residential building to the attribute list of residentials.
-     * 
      * @param building
      *            the residential to add
      */
@@ -174,7 +168,6 @@ public class Town {
 
     /**
      * Adds a special building to the attribute list of special buildings.
-     * 
      * @param specialBuilding
      *            the special building to add
      */
@@ -186,7 +179,6 @@ public class Town {
 
     /**
      * Adds a watery to the attribute list of wateries.
-     * 
      * @param watery
      *            the watery to add
      */
@@ -201,7 +193,6 @@ public class Town {
      * the directory name the fives directories : industrials, residentials,
      * grounds, wateries, and special_buildings, treats each files and puts the
      * results in the attribute lists.
-     * 
      * @param directoryName
      *            the directory name where are the five directories
      */
@@ -217,9 +208,8 @@ public class Town {
 
         // Extract the normal gravity oriented and change it to the new
         // base.
-        final Vector3d normalGround =
-            Town.extractGroundNormal(directoryName + FilesNames.GRAVITY_GROUND_FILENAME
-                + FilesNames.EXTENSION);
+        final Vector3d normalGround = Town.extractGroundNormal(directoryName
+                + FilesNames.GRAVITY_GROUND_FILENAME + FilesNames.EXTENSION);
         this.createChangeBaseMatrix(normalGround);
 
         // Treat every kind of surfaces put in the algorithms.
@@ -230,19 +220,19 @@ public class Town {
         Town.LOG.info("Numbers of wateries : " + this.wateries.size());
 
         this.treatSpecialBuildings(directoryName
-            + FilesNames.SPECIAL_BUILDINGS_NAME);
+                + FilesNames.SPECIAL_BUILDINGS_NAME);
         Town.LOG.info("Numbers of special buildings : "
-            + this.specialBuildings.size());
+                + this.specialBuildings.size());
 
         this.treatIndustrials(directoryName + FilesNames.INDUSTRIALS_NAME,
-            normalGround);
+                normalGround);
         Town.LOG.info("Numbers of industrials zones : "
-            + this.industrials.size());
+                + this.industrials.size());
 
         this.treatResidentials(directoryName + FilesNames.RESIDENTIALS_NAME,
-            normalGround);
+                normalGround);
         Town.LOG.info("Numbers of residentials zones : "
-            + this.residentials.size());
+                + this.residentials.size());
 
         Town.LOG.info("Temps total écoulé : " + (System.nanoTime() - time));
     }
@@ -258,7 +248,6 @@ public class Town {
 
     /**
      * Writes the town in a CityGML file. Uses the WriterCityGML.
-     * 
      * @param fileName
      *            the name of the file to write in
      */
@@ -276,7 +265,6 @@ public class Town {
 
     /**
      * Writes every members of the lists as STL files.
-     * 
      * @param directoryName
      *            the name of the directory to write in
      */
@@ -290,7 +278,6 @@ public class Town {
 
     /**
      * Writes the grounds as STL files. Used for debugging.
-     * 
      * @param directoryName
      *            the name of the directory to write in
      */
@@ -299,14 +286,14 @@ public class Town {
 
         for (final Ground f : this.grounds) {
             f.writeSTL(directoryName + FilesNames.GROUND_FILENAME
-                + FilesNames.SEPARATOR + counterGround + FilesNames.EXTENSION);
+                    + FilesNames.SEPARATOR + counterGround
+                    + FilesNames.EXTENSION);
             ++counterGround;
         }
     }
 
     /**
      * Writes the industrial buildings as STL files. Used for debugging.
-     * 
      * @param directoryName
      *            the name of the directory to write in
      */
@@ -315,14 +302,13 @@ public class Town {
 
         for (final Building m : this.industrials) {
             m.writeSTL(directoryName + FilesNames.INDUSTRIAL_FILENAME
-                + FilesNames.SEPARATOR + buildingCounter);
+                    + FilesNames.SEPARATOR + buildingCounter);
             ++buildingCounter;
         }
     }
 
     /**
      * Writes the residential buildings as STL files. Used for debugging.
-     * 
      * @param directoryName
      *            the name of the directory to write in
      */
@@ -331,14 +317,13 @@ public class Town {
 
         for (final Building m : this.residentials) {
             m.writeSTL(directoryName + FilesNames.RESIDENTIAL_FILENAME
-                + FilesNames.SEPARATOR + buildingCounter);
+                    + FilesNames.SEPARATOR + buildingCounter);
             ++buildingCounter;
         }
     }
 
     /**
      * Writes the special buildings as STL files. Used for debugging.
-     * 
      * @param directoryName
      *            the name of the directory to write in
      */
@@ -347,16 +332,15 @@ public class Town {
 
         for (final SpecialBuilding m : this.specialBuildings) {
             m.getMesh().writeSTL(
-                directoryName + FilesNames.SPECIAL_BUILDING_FILENAME
-                    + FilesNames.SEPARATOR + buildingCounter
-                    + FilesNames.EXTENSION);
+                    directoryName + FilesNames.SPECIAL_BUILDING_FILENAME
+                            + FilesNames.SEPARATOR + buildingCounter
+                            + FilesNames.EXTENSION);
             ++buildingCounter;
         }
     }
 
     /**
      * Writes the wateries as STL files. Used for debugging.
-     * 
      * @param directoryName
      *            the name of the directory to write in
      */
@@ -365,14 +349,14 @@ public class Town {
 
         for (final Ground f : this.wateries) {
             f.writeSTL(directoryName + FilesNames.WATERY_FILENAME
-                + FilesNames.SEPARATOR + counterWateries + FilesNames.EXTENSION);
+                    + FilesNames.SEPARATOR + counterWateries
+                    + FilesNames.EXTENSION);
             ++counterWateries;
         }
     }
 
     /**
      * Adds a list of buildings to the residential list.
-     * 
      * @param listBuildings
      *            the list of buildings to add
      */
@@ -384,14 +368,14 @@ public class Town {
 
     /**
      * Extracts buildings by extracting the blocks after the ground extraction.
-     * 
      * @param mesh
      *            the mesh containing the buildinfs
      * @param noise
      *            the mesh to stock the noise
      * @return a list of buildings as meshes
      */
-    private static List<Mesh> buildingsExtraction(final Mesh mesh, final Mesh noise) {
+    private static List<Mesh> buildingsExtraction(final Mesh mesh,
+            final Mesh noise) {
 
         final List<Mesh> buildingList = new ArrayList<Mesh>();
 
@@ -401,7 +385,7 @@ public class Town {
 
         // Algorithm : detection of buildings considering their size.
         for (final Mesh m : thingsList) {
-            if (m.size() >= SeparationGroundBuilding.BLOCK_BUILDING_SIZE_ERROR) {
+            if (m.size() >= SeparationBuildings.BLOCK_BUILDING_SIZE_ERROR) {
 
                 buildingList.add(m);
             } else {
@@ -419,20 +403,19 @@ public class Town {
     /**
      * Cut in a building zone the forms which are not buildings : little walls,
      * chimneys. Method not implemented.
-     * 
      * @param buildings
      *            the list of buildings to treat
      * @return the list of the forms
      */
     @SuppressWarnings("unused")
-    private static ArrayList<Mesh> carveRealBuildings(final List<Mesh> buildings) {
+    private static ArrayList<Mesh>
+            carveRealBuildings(final List<Mesh> buildings) {
         // TODO : implement this method.
         return null;
     }
 
     /**
      * Cleans the directory in parameter, or creates it if it doesn't exist.
-     * 
      * @param directoryName
      *            the name of the directory
      */
@@ -456,7 +439,6 @@ public class Town {
     /**
      * Creates a change base matrix with the normal to the ground. See the
      * MatrixMethod class for more informations.
-     * 
      * @param normalGround
      *            the vector to build the matrix.
      */
@@ -475,7 +457,6 @@ public class Town {
 
     /**
      * Reads the ground file and returns the average normal as ground normal.
-     * 
      * @param fileName
      *            the name of the ground file
      * @return the normal to the ground as Vector3d
@@ -490,7 +471,6 @@ public class Town {
 
     /**
      * Extracts the grounds, using the groundExtract method.
-     * 
      * @param mesh
      *            the mesh to extract from
      * @param normalGround
@@ -498,11 +478,11 @@ public class Town {
      *            course...)
      * @return a mesh containing the ground
      */
-    private static Mesh groundExtraction(final Mesh mesh, final Vector3d normalGround) {
+    private static Mesh groundExtraction(final Mesh mesh,
+            final Vector3d normalGround) {
 
         // Searches for ground-oriented triangles with an error.
-        Mesh meshOriented =
-            mesh.orientedAs(normalGround,
+        Mesh meshOriented = mesh.orientedAs(normalGround,
                 SeparationGroundBuilding.ANGLE_GROUND_ERROR);
 
         List<Mesh> thingsList;
@@ -510,7 +490,7 @@ public class Town {
         // Extracts the blocks in the oriented triangles.
         thingsList = Algos.blockExtract(meshOriented);
 
-        //FIXME : use meshOriented.
+        // FIXME : use meshOriented.
         Mesh wholeGround = new Mesh();
         for (final Mesh f : thingsList) {
             wholeGround.addAll(f);
@@ -521,23 +501,22 @@ public class Town {
         final double highDiff = mesh.zMax() - mesh.zMin();
 
         // Builds an axis normal to the current ground.
-        final Edge axisNormalGround =
-            new Edge(new Point(0, 0, 0), new Point(normalGround.x,
-                normalGround.y, normalGround.z));
+        final Edge axisNormalGround = new Edge(new Point(0, 0, 0), new Point(
+                normalGround.x, normalGround.y, normalGround.z));
 
         // Project the current whole ground centroid on this axis.
-        final Point pAverage =
-            axisNormalGround.project(wholeGround.getCentroid());
+        final Point pAverage = axisNormalGround.project(wholeGround
+                .getCentroid());
 
         // After this, for each block, consider the distance (on the
         // axisNormalGround) as an altitude distance. If it is greater than
         // the error, then it's not considered as ground.
         for (final Mesh m : thingsList) {
-            final Point projectedPoint =
-                axisNormalGround.project(m.getCentroid());
+            final Point projectedPoint = axisNormalGround.project(m
+                    .getCentroid());
             if (projectedPoint.getZ() < pAverage.getZ()
-                || projectedPoint.distance(pAverage) < highDiff
-                    * SeparationGroundBuilding.ALTITUDE_ERROR) {
+                    || projectedPoint.distance(pAverage) < highDiff
+                            * SeparationGroundBuilding.ALTITUDE_ERROR) {
 
                 groundsList.add(m);
             }
@@ -549,7 +528,7 @@ public class Town {
         thingsList = new ArrayList<Mesh>(groundsList);
         groundsList = new ArrayList<Mesh>();
         for (final Mesh m : thingsList) {
-            if (m.size() > SeparationGroundBuilding.BLOCK_GROUNDS_SIZE_ERROR) {
+            if (m.size() > SeparationGrounds.BLOCK_GROUNDS_SIZE_ERROR) {
                 groundsList.add(m);
             }
         }
@@ -557,8 +536,7 @@ public class Town {
         // Now that we found the real grounds, we extract the other
         // triangles
         // which are almost ground-oriented to add them.
-        meshOriented =
-            mesh.orientedAs(normalGround,
+        meshOriented = mesh.orientedAs(normalGround,
                 SeparationGroundBuilding.LARGE_ANGLE_GROUND_ERROR);
 
         // If the new grounds are neighbours from the old ones, they are
@@ -588,14 +566,14 @@ public class Town {
      * Adds the maximum of noise on grounds to complete them. See block extract
      * method in the Algos class. After the completion of the grounds, triangles
      * are removed from noise.
-     * 
      * @param groundsMesh
      *            the ground
      * @param noise
      *            the noise mesh computed by former algorithms
      * @return a list of grounds completed with noise
      */
-    private static List<Mesh> noiseTreatment(final Mesh groundsMesh, final Mesh noise) {
+    private static List<Mesh> noiseTreatment(final Mesh groundsMesh,
+            final Mesh noise) {
 
         List<Mesh> list;
 
@@ -606,7 +584,6 @@ public class Town {
 
     /**
      * Parses a STL file. Uses the ParserSTL class.
-     * 
      * @param fileName
      *            the name of the file
      * @return the mesh parsed
@@ -618,8 +595,7 @@ public class Town {
             return parser.read();
 
         } catch (final IOException e) {
-            Town.LOG
-                .severe("Error : the file is badly formed, not found or unreadable !");
+            Town.LOG.severe("Error : the file is badly formed, not found or unreadable !");
             System.exit(1);
             return null;
         }
@@ -629,7 +605,6 @@ public class Town {
      * Treats the files of grounds which are in the directory. Creates Ground
      * objects for each files, puts an attribute, and calls the buildFromMesh
      * method of Ground. Then adds it to the list of grounds.
-     * 
      * @param directoryName
      *            the directory name to find the grounds.
      */
@@ -637,14 +612,14 @@ public class Town {
         int counterGrounds = 1;
 
         while (new File(directoryName + FilesNames.GROUND_FILENAME
-            + FilesNames.SEPARATOR + counterGrounds + FilesNames.EXTENSION)
-            .exists()) {
+                + FilesNames.SEPARATOR + counterGrounds + FilesNames.EXTENSION)
+                .exists()) {
 
             final Ground ground = new Ground("ground");
 
             ground.buildFromMesh(Town.parseFile(directoryName
-                + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
-                + counterGrounds + FilesNames.EXTENSION));
+                    + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
+                    + counterGrounds + FilesNames.EXTENSION));
 
             // FIXME
             this.addGround(this.treatGroundZone(ground));
@@ -655,7 +630,6 @@ public class Town {
 
     /**
      * Treats the ground object. For the moment, it just changes base.
-     * 
      * @param groundZone
      *            the ground to treat
      * @return the ground treated
@@ -672,24 +646,23 @@ public class Town {
      * Separates grounds and buildings, builds a Ground object and calls
      * buildFromMesh method, builds Building objects, puts the buildings in and
      * calls the buildFromMesh methods.
-     * 
      * @param directoryName
      *            the name of the working directory
      * @param normalGravityOriented
      *            the normal gravity-oriented
      */
     private void treatIndustrials(final String directoryName,
-        final Vector3d normalGravityOriented) {
+            final Vector3d normalGravityOriented) {
         int counterIndustrials = 1;
 
         // While there is files correctly named...
         while (new File(directoryName + FilesNames.INDUSTRIAL_FILENAME
-            + FilesNames.SEPARATOR + counterIndustrials + FilesNames.EXTENSION)
-            .exists()) {
+                + FilesNames.SEPARATOR + counterIndustrials
+                + FilesNames.EXTENSION).exists()) {
 
             if (Town.stepByStep) {
                 Town.cleanDirectory(directoryName
-                    + FilesNames.TEMPORARY_DIRECTORY);
+                        + FilesNames.TEMPORARY_DIRECTORY);
             }
 
             // Declarations.
@@ -702,21 +675,21 @@ public class Town {
                 Configuration.loadCoefficients();
 
                 // ...Parse the meshes of these files.
-                final Mesh mesh =
-                    Town.parseFile(directoryName
+                final Mesh mesh = Town.parseFile(directoryName
                         + FilesNames.INDUSTRIAL_FILENAME + FilesNames.SEPARATOR
                         + counterIndustrials + FilesNames.EXTENSION);
 
                 // If another ground normal is available, extract it. Otherwise,
                 // keep the normal gravity-oriented as the normal to the ground.
                 if (new File(directoryName + FilesNames.GROUND_FILENAME
-                    + FilesNames.SEPARATOR + counterIndustrials
-                    + FilesNames.EXTENSION).exists()) {
+                        + FilesNames.SEPARATOR + counterIndustrials
+                        + FilesNames.EXTENSION).exists()) {
 
-                    realNormalToTheGround =
-                        Town.extractGroundNormal(directoryName
-                            + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
-                            + counterIndustrials + FilesNames.EXTENSION);
+                    realNormalToTheGround = Town
+                            .extractGroundNormal(directoryName
+                                    + FilesNames.GROUND_FILENAME
+                                    + FilesNames.SEPARATOR + counterIndustrials
+                                    + FilesNames.EXTENSION);
 
                     MatrixMethod.changeBase(realNormalToTheGround, this.matrix);
 
@@ -728,8 +701,8 @@ public class Town {
                 mesh.changeBase(this.matrix);
 
                 // Extraction of the ground.
-                wholeGround =
-                    Town.groundExtraction(mesh, realNormalToTheGround);
+                wholeGround = Town
+                        .groundExtraction(mesh, realNormalToTheGround);
 
                 // Extraction of the buildings : the blocks which are left after
                 // the ground extraction.
@@ -742,21 +715,22 @@ public class Town {
 
                 if (Town.stepByStep) {
                     System.out.println("Building n° " + counterIndustrials
-                        + " : ");
+                            + " : ");
                     System.out
-                        .println("1st step executed : you will find the result in : "
-                            + directoryName
-                            + FilesNames.TEMPORARY_DIRECTORY
-                            + FilesNames.INDUSTRIAL_FILENAME
-                            + FilesNames.SEPARATOR
-                            + counterIndustrials
-                            + FilesNames.EXTENSION
-                            + "and in : "
-                            + directoryName
-                            + FilesNames.TEMPORARY_DIRECTORY
-                            + FilesNames.GROUND_FILENAME
-                            + FilesNames.SEPARATOR
-                            + counterIndustrials + FilesNames.EXTENSION);
+                            .println("1st step executed : you will find the result in : "
+                                    + directoryName
+                                    + FilesNames.TEMPORARY_DIRECTORY
+                                    + FilesNames.INDUSTRIAL_FILENAME
+                                    + FilesNames.SEPARATOR
+                                    + counterIndustrials
+                                    + FilesNames.EXTENSION
+                                    + "and in : "
+                                    + directoryName
+                                    + FilesNames.TEMPORARY_DIRECTORY
+                                    + FilesNames.GROUND_FILENAME
+                                    + FilesNames.SEPARATOR
+                                    + counterIndustrials
+                                    + FilesNames.EXTENSION);
 
                     final Mesh wholeBuildings = new Mesh();
                     for (final Mesh b : buildings) {
@@ -764,13 +738,14 @@ public class Town {
                     }
 
                     wholeBuildings.writeSTL(directoryName
-                        + FilesNames.TEMPORARY_DIRECTORY
-                        + FilesNames.INDUSTRIAL_FILENAME + FilesNames.SEPARATOR
-                        + counterIndustrials + FilesNames.EXTENSION);
+                            + FilesNames.TEMPORARY_DIRECTORY
+                            + FilesNames.INDUSTRIAL_FILENAME
+                            + FilesNames.SEPARATOR + counterIndustrials
+                            + FilesNames.EXTENSION);
                     wholeGround.writeSTL(directoryName
-                        + FilesNames.TEMPORARY_DIRECTORY
-                        + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
-                        + counterIndustrials + FilesNames.EXTENSION);
+                            + FilesNames.TEMPORARY_DIRECTORY
+                            + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
+                            + counterIndustrials + FilesNames.EXTENSION);
                 }
             } while (Town.stepByStep && !Town.askForAnswer());
 
@@ -785,7 +760,7 @@ public class Town {
             for (final Mesh m : buildings) {
                 final Building e = new Building();
                 e.buildFromMesh(m, wholeGround, realNormalToTheGround,
-                    directoryName, counterIndustrials, counterBuilding);
+                        directoryName, counterIndustrials, counterBuilding);
                 listBuildings.add(e);
                 counterBuilding++;
             }
@@ -809,24 +784,23 @@ public class Town {
      * Separates grounds and buildings, builds a Ground object and calls
      * buildFromMesh method, builds Building objects, puts the buildings in and
      * calls the buildFromMesh methods.
-     * 
      * @param directoryName
      *            the name of the working directory
      * @param normalGravityOriented
      *            the normal oriented as the gravity vector oriented to the sky
      */
     private void treatResidentials(final String directoryName,
-        final Vector3d normalGravityOriented) {
+            final Vector3d normalGravityOriented) {
         int counterResidentials = 1;
 
         // While there is files correctly named...
         while (new File(directoryName + FilesNames.RESIDENTIAL_FILENAME
-            + FilesNames.SEPARATOR + counterResidentials + FilesNames.EXTENSION)
-            .exists()) {
+                + FilesNames.SEPARATOR + counterResidentials
+                + FilesNames.EXTENSION).exists()) {
 
             if (Town.stepByStep) {
                 Town.cleanDirectory(directoryName
-                    + FilesNames.TEMPORARY_DIRECTORY);
+                        + FilesNames.TEMPORARY_DIRECTORY);
             }
 
             // Declarations.
@@ -839,8 +813,7 @@ public class Town {
                 Configuration.loadCoefficients();
 
                 // ...Parse the meshes of these files.
-                final Mesh mesh =
-                    Town.parseFile(directoryName
+                final Mesh mesh = Town.parseFile(directoryName
                         + FilesNames.RESIDENTIAL_FILENAME
                         + FilesNames.SEPARATOR + counterResidentials
                         + FilesNames.EXTENSION);
@@ -848,13 +821,15 @@ public class Town {
                 // If another ground normal is available, extract it. Otherwise,
                 // keep the normal gravity-oriented as the normal to the ground.
                 if (new File(directoryName + FilesNames.GROUND_FILENAME
-                    + FilesNames.SEPARATOR + counterResidentials
-                    + FilesNames.EXTENSION).exists()) {
+                        + FilesNames.SEPARATOR + counterResidentials
+                        + FilesNames.EXTENSION).exists()) {
 
-                    realNormalToTheGround =
-                        Town.extractGroundNormal(directoryName
-                            + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
-                            + counterResidentials + FilesNames.EXTENSION);
+                    realNormalToTheGround = Town
+                            .extractGroundNormal(directoryName
+                                    + FilesNames.GROUND_FILENAME
+                                    + FilesNames.SEPARATOR
+                                    + counterResidentials
+                                    + FilesNames.EXTENSION);
 
                     MatrixMethod.changeBase(realNormalToTheGround, this.matrix);
 
@@ -866,8 +841,8 @@ public class Town {
                 mesh.changeBase(this.matrix);
 
                 // Extraction of the ground.
-                wholeGround =
-                    Town.groundExtraction(mesh, realNormalToTheGround);
+                wholeGround = Town
+                        .groundExtraction(mesh, realNormalToTheGround);
 
                 // Extraction of the buildings : the blocks which are left after
                 // the ground extraction.
@@ -880,21 +855,22 @@ public class Town {
 
                 if (Town.stepByStep) {
                     System.out.println("Building n° " + counterResidentials
-                        + " : ");
+                            + " : ");
                     System.out
-                        .println("1st step executed : you will find the result in : "
-                            + directoryName
-                            + FilesNames.TEMPORARY_DIRECTORY
-                            + FilesNames.RESIDENTIAL_FILENAME
-                            + FilesNames.SEPARATOR
-                            + counterResidentials
-                            + FilesNames.EXTENSION
-                            + " and in : "
-                            + directoryName
-                            + FilesNames.TEMPORARY_DIRECTORY
-                            + FilesNames.GROUND_FILENAME
-                            + FilesNames.SEPARATOR
-                            + counterResidentials + FilesNames.EXTENSION);
+                            .println("1st step executed : you will find the result in : "
+                                    + directoryName
+                                    + FilesNames.TEMPORARY_DIRECTORY
+                                    + FilesNames.RESIDENTIAL_FILENAME
+                                    + FilesNames.SEPARATOR
+                                    + counterResidentials
+                                    + FilesNames.EXTENSION
+                                    + " and in : "
+                                    + directoryName
+                                    + FilesNames.TEMPORARY_DIRECTORY
+                                    + FilesNames.GROUND_FILENAME
+                                    + FilesNames.SEPARATOR
+                                    + counterResidentials
+                                    + FilesNames.EXTENSION);
 
                     final Mesh wholeBuildings = new Mesh();
                     for (final Mesh b : buildings) {
@@ -902,14 +878,14 @@ public class Town {
                     }
 
                     wholeBuildings.writeSTL(directoryName
-                        + FilesNames.TEMPORARY_DIRECTORY
-                        + FilesNames.RESIDENTIAL_FILENAME
-                        + FilesNames.SEPARATOR + counterResidentials
-                        + FilesNames.EXTENSION);
+                            + FilesNames.TEMPORARY_DIRECTORY
+                            + FilesNames.RESIDENTIAL_FILENAME
+                            + FilesNames.SEPARATOR + counterResidentials
+                            + FilesNames.EXTENSION);
                     wholeGround.writeSTL(directoryName
-                        + FilesNames.TEMPORARY_DIRECTORY
-                        + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
-                        + counterResidentials + FilesNames.EXTENSION);
+                            + FilesNames.TEMPORARY_DIRECTORY
+                            + FilesNames.GROUND_FILENAME + FilesNames.SEPARATOR
+                            + counterResidentials + FilesNames.EXTENSION);
                 }
             } while (Town.stepByStep && !Town.askForAnswer());
 
@@ -924,7 +900,7 @@ public class Town {
             for (final Mesh m : buildings) {
                 final Building e = new Building();
                 e.buildFromMesh(m, wholeGround, realNormalToTheGround,
-                    directoryName, counterResidentials, counterBuilding);
+                        directoryName, counterResidentials, counterBuilding);
                 listBuildings.add(e);
                 counterBuilding++;
             }
@@ -946,7 +922,6 @@ public class Town {
     /**
      * Treats the files of special buildings which are in the directory. Puts
      * them as meshes in the specialBuilding list.
-     * 
      * @param directoryName
      *            the name of the directory where are the files
      */
@@ -954,11 +929,10 @@ public class Town {
         int counterSpecialBuildings = 1;
 
         while (new File(directoryName + FilesNames.SPECIAL_BUILDING_FILENAME
-            + FilesNames.SEPARATOR + counterSpecialBuildings
-            + FilesNames.EXTENSION).exists()) {
+                + FilesNames.SEPARATOR + counterSpecialBuildings
+                + FilesNames.EXTENSION).exists()) {
 
-            final Mesh meshSpecialBuilding =
-                Town.parseFile(directoryName
+            final Mesh meshSpecialBuilding = Town.parseFile(directoryName
                     + FilesNames.SPECIAL_BUILDING_FILENAME
                     + FilesNames.SEPARATOR + counterSpecialBuildings
                     + FilesNames.EXTENSION);
@@ -979,7 +953,6 @@ public class Town {
      * Treats the files of wateries which are in the directory. Creates Ground
      * objects for each files, puts an attribute : Water, and calls the
      * buildFromMesh method of Ground. Then adds it to the list of wateries.
-     * 
      * @param directoryName
      *            the directory name to find the wateries.
      */
@@ -988,14 +961,14 @@ public class Town {
         int counterWateries = 1;
 
         while (new File(directoryName + FilesNames.WATERY_FILENAME
-            + FilesNames.SEPARATOR + counterWateries + FilesNames.EXTENSION)
-            .exists()) {
+                + FilesNames.SEPARATOR + counterWateries + FilesNames.EXTENSION)
+                .exists()) {
 
             final Ground watery = new Ground("ground");
 
             watery.buildFromMesh(Town.parseFile(directoryName
-                + FilesNames.WATERY_FILENAME + FilesNames.SEPARATOR
-                + counterWateries + FilesNames.EXTENSION));
+                    + FilesNames.WATERY_FILENAME + FilesNames.SEPARATOR
+                    + counterWateries + FilesNames.EXTENSION));
 
             this.addWatery(this.treatGroundZone(watery));
 

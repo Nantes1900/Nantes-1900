@@ -2,7 +2,8 @@ package fr.nantes1900.models.extended;
 
 import fr.nantes1900.constants.Configuration;
 import fr.nantes1900.constants.FilesNames;
-import fr.nantes1900.constants.SeparationTreatmentWallsRoofs;
+import fr.nantes1900.constants.SeparationWallsRoofs;
+import fr.nantes1900.constants.SeparationWallsSeparationRoofs;
 import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.Surface;
@@ -21,7 +22,6 @@ import javax.vecmath.Vector3d;
 
 /**
  * Implements a building as two lists of surfaces : walls and roofs.
- * 
  * @author Daniel Lefevre
  */
 public class Building {
@@ -44,7 +44,6 @@ public class Building {
 
     /**
      * Adds a roof to the attribute list of roofs.
-     * 
      * @param roof
      *            the roof to add
      */
@@ -54,7 +53,6 @@ public class Building {
 
     /**
      * Adds a list of roofs to the attribute list of roofs.
-     * 
      * @param addRoofs
      *            the list of roofs to add
      */
@@ -64,7 +62,6 @@ public class Building {
 
     /**
      * Adds a wall to the attribute list of walls.
-     * 
      * @param wall
      *            the wall to add
      */
@@ -74,7 +71,6 @@ public class Building {
 
     /**
      * Adds a list of walls to the attribute list of walls.
-     * 
      * @param addWalls
      *            the wall to add
      */
@@ -88,7 +84,6 @@ public class Building {
      * surfaces, and search and treat the new neighbours. After that, it
      * determinates neighbours, sort the uncomputable surfaces, and finally
      * order the neighbours and compute the edges.
-     * 
      * @param building
      *            the mesh to compute
      * @param normalGround
@@ -101,12 +96,11 @@ public class Building {
      *            the number of the current building
      */
     public final void buildFromMesh(final Mesh building, final Mesh grounds,
-        final Vector3d normalGround, final String directoryName,
-        final int counterZone, final int counterBuilding) {
+            final Vector3d normalGround, final String directoryName,
+            final int counterZone, final int counterBuilding) {
 
         if (Town.stepByStep) {
-            building
-                .writeSTL(directoryName + FilesNames.TEMPORARY_DIRECTORY
+            building.writeSTL(directoryName + FilesNames.TEMPORARY_DIRECTORY
                     + FilesNames.RESIDENTIAL_FILENAME + FilesNames.SEPARATOR
                     + counterZone + FilesNames.SEPARATOR
                     + FilesNames.BUILDING_NAME + FilesNames.SEPARATOR
@@ -121,7 +115,7 @@ public class Building {
 
         do {
             tempBuilding = new Mesh(building);
-            
+
             // Loads the new coefficients from the config file.
             Configuration.loadCoefficients();
 
@@ -130,38 +124,40 @@ public class Building {
                 // old and new files.
                 int counterWall = 1;
                 while (new File(directoryName + FilesNames.TEMPORARY_DIRECTORY
-                    + FilesNames.RESIDENTIAL_FILENAME + FilesNames.SEPARATOR
-                    + counterZone + FilesNames.SEPARATOR
-                    + FilesNames.BUILDING_NAME + FilesNames.SEPARATOR
-                    + counterBuilding + FilesNames.SEPARATOR
-                    + FilesNames.WALL_NAME + FilesNames.SEPARATOR + counterWall
-                    + FilesNames.EXTENSION).exists()) {
-                    new File(directoryName + FilesNames.TEMPORARY_DIRECTORY
                         + FilesNames.RESIDENTIAL_FILENAME
                         + FilesNames.SEPARATOR + counterZone
                         + FilesNames.SEPARATOR + FilesNames.BUILDING_NAME
                         + FilesNames.SEPARATOR + counterBuilding
                         + FilesNames.SEPARATOR + FilesNames.WALL_NAME
                         + FilesNames.SEPARATOR + counterWall
-                        + FilesNames.EXTENSION).delete();
+                        + FilesNames.EXTENSION).exists()) {
+                    new File(directoryName + FilesNames.TEMPORARY_DIRECTORY
+                            + FilesNames.RESIDENTIAL_FILENAME
+                            + FilesNames.SEPARATOR + counterZone
+                            + FilesNames.SEPARATOR + FilesNames.BUILDING_NAME
+                            + FilesNames.SEPARATOR + counterBuilding
+                            + FilesNames.SEPARATOR + FilesNames.WALL_NAME
+                            + FilesNames.SEPARATOR + counterWall
+                            + FilesNames.EXTENSION).delete();
                     counterWall++;
                 }
                 int counterRoof = 1;
                 while (new File(directoryName + FilesNames.TEMPORARY_DIRECTORY
-                    + FilesNames.RESIDENTIAL_FILENAME + FilesNames.SEPARATOR
-                    + counterZone + FilesNames.SEPARATOR
-                    + FilesNames.BUILDING_NAME + FilesNames.SEPARATOR
-                    + counterBuilding + FilesNames.SEPARATOR
-                    + FilesNames.ROOF_NAME + FilesNames.SEPARATOR + counterRoof
-                    + FilesNames.EXTENSION).exists()) {
-                    new File(directoryName + FilesNames.TEMPORARY_DIRECTORY
                         + FilesNames.RESIDENTIAL_FILENAME
                         + FilesNames.SEPARATOR + counterZone
                         + FilesNames.SEPARATOR + FilesNames.BUILDING_NAME
                         + FilesNames.SEPARATOR + counterBuilding
                         + FilesNames.SEPARATOR + FilesNames.ROOF_NAME
                         + FilesNames.SEPARATOR + counterRoof
-                        + FilesNames.EXTENSION).delete();
+                        + FilesNames.EXTENSION).exists()) {
+                    new File(directoryName + FilesNames.TEMPORARY_DIRECTORY
+                            + FilesNames.RESIDENTIAL_FILENAME
+                            + FilesNames.SEPARATOR + counterZone
+                            + FilesNames.SEPARATOR + FilesNames.BUILDING_NAME
+                            + FilesNames.SEPARATOR + counterBuilding
+                            + FilesNames.SEPARATOR + FilesNames.ROOF_NAME
+                            + FilesNames.SEPARATOR + counterRoof
+                            + FilesNames.EXTENSION).delete();
                     counterRoof++;
                 }
             }
@@ -184,38 +180,38 @@ public class Building {
 
             if (Town.stepByStep) {
                 System.out
-                    .println("2nd step executed : you will find the result in : "
-                        + directoryName
-                        + FilesNames.TEMPORARY_DIRECTORY
-                        + FilesNames.RESIDENTIAL_FILENAME
-                        + FilesNames.SEPARATOR
-                        + counterZone
-                        + FilesNames.SEPARATOR
-                        + FilesNames.BUILDING_NAME
-                        + FilesNames.SEPARATOR + counterBuilding);
+                        .println("2nd step executed : you will find the result in : "
+                                + directoryName
+                                + FilesNames.TEMPORARY_DIRECTORY
+                                + FilesNames.RESIDENTIAL_FILENAME
+                                + FilesNames.SEPARATOR
+                                + counterZone
+                                + FilesNames.SEPARATOR
+                                + FilesNames.BUILDING_NAME
+                                + FilesNames.SEPARATOR + counterBuilding);
 
                 int counterWall = 1;
                 for (final Mesh m : wallList) {
                     m.writeSTL(directoryName + FilesNames.TEMPORARY_DIRECTORY
-                        + FilesNames.RESIDENTIAL_FILENAME
-                        + FilesNames.SEPARATOR + counterZone
-                        + FilesNames.SEPARATOR + FilesNames.BUILDING_NAME
-                        + FilesNames.SEPARATOR + counterBuilding
-                        + FilesNames.SEPARATOR + FilesNames.WALL_NAME
-                        + FilesNames.SEPARATOR + counterWall
-                        + FilesNames.EXTENSION);
+                            + FilesNames.RESIDENTIAL_FILENAME
+                            + FilesNames.SEPARATOR + counterZone
+                            + FilesNames.SEPARATOR + FilesNames.BUILDING_NAME
+                            + FilesNames.SEPARATOR + counterBuilding
+                            + FilesNames.SEPARATOR + FilesNames.WALL_NAME
+                            + FilesNames.SEPARATOR + counterWall
+                            + FilesNames.EXTENSION);
                     counterWall++;
                 }
                 int counterRoof = 1;
                 for (final Mesh m : roofList) {
                     m.writeSTL(directoryName + FilesNames.TEMPORARY_DIRECTORY
-                        + FilesNames.RESIDENTIAL_FILENAME
-                        + FilesNames.SEPARATOR + counterZone
-                        + FilesNames.SEPARATOR + FilesNames.BUILDING_NAME
-                        + FilesNames.SEPARATOR + counterBuilding
-                        + FilesNames.SEPARATOR + FilesNames.ROOF_NAME
-                        + FilesNames.SEPARATOR + counterRoof
-                        + FilesNames.EXTENSION);
+                            + FilesNames.RESIDENTIAL_FILENAME
+                            + FilesNames.SEPARATOR + counterZone
+                            + FilesNames.SEPARATOR + FilesNames.BUILDING_NAME
+                            + FilesNames.SEPARATOR + counterBuilding
+                            + FilesNames.SEPARATOR + FilesNames.ROOF_NAME
+                            + FilesNames.SEPARATOR + counterRoof
+                            + FilesNames.EXTENSION);
                     counterRoof++;
                 }
             }
@@ -233,25 +229,25 @@ public class Building {
             // From all the neighbours, computes the wrap line and returns the
             // surfaces as polylines.
             this.findEdgesFromNeighbours(wallList, roofList, normalGround,
-                groundsTreated, noise);
+                    groundsTreated, noise);
 
             if (Town.stepByStep) {
                 System.out
-                    .println("3rd step executed : you will find the result in : "
-                        + directoryName
-                        + FilesNames.TEMPORARY_DIRECTORY
-                        + FilesNames.RESIDENTIAL_FILENAME
-                        + FilesNames.SEPARATOR
-                        + counterZone
-                        + FilesNames.SEPARATOR
-                        + FilesNames.BUILDING_NAME
-                        + FilesNames.SEPARATOR + counterBuilding);
+                        .println("3rd step executed : you will find the result in : "
+                                + directoryName
+                                + FilesNames.TEMPORARY_DIRECTORY
+                                + FilesNames.RESIDENTIAL_FILENAME
+                                + FilesNames.SEPARATOR
+                                + counterZone
+                                + FilesNames.SEPARATOR
+                                + FilesNames.BUILDING_NAME
+                                + FilesNames.SEPARATOR + counterBuilding);
 
                 this.writeSTL(directoryName + FilesNames.TEMPORARY_DIRECTORY
-                    + FilesNames.RESIDENTIAL_FILENAME + FilesNames.SEPARATOR
-                    + counterZone + FilesNames.SEPARATOR
-                    + FilesNames.BUILDING_NAME + FilesNames.SEPARATOR
-                    + counterBuilding);
+                        + FilesNames.RESIDENTIAL_FILENAME
+                        + FilesNames.SEPARATOR + counterZone
+                        + FilesNames.SEPARATOR + FilesNames.BUILDING_NAME
+                        + FilesNames.SEPARATOR + counterBuilding);
             }
         } while (Town.stepByStep && !Town.askForAnswer());
 
@@ -264,7 +260,6 @@ public class Building {
      * For each surface (wall or roof), orders the neighbours, and after this,
      * computes the edges. If an exception is throwed by these two methods, the
      * surface is not treated at all.
-     * 
      * @param wallList
      *            the list of walls as surfaces
      * @param roofList
@@ -277,8 +272,8 @@ public class Building {
      *            the mesh containing the noise
      */
     public final void findEdgesFromNeighbours(final List<Surface> wallList,
-        final List<Surface> roofList, final Vector3d normalGround,
-        final Surface grounds, final Mesh noise) {
+            final List<Surface> roofList, final Vector3d normalGround,
+            final Surface grounds, final Mesh noise) {
 
         // Determinates the neighbours.
         Building.determinateNeighbours(wallList, roofList, grounds, noise);
@@ -308,8 +303,8 @@ public class Building {
 
                 // When the neighbours are sorted, finds the intersection of
                 // them to find the edges of this surface.
-                final Polyline p =
-                    surface.findEdges(wallList, pointMap, normalGround);
+                final Polyline p = surface.findEdges(wallList, pointMap,
+                        normalGround);
 
                 // If it is a wall, adds it to the wall list, otherwise to the
                 // roof list (obvious...).
@@ -330,12 +325,11 @@ public class Building {
 
         Town.LOG.finest("Surfaces correctly treated : " + counterWellTreated);
         Town.LOG.finest("Surfaces not treated : "
-            + (wholeList.size() - counterWellTreated));
+                + (wholeList.size() - counterWellTreated));
     }
 
     /**
      * Getter.
-     * 
      * @return the list of roofs
      */
     public final List<Polyline> getRoofs() {
@@ -344,7 +338,6 @@ public class Building {
 
     /**
      * Getter.
-     * 
      * @return the list of walls
      */
     public final List<Polyline> getWalls() {
@@ -353,7 +346,6 @@ public class Building {
 
     /**
      * Writes the walls and roofs in STL files. Used for debugging.
-     * 
      * @param directoryName
      *            the directory to write in
      */
@@ -365,7 +357,6 @@ public class Building {
     /**
      * Determinates the neighbours of each meshes. Two meshes are neighbours if
      * they share an edge.
-     * 
      * @param wallList
      *            the list of walls as meshes
      * @param roofList
@@ -376,7 +367,8 @@ public class Building {
      *            the mesh containing the noise
      */
     private static void determinateNeighbours(final List<Surface> wallList,
-        final List<Surface> roofList, final Surface grounds, final Mesh noise) {
+            final List<Surface> roofList, final Surface grounds,
+            final Mesh noise) {
 
         final Polyline groundsBounds = grounds.returnUnsortedBounds();
 
@@ -392,7 +384,7 @@ public class Building {
             wholeListFakes.add(fake);
         }
         Algos.blockTreatPlanedNoise(wholeListFakes, noise,
-            SeparationTreatmentWallsRoofs.PLANES_ERROR);
+                SeparationWallsSeparationRoofs.PLANES_ERROR);
 
         // First we clear the neighbours.
         for (final Surface s : wholeList) {
@@ -429,7 +421,6 @@ public class Building {
     /**
      * Computes the grounds to fill holes between grounds and buildings. Not
      * implemented.
-     * 
      * @param grounds
      *            the surface containing the grounds
      */
@@ -441,7 +432,6 @@ public class Building {
     /**
      * Determinates the neighbours of each meshes. Two meshes are neighbours if
      * they share an edge.
-     * 
      * @param wallList
      *            the list of walls as meshes
      * @param roofList
@@ -450,7 +440,7 @@ public class Building {
      *            the grounds as one mesh
      */
     private static void searchForNeighbours(final List<Surface> wallList,
-        final List<Surface> roofList, final Surface grounds) {
+            final List<Surface> roofList, final Surface grounds) {
 
         final Polyline groundsBounds = grounds.returnUnsortedBounds();
 
@@ -493,7 +483,6 @@ public class Building {
     /**
      * Cuts the rest (after the extraction of the walls) of the mesh in roofs
      * considering the orientation of the triangles.
-     * 
      * @param building
      *            the building to carve
      * @param normalGround
@@ -503,20 +492,19 @@ public class Building {
      * @return the list of roofs
      */
     private static List<Surface> sortRoofs(final Mesh building,
-        final Vector3d normalGround, final Mesh noise) {
+            final Vector3d normalGround, final Mesh noise) {
         final List<Surface> roofList = new ArrayList<Surface>();
 
         // Cut the mesh in parts, considering their orientation.
-        final List<Mesh> thingsList =
-            Algos.blockOrientedExtract(building,
-                SeparationTreatmentWallsRoofs.ROOF_ANGLE_ERROR);
+        final List<Mesh> thingsList = Algos.blockOrientedExtract(building,
+                SeparationWallsSeparationRoofs.ROOF_ANGLE_ERROR);
 
         // Considering their size and their orientation, sort the blocks in
         // roofs or noise. If a wall is oriented in direction of the ground,
         // it is not keeped.
         for (final Mesh e : thingsList) {
-            if ((e.size() >= SeparationTreatmentWallsRoofs.ROOF_SIZE_ERROR)
-                && (e.averageNormal().dot(normalGround) > 0)) {
+            if ((e.size() >= SeparationWallsSeparationRoofs.ROOF_SIZE_ERROR)
+                    && (e.averageNormal().dot(normalGround) > 0)) {
                 roofList.add(new Surface(e));
             } else {
                 noise.addAll(e);
@@ -528,14 +516,13 @@ public class Building {
     /**
      * Removes the surfaces which have two neighbours or less : they can't be
      * treated. It's isolated surfaces for example.
-     * 
      * @param wallList
      *            the list of walls as surfaces
      * @param roofList
      *            the list of roofs as surfaces
      */
     private static void sortSurfaces(final List<Surface> wallList,
-        final List<Surface> roofList) {
+            final List<Surface> roofList) {
 
         int counter = 0;
         for (int i = 0; i < wallList.size(); i++) {
@@ -564,7 +551,6 @@ public class Building {
     /**
      * Cuts the normal-to-the-ground mesh in walls considering the orientation
      * of the triangles.
-     * 
      * @param building
      *            the building to carve
      * @param normalGround
@@ -574,23 +560,21 @@ public class Building {
      * @return the list of walls
      */
     private static List<Surface> sortWalls(final Mesh building,
-        final Vector3d normalGround, final Mesh noise) {
+            final Vector3d normalGround, final Mesh noise) {
         final List<Surface> wallList = new ArrayList<Surface>();
 
         // Select the triangles which are oriented normal to normalGround.
-        final Mesh wallOriented =
-            building.orientedNormalTo(normalGround,
-                SeparationTreatmentWallsRoofs.NORMALTO_ERROR);
+        final Mesh wallOriented = building.orientedNormalTo(normalGround,
+                SeparationWallsRoofs.NORMALTO_ERROR);
 
         // Cut the mesh in parts, considering their orientation.
-        final List<Mesh> thingsList =
-            Algos.blockOrientedExtract(wallOriented,
-                SeparationTreatmentWallsRoofs.WALL_ANGLE_ERROR);
+        final List<Mesh> thingsList = Algos.blockOrientedExtract(wallOriented,
+                SeparationWallsSeparationRoofs.WALL_ANGLE_ERROR);
 
         // Considering their size, sort the blocks in walls or noise.
         for (final Mesh e : thingsList) {
             building.remove(e);
-            if (e.size() >= SeparationTreatmentWallsRoofs.WALL_SIZE_ERROR) {
+            if (e.size() >= SeparationWallsSeparationRoofs.WALL_SIZE_ERROR) {
                 wallList.add(new Surface(e));
             } else {
                 noise.addAll(e);
@@ -603,7 +587,6 @@ public class Building {
      * Treats the new neighbours : search for the new neighbours. After this, if
      * some surfaces are neighbours, and have the same orientation, then merges
      * it to form only one surface.
-     * 
      * @param wallTreatedList
      *            the list of walls as surfaces
      * @param roofTreatedList
@@ -612,7 +595,7 @@ public class Building {
      *            the grounds
      */
     private static void treatNewNeighbours(final List<Surface> wallTreatedList,
-        final List<Surface> roofTreatedList, final Surface grounds) {
+            final List<Surface> roofTreatedList, final Surface grounds) {
 
         Building.searchForNeighbours(wallTreatedList, roofTreatedList, grounds);
 
@@ -635,7 +618,7 @@ public class Building {
 
             for (final Surface m : wholeList) {
                 if (m.isOrientedAs(surface,
-                    SeparationTreatmentWallsRoofs.MIDDLE_ANGLE_ERROR)) {
+                        SeparationWallsSeparationRoofs.MIDDLE_ANGLE_ERROR)) {
                     oriented.add(m);
                 }
             }
@@ -657,7 +640,6 @@ public class Building {
      * Adds the noise to the surface which is its neighbour, and which has the
      * same orientation. The error orientation is determined by the
      * LARGE_ANGLE_ERROR.
-     * 
      * @param wallList
      *            the list of walls as meshes
      * @param roofList
@@ -668,20 +650,19 @@ public class Building {
      *            the mesh containing the grounds
      */
     private static void treatNoise(final List<Surface> wallList,
-        final List<Surface> roofList, final Mesh noise, final Mesh grounds) {
+            final List<Surface> roofList, final Mesh noise, final Mesh grounds) {
 
         // Adds the oriented and neighbour noise to the walls.
         Algos.blockTreatOrientedNoise(wallList, noise,
-            SeparationTreatmentWallsRoofs.LARGE_ANGLE_ERROR);
+                SeparationWallsSeparationRoofs.LARGE_ANGLE_ERROR);
 
         // Adds the oriented and neighbour noise to the roofs.
         Algos.blockTreatOrientedNoise(roofList, noise,
-            SeparationTreatmentWallsRoofs.LARGE_ANGLE_ERROR);
+                SeparationWallsSeparationRoofs.LARGE_ANGLE_ERROR);
     }
 
     /**
      * Writes the roofs in STL files. Used for debugging.
-     * 
      * @param fileName
      *            the beginning of the name of the file to write in
      */
@@ -689,11 +670,10 @@ public class Building {
         int counterRoof = 1;
         for (final Polyline p : this.roofs) {
 
-            p.returnCentroidMesh()
-                .writeSTL(
+            p.returnCentroidMesh().writeSTL(
                     fileName + FilesNames.SEPARATOR + "computedRoof"
-                        + FilesNames.SEPARATOR + counterRoof
-                        + FilesNames.EXTENSION);
+                            + FilesNames.SEPARATOR + counterRoof
+                            + FilesNames.EXTENSION);
             counterRoof = counterRoof + 1;
 
         }
@@ -701,7 +681,6 @@ public class Building {
 
     /**
      * Writes the walls in STL files. Used for debugging.
-     * 
      * @param fileName
      *            the beginning of the name of the file to write in
      */
@@ -709,11 +688,10 @@ public class Building {
         int counterWall = 1;
         for (final Polyline p : this.walls) {
 
-            p.returnCentroidMesh()
-                .writeSTL(
+            p.returnCentroidMesh().writeSTL(
                     fileName + FilesNames.SEPARATOR + "computedWall"
-                        + FilesNames.SEPARATOR + counterWall
-                        + FilesNames.EXTENSION);
+                            + FilesNames.SEPARATOR + counterWall
+                            + FilesNames.EXTENSION);
             counterWall = counterWall + 1;
 
         }

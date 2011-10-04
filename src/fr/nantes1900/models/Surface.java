@@ -1,11 +1,5 @@
 package fr.nantes1900.models;
 
-import fr.nantes1900.constants.SeparationTreatmentWallsRoofs;
-import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -13,11 +7,16 @@ import java.util.Map;
 
 import javax.vecmath.Vector3d;
 
+import fr.nantes1900.constants.SimplificationWallsRoofs;
+import fr.nantes1900.models.basis.Edge;
+import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
+
 /**
  * Implements a surface, extending a mesh, and containing a list of surfaces as
  * neighbours. Contains some algorithms for the separation between walls and
  * roofs.
- * 
  * @author Daniel Lefevre
  */
 public class Surface extends Mesh {
@@ -41,7 +40,6 @@ public class Surface extends Mesh {
 
     /**
      * Constructor from a collection of triangles. See the HashSet constructor.
-     * 
      * @param c
      *            a collection of triangles
      */
@@ -53,7 +51,6 @@ public class Surface extends Mesh {
      * Adds a neighbour to the attribute neighbours. Checks if it is not
      * contained. Adds also this to the m neighbours, also checking if not
      * already contained.
-     * 
      * @param m
      *            the mesh as neighbour to add
      */
@@ -71,7 +68,6 @@ public class Surface extends Mesh {
      * to be treated first (using orderNeighbours). Since the neighbours are
      * sorted, calls the method createEdge for each neighbours and builds the
      * polyline with the edges returned.
-     * 
      * @param wallList
      *            the list of walls to check if the surface is a wall or not
      * @param pointMap
@@ -84,8 +80,8 @@ public class Surface extends Mesh {
      *             if a problem happened
      */
     public final Polyline findEdges(final List<Surface> wallList,
-        final Map<Point, Point> pointMap, final Vector3d normalGround)
-        throws InvalidSurfaceException {
+            final Map<Point, Point> pointMap, final Vector3d normalGround)
+            throws InvalidSurfaceException {
 
         final Polyline edges = new Polyline();
 
@@ -94,8 +90,8 @@ public class Surface extends Mesh {
         for (int i = 0; i < this.getNeighbours().size() - 2; ++i) {
 
             edges.add(this.createEdge(this.getNeighbours().get(i), this
-                .getNeighbours().get(i + 1), this.getNeighbours().get(i + 2),
-                pointMap, wallList, normalGround));
+                    .getNeighbours().get(i + 1), this.getNeighbours()
+                    .get(i + 2), pointMap, wallList, normalGround));
         }
 
         final int size = this.getNeighbours().size();
@@ -103,19 +99,18 @@ public class Surface extends Mesh {
         // We add the last missing edges which where not treated in the
         // loop.
         edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
-            .getNeighbours().get(size - 1), this.getNeighbours().get(0),
-            pointMap, wallList, normalGround));
+                .getNeighbours().get(size - 1), this.getNeighbours().get(0),
+                pointMap, wallList, normalGround));
 
         edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
-            .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
-            wallList, normalGround));
+                .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
+                wallList, normalGround));
 
         return edges;
     }
 
     /**
      * Getter.
-     * 
      * @return the neighbours
      */
     public final List<Surface> getNeighbours() {
@@ -132,7 +127,6 @@ public class Surface extends Mesh {
      * neighbour the closest (in terms of distance) neighbour not still treated.
      * If there is too much common neighbours, then the algorithm removes the
      * still-treated neighbours. It often resolves the problem.
-     * 
      * @param wholeList
      *            the list of every surfaces
      * @param grounds
@@ -142,7 +136,7 @@ public class Surface extends Mesh {
      *             as said in the description
      */
     public final void orderNeighbours(final List<Surface> wholeList,
-        final Surface grounds) throws ImpossibleNeighboursOrderException {
+            final Surface grounds) throws ImpossibleNeighboursOrderException {
 
         final List<Surface> neighboursOrdered = new ArrayList<Surface>();
 
@@ -179,7 +173,7 @@ public class Surface extends Mesh {
                 // We will find which one our current surface is the closest to,
                 // and it will be our next neighbour !
                 commonNeighbours.add(this.findPossibleNeighbour(current,
-                    neighboursOrdered));
+                        neighboursOrdered));
             }
 
             // If there is too much neighbours, this step can resolve it.
@@ -216,14 +210,13 @@ public class Surface extends Mesh {
     /**
      * Returns the meshes belonging to the list contain which are neighbours of
      * this in the list ret. Recursive method.
-     * 
      * @param ret
      *            the list returned which contains the neighbours
      * @param contain
      *            the list which must contain the neighbours
      */
     public final void returnNeighbours(final List<Surface> ret,
-        final List<Surface> contain) {
+            final List<Surface> contain) {
 
         // Add this to the ret list.
         ret.add(this);
@@ -240,7 +233,6 @@ public class Surface extends Mesh {
     /**
      * Returns a mesh composed of only one triangle which represents a plane in
      * 3D space.
-     * 
      * @param normalGround
      *            the normal to the ground
      * @return the mesh with only one triangle
@@ -251,11 +243,10 @@ public class Surface extends Mesh {
 
         final Surface computedWallPlane = new Surface();
 
-        final Point centroid =
-            new Point(this.xAverage(), this.yAverage(), this.zAverage());
+        final Point centroid = new Point(this.xAverage(), this.yAverage(),
+                this.zAverage());
 
-        final Point p1 =
-            new Point(centroid.getX() + 1, centroid.getY()
+        final Point p1 = new Point(centroid.getX() + 1, centroid.getY()
                 - averageNormal.getX() / averageNormal.getY(), centroid.getZ());
 
         final Point p3 = centroid;
@@ -276,7 +267,6 @@ public class Surface extends Mesh {
      * Computes the intersection of the first three planes, and the three next.
      * If one plane is wall, rectifies its normal to be vertical. If one point
      * has already been created before, use the hashmap to find it.
-     * 
      * @param s1
      *            the first plane
      * @param s2
@@ -294,9 +284,9 @@ public class Surface extends Mesh {
      *             if the algorithm cannot comput the edge
      */
     private Edge createEdge(final Surface s1, final Surface s2,
-        final Surface s3, final Map<Point, Point> pointMap,
-        final List<Surface> wallList, final Vector3d normalGround)
-        throws InvalidSurfaceException {
+            final Surface s3, final Map<Point, Point> pointMap,
+            final List<Surface> wallList, final Vector3d normalGround)
+            throws InvalidSurfaceException {
 
         final List<Surface> surfaces = new ArrayList<Surface>();
         surfaces.add(s1);
@@ -309,17 +299,16 @@ public class Surface extends Mesh {
             // If there is two neighbours which have the same orientation, then
             // throw an exception.
             if (this.isOrientedAs(s1,
-                SeparationTreatmentWallsRoofs.IS_ORIENTED_FACTOR)
-                || this.isOrientedAs(s2,
-                    SeparationTreatmentWallsRoofs.IS_ORIENTED_FACTOR)
-                || this.isOrientedAs(s3,
-                    SeparationTreatmentWallsRoofs.IS_ORIENTED_FACTOR)) {
+                    SimplificationWallsRoofs.IS_ORIENTED_FACTOR)
+                    || this.isOrientedAs(s2,
+                            SimplificationWallsRoofs.IS_ORIENTED_FACTOR)
+                    || this.isOrientedAs(s3,
+                            SimplificationWallsRoofs.IS_ORIENTED_FACTOR)) {
                 throw new ParallelPlanesException();
             }
-            if (s1.isOrientedAs(s2,
-                SeparationTreatmentWallsRoofs.IS_ORIENTED_FACTOR)
-                || s2.isOrientedAs(s3,
-                    SeparationTreatmentWallsRoofs.IS_ORIENTED_FACTOR)) {
+            if (s1.isOrientedAs(s2, SimplificationWallsRoofs.IS_ORIENTED_FACTOR)
+                    || s2.isOrientedAs(s3,
+                            SimplificationWallsRoofs.IS_ORIENTED_FACTOR)) {
                 throw new ParallelPlanesException();
             }
 
@@ -376,7 +365,6 @@ public class Surface extends Mesh {
     /**
      * Finds in the list of neighbours of this except the list of surfaces the
      * closest to the surface.
-     * 
      * @param current
      *            the surface to check
      * @param neighboursOrdered
@@ -385,7 +373,7 @@ public class Surface extends Mesh {
      *         this, not belonging to the list neighboursOrdered
      */
     private Surface findPossibleNeighbour(final Surface current,
-        final List<Surface> neighboursOrdered) {
+            final List<Surface> neighboursOrdered) {
         Surface possible = null;
         double distanceMin = Double.POSITIVE_INFINITY;
 
@@ -393,7 +381,7 @@ public class Surface extends Mesh {
         // closest one.
         for (final Surface s : this.getNeighbours()) {
             if (!neighboursOrdered.contains(s)
-                && !current.getNeighbours().contains(s)) {
+                    && !current.getNeighbours().contains(s)) {
                 if (current.minimalDistance(s) < distanceMin) {
                     possible = s;
                     distanceMin = current.minimalDistance(s);
@@ -406,7 +394,6 @@ public class Surface extends Mesh {
 
     /**
      * Returns the intersection of two lists of neighbours.
-     * 
      * @param surface
      *            the other surface
      * @return a list containing the elements shared by the two lists
@@ -424,11 +411,10 @@ public class Surface extends Mesh {
     /**
      * Implements an exception used in algorithms when the neighbours cannot be
      * ordered.
-     * 
      * @author Daniel Lefevre
      */
     public static final class ImpossibleNeighboursOrderException extends
-        Exception {
+            Exception {
 
         /**
          * Version attribute.
@@ -445,7 +431,6 @@ public class Surface extends Mesh {
     /**
      * Implements an execption used in findEdges method when surfaces can not be
      * vectorized.
-     * 
      * @author Daniel Lefevre
      */
     public static final class InvalidSurfaceException extends Exception {
@@ -464,7 +449,6 @@ public class Surface extends Mesh {
 
     /**
      * Implements an exception used in algorithms when planes are parallel.
-     * 
      * @author Daniel Lefevre
      */
     public static final class ParallelPlanesException extends Exception {

@@ -2,7 +2,6 @@ package fr.nantes1900.constants;
 
 /**
  * Contains some coefficients used in the algorithms.
- * 
  * @author Daniel Lefevre
  */
 public final class SeparationGroundBuilding {
@@ -30,17 +29,7 @@ public final class SeparationGroundBuilding {
      */
     public static double LARGE_ANGLE_GROUND_ERROR = 60;
 
-    /**
-     * Coefficient used after the extraction of the building, to determine if a
-     * building has enough triangles to be considered as a real building.
-     */
-    public static double BLOCK_BUILDING_SIZE_ERROR = 500;
 
-    /**
-     * Coefficient used after the extraction of the grounds, to determine if a
-     * ground has enough triangles to be considered as a real one.
-     */
-    public static double BLOCK_GROUNDS_SIZE_ERROR = 50;
 
     /**
      * Private constructor.
