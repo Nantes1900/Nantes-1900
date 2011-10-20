@@ -456,11 +456,11 @@ public class Polygone {
      * 
      * @return a mesh representing the surface of the polyline
      */
-    public final TriangleMesh returnCentroidMesh() {
+    public final Mesh returnCentroidMesh() {
 	if (this.isEmpty()) {
-	    return new TriangleMesh();
+	    return new Mesh();
 	}
-	final TriangleMesh ens = new TriangleMesh();
+	final Mesh ens = new Mesh();
 
 	final Point centroid = new Point(this.xAverage(), this.yAverage(),
 		this.zAverage());
@@ -489,7 +489,7 @@ public class Polygone {
      * @throws EmptyPolylineException
      *             if the polyline is empty
      */
-    public final TriangleMesh returnExistingMesh(final TriangleMesh m) {
+    public final Mesh returnExistingMesh(final Mesh m) {
 
 	// If there is Edges which have not triangles associated, the method
 	// calls the returnCentroidMesh.
@@ -501,7 +501,7 @@ public class Polygone {
 
 	// Find every triangles which belong to the edges, and which belong to m
 	// too.
-	final TriangleMesh ens = new TriangleMesh();
+	final Mesh ens = new Mesh();
 	for (final Edge e : this.edgeList) {
 	    for (final Triangle t : e.getTriangles()) {
 		if (m.contains(t)) {

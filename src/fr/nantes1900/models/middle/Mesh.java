@@ -19,7 +19,7 @@ import javax.vecmath.Vector3d;
  * 
  * @author Daniel Lefevre, Eric Berthe, Valentin Roger, Elsa Arroud-Vignod
  */
-public class TriangleMesh extends HashSet<Triangle> {
+public class Mesh extends HashSet<Triangle> {
 
     /**
      * Static integer to create new ID objects.
@@ -39,9 +39,9 @@ public class TriangleMesh extends HashSet<Triangle> {
     /**
      * Void constructor.
      */
-    public TriangleMesh() {
+    public Mesh() {
 	super();
-	this.iD = ++TriangleMesh.currentID;
+	this.iD = ++Mesh.currentID;
     }
 
     /**
@@ -50,9 +50,9 @@ public class TriangleMesh extends HashSet<Triangle> {
      * @param c
      *            the collection
      */
-    public TriangleMesh(final Collection<? extends Triangle> c) {
+    public Mesh(final Collection<? extends Triangle> c) {
 	super(c);
-	this.iD = ++TriangleMesh.currentID;
+	this.iD = ++Mesh.currentID;
     }
 
     /**
@@ -176,9 +176,9 @@ public class TriangleMesh extends HashSet<Triangle> {
      *            the distance between the two planes and p
      * @return the triangles which are between those two planes
      */
-    public final TriangleMesh inPlanes(final Vector3d vect, final Point p,
+    public final Mesh inPlanes(final Vector3d vect, final Point p,
 	    final double error) {
-	final TriangleMesh ret = new TriangleMesh();
+	final Mesh ret = new Mesh();
 
 	for (final Triangle triangle : this) {
 	    if (triangle.isInPlanes(vect, p, error)) {
@@ -202,7 +202,7 @@ public class TriangleMesh extends HashSet<Triangle> {
      * @throws SingularMatrixException
      *             if the planes are not well oriented
      */
-    public final Point intersection(final TriangleMesh m2, final TriangleMesh m3)
+    public final Point intersection(final Mesh m2, final Mesh m3)
 	    throws SingularMatrixException {
 
 	final Vector3d vect1 = this.averageNormal();
@@ -241,15 +241,15 @@ public class TriangleMesh extends HashSet<Triangle> {
     /**
      * Checks if two meshes share an edge.
      * 
-     * @param triangleMesh
+     * @param mesh
      *            the mesh to compare with
      * @return true if one edge at least is shared between this and mesh, and
      *         false otherwise.
      */
-    public final boolean isNeighbour(final TriangleMesh triangleMesh) {
-	if (triangleMesh != this) {
+    public final boolean isNeighbour(final Mesh mesh) {
+	if (mesh != this) {
 	    for (final Edge e : this.returnUnsortedBounds().getEdgeList()) {
-		if (triangleMesh.contains(e)) {
+		if (mesh.contains(e)) {
 		    return true;
 		}
 	    }
@@ -267,7 +267,7 @@ public class TriangleMesh extends HashSet<Triangle> {
      *            the error in degrees
      * @return the mesh composed of all the triangles
      */
-    public final boolean isOrientedAs(final TriangleMesh w2,
+    public final boolean isOrientedAs(final Mesh w2,
 	    final double littleAngleNormalErrorFactor) {
 
 	final double convertDegreesToRadian = 180 / Math.PI;
@@ -279,18 +279,18 @@ public class TriangleMesh extends HashSet<Triangle> {
      * Returns the minimal distance between two meshes. Searches for all the
      * points the one which are the closest and returns their distance.
      * 
-     * @param triangleMesh
+     * @param mesh
      *            the other mesh
      * @return the minimal distance between those two meshes
      */
-    public final double minimalDistance(final TriangleMesh triangleMesh) {
+    public final double minimalDistance(final Mesh mesh) {
 
 	final Set<Point> hash1 = new HashSet<Point>();
 	final Polygone poly1 = this.returnUnsortedBounds();
 	hash1.addAll(poly1.getPointList());
 
 	final Set<Point> hash2 = new HashSet<Point>();
-	final Polygone poly2 = triangleMesh.returnUnsortedBounds();
+	final Polygone poly2 = mesh.returnUnsortedBounds();
 	hash2.addAll(poly2.getPointList());
 
 	double minDistance = Double.POSITIVE_INFINITY;
@@ -316,8 +316,8 @@ public class TriangleMesh extends HashSet<Triangle> {
      *            the orientation error in degrees
      * @return a mesh containing all those triangles
      */
-    public final TriangleMesh orientedAs(final Vector3d normal, final double error) {
-	final TriangleMesh ret = new TriangleMesh();
+    public final Mesh orientedAs(final Vector3d normal, final double error) {
+	final Mesh ret = new Mesh();
 	for (final Triangle f : this) {
 	    if (f.angularTolerance(normal, error)) {
 		ret.add(f);
@@ -337,8 +337,8 @@ public class TriangleMesh extends HashSet<Triangle> {
      *            the orientation error
      * @return the mesh containing all those triangles
      */
-    public final TriangleMesh orientedNormalTo(final Vector3d vect, final double error) {
-	final TriangleMesh ret = new TriangleMesh();
+    public final Mesh orientedNormalTo(final Vector3d vect, final double error) {
+	final Mesh ret = new Mesh();
 	for (final Triangle f : this) {
 	    if (f.isNormalTo(vect, error)) {
 		ret.add(f);
@@ -353,7 +353,7 @@ public class TriangleMesh extends HashSet<Triangle> {
      * @param m
      *            the mesh containing the triangles to remove
      */
-    public final void remove(final TriangleMesh m) {
+    public final void remove(final Mesh m) {
 	this.removeAll(m);
     }
 
@@ -414,8 +414,8 @@ public class TriangleMesh extends HashSet<Triangle> {
      *            the second bound
      * @return the mesh containing the triangles
      */
-    public final TriangleMesh xBetween(final double m1, final double m2) {
-	final TriangleMesh ens = new TriangleMesh();
+    public final Mesh xBetween(final double m1, final double m2) {
+	final Mesh ens = new Mesh();
 	for (final Triangle t : this) {
 	    if (t.xMax() < Math.max(m1, m2) && t.xMin() > Math.min(m1, m2)) {
 		ens.add(t);
@@ -478,8 +478,8 @@ public class TriangleMesh extends HashSet<Triangle> {
      *            the second bound
      * @return the mesh containing the triangles
      */
-    public final TriangleMesh yBetween(final double m1, final double m2) {
-	final TriangleMesh ens = new TriangleMesh();
+    public final Mesh yBetween(final double m1, final double m2) {
+	final Mesh ens = new Mesh();
 	for (final Triangle t : this) {
 	    if (t.yMax() < Math.max(m1, m2) && t.yMin() > Math.min(m1, m2)) {
 		ens.add(t);
@@ -542,8 +542,8 @@ public class TriangleMesh extends HashSet<Triangle> {
      *            the second bound
      * @return the mesh containing the triangles
      */
-    public final TriangleMesh zBetween(final double m1, final double m2) {
-	final TriangleMesh ens = new TriangleMesh();
+    public final Mesh zBetween(final double m1, final double m2) {
+	final Mesh ens = new Mesh();
 	for (final Triangle t : this) {
 	    if (t.zMax() < Math.max(m1, m2) && t.zMin() > Math.min(m1, m2)) {
 		ens.add(t);

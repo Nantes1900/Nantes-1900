@@ -2,7 +2,7 @@ package fr.nantes1900.utils;
 
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -41,7 +41,7 @@ public class WriterSTL {
     /**
      * The mesh to write.
      */
-    private TriangleMesh triangleMesh;
+    private Mesh mesh;
 
     /**
      * The mode of writing. Use the two constants : ASCII_MODE or BINARY_MODE.
@@ -86,8 +86,8 @@ public class WriterSTL {
      * @param m
      *            the mesh to write
      */
-    public final void setMesh(final TriangleMesh m) {
-	this.triangleMesh = m;
+    public final void setMesh(final Mesh m) {
+	this.mesh = m;
     }
 
     /**
@@ -105,7 +105,7 @@ public class WriterSTL {
      */
     public final void write() {
 	try {
-	    if (this.triangleMesh == null) {
+	    if (this.mesh == null) {
 		throw new NoMeshException();
 	    }
 
@@ -223,7 +223,7 @@ public class WriterSTL {
 	    // Writes the header of the file : solid.
 	    writer = new BufferedWriter(new FileWriter(this.fileName));
 	    writer.write("solid");
-	    for (final Triangle f : this.triangleMesh) {
+	    for (final Triangle f : this.mesh) {
 		WriterSTL.writeASCIITriangle(writer, f);
 	    }
 
@@ -263,11 +263,11 @@ public class WriterSTL {
 	    // LITTLE_ENDIAN format.
 	    final ByteBuffer bBuf = ByteBuffer.allocate(Integer.SIZE);
 	    bBuf.order(ByteOrder.LITTLE_ENDIAN);
-	    bBuf.putInt(this.triangleMesh.size());
+	    bBuf.putInt(this.mesh.size());
 	    stream.write(bBuf.array(), 0, Integer.SIZE / Byte.SIZE);
 
 	    // Writes every triangle.
-	    for (final Triangle t : this.triangleMesh) {
+	    for (final Triangle t : this.mesh) {
 		WriterSTL.writeBinaryTriangle(stream, t);
 	    }
 

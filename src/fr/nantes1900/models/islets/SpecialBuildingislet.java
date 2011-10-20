@@ -1,6 +1,6 @@
 package fr.nantes1900.models.islets;
 
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
 
 /**
  * Implements a special building object as a container of a mesh.
@@ -12,12 +12,12 @@ public class SpecialBuildingislet extends AbstractIslet {
     /**
      * The mesh describing the surface of the special building.
      */
-    private TriangleMesh triangleMesh = new TriangleMesh();
+    private Mesh mesh = new Mesh();
 
     /**
      * Constructor. TODO : redo
      */
-    public SpecialBuildingislet(TriangleMesh m) {
+    public SpecialBuildingislet(Mesh m) {
 	super(m);
     }
 
@@ -27,8 +27,8 @@ public class SpecialBuildingislet extends AbstractIslet {
      * @param m
      *            the special building as a mesh
      */
-    public final void buildFromMesh(final TriangleMesh m) {
-	this.triangleMesh = m;
+    public final void buildFromMesh(final Mesh m) {
+	this.mesh = m;
 	// TODO : implement this method.
     }
 
@@ -37,8 +37,8 @@ public class SpecialBuildingislet extends AbstractIslet {
      * 
      * @return the mesh
      */
-    public final TriangleMesh getMesh() {
-	return this.triangleMesh;
+    public final Mesh getMesh() {
+	return this.mesh;
     }
 
     /**

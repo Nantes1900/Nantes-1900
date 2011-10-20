@@ -1,9 +1,9 @@
 package fr.nantes1900.models.islets;
 
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
 
 public class WateryIslet extends AbstractIslet {
-    public WateryIslet(TriangleMesh m) {
+    public WateryIslet(Mesh m) {
 	super(m);
     }
 

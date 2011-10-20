@@ -3,7 +3,7 @@ package test.fr.nantes1900.models;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.models.middle.Polygone;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
@@ -91,7 +91,7 @@ public class MeshTest extends TestCase {
     /**
      * Test attribute.
      */
-    private final TriangleMesh m = new TriangleMesh();
+    private final Mesh m = new Mesh();
 
     /**
      * Constructor of the MeshTest class : creating the mesh which will be an
@@ -107,7 +107,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.TriangleMesh#averageNormal()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#averageNormal()}.
      */
     @Test
     public final void testAverageNormal() {
@@ -117,7 +117,7 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.TriangleMesh#changeBase(double[][])}.
+     * {@link fr.nantes1900.models.middle.Mesh#changeBase(double[][])}.
      */
     @Test
     public final static void testChangeBase() {
@@ -142,11 +142,11 @@ public class MeshTest extends TestCase {
 	    final Triangle triangle2 = new Triangle(point4, point5, point6,
 		    edge4, edge5, edge6, vector2);
 
-	    final TriangleMesh triangleMesh = new TriangleMesh();
-	    triangleMesh.add(triangle1);
-	    triangleMesh.add(triangle2);
+	    final Mesh mesh = new Mesh();
+	    mesh.add(triangle1);
+	    mesh.add(triangle2);
 
-	    triangleMesh.changeBase(MatrixMethod.createOrthoBase(new Vector3d(1, 0, 0),
+	    mesh.changeBase(MatrixMethod.createOrthoBase(new Vector3d(1, 0, 0),
 		    new Vector3d(0, 1, 0), new Vector3d(0, 0, 1)));
 	    Assert.assertTrue(point1.equals(new Point(1, 0, -1)));
 	    Assert.assertTrue(point2.equals(new Point(0, 1, 0)));
@@ -158,7 +158,7 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.TriangleMesh#contains(fr.nantes1900.models.basis.Edge)}
+     * {@link fr.nantes1900.models.middle.Mesh#contains(fr.nantes1900.models.basis.Edge)}
      * .
      */
     @Test
@@ -172,7 +172,7 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.TriangleMesh#faceUnderZ(double)}.
+     * {@link fr.nantes1900.models.middle.Mesh#faceUnderZ(double)}.
      */
     @Test
     public final void testFaceUnderZ() {
@@ -180,7 +180,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.TriangleMesh#inPlanes()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#inPlanes()}.
      */
     @Test
     public final static void testInPlanes() {
@@ -207,22 +207,22 @@ public class MeshTest extends TestCase {
 	final Triangle triangle2 = new Triangle(point4, point5, point6, edge4,
 		edge5, edge6, vector);
 
-	final TriangleMesh triangleMesh = new TriangleMesh();
-	triangleMesh.add(triangle1);
-	triangleMesh.add(triangle2);
+	final Mesh mesh = new Mesh();
+	mesh.add(triangle1);
+	mesh.add(triangle2);
 
-	final TriangleMesh mesh2 = triangleMesh.inPlanes(vector, point1, 2.0);
+	final Mesh mesh2 = mesh.inPlanes(vector, point1, 2.0);
 	Assert.assertTrue(mesh2.contains(triangle1));
 	Assert.assertTrue(mesh2.contains(triangle2));
 
-	final TriangleMesh mesh3 = triangleMesh.inPlanes(vector, point1, 0.5);
+	final Mesh mesh3 = mesh.inPlanes(vector, point1, 0.5);
 	Assert.assertTrue(mesh3.contains(triangle1));
 	Assert.assertFalse(mesh3.contains(triangle2));
     }
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.TriangleMesh#intersection(fr.nantes1900.models.middle.TriangleMesh, fr.nantes1900.models.middle.TriangleMesh)}
+     * {@link fr.nantes1900.models.middle.Mesh#intersection(fr.nantes1900.models.middle.Mesh, fr.nantes1900.models.middle.Mesh)}
      * .
      */
     @Test
@@ -246,11 +246,11 @@ public class MeshTest extends TestCase {
 	    final Triangle triangle3 = new Triangle(point3, point3, point3,
 		    edge3, edge3, edge3, vector3);
 
-	    final TriangleMesh m1 = new TriangleMesh();
+	    final Mesh m1 = new Mesh();
 	    m1.add(triangle1);
-	    final TriangleMesh m2 = new TriangleMesh();
+	    final Mesh m2 = new Mesh();
 	    m2.add(triangle2);
-	    final TriangleMesh m3 = new TriangleMesh();
+	    final Mesh m3 = new Mesh();
 	    m3.add(triangle3);
 
 	    Assert.assertTrue(m1.intersection(m2, m3)
@@ -262,19 +262,19 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.TriangleMesh#isNeighbour(fr.nantes1900.models.middle.TriangleMesh)}
+     * {@link fr.nantes1900.models.middle.Mesh#isNeighbour(fr.nantes1900.models.middle.Mesh)}
      * .
      */
     @Test
     public final void testIsNeighbour() {
-	final TriangleMesh m1 = new TriangleMesh();
+	final Mesh m1 = new Mesh();
 	m1.add(this.t1);
 	Assert.assertTrue(m1.isNeighbour(this.m));
     }
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.TriangleMesh#isOrientedAs(fr.nantes1900.models.middle.TriangleMesh, double)}
+     * {@link fr.nantes1900.models.middle.Mesh#isOrientedAs(fr.nantes1900.models.middle.Mesh, double)}
      * .
      */
     @Test
@@ -291,9 +291,9 @@ public class MeshTest extends TestCase {
 	Triangle triangle2 = new Triangle(point2, point2, point2, edge2, edge2,
 		edge2, vector2);
 
-	final TriangleMesh mesh1 = new TriangleMesh();
+	final Mesh mesh1 = new Mesh();
 	mesh1.add(triangle1);
-	final TriangleMesh mesh2 = new TriangleMesh();
+	final Mesh mesh2 = new Mesh();
 	mesh2.add(triangle2);
 
 	Assert.assertTrue(mesh1.isOrientedAs(mesh2, 15));
@@ -330,9 +330,9 @@ public class MeshTest extends TestCase {
 	final Triangle triangle2 = new Triangle(point4, point5, point6, edge4,
 		edge5, edge6, vector);
 
-	final TriangleMesh mesh1 = new TriangleMesh();
+	final Mesh mesh1 = new Mesh();
 	mesh1.add(triangle1);
-	final TriangleMesh mesh2 = new TriangleMesh();
+	final Mesh mesh2 = new Mesh();
 	mesh2.add(triangle2);
 
 	Assert.assertEquals(mesh1.minimalDistance(mesh2), 1.0);
@@ -340,12 +340,12 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.TriangleMesh#orientedAs(javax.vecmath.Vector3d, double)}
+     * {@link fr.nantes1900.models.middle.Mesh#orientedAs(javax.vecmath.Vector3d, double)}
      * .
      */
     @Test
     public final void testOrientedAs() {
-	final TriangleMesh oriented = this.m
+	final Mesh oriented = this.m
 		.orientedAs(new Vector3d(0.1, 0.1, 0.9), 15);
 	Assert.assertTrue(oriented.contains(this.t1));
 	Assert.assertFalse(oriented.contains(this.t2));
@@ -353,12 +353,12 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.TriangleMesh#orientedNormalTo(javax.vecmath.Vector3d, double)}
+     * {@link fr.nantes1900.models.middle.Mesh#orientedNormalTo(javax.vecmath.Vector3d, double)}
      * .
      */
     @Test
     public final void testOrientedNormalTo() {
-	final TriangleMesh oriented = this.m.orientedNormalTo(new Vector3d(0.1, 0.1,
+	final Mesh oriented = this.m.orientedNormalTo(new Vector3d(0.1, 0.1,
 		0.9), 0.2);
 	Assert.assertTrue(oriented.contains(this.t2));
 	Assert.assertFalse(oriented.contains(this.t1));
@@ -366,13 +366,13 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.TriangleMesh#remove(fr.nantes1900.models.middle.TriangleMesh)}
+     * {@link fr.nantes1900.models.middle.Mesh#remove(fr.nantes1900.models.middle.Mesh)}
      * .
      */
     @Test
     public final void testRemoveMesh() {
-	final TriangleMesh m1 = new TriangleMesh(this.m);
-	final TriangleMesh m2 = new TriangleMesh();
+	final Mesh m1 = new Mesh(this.m);
+	final Mesh m2 = new Mesh();
 	m2.add(this.t1);
 
 	m1.remove(m2);
@@ -382,7 +382,7 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.TriangleMesh#returnUnsortedBounds()}.
+     * {@link fr.nantes1900.models.middle.Mesh#returnUnsortedBounds()}.
      */
     @Test
     public final static void testReturnUnsortedBounds() {
@@ -437,17 +437,17 @@ public class MeshTest extends TestCase {
 	final Triangle triangle8 = new Triangle(point2, point7, point8, edge14,
 		edge15, edge17, vector);
 
-	final TriangleMesh triangleMesh = new TriangleMesh();
-	triangleMesh.add(triangle1);
-	triangleMesh.add(triangle2);
-	triangleMesh.add(triangle3);
-	triangleMesh.add(triangle4);
-	triangleMesh.add(triangle5);
-	triangleMesh.add(triangle6);
-	triangleMesh.add(triangle7);
-	triangleMesh.add(triangle8);
+	final Mesh mesh = new Mesh();
+	mesh.add(triangle1);
+	mesh.add(triangle2);
+	mesh.add(triangle3);
+	mesh.add(triangle4);
+	mesh.add(triangle5);
+	mesh.add(triangle6);
+	mesh.add(triangle7);
+	mesh.add(triangle8);
 
-	final Polygone bounds = triangleMesh.returnUnsortedBounds();
+	final Polygone bounds = mesh.returnUnsortedBounds();
 	Assert.assertTrue(bounds.contains(point1));
 	Assert.assertTrue(bounds.contains(point2));
 	Assert.assertTrue(bounds.contains(point3));
@@ -478,7 +478,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.TriangleMesh#xAverage()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#xAverage()}.
      */
     @Test
     public final void testXAverage() {
@@ -487,17 +487,17 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.TriangleMesh#xBetween(double, double)}.
+     * {@link fr.nantes1900.models.middle.Mesh#xBetween(double, double)}.
      */
     @Test
     public final void testXBetween() {
-	final TriangleMesh xBet = this.m.xBetween(10, -10);
+	final Mesh xBet = this.m.xBetween(10, -10);
 	Assert.assertTrue(xBet.contains(this.t1));
 	Assert.assertTrue(xBet.contains(this.t2));
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.TriangleMesh#xMax()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#xMax()}.
      */
     @Test
     public final void testXMax() {
@@ -505,7 +505,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.TriangleMesh#xMin()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#xMin()}.
      */
     @Test
     public final void testXMin() {
@@ -513,7 +513,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.TriangleMesh#yAverage()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#yAverage()}.
      */
     @Test
     public final void testYAverage() {
@@ -522,17 +522,17 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.TriangleMesh#yBetween(double, double)}.
+     * {@link fr.nantes1900.models.middle.Mesh#yBetween(double, double)}.
      */
     @Test
     public final void testYBetween() {
-	final TriangleMesh yBet = this.m.yBetween(10, -10);
+	final Mesh yBet = this.m.yBetween(10, -10);
 	Assert.assertTrue(yBet.contains(this.t1));
 	Assert.assertTrue(yBet.contains(this.t2));
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.TriangleMesh#yMax()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#yMax()}.
      */
     @Test
     public final void testYMax() {
@@ -540,7 +540,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.TriangleMesh#yMin()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#yMin()}.
      */
     @Test
     public final void testYMin() {
@@ -548,7 +548,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.TriangleMesh#zAverage()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#zAverage()}.
      */
     @Test
     public final void testZAverage() {
@@ -557,17 +557,17 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.TriangleMesh#zBetween(double, double)}.
+     * {@link fr.nantes1900.models.middle.Mesh#zBetween(double, double)}.
      */
     @Test
     public final void testZBetween() {
-	final TriangleMesh zBet = this.m.zBetween(10, -10);
+	final Mesh zBet = this.m.zBetween(10, -10);
 	Assert.assertTrue(zBet.contains(this.t1));
 	Assert.assertTrue(zBet.contains(this.t2));
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.TriangleMesh#zMax()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#zMax()}.
      */
     @Test
     public final void testZMax() {
@@ -575,7 +575,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.TriangleMesh#zMin()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#zMin()}.
      */
     @Test
     public final void testZMin() {
@@ -583,7 +583,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.TriangleMesh#zMinFace()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#zMinFace()}.
      */
     @Test
     public final void testZMinFace() {

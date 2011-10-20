@@ -1,6 +1,5 @@
 package fr.nantes1900.models.islets;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,140 +12,55 @@ import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
+import fr.nantes1900.models.middle.Surface;
 import fr.nantes1900.utils.Algos;
 
 //LOL for the name...
 
 public abstract class AbstractEntialIslet extends AbstractIslet {
     private List<Building> buildings = new ArrayList<Building>();
-    private Building initialBuilding = new Building();
-    private Ground initialGround = new Ground();
+
+    private Mesh initialBuilding;
+
+    private Mesh initialGround;
+
+    private Ground ground;
+    private Surface groundForAlgorithm;
+
+    private Mesh noise;
+
     public int progression = 0;
 
-    public AbstractEntialIslet(TriangleMesh m) {
+    private Vector3d groundNormal;
+
+    public AbstractEntialIslet(Mesh m) {
 	super(m);
-    }
-
-    public void launchNextAlgo() {
-	switch (this.progression) {
-	case 0:
-	    this.launchAlgo1();
-	    break;
-	case 1:
-	    this.launchAlgo2();
-	    break;
-	case 2:
-	    this.launchAlgo3();
-	    break;
-	case 3:
-	    this.launchAlgo4();
-	    break;
-	case 4:
-	    this.launchAlgo5();
-	    break;
-	case 5:
-	    this.launchAlgo6();
-	    break;
-	case 6:
-	    this.launchAlgo7();
-	    break;
-	case 7:
-	    this.launchAlgo8();
-	    break;
-	}
-    }
-
-    private void incProgression() {
-	this.progression++;
-    }
-
-    /**
-     * SeparationGroundBuilding
-     */
-    public void launchAlgo1() {
-	if (this.initialTotalMesh == null) {
-	    throw new InvalidParameterException();
-	    // TODO
-	}
-
-	this.incProgression();
-    }
-
-    /**
-     * SeparationBuildings
-     */
-    public void launchAlgo2() {
-
-    }
-
-    /**
-     * SeparationWallRoof
-     */
-    public void launchAlgo3() {
-
-    }
-
-    /**
-     * SeparationWalls
-     */
-    public void launchAlgo4() {
-
-    }
-
-    /**
-     * SeparationRoofs
-     */
-    public void launchAlgo5() {
-
-    }
-
-    /**
-     * DeterminateNeighbours
-     */
-    public void launchAlgo6() {
-
-    }
-
-    /**
-     * SortNeighbours
-     */
-    public void launchAlgo7() {
-
-    }
-
-    /**
-     * SimplificationSurfaces
-     */
-    public void launchAlgo8() {
-
     }
 
     /**
      * Extracts buildings by extracting the blocks after the ground extraction.
      * 
-     * @param TriangleMesh
-     *            the TriangleMesh containing the buildinfs
+     * @param Mesh
+     *            the Mesh containing the buildinfs
      * @param noise
-     *            the TriangleMesh to stock the noise
-     * @return a list of buildings as TriangleMeshes
+     *            the Mesh to stock the noise
+     * @return a list of buildings as Meshes
      */
-    private static List<TriangleMesh> buildingsExtraction(
-	    final TriangleMesh TriangleMesh, final TriangleMesh noise) {
+    private void buildingsExtraction() {
 
-	final List<TriangleMesh> buildingList = new ArrayList<TriangleMesh>();
+	final List<Mesh> buildingList = new ArrayList<Mesh>();
 
-	List<TriangleMesh> thingsList;
+	List<Mesh> thingsList;
 	// Extraction of the buildings.
-	thingsList = Algos.blockExtract(TriangleMesh);
+	thingsList = Algos.blockExtract(this.initialBuilding);
 
-	// Algorithm : detection of buildings considering their size.
-	for (final TriangleMesh m : thingsList) {
+	// Steprithm : detection of buildings considering their size.
+	for (final Mesh m : thingsList) {
 	    if (m.size() >= SeparationBuildings.BLOCK_BUILDING_SIZE_ERROR) {
-
 		buildingList.add(m);
 	    } else {
-		noise.addAll(m);
+		this.noise.addAll(m);
 	    }
 	}
 
@@ -154,58 +68,63 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
 	    System.out.println("Error : no building found !");
 	}
 
-	return buildingList;
+	for (Mesh m : buildingList) {
+	    this.buildings.add(new Building(m));
+	}
     }
 
     /**
      * Cut in a building zone the forms which are not buildings : little walls,
      * chimneys. Method not implemented.
      * 
-     * @param buildings
+     * @param buildingsList
      *            the list of buildings to treat
      * @return the list of the forms
      */
-    private static ArrayList<TriangleMesh> carveRealBuildings(
-	    final List<TriangleMesh> buildings) {
+    private void carveRealBuildings(final List<Building> buildingsList) {
 	// TODO : implement this method.
-	return null;
+    }
+
+    private Ground noiseTreatment() {
+	List<Mesh> list = Algos.blockExtract(this.initialGround);
+	return new Ground(Algos.blockTreatNoise(list, this.noise));
     }
 
     /**
      * Extracts the grounds, using the groundExtract method.
      * 
      * @param mesh
-     *            the TriangleMesh to extract from
-     * @param normalGround
+     *            the Mesh to extract from
+     * @param groundNormal
      *            the normal to the ground (not the gravity-oriented normal, of
      *            course...)
-     * @return a TriangleMesh containing the ground
+     * @return a Mesh containing the ground
      */
-    private static TriangleMesh groundExtraction(final TriangleMesh mesh,
-	    final Vector3d normalGround) {
+    private void groundExtraction() {
 
 	// Searches for ground-oriented triangles with an error.
-	TriangleMesh TriangleMeshOriented = mesh.orientedAs(normalGround,
+	Mesh meshOriented = this.initialTotalMesh.orientedAs(this.groundNormal,
 		SeparationGroundBuilding.ANGLE_GROUND_ERROR);
 
-	List<TriangleMesh> thingsList;
-	List<TriangleMesh> groundsList = new ArrayList<TriangleMesh>();
+	List<Mesh> thingsList;
+	List<Mesh> groundsList = new ArrayList<Mesh>();
 	// Extracts the blocks in the oriented triangles.
-	thingsList = Algos.blockExtract(TriangleMeshOriented);
+	thingsList = Algos.blockExtract(meshOriented);
 
-	// FIXME : use TriangleMeshOriented.
-	TriangleMesh wholeGround = new TriangleMesh();
-	for (final TriangleMesh f : thingsList) {
+	// FIXME : use MeshOriented.
+	Mesh wholeGround = new Mesh();
+	for (final Mesh f : thingsList) {
 	    wholeGround.addAll(f);
 	}
 
 	// We consider the altitude of the blocks on an axis parallel to the
 	// normal ground.
-	final double highDiff = mesh.zMax() - mesh.zMin();
+	final double highDiff = this.initialTotalMesh.zMax()
+		- this.initialTotalMesh.zMin();
 
 	// Builds an axis normal to the current ground.
 	final Edge axisNormalGround = new Edge(new Point(0, 0, 0), new Point(
-		normalGround.x, normalGround.y, normalGround.z));
+		this.groundNormal.x, this.groundNormal.y, this.groundNormal.z));
 
 	// Project the current whole ground centroid on this axis.
 	final Point pAverage = axisNormalGround.project(wholeGround
@@ -214,7 +133,7 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
 	// After this, for each block, consider the distance (on the
 	// axisNormalGround) as an altitude distance. If it is greater than
 	// the error, then it's not considered as ground.
-	for (final TriangleMesh m : thingsList) {
+	for (final Mesh m : thingsList) {
 	    final Point projectedPoint = axisNormalGround.project(m
 		    .getCentroid());
 	    if (projectedPoint.getZ() < pAverage.getZ()
@@ -228,9 +147,9 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
 	// We consider the size of the blocks : if they're big enough,
 	// they're keeped. This is to avoid the parts of roofs, walls,
 	// etc...
-	thingsList = new ArrayList<TriangleMesh>(groundsList);
-	groundsList = new ArrayList<TriangleMesh>();
-	for (final TriangleMesh m : thingsList) {
+	thingsList = new ArrayList<Mesh>(groundsList);
+	groundsList = new ArrayList<Mesh>();
+	for (final Mesh m : thingsList) {
 	    if (m.size() > SeparationGrounds.BLOCK_GROUNDS_SIZE_ERROR) {
 		groundsList.add(m);
 	    }
@@ -239,63 +158,207 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
 	// Now that we found the real grounds, we extract the other
 	// triangles
 	// which are almost ground-oriented to add them.
-	TriangleMeshOriented = mesh.orientedAs(normalGround,
+	meshOriented = this.initialTotalMesh.orientedAs(this.groundNormal,
 		SeparationGroundBuilding.LARGE_ANGLE_GROUND_ERROR);
 
 	// If the new grounds are neighbours from the old ones, they are
 	// added to the real grounds.
-	thingsList = new ArrayList<TriangleMesh>();
-	for (final TriangleMesh m : groundsList) {
+	thingsList = new ArrayList<Mesh>();
+	for (final Mesh m : groundsList) {
 
-	    final TriangleMesh temp = new TriangleMesh(m);
-	    temp.addAll(TriangleMeshOriented);
-	    final TriangleMesh ret = new TriangleMesh();
+	    final Mesh temp = new Mesh(m);
+	    temp.addAll(meshOriented);
+	    final Mesh ret = new Mesh();
 	    m.getOne().returnNeighbours(ret, temp);
-	    TriangleMeshOriented.remove(ret);
+	    meshOriented.remove(ret);
 	    thingsList.add(ret);
 	}
 	groundsList = thingsList;
 
-	wholeGround = new TriangleMesh();
-	for (final TriangleMesh f : groundsList) {
-	    mesh.remove(f);
+	wholeGround = new Mesh();
+	for (final Mesh f : groundsList) {
 	    wholeGround.addAll(f);
 	}
 
-	return wholeGround;
+	this.initialGround = new Ground(wholeGround);
+    }
+
+    private void incProgression() {
+	this.progression++;
     }
 
     /**
-     * Treats the ground object. For the moment, it just changes base.
+     * GroundNormal
      * 
-     * @param groundZone
-     *            the ground to treat
-     * @return the ground treated
+     * @throws UnimplementedException
      */
-    private Ground treatGroundZone(final Ground groundZone) {
+    public void launchStep0() throws UnimplementedException {
+	if (this.matrix == null) {
+	    throw new UnimplementedException();
+	    // TODO
+	}
 
-	// groundZone.changeBase(this.matrix);
-
-	return groundZone;
+	// Be careful to the normal you use.
+	this.changeBase();
     }
 
     /**
-     * method in the Algos class. After the completion of the grounds, triangles
-     * are removed from noise.
+     * SeparationGroundBuilding
      * 
-     * @param groundsTriangleMesh
-     *            the ground
-     * @param noise
-     *            the noise TriangleMesh computed by former algorithms
-     * @return a list of grounds completed with noise
+     * @throws UnimplementedException
      */
-    private static List<TriangleMesh> noiseTreatment(
-	    final TriangleMesh groundsTriangleMesh, final TriangleMesh noise) {
+    public void launchStep1() throws UnimplementedException {
+	if (this.initialTotalMesh == null) {
+	    throw new UnimplementedException();
+	    // TODO
+	}
 
-	List<TriangleMesh> list;
+	this.groundExtraction();
+	this.initialBuilding = new Mesh(this.initialTotalMesh);
+	this.initialBuilding.remove(this.initialGround);
 
-	list = Algos.blockExtract(groundsTriangleMesh);
-	Algos.blockTreatNoise(list, noise);
-	return list;
+	this.incProgression();
+    }
+
+    /**
+     * SeparationBuildings
+     * 
+     * @throws UnimplementedException
+     */
+    public void launchStep2() throws UnimplementedException {
+	if (this.initialBuilding == null) {
+	    throw new UnimplementedException();
+	    // TODO
+	}
+
+	this.noise = new Mesh();
+	this.buildingsExtraction();
+
+	this.ground = this.noiseTreatment();
+    }
+
+    /**
+     * CarveWallsBetweenBuildings
+     */
+    public void launchStep3() {
+	this.carveRealBuildings(this.buildings);
+    }
+
+    // FIXME : full this with conditions... If meshes are not defined.. etc...
+    /**
+     * SeparationWallRoof
+     */
+    public void launchStep4() {
+	for (Building b : this.buildings) {
+	    b.separateWallRoof(this.gravityNormal);
+	}
+    }
+
+    /**
+     * SeparationWallsAndSeparationRoofs
+     */
+    public void launchStep5() {
+	this.groundForAlgorithm = new Surface(this.ground);
+
+	for (Building b : this.buildings) {
+	    b.cutWalls();
+	    b.cutRoofs(this.groundNormal);
+	    b.treatNoise();
+	    b.treatNewNeighbours(this.groundForAlgorithm);
+	}
+    }
+
+    /**
+     * DeterminateNeighbours
+     */
+    public void launchStep7() {
+	for (Building b : this.buildings) {
+	    b.determinateNeighbours(this.groundForAlgorithm);
+	}
+    }
+
+    /**
+     * SortNeighbours
+     */
+    public void launchStep8() {
+	for (Building b : this.buildings) {
+	    b.sortSurfaces();
+	    b.orderNeighbours(this.groundForAlgorithm);
+	}
+    }
+
+    /**
+     * SimplificationSurfaces
+     */
+    public void launchStep9() {
+	for (Building b : this.buildings) {
+	    b.determinateContours(this.groundNormal);
+	}
+    }
+
+    /**
+     * RecomputationGround
+     */
+    public void launchStep10() {
+	for (Building b : this.buildings) {
+	    b.reComputeGroundBounds();
+	}
+    }
+
+    public void launchNextStep() {
+	switch (this.progression) {
+	case 0:
+	    try {
+		this.launchStep0();
+	    } catch (UnimplementedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
+	    break;
+	case 1:
+	    try {
+		this.launchStep1();
+	    } catch (UnimplementedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
+	    break;
+	case 2:
+	    try {
+		this.launchStep2();
+	    } catch (UnimplementedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	    }
+	    break;
+	case 3:
+	    this.launchStep3();
+	    break;
+	case 4:
+	    this.launchStep4();
+	    break;
+	case 5:
+	    this.launchStep5();
+	    break;
+	// TODO
+	// case 6:
+	// this.launchStep6();
+	// break;
+	case 7:
+	    this.launchStep7();
+	    break;
+	case 8:
+	    this.launchStep8();
+	    break;
+	case 9:
+	    this.launchStep9();
+	    break;
+	}
+    }
+
+    public class UnimplementedException extends Exception {
+
+	private static final long serialVersionUID = 1L;
+
     }
 }

@@ -22,24 +22,19 @@ public class Surface {
      */
     private final List<Surface> neighbours = new ArrayList<Surface>();
 
-    private final Polygone polygone = new Polygone();
-    private final TriangleMesh triangleMesh = new TriangleMesh();
+    private Polygone polygone = new Polygone();
+    private Mesh mesh = new Mesh();
 
-    // /**
-    // * Void constructor.
-    // */
-    // public Surface() {
-    // }
+    public Surface(Polygone p) {
+	this.setPolygone(p);
+    }
 
-    // /**
-    // * Constructor from a collection of triangles. See the HashSet
-    // constructor.
-    // * @param c
-    // * a collection of triangles
-    // */
-    // public Surface(final Collection<? extends Triangle> c) {
-    // super(c);
-    // }
+    public Surface(Mesh m) {
+	this.setMesh(m);
+    }
+
+    public Surface() {
+    }
 
     /**
      * Adds a neighbour to the attribute neighbours. Checks if it is not
@@ -411,6 +406,22 @@ public class Surface {
 	    }
 	}
 	return ret;
+    }
+
+    public Polygone getPolygone() {
+	return this.polygone;
+    }
+
+    public void setPolygone(Polygone polygone) {
+	this.polygone = polygone;
+    }
+
+    public Mesh getMesh() {
+	return this.mesh;
+    }
+
+    public void setMesh(Mesh mesh) {
+	this.mesh = mesh;
     }
 
     /**

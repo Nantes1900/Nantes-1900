@@ -3,7 +3,7 @@ package test.fr.nantes1900.models;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.models.middle.Polygone;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
@@ -325,7 +325,7 @@ public class PolylineTest extends TestCase {
 	final Polygone polygone = new Polygone();
 	polygone.add(edge1);
 
-	TriangleMesh m;
+	Mesh m;
 	m = polygone.returnCentroidMesh();
 	final Point centroid = new Point(0.5, 0.5, -0.5);
 
@@ -342,7 +342,7 @@ public class PolylineTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.Polygone#returnExistingMesh(fr.nantes1900.models.middle.TriangleMesh)}
+     * {@link fr.nantes1900.models.middle.Polygone#returnExistingMesh(fr.nantes1900.models.middle.Mesh)}
      * .
      */
     @Test
@@ -370,11 +370,11 @@ public class PolylineTest extends TestCase {
 	polygone.add(edge4);
 	polygone.add(edge5);
 
-	final TriangleMesh belongTo = new TriangleMesh();
+	final Mesh belongTo = new Mesh();
 	belongTo.add(t1);
 	belongTo.add(t2);
 
-	final TriangleMesh m = polygone.returnExistingMesh(belongTo);
+	final Mesh m = polygone.returnExistingMesh(belongTo);
 	Assert.assertTrue(m.contains(t1));
 	Assert.assertTrue(m.contains(t2));
     }

@@ -3,7 +3,7 @@ package test.fr.nantes1900.models.basis;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -268,7 +268,7 @@ public class TriangleTest extends TestCase {
 
     /**
      * Test method for
-     * {@link nantes1900.models.basis.Triangle#returnNeighbours(TriangleMesh.models.Mesh, TriangleMesh.models.Mesh)}
+     * {@link nantes1900.models.basis.Triangle#returnNeighbours(Mesh.models.Mesh, Mesh.models.Mesh)}
      * .
      * 
      * @throws MoreThanTwoTrianglesPerEdgeException
@@ -295,7 +295,7 @@ public class TriangleTest extends TestCase {
 	final Triangle t5 = new Triangle(this.p1, p5, p6, e6, e8, e10,
 		this.vect);
 
-	final TriangleMesh contain = new TriangleMesh();
+	final Mesh contain = new Mesh();
 	contain.add(this.t);
 	contain.add(t2);
 	contain.add(t3);
@@ -309,7 +309,7 @@ public class TriangleTest extends TestCase {
 			new Point(0.05, 0.05, 0.05)), new Edge(new Point(0.05,
 			0.05, 0.05), new Point(0.05, 0.05, 0.05)), this.vect);
 
-	final TriangleMesh ret = new TriangleMesh();
+	final Mesh ret = new Mesh();
 	this.t.returnNeighbours(ret, contain);
 
 	Assert.assertTrue(ret.contains(this.t));

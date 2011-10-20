@@ -1,7 +1,7 @@
 package fr.nantes1900.utils;
 
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.models.middle.Surface;
 
 import java.util.ArrayList;
@@ -33,20 +33,20 @@ public final class Algos {
      *            the mesh to divide
      * @return an array of the blocks-meshes
      */
-    public static List<TriangleMesh> blockExtract(final TriangleMesh m) {
-	final Set<TriangleMesh> thingsList = new HashSet<TriangleMesh>();
-	final TriangleMesh triangleMesh = new TriangleMesh(m);
+    public static List<Mesh> blockExtract(final Mesh m) {
+	final Set<Mesh> thingsList = new HashSet<Mesh>();
+	final Mesh mesh = new Mesh(m);
 
-	while (!triangleMesh.isEmpty()) {
+	while (!mesh.isEmpty()) {
 
-	    final TriangleMesh e = new TriangleMesh();
-	    triangleMesh.getOne().returnNeighbours(e, triangleMesh);
-	    triangleMesh.remove(e);
+	    final Mesh e = new Mesh();
+	    mesh.getOne().returnNeighbours(e, mesh);
+	    mesh.remove(e);
 	    thingsList.add(e);
 
 	}
 
-	return new ArrayList<TriangleMesh>(thingsList);
+	return new ArrayList<Mesh>(thingsList);
     }
 
     /**
@@ -63,23 +63,23 @@ public final class Algos {
      *            the error on the orientation
      * @return an array of the blocks-meshs
      */
-    public static List<TriangleMesh> blockOrientedExtract(final TriangleMesh m,
+    public static List<Mesh> blockOrientedExtract(final Mesh m,
 	    final double angleNormalErrorFactor) {
 
-	final List<TriangleMesh> thingsList = new ArrayList<TriangleMesh>();
-	final List<TriangleMesh> meshList = Algos.blockExtract(m);
+	final List<Mesh> thingsList = new ArrayList<Mesh>();
+	final List<Mesh> meshList = Algos.blockExtract(m);
 
-	for (final TriangleMesh triangleMesh : meshList) {
-	    while (!triangleMesh.isEmpty()) {
-		final TriangleMesh e = new TriangleMesh();
-		final Triangle tri = triangleMesh.getOne();
+	for (final Mesh mesh : meshList) {
+	    while (!mesh.isEmpty()) {
+		final Mesh e = new Mesh();
+		final Triangle tri = mesh.getOne();
 
-		final TriangleMesh oriented = triangleMesh.orientedAs(tri.getNormal(),
+		final Mesh oriented = mesh.orientedAs(tri.getNormal(),
 			angleNormalErrorFactor);
 
 		tri.returnNeighbours(e, oriented);
 
-		triangleMesh.remove(e);
+		mesh.remove(e);
 		thingsList.add(e);
 	    }
 	}
@@ -97,21 +97,24 @@ public final class Algos {
      * @param noise
      *            the whole noise
      */
-    public static void blockTreatNoise(final List<TriangleMesh> list, final TriangleMesh noise) {
+    public static Mesh blockTreatNoise(final List<Mesh> list, final Mesh noise) {
+	final List<Mesh> m = new ArrayList<Mesh>();
+	final Mesh result = new Mesh();
 
-	final List<TriangleMesh> m = new ArrayList<TriangleMesh>();
-
-	for (final TriangleMesh e : list) {
-	    final TriangleMesh meshAndNoise = new TriangleMesh(e);
+	for (final Mesh e : list) {
+	    final Mesh meshAndNoise = new Mesh(e);
 	    meshAndNoise.addAll(noise);
-	    final TriangleMesh mes = new TriangleMesh();
+	    final Mesh mes = new Mesh();
 	    e.getOne().returnNeighbours(mes, meshAndNoise);
 	    m.add(mes);
 	    noise.remove(mes);
 	}
 
-	list.clear();
-	list.addAll(m);
+	for (Mesh mesh : m) {
+	    result.addAll(mesh);
+	}
+
+	return result;
     }
 
     /**
@@ -127,16 +130,16 @@ public final class Algos {
      * @param errorPlanes
      *            the distance between the two planes
      */
-    public static void blockTreatPlanedNoise(final List<TriangleMesh> list,
-	    final TriangleMesh noise, final double errorPlanes) {
+    public static void blockTreatPlanedNoise(final List<Mesh> list,
+	    final Mesh noise, final double errorPlanes) {
 
-	final List<TriangleMesh> m = new ArrayList<TriangleMesh>();
+	final List<Mesh> m = new ArrayList<Mesh>();
 
-	for (final TriangleMesh e : list) {
-	    final TriangleMesh meshAndNoise = new TriangleMesh(e);
+	for (final Mesh e : list) {
+	    final Mesh meshAndNoise = new Mesh(e);
 	    meshAndNoise.addAll(noise.inPlanes(e.averageNormal(),
 		    e.getCentroid(), errorPlanes));
-	    final TriangleMesh mes = new TriangleMesh();
+	    final Mesh mes = new Mesh();
 	    e.getOne().returnNeighbours(mes, meshAndNoise);
 	    m.add(mes);
 	    noise.remove(mes);
@@ -152,30 +155,31 @@ public final class Algos {
      * the list) and which have the same orientation. It thus adds it to the
      * mesh.
      * 
-     * @param wallList
+     * @param surfaceList
      *            the list of meshes to complete with noise
      * @param noise
      *            the whole noise
      * @param largeAngleNormalErrorFactor
      *            the error on the orientation
      */
-    public static void blockTreatOrientedNoise(final List<TriangleMesh> wallList,
-	    final TriangleMesh noise, final double largeAngleNormalErrorFactor) {
+    //FIXME : I changed this, but there is maybe debug or test to make...
+    public static void blockTreatOrientedNoise(final List<Surface> surfaceList,
+	    final Mesh noise, final double largeAngleNormalErrorFactor) {
 
-	final List<TriangleMesh> list = new ArrayList<TriangleMesh>();
+	final List<Surface> list = new ArrayList<Surface>();
 
-	for (final TriangleMesh e : wallList) {
-	    final TriangleMesh meshAndNoise = new TriangleMesh(e);
-	    meshAndNoise.addAll(noise.orientedAs(e.averageNormal(),
+	for (final Surface e : surfaceList) {
+	    final Mesh meshAndNoise = new Mesh(e.getMesh());
+	    meshAndNoise.addAll(noise.orientedAs(e.getMesh().averageNormal(),
 		    largeAngleNormalErrorFactor));
-	    final TriangleMesh mes = new TriangleMesh();
-	    e.getOne().returnNeighbours(mes, meshAndNoise);
-	    list.add(mes);
+	    final Mesh mes = new Mesh();
+	    e.getMesh().getOne().returnNeighbours(mes, meshAndNoise);
+	    list.add(new Surface(mes));
 
 	    noise.remove(mes);
 	}
 
-	wallList.clear();
-	wallList.addAll(list);
+	surfaceList.clear();
+	surfaceList.addAll(list);
     }
 }

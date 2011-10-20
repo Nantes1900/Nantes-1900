@@ -1,6 +1,6 @@
 package fr.nantes1900.models.basis;
 
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.models.middle.Polygone;
 import fr.nantes1900.models.middle.Polygone.BadFormedPolylineException;
 
@@ -208,7 +208,7 @@ public class Edge {
      * @return true if this edge contains only one triangle belonging to m,
      *         false otherwise.
      */
-    public final boolean isBound(final TriangleMesh m) {
+    public final boolean isBound(final Mesh m) {
 	int counter = 0;
 	for (final Triangle triangle : this.triangles) {
 	    if (m.contains(triangle)) {

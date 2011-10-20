@@ -4,7 +4,7 @@ import fr.nantes1900.models.MockupPart;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -72,7 +72,7 @@ public class ParserSTL {
      *             if the file is bad formed or if there is an error during the
      *             reading
      */
-    public final TriangleMesh read() throws IOException {
+    public final Mesh read() throws IOException {
 	final Scanner scanner = new Scanner(new FileReader(this.fileName));
 
 	// Reading the file
@@ -93,7 +93,7 @@ public class ParserSTL {
 		} else {
 		    triangleMap = this.readSTLB();
 		}
-		return new TriangleMesh(triangleMap);
+		return new Mesh(triangleMap);
 	    }
 	    return null;
 	} finally {

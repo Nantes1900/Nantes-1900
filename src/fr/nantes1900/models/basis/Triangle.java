@@ -1,6 +1,6 @@
 package fr.nantes1900.models.basis;
 
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -386,7 +386,7 @@ public class Triangle {
      * @param container
      *            the mesh which must contain all the triangles
      */
-    public final void returnNeighbours(final TriangleMesh ret, final TriangleMesh container) {
+    public final void returnNeighbours(final Mesh ret, final Mesh container) {
 
 	// Add this triangle.
 	ret.add(this);

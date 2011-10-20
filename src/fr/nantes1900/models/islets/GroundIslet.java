@@ -1,6 +1,6 @@
 package fr.nantes1900.models.islets;
 
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
 
 /**
  * Implements a ground as a mesh with an associated String attribute.
@@ -12,7 +12,7 @@ public class GroundIslet extends AbstractIslet {
     /**
      * The mesh describing the surface.
      */
-    private TriangleMesh triangleMesh = new TriangleMesh();
+    private Mesh mesh = new Mesh();
 
     /**
      * Constructor. Builds the Ground with an attribute as a String.
@@ -20,7 +20,7 @@ public class GroundIslet extends AbstractIslet {
      * @param type
      *            the attribute
      */
-    public GroundIslet(TriangleMesh m) {
+    public GroundIslet(Mesh m) {
 	super(m);
     }
 
@@ -30,10 +30,10 @@ public class GroundIslet extends AbstractIslet {
      * @param m
      *            the mesh to convert
      */
-    public final void buildFromMesh(final TriangleMesh m) {
-	this.triangleMesh = new TriangleMesh(m);
+    public final void buildFromMesh(final Mesh m) {
+	this.mesh = new Mesh(m);
 
-	this.decimate(this.triangleMesh);
+	this.decimate(this.mesh);
     }
 
     /**
@@ -42,7 +42,7 @@ public class GroundIslet extends AbstractIslet {
      * @param ground
      *            the ground to decimate as a mesh
      */
-    public void decimate(final TriangleMesh ground) {
+    public void decimate(final Mesh ground) {
 	// TODO : implement this method.
     }
 
@@ -51,8 +51,8 @@ public class GroundIslet extends AbstractIslet {
      * 
      * @return the ground as a mesh
      */
-    public final TriangleMesh getMesh() {
-	return this.triangleMesh;
+    public final Mesh getMesh() {
+	return this.mesh;
     }
 
     /**
@@ -62,7 +62,7 @@ public class GroundIslet extends AbstractIslet {
      *            the name of the file to write in
      */
     public final void writeSTL(final String fileName) {
-	this.triangleMesh.writeSTL(fileName);
+	this.mesh.writeSTL(fileName);
     }
 
     /**

@@ -3,7 +3,7 @@ package test.fr.nantes1900.utils;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.utils.WriterSTL;
 
@@ -60,7 +60,7 @@ public final class ParserSTLTest extends TestCase {
 	    final Edge e6 = new Edge(p6, p4);
 	    final Triangle t2 = new Triangle(p4, p5, p6, e4, e5, e6, vect2);
 
-	    final TriangleMesh write = new TriangleMesh();
+	    final Mesh write = new Mesh();
 	    write.add(t1);
 	    write.add(t2);
 
@@ -75,7 +75,7 @@ public final class ParserSTLTest extends TestCase {
 	    writerB.write();
 
 	    final ParserSTL parserA = new ParserSTL("WriterTestA.stl");
-	    final TriangleMesh readA = parserA.read();
+	    final Mesh readA = parserA.read();
 	    Assert.assertTrue(readA.size() == 2);
 	    final List<Triangle> readListA = new ArrayList<Triangle>(readA);
 	    Assert.assertTrue(readListA.get(0).equals(t1)
@@ -84,7 +84,7 @@ public final class ParserSTLTest extends TestCase {
 		    || readListA.get(1).equals(t2));
 
 	    final ParserSTL parserB = new ParserSTL("WriterTestB.stl");
-	    final TriangleMesh readB = parserB.read();
+	    final Mesh readB = parserB.read();
 	    Assert.assertTrue(readB.size() == 2);
 	    final List<Triangle> readListB = new ArrayList<Triangle>(readB);
 	    Assert.assertTrue(readListB.get(0).equals(t1)

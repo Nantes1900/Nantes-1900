@@ -4,11 +4,11 @@ import java.util.List;
 
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
 
 public class IndustrialIslet extends AbstractEntialIslet {
 
-    public IndustrialIslet(TriangleMesh m) {
+    public IndustrialIslet(Mesh m) {
 	super(m);
     }
 
@@ -28,9 +28,9 @@ public class IndustrialIslet extends AbstractEntialIslet {
 	int counterIndustrials = 1;
 
 	// Declarations.
-	List<TriangleMesh> buildings;
-	TriangleMesh wholeGround;
-	List<TriangleMesh> groundsMesh;
+	List<Mesh> buildings;
+	Mesh wholeGround;
+	List<Mesh> groundsMesh;
 	Vector3d realNormalToTheGround;
 
 	// realNormalToTheGround = normalGravityOriented;

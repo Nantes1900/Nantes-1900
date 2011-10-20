@@ -4,14 +4,14 @@ import java.io.IOException;
 
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 public abstract class AbstractIslet {
 
-    protected TriangleMesh initialTotalMesh;
+    protected Mesh initialTotalMesh;
 
     /**
      * Change base matrix from the current base to a base which is ground-like
@@ -19,7 +19,9 @@ public abstract class AbstractIslet {
      */
     protected double[][] matrix = new double[MatrixMethod.MATRIX_DIMENSION][MatrixMethod.MATRIX_DIMENSION];
 
-    public AbstractIslet(TriangleMesh m) {
+    protected Vector3d gravityNormal;
+
+    public AbstractIslet(Mesh m) {
 	this.initialTotalMesh = m;
     }
 
@@ -50,12 +52,12 @@ public abstract class AbstractIslet {
      * @param normalGround
      *            the vector to build the matrix.
      */
-    protected void createChangeBaseMatrix(final Vector3d normalGround) {
+    protected void createChangeBaseMatrix() {
 
 	try {
 	    // Base change
-	    this.matrix = MatrixMethod.createOrthoBase(normalGround);
-	    MatrixMethod.changeBase(normalGround, this.matrix);
+	    this.matrix = MatrixMethod.createOrthoBase(this.gravityNormal);
+	    MatrixMethod.changeBase(this.gravityNormal, this.matrix);
 
 	} catch (final SingularMatrixException e) {
 	    System.out.println("Error : the matrix is badly formed !");
@@ -63,22 +65,8 @@ public abstract class AbstractIslet {
 	}
     }
 
-    /**
-     * Reads the ground file and returns the average normal as ground normal.
-     * 
-     * @param fileName
-     *            the name of the ground file
-     * @return the normal to the ground as Vector3d
-     */
-    protected Vector3d extractGroundNormal(final String fileName) {
-
-	this.parseFile(fileName);
-
-	// Extract of the normal of the ground
-	return this.initialTotalMesh.averageNormal();
-    }
-
     protected void changeBase() {
-	// TODO
+	// TODO : if there is no matrix, or no mesh...
+	this.initialTotalMesh.changeBase(this.matrix);
     }
 }
