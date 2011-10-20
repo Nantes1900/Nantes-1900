@@ -1,7 +1,7 @@
 package fr.nantes1900.utils;
 
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.Mesh;
+import fr.nantes1900.models.middle.TriangleMesh;
 import fr.nantes1900.models.middle.Surface;
 
 import java.util.ArrayList;
@@ -11,6 +11,7 @@ import java.util.Set;
 
 /**
  * Contains some algorithms used in the other classes.
+ * 
  * @author Daniel Lefevre
  */
 public final class Algos {
@@ -27,24 +28,25 @@ public final class Algos {
      * a new mesh into the arraylist. Thus, it takes another triangle and make
      * again the same operation until there is no more triangle. This method
      * does not destroy the mesh in parameter.
+     * 
      * @param m
      *            the mesh to divide
      * @return an array of the blocks-meshes
      */
-    public static List<Mesh> blockExtract(final Mesh m) {
-        final Set<Mesh> thingsList = new HashSet<Mesh>();
-        final Mesh mesh = new Mesh(m);
+    public static List<TriangleMesh> blockExtract(final TriangleMesh m) {
+	final Set<TriangleMesh> thingsList = new HashSet<TriangleMesh>();
+	final TriangleMesh triangleMesh = new TriangleMesh(m);
 
-        while (!mesh.isEmpty()) {
+	while (!triangleMesh.isEmpty()) {
 
-            final Mesh e = new Mesh();
-            mesh.getOne().returnNeighbours(e, mesh);
-            mesh.remove(e);
-            thingsList.add(e);
+	    final TriangleMesh e = new TriangleMesh();
+	    triangleMesh.getOne().returnNeighbours(e, triangleMesh);
+	    triangleMesh.remove(e);
+	    thingsList.add(e);
 
-        }
+	}
 
-        return new ArrayList<Mesh>(thingsList);
+	return new ArrayList<TriangleMesh>(thingsList);
     }
 
     /**
@@ -54,60 +56,62 @@ public final class Algos {
      * them its neighbours, and puts it in a new mesh into the arraylist. Then
      * it takes another triangle and make again the same operation until there
      * is no more triangle. This method does not destroy the mesh in parameter.
+     * 
      * @param m
      *            the mesh to divide
      * @param angleNormalErrorFactor
      *            the error on the orientation
      * @return an array of the blocks-meshs
      */
-    public static List<Mesh> blockOrientedExtract(final Mesh m,
-            final double angleNormalErrorFactor) {
+    public static List<TriangleMesh> blockOrientedExtract(final TriangleMesh m,
+	    final double angleNormalErrorFactor) {
 
-        final List<Mesh> thingsList = new ArrayList<Mesh>();
-        final List<Mesh> meshList = Algos.blockExtract(m);
+	final List<TriangleMesh> thingsList = new ArrayList<TriangleMesh>();
+	final List<TriangleMesh> meshList = Algos.blockExtract(m);
 
-        for (final Mesh mesh : meshList) {
-            while (!mesh.isEmpty()) {
-                final Mesh e = new Mesh();
-                final Triangle tri = mesh.getOne();
+	for (final TriangleMesh triangleMesh : meshList) {
+	    while (!triangleMesh.isEmpty()) {
+		final TriangleMesh e = new TriangleMesh();
+		final Triangle tri = triangleMesh.getOne();
 
-                final Mesh oriented = mesh.orientedAs(tri.getNormal(),
-                        angleNormalErrorFactor);
+		final TriangleMesh oriented = triangleMesh.orientedAs(tri.getNormal(),
+			angleNormalErrorFactor);
 
-                tri.returnNeighbours(e, oriented);
+		tri.returnNeighbours(e, oriented);
 
-                mesh.remove(e);
-                thingsList.add(e);
-            }
-        }
+		triangleMesh.remove(e);
+		thingsList.add(e);
+	    }
+	}
 
-        return thingsList;
+	return thingsList;
     }
 
     /**
      * Treats a list of mesh to add the noise which is neighbour of the mesh.
      * This method tries to find a block of noise which completes the mesh (of
      * the list). It thus adds it to the mesh.
+     * 
      * @param list
      *            the list of meshes to complete with noise
      * @param noise
      *            the whole noise
      */
-    public static void blockTreatNoise(final List<Mesh> list, final Mesh noise) {
+    public static void blockTreatNoise(final List<TriangleMesh> list, final TriangleMesh noise) {
 
-        final List<Mesh> m = new ArrayList<Mesh>();
+	final List<TriangleMesh> m = new ArrayList<TriangleMesh>();
 
-        for (final Mesh e : list) {
-            final Mesh meshAndNoise = new Mesh(e);
-            meshAndNoise.addAll(noise);
-            final Mesh mes = new Mesh();
-            e.getOne().returnNeighbours(mes, meshAndNoise);
-            m.add(mes);
-            noise.remove(mes);
-        }
+	for (final TriangleMesh e : list) {
+	    final TriangleMesh meshAndNoise = new TriangleMesh(e);
+	    meshAndNoise.addAll(noise);
+	    final TriangleMesh mes = new TriangleMesh();
+	    e.getOne().returnNeighbours(mes, meshAndNoise);
+	    m.add(mes);
+	    noise.remove(mes);
+	}
 
-        list.clear();
-        list.addAll(m);
+	list.clear();
+	list.addAll(m);
     }
 
     /**
@@ -115,6 +119,7 @@ public final class Algos {
      * This method tries to find a block of noise which completes the mesh (of
      * the list) and which is contained between two planes parallel to the mesh.
      * It thus adds it to the mesh.
+     * 
      * @param list
      *            the list of meshes to complete with noise
      * @param noise
@@ -122,23 +127,23 @@ public final class Algos {
      * @param errorPlanes
      *            the distance between the two planes
      */
-    public static void blockTreatPlanedNoise(final List<Mesh> list,
-            final Mesh noise, final double errorPlanes) {
+    public static void blockTreatPlanedNoise(final List<TriangleMesh> list,
+	    final TriangleMesh noise, final double errorPlanes) {
 
-        final List<Mesh> m = new ArrayList<Mesh>();
+	final List<TriangleMesh> m = new ArrayList<TriangleMesh>();
 
-        for (final Mesh e : list) {
-            final Mesh meshAndNoise = new Mesh(e);
-            meshAndNoise.addAll(noise.inPlanes(e.averageNormal(),
-                    e.getCentroid(), errorPlanes));
-            final Mesh mes = new Mesh();
-            e.getOne().returnNeighbours(mes, meshAndNoise);
-            m.add(mes);
-            noise.remove(mes);
-        }
+	for (final TriangleMesh e : list) {
+	    final TriangleMesh meshAndNoise = new TriangleMesh(e);
+	    meshAndNoise.addAll(noise.inPlanes(e.averageNormal(),
+		    e.getCentroid(), errorPlanes));
+	    final TriangleMesh mes = new TriangleMesh();
+	    e.getOne().returnNeighbours(mes, meshAndNoise);
+	    m.add(mes);
+	    noise.remove(mes);
+	}
 
-        list.clear();
-        list.addAll(m);
+	list.clear();
+	list.addAll(m);
     }
 
     /**
@@ -146,6 +151,7 @@ public final class Algos {
      * This method tries to find a block of noise which completes the mesh (of
      * the list) and which have the same orientation. It thus adds it to the
      * mesh.
+     * 
      * @param wallList
      *            the list of meshes to complete with noise
      * @param noise
@@ -153,23 +159,23 @@ public final class Algos {
      * @param largeAngleNormalErrorFactor
      *            the error on the orientation
      */
-    public static void blockTreatOrientedNoise(final List<Mesh> wallList,
-            final Mesh noise, final double largeAngleNormalErrorFactor) {
+    public static void blockTreatOrientedNoise(final List<TriangleMesh> wallList,
+	    final TriangleMesh noise, final double largeAngleNormalErrorFactor) {
 
-        final List<Mesh> list = new ArrayList<Mesh>();
+	final List<TriangleMesh> list = new ArrayList<TriangleMesh>();
 
-        for (final Mesh e : wallList) {
-            final Mesh meshAndNoise = new Mesh(e);
-            meshAndNoise.addAll(noise.orientedAs(e.averageNormal(),
-                    largeAngleNormalErrorFactor));
-            final Mesh mes = new Mesh();
-            e.getOne().returnNeighbours(mes, meshAndNoise);
-            list.add(mes);
+	for (final TriangleMesh e : wallList) {
+	    final TriangleMesh meshAndNoise = new TriangleMesh(e);
+	    meshAndNoise.addAll(noise.orientedAs(e.averageNormal(),
+		    largeAngleNormalErrorFactor));
+	    final TriangleMesh mes = new TriangleMesh();
+	    e.getOne().returnNeighbours(mes, meshAndNoise);
+	    list.add(mes);
 
-            noise.remove(mes);
-        }
+	    noise.remove(mes);
+	}
 
-        wallList.clear();
-        wallList.addAll(list);
+	wallList.clear();
+	wallList.addAll(list);
     }
 }

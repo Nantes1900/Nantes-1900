@@ -2,9 +2,10 @@ package fr.nantes1900.constants;
 
 /**
  * Contains some coefficients used in the algorithms.
+ * 
  * @author Daniel Lefevre
  */
-public class SimplificationWallsRoofs {
+public class SimplificationSurfaces {
 
     /**
      * Minimum angle between two neighbours of a surface. Used in the edges

@@ -2,6 +2,7 @@ package fr.nantes1900.constants;
 
 /**
  * Contains some coefficients used in the algorithms.
+ * 
  * @author Daniel Lefevre
  */
 public final class SeparationGroundBuilding {
@@ -28,8 +29,6 @@ public final class SeparationGroundBuilding {
      * degrees.
      */
     public static double LARGE_ANGLE_GROUND_ERROR = 60;
-
-
 
     /**
      * Private constructor.

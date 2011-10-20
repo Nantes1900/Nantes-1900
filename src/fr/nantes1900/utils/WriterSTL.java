@@ -2,7 +2,7 @@ package fr.nantes1900.utils;
 
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.Mesh;
+import fr.nantes1900.models.middle.TriangleMesh;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -41,7 +41,7 @@ public class WriterSTL {
     /**
      * The mesh to write.
      */
-    private Mesh mesh;
+    private TriangleMesh triangleMesh;
 
     /**
      * The mode of writing. Use the two constants : ASCII_MODE or BINARY_MODE.
@@ -55,7 +55,7 @@ public class WriterSTL {
      *            the name of the file to write in
      */
     public WriterSTL(final String fileNameWrite) {
-        this.fileName = fileNameWrite;
+	this.fileName = fileNameWrite;
     }
 
     /**
@@ -67,8 +67,8 @@ public class WriterSTL {
      *            the mode of the writer
      */
     public WriterSTL(final String fileNameWrite, final int mode) {
-        this.fileName = fileNameWrite;
-        this.writingMode = mode;
+	this.fileName = fileNameWrite;
+	this.writingMode = mode;
     }
 
     /**
@@ -77,7 +77,7 @@ public class WriterSTL {
      * @return the attribute MODE
      */
     public final int getWriteMode() {
-        return this.writingMode;
+	return this.writingMode;
     }
 
     /**
@@ -86,8 +86,8 @@ public class WriterSTL {
      * @param m
      *            the mesh to write
      */
-    public final void setMesh(final Mesh m) {
-        this.mesh = m;
+    public final void setMesh(final TriangleMesh m) {
+	this.triangleMesh = m;
     }
 
     /**
@@ -97,29 +97,29 @@ public class WriterSTL {
      *            the new mode
      */
     public final void setWriteMode(final int mode) {
-        this.writingMode = mode;
+	this.writingMode = mode;
     }
 
     /**
      * Writes a mesh, the format depending on the attribute MODE.
      */
     public final void write() {
-        try {
-            if (this.mesh == null) {
-                throw new NoMeshException();
-            }
+	try {
+	    if (this.triangleMesh == null) {
+		throw new NoMeshException();
+	    }
 
-            if (this.writingMode == WriterSTL.ASCII_MODE) {
-                this.writeSTLA();
-            } else if (this.writingMode == WriterSTL.BINARY_MODE) {
-                this.writeSTLB();
-            }
+	    if (this.writingMode == WriterSTL.ASCII_MODE) {
+		this.writeSTLA();
+	    } else if (this.writingMode == WriterSTL.BINARY_MODE) {
+		this.writeSTLB();
+	    }
 
-        } catch (final IOException e) {
-            e.printStackTrace();
-        } catch (final NoMeshException e) {
-            e.printStackTrace();
-        }
+	} catch (final IOException e) {
+	    e.printStackTrace();
+	} catch (final NoMeshException e) {
+	    e.printStackTrace();
+	}
     }
 
     /**
@@ -131,28 +131,27 @@ public class WriterSTL {
      *            The triangle to write.
      */
     private static void writeASCIITriangle(final BufferedWriter writer,
-        final Triangle triangle) {
-        try {
-            // Write facet normal : to begin a triangle with writing its normal.
-            String s1 = "\nfacet normal";
+	    final Triangle triangle) {
+	try {
+	    // Write facet normal : to begin a triangle with writing its normal.
+	    String s1 = "\nfacet normal";
 
-            s1 +=
-                " " + triangle.getNormal().x + " " + triangle.getNormal().y
-                    + " " + triangle.getNormal().z;
+	    s1 += " " + triangle.getNormal().x + " " + triangle.getNormal().y
+		    + " " + triangle.getNormal().z;
 
-            // Write outer loop : to begin to write the three points.
-            writer.write(s1 + "\nouter loop");
-            // Write the three points.
-            for (final Point p : triangle.getPoints()) {
-                writer.write("\nvertex" + " " + p.getX() + " " + p.getY() + " "
-                    + p.getZ());
-            }
+	    // Write outer loop : to begin to write the three points.
+	    writer.write(s1 + "\nouter loop");
+	    // Write the three points.
+	    for (final Point p : triangle.getPoints()) {
+		writer.write("\nvertex" + " " + p.getX() + " " + p.getY() + " "
+			+ p.getZ());
+	    }
 
-            // Write the end of the facet.
-            writer.write("\nendloop\nendfacet");
-        } catch (final java.io.IOException e) {
-            e.printStackTrace();
-        }
+	    // Write the end of the facet.
+	    writer.write("\nendloop\nendfacet");
+	} catch (final java.io.IOException e) {
+	    e.printStackTrace();
+	}
     }
 
     /**
@@ -166,27 +165,27 @@ public class WriterSTL {
      *             if the writer throws an error
      */
     private static void writeBinaryTriangle(final OutputStream writer,
-        final Triangle triangle) throws IOException {
+	    final Triangle triangle) throws IOException {
 
-        // Write first the normal.
-        WriterSTL.writeInGoodOrder(writer, triangle.getNormal().getX());
-        WriterSTL.writeInGoodOrder(writer, triangle.getNormal().getY());
-        WriterSTL.writeInGoodOrder(writer, triangle.getNormal().getZ());
+	// Write first the normal.
+	WriterSTL.writeInGoodOrder(writer, triangle.getNormal().getX());
+	WriterSTL.writeInGoodOrder(writer, triangle.getNormal().getY());
+	WriterSTL.writeInGoodOrder(writer, triangle.getNormal().getZ());
 
-        // And the three points after.
-        WriterSTL.writeInGoodOrder(writer, triangle.getP1().getX());
-        WriterSTL.writeInGoodOrder(writer, triangle.getP1().getY());
-        WriterSTL.writeInGoodOrder(writer, triangle.getP1().getZ());
+	// And the three points after.
+	WriterSTL.writeInGoodOrder(writer, triangle.getP1().getX());
+	WriterSTL.writeInGoodOrder(writer, triangle.getP1().getY());
+	WriterSTL.writeInGoodOrder(writer, triangle.getP1().getZ());
 
-        WriterSTL.writeInGoodOrder(writer, triangle.getP2().getX());
-        WriterSTL.writeInGoodOrder(writer, triangle.getP2().getY());
-        WriterSTL.writeInGoodOrder(writer, triangle.getP2().getZ());
+	WriterSTL.writeInGoodOrder(writer, triangle.getP2().getX());
+	WriterSTL.writeInGoodOrder(writer, triangle.getP2().getY());
+	WriterSTL.writeInGoodOrder(writer, triangle.getP2().getZ());
 
-        WriterSTL.writeInGoodOrder(writer, triangle.getP3().getX());
-        WriterSTL.writeInGoodOrder(writer, triangle.getP3().getY());
-        WriterSTL.writeInGoodOrder(writer, triangle.getP3().getZ());
+	WriterSTL.writeInGoodOrder(writer, triangle.getP3().getX());
+	WriterSTL.writeInGoodOrder(writer, triangle.getP3().getY());
+	WriterSTL.writeInGoodOrder(writer, triangle.getP3().getZ());
 
-        writer.write(new byte[2]);
+	writer.write(new byte[2]);
     }
 
     /**
@@ -200,15 +199,15 @@ public class WriterSTL {
      *             if the writer throws an error
      */
     private static void writeInGoodOrder(final OutputStream writer,
-        final double a) throws IOException {
+	    final double a) throws IOException {
 
-        // Write the double, but must before order it in the LITTLE_ENDIAN
-        // format.
-        final ByteBuffer bBuf = ByteBuffer.allocate(Float.SIZE);
-        bBuf.order(ByteOrder.LITTLE_ENDIAN);
-        bBuf.putFloat((float) a);
+	// Write the double, but must before order it in the LITTLE_ENDIAN
+	// format.
+	final ByteBuffer bBuf = ByteBuffer.allocate(Float.SIZE);
+	bBuf.order(ByteOrder.LITTLE_ENDIAN);
+	bBuf.putFloat((float) a);
 
-        writer.write(bBuf.array(), 0, Float.SIZE / Byte.SIZE);
+	writer.write(bBuf.array(), 0, Float.SIZE / Byte.SIZE);
     }
 
     /**
@@ -218,27 +217,27 @@ public class WriterSTL {
      *             if there is a problem in the opening or the closing operation
      */
     private void writeSTLA() throws IOException {
-        BufferedWriter writer = null;
-        try {
+	BufferedWriter writer = null;
+	try {
 
-            // Writes the header of the file : solid.
-            writer = new BufferedWriter(new FileWriter(this.fileName));
-            writer.write("solid");
-            for (final Triangle f : this.mesh) {
-                WriterSTL.writeASCIITriangle(writer, f);
-            }
+	    // Writes the header of the file : solid.
+	    writer = new BufferedWriter(new FileWriter(this.fileName));
+	    writer.write("solid");
+	    for (final Triangle f : this.triangleMesh) {
+		WriterSTL.writeASCIITriangle(writer, f);
+	    }
 
-            // Writes the end of the file : endsolid.
-            writer.write("\nendsolid");
+	    // Writes the end of the file : endsolid.
+	    writer.write("\nendsolid");
 
-            // Finishes to write the last datas before closing the writer.
-            writer.flush();
+	    // Finishes to write the last datas before closing the writer.
+	    writer.flush();
 
-        } finally {
-            if (writer != null) {
-                writer.close();
-            }
-        }
+	} finally {
+	    if (writer != null) {
+		writer.close();
+	    }
+	}
 
     }
 
@@ -249,35 +248,35 @@ public class WriterSTL {
      *             if there is a problem in the opening of the closing operation
      */
     private void writeSTLB() throws IOException {
-        BufferedOutputStream stream = null;
-        try {
-            stream =
-                new BufferedOutputStream(new FileOutputStream(this.fileName));
+	BufferedOutputStream stream = null;
+	try {
+	    stream = new BufferedOutputStream(new FileOutputStream(
+		    this.fileName));
 
-            // Writes a 80-byte long header. Possibility to write the name of
-            // the author.
-            final int headerSize = 80;
-            final byte[] header = new byte[headerSize];
-            stream.write(header);
+	    // Writes a 80-byte long header. Possibility to write the name of
+	    // the author.
+	    final int headerSize = 80;
+	    final byte[] header = new byte[headerSize];
+	    stream.write(header);
 
-            // Writes the number of triangles : must order the Int in the
-            // LITTLE_ENDIAN format.
-            final ByteBuffer bBuf = ByteBuffer.allocate(Integer.SIZE);
-            bBuf.order(ByteOrder.LITTLE_ENDIAN);
-            bBuf.putInt(this.mesh.size());
-            stream.write(bBuf.array(), 0, Integer.SIZE / Byte.SIZE);
+	    // Writes the number of triangles : must order the Int in the
+	    // LITTLE_ENDIAN format.
+	    final ByteBuffer bBuf = ByteBuffer.allocate(Integer.SIZE);
+	    bBuf.order(ByteOrder.LITTLE_ENDIAN);
+	    bBuf.putInt(this.triangleMesh.size());
+	    stream.write(bBuf.array(), 0, Integer.SIZE / Byte.SIZE);
 
-            // Writes every triangle.
-            for (final Triangle t : this.mesh) {
-                WriterSTL.writeBinaryTriangle(stream, t);
-            }
+	    // Writes every triangle.
+	    for (final Triangle t : this.triangleMesh) {
+		WriterSTL.writeBinaryTriangle(stream, t);
+	    }
 
-            // Finishes to write the last datas before closing the writer.
-            stream.flush();
-            stream.close();
-        } catch (final FileNotFoundException e) {
-            e.printStackTrace();
-        }
+	    // Finishes to write the last datas before closing the writer.
+	    stream.flush();
+	    stream.close();
+	} catch (final FileNotFoundException e) {
+	    e.printStackTrace();
+	}
     }
 
     /**
@@ -287,15 +286,15 @@ public class WriterSTL {
      */
     public final class NoMeshException extends Exception {
 
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
+	/**
+	 * Version attribute.
+	 */
+	private static final long serialVersionUID = 1L;
 
-        /**
-         * Private constructor.
-         */
-        public NoMeshException() {
-        }
+	/**
+	 * Private constructor.
+	 */
+	public NoMeshException() {
+	}
     }
 }

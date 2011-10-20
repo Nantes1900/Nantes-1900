@@ -19,7 +19,7 @@ import javax.vecmath.Vector3d;
  * 
  * @author Daniel Lefevre, Eric Berthe, Valentin Roger, Elsa Arroud-Vignod
  */
-public class Mesh extends HashSet<Triangle> {
+public class TriangleMesh extends HashSet<Triangle> {
 
     /**
      * Static integer to create new ID objects.
@@ -39,9 +39,9 @@ public class Mesh extends HashSet<Triangle> {
     /**
      * Void constructor.
      */
-    public Mesh() {
-        super();
-        this.iD = ++Mesh.currentID;
+    public TriangleMesh() {
+	super();
+	this.iD = ++TriangleMesh.currentID;
     }
 
     /**
@@ -50,9 +50,9 @@ public class Mesh extends HashSet<Triangle> {
      * @param c
      *            the collection
      */
-    public Mesh(final Collection<? extends Triangle> c) {
-        super(c);
-        this.iD = ++Mesh.currentID;
+    public TriangleMesh(final Collection<? extends Triangle> c) {
+	super(c);
+	this.iD = ++TriangleMesh.currentID;
     }
 
     /**
@@ -61,14 +61,14 @@ public class Mesh extends HashSet<Triangle> {
      * @return average The average Vector3d normal.
      */
     public final Vector3d averageNormal() {
-        final int n = this.size();
-        final Vector3d average = new Vector3d();
-        for (final Triangle face : this) {
-            average.add(face.getNormal());
-        }
-        average.scale(1 / (double) n);
+	final int n = this.size();
+	final Vector3d average = new Vector3d();
+	for (final Triangle face : this) {
+	    average.add(face.getNormal());
+	}
+	average.scale(1 / (double) n);
 
-        return average;
+	return average;
     }
 
     /**
@@ -78,26 +78,26 @@ public class Mesh extends HashSet<Triangle> {
      *            the change base matrix
      */
     public final void changeBase(final double[][] matrix) {
-        if (matrix == null) {
-            throw new InvalidParameterException();
-        }
+	if (matrix == null) {
+	    throw new InvalidParameterException();
+	}
 
-        final Set<Point> set = new HashSet<Point>();
-        final Set<Triangle> mesh = new HashSet<Triangle>();
+	final Set<Point> set = new HashSet<Point>();
+	final Set<Triangle> mesh = new HashSet<Triangle>();
 
-        // Make a list of all the points, and base change them.
-        for (final Triangle f : this) {
-            set.addAll(f.getPoints());
-            MatrixMethod.changeBase(f.getNormal(), matrix);
-            mesh.add(f);
-        }
+	// Make a list of all the points, and base change them.
+	for (final Triangle f : this) {
+	    set.addAll(f.getPoints());
+	    MatrixMethod.changeBase(f.getNormal(), matrix);
+	    mesh.add(f);
+	}
 
-        for (final Point p : set) {
-            p.changeBase(matrix);
-        }
+	for (final Point p : set) {
+	    p.changeBase(matrix);
+	}
 
-        this.clear();
-        this.addAll(mesh);
+	this.clear();
+	this.addAll(mesh);
     }
 
     /**
@@ -109,12 +109,12 @@ public class Mesh extends HashSet<Triangle> {
      *         triangle own it.
      */
     public final boolean contains(final Edge e) {
-        for (final Triangle t : this) {
-            if (t.contains(e)) {
-                return true;
-            }
-        }
-        return false;
+	for (final Triangle t : this) {
+	    if (t.contains(e)) {
+		return true;
+	    }
+	}
+	return false;
     }
 
     /**
@@ -126,12 +126,12 @@ public class Mesh extends HashSet<Triangle> {
      * @return the first triangle found which is under zMax
      */
     public final Triangle faceUnderZ(final double zMax) {
-        for (final Triangle t : this) {
-            if (t.zMax() < zMax) {
-                return t;
-            }
-        }
-        return null;
+	for (final Triangle t : this) {
+	    if (t.zMax() < zMax) {
+		return t;
+	    }
+	}
+	return null;
     }
 
     /**
@@ -140,7 +140,7 @@ public class Mesh extends HashSet<Triangle> {
      * @return this point
      */
     public final Point getCentroid() {
-        return new Point(this.xAverage(), this.yAverage(), this.zAverage());
+	return new Point(this.xAverage(), this.yAverage(), this.zAverage());
     }
 
     /**
@@ -149,7 +149,7 @@ public class Mesh extends HashSet<Triangle> {
      * @return the ID of the object
      */
     public final int getID() {
-        return this.iD;
+	return this.iD;
     }
 
     /**
@@ -160,7 +160,7 @@ public class Mesh extends HashSet<Triangle> {
      * @return one triangle
      */
     public final Triangle getOne() {
-        return this.iterator().next();
+	return this.iterator().next();
     }
 
     /**
@@ -176,17 +176,17 @@ public class Mesh extends HashSet<Triangle> {
      *            the distance between the two planes and p
      * @return the triangles which are between those two planes
      */
-    public final Mesh inPlanes(final Vector3d vect, final Point p,
-        final double error) {
-        final Mesh ret = new Mesh();
+    public final TriangleMesh inPlanes(final Vector3d vect, final Point p,
+	    final double error) {
+	final TriangleMesh ret = new TriangleMesh();
 
-        for (final Triangle triangle : this) {
-            if (triangle.isInPlanes(vect, p, error)) {
-                ret.add(triangle);
-            }
-        }
+	for (final Triangle triangle : this) {
+	    if (triangle.isInPlanes(vect, p, error)) {
+		ret.add(triangle);
+	    }
+	}
 
-        return ret;
+	return ret;
     }
 
     /**
@@ -202,59 +202,59 @@ public class Mesh extends HashSet<Triangle> {
      * @throws SingularMatrixException
      *             if the planes are not well oriented
      */
-    public final Point intersection(final Mesh m2, final Mesh m3)
-        throws SingularMatrixException {
+    public final Point intersection(final TriangleMesh m2, final TriangleMesh m3)
+	    throws SingularMatrixException {
 
-        final Vector3d vect1 = this.averageNormal();
-        final Vector3d vect2 = m2.averageNormal();
-        final Vector3d vect3 = m3.averageNormal();
+	final Vector3d vect1 = this.averageNormal();
+	final Vector3d vect2 = m2.averageNormal();
+	final Vector3d vect3 = m3.averageNormal();
 
-        // Creates three planes from the three meshes.
-        final double a1 = vect1.x;
-        final double b1 = vect1.y;
-        final double c1 = vect1.z;
-        final double d1 =
-            -this.xAverage() * a1 - this.yAverage() * b1 - this.zAverage() * c1;
+	// Creates three planes from the three meshes.
+	final double a1 = vect1.x;
+	final double b1 = vect1.y;
+	final double c1 = vect1.z;
+	final double d1 = -this.xAverage() * a1 - this.yAverage() * b1
+		- this.zAverage() * c1;
 
-        final double a2 = vect2.x;
-        final double b2 = vect2.y;
-        final double c2 = vect2.z;
-        final double d2 =
-            -m2.xAverage() * a2 - m2.yAverage() * b2 - m2.zAverage() * c2;
+	final double a2 = vect2.x;
+	final double b2 = vect2.y;
+	final double c2 = vect2.z;
+	final double d2 = -m2.xAverage() * a2 - m2.yAverage() * b2
+		- m2.zAverage() * c2;
 
-        final double a3 = vect3.x;
-        final double b3 = vect3.y;
-        final double c3 = vect3.z;
-        final double d3 =
-            -m3.xAverage() * a3 - m3.yAverage() * b3 - m3.zAverage() * c3;
+	final double a3 = vect3.x;
+	final double b3 = vect3.y;
+	final double c3 = vect3.z;
+	final double d3 = -m3.xAverage() * a3 - m3.yAverage() * b3
+		- m3.zAverage() * c3;
 
-        // Inverses the matrix to find the intersection point.
-        final double[][] matrix =
-            MatrixMethod.createOrthoBase(vect1, vect2, vect3);
-        final double[][] matrixInv = MatrixMethod.getInversMatrix(matrix);
+	// Inverses the matrix to find the intersection point.
+	final double[][] matrix = MatrixMethod.createOrthoBase(vect1, vect2,
+		vect3);
+	final double[][] matrixInv = MatrixMethod.getInversMatrix(matrix);
 
-        final double[] ds = {-d1, -d2, -d3 };
-        final double[] p = MatrixMethod.changeBase(ds, matrixInv);
-        return new Point(p[0], p[1], p[2]);
+	final double[] ds = { -d1, -d2, -d3 };
+	final double[] p = MatrixMethod.changeBase(ds, matrixInv);
+	return new Point(p[0], p[1], p[2]);
     }
 
     /**
      * Checks if two meshes share an edge.
      * 
-     * @param mesh
+     * @param triangleMesh
      *            the mesh to compare with
      * @return true if one edge at least is shared between this and mesh, and
      *         false otherwise.
      */
-    public final boolean isNeighbour(final Mesh mesh) {
-        if (mesh != this) {
-            for (final Edge e : this.returnUnsortedBounds().getEdgeList()) {
-                if (mesh.contains(e)) {
-                    return true;
-                }
-            }
-        }
-        return false;
+    public final boolean isNeighbour(final TriangleMesh triangleMesh) {
+	if (triangleMesh != this) {
+	    for (final Edge e : this.returnUnsortedBounds().getEdgeList()) {
+		if (triangleMesh.contains(e)) {
+		    return true;
+		}
+	    }
+	}
+	return false;
     }
 
     /**
@@ -267,43 +267,43 @@ public class Mesh extends HashSet<Triangle> {
      *            the error in degrees
      * @return the mesh composed of all the triangles
      */
-    public final boolean isOrientedAs(final Mesh w2,
-        final double littleAngleNormalErrorFactor) {
+    public final boolean isOrientedAs(final TriangleMesh w2,
+	    final double littleAngleNormalErrorFactor) {
 
-        final double convertDegreesToRadian = 180 / Math.PI;
-        return this.averageNormal().angle(w2.averageNormal()) < littleAngleNormalErrorFactor
-            / convertDegreesToRadian;
+	final double convertDegreesToRadian = 180 / Math.PI;
+	return this.averageNormal().angle(w2.averageNormal()) < littleAngleNormalErrorFactor
+		/ convertDegreesToRadian;
     }
 
     /**
      * Returns the minimal distance between two meshes. Searches for all the
      * points the one which are the closest and returns their distance.
      * 
-     * @param mesh
+     * @param triangleMesh
      *            the other mesh
      * @return the minimal distance between those two meshes
      */
-    public final double minimalDistance(final Mesh mesh) {
+    public final double minimalDistance(final TriangleMesh triangleMesh) {
 
-        final Set<Point> hash1 = new HashSet<Point>();
-        final Polyline poly1 = this.returnUnsortedBounds();
-        hash1.addAll(poly1.getPointList());
+	final Set<Point> hash1 = new HashSet<Point>();
+	final Polygone poly1 = this.returnUnsortedBounds();
+	hash1.addAll(poly1.getPointList());
 
-        final Set<Point> hash2 = new HashSet<Point>();
-        final Polyline poly2 = mesh.returnUnsortedBounds();
-        hash2.addAll(poly2.getPointList());
+	final Set<Point> hash2 = new HashSet<Point>();
+	final Polygone poly2 = triangleMesh.returnUnsortedBounds();
+	hash2.addAll(poly2.getPointList());
 
-        double minDistance = Double.POSITIVE_INFINITY;
+	double minDistance = Double.POSITIVE_INFINITY;
 
-        for (final Point p1 : hash1) {
-            for (final Point p2 : hash2) {
-                if (p1.distance(p2) < minDistance) {
-                    minDistance = p1.distance(p2);
-                }
-            }
-        }
+	for (final Point p1 : hash1) {
+	    for (final Point p2 : hash2) {
+		if (p1.distance(p2) < minDistance) {
+		    minDistance = p1.distance(p2);
+		}
+	    }
+	}
 
-        return minDistance;
+	return minDistance;
     }
 
     /**
@@ -316,14 +316,14 @@ public class Mesh extends HashSet<Triangle> {
      *            the orientation error in degrees
      * @return a mesh containing all those triangles
      */
-    public final Mesh orientedAs(final Vector3d normal, final double error) {
-        final Mesh ret = new Mesh();
-        for (final Triangle f : this) {
-            if (f.angularTolerance(normal, error)) {
-                ret.add(f);
-            }
-        }
-        return ret;
+    public final TriangleMesh orientedAs(final Vector3d normal, final double error) {
+	final TriangleMesh ret = new TriangleMesh();
+	for (final Triangle f : this) {
+	    if (f.angularTolerance(normal, error)) {
+		ret.add(f);
+	    }
+	}
+	return ret;
     }
 
     /**
@@ -337,14 +337,14 @@ public class Mesh extends HashSet<Triangle> {
      *            the orientation error
      * @return the mesh containing all those triangles
      */
-    public final Mesh orientedNormalTo(final Vector3d vect, final double error) {
-        final Mesh ret = new Mesh();
-        for (final Triangle f : this) {
-            if (f.isNormalTo(vect, error)) {
-                ret.add(f);
-            }
-        }
-        return ret;
+    public final TriangleMesh orientedNormalTo(final Vector3d vect, final double error) {
+	final TriangleMesh ret = new TriangleMesh();
+	for (final Triangle f : this) {
+	    if (f.isNormalTo(vect, error)) {
+		ret.add(f);
+	    }
+	}
+	return ret;
     }
 
     /**
@@ -353,8 +353,8 @@ public class Mesh extends HashSet<Triangle> {
      * @param m
      *            the mesh containing the triangles to remove
      */
-    public final void remove(final Mesh m) {
-        this.removeAll(m);
+    public final void remove(final TriangleMesh m) {
+	this.removeAll(m);
     }
 
     /**
@@ -363,19 +363,19 @@ public class Mesh extends HashSet<Triangle> {
      * 
      * @return the polyline containing these edges
      */
-    public final Polyline returnUnsortedBounds() {
-        final Polyline bounds = new Polyline();
+    public final Polygone returnUnsortedBounds() {
+	final Polygone bounds = new Polygone();
 
-        // Select every edges of the mesh.
-        for (final Triangle tri : this) {
-            for (final Edge edge : tri.getEdges()) {
-                if (edge.isBound(this)) {
-                    bounds.add(edge);
-                }
-            }
-        }
+	// Select every edges of the mesh.
+	for (final Triangle tri : this) {
+	    for (final Edge edge : tri.getEdges()) {
+		if (edge.isBound(this)) {
+		    bounds.add(edge);
+		}
+	    }
+	}
 
-        return bounds;
+	return bounds;
     }
 
     /**
@@ -385,9 +385,9 @@ public class Mesh extends HashSet<Triangle> {
      *            the name of the file
      */
     public final void writeSTL(final String fileName) {
-        final WriterSTL writer = new WriterSTL(fileName);
-        writer.setMesh(this);
-        writer.write();
+	final WriterSTL writer = new WriterSTL(fileName);
+	writer.setMesh(this);
+	writer.write();
     }
 
     /**
@@ -397,11 +397,11 @@ public class Mesh extends HashSet<Triangle> {
      * @return the average x-coordinate of all points
      */
     public final double xAverage() {
-        double xAverage = 0;
-        for (final Triangle face : this) {
-            xAverage += face.xAverage();
-        }
-        return xAverage / this.size();
+	double xAverage = 0;
+	for (final Triangle face : this) {
+	    xAverage += face.xAverage();
+	}
+	return xAverage / this.size();
     }
 
     /**
@@ -414,14 +414,14 @@ public class Mesh extends HashSet<Triangle> {
      *            the second bound
      * @return the mesh containing the triangles
      */
-    public final Mesh xBetween(final double m1, final double m2) {
-        final Mesh ens = new Mesh();
-        for (final Triangle t : this) {
-            if (t.xMax() < Math.max(m1, m2) && t.xMin() > Math.min(m1, m2)) {
-                ens.add(t);
-            }
-        }
-        return ens;
+    public final TriangleMesh xBetween(final double m1, final double m2) {
+	final TriangleMesh ens = new TriangleMesh();
+	for (final Triangle t : this) {
+	    if (t.xMax() < Math.max(m1, m2) && t.xMin() > Math.min(m1, m2)) {
+		ens.add(t);
+	    }
+	}
+	return ens;
     }
 
     /**
@@ -430,13 +430,13 @@ public class Mesh extends HashSet<Triangle> {
      * @return the x-maximum of all points of all faces from this mesh
      */
     public final double xMax() {
-        double xMaxi = Double.NEGATIVE_INFINITY;
-        for (final Triangle face : this) {
-            if (face.xMax() > xMaxi) {
-                xMaxi = face.xMax();
-            }
-        }
-        return xMaxi;
+	double xMaxi = Double.NEGATIVE_INFINITY;
+	for (final Triangle face : this) {
+	    if (face.xMax() > xMaxi) {
+		xMaxi = face.xMax();
+	    }
+	}
+	return xMaxi;
     }
 
     /**
@@ -445,13 +445,13 @@ public class Mesh extends HashSet<Triangle> {
      * @return the x-minimum of all points of all faces from this mesh
      */
     public final double xMin() {
-        double xMini = Double.POSITIVE_INFINITY;
-        for (final Triangle face : this) {
-            if (face.xMin() < xMini) {
-                xMini = face.xMin();
-            }
-        }
-        return xMini;
+	double xMini = Double.POSITIVE_INFINITY;
+	for (final Triangle face : this) {
+	    if (face.xMin() < xMini) {
+		xMini = face.xMin();
+	    }
+	}
+	return xMini;
     }
 
     /**
@@ -461,11 +461,11 @@ public class Mesh extends HashSet<Triangle> {
      * @return the average y-coordinate of all points
      */
     public final double yAverage() {
-        double yAverage = 0;
-        for (final Triangle face : this) {
-            yAverage += face.yAverage();
-        }
-        return yAverage / this.size();
+	double yAverage = 0;
+	for (final Triangle face : this) {
+	    yAverage += face.yAverage();
+	}
+	return yAverage / this.size();
     }
 
     /**
@@ -478,14 +478,14 @@ public class Mesh extends HashSet<Triangle> {
      *            the second bound
      * @return the mesh containing the triangles
      */
-    public final Mesh yBetween(final double m1, final double m2) {
-        final Mesh ens = new Mesh();
-        for (final Triangle t : this) {
-            if (t.yMax() < Math.max(m1, m2) && t.yMin() > Math.min(m1, m2)) {
-                ens.add(t);
-            }
-        }
-        return ens;
+    public final TriangleMesh yBetween(final double m1, final double m2) {
+	final TriangleMesh ens = new TriangleMesh();
+	for (final Triangle t : this) {
+	    if (t.yMax() < Math.max(m1, m2) && t.yMin() > Math.min(m1, m2)) {
+		ens.add(t);
+	    }
+	}
+	return ens;
     }
 
     /**
@@ -494,13 +494,13 @@ public class Mesh extends HashSet<Triangle> {
      * @return the y-maximum of all points of all faces from this mesh
      */
     public final double yMax() {
-        double yMaxi = Double.NEGATIVE_INFINITY;
-        for (final Triangle face : this) {
-            if (face.yMax() > yMaxi) {
-                yMaxi = face.yMax();
-            }
-        }
-        return yMaxi;
+	double yMaxi = Double.NEGATIVE_INFINITY;
+	for (final Triangle face : this) {
+	    if (face.yMax() > yMaxi) {
+		yMaxi = face.yMax();
+	    }
+	}
+	return yMaxi;
     }
 
     /**
@@ -509,13 +509,13 @@ public class Mesh extends HashSet<Triangle> {
      * @return the y-minimum of all points of all faces from this mesh
      */
     public final double yMin() {
-        double yMini = Double.POSITIVE_INFINITY;
-        for (final Triangle face : this) {
-            if (face.yMin() < yMini) {
-                yMini = face.yMin();
-            }
-        }
-        return yMini;
+	double yMini = Double.POSITIVE_INFINITY;
+	for (final Triangle face : this) {
+	    if (face.yMin() < yMini) {
+		yMini = face.yMin();
+	    }
+	}
+	return yMini;
     }
 
     /**
@@ -525,11 +525,11 @@ public class Mesh extends HashSet<Triangle> {
      * @return the average z-coordinate of all points
      */
     public final double zAverage() {
-        double zAverage = 0;
-        for (final Triangle face : this) {
-            zAverage += face.zAverage();
-        }
-        return zAverage / this.size();
+	double zAverage = 0;
+	for (final Triangle face : this) {
+	    zAverage += face.zAverage();
+	}
+	return zAverage / this.size();
     }
 
     /**
@@ -542,14 +542,14 @@ public class Mesh extends HashSet<Triangle> {
      *            the second bound
      * @return the mesh containing the triangles
      */
-    public final Mesh zBetween(final double m1, final double m2) {
-        final Mesh ens = new Mesh();
-        for (final Triangle t : this) {
-            if (t.zMax() < Math.max(m1, m2) && t.zMin() > Math.min(m1, m2)) {
-                ens.add(t);
-            }
-        }
-        return ens;
+    public final TriangleMesh zBetween(final double m1, final double m2) {
+	final TriangleMesh ens = new TriangleMesh();
+	for (final Triangle t : this) {
+	    if (t.zMax() < Math.max(m1, m2) && t.zMin() > Math.min(m1, m2)) {
+		ens.add(t);
+	    }
+	}
+	return ens;
     }
 
     /**
@@ -558,13 +558,13 @@ public class Mesh extends HashSet<Triangle> {
      * @return the z-maximum of all points of all faces from this mesh
      */
     public final double zMax() {
-        double zMaxi = Double.NEGATIVE_INFINITY;
-        for (final Triangle face : this) {
-            if (face.zMax() > zMaxi) {
-                zMaxi = face.zMax();
-            }
-        }
-        return zMaxi;
+	double zMaxi = Double.NEGATIVE_INFINITY;
+	for (final Triangle face : this) {
+	    if (face.zMax() > zMaxi) {
+		zMaxi = face.zMax();
+	    }
+	}
+	return zMaxi;
     }
 
     /**
@@ -573,13 +573,13 @@ public class Mesh extends HashSet<Triangle> {
      * @return the z-minimum of all points of all faces from this mesh
      */
     public final double zMin() {
-        double zMini = Double.POSITIVE_INFINITY;
-        for (final Triangle face : this) {
-            if (face.zMin() < zMini) {
-                zMini = face.zMin();
-            }
-        }
-        return zMini;
+	double zMini = Double.POSITIVE_INFINITY;
+	for (final Triangle face : this) {
+	    if (face.zMin() < zMini) {
+		zMini = face.zMin();
+	    }
+	}
+	return zMini;
     }
 
     /**
@@ -588,17 +588,17 @@ public class Mesh extends HashSet<Triangle> {
      * @return the triangle which has the lowest z
      */
     public final Triangle zMinFace() {
-        Triangle t = null;
-        if (this.isEmpty()) {
-            throw new InvalidParameterException();
-        }
-        double zMini = Double.POSITIVE_INFINITY;
-        for (final Triangle face : this) {
-            if (face.zMin() < zMini) {
-                t = face;
-                zMini = face.zMin();
-            }
-        }
-        return t;
+	Triangle t = null;
+	if (this.isEmpty()) {
+	    throw new InvalidParameterException();
+	}
+	double zMini = Double.POSITIVE_INFINITY;
+	for (final Triangle face : this) {
+	    if (face.zMin() < zMini) {
+		t = face;
+		zMini = face.zMin();
+	    }
+	}
+	return t;
     }
 }

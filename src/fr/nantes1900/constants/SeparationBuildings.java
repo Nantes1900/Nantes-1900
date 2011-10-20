@@ -2,6 +2,7 @@ package fr.nantes1900.constants;
 
 /**
  * Contains some coefficients used in the algorithms.
+ * 
  * @author Daniel Lefevre
  */
 public class SeparationBuildings {

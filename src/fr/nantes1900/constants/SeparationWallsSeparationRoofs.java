@@ -2,6 +2,7 @@ package fr.nantes1900.constants;
 
 /**
  * Contains some coefficients used in the algorithms.
+ * 
  * @author Daniel Lefevre
  */
 public final class SeparationWallsSeparationRoofs {
@@ -50,8 +51,6 @@ public final class SeparationWallsSeparationRoofs {
      * planes, parallel to the surface, spaced of this factor from the surface.
      */
     public static double PLANES_ERROR = 1;
-
-
 
     /**
      * Private constructor.

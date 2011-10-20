@@ -1,10 +1,10 @@
 package fr.nantes1900.utils;
 
-import fr.nantes1900.models.Town;
+import fr.nantes1900.models.MockupPart;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.Mesh;
+import fr.nantes1900.models.middle.TriangleMesh;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -24,14 +24,13 @@ import java.util.StringTokenizer;
 
 import javax.vecmath.Vector3d;
 
-
 /**
  * Implements a STL parser : detects if it is an ASCII or a binary file, and
  * parses it. During the parsing, it builds a mesh, giving to the same points
  * the same references (and to the edges), and avoiding to keep the bad-formed
  * triangles.
  * 
- * @author Eric Berthe, Valentin Roger, Daniel Lefèvre
+ * @author Eric Berthe, Valentin Roger, Daniel Lefevre
  */
 public class ParserSTL {
 
@@ -62,7 +61,7 @@ public class ParserSTL {
      *            the name of the file to read
      */
     public ParserSTL(final String fileNameRead) {
-        this.fileName = fileNameRead;
+	this.fileName = fileNameRead;
     }
 
     /**
@@ -73,33 +72,33 @@ public class ParserSTL {
      *             if the file is bad formed or if there is an error during the
      *             reading
      */
-    public final Mesh read() throws IOException {
-        final Scanner scanner = new Scanner(new FileReader(this.fileName));
+    public final TriangleMesh read() throws IOException {
+	final Scanner scanner = new Scanner(new FileReader(this.fileName));
 
-        // Reading the file
-        try {
-            if (scanner.hasNextLine()) {
-                final StringTokenizer brokenLine =
-                    new StringTokenizer(scanner.nextLine(), " ");
-                final String openingWord = brokenLine.nextToken();
+	// Reading the file
+	try {
+	    if (scanner.hasNextLine()) {
+		final StringTokenizer brokenLine = new StringTokenizer(
+			scanner.nextLine(), " ");
+		final String openingWord = brokenLine.nextToken();
 
-                Set<Triangle> triangleMap;
-                this.pointMap = new HashMap<Point, Point>();
-                this.edgeMap = new HashMap<Edge, Edge>();
+		Set<Triangle> triangleMap;
+		this.pointMap = new HashMap<Point, Point>();
+		this.edgeMap = new HashMap<Edge, Edge>();
 
-                // If the first word is solid, this means it's an ASCII file.
-                // If it's a binary file, it will not be found.
-                if ("solid".equals(openingWord)) {
-                    triangleMap = this.readSTLA();
-                } else {
-                    triangleMap = this.readSTLB();
-                }
-                return new Mesh(triangleMap);
-            }
-            return null;
-        } finally {
-            scanner.close();
-        }
+		// If the first word is solid, this means it's an ASCII file.
+		// If it's a binary file, it will not be found.
+		if ("solid".equals(openingWord)) {
+		    triangleMap = this.readSTLA();
+		} else {
+		    triangleMap = this.readSTLB();
+		}
+		return new TriangleMesh(triangleMap);
+	    }
+	    return null;
+	} finally {
+	    scanner.close();
+	}
 
     }
 
@@ -118,43 +117,42 @@ public class ParserSTL {
      * @return true when an entire has been read, and false otherwise.
      */
     private static boolean processLineA(final String line,
-        final Vector3d currentVector, final List<Point> currentPoints) {
+	    final Vector3d currentVector, final List<Point> currentPoints) {
 
-        // If the line is empty, the parser passes to the next line.
-        if (!line.isEmpty()) {
+	// If the line is empty, the parser passes to the next line.
+	if (!line.isEmpty()) {
 
-            // Select the first word of the line.
-            final StringTokenizer brokenLine = new StringTokenizer(line, " ");
-            final String openingWord = brokenLine.nextToken();
+	    // Select the first word of the line.
+	    final StringTokenizer brokenLine = new StringTokenizer(line, " ");
+	    final String openingWord = brokenLine.nextToken();
 
-            // If the word is facet normal, read the vector.
-            if ("facet".equals(openingWord)
-                && "normal".equals(brokenLine.nextToken())) {
-                currentVector.set(Double.parseDouble(brokenLine.nextToken()),
-                    Double.parseDouble(brokenLine.nextToken()), Double
-                        .parseDouble(brokenLine.nextToken()));
+	    // If the word is facet normal, read the vector.
+	    if ("facet".equals(openingWord)
+		    && "normal".equals(brokenLine.nextToken())) {
+		currentVector.set(Double.parseDouble(brokenLine.nextToken()),
+			Double.parseDouble(brokenLine.nextToken()),
+			Double.parseDouble(brokenLine.nextToken()));
 
-                currentVector.normalize();
-            }
+		currentVector.normalize();
+	    }
 
-            // If the word is vertex, read one of the three points.
-            else if ("vertex".equals(openingWord)) {
-                final Point p =
-                    new Point((float) Double
-                        .parseDouble(brokenLine.nextToken()), (float) Double
-                        .parseDouble(brokenLine.nextToken()), (float) Double
-                        .parseDouble(brokenLine.nextToken()));
+	    // If the word is vertex, read one of the three points.
+	    else if ("vertex".equals(openingWord)) {
+		final Point p = new Point((float) Double.parseDouble(brokenLine
+			.nextToken()), (float) Double.parseDouble(brokenLine
+			.nextToken()), (float) Double.parseDouble(brokenLine
+			.nextToken()));
 
-                currentPoints.add(p);
-            }
+		currentPoints.add(p);
+	    }
 
-            // If the the points are read, return true so that readSTLA builds
-            // the triangle.
-            else if ("endfacet".equals(openingWord)) {
-                return true;
-            }
-        }
-        return false;
+	    // If the the points are read, return true so that readSTLA builds
+	    // the triangle.
+	    else if ("endfacet".equals(openingWord)) {
+		return true;
+	    }
+	}
+	return false;
     }
 
     /**
@@ -172,55 +170,55 @@ public class ParserSTL {
      *             contains already two triangles
      */
     private Triangle processLineB(final ByteBuffer bBuf)
-        throws BadMeshException {
+	    throws BadMeshException {
 
-        // Reading part.
+	// Reading part.
 
-        // Reads in the ByteBuffer the floats.
-        final Vector3d norm =
-            new Vector3d(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
+	// Reads in the ByteBuffer the floats.
+	final Vector3d norm = new Vector3d(bBuf.getFloat(), bBuf.getFloat(),
+		bBuf.getFloat());
 
-        Point p1 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
-        Point p2 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
-        Point p3 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
+	Point p1 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
+	Point p2 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
+	Point p3 = new Point(bBuf.getFloat(), bBuf.getFloat(), bBuf.getFloat());
 
-        // Adds two bytes to respect the binary format. Those bytes can be used
-        // to put a color to the triangle. But we don't use them.
-        bBuf.get();
-        bBuf.get();
+	// Adds two bytes to respect the binary format. Those bytes can be used
+	// to put a color to the triangle. But we don't use them.
+	bBuf.get();
+	bBuf.get();
 
-        // Treatment part.
+	// Treatment part.
 
-        // Treats the points.
-        p1 = this.treatPoint(p1);
-        p2 = this.treatPoint(p2);
-        p3 = this.treatPoint(p3);
+	// Treats the points.
+	p1 = this.treatPoint(p1);
+	p2 = this.treatPoint(p2);
+	p3 = this.treatPoint(p3);
 
-        if (norm.x == 0 && norm.y == 0 && norm.z == 0) {
-            throw new BadMeshException();
-        }
-        norm.normalize();
+	if (norm.x == 0 && norm.y == 0 && norm.z == 0) {
+	    throw new BadMeshException();
+	}
+	norm.normalize();
 
-        // If two points are the same, throws a FlatTriangleException.
-        if (p1 == p2 || p2 == p3 || p1 == p3) {
-            throw new FlatTriangleException();
-        }
+	// If two points are the same, throws a FlatTriangleException.
+	if (p1 == p2 || p2 == p3 || p1 == p3) {
+	    throw new FlatTriangleException();
+	}
 
-        // Same verification for the edges : using the method get of a HashSet.
-        Edge e1 = new Edge(p1, p2);
-        Edge e2 = new Edge(p2, p3);
-        Edge e3 = new Edge(p3, p1);
+	// Same verification for the edges : using the method get of a HashSet.
+	Edge e1 = new Edge(p1, p2);
+	Edge e2 = new Edge(p2, p3);
+	Edge e3 = new Edge(p3, p1);
 
-        e1 = this.treatEdge(e1);
-        e2 = this.treatEdge(e2);
-        e3 = this.treatEdge(e3);
+	e1 = this.treatEdge(e1);
+	e2 = this.treatEdge(e2);
+	e3 = this.treatEdge(e3);
 
-        if (e1.getNumberTriangles() == 2 || e2.getNumberTriangles() == 2
-            || e3.getNumberTriangles() == 2) {
-            throw new MoreThanTwoTrianglesPerEdgeException();
-        }
+	if (e1.getNumberTriangles() == 2 || e2.getNumberTriangles() == 2
+		|| e3.getNumberTriangles() == 2) {
+	    throw new MoreThanTwoTrianglesPerEdgeException();
+	}
 
-        return new Triangle(p1, p2, p3, e1, e2, e3, norm);
+	return new Triangle(p1, p2, p3, e1, e2, e3, norm);
     }
 
     /**
@@ -236,71 +234,71 @@ public class ParserSTL {
      */
     private Set<Triangle> readSTLA() throws IOException {
 
-        final Scanner scanner = new Scanner(new FileReader(this.fileName));
+	final Scanner scanner = new Scanner(new FileReader(this.fileName));
 
-        this.triangleSet = new HashSet<Triangle>();
+	this.triangleSet = new HashSet<Triangle>();
 
-        final Vector3d currentVector = new Vector3d();
-        final List<Point> currentPoints = new ArrayList<Point>();
+	final Vector3d currentVector = new Vector3d();
+	final List<Point> currentPoints = new ArrayList<Point>();
 
-        // Reading the file
-        try {
-            while (scanner.hasNextLine()) {
+	// Reading the file
+	try {
+	    while (scanner.hasNextLine()) {
 
-                // If the processLineA have finished to read an entire triangle,
-                // it proceeds to the treatment.
-                if (ParserSTL.processLineA(scanner.nextLine(), currentVector,
-                    currentPoints)) {
+		// If the processLineA have finished to read an entire triangle,
+		// it proceeds to the treatment.
+		if (ParserSTL.processLineA(scanner.nextLine(), currentVector,
+			currentPoints)) {
 
-                    try {
-                        // From the points read, checks in the hashset if they
-                        // doesn't already exist.
-                        final Point p1 = this.treatPoint(currentPoints.get(0));
-                        final Point p2 = this.treatPoint(currentPoints.get(1));
-                        final Point p3 = this.treatPoint(currentPoints.get(2));
+		    try {
+			// From the points read, checks in the hashset if they
+			// doesn't already exist.
+			final Point p1 = this.treatPoint(currentPoints.get(0));
+			final Point p2 = this.treatPoint(currentPoints.get(1));
+			final Point p3 = this.treatPoint(currentPoints.get(2));
 
-                        // Checks in the HashSet of edges if this edge doesn't
-                        // already exist. If it already exists, it doesn't
-                        // create another edge, but keep the same reference.
-                        final Edge e1 = this.treatEdge(new Edge(p1, p2));
-                        final Edge e2 = this.treatEdge(new Edge(p2, p3));
-                        final Edge e3 = this.treatEdge(new Edge(p3, p1));
+			// Checks in the HashSet of edges if this edge doesn't
+			// already exist. If it already exists, it doesn't
+			// create another edge, but keep the same reference.
+			final Edge e1 = this.treatEdge(new Edge(p1, p2));
+			final Edge e2 = this.treatEdge(new Edge(p2, p3));
+			final Edge e3 = this.treatEdge(new Edge(p3, p1));
 
-                        // Checks for the flat triangles.
-                        if (e1 == e2 || e2 == e3 || e1 == e3) {
-                            throw new FlatTriangleException();
-                        }
+			// Checks for the flat triangles.
+			if (e1 == e2 || e2 == e3 || e1 == e3) {
+			    throw new FlatTriangleException();
+			}
 
-                        if (e1.getNumberTriangles() == 2
-                            || e2.getNumberTriangles() == 2
-                            || e3.getNumberTriangles() == 2) {
-                            throw new MoreThanTwoTrianglesPerEdgeException();
-                        }
+			if (e1.getNumberTriangles() == 2
+				|| e2.getNumberTriangles() == 2
+				|| e3.getNumberTriangles() == 2) {
+			    throw new MoreThanTwoTrianglesPerEdgeException();
+			}
 
-                        this.triangleSet.add(new Triangle(p1, p2, p3, e1, e2,
-                            e3, currentVector));
+			this.triangleSet.add(new Triangle(p1, p2, p3, e1, e2,
+				e3, currentVector));
 
-                        System.out.println(this.triangleSet.size());
+			System.out.println(this.triangleSet.size());
 
-                    } catch (final MoreThanTwoTrianglesPerEdgeException e) {
-                        // This triangle can't be add : three triangles per edge
-                        // will cause problems in the program.
-                    } catch (final FlatTriangleException e) {
-                        // If it is a flat Triangle : 2 identical Points, then 2
-                        // identical Edge, it is not added to the Mesh.
-                    } catch (final OutOfBoundsPointException e) {
-                        // The coordinates of the Point are unbounded, then the
-                        // Triangle is not added to the Mesh.
-                    } finally {
-                        currentPoints.clear();
-                    }
-                }
-            }
-        } finally {
-            scanner.close();
-        }
+		    } catch (final MoreThanTwoTrianglesPerEdgeException e) {
+			// This triangle can't be add : three triangles per edge
+			// will cause problems in the program.
+		    } catch (final FlatTriangleException e) {
+			// If it is a flat Triangle : 2 identical Points, then 2
+			// identical Edge, it is not added to the Mesh.
+		    } catch (final OutOfBoundsPointException e) {
+			// The coordinates of the Point are unbounded, then the
+			// Triangle is not added to the Mesh.
+		    } finally {
+			currentPoints.clear();
+		    }
+		}
+	    }
+	} finally {
+	    scanner.close();
+	}
 
-        return this.triangleSet;
+	return this.triangleSet;
     }
 
     /**
@@ -315,67 +313,67 @@ public class ParserSTL {
      *             if the file is badformed
      */
     private Set<Triangle> readSTLB() throws IOException {
-        final InputStream stream =
-            new BufferedInputStream(new FileInputStream(this.fileName));
+	final InputStream stream = new BufferedInputStream(new FileInputStream(
+		this.fileName));
 
-        this.triangleSet = new HashSet<Triangle>();
+	this.triangleSet = new HashSet<Triangle>();
 
-        final int headerSize = 80;
+	final int headerSize = 80;
 
-        final byte[] header = new byte[headerSize];
-        stream.read(header, 0, headerSize);
+	final byte[] header = new byte[headerSize];
+	stream.read(header, 0, headerSize);
 
-        final byte[] sizeBytes = new byte[Byte.SIZE / 2];
-        stream.read(sizeBytes, 0, Byte.SIZE / 2);
+	final byte[] sizeBytes = new byte[Byte.SIZE / 2];
+	stream.read(sizeBytes, 0, Byte.SIZE / 2);
 
-        ByteBuffer bBuf = ByteBuffer.wrap(sizeBytes);
-        bBuf.order(ByteOrder.nativeOrder());
-        final int meshSize = bBuf.getInt();
+	ByteBuffer bBuf = ByteBuffer.wrap(sizeBytes);
+	bBuf.order(ByteOrder.nativeOrder());
+	final int meshSize = bBuf.getInt();
 
-        final int triangleSTLSize = 50;
+	final int triangleSTLSize = 50;
 
-        final byte[] fileContent = new byte[triangleSTLSize * meshSize];
-        stream.read(fileContent);
-        bBuf = ByteBuffer.wrap(fileContent);
-        bBuf.order(ByteOrder.nativeOrder());
+	final byte[] fileContent = new byte[triangleSTLSize * meshSize];
+	stream.read(fileContent);
+	bBuf = ByteBuffer.wrap(fileContent);
+	bBuf.order(ByteOrder.nativeOrder());
 
-        int counterError = 0;
+	int counterError = 0;
 
-        for (int i = 0; i < meshSize; i = i + 1) {
-            try {
-                // If a Triangle exists already, and if the
-                // Parser read another
-                // Triangle with the same values,
-                // only one of those Triangles will be added
-                // to the Mesh.
-                this.triangleSet.add(this.processLineB(bBuf));
-            } catch (final FlatTriangleException e) {
-                // If it is a flat Triangle : 2 identical
-                // Points, then 2
-                // identical Edge, it is not added to the
-                // Mesh.
-                ++counterError;
-            } catch (final OutOfBoundsPointException e) {
-                // The coordinates of the Point are
-                // unbounded, then the Triangle
-                // is not added to the Mesh.
-                ++counterError;
-            } catch (final MoreThanTwoTrianglesPerEdgeException e) {
-                // If one edge of the new triangle contains
-                // already two triangles, then the new triangle is
-                // removed from the mesh.
-                ++counterError;
-            } catch (BadMeshException e) {
-                // This execption is supposed to be treated in the three catch
-                // above.
-            }
-        }
+	for (int i = 0; i < meshSize; i = i + 1) {
+	    try {
+		// If a Triangle exists already, and if the
+		// Parser read another
+		// Triangle with the same values,
+		// only one of those Triangles will be added
+		// to the Mesh.
+		this.triangleSet.add(this.processLineB(bBuf));
+	    } catch (final FlatTriangleException e) {
+		// If it is a flat Triangle : 2 identical
+		// Points, then 2
+		// identical Edge, it is not added to the
+		// Mesh.
+		++counterError;
+	    } catch (final OutOfBoundsPointException e) {
+		// The coordinates of the Point are
+		// unbounded, then the Triangle
+		// is not added to the Mesh.
+		++counterError;
+	    } catch (final MoreThanTwoTrianglesPerEdgeException e) {
+		// If one edge of the new triangle contains
+		// already two triangles, then the new triangle is
+		// removed from the mesh.
+		++counterError;
+	    } catch (BadMeshException e) {
+		// This execption is supposed to be treated in the three catch
+		// above.
+	    }
+	}
 
-        Town.LOG.finest(counterError
-            + " triangles removed from the mesh during the parsing !");
+	System.out.println(counterError
+		+ " triangles removed from the mesh during the parsing !");
 
-        stream.close();
-        return this.triangleSet;
+	stream.close();
+	return this.triangleSet;
     }
 
     /**
@@ -389,12 +387,12 @@ public class ParserSTL {
      */
     private Edge treatEdge(final Edge edge) {
 
-        final Edge eNew = this.edgeMap.get(edge);
-        if (eNew == null) {
-            this.edgeMap.put(edge, edge);
-            return edge;
-        }
-        return eNew;
+	final Edge eNew = this.edgeMap.get(edge);
+	if (eNew == null) {
+	    this.edgeMap.put(edge, edge);
+	    return edge;
+	}
+	return eNew;
     }
 
     /**
@@ -409,28 +407,28 @@ public class ParserSTL {
      *                if the point have incorrect values
      */
     private Point treatPoint(final Point point)
-        throws OutOfBoundsPointException {
+	    throws OutOfBoundsPointException {
 
-        // If the point has one coordinate >
-        // 1e5, throws an Exception. It can cause an error
-        // further in the program.
-        final double maxLimit = OutOfBoundsPointException.BOUND_LIMIT;
+	// If the point has one coordinate >
+	// 1e5, throws an Exception. It can cause an error
+	// further in the program.
+	final double maxLimit = OutOfBoundsPointException.BOUND_LIMIT;
 
-        if (point.getX() > maxLimit || point.getY() > maxLimit
-            || point.getZ() > maxLimit) {
-            throw new OutOfBoundsPointException();
-        }
+	if (point.getX() > maxLimit || point.getY() > maxLimit
+		|| point.getZ() > maxLimit) {
+	    throw new OutOfBoundsPointException();
+	}
 
-        final Point mapP = this.pointMap.get(point);
+	final Point mapP = this.pointMap.get(point);
 
-        // Checks in the HashSet of points if this point doesn't already exist.
-        // If it already exists, it doesn't create another point, but keep the
-        // same reference.
-        if (mapP == null) {
-            this.pointMap.put(point, point);
-            return point;
-        }
-        return mapP;
+	// Checks in the HashSet of points if this point doesn't already exist.
+	// If it already exists, it doesn't create another point, but keep the
+	// same reference.
+	if (mapP == null) {
+	    this.pointMap.put(point, point);
+	    return point;
+	}
+	return mapP;
     }
 
     /**
@@ -441,16 +439,16 @@ public class ParserSTL {
      */
     public static class BadMeshException extends Exception {
 
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
+	/**
+	 * Version attribute.
+	 */
+	private static final long serialVersionUID = 1L;
 
-        /**
-         * Private constructor.
-         */
-        public BadMeshException() {
-        }
+	/**
+	 * Private constructor.
+	 */
+	public BadMeshException() {
+	}
 
     }
 
@@ -460,18 +458,18 @@ public class ParserSTL {
      * @author Daniel Lefevre
      */
     private static final class FlatTriangleException extends
-        ParserSTL.BadMeshException {
+	    ParserSTL.BadMeshException {
 
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
+	/**
+	 * Version attribute.
+	 */
+	private static final long serialVersionUID = 1L;
 
-        /**
-         * Private constructor.
-         */
-        public FlatTriangleException() {
-        }
+	/**
+	 * Private constructor.
+	 */
+	public FlatTriangleException() {
+	}
     }
 
     /**
@@ -481,18 +479,18 @@ public class ParserSTL {
      * @author Daniel Lefevre
      */
     private static final class MoreThanTwoTrianglesPerEdgeException extends
-        ParserSTL.BadMeshException {
+	    ParserSTL.BadMeshException {
 
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
+	/**
+	 * Version attribute.
+	 */
+	private static final long serialVersionUID = 1L;
 
-        /**
-         * Private constructor.
-         */
-        public MoreThanTwoTrianglesPerEdgeException() {
-        }
+	/**
+	 * Private constructor.
+	 */
+	public MoreThanTwoTrianglesPerEdgeException() {
+	}
     }
 
     /**
@@ -501,21 +499,21 @@ public class ParserSTL {
      * @author Daniel Lefevre
      */
     private static final class OutOfBoundsPointException extends
-        ParserSTL.BadMeshException {
+	    ParserSTL.BadMeshException {
 
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-        /**
-         * Bound limit attribute.
-         */
-        private static final double BOUND_LIMIT = 1e5;
+	/**
+	 * Version attribute.
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * Bound limit attribute.
+	 */
+	private static final double BOUND_LIMIT = 1e5;
 
-        /**
-         * Private constructor.
-         */
-        public OutOfBoundsPointException() {
-        }
+	/**
+	 * Private constructor.
+	 */
+	public OutOfBoundsPointException() {
+	}
     }
 }

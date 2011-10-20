@@ -1,8 +1,8 @@
 package fr.nantes1900.models.basis;
 
-import fr.nantes1900.models.middle.Mesh;
-import fr.nantes1900.models.middle.Polyline;
-import fr.nantes1900.models.middle.Polyline.BadFormedPolylineException;
+import fr.nantes1900.models.middle.TriangleMesh;
+import fr.nantes1900.models.middle.Polygone;
+import fr.nantes1900.models.middle.Polygone.BadFormedPolylineException;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -37,9 +37,9 @@ public class Edge {
      *            the polyline to copy
      */
     public Edge(final Edge edge) {
-        this.points[0] = edge.getP1();
-        this.points[1] = edge.getP2();
-        this.triangles = new ArrayList<Triangle>(edge.triangles);
+	this.points[0] = edge.getP1();
+	this.points[1] = edge.getP2();
+	this.triangles = new ArrayList<Triangle>(edge.triangles);
     }
 
     /**
@@ -51,8 +51,8 @@ public class Edge {
      *            the second point
      */
     public Edge(final Point point1, final Point point2) {
-        this.points[0] = point1;
-        this.points[1] = point2;
+	this.points[0] = point1;
+	this.points[1] = point2;
     }
 
     /**
@@ -62,11 +62,11 @@ public class Edge {
      *            the triangle to add
      */
     public final void addTriangle(final Triangle triangle) {
-        if (!this.triangles.contains(triangle)) {
-            if (this.triangles.size() <= 2) {
-                this.triangles.add(triangle);
-            }
-        }
+	if (!this.triangles.contains(triangle)) {
+	    if (this.triangles.size() <= 2) {
+		this.triangles.add(triangle);
+	    }
+	}
     }
 
     /**
@@ -75,9 +75,9 @@ public class Edge {
      * @return the middle point
      */
     public final Point computeMiddle() {
-        return new Point((this.getP1().getX() + this.getP2().getX()) / 2, (this
-            .getP1().getY() + this.getP2().getY()) / 2,
-            (this.getP1().getZ() + this.getP2().getZ()) / 2);
+	return new Point((this.getP1().getX() + this.getP2().getX()) / 2, (this
+		.getP1().getY() + this.getP2().getY()) / 2, (this.getP1()
+		.getZ() + this.getP2().getZ()) / 2);
     }
 
     /**
@@ -88,7 +88,7 @@ public class Edge {
      * @return true if p is contained, and false otherwise
      */
     public final boolean contains(final Point point) {
-        return this.points[0] == point || this.points[1] == point;
+	return this.points[0] == point || this.points[1] == point;
     }
 
     /**
@@ -99,28 +99,29 @@ public class Edge {
      * @return the vector
      */
     public final Vector3d convertToVector3d() {
-        return new Vector3d(this.getP2().getX() - this.getP1().getX(), this
-            .getP2().getY()
-            - this.getP1().getY(), this.getP2().getZ() - this.getP1().getZ());
+	return new Vector3d(this.getP2().getX() - this.getP1().getX(), this
+		.getP2().getY() - this.getP1().getY(), this.getP2().getZ()
+		- this.getP1().getZ());
     }
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public final boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (this.getClass() != obj.getClass()) {
-            return false;
-        }
-        return ((Edge) obj).contains(this.points[0])
-            && ((Edge) obj).contains(this.points[1]);
+	if (this == obj) {
+	    return true;
+	}
+	if (obj == null) {
+	    return false;
+	}
+	if (this.getClass() != obj.getClass()) {
+	    return false;
+	}
+	return ((Edge) obj).contains(this.points[0])
+		&& ((Edge) obj).contains(this.points[1]);
     }
 
     /**
@@ -129,28 +130,28 @@ public class Edge {
      * @return the number of triangles
      */
     public final int getNumberTriangles() {
-        return this.triangles.size();
+	return this.triangles.size();
     }
 
     /**
      * Returns the number of neighbours of the edge contained in the polyline p.
      * Two neighbours are two edges which share a point.
      * 
-     * @param polyline
+     * @param polygone
      *            the polyline which contains the edges
      * @return the number of neighbours
      */
-    public final int getNumNeighbours(final Polyline polyline) {
-        if (!polyline.contains(this)) {
-            throw new InvalidParameterException();
-        }
-        int counter = 0;
-        for (final Edge e : polyline.getEdgeList()) {
-            if (this.isNeighboor(e)) {
-                counter = counter + 1;
-            }
-        }
-        return counter;
+    public final int getNumNeighbours(final Polygone polygone) {
+	if (!polygone.contains(this)) {
+	    throw new InvalidParameterException();
+	}
+	int counter = 0;
+	for (final Edge e : polygone.getEdgeList()) {
+	    if (this.isNeighboor(e)) {
+		counter = counter + 1;
+	    }
+	}
+	return counter;
     }
 
     /**
@@ -159,7 +160,7 @@ public class Edge {
      * @return the first point
      */
     public final Point getP1() {
-        return this.points[0];
+	return this.points[0];
     }
 
     /**
@@ -168,7 +169,7 @@ public class Edge {
      * @return the second point
      */
     public final Point getP2() {
-        return this.points[1];
+	return this.points[1];
     }
 
     /**
@@ -177,7 +178,7 @@ public class Edge {
      * @return a list of points containing the two points of the edge
      */
     public final List<Point> getPoints() {
-        return Arrays.asList(this.points);
+	return Arrays.asList(this.points);
     }
 
     /**
@@ -186,16 +187,17 @@ public class Edge {
      * @return the list of triangles containing the edge
      */
     public final List<Triangle> getTriangles() {
-        return this.triangles;
+	return this.triangles;
     }
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
     public final int hashCode() {
-        return this.points[0].hashCode() + this.points[1].hashCode();
+	return this.points[0].hashCode() + this.points[1].hashCode();
     }
 
     /**
@@ -206,14 +208,14 @@ public class Edge {
      * @return true if this edge contains only one triangle belonging to m,
      *         false otherwise.
      */
-    public final boolean isBound(final Mesh m) {
-        int counter = 0;
-        for (final Triangle triangle : this.triangles) {
-            if (m.contains(triangle)) {
-                ++counter;
-            }
-        }
-        return counter == 1;
+    public final boolean isBound(final TriangleMesh m) {
+	int counter = 0;
+	for (final Triangle triangle : this.triangles) {
+	    if (m.contains(triangle)) {
+		++counter;
+	    }
+	}
+	return counter == 1;
     }
 
     /**
@@ -229,31 +231,30 @@ public class Edge {
      */
     public final boolean isInCylinder3D(final Point point, final double error) {
 
-        // Basic projection of a point on a line.
-        final double x1 = this.getP1().getX();
-        final double x2 = this.getP2().getX();
-        final double x3 = point.getX();
+	// Basic projection of a point on a line.
+	final double x1 = this.getP1().getX();
+	final double x2 = this.getP2().getX();
+	final double x3 = point.getX();
 
-        final double y1 = this.getP1().getY();
-        final double y2 = this.getP2().getY();
-        final double y3 = point.getY();
+	final double y1 = this.getP1().getY();
+	final double y2 = this.getP2().getY();
+	final double y3 = point.getY();
 
-        final double z1 = this.getP1().getZ();
-        final double z2 = this.getP2().getZ();
-        final double z3 = point.getZ();
+	final double z1 = this.getP1().getZ();
+	final double z2 = this.getP2().getZ();
+	final double z3 = point.getZ();
 
-        final double lambda =
-            ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
-                * (z2 - z1))
-                / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
-                    * (z2 - z1));
+	final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
+		* (z2 - z1))
+		/ ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
+			* (z2 - z1));
 
-        final double x4 = lambda * (x2 - x1) + x1;
-        final double y4 = lambda * (y2 - y1) + y1;
-        final double z4 = lambda * (z2 - z1) + z1;
+	final double x4 = lambda * (x2 - x1) + x1;
+	final double y4 = lambda * (y2 - y1) + y1;
+	final double z4 = lambda * (z2 - z1) + z1;
 
-        return lambda >= 0 && lambda <= 1
-            && point.distance(new Point(x4, y4, z4)) <= error;
+	return lambda >= 0 && lambda <= 1
+		&& point.distance(new Point(x4, y4, z4)) <= error;
     }
 
     /**
@@ -269,29 +270,29 @@ public class Edge {
      *         otherwise
      */
     public final boolean isInInfiniteCylinder2D(final Point point,
-        final double error) {
+	    final double error) {
 
-        double a;
-        double b;
-        double c;
+	double a;
+	double b;
+	double c;
 
-        final Point p1 = this.getP1();
-        final Point p2 = this.getP2();
+	final Point p1 = this.getP1();
+	final Point p2 = this.getP2();
 
-        // We calculate the equation of the segment, and of the two lines
-        // parallels to it and which frame the line
-        if (p1.getX() == p2.getX()) {
-            a = 1;
-            b = 0;
-            c = -p1.getX();
-        } else {
-            a = -(p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
-            b = 1;
-            c = -p1.getY() - a * p1.getX();
-        }
+	// We calculate the equation of the segment, and of the two lines
+	// parallels to it and which frame the line
+	if (p1.getX() == p2.getX()) {
+	    a = 1;
+	    b = 0;
+	    c = -p1.getX();
+	} else {
+	    a = -(p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
+	    b = 1;
+	    c = -p1.getY() - a * p1.getX();
+	}
 
-        return a * point.getX() + b * point.getY() < -c + error
-            && a * point.getX() + b * point.getY() > -c - error;
+	return a * point.getX() + b * point.getY() < -c + error
+		&& a * point.getX() + b * point.getY() > -c - error;
     }
 
     /**
@@ -306,33 +307,32 @@ public class Edge {
      *         otherwise
      */
     public final boolean isInInfiniteCylinder3D(final Point point,
-        final double error) {
+	    final double error) {
 
-        final double x1 = this.getP1().getX();
-        final double x2 = this.getP2().getX();
-        final double x3 = point.getX();
+	final double x1 = this.getP1().getX();
+	final double x2 = this.getP2().getX();
+	final double x3 = point.getX();
 
-        final double y1 = this.getP1().getY();
-        final double y2 = this.getP2().getY();
-        final double y3 = point.getY();
+	final double y1 = this.getP1().getY();
+	final double y2 = this.getP2().getY();
+	final double y3 = point.getY();
 
-        final double z1 = this.getP1().getZ();
-        final double z2 = this.getP2().getZ();
-        final double z3 = point.getZ();
+	final double z1 = this.getP1().getZ();
+	final double z2 = this.getP2().getZ();
+	final double z3 = point.getZ();
 
-        final double lambda =
-            ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
-                * (z2 - z1))
-                / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
-                    * (z2 - z1));
+	final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
+		* (z2 - z1))
+		/ ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
+			* (z2 - z1));
 
-        final double x4 = lambda * (x2 - x1) + x1;
-        final double y4 = lambda * (y2 - y1) + y1;
-        final double z4 = lambda * (z2 - z1) + z1;
+	final double x4 = lambda * (x2 - x1) + x1;
+	final double y4 = lambda * (y2 - y1) + y1;
+	final double z4 = lambda * (z2 - z1) + z1;
 
-        final Point p4 = new Point(x4, y4, z4);
+	final Point p4 = new Point(x4, y4, z4);
 
-        return point.distance(p4) <= error;
+	return point.distance(p4) <= error;
     }
 
     /**
@@ -344,10 +344,10 @@ public class Edge {
      *         edge, or if they are not neighboor
      */
     public final boolean isNeighboor(final Edge e) {
-        if (this == e) {
-            return false;
-        }
-        return this.contains(e.points[0]) || this.contains(e.points[1]);
+	if (this == e) {
+	    return false;
+	}
+	return this.contains(e.points[0]) || this.contains(e.points[1]);
     }
 
     /**
@@ -356,7 +356,7 @@ public class Edge {
      * @return the distance between the two points of the edge
      */
     public final double length() {
-        return this.points[0].distance(this.points[1]);
+	return this.points[0].distance(this.points[1]);
     }
 
     /**
@@ -371,23 +371,22 @@ public class Edge {
      */
     public final boolean orientedAs(final Edge e, final double error) {
 
-        // Builds two vectors and normalize them.
-        final Vector3d vect1 =
-            new Vector3d(e.getP2().getX() - e.getP1().getX(), e.getP2().getY()
-                - e.getP1().getY(), e.getP2().getZ() - e.getP1().getZ());
-        vect1.normalize();
+	// Builds two vectors and normalize them.
+	final Vector3d vect1 = new Vector3d(
+		e.getP2().getX() - e.getP1().getX(), e.getP2().getY()
+			- e.getP1().getY(), e.getP2().getZ() - e.getP1().getZ());
+	vect1.normalize();
 
-        final Vector3d vect2 =
-            new Vector3d(this.getP2().getX() - this.getP1().getX(), this
-                .getP2().getY()
-                - this.getP1().getY(), this.getP2().getZ()
-                - this.getP1().getZ());
-        vect2.normalize();
+	final Vector3d vect2 = new Vector3d(this.getP2().getX()
+		- this.getP1().getX(), this.getP2().getY()
+		- this.getP1().getY(), this.getP2().getZ()
+		- this.getP1().getZ());
+	vect2.normalize();
 
-        // Then calls the angle function to check their orientation.
-        final double convertDegreeRadian = 180 / Math.PI;
-        return (vect1.angle(vect2) < (error / convertDegreeRadian))
-            || vect1.angle(vect2) > (((180 - error) / convertDegreeRadian));
+	// Then calls the angle function to check their orientation.
+	final double convertDegreeRadian = 180 / Math.PI;
+	return (vect1.angle(vect2) < (error / convertDegreeRadian))
+		|| vect1.angle(vect2) > (((180 - error) / convertDegreeRadian));
     }
 
     /**
@@ -399,34 +398,33 @@ public class Edge {
      */
     public final Point project(final Point point) {
 
-        // Basic projection of a point on a line.
-        final Point p1 = this.getP1();
-        final Point p2 = this.getP2();
-        final Point p3 = point;
+	// Basic projection of a point on a line.
+	final Point p1 = this.getP1();
+	final Point p2 = this.getP2();
+	final Point p3 = point;
 
-        final double x1 = p1.getX();
-        final double x2 = p2.getX();
-        final double x3 = p3.getX();
+	final double x1 = p1.getX();
+	final double x2 = p2.getX();
+	final double x3 = p3.getX();
 
-        final double y1 = p1.getY();
-        final double y2 = p2.getY();
-        final double y3 = p3.getY();
+	final double y1 = p1.getY();
+	final double y2 = p2.getY();
+	final double y3 = p3.getY();
 
-        final double z1 = p1.getZ();
-        final double z2 = p2.getZ();
-        final double z3 = p3.getZ();
+	final double z1 = p1.getZ();
+	final double z2 = p2.getZ();
+	final double z3 = p3.getZ();
 
-        final double lambda =
-            ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
-                * (z2 - z1))
-                / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
-                    * (z2 - z1));
+	final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
+		* (z2 - z1))
+		/ ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
+			* (z2 - z1));
 
-        final double x4 = lambda * (x2 - x1) + x1;
-        final double y4 = lambda * (y2 - y1) + y1;
-        final double z4 = lambda * (z2 - z1) + z1;
+	final double x4 = lambda * (x2 - x1) + x1;
+	final double y4 = lambda * (y2 - y1) + y1;
+	final double z4 = lambda * (z2 - z1) + z1;
 
-        return new Point(x4, y4, z4);
+	return new Point(x4, y4, z4);
     }
 
     /**
@@ -442,16 +440,16 @@ public class Edge {
      * @throws BadFormedPolylineException
      *             if a point in the polyline does not belong to the two edges
      */
-    public final Edge returnNeighbour(final Polyline b, final Point p)
-        throws BadFormedPolylineException {
+    public final Edge returnNeighbour(final Polygone b, final Point p)
+	    throws BadFormedPolylineException {
 
-        final List<Edge> list = b.getNeighbours(p);
+	final List<Edge> list = b.getNeighbours(p);
 
-        if (list.size() == 2) {
-            list.remove(this);
-            return list.get(0);
-        }
-        throw new BadFormedPolylineException();
+	if (list.size() == 2) {
+	    list.remove(this);
+	    return list.get(0);
+	}
+	throw new BadFormedPolylineException();
     }
 
     /**
@@ -462,13 +460,13 @@ public class Edge {
      * @return the other point which forms the edge
      */
     public final Point returnOther(final Point p) {
-        if (this.getP1() == p) {
-            return this.getP2();
-        } else if (this.getP2() == p) {
-            return this.getP1();
-        } else {
-            throw new InvalidParameterException();
-        }
+	if (this.getP1() == p) {
+	    return this.getP2();
+	} else if (this.getP2() == p) {
+	    return this.getP1();
+	} else {
+	    throw new InvalidParameterException();
+	}
     }
 
     /**
@@ -480,18 +478,18 @@ public class Edge {
      */
     public final Triangle returnOther(final Triangle t) {
 
-        Triangle triangle = null;
+	Triangle triangle = null;
 
-        if (this.triangles.size() == 2) {
-            if (this.triangles.get(0) == t) {
-                triangle = this.triangles.get(1);
-            }
-            if (this.triangles.get(1) == t) {
-                triangle = this.triangles.get(0);
-            }
-        }
+	if (this.triangles.size() == 2) {
+	    if (this.triangles.get(0) == t) {
+		triangle = this.triangles.get(1);
+	    }
+	    if (this.triangles.get(1) == t) {
+		triangle = this.triangles.get(0);
+	    }
+	}
 
-        return triangle;
+	return triangle;
     }
 
     /**
@@ -501,7 +499,7 @@ public class Edge {
      *            the first point
      */
     public final void setP1(final Point point) {
-        this.points[0] = point;
+	this.points[0] = point;
 
     }
 
@@ -512,7 +510,7 @@ public class Edge {
      *            the second point
      */
     public final void setP2(final Point point) {
-        this.points[1] = point;
+	this.points[1] = point;
     }
 
     /**
@@ -525,22 +523,23 @@ public class Edge {
      */
     public final Point sharedPoint(final Edge e) {
 
-        Point point = null;
-        if (this.contains(e.getP1())) {
-            point = e.getP1();
-        }
-        if (this.contains(e.getP2())) {
-            point = e.getP2();
-        }
-        return point;
+	Point point = null;
+	if (this.contains(e.getP1())) {
+	    point = e.getP1();
+	}
+	if (this.contains(e.getP2())) {
+	    point = e.getP2();
+	}
+	return point;
     }
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
     public final String toString() {
-        return new String("(" + this.getP1() + ", " + this.getP2() + ")");
+	return new String("(" + this.getP1() + ", " + this.getP2() + ")");
     }
 }

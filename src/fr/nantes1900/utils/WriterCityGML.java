@@ -1,9 +1,9 @@
 package fr.nantes1900.utils;
 
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.islets.Ground;
-import fr.nantes1900.models.islets.SpecialBuilding;
-import fr.nantes1900.models.middle.Polyline;
+import fr.nantes1900.models.islets.GroundIslet;
+import fr.nantes1900.models.islets.SpecialBuildingislet;
+import fr.nantes1900.models.middle.Polygone;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -35,6 +35,7 @@ import org.citygml4j.xml.io.writer.CityGMLWriter;
 
 /**
  * Implements a CityGML writer of a Town.
+ * 
  * @author Daniel Lefevre
  */
 public class WriterCityGML {

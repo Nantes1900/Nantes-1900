@@ -2,9 +2,10 @@ package fr.nantes1900.constants;
 
 /**
  * Contains some coefficients used in the algorithms.
+ * 
  * @author Daniel Lefevre
  */
-public class SeparationWallsRoofs {
+public class SeparationWallRoof {
 
     /**
      * Error factor : coefficient compared to a dot product to determine if a
