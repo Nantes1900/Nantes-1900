@@ -1,4 +1,4 @@
-package fr.nantes1900.models;
+package fr.nantes1900.models.middle;
 
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;

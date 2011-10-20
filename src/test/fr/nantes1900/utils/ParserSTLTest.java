@@ -1,9 +1,9 @@
 package test.fr.nantes1900.utils;
 
-import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.utils.WriterSTL;
 

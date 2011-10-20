@@ -1,10 +1,10 @@
 package test.fr.nantes1900.models.basis;
 
-import fr.nantes1900.models.Polyline;
-import fr.nantes1900.models.Polyline.BadFormedPolylineException;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.middle.Polyline;
+import fr.nantes1900.models.middle.Polyline.BadFormedPolylineException;
 
 import java.security.InvalidParameterException;
 import java.util.List;
@@ -132,7 +132,7 @@ public class EdgeTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#getNumNeighbours(fr.nantes1900.models.Polyline)}
+     * {@link fr.nantes1900.models.basis.Edge#getNumNeighbours(fr.nantes1900.models.middle.Polyline)}
      * .
      */
     @Test
@@ -298,7 +298,7 @@ public class EdgeTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#returnNeighbour(fr.nantes1900.models.Polyline, fr.nantes1900.models.basis.Point)}
+     * {@link fr.nantes1900.models.basis.Edge#returnNeighbour(fr.nantes1900.models.middle.Polyline, fr.nantes1900.models.basis.Point)}
      * .
      */
     @Test

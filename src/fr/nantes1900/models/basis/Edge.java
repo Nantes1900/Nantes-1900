@@ -1,8 +1,8 @@
 package fr.nantes1900.models.basis;
 
-import fr.nantes1900.models.Mesh;
-import fr.nantes1900.models.Polyline;
-import fr.nantes1900.models.Polyline.BadFormedPolylineException;
+import fr.nantes1900.models.middle.Mesh;
+import fr.nantes1900.models.middle.Polyline;
+import fr.nantes1900.models.middle.Polyline.BadFormedPolylineException;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;

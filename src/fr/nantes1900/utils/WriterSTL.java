@@ -1,8 +1,8 @@
 package fr.nantes1900.utils;
 
-import fr.nantes1900.models.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.middle.Mesh;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;

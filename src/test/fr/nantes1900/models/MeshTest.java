@@ -1,10 +1,10 @@
 package test.fr.nantes1900.models;
 
-import fr.nantes1900.models.Mesh;
-import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.middle.Mesh;
+import fr.nantes1900.models.middle.Polyline;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
@@ -109,7 +109,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#averageNormal()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#averageNormal()}.
      */
     @Test
     public final void testAverageNormal() {
@@ -118,7 +118,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#changeBase(double[][])}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#changeBase(double[][])}.
      */
     @Test
     public final static void testChangeBase() {
@@ -161,7 +161,7 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Mesh#contains(fr.nantes1900.models.basis.Edge)}
+     * {@link fr.nantes1900.models.middle.Mesh#contains(fr.nantes1900.models.basis.Edge)}
      * .
      */
     @Test
@@ -174,7 +174,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#faceUnderZ(double)}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#faceUnderZ(double)}.
      */
     @Test
     public final void testFaceUnderZ() {
@@ -182,7 +182,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#inPlanes()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#inPlanes()}.
      */
     @Test
     public final static void testInPlanes() {
@@ -224,7 +224,7 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Mesh#intersection(fr.nantes1900.models.Mesh, fr.nantes1900.models.Mesh)}
+     * {@link fr.nantes1900.models.middle.Mesh#intersection(fr.nantes1900.models.middle.Mesh, fr.nantes1900.models.middle.Mesh)}
      * .
      */
     @Test
@@ -267,7 +267,7 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Mesh#isNeighbour(fr.nantes1900.models.Mesh)}.
+     * {@link fr.nantes1900.models.middle.Mesh#isNeighbour(fr.nantes1900.models.middle.Mesh)}.
      */
     @Test
     public final void testIsNeighbour() {
@@ -278,7 +278,7 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Mesh#isOrientedAs(fr.nantes1900.models.Mesh, double)}
+     * {@link fr.nantes1900.models.middle.Mesh#isOrientedAs(fr.nantes1900.models.middle.Mesh, double)}
      * .
      */
     @Test
@@ -345,7 +345,7 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Mesh#orientedAs(javax.vecmath.Vector3d, double)}
+     * {@link fr.nantes1900.models.middle.Mesh#orientedAs(javax.vecmath.Vector3d, double)}
      * .
      */
     @Test
@@ -358,7 +358,7 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Mesh#orientedNormalTo(javax.vecmath.Vector3d, double)}
+     * {@link fr.nantes1900.models.middle.Mesh#orientedNormalTo(javax.vecmath.Vector3d, double)}
      * .
      */
     @Test
@@ -371,7 +371,7 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Mesh#remove(fr.nantes1900.models.Mesh)}.
+     * {@link fr.nantes1900.models.middle.Mesh#remove(fr.nantes1900.models.middle.Mesh)}.
      */
     @Test
     public final void testRemoveMesh() {
@@ -385,7 +385,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#returnUnsortedBounds()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#returnUnsortedBounds()}.
      */
     @Test
     public final static void testReturnUnsortedBounds() {
@@ -481,7 +481,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#xAverage()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#xAverage()}.
      */
     @Test
     public final void testXAverage() {
@@ -490,7 +490,7 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Mesh#xBetween(double, double)}.
+     * {@link fr.nantes1900.models.middle.Mesh#xBetween(double, double)}.
      */
     @Test
     public final void testXBetween() {
@@ -500,7 +500,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#xMax()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#xMax()}.
      */
     @Test
     public final void testXMax() {
@@ -508,7 +508,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#xMin()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#xMin()}.
      */
     @Test
     public final void testXMin() {
@@ -516,7 +516,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#yAverage()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#yAverage()}.
      */
     @Test
     public final void testYAverage() {
@@ -525,7 +525,7 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Mesh#yBetween(double, double)}.
+     * {@link fr.nantes1900.models.middle.Mesh#yBetween(double, double)}.
      */
     @Test
     public final void testYBetween() {
@@ -535,7 +535,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#yMax()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#yMax()}.
      */
     @Test
     public final void testYMax() {
@@ -543,7 +543,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#yMin()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#yMin()}.
      */
     @Test
     public final void testYMin() {
@@ -551,7 +551,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#zAverage()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#zAverage()}.
      */
     @Test
     public final void testZAverage() {
@@ -560,7 +560,7 @@ public class MeshTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Mesh#zBetween(double, double)}.
+     * {@link fr.nantes1900.models.middle.Mesh#zBetween(double, double)}.
      */
     @Test
     public final void testZBetween() {
@@ -570,7 +570,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#zMax()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#zMax()}.
      */
     @Test
     public final void testZMax() {
@@ -578,7 +578,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#zMin()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#zMin()}.
      */
     @Test
     public final void testZMin() {
@@ -586,7 +586,7 @@ public class MeshTest extends TestCase {
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Mesh#zMinFace()}.
+     * Test method for {@link fr.nantes1900.models.middle.Mesh#zMinFace()}.
      */
     @Test
     public final void testZMinFace() {

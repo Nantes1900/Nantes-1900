@@ -1,10 +1,10 @@
 package fr.nantes1900.utils;
 
-import fr.nantes1900.models.Mesh;
+import fr.nantes1900.models.Town;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.extended.Town;
+import fr.nantes1900.models.middle.Mesh;
 
 import java.io.BufferedInputStream;
 import java.io.FileInputStream;
@@ -23,6 +23,7 @@ import java.util.Set;
 import java.util.StringTokenizer;
 
 import javax.vecmath.Vector3d;
+
 
 /**
  * Implements a STL parser : detects if it is an ASCII or a binary file, and

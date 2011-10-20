@@ -1,6 +1,6 @@
-package fr.nantes1900.models.extended;
+package fr.nantes1900.models.islets;
 
-import fr.nantes1900.models.Mesh;
+import fr.nantes1900.models.middle.Mesh;
 
 /**
  * Implements a ground as a mesh with an associated String attribute.

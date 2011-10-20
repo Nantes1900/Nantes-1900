@@ -1,10 +1,10 @@
 package test.fr.nantes1900.models;
 
-import fr.nantes1900.models.Mesh;
-import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.middle.Mesh;
+import fr.nantes1900.models.middle.Polyline;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
@@ -80,7 +80,7 @@ public class PolylineTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Polyline#changeBase(double[][])} .
+     * {@link fr.nantes1900.models.middle.Polyline#changeBase(double[][])} .
      */
     @Test
     public final static void testChangeBase()
@@ -111,7 +111,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#edgeSize()}.
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#edgeSize()}.
      */
     @Test
     public final void testEdgeSize()
@@ -121,7 +121,7 @@ public class PolylineTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Polyline#getCylinder(fr.nantes1900.models.basis.Edge, double)}
+     * {@link fr.nantes1900.models.middle.Polyline#getCylinder(fr.nantes1900.models.basis.Edge, double)}
      * .
      */
     @Test
@@ -153,7 +153,7 @@ public class PolylineTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Polyline#getNeighbours(fr.nantes1900.models.basis.Point)}
+     * {@link fr.nantes1900.models.middle.Polyline#getNeighbours(fr.nantes1900.models.basis.Point)}
      * .
      */
     @Test
@@ -166,7 +166,7 @@ public class PolylineTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Polyline#getNumNeighbours(fr.nantes1900.models.basis.Point)}
+     * {@link fr.nantes1900.models.middle.Polyline#getNumNeighbours(fr.nantes1900.models.basis.Point)}
      * .
      */
     @Test
@@ -177,7 +177,7 @@ public class PolylineTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Polyline#isInCylinder2D(fr.nantes1900.models.basis.Point, fr.nantes1900.models.basis.Point, fr.nantes1900.models.basis.Point, double)}
+     * {@link fr.nantes1900.models.middle.Polyline#isInCylinder2D(fr.nantes1900.models.basis.Point, fr.nantes1900.models.basis.Point, fr.nantes1900.models.basis.Point, double)}
      * .
      */
     @Test
@@ -196,7 +196,7 @@ public class PolylineTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Polyline#isNeighbour(fr.nantes1900.models.Polyline)}
+     * {@link fr.nantes1900.models.middle.Polyline#isNeighbour(fr.nantes1900.models.middle.Polyline)}
      * .
      */
     @Test
@@ -208,7 +208,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#length()}.
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#length()}.
      */
     @Test
     public final void testLength()
@@ -217,7 +217,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#lengthAverage()} .
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#lengthAverage()} .
      */
     @Test
     public final void testLengthAverage()
@@ -228,7 +228,7 @@ public class PolylineTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Polyline#orientedAs(fr.nantes1900.models.basis.Edge, double)}
+     * {@link fr.nantes1900.models.middle.Polyline#orientedAs(fr.nantes1900.models.basis.Edge, double)}
      * .
      */
     @Test
@@ -251,7 +251,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#pointSize()}.
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#pointSize()}.
      */
     @Test
     public final void testPointSize()
@@ -260,7 +260,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#refresh()}.
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#refresh()}.
      */
     @Test
     public final void testRefresh()
@@ -284,7 +284,7 @@ public class PolylineTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Polyline#remove(fr.nantes1900.models.basis.Edge)}
+     * {@link fr.nantes1900.models.middle.Polyline#remove(fr.nantes1900.models.basis.Edge)}
      * .
      */
     @Test
@@ -306,7 +306,7 @@ public class PolylineTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Polyline#remove(fr.nantes1900.models.Polyline)}
+     * {@link fr.nantes1900.models.middle.Polyline#remove(fr.nantes1900.models.middle.Polyline)}
      * .
      */
     @Test
@@ -328,7 +328,7 @@ public class PolylineTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Polyline#returnCentroidMesh()} .
+     * {@link fr.nantes1900.models.middle.Polyline#returnCentroidMesh()} .
      */
     @Test
     public final static void testReturnCentroidMesh()
@@ -359,7 +359,7 @@ public class PolylineTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Polyline#returnExistingMesh(fr.nantes1900.models.Mesh)}
+     * {@link fr.nantes1900.models.middle.Polyline#returnExistingMesh(fr.nantes1900.models.middle.Mesh)}
      * .
      */
     @Test
@@ -398,7 +398,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#xAverage()}.
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#xAverage()}.
      */
     @Test
     public final void testXAverage()
@@ -408,7 +408,7 @@ public class PolylineTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Polyline#xBetween(double, double)} .
+     * {@link fr.nantes1900.models.middle.Polyline#xBetween(double, double)} .
      */
     @Test
     public final void testXBetween()
@@ -428,7 +428,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#xLengthAverage()} .
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#xLengthAverage()} .
      */
     @Test
     public final void testXLengthAverage()
@@ -437,7 +437,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#xMax()}.
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#xMax()}.
      */
     @Test
     public final void testXMax()
@@ -446,7 +446,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#xMin()}.
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#xMin()}.
      */
     @Test
     public final void testXMin()
@@ -455,7 +455,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#yAverage()}.
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#yAverage()}.
      */
     @Test
     public final void testYAverage()
@@ -465,7 +465,7 @@ public class PolylineTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Polyline#yBetween(double, double)} .
+     * {@link fr.nantes1900.models.middle.Polyline#yBetween(double, double)} .
      */
     @Test
     public final void testYBetween()
@@ -485,7 +485,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#yLengthAverage()} .
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#yLengthAverage()} .
      */
     @Test
     public final void testYLengthAverage()
@@ -494,7 +494,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#yMax()}.
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#yMax()}.
      */
     @Test
     public final void testYMax()
@@ -503,7 +503,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#yMin()}.
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#yMin()}.
      */
     @Test
     public final void testYMin()
@@ -512,7 +512,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#zAverage()}.
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#zAverage()}.
      */
     @Test
     public final void testZAverage()
@@ -522,7 +522,7 @@ public class PolylineTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.Polyline#zBetween(double, double)} .
+     * {@link fr.nantes1900.models.middle.Polyline#zBetween(double, double)} .
      */
     @Test
     public final void testZBetween()
@@ -542,7 +542,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#zLengthAverage()} .
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#zLengthAverage()} .
      */
     @Test
     public final void testZLengthAverage()
@@ -551,7 +551,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#zMax()}.
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#zMax()}.
      */
     @Test
     public final void testZMax()
@@ -560,7 +560,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#zMaxPoint()}.
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#zMaxPoint()}.
      */
     @Test
     public final void testZMaxPoint()
@@ -569,7 +569,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#zMin()}.
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#zMin()}.
      */
     @Test
     public final void testZMin()
@@ -578,7 +578,7 @@ public class PolylineTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.Polyline#zProjection(double)}
+     * Test method for {@link fr.nantes1900.models.middle.Polyline#zProjection(double)}
      * .
      */
     @Test
