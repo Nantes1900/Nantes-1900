@@ -2,7 +2,7 @@ package fr.nantes1900.utils;
 
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.islets.GroundIslet;
-import fr.nantes1900.models.islets.SpecialBuildingislet;
+import fr.nantes1900.models.islets.SpecialBuildingIslet;
 import fr.nantes1900.models.middle.Polygone;
 
 import java.io.File;

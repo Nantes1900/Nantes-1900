@@ -7,7 +7,7 @@ import fr.nantes1900.models.middle.Mesh;
  * 
  * @author Daniel Lefevre
  */
-public class SpecialBuildingislet extends AbstractIslet {
+public class SpecialBuildingIslet extends AbstractIslet {
 
     /**
      * The mesh describing the surface of the special building.
@@ -17,7 +17,7 @@ public class SpecialBuildingislet extends AbstractIslet {
     /**
      * Constructor. TODO : redo
      */
-    public SpecialBuildingislet(Mesh m) {
+    public SpecialBuildingIslet(Mesh m) {
 	super(m);
     }
 

@@ -8,7 +8,7 @@ import fr.nantes1900.constants.FilesNames;
 import fr.nantes1900.models.islets.GroundIslet;
 import fr.nantes1900.models.islets.IndustrialIslet;
 import fr.nantes1900.models.islets.ResidentialIslet;
-import fr.nantes1900.models.islets.SpecialBuildingislet;
+import fr.nantes1900.models.islets.SpecialBuildingIslet;
 import fr.nantes1900.models.islets.WateryIslet;
 
 /**
@@ -44,7 +44,7 @@ public class MockupPart {
     /**
      * List of special buildings.
      */
-    private final List<SpecialBuildingislet> specialBuildingislets = new ArrayList<SpecialBuildingislet>();
+    private final List<SpecialBuildingIslet> specialBuildingIslets = new ArrayList<SpecialBuildingIslet>();
 
     public MockupPart(String directoryName) {
 
@@ -104,13 +104,13 @@ public class MockupPart {
     /**
      * Adds a special building to the attribute list of special buildings.
      * 
-     * @param specialBuildingislet
+     * @param specialBuildingIslet
      *            the special building to add
      */
     public final void addSpecialBuilding(
-	    final SpecialBuildingislet specialBuildingislet) {
-	if (!this.specialBuildingislets.contains(specialBuildingislet)) {
-	    this.specialBuildingislets.add(specialBuildingislet);
+	    final SpecialBuildingIslet specialBuildingIslet) {
+	if (!this.specialBuildingIslets.contains(specialBuildingIslet)) {
+	    this.specialBuildingIslets.add(specialBuildingIslet);
 	}
     }
 
