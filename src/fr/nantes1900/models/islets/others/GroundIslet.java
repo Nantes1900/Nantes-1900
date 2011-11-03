@@ -1,5 +1,6 @@
-package fr.nantes1900.models.islets;
+package fr.nantes1900.models.islets.others;
 
+import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.middle.Mesh;
 
 /**
@@ -8,11 +9,6 @@ import fr.nantes1900.models.middle.Mesh;
  * @author Daniel Lefevre
  */
 public class GroundIslet extends AbstractIslet {
-
-    /**
-     * The mesh describing the surface.
-     */
-    private Mesh mesh = new Mesh();
 
     /**
      * Constructor. Builds the Ground with an attribute as a String.
@@ -31,9 +27,9 @@ public class GroundIslet extends AbstractIslet {
      *            the mesh to convert
      */
     public final void buildFromMesh(final Mesh m) {
-	this.mesh = new Mesh(m);
+	this.initialTotalMesh = new Mesh(m);
 
-	this.decimate(this.mesh);
+	this.decimate(this.initialTotalMesh);
     }
 
     /**
@@ -52,7 +48,7 @@ public class GroundIslet extends AbstractIslet {
      * @return the ground as a mesh
      */
     public final Mesh getMesh() {
-	return this.mesh;
+	return this.initialTotalMesh;
     }
 
     /**
@@ -62,7 +58,7 @@ public class GroundIslet extends AbstractIslet {
      *            the name of the file to write in
      */
     public final void writeSTL(final String fileName) {
-	this.mesh.writeSTL(fileName);
+	this.initialTotalMesh.writeSTL(fileName);
     }
 
     /**

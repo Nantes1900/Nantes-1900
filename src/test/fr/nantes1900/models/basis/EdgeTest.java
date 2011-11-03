@@ -3,8 +3,8 @@ package test.fr.nantes1900.models.basis;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.Polygone;
-import fr.nantes1900.models.middle.Polygone.BadFormedPolylineException;
+import fr.nantes1900.models.middle.Polygon;
+import fr.nantes1900.models.middle.Polygon.BadFormedPolylineException;
 
 import java.security.InvalidParameterException;
 import java.util.List;
@@ -54,7 +54,7 @@ public class EdgeTest extends TestCase {
     /** Test attribute. */
     private final Edge edge6 = new Edge(this.point3, this.point4);
     /** Test attribute. */
-    private final Polygone polygone = new Polygone();
+    private final Polygon polygon = new Polygon();
 
     /**
      * Constructor of the test class EdgeTest : creates a polyline for the
@@ -66,10 +66,10 @@ public class EdgeTest extends TestCase {
 		this.edge1, this.edge2, this.edge3, this.vect);
 	this.triangle2 = new Triangle(this.point1, this.point2, this.point4,
 		this.edge1, this.edge4, this.edge5, this.vect);
-	this.polygone.add(this.edge1);
-	this.polygone.add(this.edge2);
-	this.polygone.add(this.edge4);
-	this.polygone.add(this.edge6);
+	this.polygon.add(this.edge1);
+	this.polygon.add(this.edge2);
+	this.polygon.add(this.edge4);
+	this.polygon.add(this.edge6);
     }
 
     /**
@@ -126,12 +126,12 @@ public class EdgeTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#getNumNeighbours(fr.nantes1900.models.middle.Polygone)}
+     * {@link fr.nantes1900.models.basis.Edge#getNumNeighbours(fr.nantes1900.models.middle.Polygon)}
      * .
      */
     @Test
     public final void testGetNumNeighbours() {
-	final Polygone p = new Polygone();
+	final Polygon p = new Polygon();
 	p.add(this.edge1);
 	p.add(this.edge2);
 	p.add(this.edge3);
@@ -281,7 +281,7 @@ public class EdgeTest extends TestCase {
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#returnNeighbour(fr.nantes1900.models.middle.Polygone, fr.nantes1900.models.basis.Point)}
+     * {@link fr.nantes1900.models.basis.Edge#returnNeighbour(fr.nantes1900.models.middle.Polygon, fr.nantes1900.models.basis.Point)}
      * .
      */
     @Test
@@ -293,7 +293,7 @@ public class EdgeTest extends TestCase {
 	final Edge e1 = new Edge(p1, p2);
 	final Edge e2 = new Edge(p1, p3);
 
-	final Polygone b = new Polygone();
+	final Polygon b = new Polygon();
 	b.add(e1);
 	b.add(e2);
 

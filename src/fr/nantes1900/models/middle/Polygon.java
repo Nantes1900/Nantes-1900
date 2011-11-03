@@ -15,7 +15,7 @@ import javax.vecmath.Vector3d;
  * 
  * @author Daniel Lefevre
  */
-public class Polygone {
+public class Polygon {
 
     /**
      * ID counter.
@@ -45,8 +45,8 @@ public class Polygone {
     /**
      * Void constructor.
      */
-    public Polygone() {
-	this.iD = ++Polygone.currentID;
+    public Polygon() {
+	this.iD = ++Polygon.currentID;
     }
 
     /**
@@ -55,7 +55,7 @@ public class Polygone {
      * @param a
      *            the list of edges
      */
-    public Polygone(final List<Edge> a) {
+    public Polygon(final List<Edge> a) {
 	for (final Edge e : a) {
 	    // Checks if the objects added are not already contained in the
 	    // list.
@@ -70,7 +70,7 @@ public class Polygone {
 	    }
 	}
 
-	this.iD = ++Polygone.currentID;
+	this.iD = ++Polygon.currentID;
     }
 
     /**
@@ -81,7 +81,7 @@ public class Polygone {
      * @param p
      *            the polyline to copy
      */
-    public Polygone(final Polygone p) {
+    public Polygon(final Polygon p) {
 	this(p.getEdgeList());
 
 	// For each point, make the list of the edges which contain this point.
@@ -344,7 +344,7 @@ public class Polygone {
      *            the polyline to search in
      * @return true if one point belongs to the other polyline, false otherwise
      */
-    public final boolean isNeighbour(final Polygone p) {
+    public final boolean isNeighbour(final Polygon p) {
 	if (p != this) {
 	    for (final Edge e1 : this.edgeList) {
 		if (p.contains(e1)) {
@@ -389,8 +389,8 @@ public class Polygone {
      *            the orientation error
      * @return the polyline containing all those edges
      */
-    public final Polygone orientedAs(final Edge e, final double error) {
-	final Polygone ret = new Polygone();
+    public final Polygon orientedAs(final Edge e, final double error) {
+	final Polygon ret = new Polygon();
 
 	for (final Edge edge : this.edgeList) {
 	    if (edge.orientedAs(e, error)) {
@@ -440,7 +440,7 @@ public class Polygone {
      * @param p
      *            the list of edges to remove
      */
-    public final void remove(final Polygone p) {
+    public final void remove(final Polygon p) {
 	final List<Edge> edges = new ArrayList<Edge>(this.edgeList);
 	for (final Edge e : p.edgeList) {
 	    edges.remove(e);
@@ -546,8 +546,8 @@ public class Polygone {
      * @return the polyline composed by the edges contained in this which the x
      *         coordinates are in the bounds m1 and m2
      */
-    public final Polygone xBetween(final double m1, final double m2) {
-	final Polygone b = new Polygone();
+    public final Polygon xBetween(final double m1, final double m2) {
+	final Polygon b = new Polygon();
 	for (final Edge e : this.edgeList) {
 	    if (e.getP1().getX() > Math.min(m1, m2)
 		    && e.getP1().getX() < Math.max(m1, m2)
@@ -626,8 +626,8 @@ public class Polygone {
      * @return the polyline composed by the edges contained in this which the y
      *         coordinates are in the bounds m1 and m2
      */
-    public final Polygone yBetween(final double m1, final double m2) {
-	final Polygone b = new Polygone();
+    public final Polygon yBetween(final double m1, final double m2) {
+	final Polygon b = new Polygon();
 	for (final Edge e : this.edgeList) {
 	    if (e.getP1().getY() > Math.min(m1, m2)
 		    && e.getP1().getY() < Math.max(m1, m2)
@@ -706,8 +706,8 @@ public class Polygone {
      * @return the polyline composed by the edges contained in this which the z
      *         coordinates are in the bounds m1 and m2
      */
-    public final Polygone zBetween(final double m1, final double m2) {
-	final Polygone b = new Polygone();
+    public final Polygon zBetween(final double m1, final double m2) {
+	final Polygon b = new Polygon();
 	for (final Edge e : this.edgeList) {
 	    if (e.getP1().getZ() > Math.min(m1, m2)
 		    && e.getP1().getZ() < Math.max(m1, m2)

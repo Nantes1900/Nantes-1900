@@ -286,11 +286,11 @@ public class Mesh extends HashSet<Triangle> {
     public final double minimalDistance(final Mesh mesh) {
 
 	final Set<Point> hash1 = new HashSet<Point>();
-	final Polygone poly1 = this.returnUnsortedBounds();
+	final Polygon poly1 = this.returnUnsortedBounds();
 	hash1.addAll(poly1.getPointList());
 
 	final Set<Point> hash2 = new HashSet<Point>();
-	final Polygone poly2 = mesh.returnUnsortedBounds();
+	final Polygon poly2 = mesh.returnUnsortedBounds();
 	hash2.addAll(poly2.getPointList());
 
 	double minDistance = Double.POSITIVE_INFINITY;
@@ -363,8 +363,8 @@ public class Mesh extends HashSet<Triangle> {
      * 
      * @return the polyline containing these edges
      */
-    public final Polygone returnUnsortedBounds() {
-	final Polygone bounds = new Polygone();
+    public final Polygon returnUnsortedBounds() {
+	final Polygon bounds = new Polygon();
 
 	// Select every edges of the mesh.
 	for (final Triangle tri : this) {

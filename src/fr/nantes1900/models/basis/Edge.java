@@ -1,8 +1,8 @@
 package fr.nantes1900.models.basis;
 
 import fr.nantes1900.models.middle.Mesh;
-import fr.nantes1900.models.middle.Polygone;
-import fr.nantes1900.models.middle.Polygone.BadFormedPolylineException;
+import fr.nantes1900.models.middle.Polygon;
+import fr.nantes1900.models.middle.Polygon.BadFormedPolylineException;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -137,16 +137,16 @@ public class Edge {
      * Returns the number of neighbours of the edge contained in the polyline p.
      * Two neighbours are two edges which share a point.
      * 
-     * @param polygone
+     * @param polygon
      *            the polyline which contains the edges
      * @return the number of neighbours
      */
-    public final int getNumNeighbours(final Polygone polygone) {
-	if (!polygone.contains(this)) {
+    public final int getNumNeighbours(final Polygon polygon) {
+	if (!polygon.contains(this)) {
 	    throw new InvalidParameterException();
 	}
 	int counter = 0;
-	for (final Edge e : polygone.getEdgeList()) {
+	for (final Edge e : polygon.getEdgeList()) {
 	    if (this.isNeighboor(e)) {
 		counter = counter + 1;
 	    }
@@ -440,7 +440,7 @@ public class Edge {
      * @throws BadFormedPolylineException
      *             if a point in the polyline does not belong to the two edges
      */
-    public final Edge returnNeighbour(final Polygone b, final Point p)
+    public final Edge returnNeighbour(final Polygon b, final Point p)
 	    throws BadFormedPolylineException {
 
 	final List<Edge> list = b.getNeighbours(p);

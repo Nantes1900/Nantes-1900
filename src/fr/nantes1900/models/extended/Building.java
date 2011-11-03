@@ -12,7 +12,7 @@ import fr.nantes1900.constants.SeparationWallRoof;
 import fr.nantes1900.constants.SeparationWallsSeparationRoofs;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.middle.Mesh;
-import fr.nantes1900.models.middle.Polygone;
+import fr.nantes1900.models.middle.Polygon;
 import fr.nantes1900.models.middle.Surface;
 import fr.nantes1900.models.middle.Surface.ImpossibleNeighboursOrderException;
 import fr.nantes1900.models.middle.Surface.InvalidSurfaceException;
@@ -28,6 +28,19 @@ public class Building {
     private Mesh initialTotalMesh;
     private Mesh initialWall;
     private Mesh initialRoof;
+
+    public Mesh getInitialTotalMesh() {
+	return this.initialTotalMesh;
+    }
+
+    public Mesh getInitialWall() {
+	return this.initialWall;
+    }
+
+    public Mesh getInitialRoof() {
+	return this.initialRoof;
+    }
+
     private Mesh noise;
     private final List<Surface> walls = new ArrayList<Surface>();
     private final List<Surface> roofs = new ArrayList<Surface>();
@@ -194,7 +207,7 @@ public class Building {
 	    try {
 		// When the neighbours are sorted, finds the intersection of
 		// them to find the edges of this surface.
-		final Polygone p = surface.findEdges(this.walls, pointMap,
+		final Polygon p = surface.findEdges(this.walls, pointMap,
 			normalGround);
 
 		surface.setPolygone(p);
@@ -218,7 +231,7 @@ public class Building {
 
     public void determinateNeighbours(final Surface grounds) {
 
-	final Polygone groundsBounds = grounds.getMesh().returnUnsortedBounds();
+	final Polygon groundsBounds = grounds.getMesh().returnUnsortedBounds();
 
 	final List<Surface> wholeList = new ArrayList<Surface>();
 	wholeList.addAll(this.walls);
@@ -242,7 +255,7 @@ public class Building {
 	grounds.getNeighbours().clear();
 
 	// We compute the bounds to check if they share a common edge.
-	final List<Polygone> wholeBoundsList = new ArrayList<Polygone>();
+	final List<Polygon> wholeBoundsList = new ArrayList<Polygon>();
 	for (final Mesh m : wholeListFakes) {
 	    wholeBoundsList.add(m.returnUnsortedBounds());
 	}
@@ -250,10 +263,10 @@ public class Building {
 	// Then we check every edge of the bounds to see if some are shared by
 	// two meshes. If they do, they are neighbours.
 	for (int i = 0; i < wholeBoundsList.size(); i = i + 1) {
-	    final Polygone polygone1 = wholeBoundsList.get(i);
+	    final Polygon polygone1 = wholeBoundsList.get(i);
 
 	    for (int j = i + 1; j < wholeBoundsList.size(); j = j + 1) {
-		final Polygone polygone2 = wholeBoundsList.get(j);
+		final Polygon polygone2 = wholeBoundsList.get(j);
 
 		if (polygone1.isNeighbour(polygone2)) {
 		    wholeList.get(i).addNeighbour(wholeList.get(j));
@@ -269,7 +282,7 @@ public class Building {
     // FIXME : what is the difference between searchForNeighbours and
     // determinateNeighbours.
     private void searchForNeighbours(final Surface grounds) {
-	final Polygone groundsBounds = grounds.getMesh().returnUnsortedBounds();
+	final Polygon groundsBounds = grounds.getMesh().returnUnsortedBounds();
 
 	final List<Surface> wholeList = new ArrayList<Surface>();
 	wholeList.addAll(this.walls);
@@ -282,7 +295,7 @@ public class Building {
 	// And we clear the neighbours of the grounds.
 	grounds.getNeighbours().clear();
 
-	final List<Polygone> wholeBoundsList = new ArrayList<Polygone>();
+	final List<Polygon> wholeBoundsList = new ArrayList<Polygon>();
 
 	// We compute the bounds to check if they share a common edge.
 	for (final Surface m : wholeList) {
@@ -292,10 +305,10 @@ public class Building {
 	// Then we check every edge of the bounds to see if some are shared
 	// by two meshes. If they do, they are neighbours.
 	for (int i = 0; i < wholeBoundsList.size(); i = i + 1) {
-	    final Polygone polygone1 = wholeBoundsList.get(i);
+	    final Polygon polygone1 = wholeBoundsList.get(i);
 
 	    for (int j = i + 1; j < wholeBoundsList.size(); j = j + 1) {
-		final Polygone polygone2 = wholeBoundsList.get(j);
+		final Polygon polygone2 = wholeBoundsList.get(j);
 		if (polygone1.isNeighbour(polygone2)) {
 		    wholeList.get(i).addNeighbour(wholeList.get(j));
 		}
@@ -307,7 +320,7 @@ public class Building {
 	}
     }
 
-    public DefaultMutableTreeNode returnTreeNode() {
+    public DefaultMutableTreeNode returnTree() {
 	DefaultMutableTreeNode currentNode = new DefaultMutableTreeNode();
 
 	for (int wallNumber = 0; wallNumber < this.walls.size(); wallNumber++) {

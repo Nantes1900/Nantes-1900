@@ -26,10 +26,10 @@ public class Surface {
      */
     private final List<Surface> neighbours = new ArrayList<Surface>();
 
-    private Polygone polygone = new Polygone();
+    private Polygon polygon = new Polygon();
     private Mesh mesh = new Mesh();
 
-    public Surface(Polygone p) {
+    public Surface(Polygon p) {
 	this.setPolygone(p);
     }
 
@@ -74,11 +74,11 @@ public class Surface {
      * @throws InvalidSurfaceException
      *             if a problem happened
      */
-    public final Polygone findEdges(final List<Surface> wallList,
+    public final Polygon findEdges(final List<Surface> wallList,
 	    final Map<Point, Point> pointMap, final Vector3d normalGround)
 	    throws InvalidSurfaceException {
 
-	final Polygone edges = new Polygone();
+	final Polygon edges = new Polygon();
 
 	// The neighbours are sorted, then it's easy to make the edges and
 	// points.
@@ -417,12 +417,12 @@ public class Surface {
 	return ret;
     }
 
-    public Polygone getPolygone() {
-	return this.polygone;
+    public Polygon getPolygone() {
+	return this.polygon;
     }
 
-    public void setPolygone(Polygone polygoneIn) {
-	this.polygone = polygoneIn;
+    public void setPolygone(Polygon polygoneIn) {
+	this.polygon = polygoneIn;
     }
 
     public Mesh getMesh() {

@@ -69,8 +69,19 @@ public abstract class AbstractIslet {
 	}
     }
 
-    protected void changeBase() {
-	// TODO : if there is no matrix, or no mesh...
+    protected void changeBase() throws UnCompletedParametersException {
+	if (this.matrix == null || this.initialTotalMesh == null) {
+	    throw new UnCompletedParametersException();
+	}
 	this.initialTotalMesh.changeBase(this.matrix);
+    }
+
+    public class UnCompletedParametersException extends Exception {
+
+	private static final long serialVersionUID = 1L;
+
+	public UnCompletedParametersException() {
+	    // Nothing here.
+	}
     }
 }

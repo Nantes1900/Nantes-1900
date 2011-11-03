@@ -1,5 +1,6 @@
-package fr.nantes1900.models.islets;
+package fr.nantes1900.models.islets.others;
 
+import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.middle.Mesh;
 
 public class WateryIslet extends AbstractIslet {

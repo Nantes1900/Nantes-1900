@@ -4,7 +4,7 @@ import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.middle.Mesh;
-import fr.nantes1900.models.middle.Polygone;
+import fr.nantes1900.models.middle.Polygon;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
@@ -447,7 +447,7 @@ public class MeshTest extends TestCase {
 	mesh.add(triangle7);
 	mesh.add(triangle8);
 
-	final Polygone bounds = mesh.returnUnsortedBounds();
+	final Polygon bounds = mesh.returnUnsortedBounds();
 	Assert.assertTrue(bounds.contains(point1));
 	Assert.assertTrue(bounds.contains(point2));
 	Assert.assertTrue(bounds.contains(point3));
