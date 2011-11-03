@@ -1,9 +1,9 @@
 package fr.nantes1900.utils;
 
-import fr.nantes1900.models.Polyline;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.extended.Ground;
-import fr.nantes1900.models.extended.SpecialBuilding;
+import fr.nantes1900.models.islets.GroundIslet;
+import fr.nantes1900.models.islets.SpecialBuildingIslet;
+import fr.nantes1900.models.middle.Polygone;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -39,316 +39,318 @@ import org.citygml4j.xml.io.writer.CityGMLWriter;
  * @author Daniel Lefevre
  */
 public class WriterCityGML {
-
-    /**
-     * The city gml factory.
-     */
-    private final CityGMLFactory citygml = new CityGMLFactory();
-    /**
-     * The gml factory.
-     */
-    private final GMLFactory gml = new GMLFactory();
-    /**
-     * The city model.
-     */
-    private final CityModel cityModel = this.citygml.createCityModel();
-    /**
-     * The gml ID manager.
-     */
-    private final GMLIdManager gmlIdManager = DefaultGMLIdManager.getInstance();
-    /**
-     * The geometry factory.
-     */
-    private final GMLGeometryFactory geom = new GMLGeometryFactory();
-    /**
-     * The JAXB building.
-     */
-    private JAXBBuilder builder;
-
-    /**
-     * The name of the file to write in.
-     */
-    private final String fileName;
-
-    /**
-     * Constructor.
-     * 
-     * @param fileNameWrite
-     *            the file to write in
-     */
-    public WriterCityGML(final String fileNameWrite) {
-
-        try {
-            final CityGMLContext ctx = new CityGMLContext();
-            this.builder = ctx.createJAXBBuilder();
-        } catch (final JAXBException e) {
-            e.printStackTrace();
-        }
-
-        this.fileName = fileNameWrite;
-    }
-
-    /**
-     * Adds a building to the CityGMLFactory.
-     * 
-     * @param buildingToAdd
-     *            the building to write
-     */
-    public final void addBuilding(
-        final fr.nantes1900.models.extended.Building buildingToAdd) {
-        final Building building = this.citygml.createBuilding();
-
-        // LOD2 solid
-        final List<SurfaceProperty> surfaceMember =
-            new ArrayList<SurfaceProperty>();
-
-        // Creates the surface object.
-        final CompositeSurface compositeSurface =
-            this.gml.createCompositeSurface();
-        compositeSurface.setSurfaceMember(surfaceMember);
-        final Solid solid = this.gml.createSolid();
-        solid.setExterior(this.gml.createSurfaceProperty(compositeSurface));
-
-        building.setLod2Solid(this.gml.createSolidProperty(solid));
-
-        // Thematic boundary surfaces
-        final List<BoundarySurfaceProperty> boundedBy =
-            new ArrayList<BoundarySurfaceProperty>();
-
-        try {
-            for (final Polyline surface : buildingToAdd.getWalls()) {
-                // Creates the geometry as a suite of coordinates.
-                final Polygon geometry =
-                    this.geom.createLinearPolygon(surface
-                        .getPointsAsCoordinates(), 3);
-
-                // Adds an ID.
-                geometry.setId(this.gmlIdManager.generateGmlId());
-                surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
-                    .getId()));
-
-                // Creates a surface.
-                final AbstractBoundarySurface boundarySurface =
-                    this.citygml.createWallSurface();
-
-                // Adds the polygon as a surface.
-                boundarySurface.setLod2MultiSurface(this.gml
-                    .createMultiSurfaceProperty(this.gml
-                        .createMultiSurface(geometry)));
-
-                boundedBy.add(this.citygml
-                    .createBoundarySurfaceProperty(boundarySurface));
-            }
-
-            // Idem for the roofs.
-            for (final Polyline surface : buildingToAdd.getRoofs()) {
-                // Creates the polygon.
-                final Polygon geometry =
-                    this.geom.createLinearPolygon(surface
-                        .getPointsAsCoordinates(), 3);
-                geometry.setId(this.gmlIdManager.generateGmlId());
-                surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
-                    .getId()));
-
-                // Creates the roof.
-                final AbstractBoundarySurface boundarySurface =
-                    this.citygml.createRoofSurface();
-
-                // Adds the polygon as the surface.
-                boundarySurface.setLod2MultiSurface(this.gml
-                    .createMultiSurfaceProperty(this.gml
-                        .createMultiSurface(geometry)));
-
-                boundedBy.add(this.citygml
-                    .createBoundarySurfaceProperty(boundarySurface));
-            }
-        } catch (final DimensionMismatchException e) {
-            e.printStackTrace();
-        }
-
-        building.setBoundedBySurface(boundedBy);
-
-        this.cityModel.setBoundedBy(building.calcBoundedBy(false));
-        this.cityModel.addCityObjectMember(this.citygml
-            .createCityObjectMember(building));
-    }
-
-    /**
-     * Adds a list of edifices to the CityGMLFactory.
-     * 
-     * @param buildings
-     *            the list of buildings to add
-     */
-    public final void addBuildings(
-        final List<fr.nantes1900.models.extended.Building> buildings) {
-        for (final fr.nantes1900.models.extended.Building building : buildings) {
-            this.addBuilding(building);
-        }
-    }
-
-    /**
-     * Adds a ground to the CityGMLFactory.
-     * 
-     * @param ground
-     *            the ground to add
-     */
-    public final void addGround(final Ground ground) {
-        final Building building = this.citygml.createBuilding();
-
-        // LOD2 solid
-        final List<SurfaceProperty> surfaceMember =
-            new ArrayList<SurfaceProperty>();
-
-        final CompositeSurface compositeSurface =
-            this.gml.createCompositeSurface();
-        compositeSurface.setSurfaceMember(surfaceMember);
-        final Solid solid = this.gml.createSolid();
-        solid.setExterior(this.gml.createSurfaceProperty(compositeSurface));
-
-        building.setLod2Solid(this.gml.createSolidProperty(solid));
-
-        // Thematic boundary surfaces
-        final List<BoundarySurfaceProperty> boundedBy =
-            new ArrayList<BoundarySurfaceProperty>();
-
-        try {
-            for (final Triangle t : ground.getMesh()) {
-                // Creates the polygon.
-                final Polygon geometry =
-                    this.geom
-                        .createLinearPolygon(t.getPointsAsCoordinates(), 3);
-                geometry.setId(this.gmlIdManager.generateGmlId());
-                surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
-                    .getId()));
-
-                // Creates the ground surface.
-                final AbstractBoundarySurface boundarySurface =
-                    this.citygml.createGroundSurface();
-
-                // Adds the polygon as the surface.
-                boundarySurface.setLod2MultiSurface(this.gml
-                    .createMultiSurfaceProperty(this.gml
-                        .createMultiSurface(geometry)));
-
-                boundedBy.add(this.citygml
-                    .createBoundarySurfaceProperty(boundarySurface));
-            }
-        } catch (final DimensionMismatchException e) {
-            e.printStackTrace();
-        }
-
-        building.setBoundedBySurface(boundedBy);
-
-        this.cityModel.setBoundedBy(building.calcBoundedBy(false));
-        this.cityModel.addCityObjectMember(this.citygml
-            .createCityObjectMember(building));
-    }
-
-    /**
-     * Adds a list of grounds to the CityGMLFactory.
-     * 
-     * @param grounds
-     *            the list of grounds to add
-     */
-    public final void addGrounds(final List<Ground> grounds) {
-        for (final Ground ground : grounds) {
-            this.addGround(ground);
-        }
-    }
-
-    /**
-     * Creates a CityGML Building, and adds the special building as a mesh.
-     * 
-     * @param specialBuilding
-     *            the mesh of the special building
-     */
-    public final void addSpecialBuilding(final SpecialBuilding specialBuilding) {
-        final Building building = this.citygml.createBuilding();
-
-        // LOD2 solid
-        final List<SurfaceProperty> surfaceMember =
-            new ArrayList<SurfaceProperty>();
-
-        final CompositeSurface compositeSurface =
-            this.gml.createCompositeSurface();
-        compositeSurface.setSurfaceMember(surfaceMember);
-        final Solid solid = this.gml.createSolid();
-        solid.setExterior(this.gml.createSurfaceProperty(compositeSurface));
-
-        building.setLod2Solid(this.gml.createSolidProperty(solid));
-
-        // Thematic boundary surfaces
-        final List<BoundarySurfaceProperty> boundedBy =
-            new ArrayList<BoundarySurfaceProperty>();
-
-        try {
-            for (final Triangle t : specialBuilding.getMesh()) {
-                // Creates the polygon.
-                final Polygon geometry =
-                    this.geom
-                        .createLinearPolygon(t.getPointsAsCoordinates(), 3);
-                geometry.setId(this.gmlIdManager.generateGmlId());
-                surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
-                    .getId()));
-
-                // Creates the building as a surface.
-                final AbstractBoundarySurface boundarySurface =
-                    this.citygml.createWallSurface();
-
-                // Adds the polygon as the surface.
-                boundarySurface.setLod2MultiSurface(this.gml
-                    .createMultiSurfaceProperty(this.gml
-                        .createMultiSurface(geometry)));
-
-                boundedBy.add(this.citygml
-                    .createBoundarySurfaceProperty(boundarySurface));
-            }
-        } catch (final DimensionMismatchException e) {
-            e.printStackTrace();
-        }
-
-        building.setBoundedBySurface(boundedBy);
-
-        this.cityModel.setBoundedBy(building.calcBoundedBy(false));
-        this.cityModel.addCityObjectMember(this.citygml
-            .createCityObjectMember(building));
-    }
-
-    /**
-     * Adds a list of special buildings as meshes.
-     * 
-     * @param specialBuildings
-     *            the list of the special buildings
-     */
-    public final void addSpecialBuildings(
-        final List<SpecialBuilding> specialBuildings) {
-        for (final SpecialBuilding specialBuilding : specialBuildings) {
-            this.addSpecialBuilding(specialBuilding);
-        }
-    }
-
-    /**
-     * Writes the CityGML file with the CityGMLFactory.
-     */
-    public final void write() {
-
-        CityGMLOutputFactory out;
-        try {
-            out =
-                this.builder.createCityGMLOutputFactory(CityGMLVersion.v1_0_0);
-            final CityGMLWriter writer =
-                out.createCityGMLWriter(new File(this.fileName));
-
-            writer.setPrefixes(CityGMLVersion.v1_0_0);
-            writer.setSchemaLocations(CityGMLVersion.v1_0_0);
-            writer.setIndentString("  ");
-            writer.write(this.cityModel);
-            writer.close();
-        } catch (final CityGMLReadException e) {
-            e.printStackTrace();
-        } catch (final CityGMLWriteException e) {
-            e.printStackTrace();
-        }
-
-    }
+    //
+    // /**
+    // * The city gml factory.
+    // */
+    // private final CityGMLFactory citygml = new CityGMLFactory();
+    // /**
+    // * The gml factory.
+    // */
+    // private final GMLFactory gml = new GMLFactory();
+    // /**
+    // * The city model.
+    // */
+    // private final CityModel cityModel = this.citygml.createCityModel();
+    // /**
+    // * The gml ID manager.
+    // */
+    // private final GMLIdManager gmlIdManager =
+    // DefaultGMLIdManager.getInstance();
+    // /**
+    // * The geometry factory.
+    // */
+    // private final GMLGeometryFactory geom = new GMLGeometryFactory();
+    // /**
+    // * The JAXB building.
+    // */
+    // private JAXBBuilder builder;
+    //
+    // /**
+    // * The name of the file to write in.
+    // */
+    // private final String fileName;
+    //
+    // /**
+    // * Constructor.
+    // *
+    // * @param fileNameWrite
+    // * the file to write in
+    // */
+    // public WriterCityGML(final String fileNameWrite) {
+    //
+    // try {
+    // final CityGMLContext ctx = new CityGMLContext();
+    // this.builder = ctx.createJAXBBuilder();
+    // } catch (final JAXBException e) {
+    // e.printStackTrace();
+    // }
+    //
+    // this.fileName = fileNameWrite;
+    // }
+    //
+    // /**
+    // * Adds a building to the CityGMLFactory.
+    // *
+    // * @param buildingToAdd
+    // * the building to write
+    // */
+    // public final void addBuilding(
+    // final fr.nantes1900.models.extended.Building buildingToAdd) {
+    // final Building building = this.citygml.createBuilding();
+    //
+    // // LOD2 solid
+    // final List<SurfaceProperty> surfaceMember =
+    // new ArrayList<SurfaceProperty>();
+    //
+    // // Creates the surface object.
+    // final CompositeSurface compositeSurface =
+    // this.gml.createCompositeSurface();
+    // compositeSurface.setSurfaceMember(surfaceMember);
+    // final Solid solid = this.gml.createSolid();
+    // solid.setExterior(this.gml.createSurfaceProperty(compositeSurface));
+    //
+    // building.setLod2Solid(this.gml.createSolidProperty(solid));
+    //
+    // // Thematic boundary surfaces
+    // final List<BoundarySurfaceProperty> boundedBy =
+    // new ArrayList<BoundarySurfaceProperty>();
+    //
+    // try {
+    // for (final Polyline surface : buildingToAdd.getWalls()) {
+    // // Creates the geometry as a suite of coordinates.
+    // final Polygon geometry =
+    // this.geom.createLinearPolygon(surface
+    // .getPointsAsCoordinates(), 3);
+    //
+    // // Adds an ID.
+    // geometry.setId(this.gmlIdManager.generateGmlId());
+    // surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
+    // .getId()));
+    //
+    // // Creates a surface.
+    // final AbstractBoundarySurface boundarySurface =
+    // this.citygml.createWallSurface();
+    //
+    // // Adds the polygon as a surface.
+    // boundarySurface.setLod2MultiSurface(this.gml
+    // .createMultiSurfaceProperty(this.gml
+    // .createMultiSurface(geometry)));
+    //
+    // boundedBy.add(this.citygml
+    // .createBoundarySurfaceProperty(boundarySurface));
+    // }
+    //
+    // // Idem for the roofs.
+    // for (final Polyline surface : buildingToAdd.getRoofs()) {
+    // // Creates the polygon.
+    // final Polygon geometry =
+    // this.geom.createLinearPolygon(surface
+    // .getPointsAsCoordinates(), 3);
+    // geometry.setId(this.gmlIdManager.generateGmlId());
+    // surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
+    // .getId()));
+    //
+    // // Creates the roof.
+    // final AbstractBoundarySurface boundarySurface =
+    // this.citygml.createRoofSurface();
+    //
+    // // Adds the polygon as the surface.
+    // boundarySurface.setLod2MultiSurface(this.gml
+    // .createMultiSurfaceProperty(this.gml
+    // .createMultiSurface(geometry)));
+    //
+    // boundedBy.add(this.citygml
+    // .createBoundarySurfaceProperty(boundarySurface));
+    // }
+    // } catch (final DimensionMismatchException e) {
+    // e.printStackTrace();
+    // }
+    //
+    // building.setBoundedBySurface(boundedBy);
+    //
+    // this.cityModel.setBoundedBy(building.calcBoundedBy(false));
+    // this.cityModel.addCityObjectMember(this.citygml
+    // .createCityObjectMember(building));
+    // }
+    //
+    // /**
+    // * Adds a list of edifices to the CityGMLFactory.
+    // *
+    // * @param buildings
+    // * the list of buildings to add
+    // */
+    // public final void addBuildings(
+    // final List<fr.nantes1900.models.extended.Building> buildings) {
+    // for (final fr.nantes1900.models.extended.Building building : buildings) {
+    // this.addBuilding(building);
+    // }
+    // }
+    //
+    // /**
+    // * Adds a ground to the CityGMLFactory.
+    // *
+    // * @param ground
+    // * the ground to add
+    // */
+    // public final void addGround(final Ground ground) {
+    // final Building building = this.citygml.createBuilding();
+    //
+    // // LOD2 solid
+    // final List<SurfaceProperty> surfaceMember =
+    // new ArrayList<SurfaceProperty>();
+    //
+    // final CompositeSurface compositeSurface =
+    // this.gml.createCompositeSurface();
+    // compositeSurface.setSurfaceMember(surfaceMember);
+    // final Solid solid = this.gml.createSolid();
+    // solid.setExterior(this.gml.createSurfaceProperty(compositeSurface));
+    //
+    // building.setLod2Solid(this.gml.createSolidProperty(solid));
+    //
+    // // Thematic boundary surfaces
+    // final List<BoundarySurfaceProperty> boundedBy =
+    // new ArrayList<BoundarySurfaceProperty>();
+    //
+    // try {
+    // for (final Triangle t : ground.getMesh()) {
+    // // Creates the polygon.
+    // final Polygon geometry =
+    // this.geom
+    // .createLinearPolygon(t.getPointsAsCoordinates(), 3);
+    // geometry.setId(this.gmlIdManager.generateGmlId());
+    // surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
+    // .getId()));
+    //
+    // // Creates the ground surface.
+    // final AbstractBoundarySurface boundarySurface =
+    // this.citygml.createGroundSurface();
+    //
+    // // Adds the polygon as the surface.
+    // boundarySurface.setLod2MultiSurface(this.gml
+    // .createMultiSurfaceProperty(this.gml
+    // .createMultiSurface(geometry)));
+    //
+    // boundedBy.add(this.citygml
+    // .createBoundarySurfaceProperty(boundarySurface));
+    // }
+    // } catch (final DimensionMismatchException e) {
+    // e.printStackTrace();
+    // }
+    //
+    // building.setBoundedBySurface(boundedBy);
+    //
+    // this.cityModel.setBoundedBy(building.calcBoundedBy(false));
+    // this.cityModel.addCityObjectMember(this.citygml
+    // .createCityObjectMember(building));
+    // }
+    //
+    // /**
+    // * Adds a list of grounds to the CityGMLFactory.
+    // *
+    // * @param grounds
+    // * the list of grounds to add
+    // */
+    // public final void addGrounds(final List<Ground> grounds) {
+    // for (final Ground ground : grounds) {
+    // this.addGround(ground);
+    // }
+    // }
+    //
+    // /**
+    // * Creates a CityGML Building, and adds the special building as a mesh.
+    // *
+    // * @param specialBuilding
+    // * the mesh of the special building
+    // */
+    // public final void addSpecialBuilding(final SpecialBuilding
+    // specialBuilding) {
+    // final Building building = this.citygml.createBuilding();
+    //
+    // // LOD2 solid
+    // final List<SurfaceProperty> surfaceMember =
+    // new ArrayList<SurfaceProperty>();
+    //
+    // final CompositeSurface compositeSurface =
+    // this.gml.createCompositeSurface();
+    // compositeSurface.setSurfaceMember(surfaceMember);
+    // final Solid solid = this.gml.createSolid();
+    // solid.setExterior(this.gml.createSurfaceProperty(compositeSurface));
+    //
+    // building.setLod2Solid(this.gml.createSolidProperty(solid));
+    //
+    // // Thematic boundary surfaces
+    // final List<BoundarySurfaceProperty> boundedBy =
+    // new ArrayList<BoundarySurfaceProperty>();
+    //
+    // try {
+    // for (final Triangle t : specialBuilding.getMesh()) {
+    // // Creates the polygon.
+    // final Polygon geometry =
+    // this.geom
+    // .createLinearPolygon(t.getPointsAsCoordinates(), 3);
+    // geometry.setId(this.gmlIdManager.generateGmlId());
+    // surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry
+    // .getId()));
+    //
+    // // Creates the building as a surface.
+    // final AbstractBoundarySurface boundarySurface =
+    // this.citygml.createWallSurface();
+    //
+    // // Adds the polygon as the surface.
+    // boundarySurface.setLod2MultiSurface(this.gml
+    // .createMultiSurfaceProperty(this.gml
+    // .createMultiSurface(geometry)));
+    //
+    // boundedBy.add(this.citygml
+    // .createBoundarySurfaceProperty(boundarySurface));
+    // }
+    // } catch (final DimensionMismatchException e) {
+    // e.printStackTrace();
+    // }
+    //
+    // building.setBoundedBySurface(boundedBy);
+    //
+    // this.cityModel.setBoundedBy(building.calcBoundedBy(false));
+    // this.cityModel.addCityObjectMember(this.citygml
+    // .createCityObjectMember(building));
+    // }
+    //
+    // /**
+    // * Adds a list of special buildings as meshes.
+    // *
+    // * @param specialBuildings
+    // * the list of the special buildings
+    // */
+    // public final void addSpecialBuildings(
+    // final List<SpecialBuilding> specialBuildings) {
+    // for (final SpecialBuilding specialBuilding : specialBuildings) {
+    // this.addSpecialBuilding(specialBuilding);
+    // }
+    // }
+    //
+    // /**
+    // * Writes the CityGML file with the CityGMLFactory.
+    // */
+    // public final void write() {
+    //
+    // CityGMLOutputFactory out;
+    // try {
+    // out =
+    // this.builder.createCityGMLOutputFactory(CityGMLVersion.v1_0_0);
+    // final CityGMLWriter writer =
+    // out.createCityGMLWriter(new File(this.fileName));
+    //
+    // writer.setPrefixes(CityGMLVersion.v1_0_0);
+    // writer.setSchemaLocations(CityGMLVersion.v1_0_0);
+    // writer.setIndentString("  ");
+    // writer.write(this.cityModel);
+    // writer.close();
+    // } catch (final CityGMLReadException e) {
+    // e.printStackTrace();
+    // } catch (final CityGMLWriteException e) {
+    // e.printStackTrace();
+    // }
+    //
+    // }
 }

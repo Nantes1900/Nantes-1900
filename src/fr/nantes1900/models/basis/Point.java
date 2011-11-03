@@ -35,9 +35,9 @@ public class Point {
      *            coordinate
      */
     public Point(final double xNew, final double yNew, final double zNew) {
-        this.x = xNew;
-        this.y = yNew;
-        this.z = zNew;
+	this.x = xNew;
+	this.y = yNew;
+	this.z = zNew;
     }
 
     /**
@@ -48,9 +48,9 @@ public class Point {
      *            the point to copy
      */
     public Point(final Point point) {
-        this.x = point.x;
-        this.y = point.y;
-        this.z = point.z;
+	this.x = point.x;
+	this.y = point.y;
+	this.z = point.z;
     }
 
     /**
@@ -61,8 +61,8 @@ public class Point {
      *            of base change
      */
     public final void changeBase(final double[][] matrix) {
-        final double[] coords = {this.x, this.y, this.z, };
-        this.set(MatrixMethod.changeBase(coords, matrix));
+	final double[] coords = { this.x, this.y, this.z, };
+	this.set(MatrixMethod.changeBase(coords, matrix));
     }
 
     /**
@@ -73,39 +73,40 @@ public class Point {
      * @return the distance
      */
     public final double distance(final Point p) {
-        return Math.sqrt(Math.pow(p.x - this.x, 2) + Math.pow(p.y - this.y, 2)
-            + Math.pow(p.z - this.z, 2));
+	return Math.sqrt(Math.pow(p.x - this.x, 2) + Math.pow(p.y - this.y, 2)
+		+ Math.pow(p.z - this.z, 2));
     }
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
     public final boolean equals(final Object obj) {
-        if (this == obj) {
-            return true;
-        }
-        if (obj == null) {
-            return false;
-        }
-        if (this.getClass() != obj.getClass()) {
-            return false;
-        }
-        final Point other = (Point) obj;
-        if (Double.doubleToLongBits((float) this.x) != Double
-            .doubleToLongBits((float) other.x)) {
-            return false;
-        }
-        if (Double.doubleToLongBits((float) this.y) != Double
-            .doubleToLongBits((float) other.y)) {
-            return false;
-        }
-        if (Double.doubleToLongBits((float) this.z) != Double
-            .doubleToLongBits((float) other.z)) {
-            return false;
-        }
-        return true;
+	if (this == obj) {
+	    return true;
+	}
+	if (obj == null) {
+	    return false;
+	}
+	if (this.getClass() != obj.getClass()) {
+	    return false;
+	}
+	final Point other = (Point) obj;
+	if (Double.doubleToLongBits((float) this.x) != Double
+		.doubleToLongBits((float) other.x)) {
+	    return false;
+	}
+	if (Double.doubleToLongBits((float) this.y) != Double
+		.doubleToLongBits((float) other.y)) {
+	    return false;
+	}
+	if (Double.doubleToLongBits((float) this.z) != Double
+		.doubleToLongBits((float) other.z)) {
+	    return false;
+	}
+	return true;
     }
 
     /**
@@ -114,7 +115,7 @@ public class Point {
      * @return an array of doubles
      */
     public final double[] getPointAsCoordinates() {
-        return new double[] {this.x, this.y, this.z, };
+	return new double[] { this.x, this.y, this.z, };
     }
 
     /**
@@ -123,7 +124,7 @@ public class Point {
      * @return the x coordinate
      */
     public final double getX() {
-        return this.x;
+	return this.x;
     }
 
     /**
@@ -132,7 +133,7 @@ public class Point {
      * @return the y coordinate
      */
     public final double getY() {
-        return this.y;
+	return this.y;
     }
 
     /**
@@ -141,26 +142,27 @@ public class Point {
      * @return the z coordinate
      */
     public final double getZ() {
-        return this.z;
+	return this.z;
     }
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#hashCode()
      */
     @Override
     public final int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        final int hashTemp = 32;
-        long temp;
-        temp = Double.doubleToLongBits((float) this.x);
-        result = prime * result + (int) (temp ^ (temp >>> hashTemp));
-        temp = Double.doubleToLongBits((float) this.y);
-        result = prime * result + (int) (temp ^ (temp >>> hashTemp));
-        temp = Double.doubleToLongBits((float) this.z);
-        result = prime * result + (int) (temp ^ (temp >>> hashTemp));
-        return result;
+	final int prime = 31;
+	int result = 1;
+	final int hashTemp = 32;
+	long temp;
+	temp = Double.doubleToLongBits((float) this.x);
+	result = prime * result + (int) (temp ^ (temp >>> hashTemp));
+	temp = Double.doubleToLongBits((float) this.y);
+	result = prime * result + (int) (temp ^ (temp >>> hashTemp));
+	temp = Double.doubleToLongBits((float) this.z);
+	result = prime * result + (int) (temp ^ (temp >>> hashTemp));
+	return result;
     }
 
     /**
@@ -174,10 +176,10 @@ public class Point {
      *            the new z coordinate
      */
     public final void set(final double xNew, final double yNew,
-        final double zNew) {
-        this.x = xNew;
-        this.y = yNew;
-        this.z = zNew;
+	    final double zNew) {
+	this.x = xNew;
+	this.y = yNew;
+	this.z = zNew;
     }
 
     /**
@@ -187,9 +189,9 @@ public class Point {
      *            the three coordinates
      */
     public final void set(final double[] coords) {
-        this.setX(coords[0]);
-        this.setY(coords[1]);
-        this.setZ(coords[2]);
+	this.setX(coords[0]);
+	this.setY(coords[1]);
+	this.setZ(coords[2]);
     }
 
     /**
@@ -199,7 +201,7 @@ public class Point {
      *            : the x coordinate
      */
     public final void setX(final double xNew) {
-        this.x = xNew;
+	this.x = xNew;
     }
 
     /**
@@ -209,7 +211,7 @@ public class Point {
      *            coordinate
      */
     public final void setY(final double yNew) {
-        this.y = yNew;
+	this.y = yNew;
     }
 
     /**
@@ -219,15 +221,16 @@ public class Point {
      *            coordinate
      */
     public final void setZ(final double zNew) {
-        this.z = zNew;
+	this.z = zNew;
     }
 
     /*
      * (non-Javadoc)
+     * 
      * @see java.lang.Object#toString()
      */
     @Override
     public final String toString() {
-        return new String("(" + this.x + ", " + this.y + ", " + this.z + ")");
+	return new String("(" + this.x + ", " + this.y + ", " + this.z + ")");
     }
 }
