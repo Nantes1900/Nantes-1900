@@ -36,12 +36,15 @@ public class IsletSelectionView extends JFrame
      */
     public IsletSelectionView(ActionsView actionsView, GlobalTreeView globalTreeView)
     {
+        // initializes the frame
         this.setTitle("Nantes 1900");
         this.setMinimumSize(new Dimension(600, 600));
         
+        // gets the view to add
         this.aView = actionsView;
         this.gtView = globalTreeView;
         
+        // adds the different views
         this.getContentPane().setLayout(new GridBagLayout());
         this.getContentPane().add(aView, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,

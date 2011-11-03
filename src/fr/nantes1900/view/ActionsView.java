@@ -33,4 +33,9 @@ public class ActionsView extends JPanel
         this.add(bOpen);
         this.add(bLaunch);
     }
+
+    public JButton getOpenButton()
+    {
+        return this.bOpen;
+    }
 }

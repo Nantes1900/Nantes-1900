@@ -3,6 +3,12 @@
  */
 package fr.nantes1900.control;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.File;
+
+import javax.swing.JFileChooser;
+
 import fr.nantes1900.view.ActionsView;
 
 /**
@@ -22,6 +28,28 @@ public class ActionsController
     public ActionsController()
     {
         aView = new ActionsView();
+        aView.getOpenButton().addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent arg0)
+            {
+                JFileChooser fileChooser = new JFileChooser();
+                fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+                fileChooser.setAcceptAllFileFilterUsed(false);
+                
+                fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
+                
+                if (fileChooser.showOpenDialog(ActionsController.this.aView) == JFileChooser.APPROVE_OPTION)
+                {
+                    File file = fileChooser.getSelectedFile();
+                    if (file.isDirectory())
+                    {
+                        System.out.println(file.getPath());
+                    }
+                }
+            }
+            
+        });
     }
     
     /**
