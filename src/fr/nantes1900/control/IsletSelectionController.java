@@ -10,21 +10,22 @@ import fr.nantes1900.view.IsletSelectionView;
  */
 public class IsletSelectionController
 {
-    /**
-     * The controller of the tree used to select an islet.
-     */
-    private GlobalTreeController gtController;
 
     /**
      * The controller of the panel containing buttons to perform the different
      * actions.
      */
     private ActionsController    aController;
-    
+
+    /**
+     * The controller of the tree used to select an islet.
+     */
+    private GlobalTreeController gtController;
+
     /**
      * View allowing to select an islet and launch a treatment.
      */
-    private IsletSelectionView isView;
+    private IsletSelectionView   isView;
 
     /**
      * Creates a new controller to handle the islet selection window.
@@ -33,8 +34,9 @@ public class IsletSelectionController
     {
         gtController = new GlobalTreeController();
         aController = new ActionsController();
-        
-        isView = new IsletSelectionView(aController.getActionsView());
+
+        isView = new IsletSelectionView(aController.getActionsView(),
+                gtController.getGlobalTreeView());
         isView.setVisible(true);
     }
 }
