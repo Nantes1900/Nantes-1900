@@ -16,25 +16,23 @@ import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.models.middle.Surface;
 import fr.nantes1900.utils.Algos;
 
-//LOL for the name...
+public abstract class AbstractTreatableIslet extends AbstractIslet {
+    protected List<Building> buildings = new ArrayList<Building>();
 
-public abstract class AbstractEntialIslet extends AbstractIslet {
-    private List<Building> buildings = new ArrayList<Building>();
+    protected Mesh initialBuilding;
 
-    private Mesh initialBuilding;
-
-    private Mesh initialGround;
-
-    private Ground ground;
-    private Surface groundForAlgorithm;
-
-    private Mesh noise;
+    protected Mesh initialGround;
 
     public int progression = 0;
 
-    private Vector3d groundNormal;
+    protected Ground ground;
+    protected Surface groundForAlgorithm;
 
-    public AbstractEntialIslet(Mesh m) {
+    protected Mesh noise;
+
+    protected Vector3d groundNormal;
+
+    public AbstractTreatableIslet(Mesh m) {
 	super(m);
     }
 
@@ -69,7 +67,7 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
 	}
 
 	for (Mesh m : buildingList) {
-	    this.buildings.add(new Building(m));
+	    this.getBuildings().add(new Building(m));
 	}
     }
 
@@ -83,6 +81,54 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
      */
     private void carveRealBuildings(final List<Building> buildingsList) {
 	// TODO : implement this method.
+    }
+
+    public Mesh getInitialBuilding() {
+	return this.initialBuilding;
+    }
+
+    public void setInitialBuilding(Mesh initialBuildingIn) {
+	this.initialBuilding = initialBuildingIn;
+    }
+
+    public Mesh getInitialGround() {
+	return this.initialGround;
+    }
+
+    public void setInitialGround(Mesh initialGroundIn) {
+	this.initialGround = initialGroundIn;
+    }
+
+    public Ground getGround() {
+	return this.ground;
+    }
+
+    public void setGround(Ground groundIn) {
+	this.ground = groundIn;
+    }
+
+    public Surface getGroundForAlgorithm() {
+	return this.groundForAlgorithm;
+    }
+
+    public void setGroundForAlgorithm(Surface groundForAlgorithmIn) {
+	this.groundForAlgorithm = groundForAlgorithmIn;
+    }
+
+    public Mesh getNoise() {
+	return this.noise;
+    }
+
+    public void setNoise(Mesh noiseIn) {
+	this.noise = noiseIn;
+    }
+
+    public Vector3d getGroundNormal() {
+	return this.groundNormal;
+    }
+
+    public void setGroundNormal(Vector3d groundNormalIn) {
+	this.groundNormal = groundNormalIn;
     }
 
     private Ground noiseTreatment() {
@@ -183,10 +229,6 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
 	this.initialGround = new Ground(wholeGround);
     }
 
-    private void incProgression() {
-	this.progression++;
-    }
-
     /**
      * GroundNormal
      * 
@@ -216,8 +258,6 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
 	this.groundExtraction();
 	this.initialBuilding = new Mesh(this.initialTotalMesh);
 	this.initialBuilding.remove(this.initialGround);
-
-	this.incProgression();
     }
 
     /**
@@ -241,7 +281,7 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
      * CarveWallsBetweenBuildings
      */
     public void launchStep3() {
-	this.carveRealBuildings(this.buildings);
+	this.carveRealBuildings(this.getBuildings());
     }
 
     // FIXME : full this with conditions... If meshes are not defined.. etc...
@@ -249,7 +289,7 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
      * SeparationWallRoof
      */
     public void launchStep4() {
-	for (Building b : this.buildings) {
+	for (Building b : this.getBuildings()) {
 	    b.separateWallRoof(this.gravityNormal);
 	}
     }
@@ -260,7 +300,7 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
     public void launchStep5() {
 	this.groundForAlgorithm = new Surface(this.ground);
 
-	for (Building b : this.buildings) {
+	for (Building b : this.getBuildings()) {
 	    b.cutWalls();
 	    b.cutRoofs(this.groundNormal);
 	    b.treatNoise();
@@ -271,8 +311,8 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
     /**
      * DeterminateNeighbours
      */
-    public void launchStep7() {
-	for (Building b : this.buildings) {
+    public void launchStep6() {
+	for (Building b : this.getBuildings()) {
 	    b.determinateNeighbours(this.groundForAlgorithm);
 	}
     }
@@ -280,8 +320,8 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
     /**
      * SortNeighbours
      */
-    public void launchStep8() {
-	for (Building b : this.buildings) {
+    public void launchStep7() {
+	for (Building b : this.getBuildings()) {
 	    b.sortSurfaces();
 	    b.orderNeighbours(this.groundForAlgorithm);
 	}
@@ -290,8 +330,8 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
     /**
      * SimplificationSurfaces
      */
-    public void launchStep9() {
-	for (Building b : this.buildings) {
+    public void launchStep8() {
+	for (Building b : this.getBuildings()) {
 	    b.determinateContours(this.groundNormal);
 	}
     }
@@ -300,60 +340,17 @@ public abstract class AbstractEntialIslet extends AbstractIslet {
      * RecomputationGround
      */
     public void launchStep10() {
-	for (Building b : this.buildings) {
+	for (Building b : this.getBuildings()) {
 	    b.reComputeGroundBounds();
 	}
     }
 
-    public void launchNextStep() {
-	switch (this.progression) {
-	case 0:
-	    try {
-		this.launchStep0();
-	    } catch (UnimplementedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    }
-	    break;
-	case 1:
-	    try {
-		this.launchStep1();
-	    } catch (UnimplementedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    }
-	    break;
-	case 2:
-	    try {
-		this.launchStep2();
-	    } catch (UnimplementedException e) {
-		// TODO Auto-generated catch block
-		e.printStackTrace();
-	    }
-	    break;
-	case 3:
-	    this.launchStep3();
-	    break;
-	case 4:
-	    this.launchStep4();
-	    break;
-	case 5:
-	    this.launchStep5();
-	    break;
-	// TODO
-	// case 6:
-	// this.launchStep6();
-	// break;
-	case 7:
-	    this.launchStep7();
-	    break;
-	case 8:
-	    this.launchStep8();
-	    break;
-	case 9:
-	    this.launchStep9();
-	    break;
-	}
+    public List<Building> getBuildings() {
+	return this.buildings;
+    }
+
+    public void setBuildings(List<Building> buildingsIn) {
+	this.buildings = buildingsIn;
     }
 
     public class UnimplementedException extends Exception {

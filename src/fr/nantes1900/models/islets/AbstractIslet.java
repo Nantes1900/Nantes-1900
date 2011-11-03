@@ -25,6 +25,10 @@ public abstract class AbstractIslet {
 	this.initialTotalMesh = m;
     }
 
+    public Mesh getInitialTotalMesh() {
+	return this.initialTotalMesh;
+    }
+
     /**
      * Parses a STL file. Uses the ParserSTL class.
      * 

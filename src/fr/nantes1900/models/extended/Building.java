@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.constants.SeparationWallRoof;
@@ -304,5 +305,19 @@ public class Building {
 		wholeList.get(i).addNeighbour(grounds);
 	    }
 	}
+    }
+
+    public DefaultMutableTreeNode returnTreeNode() {
+	DefaultMutableTreeNode currentNode = new DefaultMutableTreeNode();
+
+	for (int wallNumber = 0; wallNumber < this.walls.size(); wallNumber++) {
+	    currentNode.add(new DefaultMutableTreeNode("Wall " + wallNumber));
+	}
+
+	for (int roofNumber = 0; roofNumber < this.roofs.size(); roofNumber++) {
+	    currentNode.add(new DefaultMutableTreeNode("Roof " + roofNumber));
+	}
+
+	return currentNode;
     }
 }
