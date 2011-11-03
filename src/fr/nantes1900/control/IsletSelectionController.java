@@ -3,6 +3,8 @@
  */
 package fr.nantes1900.control;
 
+import fr.nantes1900.view.IsletSelectionView;
+
 /**
  * @author Camille
  */
@@ -18,10 +20,21 @@ public class IsletSelectionController
      * actions.
      */
     private ActionsController    aController;
+    
+    /**
+     * View allowing to select an islet and launch a treatment.
+     */
+    private IsletSelectionView isView;
 
+    /**
+     * Creates a new controller to handle the islet selection window.
+     */
     public IsletSelectionController()
     {
         gtController = new GlobalTreeController();
         aController = new ActionsController();
+        
+        isView = new IsletSelectionView();
+        isView.setVisible(true);
     }
 }
