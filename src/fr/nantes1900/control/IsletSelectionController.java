@@ -3,6 +3,8 @@
  */
 package fr.nantes1900.control;
 
+import java.io.File;
+
 import fr.nantes1900.view.IsletSelectionView;
 
 /**
@@ -28,15 +30,42 @@ public class IsletSelectionController
     private IsletSelectionView   isView;
 
     /**
+     * The opened directory corresponding to a mockup part.
+     */
+    private File                 mockupDirectory;
+
+    /**
      * Creates a new controller to handle the islet selection window.
      */
     public IsletSelectionController()
     {
-        gtController = new GlobalTreeController();
-        aController = new ActionsController();
+        gtController = new GlobalTreeController(this);
+        aController = new ActionsController(this);
 
         isView = new IsletSelectionView(aController.getActionsView(),
                 gtController.getGlobalTreeView());
         isView.setVisible(true);
+    }
+
+    /**
+     * Updates the directory containing the files of islets.
+     * 
+     * @param newDirectory
+     *              The new directory.
+     * @return
+     *      true - the directory match a mockup part directory format.\n
+     *      false - the directory doesn't match a mockup part directory format.
+     * @todo    Check the matching.
+     */
+    public boolean updateMockupDirectory(File newDirectory)
+    {
+        boolean isMockupDirectory = true;
+        if (isMockupDirectory)
+        {
+            this.mockupDirectory = newDirectory;
+            gtController.updateDirectory(mockupDirectory);
+        }
+        
+        return true;
     }
 }
