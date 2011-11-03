@@ -34,7 +34,7 @@ public class IsletSelectionController
         gtController = new GlobalTreeController();
         aController = new ActionsController();
         
-        isView = new IsletSelectionView();
+        isView = new IsletSelectionView(aController.getActionsView());
         isView.setVisible(true);
     }
 }
