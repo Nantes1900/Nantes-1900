@@ -1,5 +1,6 @@
-package fr.nantes1900.models.islets;
+package fr.nantes1900.models.islets.others;
 
+import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.middle.Mesh;
 
 /**
@@ -10,26 +11,10 @@ import fr.nantes1900.models.middle.Mesh;
 public class SpecialBuildingIslet extends AbstractIslet {
 
     /**
-     * The mesh describing the surface of the special building.
-     */
-    private Mesh mesh = new Mesh();
-
-    /**
-     * Constructor. TODO : redo
+     * Constructor.
      */
     public SpecialBuildingIslet(Mesh m) {
 	super(m);
-    }
-
-    /**
-     * Builds a special building from a mesh. Not implemented.
-     * 
-     * @param m
-     *            the special building as a mesh
-     */
-    public final void buildFromMesh(final Mesh m) {
-	this.mesh = m;
-	// TODO : implement this method.
     }
 
     /**
@@ -38,7 +23,7 @@ public class SpecialBuildingIslet extends AbstractIslet {
      * @return the mesh
      */
     public final Mesh getMesh() {
-	return this.mesh;
+	return this.initialTotalMesh;
     }
 
     /**

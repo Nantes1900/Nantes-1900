@@ -4,6 +4,7 @@ import fr.nantes1900.models.middle.Mesh;
 
 public class TriangleMeshViewer {
 
-    public TriangleMeshViewer(Mesh mesh) {
+    public TriangleMeshViewer(@SuppressWarnings("unused") Mesh mesh) {
+	// TODO
     }
 }

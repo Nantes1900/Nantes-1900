@@ -23,6 +23,11 @@ public class IsletSelectionController
      * The controller of the tree used to select an islet.
      */
     private GlobalTreeController gtController;
+    
+    /**
+     * The controller of the 3D view which shows a selected islet.
+     */
+    private Universe3DController u3DController;
 
     /**
      * View allowing to select an islet and launch a treatment.
@@ -41,9 +46,10 @@ public class IsletSelectionController
     {
         gtController = new GlobalTreeController(this);
         aController = new ActionsController(this);
+        u3DController = new Universe3DController(this);
 
         isView = new IsletSelectionView(aController.getActionsView(),
-                gtController.getGlobalTreeView());
+                gtController.getGlobalTreeView(), u3DController.getUniverse3DView());
         isView.setVisible(true);
     }
 

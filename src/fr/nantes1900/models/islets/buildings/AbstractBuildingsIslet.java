@@ -1,4 +1,4 @@
-package fr.nantes1900.models.islets;
+package fr.nantes1900.models.islets.buildings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,11 +12,12 @@ import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
+import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.models.middle.Surface;
 import fr.nantes1900.utils.Algos;
 
-public abstract class AbstractTreatableIslet extends AbstractIslet {
+public abstract class AbstractBuildingsIslet extends AbstractIslet {
     protected List<Building> buildings = new ArrayList<Building>();
 
     protected Mesh initialBuilding;
@@ -32,7 +33,7 @@ public abstract class AbstractTreatableIslet extends AbstractIslet {
 
     protected Vector3d groundNormal;
 
-    public AbstractTreatableIslet(Mesh m) {
+    public AbstractBuildingsIslet(Mesh m) {
 	super(m);
     }
 
@@ -67,7 +68,7 @@ public abstract class AbstractTreatableIslet extends AbstractIslet {
 	}
 
 	for (Mesh m : buildingList) {
-	    this.getBuildings().add(new Building(m));
+	    this.buildings.add(new Building(m));
 	}
     }
 
@@ -87,48 +88,16 @@ public abstract class AbstractTreatableIslet extends AbstractIslet {
 	return this.initialBuilding;
     }
 
-    public void setInitialBuilding(Mesh initialBuildingIn) {
-	this.initialBuilding = initialBuildingIn;
-    }
-
     public Mesh getInitialGround() {
 	return this.initialGround;
-    }
-
-    public void setInitialGround(Mesh initialGroundIn) {
-	this.initialGround = initialGroundIn;
     }
 
     public Ground getGround() {
 	return this.ground;
     }
 
-    public void setGround(Ground groundIn) {
-	this.ground = groundIn;
-    }
-
     public Surface getGroundForAlgorithm() {
 	return this.groundForAlgorithm;
-    }
-
-    public void setGroundForAlgorithm(Surface groundForAlgorithmIn) {
-	this.groundForAlgorithm = groundForAlgorithmIn;
-    }
-
-    public Mesh getNoise() {
-	return this.noise;
-    }
-
-    public void setNoise(Mesh noiseIn) {
-	this.noise = noiseIn;
-    }
-
-    public Vector3d getGroundNormal() {
-	return this.groundNormal;
-    }
-
-    public void setGroundNormal(Vector3d groundNormalIn) {
-	this.groundNormal = groundNormalIn;
     }
 
     private Ground noiseTreatment() {
@@ -147,7 +116,6 @@ public abstract class AbstractTreatableIslet extends AbstractIslet {
      * @return a Mesh containing the ground
      */
     private void groundExtraction() {
-
 	// Searches for ground-oriented triangles with an error.
 	Mesh meshOriented = this.initialTotalMesh.orientedAs(this.groundNormal,
 		SeparationGroundBuilding.ANGLE_GROUND_ERROR);
@@ -241,7 +209,12 @@ public abstract class AbstractTreatableIslet extends AbstractIslet {
 	}
 
 	// Be careful to the normal you use.
-	this.changeBase();
+	try {
+	    this.changeBase();
+	} catch (UnCompletedParametersException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
     }
 
     /**
@@ -284,7 +257,6 @@ public abstract class AbstractTreatableIslet extends AbstractIslet {
 	this.carveRealBuildings(this.getBuildings());
     }
 
-    // FIXME : full this with conditions... If meshes are not defined.. etc...
     /**
      * SeparationWallRoof
      */
@@ -300,11 +272,11 @@ public abstract class AbstractTreatableIslet extends AbstractIslet {
     public void launchStep5() {
 	this.groundForAlgorithm = new Surface(this.ground);
 
-	for (Building b : this.getBuildings()) {
-	    b.cutWalls();
-	    b.cutRoofs(this.groundNormal);
-	    b.treatNoise();
-	    b.treatNewNeighbours(this.groundForAlgorithm);
+	for (Building building : this.getBuildings()) {
+	    building.cutWalls();
+	    building.cutRoofs(this.groundNormal);
+	    building.treatNoise();
+	    building.treatNewNeighbours(this.groundForAlgorithm);
 	}
     }
 
@@ -339,7 +311,7 @@ public abstract class AbstractTreatableIslet extends AbstractIslet {
     /**
      * RecomputationGround
      */
-    public void launchStep10() {
+    public void launchStep9() {
 	for (Building b : this.getBuildings()) {
 	    b.reComputeGroundBounds();
 	}
