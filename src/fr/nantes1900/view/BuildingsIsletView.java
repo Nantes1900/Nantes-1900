@@ -1,7 +1,7 @@
 package fr.nantes1900.view;
 
 import fr.nantes1900.models.extended.Building;
-import fr.nantes1900.models.islets.buildings.ResidentialIslet;
+import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.middle.Surface;
 
 /**
@@ -12,12 +12,11 @@ import fr.nantes1900.models.middle.Surface;
  * @author Daniel
  * 
  */
-public abstract class ResidentialIsletView {
-    protected ResidentialIslet islet;
+public abstract class BuildingsIsletView {
     protected Universe3DView universe3D;
+    protected AbstractBuildingsIslet islet;
 
-    public ResidentialIsletView(Universe3DView universe3d) {
-
+    public BuildingsIsletView(Universe3DView universe3d) {
 	this.universe3D = universe3d;
     }
 

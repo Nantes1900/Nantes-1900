@@ -39,7 +39,7 @@ public class IsletSelectionView extends JFrame
      *              The tree allowing to select an islet.
      * @todo Handle the size issues.
      */
-    public IsletSelectionView(ActionsView actionsView, GlobalTreeView globalTreeView, Universe3DView universe3DView)
+    public IsletSelectionView(ActionsView actionsView, GlobalTreeView globalTreeView, Universe3DView buildingsIsletView)
     {
         // initializes the frame
         this.setTitle("Nantes 1900");
@@ -48,7 +48,7 @@ public class IsletSelectionView extends JFrame
         // gets the view to add
         this.aView = actionsView;
         this.gtView = globalTreeView;
-        this.u3DView = universe3DView;
+        this.u3DView = buildingsIsletView;
         
         // adds the different views
         this.getContentPane().setLayout(new GridBagLayout());
