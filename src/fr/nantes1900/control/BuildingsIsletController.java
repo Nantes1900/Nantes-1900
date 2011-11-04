@@ -5,26 +5,26 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
 import fr.nantes1900.models.extended.Building;
-import fr.nantes1900.models.islets.buildings.ResidentialIslet;
-import fr.nantes1900.models.islets.buildings.ResidentialIslet.UnimplementedException;
-import fr.nantes1900.view.ResidentialIsletView;
+import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
+import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet.UnimplementedException;
+import fr.nantes1900.view.BuildingsIsletView;
 
-public class ResidentialIsletController {
+public class BuildingsIsletController {
 
-    private ResidentialIsletView isletView;
-    private ResidentialIslet islet;
+    private BuildingsIsletView isletView;
+    private AbstractBuildingsIslet islet;
 
-    public ResidentialIsletController(ResidentialIslet isletIn,
-        ResidentialIsletView isletViewIn) {
+    public BuildingsIsletController(AbstractBuildingsIslet isletIn,
+        BuildingsIsletView isletViewIn) {
         this.isletView = isletViewIn;
         this.islet = isletIn;
     }
 
-    public ResidentialIsletView getIsletView() {
+    public BuildingsIsletView getIsletView() {
         return this.isletView;
     }
 
-    public ResidentialIslet getIslet() {
+    public AbstractBuildingsIslet getIslet() {
         return this.islet;
     }
 
