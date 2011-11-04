@@ -1,7 +1,7 @@
 package fr.nantes1900.view;
 
 import fr.nantes1900.models.extended.Building;
-import fr.nantes1900.models.islets.buildings.AbstractToProcessIslet;
+import fr.nantes1900.models.islets.buildings.ResidentialIslet;
 import fr.nantes1900.models.middle.Surface;
 
 /**
@@ -12,11 +12,11 @@ import fr.nantes1900.models.middle.Surface;
  * @author Daniel
  * 
  */
-public abstract class AbstractToProcessIsletView {
+public abstract class ResidentialIsletView {
     protected Universe3D universe3D;
-    protected AbstractToProcessIslet islet;
+    protected ResidentialIslet islet;
 
-    public AbstractToProcessIsletView(Universe3D universe3d) {
+    public ResidentialIsletView(Universe3D universe3d) {
 	this.universe3D = universe3d;
     }
 

@@ -17,7 +17,7 @@ import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.models.middle.Surface;
 import fr.nantes1900.utils.Algos;
 
-public abstract class AbstractToProcessIslet extends AbstractIslet {
+public abstract class ResidentialIslet extends AbstractIslet {
     protected List<Building> buildings = new ArrayList<Building>();
 
     protected Mesh initialBuilding;
@@ -33,7 +33,7 @@ public abstract class AbstractToProcessIslet extends AbstractIslet {
 
     protected Vector3d groundNormal;
 
-    public AbstractToProcessIslet(Mesh m) {
+    public ResidentialIslet(Mesh m) {
 	super(m);
     }
 
