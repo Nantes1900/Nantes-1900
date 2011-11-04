@@ -1,6 +1,7 @@
 package fr.nantes1900.view;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
@@ -32,6 +33,10 @@ public class Universe3DView extends JPanel{
         this.simpleUniverse = new SimpleUniverse(c);
 
         this.simpleUniverse.addBranchGraph(this.createSceneGraph());
+        
+        // Size to show the panel while there is nothing to show
+        this.setMinimumSize(new Dimension(400, 400));
+        this.setPreferredSize(new Dimension(400, 400));
     }
     
     private BranchGroup createSceneGraph()
