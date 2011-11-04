@@ -13,18 +13,19 @@ import fr.nantes1900.models.middle.Surface;
  * 
  */
 public abstract class ResidentialIsletView {
-    protected Universe3D universe3D;
     protected ResidentialIslet islet;
+    protected Universe3DView universe3D;
 
-    public ResidentialIsletView(Universe3D universe3d) {
+    public ResidentialIsletView(Universe3DView universe3d) {
+
 	this.universe3D = universe3d;
     }
 
-    public Universe3D getUniverse3D() {
+    public Universe3DView getUniverse3D() {
 	return this.universe3D;
     }
 
-    public void setUniverse3D(Universe3D universe3DIn) {
+    public void setUniverse3D(Universe3DView universe3DIn) {
 	this.universe3D = universe3DIn;
     }
 

@@ -26,6 +26,11 @@ public class IsletSelectionView extends JFrame
     private GlobalTreeView gtView;
     
     /**
+     * The 3D view of the islet.
+     */
+    private Universe3DView u3DView;
+    
+    /**
      * Creates a new frame to select an islet and launch the treatment.
      * 
      * @param actionsView 
@@ -34,7 +39,7 @@ public class IsletSelectionView extends JFrame
      *              The tree allowing to select an islet.
      * @todo Handle the size issues.
      */
-    public IsletSelectionView(ActionsView actionsView, GlobalTreeView globalTreeView)
+    public IsletSelectionView(ActionsView actionsView, GlobalTreeView globalTreeView, Universe3DView universe3DView)
     {
         // initializes the frame
         this.setTitle("Nantes 1900");
@@ -43,6 +48,7 @@ public class IsletSelectionView extends JFrame
         // gets the view to add
         this.aView = actionsView;
         this.gtView = globalTreeView;
+        this.u3DView = universe3DView;
         
         // adds the different views
         this.getContentPane().setLayout(new GridBagLayout());
@@ -50,6 +56,9 @@ public class IsletSelectionView extends JFrame
                 GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(5, 10, 5, 10), 0, 0));
         this.getContentPane().add(gtView, new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+                GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(5, 10, 5, 10), 0, 0));
+        this.getContentPane().add(u3DView, new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0,
                 GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(5, 10, 5, 10), 0, 0));
     }
