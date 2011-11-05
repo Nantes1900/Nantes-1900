@@ -183,7 +183,7 @@ public class WriterSTL
     }
 
     /**
-     * Returns the value of the attribute MODE.
+     * <<<<<<< HEAD Returns the value of the attribute MODE.
      * @return the attribute MODE
      */
     public final int getWriteMode()
@@ -275,11 +275,6 @@ public class WriterSTL
 
     }
 
-    /**
-     * Writes a mesh in a binary file.
-     * @throws IOException
-     *             if there is a problem in the opening of the closing operation
-     */
     private void writeSTLB() throws IOException
     {
         BufferedOutputStream stream = null;

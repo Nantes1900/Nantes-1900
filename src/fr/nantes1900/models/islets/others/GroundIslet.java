@@ -52,6 +52,16 @@ public class GroundIslet extends AbstractIslet
     }
 
     /**
+     * Writes the ground as a mesh in a STL file.
+     * @param fileName
+     *            the name of the file to write in
+     */
+    public final void writeSTL(final String fileName)
+    {
+        this.initialTotalMesh.writeSTL(fileName);
+    }
+
+    /**
      * Treats the files of grounds which are in the directory. Creates Ground
      * objects for each files, puts an attribute, and calls the buildFromMesh
      * method of Ground. Then adds it to the list of grounds.
@@ -61,15 +71,5 @@ public class GroundIslet extends AbstractIslet
     public void treatGrounds(final String directoryName)
     {
         // TODO
-    }
-
-    /**
-     * Writes the ground as a mesh in a STL file.
-     * @param fileName
-     *            the name of the file to write in
-     */
-    public final void writeSTL(final String fileName)
-    {
-        this.initialTotalMesh.writeSTL(fileName);
     }
 }

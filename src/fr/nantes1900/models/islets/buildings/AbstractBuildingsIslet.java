@@ -34,8 +34,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     protected Mesh           initialGround;
 
     public int               progression = 0;
-    protected Ground         ground;
 
+    protected Ground         ground;
     protected Surface        groundForAlgorithm;
 
     protected Mesh           noise;
@@ -371,4 +371,5 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     {
         this.buildings = buildingsIn;
     }
+
 }

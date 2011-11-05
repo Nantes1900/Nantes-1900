@@ -32,7 +32,6 @@ import fr.nantes1900.models.middle.Mesh;
  */
 public class ParserSTL
 {
-
     /**
      * Implements an exception when a triangle, a point, or an edge is bad
      * formed.
@@ -319,7 +318,6 @@ public class ParserSTL
         {
             scanner.close();
         }
-
     }
 
     /**

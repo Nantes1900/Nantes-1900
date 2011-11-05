@@ -20,7 +20,6 @@ import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
  */
 public class Surface
 {
-
     /**
      * Implements an exception used in algorithms when the neighbours cannot be
      * ordered.
@@ -63,6 +62,7 @@ public class Surface
         {
         }
     }
+
     /**
      * Implements an exception used in algorithms when planes are parallel.
      * @author Daniel Lefevre
@@ -96,14 +96,14 @@ public class Surface
     {
     }
 
-    public Surface(Mesh m)
-    {
-        this.setMesh(m);
-    }
-
     public Surface(Polygon p)
     {
         this.setPolygone(p);
+    }
+
+    public Surface(Mesh m)
+    {
+        this.setMesh(m);
     }
 
     /**
@@ -122,122 +122,6 @@ public class Surface
         if (!m.neighbours.contains(this))
         {
             m.neighbours.add(this);
-        }
-    }
-
-    /**
-     * With four planes (the three in parameters plus this), builds an edge.
-     * Computes the intersection of the first three planes, and the three next.
-     * If one plane is wall, rectifies its normal to be vertical. If one point
-     * has already been created before, use the hashmap to find it.
-     * @param s1
-     *            the first plane
-     * @param s2
-     *            the second plane
-     * @param s3
-     *            the third plane
-     * @param pointMap
-     *            the map of existing points
-     * @param wallList
-     *            the list of the walls
-     * @param normalGround
-     *            the normal to the ground
-     * @return the edge created by these four planes
-     * @throws InvalidSurfaceException
-     *             if the algorithm cannot comput the edge
-     */
-    private Edge createEdge(final Surface s1, final Surface s2,
-            final Surface s3, final Map<Point, Point> pointMap,
-            final List<Surface> wallList, final Vector3d normalGround)
-            throws InvalidSurfaceException
-    {
-        final List<Surface> surfaces = new ArrayList<Surface>();
-        surfaces.add(s1);
-        surfaces.add(s2);
-        surfaces.add(s3);
-        surfaces.add(this);
-
-        try
-        {
-            // If there is two neighbours which have the same orientation, then
-            // throw an exception.
-            if (this.getMesh().isOrientedAs(s1.getMesh(),
-                    SimplificationSurfaces.IS_ORIENTED_FACTOR)
-                    || this.getMesh().isOrientedAs(s2.getMesh(),
-                            SimplificationSurfaces.IS_ORIENTED_FACTOR)
-                    || this.getMesh().isOrientedAs(s3.getMesh(),
-                            SimplificationSurfaces.IS_ORIENTED_FACTOR))
-            {
-                throw new ParallelPlanesException();
-            }
-            if (s1.getMesh().isOrientedAs(s2.getMesh(),
-                    SimplificationSurfaces.IS_ORIENTED_FACTOR)
-                    || s2.getMesh().isOrientedAs(s3.getMesh(),
-                            SimplificationSurfaces.IS_ORIENTED_FACTOR))
-            {
-                throw new ParallelPlanesException();
-            }
-
-            // If one of the surfaces is a wall, rectifies its normal to be
-            // vertical, and after finds the edges.
-            final List<Surface> list = new ArrayList<Surface>();
-            for (final Surface s : surfaces)
-            {
-                if (s != this)
-                {
-                    if (wallList.contains(s))
-                    {
-                        list.add(s.returnVerticalPlane(normalGround));
-                    } else
-                    {
-                        list.add(s);
-                    }
-                }
-            }
-
-            Surface surface = this;
-            if (wallList.contains(this))
-            {
-                surface = this.returnVerticalPlane(normalGround);
-            }
-
-            // Finds the intersection of the three surfaces.
-            Point p1 = surface.getMesh().intersection(list.get(0).getMesh(),
-                    list.get(1).getMesh());
-            Point p2 = surface.getMesh().intersection(list.get(1).getMesh(),
-                    list.get(2).getMesh());
-
-            // Searches in the map to find if another point with the same value
-            // doesn't already exist.
-            Point pTemp = pointMap.get(p1);
-            if (pTemp == null)
-            {
-                pointMap.put(p1, p1);
-            } else
-            {
-                p1 = pTemp;
-            }
-
-            // Idem.
-            pTemp = pointMap.get(p2);
-            if (pTemp == null)
-            {
-                pointMap.put(p2, p2);
-            } else
-            {
-                p2 = pTemp;
-            }
-
-            final Edge e = new Edge(p1, p2);
-
-            return e;
-
-        } catch (final SingularMatrixException e)
-        {
-            throw new InvalidSurfaceException();
-        } catch (final ParallelPlanesException e)
-        {
-            throw new InvalidSurfaceException();
         }
     }
 
@@ -290,76 +174,12 @@ public class Surface
     }
 
     /**
-     * Finds in the list of neighbours of this except the list of surfaces the
-     * closest to the surface.
-     * @param current
-     *            the surface to check
-     * @param neighboursOrdered
-     *            the list of surfaces not to search
-     * @return the closest surface of current belonging to the neighbours of
-     *         this, not belonging to the list neighboursOrdered
-     */
-    private Surface findPossibleNeighbour(final Surface current,
-            final List<Surface> neighboursOrdered)
-    {
-        Surface possible = null;
-        double distanceMin = Double.POSITIVE_INFINITY;
-
-        // From all the neighbours which are not still ordered, select the
-        // closest one.
-        for (final Surface s : this.getNeighbours())
-        {
-            if (!neighboursOrdered.contains(s)
-                    && !current.getNeighbours().contains(s))
-            {
-                if (current.getMesh().minimalDistance(s.getMesh()) < distanceMin)
-                {
-                    possible = s;
-                    distanceMin = current.getMesh()
-                            .minimalDistance(s.getMesh());
-                }
-            }
-        }
-
-        return possible;
-    }
-
-    /**
-     * Returns the intersection of two lists of neighbours.
-     * @param surface
-     *            the other surface
-     * @return a list containing the elements shared by the two lists
-     */
-    private List<Surface> getCommonNeighbours(final Surface surface)
-    {
-        final List<Surface> ret = new ArrayList<Surface>();
-        for (final Surface s : this.getNeighbours())
-        {
-            if (surface.getNeighbours().contains(s))
-            {
-                ret.add(s);
-            }
-        }
-        return ret;
-    }
-
-    public Mesh getMesh()
-    {
-        return this.mesh;
-    }
-
-    /**
      * Getter.
      * @return the neighbours
      */
     public final List<Surface> getNeighbours()
     {
         return this.neighbours;
-    }
-
-    public Polygon getPolygone()
-    {
-        return this.polygon;
     }
 
     /**
@@ -523,13 +343,195 @@ public class Surface
         return computedWallPlane;
     }
 
-    public void setMesh(Mesh meshIn)
+    /**
+     * With four planes (the three in parameters plus this), builds an edge.
+     * Computes the intersection of the first three planes, and the three next.
+     * If one plane is wall, rectifies its normal to be vertical. If one point
+     * has already been created before, use the hashmap to find it.
+     * @param s1
+     *            the first plane
+     * @param s2
+     *            the second plane
+     * @param s3
+     *            the third plane
+     * @param pointMap
+     *            the map of existing points
+     * @param wallList
+     *            the list of the walls
+     * @param normalGround
+     *            the normal to the ground
+     * @return the edge created by these four planes
+     * @throws InvalidSurfaceException
+     *             if the algorithm cannot comput the edge
+     */
+    private Edge createEdge(final Surface s1, final Surface s2,
+            final Surface s3, final Map<Point, Point> pointMap,
+            final List<Surface> wallList, final Vector3d normalGround)
+            throws InvalidSurfaceException
     {
-        this.mesh = meshIn;
+
+        final List<Surface> surfaces = new ArrayList<Surface>();
+        surfaces.add(s1);
+        surfaces.add(s2);
+        surfaces.add(s3);
+        surfaces.add(this);
+
+        try
+        {
+
+            // If there is two neighbours which have the same orientation, then
+            // throw an exception.
+            if (this.getMesh().isOrientedAs(s1.getMesh(),
+                    SimplificationSurfaces.IS_ORIENTED_FACTOR)
+                    || this.getMesh().isOrientedAs(s2.getMesh(),
+                            SimplificationSurfaces.IS_ORIENTED_FACTOR)
+                    || this.getMesh().isOrientedAs(s3.getMesh(),
+                            SimplificationSurfaces.IS_ORIENTED_FACTOR))
+            {
+                throw new ParallelPlanesException();
+            }
+            if (s1.getMesh().isOrientedAs(s2.getMesh(),
+                    SimplificationSurfaces.IS_ORIENTED_FACTOR)
+                    || s2.getMesh().isOrientedAs(s3.getMesh(),
+                            SimplificationSurfaces.IS_ORIENTED_FACTOR))
+            {
+                throw new ParallelPlanesException();
+            }
+
+            // If one of the surfaces is a wall, rectifies its normal to be
+            // vertical, and after finds the edges.
+            final List<Surface> list = new ArrayList<Surface>();
+            for (final Surface s : surfaces)
+            {
+                if (s != this)
+                {
+                    if (wallList.contains(s))
+                    {
+                        list.add(s.returnVerticalPlane(normalGround));
+                    } else
+                    {
+                        list.add(s);
+                    }
+                }
+            }
+
+            Surface surface = this;
+            if (wallList.contains(this))
+            {
+                surface = this.returnVerticalPlane(normalGround);
+            }
+
+            // Finds the intersection of the three surfaces.
+            Point p1 = surface.getMesh().intersection(list.get(0).getMesh(),
+                    list.get(1).getMesh());
+            Point p2 = surface.getMesh().intersection(list.get(1).getMesh(),
+                    list.get(2).getMesh());
+
+            // Searches in the map to find if another point with the same value
+            // doesn't already exist.
+            Point pTemp = pointMap.get(p1);
+            if (pTemp == null)
+            {
+                pointMap.put(p1, p1);
+            } else
+            {
+                p1 = pTemp;
+            }
+
+            // Idem.
+            pTemp = pointMap.get(p2);
+            if (pTemp == null)
+            {
+                pointMap.put(p2, p2);
+            } else
+            {
+                p2 = pTemp;
+            }
+
+            final Edge e = new Edge(p1, p2);
+
+            return e;
+
+        } catch (final SingularMatrixException e)
+        {
+            throw new InvalidSurfaceException();
+        } catch (final ParallelPlanesException e)
+        {
+            throw new InvalidSurfaceException();
+        }
+    }
+
+    /**
+     * Finds in the list of neighbours of this except the list of surfaces the
+     * closest to the surface.
+     * @param current
+     *            the surface to check
+     * @param neighboursOrdered
+     *            the list of surfaces not to search
+     * @return the closest surface of current belonging to the neighbours of
+     *         this, not belonging to the list neighboursOrdered
+     */
+    private Surface findPossibleNeighbour(final Surface current,
+            final List<Surface> neighboursOrdered)
+    {
+        Surface possible = null;
+        double distanceMin = Double.POSITIVE_INFINITY;
+
+        // From all the neighbours which are not still ordered, select the
+        // closest one.
+        for (final Surface s : this.getNeighbours())
+        {
+            if (!neighboursOrdered.contains(s)
+                    && !current.getNeighbours().contains(s))
+            {
+                if (current.getMesh().minimalDistance(s.getMesh()) < distanceMin)
+                {
+                    possible = s;
+                    distanceMin = current.getMesh()
+                            .minimalDistance(s.getMesh());
+                }
+            }
+        }
+
+        return possible;
+    }
+
+    /**
+     * Returns the intersection of two lists of neighbours.
+     * @param surface
+     *            the other surface
+     * @return a list containing the elements shared by the two lists
+     */
+    private List<Surface> getCommonNeighbours(final Surface surface)
+    {
+        final List<Surface> ret = new ArrayList<Surface>();
+        for (final Surface s : this.getNeighbours())
+        {
+            if (surface.getNeighbours().contains(s))
+            {
+                ret.add(s);
+            }
+        }
+        return ret;
+    }
+
+    public Polygon getPolygone()
+    {
+        return this.polygon;
     }
 
     public void setPolygone(Polygon polygoneIn)
     {
         this.polygon = polygoneIn;
+    }
+
+    public Mesh getMesh()
+    {
+        return this.mesh;
+    }
+
+    public void setMesh(Mesh meshIn)
+    {
+        this.mesh = meshIn;
     }
 }

@@ -11,10 +11,8 @@ import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 public abstract class AbstractIslet
 {
-
     public class UnCompletedParametersException extends Exception
     {
-
         private static final long serialVersionUID = 1L;
 
         public UnCompletedParametersException()
@@ -55,7 +53,6 @@ public abstract class AbstractIslet
      */
     protected void createChangeBaseMatrix()
     {
-
         try
         {
             // Base change
@@ -93,6 +90,7 @@ public abstract class AbstractIslet
             System.out
                     .println("Error : the file is badly formed, not found or unreadable !");
             System.exit(1);
+
         }
     }
 }
