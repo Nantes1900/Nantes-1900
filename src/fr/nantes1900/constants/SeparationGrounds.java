@@ -2,10 +2,10 @@ package fr.nantes1900.constants;
 
 /**
  * Contains some coefficients used in the algorithms.
- * 
  * @author Daniel Lefevre
  */
-public class SeparationGrounds {
+public class SeparationGrounds
+{
 
     /**
      * Coefficient used after the extraction of the grounds, to determine if a

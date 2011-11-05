@@ -7,10 +7,10 @@ public class Universe3DController
     /**
      * The view of the 3D objets to show.
      */
-    private Universe3DView u3DView;
-    
+    private Universe3DView           u3DView;
+
     private IsletSelectionController parentController;
-    
+
     public Universe3DController(
             IsletSelectionController isletSelectionController)
     {

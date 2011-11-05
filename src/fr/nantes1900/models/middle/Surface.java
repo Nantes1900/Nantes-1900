@@ -16,45 +16,50 @@ import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
  * Implements a surface, extending a mesh, and containing a list of surfaces as
  * neighbours. Contains some algorithms for the separation between walls and
  * roofs.
- * 
  * @author Daniel Lefevre
  */
-public class Surface {
+public class Surface
+{
 
     /**
      * List of the neighbours of this surface.
      */
     private final List<Surface> neighbours = new ArrayList<Surface>();
 
-    private Polygon polygon = new Polygon();
-    private Mesh mesh = new Mesh();
+    private Polygon             polygon    = new Polygon();
+    private Mesh                mesh       = new Mesh();
 
-    public Surface(Polygon p) {
-	this.setPolygone(p);
+    public Surface(Polygon p)
+    {
+        this.setPolygone(p);
     }
 
-    public Surface(Mesh m) {
-	this.setMesh(m);
+    public Surface(Mesh m)
+    {
+        this.setMesh(m);
     }
 
-    public Surface() {
+    public Surface()
+    {
     }
 
     /**
      * Adds a neighbour to the attribute neighbours. Checks if it is not
      * contained. Adds also this to the m neighbours, also checking if not
      * already contained.
-     * 
      * @param m
      *            the mesh as neighbour to add
      */
-    public final void addNeighbour(final Surface m) {
-	if (!this.neighbours.contains(m)) {
-	    this.neighbours.add(m);
-	}
-	if (!m.neighbours.contains(this)) {
-	    m.neighbours.add(this);
-	}
+    public final void addNeighbour(final Surface m)
+    {
+        if (!this.neighbours.contains(m))
+        {
+            this.neighbours.add(m);
+        }
+        if (!m.neighbours.contains(this))
+        {
+            m.neighbours.add(this);
+        }
     }
 
     /**
@@ -62,7 +67,6 @@ public class Surface {
      * to be treated first (using orderNeighbours). Since the neighbours are
      * sorted, calls the method createEdge for each neighbours and builds the
      * polyline with the edges returned.
-     * 
      * @param wallList
      *            the list of walls to check if the surface is a wall or not
      * @param pointMap
@@ -75,42 +79,44 @@ public class Surface {
      *             if a problem happened
      */
     public final Polygon findEdges(final List<Surface> wallList,
-	    final Map<Point, Point> pointMap, final Vector3d normalGround)
-	    throws InvalidSurfaceException {
+            final Map<Point, Point> pointMap, final Vector3d normalGround)
+            throws InvalidSurfaceException
+    {
 
-	final Polygon edges = new Polygon();
+        final Polygon edges = new Polygon();
 
-	// The neighbours are sorted, then it's easy to make the edges and
-	// points.
-	for (int i = 0; i < this.getNeighbours().size() - 2; ++i) {
+        // The neighbours are sorted, then it's easy to make the edges and
+        // points.
+        for (int i = 0; i < this.getNeighbours().size() - 2; ++i)
+        {
 
-	    edges.add(this.createEdge(this.getNeighbours().get(i), this
-		    .getNeighbours().get(i + 1), this.getNeighbours()
-		    .get(i + 2), pointMap, wallList, normalGround));
-	}
+            edges.add(this.createEdge(this.getNeighbours().get(i), this
+                    .getNeighbours().get(i + 1), this.getNeighbours()
+                    .get(i + 2), pointMap, wallList, normalGround));
+        }
 
-	final int size = this.getNeighbours().size();
+        final int size = this.getNeighbours().size();
 
-	// We add the last missing edges which where not treated in the
-	// loop.
-	edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
-		.getNeighbours().get(size - 1), this.getNeighbours().get(0),
-		pointMap, wallList, normalGround));
+        // We add the last missing edges which where not treated in the
+        // loop.
+        edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
+                .getNeighbours().get(size - 1), this.getNeighbours().get(0),
+                pointMap, wallList, normalGround));
 
-	edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
-		.getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
-		wallList, normalGround));
+        edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
+                .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
+                wallList, normalGround));
 
-	return edges;
+        return edges;
     }
 
     /**
      * Getter.
-     * 
      * @return the neighbours
      */
-    public final List<Surface> getNeighbours() {
-	return this.neighbours;
+    public final List<Surface> getNeighbours()
+    {
+        return this.neighbours;
     }
 
     /**
@@ -123,7 +129,6 @@ public class Surface {
      * neighbour the closest (in terms of distance) neighbour not still treated.
      * If there is too much common neighbours, then the algorithm removes the
      * still-treated neighbours. It often resolves the problem.
-     * 
      * @param wholeList
      *            the list of every surfaces
      * @param grounds
@@ -133,135 +138,146 @@ public class Surface {
      *             as said in the description
      */
     public final void orderNeighbours(final List<Surface> wholeList,
-	    final Surface grounds) throws ImpossibleNeighboursOrderException {
+            final Surface grounds) throws ImpossibleNeighboursOrderException
+    {
 
-	final List<Surface> neighboursOrdered = new ArrayList<Surface>();
+        final List<Surface> neighboursOrdered = new ArrayList<Surface>();
 
-	final int neighboursNumber = this.getNeighbours().size();
+        final int neighboursNumber = this.getNeighbours().size();
 
-	// If the ground is the neighbour of this surface, then we begin with
-	// the ground, to avoid some problems in the future. Otherwise, we
-	// begin
-	// where we want.
-	Surface current = null;
-	try {
-	    current = this.getNeighbours().get(0);
-	    if (this.getNeighbours().contains(grounds)) {
-		current = this.getCommonNeighbours(grounds).get(0);
-	    }
-	} catch (final IndexOutOfBoundsException e) {
-	    throw new ImpossibleNeighboursOrderException();
-	}
+        // If the ground is the neighbour of this surface, then we begin with
+        // the ground, to avoid some problems in the future. Otherwise, we
+        // begin
+        // where we want.
+        Surface current = null;
+        try
+        {
+            current = this.getNeighbours().get(0);
+            if (this.getNeighbours().contains(grounds))
+            {
+                current = this.getCommonNeighbours(grounds).get(0);
+            }
+        } catch (final IndexOutOfBoundsException e)
+        {
+            throw new ImpossibleNeighboursOrderException();
+        }
 
-	// We find the surfaces that are common to this surface and current.
-	// There must be two surfaces, but there always are some problems...
-	List<Surface> commonNeighbours = this.getCommonNeighbours(current);
-	int counter = 0;
+        // We find the surfaces that are common to this surface and current.
+        // There must be two surfaces, but there always are some problems...
+        List<Surface> commonNeighbours = this.getCommonNeighbours(current);
+        int counter = 0;
 
-	while (counter < neighboursNumber - 1) {
+        while (counter < neighboursNumber - 1)
+        {
 
-	    // Adds the current surface to the ordered list.
-	    neighboursOrdered.add(current);
+            // Adds the current surface to the ordered list.
+            neighboursOrdered.add(current);
 
-	    // Resolving problems : not enough common neighbours or too much...
-	    if (commonNeighbours.size() < 2) {
+            // Resolving problems : not enough common neighbours or too much...
+            if (commonNeighbours.size() < 2)
+            {
 
-		// If there is not enough, it probably means that two surfaces
-		// are effectively neighbours, but don't touch each other.
-		// We will find which one our current surface is the closest to,
-		// and it will be our next neighbour !
-		commonNeighbours.add(this.findPossibleNeighbour(current,
-			neighboursOrdered));
-	    }
+                // If there is not enough, it probably means that two surfaces
+                // are effectively neighbours, but don't touch each other.
+                // We will find which one our current surface is the closest to,
+                // and it will be our next neighbour !
+                commonNeighbours.add(this.findPossibleNeighbour(current,
+                        neighboursOrdered));
+            }
 
-	    // If there is too much neighbours, this step can resolve it.
-	    // The ground often causes that kind of problem, that's why we begin
-	    // by treating the ground first (see at the beginning of the
-	    // method).
-	    for (final Surface s : neighboursOrdered) {
-		commonNeighbours.remove(s);
-	    }
-	    if (commonNeighbours.isEmpty()) {
-		throw new ImpossibleNeighboursOrderException();
-	    }
+            // If there is too much neighbours, this step can resolve it.
+            // The ground often causes that kind of problem, that's why we begin
+            // by treating the ground first (see at the beginning of the
+            // method).
+            for (final Surface s : neighboursOrdered)
+            {
+                commonNeighbours.remove(s);
+            }
+            if (commonNeighbours.isEmpty())
+            {
+                throw new ImpossibleNeighboursOrderException();
+            }
 
-	    // Selects the next one (without retracing our steps).
-	    current = commonNeighbours.get(0);
+            // Selects the next one (without retracing our steps).
+            current = commonNeighbours.get(0);
 
-	    // Continues with this one.
-	    commonNeighbours = this.getCommonNeighbours(current);
-	    ++counter;
-	}
+            // Continues with this one.
+            commonNeighbours = this.getCommonNeighbours(current);
+            ++counter;
+        }
 
-	neighboursOrdered.add(current);
+        neighboursOrdered.add(current);
 
-	// If the last one is not neighbour to the first one, there is a
-	// problem.
-	if (!current.getNeighbours().contains(neighboursOrdered.get(0))) {
-	    throw new ImpossibleNeighboursOrderException();
-	}
+        // If the last one is not neighbour to the first one, there is a
+        // problem.
+        if (!current.getNeighbours().contains(neighboursOrdered.get(0)))
+        {
+            throw new ImpossibleNeighboursOrderException();
+        }
 
-	this.neighbours.clear();
-	this.neighbours.addAll(neighboursOrdered);
+        this.neighbours.clear();
+        this.neighbours.addAll(neighboursOrdered);
     }
 
     /**
      * Returns the meshes belonging to the list contain which are neighbours of
      * this in the list ret. Recursive method.
-     * 
      * @param ret
      *            the list returned which contains the neighbours
      * @param contain
      *            the list which must contain the neighbours
      */
     public final void returnNeighbours(final List<Surface> ret,
-	    final List<Surface> contain) {
+            final List<Surface> contain)
+    {
 
-	// Add this to the ret list.
-	ret.add(this);
+        // Add this to the ret list.
+        ret.add(this);
 
-	// If this is not contained by ret and if this is contained in
-	// contain,
-	// then call this method.
-	for (final Surface m : this.getNeighbours()) {
-	    if (!ret.contains(m) && contain.contains(m)) {
-		m.returnNeighbours(ret, contain);
-	    }
-	}
+        // If this is not contained by ret and if this is contained in
+        // contain,
+        // then call this method.
+        for (final Surface m : this.getNeighbours())
+        {
+            if (!ret.contains(m) && contain.contains(m))
+            {
+                m.returnNeighbours(ret, contain);
+            }
+        }
     }
 
     /**
      * Returns a mesh composed of only one triangle which represents a plane in
      * 3D space.
-     * 
      * @param normalGround
      *            the normal to the ground
      * @return the mesh with only one triangle
      */
-    public final Surface returnVerticalPlane(final Vector3d normalGround) {
+    public final Surface returnVerticalPlane(final Vector3d normalGround)
+    {
 
-	final Vector3d averageNormal = this.getMesh().averageNormal();
+        final Vector3d averageNormal = this.getMesh().averageNormal();
 
-	final Surface computedWallPlane = new Surface();
+        final Surface computedWallPlane = new Surface();
 
-	final Point centroid = new Point(this.getMesh().xAverage(), this
-		.getMesh().yAverage(), this.getMesh().zAverage());
+        final Point centroid = new Point(this.getMesh().xAverage(), this
+                .getMesh().yAverage(), this.getMesh().zAverage());
 
-	final Point p1 = new Point(centroid.getX() + 1, centroid.getY()
-		- averageNormal.getX() / averageNormal.getY(), centroid.getZ());
+        final Point p1 = new Point(centroid.getX() + 1, centroid.getY()
+                - averageNormal.getX() / averageNormal.getY(), centroid.getZ());
 
-	final Point p3 = centroid;
+        final Point p3 = centroid;
 
-	final Edge e1 = new Edge(p1, p1);
-	final Edge e2 = new Edge(p1, p3);
+        final Edge e1 = new Edge(p1, p1);
+        final Edge e2 = new Edge(p1, p3);
 
-	final Vector3d vect = new Vector3d();
-	vect.cross(normalGround, e2.convertToVector3d());
+        final Vector3d vect = new Vector3d();
+        vect.cross(normalGround, e2.convertToVector3d());
 
-	computedWallPlane.getMesh().add(
-		new Triangle(p1, p1, p3, e1, e2, e2, vect));
+        computedWallPlane.getMesh().add(
+                new Triangle(p1, p1, p3, e1, e2, e2, vect));
 
-	return computedWallPlane;
+        return computedWallPlane;
     }
 
     /**
@@ -269,7 +285,6 @@ public class Surface {
      * Computes the intersection of the first three planes, and the three next.
      * If one plane is wall, rectifies its normal to be vertical. If one point
      * has already been created before, use the hashmap to find it.
-     * 
      * @param s1
      *            the first plane
      * @param s2
@@ -287,91 +302,105 @@ public class Surface {
      *             if the algorithm cannot comput the edge
      */
     private Edge createEdge(final Surface s1, final Surface s2,
-	    final Surface s3, final Map<Point, Point> pointMap,
-	    final List<Surface> wallList, final Vector3d normalGround)
-	    throws InvalidSurfaceException {
+            final Surface s3, final Map<Point, Point> pointMap,
+            final List<Surface> wallList, final Vector3d normalGround)
+            throws InvalidSurfaceException
+    {
 
-	final List<Surface> surfaces = new ArrayList<Surface>();
-	surfaces.add(s1);
-	surfaces.add(s2);
-	surfaces.add(s3);
-	surfaces.add(this);
+        final List<Surface> surfaces = new ArrayList<Surface>();
+        surfaces.add(s1);
+        surfaces.add(s2);
+        surfaces.add(s3);
+        surfaces.add(this);
 
-	try {
+        try
+        {
 
-	    // If there is two neighbours which have the same orientation, then
-	    // throw an exception.
-	    if (this.getMesh().isOrientedAs(s1.getMesh(),
-		    SimplificationSurfaces.IS_ORIENTED_FACTOR)
-		    || this.getMesh().isOrientedAs(s2.getMesh(),
-			    SimplificationSurfaces.IS_ORIENTED_FACTOR)
-		    || this.getMesh().isOrientedAs(s3.getMesh(),
-			    SimplificationSurfaces.IS_ORIENTED_FACTOR)) {
-		throw new ParallelPlanesException();
-	    }
-	    if (s1.getMesh().isOrientedAs(s2.getMesh(),
-		    SimplificationSurfaces.IS_ORIENTED_FACTOR)
-		    || s2.getMesh().isOrientedAs(s3.getMesh(),
-			    SimplificationSurfaces.IS_ORIENTED_FACTOR)) {
-		throw new ParallelPlanesException();
-	    }
+            // If there is two neighbours which have the same orientation, then
+            // throw an exception.
+            if (this.getMesh().isOrientedAs(s1.getMesh(),
+                    SimplificationSurfaces.IS_ORIENTED_FACTOR)
+                    || this.getMesh().isOrientedAs(s2.getMesh(),
+                            SimplificationSurfaces.IS_ORIENTED_FACTOR)
+                    || this.getMesh().isOrientedAs(s3.getMesh(),
+                            SimplificationSurfaces.IS_ORIENTED_FACTOR))
+            {
+                throw new ParallelPlanesException();
+            }
+            if (s1.getMesh().isOrientedAs(s2.getMesh(),
+                    SimplificationSurfaces.IS_ORIENTED_FACTOR)
+                    || s2.getMesh().isOrientedAs(s3.getMesh(),
+                            SimplificationSurfaces.IS_ORIENTED_FACTOR))
+            {
+                throw new ParallelPlanesException();
+            }
 
-	    // If one of the surfaces is a wall, rectifies its normal to be
-	    // vertical, and after finds the edges.
-	    final List<Surface> list = new ArrayList<Surface>();
-	    for (final Surface s : surfaces) {
-		if (s != this) {
-		    if (wallList.contains(s)) {
-			list.add(s.returnVerticalPlane(normalGround));
-		    } else {
-			list.add(s);
-		    }
-		}
-	    }
+            // If one of the surfaces is a wall, rectifies its normal to be
+            // vertical, and after finds the edges.
+            final List<Surface> list = new ArrayList<Surface>();
+            for (final Surface s : surfaces)
+            {
+                if (s != this)
+                {
+                    if (wallList.contains(s))
+                    {
+                        list.add(s.returnVerticalPlane(normalGround));
+                    } else
+                    {
+                        list.add(s);
+                    }
+                }
+            }
 
-	    Surface surface = this;
-	    if (wallList.contains(this)) {
-		surface = this.returnVerticalPlane(normalGround);
-	    }
+            Surface surface = this;
+            if (wallList.contains(this))
+            {
+                surface = this.returnVerticalPlane(normalGround);
+            }
 
-	    // Finds the intersection of the three surfaces.
-	    Point p1 = surface.getMesh().intersection(list.get(0).getMesh(),
-		    list.get(1).getMesh());
-	    Point p2 = surface.getMesh().intersection(list.get(1).getMesh(),
-		    list.get(2).getMesh());
+            // Finds the intersection of the three surfaces.
+            Point p1 = surface.getMesh().intersection(list.get(0).getMesh(),
+                    list.get(1).getMesh());
+            Point p2 = surface.getMesh().intersection(list.get(1).getMesh(),
+                    list.get(2).getMesh());
 
-	    // Searches in the map to find if another point with the same value
-	    // doesn't already exist.
-	    Point pTemp = pointMap.get(p1);
-	    if (pTemp == null) {
-		pointMap.put(p1, p1);
-	    } else {
-		p1 = pTemp;
-	    }
+            // Searches in the map to find if another point with the same value
+            // doesn't already exist.
+            Point pTemp = pointMap.get(p1);
+            if (pTemp == null)
+            {
+                pointMap.put(p1, p1);
+            } else
+            {
+                p1 = pTemp;
+            }
 
-	    // Idem.
-	    pTemp = pointMap.get(p2);
-	    if (pTemp == null) {
-		pointMap.put(p2, p2);
-	    } else {
-		p2 = pTemp;
-	    }
+            // Idem.
+            pTemp = pointMap.get(p2);
+            if (pTemp == null)
+            {
+                pointMap.put(p2, p2);
+            } else
+            {
+                p2 = pTemp;
+            }
 
-	    final Edge e = new Edge(p1, p2);
+            final Edge e = new Edge(p1, p2);
 
-	    return e;
+            return e;
 
-	} catch (final SingularMatrixException e) {
-	    throw new InvalidSurfaceException();
-	} catch (final ParallelPlanesException e) {
-	    throw new InvalidSurfaceException();
-	}
+        } catch (final SingularMatrixException e)
+        {
+            throw new InvalidSurfaceException();
+        } catch (final ParallelPlanesException e)
+        {
+            throw new InvalidSurfaceException();
+        }
     }
 
     /**
      * Finds in the list of neighbours of this except the list of surfaces the
      * closest to the surface.
-     * 
      * @param current
      *            the surface to check
      * @param neighboursOrdered
@@ -380,116 +409,129 @@ public class Surface {
      *         this, not belonging to the list neighboursOrdered
      */
     private Surface findPossibleNeighbour(final Surface current,
-	    final List<Surface> neighboursOrdered) {
-	Surface possible = null;
-	double distanceMin = Double.POSITIVE_INFINITY;
+            final List<Surface> neighboursOrdered)
+    {
+        Surface possible = null;
+        double distanceMin = Double.POSITIVE_INFINITY;
 
-	// From all the neighbours which are not still ordered, select the
-	// closest one.
-	for (final Surface s : this.getNeighbours()) {
-	    if (!neighboursOrdered.contains(s)
-		    && !current.getNeighbours().contains(s)) {
-		if (current.getMesh().minimalDistance(s.getMesh()) < distanceMin) {
-		    possible = s;
-		    distanceMin = current.getMesh()
-			    .minimalDistance(s.getMesh());
-		}
-	    }
-	}
+        // From all the neighbours which are not still ordered, select the
+        // closest one.
+        for (final Surface s : this.getNeighbours())
+        {
+            if (!neighboursOrdered.contains(s)
+                    && !current.getNeighbours().contains(s))
+            {
+                if (current.getMesh().minimalDistance(s.getMesh()) < distanceMin)
+                {
+                    possible = s;
+                    distanceMin = current.getMesh()
+                            .minimalDistance(s.getMesh());
+                }
+            }
+        }
 
-	return possible;
+        return possible;
     }
 
     /**
      * Returns the intersection of two lists of neighbours.
-     * 
      * @param surface
      *            the other surface
      * @return a list containing the elements shared by the two lists
      */
-    private List<Surface> getCommonNeighbours(final Surface surface) {
-	final List<Surface> ret = new ArrayList<Surface>();
-	for (final Surface s : this.getNeighbours()) {
-	    if (surface.getNeighbours().contains(s)) {
-		ret.add(s);
-	    }
-	}
-	return ret;
+    private List<Surface> getCommonNeighbours(final Surface surface)
+    {
+        final List<Surface> ret = new ArrayList<Surface>();
+        for (final Surface s : this.getNeighbours())
+        {
+            if (surface.getNeighbours().contains(s))
+            {
+                ret.add(s);
+            }
+        }
+        return ret;
     }
 
-    public Polygon getPolygone() {
-	return this.polygon;
+    public Polygon getPolygone()
+    {
+        return this.polygon;
     }
 
-    public void setPolygone(Polygon polygoneIn) {
-	this.polygon = polygoneIn;
+    public void setPolygone(Polygon polygoneIn)
+    {
+        this.polygon = polygoneIn;
     }
 
-    public Mesh getMesh() {
-	return this.mesh;
+    public Mesh getMesh()
+    {
+        return this.mesh;
     }
 
-    public void setMesh(Mesh meshIn) {
-	this.mesh = meshIn;
+    public void setMesh(Mesh meshIn)
+    {
+        this.mesh = meshIn;
     }
 
     /**
      * Implements an exception used in algorithms when the neighbours cannot be
      * ordered.
-     * 
      * @author Daniel Lefevre
      */
     public static final class ImpossibleNeighboursOrderException extends
-	    Exception {
+            Exception
+    {
 
-	/**
-	 * Version attribute.
-	 */
-	private static final long serialVersionUID = 1L;
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
 
-	/**
-	 * Private constructor.
-	 */
-	public ImpossibleNeighboursOrderException() {
-	}
+        /**
+         * Private constructor.
+         */
+        public ImpossibleNeighboursOrderException()
+        {
+        }
     }
 
     /**
      * Implements an execption used in findEdges method when surfaces can not be
      * vectorized.
-     * 
      * @author Daniel Lefevre
      */
-    public static final class InvalidSurfaceException extends Exception {
+    public static final class InvalidSurfaceException extends Exception
+    {
 
-	/**
-	 * Version attribute.
-	 */
-	private static final long serialVersionUID = 1L;
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
 
-	/**
-	 * Private constructor.
-	 */
-	public InvalidSurfaceException() {
-	}
+        /**
+         * Private constructor.
+         */
+        public InvalidSurfaceException()
+        {
+        }
     }
 
     /**
      * Implements an exception used in algorithms when planes are parallel.
-     * 
      * @author Daniel Lefevre
      */
-    public static final class ParallelPlanesException extends Exception {
+    public static final class ParallelPlanesException extends Exception
+    {
 
-	/**
-	 * Version attribute.
-	 */
-	private static final long serialVersionUID = 1L;
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
 
-	/**
-	 * Private constructor.
-	 */
-	public ParallelPlanesException() {
-	}
+        /**
+         * Private constructor.
+         */
+        public ParallelPlanesException()
+        {
+        }
     }
 }
