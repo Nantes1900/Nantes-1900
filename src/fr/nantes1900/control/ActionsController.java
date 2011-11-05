@@ -19,8 +19,8 @@ public class ActionsController
     /**
      * The panel containing buttons to launch the different actions.
      */
-    private ActionsView aView;
-    
+    private ActionsView              aView;
+
     /**
      * The parent controller to give feedback to.
      */
@@ -29,7 +29,7 @@ public class ActionsController
     /**
      * Creates a new controller to handle the panel containing buttons to launch
      * the different actions.
-     * @param isletSelectionController 
+     * @param isletSelectionController
      */
     public ActionsController(IsletSelectionController isletSelectionController)
     {
@@ -51,7 +51,7 @@ public class ActionsController
                     File file = fileChooser.getSelectedFile();
                     if (file.isDirectory())
                     {
-                       parentController.updateMockupDirectory(file);
+                        parentController.updateMockupDirectory(file);
                     }
                 }
             }

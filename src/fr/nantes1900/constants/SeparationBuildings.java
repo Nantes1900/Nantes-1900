@@ -2,10 +2,10 @@ package fr.nantes1900.constants;
 
 /**
  * Contains some coefficients used in the algorithms.
- * 
  * @author Daniel Lefevre
  */
-public class SeparationBuildings {
+public class SeparationBuildings
+{
 
     /**
      * Coefficient used after the extraction of the building, to determine if a
