@@ -35,9 +35,19 @@ public class IsletSelectionController
     private IsletSelectionView   isView;
 
     /**
-     * The opened directory corresponding to a mockup part.
+     * The opened directory corresponding.
      */
-    private File                 mockupDirectory;
+    private File                 openedDirectory;
+
+    /**
+     * The selected file in the tree.
+     */
+    private File                 selectedFile;
+
+    /**
+     * The parent controller which handles this one.
+     */
+    private GlobalController     parentController;
 
     /**
      * Creates a new controller to handle the islet selection window.
@@ -68,10 +78,21 @@ public class IsletSelectionController
         boolean isMockupDirectory = true;
         if (isMockupDirectory)
         {
-            this.mockupDirectory = newDirectory;
-            gtController.updateDirectory(mockupDirectory);
+            this.openedDirectory = newDirectory;
+            gtController.updateDirectory(openedDirectory);
+            isView.setStatusBarText("Sélectionnez un îlot à traiter");
         }
 
         return true;
+    }
+
+    /**
+     * Launches the treatment of the selected file which is an islet file.
+     * 
+     * The verification that the selected file is an islet file is made at the selection in the tree.
+     */
+    public void launchIsletTreatment()
+    {
+        this.parentController.launchIsletTreatment(selectedFile);
     }
 }

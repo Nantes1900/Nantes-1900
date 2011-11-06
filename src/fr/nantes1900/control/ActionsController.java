@@ -57,6 +57,16 @@ public class ActionsController
             }
 
         });
+
+        aView.getLaunchButton().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(ActionEvent arg0)
+            {
+                parentController.launchIsletTreatment();
+            }
+
+        });
     }
 
     /**
