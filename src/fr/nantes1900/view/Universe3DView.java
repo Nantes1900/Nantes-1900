@@ -11,14 +11,14 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 
 /**
  * @author Daniel
- * 
  */
-public class Universe3DView extends JPanel{
+public class Universe3DView extends JPanel
+{
     /**
      * The universe.
      */
     private SimpleUniverse simpleUniverse;
-    
+
     /**
      * Creates a new universe.
      */
@@ -33,43 +33,44 @@ public class Universe3DView extends JPanel{
         this.simpleUniverse = new SimpleUniverse(c);
 
         this.simpleUniverse.addBranchGraph(this.createSceneGraph());
-        
+
         // Size to show the panel while there is nothing to show
         this.setMinimumSize(new Dimension(400, 400));
         this.setPreferredSize(new Dimension(400, 400));
     }
-    
+
     private BranchGroup createSceneGraph()
     {
         BranchGroup objRoot = new BranchGroup();
-        
+
         return objRoot;
     }
 
     /**
      * Removes everything displayed !
      */
-    public void clearAllMeshes() {
-	// TODO Auto-generated method stub
+    public void clearAllMeshes()
+    {
+        // TODO Auto-generated method stub
 
     }
 
     /**
      * Adds a mesh to the things displayed...
-     * 
      * @param meshViewer
      */
-    public void addTriangleMesh(TriangleMeshViewer meshViewer) {
-	// TODO Auto-generated method stub
+    public void addTriangleMesh(TriangleMeshViewer meshViewer)
+    {
+        // TODO Auto-generated method stub
     }
 
     /**
      * Adds a mesh to the things displayed...
-     * 
      * @param meshViewer
      */
     public void addPolygon(
-	    @SuppressWarnings("unused") PolygonViewer polygonViewer) {
-	// TODO Auto-generated method stub
+            @SuppressWarnings("unused") PolygonViewer polygonViewer)
+    {
+        // TODO Auto-generated method stub
     }
 }

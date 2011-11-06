@@ -7,7 +7,6 @@ import javax.swing.JTree;
 
 /**
  * @author Camille
- *
  */
 public class GlobalTreeView extends JTree
 {
