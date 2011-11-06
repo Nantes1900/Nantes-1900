@@ -8,13 +8,18 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.JFrame;
+import fr.nantes1900.view.components.PFrame;
 
 /**
  * @author Camille
  */
-public class IsletSelectionView extends JFrame
+public class IsletSelectionView extends PFrame
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
     /**
      * The panel containing the buttons to perform the different actions.
      */
@@ -42,6 +47,7 @@ public class IsletSelectionView extends JFrame
     public IsletSelectionView(ActionsView actionsView,
             GlobalTreeView globalTreeView, Universe3DView buildingsIsletView)
     {
+        super();
         // initializes the frame
         this.setTitle("Nantes 1900");
         this.setMinimumSize(new Dimension(600, 600));
@@ -52,22 +58,23 @@ public class IsletSelectionView extends JFrame
         this.u3DView = buildingsIsletView;
 
         // adds the different views
-        this.getContentPane().setLayout(new GridBagLayout());
-        this.getContentPane().add(
+        this.getComponentsPanel().setLayout(new GridBagLayout());
+        this.getComponentsPanel().add(
                 aView,
                 new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
                         GridBagConstraints.CENTER,
                         GridBagConstraints.HORIZONTAL,
                         new Insets(5, 10, 5, 10), 0, 0));
-        this.getContentPane().add(
+        this.getComponentsPanel().add(
                 gtView,
                 new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(5, 10, 5, 10), 0, 0));
-        this.getContentPane().add(
+        this.getComponentsPanel().add(
                 u3DView,
                 new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0,
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(5, 10, 5, 10), 0, 0));
+        setStatusBarText("Choisissez un dossier contenant des ilôts à traiter");
     }
 }
