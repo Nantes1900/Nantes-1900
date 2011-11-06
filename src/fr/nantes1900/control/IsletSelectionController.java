@@ -54,14 +54,14 @@ public class IsletSelectionController
      */
     public IsletSelectionController()
     {
-        gtController = new GlobalTreeController(this);
-        aController = new ActionsController(this);
-        u3DController = new Universe3DController(this);
+        this.gtController = new GlobalTreeController(this);
+        this.aController = new ActionsController(this);
+        this.u3DController = new Universe3DController(this);
 
-        isView = new IsletSelectionView(aController.getActionsView(),
-                gtController.getGlobalTreeView(),
-                u3DController.getUniverse3DView());
-        isView.setVisible(true);
+        this.isView = new IsletSelectionView(this.aController.getActionsView(),
+                this.gtController.getGlobalTreeView(),
+                this.u3DController.getUniverse3DView());
+        this.isView.setVisible(true);
     }
 
     /**
@@ -79,8 +79,8 @@ public class IsletSelectionController
         if (isMockupDirectory)
         {
             this.openedDirectory = newDirectory;
-            gtController.updateDirectory(openedDirectory);
-            isView.setStatusBarText("Sélectionnez un îlot à traiter");
+            this.gtController.updateDirectory(this.openedDirectory);
+            this.isView.setStatusBarText("Sélectionnez un îlot à traiter");
         }
 
         return true;
@@ -93,6 +93,6 @@ public class IsletSelectionController
      */
     public void launchIsletTreatment()
     {
-        this.parentController.launchIsletTreatment(selectedFile);
+        this.parentController.launchIsletTreatment(this.selectedFile);
     }
 }

@@ -20,7 +20,7 @@ public class GlobalController
      */
     public GlobalController()
     {
-        isletSelectionController = new IsletSelectionController();
+        this.isletSelectionController = new IsletSelectionController();
     }
 
     /**

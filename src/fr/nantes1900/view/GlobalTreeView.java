@@ -10,5 +10,6 @@ import javax.swing.JTree;
  */
 public class GlobalTreeView extends JTree
 {
+    private static final long serialVersionUID = 1L;
 
 }

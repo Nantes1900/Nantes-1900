@@ -11,7 +11,6 @@ import fr.nantes1900.control.GlobalController;
  */
 public class Nantes1900
 {
-
     /**
      * Private constructor.
      */
@@ -28,5 +27,4 @@ public class Nantes1900
     {
         final GlobalController globalController = new GlobalController();
     }
-
 }

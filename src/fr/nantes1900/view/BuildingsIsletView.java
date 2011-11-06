@@ -79,7 +79,7 @@ public abstract class BuildingsIsletView
      */
     public void viewBeforeStep0()
     {
-        this.universe3D.addTriangleMesh(new TriangleMeshViewer(this.islet
+        this.universe3D.addTriangleMesh(new MeshView(this.islet
                 .getInitialTotalMesh()));
     }
 
@@ -88,7 +88,7 @@ public abstract class BuildingsIsletView
      */
     public void viewBeforeStep1()
     {
-        this.universe3D.addTriangleMesh(new TriangleMeshViewer(this.islet
+        this.universe3D.addTriangleMesh(new MeshView(this.islet
                 .getInitialTotalMesh()));
     }
 
@@ -97,9 +97,9 @@ public abstract class BuildingsIsletView
      */
     public void viewBeforeStep2()
     {
-        this.universe3D.addTriangleMesh(new TriangleMeshViewer(this.islet
+        this.universe3D.addTriangleMesh(new MeshView(this.islet
                 .getInitialBuilding()));
-        this.universe3D.addTriangleMesh(new TriangleMeshViewer(this.islet
+        this.universe3D.addTriangleMesh(new MeshView(this.islet
                 .getInitialGround()));
     }
 
@@ -108,12 +108,12 @@ public abstract class BuildingsIsletView
      */
     public void viewBeforeStep3()
     {
-        this.universe3D.addTriangleMesh(new TriangleMeshViewer(this.islet
+        this.universe3D.addTriangleMesh(new MeshView(this.islet
                 .getInitialGround()));
 
         for (Building building : this.islet.getBuildings())
         {
-            this.universe3D.addTriangleMesh(new TriangleMeshViewer(building
+            this.universe3D.addTriangleMesh(new MeshView(building
                     .getInitialTotalMesh()));
         }
     }
@@ -133,9 +133,9 @@ public abstract class BuildingsIsletView
     {
         for (Building building : this.islet.getBuildings())
         {
-            this.universe3D.addTriangleMesh(new TriangleMeshViewer(building
+            this.universe3D.addTriangleMesh(new MeshView(building
                     .getInitialWall()));
-            this.universe3D.addTriangleMesh(new TriangleMeshViewer(building
+            this.universe3D.addTriangleMesh(new MeshView(building
                     .getInitialRoof()));
         }
     }
@@ -149,12 +149,12 @@ public abstract class BuildingsIsletView
         {
             for (Surface wall : building.getWalls())
             {
-                this.universe3D.addTriangleMesh(new TriangleMeshViewer(wall
+                this.universe3D.addTriangleMesh(new MeshView(wall
                         .getMesh()));
             }
             for (Surface roof : building.getRoofs())
             {
-                this.universe3D.addTriangleMesh(new TriangleMeshViewer(roof
+                this.universe3D.addTriangleMesh(new MeshView(roof
                         .getMesh()));
             }
         }
@@ -169,12 +169,12 @@ public abstract class BuildingsIsletView
         {
             for (Surface wall : building.getWalls())
             {
-                this.universe3D.addTriangleMesh(new TriangleMeshViewer(wall
+                this.universe3D.addTriangleMesh(new MeshView(wall
                         .getMesh()));
             }
             for (Surface roof : building.getRoofs())
             {
-                this.universe3D.addTriangleMesh(new TriangleMeshViewer(roof
+                this.universe3D.addTriangleMesh(new MeshView(roof
                         .getMesh()));
             }
         }
@@ -189,12 +189,12 @@ public abstract class BuildingsIsletView
         {
             for (Surface wall : building.getWalls())
             {
-                this.universe3D.addTriangleMesh(new TriangleMeshViewer(wall
+                this.universe3D.addTriangleMesh(new MeshView(wall
                         .getMesh()));
             }
             for (Surface roof : building.getRoofs())
             {
-                this.universe3D.addTriangleMesh(new TriangleMeshViewer(roof
+                this.universe3D.addTriangleMesh(new MeshView(roof
                         .getMesh()));
             }
         }
@@ -210,12 +210,12 @@ public abstract class BuildingsIsletView
             for (Surface wall : building.getWalls())
             {
                 this.universe3D
-                        .addPolygon(new PolygonViewer(wall.getPolygone()));
+                        .addPolygon(new PolygonView(wall.getPolygone()));
             }
             for (Surface roof : building.getRoofs())
             {
                 this.universe3D
-                        .addPolygon(new PolygonViewer(roof.getPolygone()));
+                        .addPolygon(new PolygonView(roof.getPolygone()));
             }
         }
     }

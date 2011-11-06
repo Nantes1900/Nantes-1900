@@ -59,7 +59,7 @@ public class Universe3DView extends JPanel
      * Adds a mesh to the things displayed...
      * @param meshViewer
      */
-    public void addTriangleMesh(TriangleMeshViewer meshViewer)
+    public void addTriangleMesh(MeshView meshViewer)
     {
         // TODO Auto-generated method stub
     }
@@ -69,7 +69,7 @@ public class Universe3DView extends JPanel
      * @param meshViewer
      */
     public void addPolygon(
-            @SuppressWarnings("unused") PolygonViewer polygonViewer)
+            @SuppressWarnings("unused") PolygonView polygonView)
     {
         // TODO Auto-generated method stub
     }

@@ -12,20 +12,15 @@ import fr.nantes1900.view.BuildingsIsletView;
 public class BuildingsIsletController
 {
 
-    private BuildingsIsletView     isletView;
-    private AbstractBuildingsIslet islet;
+    private BuildingsIsletView       isletView;
+    private AbstractBuildingsIslet   islet;
+    private IsletSelectionController isletSelectionController;
 
     public BuildingsIsletController(AbstractBuildingsIslet isletIn,
             BuildingsIsletView isletViewIn)
     {
         this.isletView = isletViewIn;
         this.islet = isletIn;
-    }
-
-    public BuildingsIsletController(
-            IsletSelectionController isletSelectionController)
-    {
-        // TODO Auto-generated constructor stub
     }
 
     public BuildingsIsletView getIsletView()
@@ -115,5 +110,15 @@ public class BuildingsIsletController
         }
 
         return tree;
+    }
+
+    public IsletSelectionController getIsletSelectionController()
+    {
+        return this.isletSelectionController;
+    }
+
+    public void setIsletSelectionController(IsletSelectionController isletSelectionControllerIn)
+    {
+        this.isletSelectionController = isletSelectionControllerIn;
     }
 }

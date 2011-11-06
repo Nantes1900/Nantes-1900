@@ -31,7 +31,7 @@ public class GlobalTreeController
             IsletSelectionController isletSelectionController)
     {
         this.parentController = isletSelectionController;
-        gtView = new GlobalTreeView();
+        this.gtView = new GlobalTreeView();
     }
 
     /**
