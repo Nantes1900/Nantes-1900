@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.nantes1900.view;
+package fr.nantes1900.view.isletselection;
 
 import javax.swing.JTree;
 

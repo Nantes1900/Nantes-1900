@@ -1,11 +1,12 @@
-package fr.nantes1900.control;
+package fr.nantes1900.control.display3d;
 
 import java.util.ArrayList;
 
-import fr.nantes1900.view.MeshView;
-import fr.nantes1900.view.PolygonView;
-import fr.nantes1900.view.TriangleView;
-import fr.nantes1900.view.Universe3DView;
+import fr.nantes1900.control.isletselection.IsletSelectionController;
+import fr.nantes1900.view.display3d.MeshView;
+import fr.nantes1900.view.display3d.PolygonView;
+import fr.nantes1900.view.display3d.TriangleView;
+import fr.nantes1900.view.display3d.Universe3DView;
 
 public class Universe3DController
 {

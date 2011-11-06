@@ -1,13 +1,14 @@
-package fr.nantes1900.control;
+package fr.nantes1900.control.isletcontrol;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.MutableTreeNode;
 
+import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet.UnimplementedException;
-import fr.nantes1900.view.BuildingsIsletView;
+import fr.nantes1900.view.isletview.BuildingsIsletView;
 
 public class BuildingsIsletController
 {

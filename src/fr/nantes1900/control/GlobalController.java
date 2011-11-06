@@ -5,6 +5,8 @@ package fr.nantes1900.control;
 
 import java.io.File;
 
+import fr.nantes1900.control.isletselection.IsletSelectionController;
+
 /**
  * @author Camille
  */

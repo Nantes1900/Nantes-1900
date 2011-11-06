@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.nantes1900.view;
+package fr.nantes1900.view.isletselection;
 
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -9,6 +9,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import fr.nantes1900.view.components.PFrame;
+import fr.nantes1900.view.display3d.Universe3DView;
 
 /**
  * @author Camille
@@ -23,17 +24,17 @@ public class IsletSelectionView extends PFrame
     /**
      * The panel containing the buttons to perform the different actions.
      */
-    private ActionsView    aView;
+    private ActionsView       aView;
 
     /**
      * The tree allowing to select an islet.
      */
-    private GlobalTreeView gtView;
+    private GlobalTreeView    gtView;
 
     /**
      * The 3D view of the islet.
      */
-    private Universe3DView u3DView;
+    private Universe3DView    u3DView;
 
     /**
      * Creates a new frame to select an islet and launch the treatment.
@@ -75,6 +76,6 @@ public class IsletSelectionView extends PFrame
                 new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0,
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(5, 10, 5, 10), 0, 0));
-        setStatusBarText("Choisissez un dossier contenant des îlots à traiter");
+        this.setStatusBarText("Choisissez un dossier contenant des îlots à traiter");
     }
 }

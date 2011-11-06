@@ -1,11 +1,13 @@
 /**
  * 
  */
-package fr.nantes1900.control;
+package fr.nantes1900.control.isletselection;
 
 import java.io.File;
 
-import fr.nantes1900.view.IsletSelectionView;
+import fr.nantes1900.control.GlobalController;
+import fr.nantes1900.control.display3d.Universe3DController;
+import fr.nantes1900.view.isletselection.IsletSelectionView;
 
 /**
  * @author Camille
@@ -87,9 +89,9 @@ public class IsletSelectionController
     }
 
     /**
-     * Launches the treatment of the selected file which is an islet file.
-     * 
-     * The verification that the selected file is an islet file is made at the selection in the tree.
+     * Launches the treatment of the selected file which is an islet file. The
+     * verification that the selected file is an islet file is made at the
+     * selection in the tree.
      */
     public void launchIsletTreatment()
     {

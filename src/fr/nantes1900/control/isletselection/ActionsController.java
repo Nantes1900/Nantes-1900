@@ -1,7 +1,7 @@
 /**
  * 
  */
-package fr.nantes1900.control;
+package fr.nantes1900.control.isletselection;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -9,7 +9,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
-import fr.nantes1900.view.ActionsView;
+import fr.nantes1900.view.isletselection.ActionsView;
 
 /**
  * @author Camille

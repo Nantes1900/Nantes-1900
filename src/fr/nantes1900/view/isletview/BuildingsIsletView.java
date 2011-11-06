@@ -1,8 +1,11 @@
-package fr.nantes1900.view;
+package fr.nantes1900.view.isletview;
 
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.middle.Surface;
+import fr.nantes1900.view.display3d.MeshView;
+import fr.nantes1900.view.display3d.PolygonView;
+import fr.nantes1900.view.display3d.Universe3DView;
 
 /**
  * @author Daniel

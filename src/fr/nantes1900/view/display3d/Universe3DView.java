@@ -1,4 +1,4 @@
-package fr.nantes1900.view;
+package fr.nantes1900.view.display3d;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;

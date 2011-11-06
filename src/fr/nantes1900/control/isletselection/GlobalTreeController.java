@@ -1,11 +1,11 @@
 /**
  * 
  */
-package fr.nantes1900.control;
+package fr.nantes1900.control.isletselection;
 
 import java.io.File;
 
-import fr.nantes1900.view.GlobalTreeView;
+import fr.nantes1900.view.isletselection.GlobalTreeView;
 
 /**
  * @author Camille
