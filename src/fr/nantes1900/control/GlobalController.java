@@ -13,6 +13,7 @@ public class GlobalController
     /**
      * The controller of the selection window.
      */
+    @SuppressWarnings("unused")
     private IsletSelectionController isletSelectionController;
 
     /**
@@ -25,9 +26,8 @@ public class GlobalController
 
     /**
      * Launches the treatment of an islet and opens the new window.
-     * 
      * @param isletFile
-     *              The file containing data of the islet to treat.
+     *            The file containing data of the islet to treat.
      */
     public void launchIsletTreatment(File isletFile)
     {

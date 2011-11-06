@@ -20,6 +20,7 @@ public class GlobalTreeController
     /**
      * The parent controller to give feedback to.
      */
+    @SuppressWarnings("unused")
     private IsletSelectionController parentController;
 
     /**
@@ -48,7 +49,8 @@ public class GlobalTreeController
      * @param mockupDirectory
      *            The new root directory.
      */
-    public void updateDirectory(File newDirectory)
+    @SuppressWarnings("static-method")
+    public void updateDirectory(@SuppressWarnings("unused") File newDirectory)
     {
         // TODO Auto-generated method stub
         // pour vérifier que tout se passe bien. A enlever quand le visuel sera

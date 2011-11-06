@@ -4,7 +4,6 @@
 package fr.nantes1900.view.components;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 
 import javax.swing.BorderFactory;
@@ -39,15 +38,15 @@ public class PFrame extends JFrame
     public PFrame()
     {
         super();
-        statusBar = new JPanel();
-        statusBar.setBorder(BorderFactory.createLoweredBevelBorder());
-        statusBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        this.statusBar = new JPanel();
+        this.statusBar.setBorder(BorderFactory.createLoweredBevelBorder());
+        this.statusBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
 
-        pComponents = new JPanel();
-        
+        this.pComponents = new JPanel();
+
         this.getContentPane().setLayout(new BorderLayout());
-        this.getContentPane().add(statusBar, BorderLayout.SOUTH);
-        this.getContentPane().add(pComponents, BorderLayout.CENTER);
+        this.getContentPane().add(this.statusBar, BorderLayout.SOUTH);
+        this.getContentPane().add(this.pComponents, BorderLayout.CENTER);
     }
 
     public void setStatusBarText(String text)
@@ -57,7 +56,7 @@ public class PFrame extends JFrame
         this.validate();
         this.repaint();
     }
-    
+
     public JPanel getComponentsPanel()
     {
         return this.pComponents;

@@ -4,7 +4,6 @@
 package fr.nantes1900.view;
 
 import javax.swing.JButton;
-import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 
 /**
@@ -13,32 +12,36 @@ import javax.swing.JPanel;
 public class ActionsView extends JPanel
 {
     /**
+     * Version ID.
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
      * Button used to open a mockup part.
      */
-    private JButton bOpen;
+    private JButton           bOpen;
 
     /**
      * Button used to launch the treatment of an islet.
      */
-    private JButton bLaunch;
+    private JButton           bLaunch;
 
     /**
      * Creates a new panel containing the open and launch buttons.
      */
     public ActionsView()
     {
-        bOpen = new JButton("Ouvrir");
-        bLaunch = new JButton("Lancer");
-        bLaunch.setEnabled(false);
+        this.bOpen = new JButton("Ouvrir");
+        this.bLaunch = new JButton("Lancer");
+        this.bLaunch.setEnabled(false);
 
-        this.add(bOpen);
-        this.add(bLaunch);
+        this.add(this.bOpen);
+        this.add(this.bLaunch);
     }
 
     /**
      * Returns the open folder button.
-     * @return
-     *          The open button.
+     * @return The open button.
      */
     public JButton getOpenButton()
     {
@@ -47,8 +50,7 @@ public class ActionsView extends JPanel
 
     /**
      * Returns the launch islet treatment button.
-     * @return
-     *          The launch button.
+     * @return The launch button.
      */
     public JButton getLaunchButton()
     {

@@ -23,8 +23,9 @@ public class Nantes1900
      * @param args
      *            arguments (the program does not take them into account)
      */
+    @SuppressWarnings("unused")
     public static void main(final String[] args)
     {
-        final GlobalController globalController = new GlobalController();
+        new GlobalController();
     }
 }

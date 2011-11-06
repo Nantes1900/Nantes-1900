@@ -26,6 +26,11 @@ public class ActionsController
      */
     private IsletSelectionController parentController;
 
+    public IsletSelectionController getParentController()
+    {
+        return this.parentController;
+    }
+
     /**
      * Creates a new controller to handle the panel containing buttons to launch
      * the different actions.
@@ -34,8 +39,8 @@ public class ActionsController
     public ActionsController(IsletSelectionController isletSelectionController)
     {
         this.parentController = isletSelectionController;
-        aView = new ActionsView();
-        aView.getOpenButton().addActionListener(new ActionListener() {
+        this.aView = new ActionsView();
+        this.aView.getOpenButton().addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent arg0)
@@ -46,24 +51,27 @@ public class ActionsController
 
                 fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
 
-                if (fileChooser.showOpenDialog(ActionsController.this.aView) == JFileChooser.APPROVE_OPTION)
+                if (fileChooser.showOpenDialog(ActionsController.this
+                        .getActionsView()) == JFileChooser.APPROVE_OPTION)
                 {
                     File file = fileChooser.getSelectedFile();
                     if (file.isDirectory())
                     {
-                        parentController.updateMockupDirectory(file);
+                        ActionsController.this.getParentController()
+                                .updateMockupDirectory(file);
                     }
                 }
             }
 
         });
 
-        aView.getLaunchButton().addActionListener(new ActionListener() {
+        this.aView.getLaunchButton().addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                parentController.launchIsletTreatment();
+                ActionsController.this.getParentController()
+                        .launchIsletTreatment();
             }
 
         });

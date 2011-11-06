@@ -12,8 +12,11 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 /**
  * @author Daniel
  */
+//TODO by Nicolas and Siju
 public class Universe3DView extends JPanel
 {
+    private static final long serialVersionUID = 1L;
+    
     /**
      * The universe.
      */
@@ -39,6 +42,7 @@ public class Universe3DView extends JPanel
         this.setPreferredSize(new Dimension(400, 400));
     }
 
+    @SuppressWarnings("static-method")
     private BranchGroup createSceneGraph()
     {
         BranchGroup objRoot = new BranchGroup();
