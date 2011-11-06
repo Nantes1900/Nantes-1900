@@ -70,6 +70,7 @@ public class IsletSelectionController
         {
             this.mockupDirectory = newDirectory;
             gtController.updateDirectory(mockupDirectory);
+            isView.setStatusBarText("Sélectionnez un îlot à traiter");
         }
 
         return true;

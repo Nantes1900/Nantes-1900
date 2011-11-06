@@ -54,6 +54,8 @@ public class PFrame extends JFrame
     {
         this.statusBar.removeAll();
         this.statusBar.add(new JLabel(text));
+        this.validate();
+        this.repaint();
     }
     
     public JPanel getComponentsPanel()

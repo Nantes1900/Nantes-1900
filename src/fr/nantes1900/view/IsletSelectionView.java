@@ -75,6 +75,6 @@ public class IsletSelectionView extends PFrame
                 new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0,
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(5, 10, 5, 10), 0, 0));
-        setStatusBarText("Choisissez un dossier contenant des ilôts à traiter");
+        setStatusBarText("Choisissez un dossier contenant des îlots à traiter");
     }
 }
