@@ -5,6 +5,10 @@ package fr.nantes1900.control.isletselection;
 
 import java.io.File;
 
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+
 import fr.nantes1900.view.isletselection.GlobalTreeView;
 
 /**
@@ -20,8 +24,17 @@ public class GlobalTreeController
     /**
      * The parent controller to give feedback to.
      */
-    @SuppressWarnings("unused")
     private IsletSelectionController parentController;
+
+    public GlobalTreeView getGtView()
+    {
+        return this.gtView;
+    }
+
+    public IsletSelectionController getParentController()
+    {
+        return this.parentController;
+    }
 
     /**
      * Creates a new controller to handle the tree used to select and view an
@@ -33,6 +46,18 @@ public class GlobalTreeController
     {
         this.parentController = isletSelectionController;
         this.gtView = new GlobalTreeView();
+
+        this.gtView.getTree().addTreeSelectionListener(
+                new TreeSelectionListener() {
+                    @Override
+                    public void valueChanged(TreeSelectionEvent e)
+                    {
+                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
+                                .getPath().getLastPathComponent();
+                        GlobalTreeController.this.parentController
+                                .displayFile(node);
+                    }
+                });
     }
 
     /**
@@ -49,9 +74,9 @@ public class GlobalTreeController
      * @param mockupDirectory
      *            The new root directory.
      */
-    @SuppressWarnings("static-method")
-    public void updateDirectory(@SuppressWarnings("unused") File newDirectory)
+    public void updateDirectory(File newDirectory)
     {
+        this.gtView.displayDirectory(newDirectory);
         // TODO Auto-generated method stub
         // pour vérifier que tout se passe bien. A enlever quand le visuel sera
         // mis en place.

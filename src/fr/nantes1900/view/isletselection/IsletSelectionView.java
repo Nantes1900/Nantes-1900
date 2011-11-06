@@ -8,6 +8,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.JFrame;
+
 import fr.nantes1900.view.components.PFrame;
 import fr.nantes1900.view.display3d.Universe3DView;
 
@@ -53,6 +55,8 @@ public class IsletSelectionView extends PFrame
         this.setTitle("Nantes 1900");
         this.setMinimumSize(new Dimension(600, 600));
 
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
         // gets the view to add
         this.aView = actionsView;
         this.gtView = globalTreeView;
@@ -67,7 +71,7 @@ public class IsletSelectionView extends PFrame
                         GridBagConstraints.HORIZONTAL,
                         new Insets(5, 10, 5, 10), 0, 0));
         this.getComponentsPanel().add(
-                this.gtView,
+                this.gtView.getTree(),
                 new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(5, 10, 5, 10), 0, 0));

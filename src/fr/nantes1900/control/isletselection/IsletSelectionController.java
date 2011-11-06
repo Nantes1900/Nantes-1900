@@ -4,52 +4,64 @@
 package fr.nantes1900.control.isletselection;
 
 import java.io.File;
+import java.io.IOException;
+
+import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
+import fr.nantes1900.control.isletcontrol.BuildingsIsletController;
+import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
+import fr.nantes1900.models.islets.buildings.ResidentialIslet;
+import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.view.isletselection.IsletSelectionView;
+import fr.nantes1900.view.isletview.BuildingsIsletView;
 
 /**
  * @author Camille
  */
 public class IsletSelectionController
 {
-
     /**
      * The controller of the panel containing buttons to perform the different
      * actions.
      */
-    private ActionsController    aController;
+    private ActionsController        aController;
 
     /**
      * The controller of the tree used to select an islet.
      */
-    private GlobalTreeController gtController;
+    private GlobalTreeController     gtController;
 
     /**
      * The controller of the 3D view which shows a selected islet.
      */
-    private Universe3DController u3DController;
+    private Universe3DController     u3DController;
+
+    /**
+     * The controller of the selected islet.
+     */
+    private BuildingsIsletController biController;
 
     /**
      * View allowing to select an islet and launch a treatment.
      */
-    private IsletSelectionView   isView;
+    private IsletSelectionView       isView;
 
     /**
      * The opened directory corresponding.
      */
-    private File                 openedDirectory;
+    private File                     openedDirectory;
 
     /**
      * The selected file in the tree.
      */
-    private File                 selectedFile;
+    private File                     selectedFile;
 
     /**
      * The parent controller which handles this one.
      */
-    private GlobalController     parentController;
+    private GlobalController         parentController;
 
     /**
      * Creates a new controller to handle the islet selection window.
@@ -84,7 +96,6 @@ public class IsletSelectionController
             this.gtController.updateDirectory(this.openedDirectory);
             this.isView.setStatusBarText("Sélectionnez un îlot à traiter");
         }
-
         return true;
     }
 
@@ -96,5 +107,24 @@ public class IsletSelectionController
     public void launchIsletTreatment()
     {
         this.parentController.launchIsletTreatment(this.selectedFile);
+    }
+
+    public void displayFile(DefaultMutableTreeNode node)
+    {
+        this.biController = new BuildingsIsletController(this);
+        // Reads the file object of the Tree
+        ParserSTL parser = new ParserSTL(node.getUserObject().toString());
+        AbstractBuildingsIslet resIslet;
+        try
+        {
+            resIslet = new ResidentialIslet(parser.read());
+            this.biController.setIslet(resIslet);
+            this.biController.setIsletView(new BuildingsIsletView());
+            this.biController.displayIslet();
+        } catch (IOException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
