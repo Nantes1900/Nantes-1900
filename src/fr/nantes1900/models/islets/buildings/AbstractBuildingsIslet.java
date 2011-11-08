@@ -372,4 +372,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         this.buildings = buildingsIn;
     }
 
+    public void setGroundNormal(Vector3d groundNormalIn)
+    {
+        this.groundNormal = groundNormalIn;
+    }
+
 }

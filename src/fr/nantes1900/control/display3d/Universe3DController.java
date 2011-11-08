@@ -1,8 +1,10 @@
 package fr.nantes1900.control.display3d;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.nantes1900.control.isletselection.IsletSelectionController;
+import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.PolygonView;
 import fr.nantes1900.view.display3d.TriangleView;
@@ -17,9 +19,9 @@ public class Universe3DController
 
     private IsletSelectionController parentController;
 
-    private ArrayList<MeshView>      meshesSelected;
-    private ArrayList<TriangleView>  trianglesSelected;
-    private ArrayList<PolygonView>   polygonSelected;
+    private ArrayList<MeshView>      meshesViewSelected;
+    private ArrayList<TriangleView>  trianglesViewSelected;
+    private ArrayList<PolygonView>   polygonsViewSelected;
 
     public Universe3DController(
             IsletSelectionController isletSelectionController)
@@ -28,23 +30,20 @@ public class Universe3DController
         this.u3DView = new Universe3DView();
     }
 
+    /**
+     * Returns the list of Triangle associated with the trianglesView contained
+     * in trianglesViewSelected.
+     * @return
+     */
+    public List<Triangle> getTrianglesSelected()
+    {
+        List<Triangle> trianglesList = new ArrayList<>();
+        // FIXME by Nicolas and Siju
+        return trianglesList;
+    }
+
     public Universe3DView getUniverse3DView()
     {
         return this.u3DView;
-    }
-
-    public ArrayList<MeshView> getMeshesSelected()
-    {
-        return this.meshesSelected;
-    }
-
-    public ArrayList<TriangleView> getTrianglesSelected()
-    {
-        return this.trianglesSelected;
-    }
-
-    public ArrayList<PolygonView> getPolygonSelected()
-    {
-        return this.polygonSelected;
     }
 }

@@ -14,12 +14,12 @@ import fr.nantes1900.view.isletselection.GlobalTreeView;
 /**
  * @author Camille
  */
-public class GlobalTreeController
-{
+public class GlobalTreeController {
+
     /**
      * View of the tree.
      */
-    private GlobalTreeView           gtView;
+    private GlobalTreeView gtView;
 
     /**
      * The parent controller to give feedback to.
@@ -32,8 +32,7 @@ public class GlobalTreeController
      * @param isletSelectionController
      */
     public GlobalTreeController(
-            IsletSelectionController isletSelectionController)
-    {
+            IsletSelectionController isletSelectionController) {
         this.parentController = isletSelectionController;
         this.gtView = new GlobalTreeView();
     }
@@ -42,8 +41,7 @@ public class GlobalTreeController
      * Returns the view of the tree associated with this controller.
      * @return The view of the tree.
      */
-    public GlobalTreeView getGlobalTreeView()
-    {
+    public GlobalTreeView getGlobalTreeView() {
         return this.gtView;
     }
 
@@ -52,18 +50,17 @@ public class GlobalTreeController
      * @param mockupDirectory
      *            The new root directory.
      */
-    public void updateDirectory(File newDirectory)
-    {
+    public void updateDirectory(File newDirectory) {
         this.gtView.displayDirectory(newDirectory);
         this.gtView.getTree().addTreeSelectionListener(
                 new TreeSelectionListener() {
+
                     @Override
-                    public void valueChanged(TreeSelectionEvent e)
-                    {
+                    public void valueChanged(TreeSelectionEvent e) {
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
                                 .getPath().getLastPathComponent();
                         GlobalTreeController.this.parentController
-                        .displayFile(node);
+                                .displayFile(node);
                     }
                 });
         // TODO Auto-generated method stub
