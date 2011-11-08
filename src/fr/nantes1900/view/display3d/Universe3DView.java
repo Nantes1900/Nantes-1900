@@ -19,8 +19,8 @@ public class Universe3DView extends JPanel
 {
     private static final long serialVersionUID = 1L;
 
-    private List<MeshView>    meshesList       = new ArrayList<>();
-    private List<PolygonView> polygonsList     = new ArrayList<>();
+    private List<MeshView>    meshesList       = new ArrayList<MeshView>();
+    private List<PolygonView> polygonsList     = new ArrayList<PolygonView>();
 
     /**
      * The universe.
