@@ -87,21 +87,12 @@ public class IsletSelectionController
      * Updates the directory containing the files of islets.
      * @param newDirectory
      *            The new directory.
-     * @return true - the directory match a mockup part directory format.\n
-     *         false - the directory doesn't match a mockup part directory
-     *         format.
-     * @todo Check the matching.
      */
-    public boolean updateMockupDirectory(File newDirectory)
+    public void updateMockupDirectory(File newDirectory)
     {
-        boolean isMockupDirectory = true;
-        if (isMockupDirectory)
-        {
-            this.openedDirectory = newDirectory;
-            this.gtController.updateDirectory(this.openedDirectory);
-            this.isView.setStatusBarText("Sélectionnez un îlot à traiter");
-        }
-        return true;
+        this.openedDirectory = newDirectory;
+        this.gtController.updateDirectory(this.openedDirectory);
+        this.isView.setStatusBarText("Sélectionnez un îlot à traiter");
     }
 
     /**

@@ -183,7 +183,7 @@ public class HelpButton extends JButton implements MouseListener
             if (! helpMessage.isEmpty())
             {
                 String title = (this.title.isEmpty()) ? "Informations complémentaires" : this.title;
-                JOptionPane.showConfirmDialog(null, helpMessage, title, JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, helpMessage, title, JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }

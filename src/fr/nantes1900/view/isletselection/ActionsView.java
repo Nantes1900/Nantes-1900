@@ -24,9 +24,14 @@ public class ActionsView extends JPanel
     private JButton           bOpen;
 
     /**
-     * Button used to launch the treatment of an islet.
+     * Button used to launch the process of an islet.
      */
     private JButton           bLaunch;
+
+    /**
+     * Button used to display some help.
+     */
+    private HelpButton        bHelp;
 
     /**
      * Creates a new panel containing the open and launch buttons.
@@ -36,10 +41,14 @@ public class ActionsView extends JPanel
         this.bOpen = new JButton("Ouvrir");
         this.bLaunch = new JButton("Lancer");
         this.bLaunch.setEnabled(false);
+        this.bHelp = new HelpButton(
+                "Ouvrez un morceau de maquette",
+                "Ouvrez un dossier correspondant à un morceau de maquette en cliquant sur le bouton ouvrir.\nVous pourrez ensuite sélectionner l'îlot à traiter",
+                "Ouvrir un morceau de maquette");
 
         this.add(this.bOpen);
         this.add(this.bLaunch);
-        this.add(new HelpButton());
+        this.add(bHelp);
     }
 
     /**
@@ -58,5 +67,14 @@ public class ActionsView extends JPanel
     public JButton getLaunchButton()
     {
         return this.bLaunch;
+    }
+
+    /**
+     * Returns the help button.
+     * @return The help button.
+     */
+    public HelpButton getHelpButton()
+    {
+        return this.bHelp;
     }
 }

@@ -59,6 +59,11 @@ public class ActionsController
                     {
                         ActionsController.this.getParentController()
                                 .updateMockupDirectory(file);
+                        aView.getHelpButton()
+                                .setHelpMessage(
+                                        "Choisissez un îlot à traiter dans l'arbre,\npuis sélectionnez un ensemble de triangle représentant la direction moyenn du sol.\nCliquez ensuite sur le bouton lancer pour lancer le traitement.",
+                                        "Sélectionner un îlot à traiter");
+                        aView.getHelpButton().setTooltip("Sélectionnez un îlot à traiter");
                     }
                 }
             }
