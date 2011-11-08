@@ -71,7 +71,7 @@ public class IsletSelectionView extends PFrame
                         GridBagConstraints.HORIZONTAL,
                         new Insets(5, 10, 5, 10), 0, 0));
         this.getComponentsPanel().add(
-                this.gtView.getTree(),
+                this.gtView,
                 new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(5, 10, 5, 10), 0, 0));

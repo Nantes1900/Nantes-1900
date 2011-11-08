@@ -26,16 +26,6 @@ public class GlobalTreeController
      */
     private IsletSelectionController parentController;
 
-    public GlobalTreeView getGtView()
-    {
-        return this.gtView;
-    }
-
-    public IsletSelectionController getParentController()
-    {
-        return this.parentController;
-    }
-
     /**
      * Creates a new controller to handle the tree used to select and view an
      * islet.
