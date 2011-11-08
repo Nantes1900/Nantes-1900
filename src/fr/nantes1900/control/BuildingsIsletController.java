@@ -1,22 +1,47 @@
-package fr.nantes1900.view.isletview;
+package fr.nantes1900.control;
 
+import fr.nantes1900.control.display3d.Universe3DController;
+import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
+import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet.UnimplementedException;
 import fr.nantes1900.models.middle.Surface;
 import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.PolygonView;
 import fr.nantes1900.view.display3d.Universe3DView;
 
-/**
- * @author Daniel
- */
-public class BuildingsIsletView
+public class BuildingsIsletController
 {
+
     protected Universe3DView         universe3D;
     protected AbstractBuildingsIslet islet;
+    private IsletSelectionController parentController;
+    private Universe3DController     u3dcontroller;
 
-    public BuildingsIsletView()
+    public BuildingsIsletController(
+            IsletSelectionController isletSelectionController)
     {
+        this.parentController = isletSelectionController;
+    }
+
+    public AbstractBuildingsIslet getIslet()
+    {
+        return this.islet;
+    }
+
+    public IsletSelectionController getIsletSelectionController()
+    {
+        return this.parentController;
+    }
+
+    public IsletSelectionController getParentController()
+    {
+        return this.parentController;
+    }
+
+    public Universe3DController getU3dcontroller()
+    {
+        return this.u3dcontroller;
     }
 
     public Universe3DView getUniverse3D()
@@ -24,60 +49,143 @@ public class BuildingsIsletView
         return this.universe3D;
     }
 
-    public void setUniverse3D(Universe3DView universe3DIn)
+    private void incProgression()
     {
-        this.universe3D = universe3DIn;
+        this.islet.progression++;
+    }
+
+    public void launchNextTreatment()
+    {
+        switch (this.islet.progression)
+        {
+            case 0:
+                try
+                {
+                    this.islet.launchStep0();
+                } catch (UnimplementedException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            break;
+            case 1:
+                try
+                {
+                    this.islet.launchStep1();
+                } catch (UnimplementedException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            break;
+            case 2:
+                try
+                {
+                    this.islet.launchStep2();
+                } catch (UnimplementedException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            break;
+            case 3:
+                this.islet.launchStep3();
+            break;
+            case 4:
+                this.islet.launchStep4();
+            break;
+            case 5:
+                this.islet.launchStep5();
+            break;
+            case 6:
+                this.islet.launchStep6();
+            break;
+            case 7:
+                this.islet.launchStep7();
+            break;
+            case 8:
+                this.islet.launchStep8();
+            break;
+        }
+        this.incProgression();
+        this.refresh();
     }
 
     public void refresh()
     {
-        System.out.println("refresh");
         this.universe3D.clearAllMeshes();
 
         switch (this.islet.progression)
         {
             case 0:
-                this.viewBeforeStep0();
+                this.viewStep0();
             break;
 
             case 1:
-                this.viewBeforeStep1();
+                this.viewStep1();
             break;
 
             case 2:
-                this.viewBeforeStep2();
+                this.viewStep2();
             break;
 
             case 3:
-                this.viewBeforeStep3();
+                this.viewStep3();
             break;
 
             case 4:
-                this.viewBeforeStep4();
+                this.viewStep4();
             break;
 
             case 5:
-                this.viewBeforeStep5();
+                this.viewStep5();
             break;
 
             case 6:
-                this.viewBeforeStep6();
+                this.viewStep6();
             break;
 
             case 7:
-                this.viewBeforeStep7();
+                this.viewStep7();
             break;
 
             case 8:
-                this.viewBeforeStep8();
+                this.viewStep8();
             break;
         }
+    }
+
+    public void setIslet(AbstractBuildingsIslet isletIn)
+    {
+        this.islet = isletIn;
+    }
+
+    public void setIsletSelectionController(
+            IsletSelectionController isletSelectionControllerIn)
+    {
+        this.parentController = isletSelectionControllerIn;
+    }
+
+    public void
+            setParentController(IsletSelectionController parentControllerIn)
+    {
+        this.parentController = parentControllerIn;
+    }
+
+    public void setUniverse3D(Universe3DView universe3DIn)
+    {
+        this.universe3D = universe3DIn;
+    }
+
+    public void setUniverse3DController(Universe3DController u3dcontrollerIn)
+    {
+        this.u3dcontroller = u3dcontrollerIn;
     }
 
     /**
      * View before every treatment.
      */
-    public void viewBeforeStep0()
+    public void viewStep0()
     {
         this.universe3D.addTriangleMesh(new MeshView(this.islet
                 .getInitialTotalMesh()));
@@ -86,7 +194,7 @@ public class BuildingsIsletView
     /**
      * View after the base change.
      */
-    public void viewBeforeStep1()
+    public void viewStep1()
     {
         this.universe3D.addTriangleMesh(new MeshView(this.islet
                 .getInitialTotalMesh()));
@@ -95,7 +203,7 @@ public class BuildingsIsletView
     /**
      * View after the separation between ground and building.
      */
-    public void viewBeforeStep2()
+    public void viewStep2()
     {
         this.universe3D.addTriangleMesh(new MeshView(this.islet
                 .getInitialBuilding()));
@@ -106,7 +214,7 @@ public class BuildingsIsletView
     /**
      * View after the separation between buildings.
      */
-    public void viewBeforeStep3()
+    public void viewStep3()
     {
         this.universe3D.addTriangleMesh(new MeshView(this.islet
                 .getInitialGround()));
@@ -121,7 +229,7 @@ public class BuildingsIsletView
     /**
      * After carving the little walls.
      */
-    public void viewBeforeStep4()
+    public void viewStep4()
     {
         // Not implemented for now.
     }
@@ -129,7 +237,7 @@ public class BuildingsIsletView
     /**
      * After SeparationWallRoof
      */
-    public void viewBeforeStep5()
+    public void viewStep5()
     {
         for (Building building : this.islet.getBuildings())
         {
@@ -143,7 +251,7 @@ public class BuildingsIsletView
     /**
      * After SeparationWallsAndSeparationRoofs
      */
-    public void viewBeforeStep6()
+    public void viewStep6()
     {
         for (Building building : this.islet.getBuildings())
         {
@@ -161,7 +269,7 @@ public class BuildingsIsletView
     /**
      * After DeterminateNeighbours
      */
-    public void viewBeforeStep7()
+    public void viewStep7()
     {
         for (Building building : this.islet.getBuildings())
         {
@@ -179,7 +287,7 @@ public class BuildingsIsletView
     /**
      * After SortNeighbours
      */
-    public void viewBeforeStep8()
+    public void viewStep8()
     {
         for (Building building : this.islet.getBuildings())
         {
