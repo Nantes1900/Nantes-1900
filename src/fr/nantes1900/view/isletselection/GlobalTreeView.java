@@ -43,19 +43,11 @@ public class GlobalTreeView extends JPanel
         {
             DefaultMutableTreeNode child = new DefaultMutableTreeNode(file);
             root.add(child);
-            System.out.println(file.getName());
         }
         
-        if (spTree != null)
-        {
-            this.remove(spTree);
-        }
         this.tree = new JTree(root);
+        spTree.setViewportView(tree);
         
-        spTree = new JScrollPane(tree);
-        this.add(spTree, BorderLayout.CENTER);
-        revalidate();
-        repaint();
     }
 
     public JTree getTree()
