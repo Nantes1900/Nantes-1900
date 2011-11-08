@@ -15,7 +15,6 @@ public class Universe3DController
      */
     private Universe3DView           u3DView;
 
-    @SuppressWarnings("unused")
     private IsletSelectionController parentController;
 
     private ArrayList<MeshView>      meshesSelected;
