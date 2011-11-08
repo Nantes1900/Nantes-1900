@@ -29,9 +29,8 @@ public class GlobalTreeView extends JPanel
      */
     public GlobalTreeView()
     {
-        this.tree = new JTree(new DefaultMutableTreeNode(""));
-        spTree = new JScrollPane(tree);
         this.setLayout(new BorderLayout());
+        spTree = new JScrollPane();
         this.add(spTree, BorderLayout.CENTER);
     }
 

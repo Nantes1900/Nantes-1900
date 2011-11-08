@@ -36,18 +36,6 @@ public class GlobalTreeController
     {
         this.parentController = isletSelectionController;
         this.gtView = new GlobalTreeView();
-
-        this.gtView.getTree().addTreeSelectionListener(
-                new TreeSelectionListener() {
-                    @Override
-                    public void valueChanged(TreeSelectionEvent e)
-                    {
-                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
-                                .getPath().getLastPathComponent();
-                        GlobalTreeController.this.parentController
-                                .displayFile(node);
-                    }
-                });
     }
 
     /**
@@ -67,6 +55,17 @@ public class GlobalTreeController
     public void updateDirectory(File newDirectory)
     {
         this.gtView.displayDirectory(newDirectory);
+        this.gtView.getTree().addTreeSelectionListener(
+                new TreeSelectionListener() {
+                    @Override
+                    public void valueChanged(TreeSelectionEvent e)
+                    {
+                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
+                                .getPath().getLastPathComponent();
+                        GlobalTreeController.this.parentController
+                        .displayFile(node);
+                    }
+                });
         // TODO Auto-generated method stub
         // pour vérifier que tout se passe bien. A enlever quand le visuel sera
         // mis en place.
