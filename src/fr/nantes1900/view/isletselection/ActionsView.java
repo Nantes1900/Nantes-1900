@@ -6,6 +6,8 @@ package fr.nantes1900.view.isletselection;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import fr.nantes1900.view.components.HelpButton;
+
 /**
  * @author Camille
  */
@@ -37,6 +39,7 @@ public class ActionsView extends JPanel
 
         this.add(this.bOpen);
         this.add(this.bLaunch);
+        this.add(new HelpButton());
     }
 
     /**
