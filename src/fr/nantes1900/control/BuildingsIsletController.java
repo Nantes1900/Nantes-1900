@@ -8,20 +8,19 @@ import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet.Unimplemente
 import fr.nantes1900.models.middle.Surface;
 import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.PolygonView;
-import fr.nantes1900.view.display3d.Universe3DView;
 
 public class BuildingsIsletController
 {
-
-    protected Universe3DView         universe3D;
-    protected AbstractBuildingsIslet islet;
+    private AbstractBuildingsIslet   islet;
     private IsletSelectionController parentController;
-    private Universe3DController     u3dcontroller;
+    private Universe3DController     u3DController;
 
     public BuildingsIsletController(
-            IsletSelectionController isletSelectionController)
+            IsletSelectionController isletSelectionController,
+            Universe3DController universe3DControllerIn)
     {
         this.parentController = isletSelectionController;
+        this.u3DController = universe3DControllerIn;
     }
 
     public AbstractBuildingsIslet getIslet()
@@ -41,12 +40,7 @@ public class BuildingsIsletController
 
     public Universe3DController getU3dcontroller()
     {
-        return this.u3dcontroller;
-    }
-
-    public Universe3DView getUniverse3D()
-    {
-        return this.universe3D;
+        return this.u3DController;
     }
 
     private void incProgression()
@@ -108,12 +102,12 @@ public class BuildingsIsletController
             break;
         }
         this.incProgression();
-        this.refresh();
+        this.display();
     }
 
-    public void refresh()
+    public void display()
     {
-        this.universe3D.clearAllMeshes();
+        this.u3DController.getUniverse3DView().clearAllMeshes();
 
         switch (this.islet.progression)
         {
@@ -172,14 +166,9 @@ public class BuildingsIsletController
         this.parentController = parentControllerIn;
     }
 
-    public void setUniverse3D(Universe3DView universe3DIn)
-    {
-        this.universe3D = universe3DIn;
-    }
-
     public void setUniverse3DController(Universe3DController u3dcontrollerIn)
     {
-        this.u3dcontroller = u3dcontrollerIn;
+        this.u3DController = u3dcontrollerIn;
     }
 
     /**
@@ -187,8 +176,8 @@ public class BuildingsIsletController
      */
     public void viewStep0()
     {
-        this.universe3D.addTriangleMesh(new MeshView(this.islet
-                .getInitialTotalMesh()));
+        this.u3DController.getUniverse3DView().addMesh(
+                new MeshView(this.islet.getInitialTotalMesh()));
     }
 
     /**
@@ -196,8 +185,8 @@ public class BuildingsIsletController
      */
     public void viewStep1()
     {
-        this.universe3D.addTriangleMesh(new MeshView(this.islet
-                .getInitialTotalMesh()));
+        this.u3DController.getUniverse3DView().addMesh(
+                new MeshView(this.islet.getInitialTotalMesh()));
     }
 
     /**
@@ -205,10 +194,10 @@ public class BuildingsIsletController
      */
     public void viewStep2()
     {
-        this.universe3D.addTriangleMesh(new MeshView(this.islet
-                .getInitialBuilding()));
-        this.universe3D.addTriangleMesh(new MeshView(this.islet
-                .getInitialGround()));
+        this.u3DController.getUniverse3DView().addMesh(
+                new MeshView(this.islet.getInitialBuilding()));
+        this.u3DController.getUniverse3DView().addMesh(
+                new MeshView(this.islet.getInitialGround()));
     }
 
     /**
@@ -216,13 +205,13 @@ public class BuildingsIsletController
      */
     public void viewStep3()
     {
-        this.universe3D.addTriangleMesh(new MeshView(this.islet
-                .getInitialGround()));
+        this.u3DController.getUniverse3DView().addMesh(
+                new MeshView(this.islet.getInitialGround()));
 
         for (Building building : this.islet.getBuildings())
         {
-            this.universe3D.addTriangleMesh(new MeshView(building
-                    .getInitialTotalMesh()));
+            this.u3DController.getUniverse3DView().addMesh(
+                    new MeshView(building.getInitialTotalMesh()));
         }
     }
 
@@ -241,10 +230,10 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBuildings())
         {
-            this.universe3D.addTriangleMesh(new MeshView(building
-                    .getInitialWall()));
-            this.universe3D.addTriangleMesh(new MeshView(building
-                    .getInitialRoof()));
+            this.u3DController.getUniverse3DView().addMesh(
+                    new MeshView(building.getInitialWall()));
+            this.u3DController.getUniverse3DView().addMesh(
+                    new MeshView(building.getInitialRoof()));
         }
     }
 
@@ -257,11 +246,13 @@ public class BuildingsIsletController
         {
             for (Surface wall : building.getWalls())
             {
-                this.universe3D.addTriangleMesh(new MeshView(wall.getMesh()));
+                this.u3DController.getUniverse3DView().addMesh(
+                        new MeshView(wall.getMesh()));
             }
             for (Surface roof : building.getRoofs())
             {
-                this.universe3D.addTriangleMesh(new MeshView(roof.getMesh()));
+                this.u3DController.getUniverse3DView().addMesh(
+                        new MeshView(roof.getMesh()));
             }
         }
     }
@@ -275,11 +266,13 @@ public class BuildingsIsletController
         {
             for (Surface wall : building.getWalls())
             {
-                this.universe3D.addTriangleMesh(new MeshView(wall.getMesh()));
+                this.u3DController.getUniverse3DView().addMesh(
+                        new MeshView(wall.getMesh()));
             }
             for (Surface roof : building.getRoofs())
             {
-                this.universe3D.addTriangleMesh(new MeshView(roof.getMesh()));
+                this.u3DController.getUniverse3DView().addMesh(
+                        new MeshView(roof.getMesh()));
             }
         }
     }
@@ -293,11 +286,13 @@ public class BuildingsIsletController
         {
             for (Surface wall : building.getWalls())
             {
-                this.universe3D.addTriangleMesh(new MeshView(wall.getMesh()));
+                this.u3DController.getUniverse3DView().addMesh(
+                        new MeshView(wall.getMesh()));
             }
             for (Surface roof : building.getRoofs())
             {
-                this.universe3D.addTriangleMesh(new MeshView(roof.getMesh()));
+                this.u3DController.getUniverse3DView().addMesh(
+                        new MeshView(roof.getMesh()));
             }
         }
     }
@@ -311,11 +306,13 @@ public class BuildingsIsletController
         {
             for (Surface wall : building.getWalls())
             {
-                this.universe3D.addPolygon(new PolygonView(wall.getPolygone()));
+                this.u3DController.getUniverse3DView().addPolygon(
+                        new PolygonView(wall.getPolygone()));
             }
             for (Surface roof : building.getRoofs())
             {
-                this.universe3D.addPolygon(new PolygonView(roof.getPolygone()));
+                this.u3DController.getUniverse3DView().addPolygon(
+                        new PolygonView(roof.getPolygone()));
             }
         }
     }

@@ -27,7 +27,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
 
     }
 
-    protected List<Building> buildings   = new ArrayList<Building>();
+    protected List<Building> buildings   = new ArrayList<>();
 
     protected Mesh           initialBuilding;
 
@@ -58,7 +58,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     private void buildingsExtraction()
     {
 
-        final List<Mesh> buildingList = new ArrayList<Mesh>();
+        final List<Mesh> buildingList = new ArrayList<>();
 
         List<Mesh> thingsList;
         // Extraction of the buildings.
@@ -140,7 +140,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
                 SeparationGroundBuilding.ANGLE_GROUND_ERROR);
 
         List<Mesh> thingsList;
-        List<Mesh> groundsList = new ArrayList<Mesh>();
+        List<Mesh> groundsList = new ArrayList<>();
         // Extracts the blocks in the oriented triangles.
         thingsList = Algos.blockExtract(meshOriented);
 
@@ -183,8 +183,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         // We consider the size of the blocks : if they're big enough,
         // they're keeped. This is to avoid the parts of roofs, walls,
         // etc...
-        thingsList = new ArrayList<Mesh>(groundsList);
-        groundsList = new ArrayList<Mesh>();
+        thingsList = new ArrayList<>(groundsList);
+        groundsList = new ArrayList<>();
         for (final Mesh m : thingsList)
         {
             if (m.size() > SeparationGrounds.BLOCK_GROUNDS_SIZE_ERROR)
@@ -201,7 +201,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
 
         // If the new grounds are neighbours from the old ones, they are
         // added to the real grounds.
-        thingsList = new ArrayList<Mesh>();
+        thingsList = new ArrayList<>();
         for (final Mesh m : groundsList)
         {
 
