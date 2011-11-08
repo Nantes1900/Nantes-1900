@@ -8,20 +8,25 @@ import java.io.IOException;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
-import fr.nantes1900.control.isletcontrol.BuildingsIsletController;
+import fr.nantes1900.models.basis.Edge;
+import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.ResidentialIslet;
+import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.utils.ParserSTL;
+import fr.nantes1900.utils.WriterSTL;
 import fr.nantes1900.view.isletselection.IsletSelectionView;
-import fr.nantes1900.view.isletview.BuildingsIsletView;
 
 /**
  * @author Camille
  */
 public class IsletSelectionController
 {
+
     /**
      * The controller of the panel containing buttons to perform the different
      * actions.
@@ -111,20 +116,45 @@ public class IsletSelectionController
 
     public void displayFile(DefaultMutableTreeNode node)
     {
-        this.biController = new BuildingsIsletController(this);
+        this.biController = new BuildingsIsletController(this,
+                this.u3DController);
         // Reads the file object of the Tree
         ParserSTL parser = new ParserSTL(node.getUserObject().toString());
         AbstractBuildingsIslet resIslet;
         try
         {
             resIslet = new ResidentialIslet(parser.read());
-            this.biController.setIslet(resIslet);
-            this.biController.setIsletView(new BuildingsIsletView());
-            this.biController.displayIslet();
+            this.getBiController().setIslet(resIslet);
+            this.getBiController().display();
         } catch (IOException e)
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    public void computeGravityNormal()
+    {
+        WriterSTL writer = new WriterSTL(this.openedDirectory
+                + "gravity_normal.stl");
+        Point point = new Point(1, 1, 1);
+        Edge edge = new Edge(point, point);
+        Triangle triangle = new Triangle(point, point, point, edge, edge, edge,
+                this.biController.computeNormalWithTrianglesSelected());
+        Mesh mesh = new Mesh();
+        mesh.add(triangle);
+        writer.setMesh(mesh);
+        writer.write();
+    }
+
+    public BuildingsIsletController getBiController()
+    {
+        return this.biController;
+    }
+
+    public void computeGroundNormal()
+    {
+        this.biController.setGroundNormal(this.biController
+                .computeNormalWithTrianglesSelected());
     }
 }

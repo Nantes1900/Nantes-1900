@@ -1,10 +1,13 @@
 package fr.nantes1900.control;
 
+import javax.vecmath.Vector3d;
+
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet.UnimplementedException;
+import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.models.middle.Surface;
 import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.PolygonView;
@@ -315,5 +318,16 @@ public class BuildingsIsletController
                         new PolygonView(roof.getPolygone()));
             }
         }
+    }
+
+    public Vector3d computeNormalWithTrianglesSelected()
+    {
+        Mesh mesh = new Mesh(this.u3DController.getTrianglesSelected());
+        return mesh.averageNormal();
+    }
+
+    public void setGroundNormal(Vector3d groundNormal)
+    {
+        this.islet.setGroundNormal(groundNormal);
     }
 }

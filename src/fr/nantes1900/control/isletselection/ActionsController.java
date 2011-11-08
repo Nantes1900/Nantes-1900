@@ -65,16 +65,26 @@ public class ActionsController
 
         });
 
+        // FIXME : Where do you place the button to validate the normal ?
+        // I suppose it is here.
+
         this.aView.getLaunchButton().addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
+                // TODO : make the test for gravity normal
+                // If no gravity normal have been choosen
+
+                // If no ground normal have been choosen
+                ActionsController.this.parentController.computeGroundNormal();
+
+                // If every normals have been choosen
                 ActionsController.this.getParentController()
                         .launchIsletTreatment();
             }
-
         });
+
     }
 
     /**
