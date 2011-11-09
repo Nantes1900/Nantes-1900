@@ -93,6 +93,14 @@ public class IsletSelectionController
         this.openedDirectory = newDirectory;
         this.gtController.updateDirectory(this.openedDirectory);
         this.isView.setStatusBarText("Sélectionnez un îlot à traiter");
+        
+        // checks if the gravity normal already exists
+        File gravityNormal = new File(openedDirectory.getPath() + "/gravity_ground.stl");
+        if (! gravityNormal.exists())
+        {
+            aController.setComputeNormalMode();
+            this.isView.setStatusBarText("Sélectionnez un ensemble de triangle pour créer la normale orientée selon la gravité");
+        }
     }
 
     /**
@@ -102,6 +110,7 @@ public class IsletSelectionController
      */
     public void launchIsletTreatment()
     {
+        computeGroundNormal();
         this.parentController.launchIsletTreatment(this.selectedFile);
     }
 
