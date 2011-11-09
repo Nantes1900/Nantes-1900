@@ -18,56 +18,55 @@ import org.junit.Test;
 
 /**
  * A set of tests for the class Edge.
- * 
  * @author Daniel Lefevre
  */
-public class EdgeTest extends TestCase {
+public class EdgeTest extends TestCase
+{
 
     /** Test attribute. */
-    private final Point point1 = new Point(1, 0, -1);
+    private final Point    point1  = new Point(1, 0, -1);
     /** Test attribute. */
-    private final Point point2 = new Point(0, 1, 0);
+    private final Point    point2  = new Point(0, 1, 0);
     /** Test attribute. */
-    private final Point point3 = new Point(-1, 2, 1);
+    private final Point    point3  = new Point(-1, 2, 1);
     /** Test attribute. */
-    private final Vector3d vect = new Vector3d(0, 0, 1);
+    private final Vector3d vect    = new Vector3d(0, 0, 1);
     /** Test attribute. */
-    private final Edge edge1 = new Edge(this.point1, this.point2);
+    private final Edge     edge1   = new Edge(this.point1, this.point2);
     /** Test attribute. */
-    private final Edge edge2 = new Edge(this.point2, this.point3);
+    private final Edge     edge2   = new Edge(this.point2, this.point3);
     /** Test attribute. */
-    private final Edge edge3 = new Edge(this.point3, this.point1);
+    private final Edge     edge3   = new Edge(this.point3, this.point1);
 
     /** Test attribute. */
     private final Triangle triangle1;
 
     /** Test attribute. */
-    private final Point point4 = new Point(2, 2, 2);
+    private final Point    point4  = new Point(2, 2, 2);
     /** Test attribute. */
-    private final Edge edge4 = new Edge(this.point1, this.point4);
+    private final Edge     edge4   = new Edge(this.point1, this.point4);
     /** Test attribute. */
-    private final Edge edge5 = new Edge(this.point2, this.point4);
+    private final Edge     edge5   = new Edge(this.point2, this.point4);
 
     /** Test attribute. */
     private final Triangle triangle2;
 
     /** Test attribute. */
-    private final Edge edge6 = new Edge(this.point3, this.point4);
+    private final Edge     edge6   = new Edge(this.point3, this.point4);
     /** Test attribute. */
-    private final Polygon polygon = new Polygon();
+    private final Polygon  polygon = new Polygon();
 
     /**
      * Constructor of the test class EdgeTest : creates a polyline for the
      * following tests.
      */
-    public EdgeTest() {
+    public EdgeTest()
+    {
 
-        this.triangle1 =
-            new Triangle(this.point1, this.point2, this.point3, this.edge1,
-                this.edge2, this.edge3, this.vect);
-        this.triangle2 =
-            new Triangle(this.point1, this.point2, this.point4, this.edge1,
-                this.edge4, this.edge5, this.vect);
+        this.triangle1 = new Triangle(this.point1, this.point2, this.point3,
+                this.edge1, this.edge2, this.edge3, this.vect);
+        this.triangle2 = new Triangle(this.point1, this.point2, this.point4,
+                this.edge1, this.edge4, this.edge5, this.vect);
         this.polygon.add(this.edge1);
         this.polygon.add(this.edge2);
         this.polygon.add(this.edge4);
@@ -78,9 +77,10 @@ public class EdgeTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.basis.Edge#computeMiddle()} .
      */
     @Test
-    public final void testComputeMiddle() {
+    public final void testComputeMiddle()
+    {
         Assert.assertTrue(this.edge5.computeMiddle().equals(
-            new Point(1, 1.5, 1)));
+                new Point(1, 1.5, 1)));
     }
 
     /**
@@ -89,7 +89,8 @@ public class EdgeTest extends TestCase {
      * .
      */
     @Test
-    public final void testContains() {
+    public final void testContains()
+    {
         Assert.assertTrue(this.edge5.contains(this.point2));
         Assert.assertFalse(this.edge5.contains(this.point1));
     }
@@ -99,9 +100,10 @@ public class EdgeTest extends TestCase {
      * {@link fr.nantes1900.models.basis.Edge#convertToVector3d()} .
      */
     @Test
-    public final void testConvertToVector3d() {
+    public final void testConvertToVector3d()
+    {
         Assert.assertTrue(this.edge5.convertToVector3d().equals(
-            new Vector3d(2, 1, 2)));
+                new Vector3d(2, 1, 2)));
     }
 
     /**
@@ -109,7 +111,8 @@ public class EdgeTest extends TestCase {
      * {@link fr.nantes1900.models.basis.Edge#equals(java.lang.Object)} .
      */
     @Test
-    public final void testEqualsObject() {
+    public final void testEqualsObject()
+    {
         final Edge eTest = new Edge(this.point1, this.point2);
         Assert.assertFalse(this.edge1.equals(this.edge2));
         Assert.assertEquals(this.edge1, this.edge1);
@@ -121,7 +124,8 @@ public class EdgeTest extends TestCase {
      * {@link fr.nantes1900.models.basis.Edge#getNumberTriangles()} .
      */
     @Test
-    public final void testGetNumberTriangles() {
+    public final void testGetNumberTriangles()
+    {
         Assert.assertTrue(this.edge1.getNumberTriangles() == 2);
         Assert.assertTrue(this.edge5.getNumberTriangles() == 1);
     }
@@ -132,7 +136,8 @@ public class EdgeTest extends TestCase {
      * .
      */
     @Test
-    public final void testGetNumNeighbours() {
+    public final void testGetNumNeighbours()
+    {
         final Polygon p = new Polygon();
         p.add(this.edge1);
         p.add(this.edge2);
@@ -140,12 +145,13 @@ public class EdgeTest extends TestCase {
         p.add(this.edge4);
         Assert.assertTrue(this.edge1.getNumNeighbours(p) == 3);
         Assert.assertTrue(this.edge2.getNumNeighbours(p) == 2);
-        try {
-            // FIXME
+        try
+        {
             this.edge5.getNumNeighbours(p);
             Assert.fail();
-        } catch (final InvalidParameterException e) {
-            Assert.fail();
+        } catch (final InvalidParameterException e)
+        {
+            // If it comes here, it's good.
         }
     }
 
@@ -156,7 +162,8 @@ public class EdgeTest extends TestCase {
      * . This test is also the test of addTriangle.
      */
     @Test
-    public final void testGetTriangleList() {
+    public final void testGetTriangleList()
+    {
         final List<Triangle> list1 = this.edge1.getTriangles();
         final List<Triangle> list2 = this.edge2.getTriangles();
         final List<Triangle> list4 = this.edge4.getTriangles();
@@ -177,7 +184,8 @@ public class EdgeTest extends TestCase {
      * .
      */
     @Test
-    public final static void testIsInCylinder3D() {
+    public final static void testIsInCylinder3D()
+    {
         final Point pointTest1 = new Point(0, 0, 0);
         final Point pointTest2 = new Point(1, 1, 1);
         final Edge e = new Edge(pointTest1, pointTest2);
@@ -197,7 +205,8 @@ public class EdgeTest extends TestCase {
      * .
      */
     @Test
-    public final static void testIsInInfiniteCylinder2D() {
+    public final static void testIsInInfiniteCylinder2D()
+    {
         final Point pointTest1 = new Point(-1, -1, 0);
         final Point pointTest2 = new Point(1, 1, 0);
         final Edge e = new Edge(pointTest1, pointTest2);
@@ -217,7 +226,8 @@ public class EdgeTest extends TestCase {
      * .
      */
     @Test
-    public final static void testIsInInfiniteCylinder3D() {
+    public final static void testIsInInfiniteCylinder3D()
+    {
         final Point pointTest1 = new Point(0, 0, 0);
         final Point pointTest2 = new Point(1, 1, 1);
         final Edge e = new Edge(pointTest1, pointTest2);
@@ -237,14 +247,16 @@ public class EdgeTest extends TestCase {
      * .
      */
     @Test
-    public final void testIsNeighboor() {
+    public final void testIsNeighboor()
+    {
         Assert.assertTrue(this.edge1.isNeighboor(this.edge2));
         Assert.assertFalse(this.edge3.isNeighboor(this.edge5));
     }
 
     /** Test method for {@link fr.nantes1900.models.basis.Edge#length()} . */
     @Test
-    public final void testLength() {
+    public final void testLength()
+    {
         Assert.assertTrue(this.edge5.length() == 3);
     }
 
@@ -254,7 +266,8 @@ public class EdgeTest extends TestCase {
      * .
      */
     @Test
-    public final static void testOrientedAs() {
+    public final static void testOrientedAs()
+    {
         final Point pointTest0 = new Point(0, 0, 0);
         final Point pointTest1 = new Point(1, 0, 0);
         final Point pointTest2 = new Point(1, 0.1, 0);
@@ -272,7 +285,8 @@ public class EdgeTest extends TestCase {
      * .
      */
     @Test
-    public final static void testProject() {
+    public final static void testProject()
+    {
         final Point pointTest0 = new Point(0, 0, 0);
         final Point pointTest1 = new Point(1, 0, 0);
         final Point pointTest2 = new Point(0.9, 0.1, 0);
@@ -288,7 +302,8 @@ public class EdgeTest extends TestCase {
      * .
      */
     @Test
-    public final static void testReturnNeighbour() {
+    public final static void testReturnNeighbour()
+    {
         final Point p1 = new Point(0, 0, 0);
         final Point p2 = new Point(0, 1, 0);
         final Point p3 = new Point(-1, 2, 0);
@@ -300,9 +315,11 @@ public class EdgeTest extends TestCase {
         b.add(e1);
         b.add(e2);
 
-        try {
+        try
+        {
             Assert.assertTrue(e1.returnNeighbour(b, p1) == e2);
-        } catch (final BadFormedPolylineException e) {
+        } catch (final BadFormedPolylineException e)
+        {
             Assert.fail();
         }
     }
@@ -313,7 +330,8 @@ public class EdgeTest extends TestCase {
      * .
      */
     @Test
-    public final void testReturnOtherPoint() {
+    public final void testReturnOtherPoint()
+    {
         Assert.assertTrue(this.edge1.returnOther(this.point1) == this.point2);
         Assert.assertTrue(this.edge3.returnOther(this.point3) == this.point1);
         Assert.assertTrue(this.edge5.returnOther(this.point4) == this.point2);
@@ -325,11 +343,10 @@ public class EdgeTest extends TestCase {
      * .
      */
     @Test
-    public final void testReturnOtherTriangle() {
-        Assert
-            .assertTrue(this.edge1.returnOther(this.triangle1) == this.triangle2);
-        Assert
-            .assertTrue(this.edge1.returnOther(this.triangle2) == this.triangle1);
+    public final void testReturnOtherTriangle()
+    {
+        Assert.assertTrue(this.edge1.returnOther(this.triangle1) == this.triangle2);
+        Assert.assertTrue(this.edge1.returnOther(this.triangle2) == this.triangle1);
         Assert.assertTrue(this.edge2.returnOther(this.triangle1) == null);
     }
 
@@ -339,7 +356,8 @@ public class EdgeTest extends TestCase {
      * .
      */
     @Test
-    public final static void testSharedPoint() {
+    public final static void testSharedPoint()
+    {
         final Point p1 = new Point(0, 0, 0);
         final Point p2 = new Point(0, 1, 0);
         final Point p3 = new Point(-1, 2, 0);
