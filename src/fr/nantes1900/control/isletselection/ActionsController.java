@@ -25,6 +25,11 @@ public class ActionsController
      * The parent controller to give feedback to.
      */
     private IsletSelectionController parentController;
+    
+    /**
+     * Action listener of the launch button.
+     */
+    private LaunchActionListener    laListener;
 
     public IsletSelectionController getParentController()
     {
@@ -59,36 +64,14 @@ public class ActionsController
                     {
                         ActionsController.this.getParentController()
                                 .updateMockupDirectory(file);
-                        aView.getHelpButton()
-                                .setHelpMessage(
-                                        "Choisissez un îlot à traiter dans l'arbre,\npuis sélectionnez un ensemble de triangle représentant la direction moyenn du sol.\nCliquez ensuite sur le bouton lancer pour lancer le traitement.",
-                                        "Sélectionner un îlot à traiter");
-                        aView.getHelpButton().setTooltip("Sélectionnez un îlot à traiter");
                     }
                 }
             }
 
         });
 
-        // FIXME : Where do you place the button to validate the normal ?
-        // I suppose it is here.
-
-        this.aView.getLaunchButton().addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent arg0)
-            {
-                // TODO : make the test for gravity normal
-                // If no gravity normal have been choosen
-
-                // If no ground normal have been choosen
-                ActionsController.this.parentController.computeGroundNormal();
-
-                // If every normals have been choosen
-                ActionsController.this.getParentController()
-                        .launchIsletTreatment();
-            }
-        });
+        laListener = new LaunchActionListener(false);
+        this.aView.getLaunchButton().addActionListener(laListener);
 
     }
 
@@ -99,5 +82,55 @@ public class ActionsController
     public ActionsView getActionsView()
     {
         return this.aView;
+    }
+
+    public void setComputeNormalMode()
+    {
+        laListener.setComputeNormalMode(true);
+        this.getActionsView().getHelpButton().setTooltip("Créez la normale orientée selon la gravité");
+        this.getActionsView().getHelpButton().setHelpMessage("La normale orientée selon la gravité représente la verticale." +
+        		"\nSélectionnez un ensemble de triangles dans l'îlot le plus approprié qui soient le plus plat possible." +
+        		"\n\nCette normale est valable pour l'ensemble des mesures sur un même morceau." +
+        		"\nVous n'avez donc besoin de la choisir qu'une fois par morceau de maquette.", "Choisir la normale orientée selon la gravité");
+        this.aView.getLaunchButton().setText("Sauver");
+    }
+    
+    public void setLaunchMode()
+    {
+        laListener.setComputeNormalMode(false);
+        this.getActionsView().getHelpButton().setTooltip("Lancez le traitement");
+        this.getActionsView().getHelpButton().setHelpMessage("Pour lancer le traitement, choisissez un ensemble de triangles qui représentent l'orientation moyenne du sol dans l'îlot à traiter." +
+        		"\nUne fois ces triangles sélectionnés, cliquez sur le bouton lancer.", "Lancer un traitement");
+    }
+    
+    public class LaunchActionListener implements ActionListener
+    {
+        private boolean computeNormal;
+        
+        public LaunchActionListener(boolean computeNormal)
+        {
+            this.computeNormal = computeNormal;
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent arg0)
+        {
+            // TODO : make the test for gravity normal
+            // If no gravity normal have been choosen
+            if (computeNormal)
+            {
+                ActionsController.this.parentController.computeGravityNormal();
+            } else
+            {
+                // If every normals have been choosen
+                ActionsController.this.parentController
+                .launchIsletTreatment();
+            }
+        }
+        
+        public void setComputeNormalMode(boolean computeNormal)
+        {
+            this.computeNormal = computeNormal;
+        }
     }
 }
