@@ -25,8 +25,6 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
 import fr.nantes1900.control.display3d.NewMouseRotate;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Triangle;
 
 /**
  * @author Daniel
@@ -75,7 +73,7 @@ public class Universe3DView extends JPanel {
 		// //////////////// Lights
 		// Light bound
 		BoundingSphere lightBounds = new BoundingSphere(new Point3d(0.0, 0.0,
-				0.0), 1000.0);
+				0.0), 100000.0);
 		// Ambient light
 		AmbientLight ambLight = new AmbientLight(true, new Color3f(1.0f, 1.0f,
 				1.0f));
@@ -101,6 +99,7 @@ public class Universe3DView extends JPanel {
 		Canvas3D c = this.simpleUniverse.getCanvas();
 		this.simpleUniverse.cleanup();
 		this.simpleUniverse = new SimpleUniverse(c);
+		c.getView().setBackClipDistance(1000);
 	}
 
 	/**
@@ -114,9 +113,8 @@ public class Universe3DView extends JPanel {
 		TransformGroup transformGroup = createTransformGroup(meshView);
 		this.simpleUniverse.addBranchGraph(this
 				.createSceneGraph(transformGroup));
-		//translateCamera(meshView.getCentroid().getX(), meshView.getCentroid()
-		//		.getY(), meshView.getCentroid().getZ());
-		translateCamera(0,0,10);
+		translateCamera(meshView.getCentroid().getX(), meshView.getCentroid()
+				.getY(), meshView.getCentroid().getZ()+100);
 
 	}
 
@@ -132,7 +130,7 @@ public class Universe3DView extends JPanel {
 	private static TransformGroup createTransformGroup(MeshView meshView) {
 
 		BoundingSphere boundingSphere = new BoundingSphere(new Point3d(0.0,
-				0.0, 0.0), 1000);
+				0.0, 0.0), 100000);
 
 		TransformGroup transformGroup = new TransformGroup();
 		transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -153,26 +151,6 @@ public class Universe3DView extends JPanel {
 		translationGroup2.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
 		rotationGroup.addChild(translationGroup2);
 
-		
-		 /////// 
-		 Point p1 = new Point(1, 1, 1); 
-		 Point p2 = new Point(0,1, 1);  
-		 Point p3 = new Point(1, 0, 1); 
-		 Vector3d normal = new Vector3d(0, 0, 1);
-		 Triangle triangle1 = new Triangle(p1, p2, p3, normal);
-		  
-		 TriangleView triangleView1 = new TriangleView(triangle1);
-		 triangleView1.createShape3D();
-		 translationGroup2.addChild(triangleView1);
-		 
-		 Point p1bis = new Point(1, 1, 1); Point p2bis = new Point(2, 1, 1);
-		 Point p3bis = new Point(1, 2, 1); Triangle triangle2 = new
-		 Triangle(p1bis, p2bis, p3bis, normal);
-		 
-		 TriangleView triangleViewer2 = new TriangleView(triangle2);
-		 triangleViewer2.createShape3D();
-		 translationGroup2.addChild(triangleViewer2); 
-		 /////////////////////
 		 
 		BranchGroup sceneRoot = new BranchGroup();
 		meshView.createTriangleShapes();
