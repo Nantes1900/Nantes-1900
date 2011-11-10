@@ -6,6 +6,7 @@ package fr.nantes1900.view.isletselection;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
 
 /**
@@ -42,9 +43,9 @@ public class ActionsView extends JPanel
         this.bLaunch = new JButton("Lancer");
         this.bLaunch.setEnabled(false);
         this.bHelp = new HelpButton(
-                "Ouvrez un morceau de maquette",
-                "Ouvrez un dossier correspondant à un morceau de maquette en cliquant sur le bouton ouvrir.\nVous pourrez ensuite sélectionner l'îlot à traiter",
-                "Ouvrir un morceau de maquette");
+                FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_TOOLTIP),
+                FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_MESSAGE),
+                FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_TITLE));
 
         this.add(this.bOpen);
         this.add(this.bLaunch);

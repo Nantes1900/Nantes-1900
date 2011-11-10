@@ -17,6 +17,7 @@ import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.ResidentialIslet;
 import fr.nantes1900.models.middle.Mesh;
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.utils.WriterSTL;
 import fr.nantes1900.view.isletselection.IsletSelectionView;
@@ -92,14 +93,14 @@ public class IsletSelectionController
     {
         this.openedDirectory = newDirectory;
         this.gtController.updateDirectory(this.openedDirectory);
-        this.isView.setStatusBarText("Sélectionnez un îlot à traiter");
+        this.isView.setStatusBarText(FileTools.readHelpMessage("ISLaunchProcess", FileTools.MESSAGETYPE_STATUSBAR));
         
         // checks if the gravity normal already exists
         File gravityNormal = new File(openedDirectory.getPath() + "/gravity_ground.stl");
         if (! gravityNormal.exists())
         {
             aController.setComputeNormalMode();
-            this.isView.setStatusBarText("Sélectionnez un ensemble de triangle pour créer la normale orientée selon la gravité");
+            this.isView.setStatusBarText(FileTools.readHelpMessage("ISGravityNormal", FileTools.MESSAGETYPE_STATUSBAR));
         }
     }
 

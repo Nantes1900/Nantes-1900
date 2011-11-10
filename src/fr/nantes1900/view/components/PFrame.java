@@ -4,6 +4,7 @@
 package fr.nantes1900.view.components;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 
 import javax.swing.BorderFactory;
@@ -41,6 +42,7 @@ public class PFrame extends JFrame
         this.statusBar = new JPanel();
         this.statusBar.setBorder(BorderFactory.createLoweredBevelBorder());
         this.statusBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        this.statusBar.setMinimumSize(new Dimension(0, 40));
 
         this.pComponents = new JPanel();
 

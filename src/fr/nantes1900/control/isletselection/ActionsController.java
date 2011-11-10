@@ -9,6 +9,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletselection.ActionsView;
 
 /**
@@ -87,20 +88,16 @@ public class ActionsController
     public void setComputeNormalMode()
     {
         laListener.setComputeNormalMode(true);
-        this.getActionsView().getHelpButton().setTooltip("Créez la normale orientée selon la gravité");
-        this.getActionsView().getHelpButton().setHelpMessage("La normale orientée selon la gravité représente la verticale." +
-        		"\nSélectionnez un ensemble de triangles dans l'îlot le plus approprié qui soient le plus plat possible." +
-        		"\n\nCette normale est valable pour l'ensemble des mesures sur un même morceau." +
-        		"\nVous n'avez donc besoin de la choisir qu'une fois par morceau de maquette.", "Choisir la normale orientée selon la gravité");
+        this.getActionsView().getHelpButton().setTooltip(FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL, FileTools.MESSAGETYPE_TOOLTIP));
+        this.getActionsView().getHelpButton().setHelpMessage(FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL, FileTools.MESSAGETYPE_MESSAGE), FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL, FileTools.MESSAGETYPE_TITLE));
         this.aView.getLaunchButton().setText("Sauver");
     }
     
     public void setLaunchMode()
     {
         laListener.setComputeNormalMode(false);
-        this.getActionsView().getHelpButton().setTooltip("Lancez le traitement");
-        this.getActionsView().getHelpButton().setHelpMessage("Pour lancer le traitement, choisissez un ensemble de triangles qui représentent l'orientation moyenne du sol dans l'îlot à traiter." +
-        		"\nUne fois ces triangles sélectionnés, cliquez sur le bouton lancer.", "Lancer un traitement");
+        this.getActionsView().getHelpButton().setTooltip(FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS, FileTools.MESSAGETYPE_TOOLTIP));
+        this.getActionsView().getHelpButton().setHelpMessage(FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS, FileTools.MESSAGETYPE_MESSAGE), FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS, FileTools.MESSAGETYPE_TITLE));
     }
     
     public class LaunchActionListener implements ActionListener

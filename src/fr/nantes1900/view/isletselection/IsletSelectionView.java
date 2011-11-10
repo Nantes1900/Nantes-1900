@@ -10,6 +10,7 @@ import java.awt.Insets;
 
 import javax.swing.JFrame;
 
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.PFrame;
 import fr.nantes1900.view.display3d.Universe3DView;
 
@@ -80,7 +81,7 @@ public class IsletSelectionView extends PFrame
                 new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0,
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(5, 10, 5, 10), 0, 0));
-        this.setStatusBarText("Choisissez un dossier contenant des îlots à traiter");
+//        this.setStatusBarText(FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_STATUSBAR));
         pack();
     }
 }
