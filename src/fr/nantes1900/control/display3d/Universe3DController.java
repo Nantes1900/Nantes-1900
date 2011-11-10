@@ -9,6 +9,7 @@ import java.util.List;
 import javax.media.j3d.BranchGroup;
 
 import com.sun.j3d.utils.picking.PickCanvas;
+import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.picking.PickTool;
 
 import fr.nantes1900.control.isletselection.IsletSelectionController;
@@ -19,10 +20,12 @@ import fr.nantes1900.view.display3d.TriangleView;
 import fr.nantes1900.view.display3d.Universe3DView;
 
 public class Universe3DController implements MouseListener, MouseMotionListener {
+	
 	/**
 	 * The view of the 3D objets to show.
 	 */
 	private Universe3DView u3DView;
+	
 	private PickCanvas pickCanvas;
 	private NewMouseRotate mouseRotate;
 
@@ -32,10 +35,20 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	private ArrayList<TriangleView> trianglesViewSelected;
 	private ArrayList<PolygonView> polygonsViewSelected;
 
+	
+	public NewMouseRotate getMouseRotate() {
+		return mouseRotate;
+	}
+
+	public void setMouseRotate(NewMouseRotate mouseRotate) {
+		this.mouseRotate = mouseRotate;
+	}
+	
+	
 	public Universe3DController(
 			IsletSelectionController isletSelectionController) {
 		this.parentController = isletSelectionController;
-		this.u3DView = new Universe3DView();
+		this.u3DView = new Universe3DView(this);
 	}
 
 	public void setPickCanvas(BranchGroup branchGroup) {
@@ -76,8 +89,27 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
+	public void mouseClicked(MouseEvent e) {
+		int buttonDown = e.getButton();
+		 
+	    if (buttonDown == MouseEvent.BUTTON1) {
+	           // Bouton GAUCHE enfoncé
+			pickCanvas.setShapeLocation(e);
+			PickResult result = pickCanvas.pickClosest();
+			if (result == null) {
+				System.out.println("Nothing picked");
+			} else {
+				TriangleView s = (TriangleView) result.getNode(PickResult.SHAPE3D);
+				if (s != null) {
+					System.out.println(s.getClass().getName());
+					s.selectOrUnselect();
+					s.changeColor();
+					mouseRotate.setCenter(s);
+				} else {
+					System.out.println("null");
+				}
+			}
+	    }
 
 	}
 
