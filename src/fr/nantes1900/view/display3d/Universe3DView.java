@@ -73,8 +73,8 @@ public class Universe3DView extends JPanel {
 		this.simpleUniverse = new SimpleUniverse(c);
 
 		// Size to show the panel while there is nothing to show
-		this.setMinimumSize(new Dimension(400, 400));
-		this.setPreferredSize(new Dimension(400, 400));
+		this.setMinimumSize(new Dimension(600, 600));
+		this.setPreferredSize(new Dimension(600, 600));
 	}
 
 	public List<MeshView> getMeshesList() {
