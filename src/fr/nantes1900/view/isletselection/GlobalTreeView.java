@@ -30,8 +30,8 @@ public class GlobalTreeView extends JPanel
     public GlobalTreeView()
     {
         this.setLayout(new BorderLayout());
-        spTree = new JScrollPane();
-        this.add(spTree, BorderLayout.CENTER);
+        this.spTree = new JScrollPane();
+        this.add(this.spTree, BorderLayout.CENTER);
     }
 
     public void displayDirectory(File newDirectory)
@@ -42,34 +42,30 @@ public class GlobalTreeView extends JPanel
         this.fillMyTree(root, newDirectoryNode);
 
         this.tree = new JTree(root);
-        spTree.setViewportView(tree);
+        this.spTree.setViewportView(this.tree);
     }
 
     public void fillMyTree(DefaultMutableTreeNode root,
             FileNode newDirectoryNode)
     {
         File[] childrenFiles = newDirectoryNode.listFiles();
-        if (childrenFiles.length>0){  
-        for (File file : childrenFiles)
+        if (childrenFiles.length > 0)
         {
-            FileNode currentNode = new FileNode(file);
-
-            DefaultMutableTreeNode child = new DefaultMutableTreeNode(
-                    currentNode);
-
-            if (file.isDirectory())
+            for (File file : childrenFiles)
             {
-                root.add(child);
-                this.fillMyTree(child, currentNode);
-            } else
-            {
-                
-                if (currentNode.toString().endsWith("stl"))
+                FileNode currentNode = new FileNode(file);
+                DefaultMutableTreeNode child = new DefaultMutableTreeNode(
+                        currentNode);
+
+                if (file.isDirectory())
+                {
+                    root.add(child);
+                    this.fillMyTree(child, currentNode);
+                } else if (currentNode.toString().endsWith("stl"))
                 {
                     root.add(child);
                 }
             }
-        }
         }
     }
 
@@ -94,6 +90,11 @@ public class GlobalTreeView extends JPanel
         public String toString()
         {
             return super.getName();
+        }
+
+        public String getEntireName()
+        {
+            return super.toString();
         }
     }
 }

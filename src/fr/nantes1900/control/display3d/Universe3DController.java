@@ -38,7 +38,7 @@ public class Universe3DController
     public List<Triangle> getTrianglesSelected()
     {
         List<Triangle> trianglesList = new ArrayList<>();
-        // FIXME by Nicolas and Siju
+        // by Nicolas and Siju
         return trianglesList;
     }
 
