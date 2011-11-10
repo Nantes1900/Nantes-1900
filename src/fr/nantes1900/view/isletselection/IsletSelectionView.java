@@ -81,7 +81,7 @@ public class IsletSelectionView extends PFrame
                 new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0,
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(5, 10, 5, 10), 0, 0));
-//        this.setStatusBarText(FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_STATUSBAR));
+        this.setStatusBarText(FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_STATUSBAR));
         pack();
     }
 }
