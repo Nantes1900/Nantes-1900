@@ -12,17 +12,17 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 /**
- * @author Camille
+ * @author Camille Bouquet, Luc Jallerat
  */
 public class GlobalTreeView extends JPanel
 {
     /**
-     * 
+     * Version ID.
      */
     private static final long serialVersionUID = 1L;
-    
-    private JTree tree;
-    private JScrollPane spTree;
+
+    private JTree             tree;
+    private JScrollPane       spTree;
 
     /**
      * Empty constructor.
@@ -36,22 +36,64 @@ public class GlobalTreeView extends JPanel
 
     public void displayDirectory(File newDirectory)
     {
+        FileNode newDirectoryNode = new FileNode(newDirectory);
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(
-                newDirectory.getName());
-        File[] childrenFiles = newDirectory.listFiles();
-        for (File file : childrenFiles)
-        {
-            DefaultMutableTreeNode child = new DefaultMutableTreeNode(file);
-            root.add(child);
-        }
-        
+                newDirectoryNode);
+        this.fillMyTree(root, newDirectoryNode);
+
         this.tree = new JTree(root);
         spTree.setViewportView(tree);
-        
+    }
+
+    public void fillMyTree(DefaultMutableTreeNode root,
+            FileNode newDirectoryNode)
+    {
+        File[] childrenFiles = newDirectoryNode.listFiles();
+        if (childrenFiles.length>0){  
+        for (File file : childrenFiles)
+        {
+            FileNode currentNode = new FileNode(file);
+
+            DefaultMutableTreeNode child = new DefaultMutableTreeNode(
+                    currentNode);
+
+            if (file.isDirectory())
+            {
+                root.add(child);
+                this.fillMyTree(child, currentNode);
+            } else
+            {
+                
+                if (currentNode.toString().endsWith("stl"))
+                {
+                    root.add(child);
+                }
+            }
+        }
+        }
     }
 
     public JTree getTree()
     {
         return this.tree;
+    }
+
+    public class FileNode extends File
+    {
+        public FileNode(File file)
+        {
+            super(file.getAbsolutePath());
+        }
+
+        /**
+		 * 
+		 */
+        private static final long serialVersionUID = 1L;
+
+        @Override
+        public String toString()
+        {
+            return super.getName();
+        }
     }
 }
