@@ -6,6 +6,7 @@ package fr.nantes1900.control.isletselection;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.control.BuildingsIsletController;
@@ -101,6 +102,7 @@ public class IsletSelectionController
                 + "/gravity_ground.stl");
         if (!gravityNormal.exists())
         {
+            JOptionPane.showMessageDialog(isView, "La normale orientée selon la gravité n'a pas été trouvé dans le dossier ouvert.\nVeuillez en créer une nouvelle.", "Normale orientée selon la gravité inexistante", JOptionPane.INFORMATION_MESSAGE);
             aController.setComputeNormalMode();
             this.isView.setStatusBarText(FileTools.readHelpMessage("ISGravityNormal", FileTools.MESSAGETYPE_STATUSBAR));
         }
