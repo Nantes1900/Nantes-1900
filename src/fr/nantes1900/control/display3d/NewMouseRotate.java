@@ -30,7 +30,7 @@ public class NewMouseRotate extends MouseRotate{
 	private TransformGroup tg3;
 	private Transform3D translation1 = new Transform3D();
 	private Transform3D translation2 = new Transform3D();
-	private Point3d center = new Point3d(1,1,1);
+	private Point3d center;
     
     public Point3d getCenter() {
 		return center;
@@ -85,7 +85,6 @@ public class NewMouseRotate extends MouseRotate{
                     
             		Vector3d vector1 = new Vector3d();
             		Vector3d vector2 = new Vector3d();
-            		//vector1.set(this.center.getX(), this.center.getY(), this.center.getZ());
             		vector1.set(centerpoint.x,centerpoint.y,centerpoint.z);
             		vector2.set(-this.center.getX(), -this.center.getY(), -this.center.getZ());            		
             		

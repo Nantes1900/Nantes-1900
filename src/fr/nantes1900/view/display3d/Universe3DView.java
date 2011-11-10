@@ -25,8 +25,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
 import fr.nantes1900.control.display3d.NewMouseRotate;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.control.display3d.Universe3DController;
 
 /**
  * @author Daniel
@@ -39,14 +38,32 @@ public class Universe3DView extends JPanel {
 	private List<PolygonView> polygonsList = new ArrayList<PolygonView>();
 
 	/**
+	 * The Universe3DController attached
+	 */
+	private Universe3DController u3DController;
+
+	/**
 	 * The universe.
 	 */
 	private SimpleUniverse simpleUniverse;
 
+
+	public SimpleUniverse getSimpleUniverse() {
+		return simpleUniverse;
+	}
+
+	public void setSimpleUniverse(SimpleUniverse simpleUniverse) {
+		this.simpleUniverse = simpleUniverse;
+	}
+
 	/**
 	 * Creates a new universe.
+	 * 
+	 * @param Universe3DController
 	 */
-	public Universe3DView() {
+	public Universe3DView(Universe3DController u3DController) {
+
+		this.u3DController = u3DController;
 		this.setLayout(new BorderLayout());
 
 		Canvas3D c = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
@@ -70,12 +87,17 @@ public class Universe3DView extends JPanel {
 
 	@SuppressWarnings("static-method")
 	private BranchGroup createSceneGraph(TransformGroup transformGroup) {
+		
 		BranchGroup objRoot = new BranchGroup();
+		objRoot.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+		objRoot.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+
+		u3DController.setPickCanvas(objRoot);
 
 		// //////////////// Lights
 		// Light bound
 		BoundingSphere lightBounds = new BoundingSphere(new Point3d(0.0, 0.0,
-				0.0), 1000.0);
+				0.0), 100000.0);
 		// Ambient light
 		AmbientLight ambLight = new AmbientLight(true, new Color3f(1.0f, 1.0f,
 				1.0f));
@@ -101,6 +123,7 @@ public class Universe3DView extends JPanel {
 		Canvas3D c = this.simpleUniverse.getCanvas();
 		this.simpleUniverse.cleanup();
 		this.simpleUniverse = new SimpleUniverse(c);
+		c.getView().setBackClipDistance(1000);
 	}
 
 	/**
@@ -114,10 +137,13 @@ public class Universe3DView extends JPanel {
 		TransformGroup transformGroup = createTransformGroup(meshView);
 		this.simpleUniverse.addBranchGraph(this
 				.createSceneGraph(transformGroup));
-		//translateCamera(meshView.getCentroid().getX(), meshView.getCentroid()
-		//		.getY(), meshView.getCentroid().getZ());
-		translateCamera(0,0,10);
-
+		// moving the camera so that we can see the mesh properly
+		translateCamera(meshView.getCentroid().getX(), meshView.getCentroid()
+				.getY(), meshView.getCentroid().getZ() + 30);
+		// changing the rotation center
+		u3DController.getMouseRotate().setCenter(
+				new Point3d(meshView.getCentroid().getX(), meshView
+						.getCentroid().getY(), meshView.getCentroid().getZ()));
 	}
 
 	/**
@@ -129,10 +155,10 @@ public class Universe3DView extends JPanel {
 		// TODO Auto-generated method stub
 	}
 
-	private static TransformGroup createTransformGroup(MeshView meshView) {
+	private TransformGroup createTransformGroup(MeshView meshView) {
 
 		BoundingSphere boundingSphere = new BoundingSphere(new Point3d(0.0,
-				0.0, 0.0), 1000);
+				0.0, 0.0), 100000);
 
 		TransformGroup transformGroup = new TransformGroup();
 		transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -153,27 +179,6 @@ public class Universe3DView extends JPanel {
 		translationGroup2.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
 		rotationGroup.addChild(translationGroup2);
 
-		
-		 /////// 
-		 Point p1 = new Point(1, 1, 1); 
-		 Point p2 = new Point(0,1, 1);  
-		 Point p3 = new Point(1, 0, 1); 
-		 Vector3d normal = new Vector3d(0, 0, 1);
-		 Triangle triangle1 = new Triangle(p1, p2, p3, normal);
-		  
-		 TriangleView triangleView1 = new TriangleView(triangle1);
-		 triangleView1.createShape3D();
-		 translationGroup2.addChild(triangleView1);
-		 
-		 Point p1bis = new Point(1, 1, 1); Point p2bis = new Point(2, 1, 1);
-		 Point p3bis = new Point(1, 2, 1); Triangle triangle2 = new
-		 Triangle(p1bis, p2bis, p3bis, normal);
-		 
-		 TriangleView triangleViewer2 = new TriangleView(triangle2);
-		 triangleViewer2.createShape3D();
-		 translationGroup2.addChild(triangleViewer2); 
-		 /////////////////////
-		 
 		BranchGroup sceneRoot = new BranchGroup();
 		meshView.createTriangleShapes();
 		for (TriangleView shape : meshView) {
@@ -186,7 +191,7 @@ public class Universe3DView extends JPanel {
 				rotationGroup, translationGroup2);
 		mouseRotate.setSchedulingBounds(boundingSphere);
 		translationGroup2.addChild(mouseRotate);
-		// pick.setMouseRotate(mouseRotate);
+		this.u3DController.setMouseRotate(mouseRotate);
 
 		// Links the middle button of the mouse with a zoom transformation
 		MouseZoom mouseZoom = new MouseZoom();

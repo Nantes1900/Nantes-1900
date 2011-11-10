@@ -20,6 +20,7 @@ import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.utils.WriterSTL;
+import fr.nantes1900.view.isletselection.GlobalTreeView.FileNode;
 import fr.nantes1900.view.isletselection.IsletSelectionView;
 
 /**
@@ -96,8 +97,9 @@ public class IsletSelectionController
         this.isView.setStatusBarText(FileTools.readHelpMessage("ISLaunchProcess", FileTools.MESSAGETYPE_STATUSBAR));
         
         // checks if the gravity normal already exists
-        File gravityNormal = new File(openedDirectory.getPath() + "/gravity_ground.stl");
-        if (! gravityNormal.exists())
+        File gravityNormal = new File(openedDirectory.getPath()
+                + "/gravity_ground.stl");
+        if (!gravityNormal.exists())
         {
             aController.setComputeNormalMode();
             this.isView.setStatusBarText(FileTools.readHelpMessage("ISGravityNormal", FileTools.MESSAGETYPE_STATUSBAR));
@@ -120,7 +122,8 @@ public class IsletSelectionController
         this.biController = new BuildingsIsletController(this,
                 this.u3DController);
         // Reads the file object of the Tree
-        ParserSTL parser = new ParserSTL(node.getUserObject().toString());
+        FileNode fileNode = (FileNode) node.getUserObject();
+        ParserSTL parser = new ParserSTL(fileNode.getEntireName());
         AbstractBuildingsIslet resIslet;
         try
         {
