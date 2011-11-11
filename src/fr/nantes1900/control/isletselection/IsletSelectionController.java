@@ -155,12 +155,6 @@ public class IsletSelectionController
         return processLaunched;
     }
 
-    private Vector3d readGravityNormal()
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
     public void displayFile(DefaultMutableTreeNode node)
     {
         // Reads the file object of the Tree
@@ -195,7 +189,7 @@ public class IsletSelectionController
                 && !this.u3DController.getTrianglesSelected().isEmpty())
         {
             WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
-                    + "gravity_normal.stl");
+                    + "/gravity_normal.stl");
             Point point = new Point(1, 1, 1);
             Edge edge = new Edge(point, point);
             Triangle triangle = new Triangle(point, point, point, edge, edge,
