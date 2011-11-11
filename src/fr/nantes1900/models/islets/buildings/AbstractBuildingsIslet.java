@@ -17,33 +17,30 @@ import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.models.middle.Surface;
 import fr.nantes1900.utils.Algos;
 
-public abstract class AbstractBuildingsIslet extends AbstractIslet
-{
+public abstract class AbstractBuildingsIslet extends AbstractIslet {
 
-    public class UnimplementedException extends Exception
-    {
+    public class UnimplementedException extends Exception {
 
         private static final long serialVersionUID = 1L;
 
     }
 
-    protected List<Building> buildings   = new ArrayList<>();
+    protected List<Building> buildings = new ArrayList<>();
 
-    protected Mesh           initialBuilding;
+    protected Mesh initialBuilding;
 
-    protected Mesh           initialGround;
+    protected Mesh initialGround;
 
-    public int               progression = 0;
+    public int progression = 0;
 
-    protected Ground         ground;
-    protected Surface        groundForAlgorithm;
+    protected Ground ground;
+    protected Surface groundForAlgorithm;
 
-    protected Mesh           noise;
+    protected Mesh noise;
 
-    protected Vector3d       groundNormal;
+    protected Vector3d groundNormal;
 
-    public AbstractBuildingsIslet(Mesh m)
-    {
+    public AbstractBuildingsIslet(Mesh m) {
         super(m);
     }
 
@@ -55,8 +52,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      *            the Mesh to stock the noise
      * @return a list of buildings as Meshes
      */
-    private void buildingsExtraction()
-    {
+    private void buildingsExtraction() {
 
         final List<Mesh> buildingList = new ArrayList<>();
 
@@ -65,24 +61,19 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         thingsList = Algos.blockExtract(this.initialBuilding);
 
         // Steprithm : detection of buildings considering their size.
-        for (final Mesh m : thingsList)
-        {
-            if (m.size() >= SeparationBuildings.BLOCK_BUILDING_SIZE_ERROR)
-            {
+        for (final Mesh m : thingsList) {
+            if (m.size() >= SeparationBuildings.BLOCK_BUILDING_SIZE_ERROR) {
                 buildingList.add(m);
-            } else
-            {
+            } else {
                 this.noise.addAll(m);
             }
         }
 
-        if (buildingList.size() == 0)
-        {
+        if (buildingList.size() == 0) {
             System.out.println("Error : no building found !");
         }
 
-        for (Mesh m : buildingList)
-        {
+        for (Mesh m : buildingList) {
             this.buildings.add(new Building(m));
         }
     }
@@ -94,33 +85,27 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      *            the list of buildings to treat
      * @return the list of the forms
      */
-    private void carveRealBuildings(final List<Building> buildingsList)
-    {
+    private void carveRealBuildings(final List<Building> buildingsList) {
         // TODO : implement this method.
     }
 
-    public List<Building> getBuildings()
-    {
+    public List<Building> getBuildings() {
         return this.buildings;
     }
 
-    public Ground getGround()
-    {
+    public Ground getGround() {
         return this.ground;
     }
 
-    public Surface getGroundForAlgorithm()
-    {
+    public Surface getGroundForAlgorithm() {
         return this.groundForAlgorithm;
     }
 
-    public Mesh getInitialBuilding()
-    {
+    public Mesh getInitialBuilding() {
         return this.initialBuilding;
     }
 
-    public Mesh getInitialGround()
-    {
+    public Mesh getInitialGround() {
         return this.initialGround;
     }
 
@@ -133,8 +118,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      *            course...)
      * @return a Mesh containing the ground
      */
-    private void groundExtraction()
-    {
+    private void groundExtraction() {
         // Searches for ground-oriented triangles with an error.
         Mesh meshOriented = this.initialTotalMesh.orientedAs(this.groundNormal,
                 SeparationGroundBuilding.ANGLE_GROUND_ERROR);
@@ -146,8 +130,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
 
         // FIXME : use MeshOriented.
         Mesh wholeGround = new Mesh();
-        for (final Mesh f : thingsList)
-        {
+        for (final Mesh f : thingsList) {
             wholeGround.addAll(f);
         }
 
@@ -167,14 +150,12 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         // After this, for each block, consider the distance (on the
         // axisNormalGround) as an altitude distance. If it is greater than
         // the error, then it's not considered as ground.
-        for (final Mesh m : thingsList)
-        {
+        for (final Mesh m : thingsList) {
             final Point projectedPoint = axisNormalGround.project(m
                     .getCentroid());
             if (projectedPoint.getZ() < pAverage.getZ()
                     || projectedPoint.distance(pAverage) < highDiff
-                            * SeparationGroundBuilding.ALTITUDE_ERROR)
-            {
+                            * SeparationGroundBuilding.ALTITUDE_ERROR) {
 
                 groundsList.add(m);
             }
@@ -185,10 +166,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         // etc...
         thingsList = new ArrayList<>(groundsList);
         groundsList = new ArrayList<>();
-        for (final Mesh m : thingsList)
-        {
-            if (m.size() > SeparationGrounds.BLOCK_GROUNDS_SIZE_ERROR)
-            {
+        for (final Mesh m : thingsList) {
+            if (m.size() > SeparationGrounds.BLOCK_GROUNDS_SIZE_ERROR) {
                 groundsList.add(m);
             }
         }
@@ -202,8 +181,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         // If the new grounds are neighbours from the old ones, they are
         // added to the real grounds.
         thingsList = new ArrayList<>();
-        for (final Mesh m : groundsList)
-        {
+        for (final Mesh m : groundsList) {
 
             final Mesh temp = new Mesh(m);
             temp.addAll(meshOriented);
@@ -215,8 +193,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         groundsList = thingsList;
 
         wholeGround = new Mesh();
-        for (final Mesh f : groundsList)
-        {
+        for (final Mesh f : groundsList) {
             wholeGround.addAll(f);
         }
 
@@ -227,20 +204,16 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * GroundNormal
      * @throws UnimplementedException
      */
-    public void launchStep0() throws UnimplementedException
-    {
-        if (this.matrix == null)
-        {
+    public void launchTreatment0() throws UnimplementedException {
+        if (this.matrix == null) {
             throw new UnimplementedException();
             // TODO
         }
 
         // Be careful to the normal you use.
-        try
-        {
+        try {
             this.changeBase();
-        } catch (UnCompletedParametersException e)
-        {
+        } catch (UnCompletedParametersException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
@@ -250,10 +223,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * SeparationGroundBuilding
      * @throws UnimplementedException
      */
-    public void launchStep1() throws UnimplementedException
-    {
-        if (this.initialTotalMesh == null)
-        {
+    public void launchTreatment1() throws UnimplementedException {
+        if (this.initialTotalMesh == null) {
             throw new UnimplementedException();
             // TODO
         }
@@ -267,10 +238,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * SeparationBuildings
      * @throws UnimplementedException
      */
-    public void launchStep2() throws UnimplementedException
-    {
-        if (this.initialBuilding == null)
-        {
+    public void launchTreatment2() throws UnimplementedException {
+        if (this.initialBuilding == null) {
             throw new UnimplementedException();
             // TODO
         }
@@ -284,18 +253,15 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * CarveWallsBetweenBuildings
      */
-    public void launchStep3()
-    {
+    public void launchTreatment3() {
         this.carveRealBuildings(this.getBuildings());
     }
 
     /**
      * SeparationWallRoof
      */
-    public void launchStep4()
-    {
-        for (Building b : this.getBuildings())
-        {
+    public void launchTreatment4() {
+        for (Building b : this.getBuildings()) {
             b.separateWallRoof(this.gravityNormal);
         }
     }
@@ -303,12 +269,10 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * SeparationWallsAndSeparationRoofs
      */
-    public void launchStep5()
-    {
+    public void launchTreatment6() {
         this.groundForAlgorithm = new Surface(this.ground);
 
-        for (Building building : this.getBuildings())
-        {
+        for (Building building : this.getBuildings()) {
             building.cutWalls();
             building.cutRoofs(this.groundNormal);
             building.treatNoise();
@@ -319,10 +283,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * DeterminateNeighbours
      */
-    public void launchStep6()
-    {
-        for (Building b : this.getBuildings())
-        {
+    public void launchTreatment7() {
+        for (Building b : this.getBuildings()) {
             b.determinateNeighbours(this.groundForAlgorithm);
         }
     }
@@ -330,10 +292,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * SortNeighbours
      */
-    public void launchStep7()
-    {
-        for (Building b : this.getBuildings())
-        {
+    public void launchTreatment8() {
+        for (Building b : this.getBuildings()) {
             b.sortSurfaces();
             b.orderNeighbours(this.groundForAlgorithm);
         }
@@ -342,10 +302,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * SimplificationSurfaces
      */
-    public void launchStep8()
-    {
-        for (Building b : this.getBuildings())
-        {
+    public void launchTreatment9() {
+        for (Building b : this.getBuildings()) {
             b.determinateContours(this.groundNormal);
         }
     }
@@ -353,27 +311,22 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * RecomputationGround
      */
-    public void launchStep9()
-    {
-        for (Building b : this.getBuildings())
-        {
+    public void launchStep9() {
+        for (Building b : this.getBuildings()) {
             b.reComputeGroundBounds();
         }
     }
 
-    private Ground noiseTreatment()
-    {
+    private Ground noiseTreatment() {
         List<Mesh> list = Algos.blockExtract(this.initialGround);
         return new Ground(Algos.blockTreatNoise(list, this.noise));
     }
 
-    public void setBuildings(List<Building> buildingsIn)
-    {
+    public void setBuildings(List<Building> buildingsIn) {
         this.buildings = buildingsIn;
     }
 
-    public void setGroundNormal(Vector3d groundNormalIn)
-    {
+    public void setGroundNormal(Vector3d groundNormalIn) {
         this.groundNormal = groundNormalIn;
     }
 
