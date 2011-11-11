@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.vecmath.Vector3d;
 
 import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
@@ -136,8 +137,11 @@ public class IsletSelectionController
                     .isGravityGroundCheckBoxSelected())
             {
                 computeGroundNormal();
+            } else
+            {
+                this.biController.setGroundNormal(readGravityNormal());
             }
-            this.parentController.launchIsletTreatment(this.selectedFile);
+            this.parentController.launchIsletTreatment(this.selectedFile, this.biController);
             processLaunched = true;
         } else
         {
@@ -149,6 +153,12 @@ public class IsletSelectionController
         }
 
         return processLaunched;
+    }
+
+    private Vector3d readGravityNormal()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     public void displayFile(DefaultMutableTreeNode node)
@@ -202,7 +212,7 @@ public class IsletSelectionController
             JOptionPane
                     .showMessageDialog(
                             isView,
-                            "Sélectionné un îlot dans l'arbre puis sélectionnez des triangles pour créer la normale",
+                            "Sélectionnez un îlot dans l'arbre\npuis sélectionnez des triangles pour créer la normale\nou sélectionnez \"Utiliser la normale orientée selon la gravité\n",
                             "Aucun îlot ouvert", JOptionPane.ERROR_MESSAGE);
         }
 

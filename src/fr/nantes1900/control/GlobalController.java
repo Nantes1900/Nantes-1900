@@ -30,8 +30,9 @@ public class GlobalController
      * Launches the treatment of an islet and opens the new window.
      * @param isletFile
      *            The file containing data of the islet to treat.
+     * @param biController 
      */
-    public void launchIsletTreatment(File isletFile)
+    public void launchIsletTreatment(File isletFile, BuildingsIsletController biController)
     {
         System.out.println("Traitement lancé sur l'îlot : "
                 + isletFile.getPath());
