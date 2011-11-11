@@ -16,7 +16,6 @@ import fr.nantes1900.models.basis.Triangle;
 public class TriangleView extends Shape3D {
 
 	private Triangle triangle;
-	private boolean selected;
 
 	public TriangleView(Triangle tri) {
 		this.triangle = tri;
@@ -28,26 +27,6 @@ public class TriangleView extends Shape3D {
 
 	public void setTriangle(Triangle triangleIn) {
 		this.triangle = triangleIn;
-	}
-
-	public boolean isSelected() {
-		return this.selected;
-	}
-
-	public void setSelected(boolean selectedIn) {
-		this.selected = selectedIn;
-	}
-
-	public void selectOrUnselect() {
-		if (selected) {
-			selected = false;
-		} else {
-			selected = true;
-		}
-	}
-
-	public void select() {
-		selected = true;
 	}
 
 	public void createShape3D() {
@@ -80,7 +59,7 @@ public class TriangleView extends Shape3D {
 		triangle2.setNormal(1, convertOppositeNormal(triangle));
 		triangle2.setNormal(2, convertOppositeNormal(triangle));
 
-		this.changeColor();
+		this.changeColor(Color.blue);
 
 		this.addGeometry(triangle1);
 		this.addGeometry(triangle2);
@@ -104,15 +83,15 @@ public class TriangleView extends Shape3D {
 		return normalFloat;
 	}
 
-	public void changeColor() {
+	public void changeColor(Color color) {
 		Appearance app = new Appearance();
 		Material mat = null;
-		if (selected) {
+		if (color==Color.blue) {
+			mat = new Material(new Color3f(0f, 0, 0.2f), new Color3f(0, 0, 0),
+					new Color3f(Color.blue), new Color3f(Color.blue), 64);
+		} else if (color==Color.red)  {
 			mat = new Material(new Color3f(0.2f, 0, 0), new Color3f(0, 0, 0),
 					new Color3f(Color.red), new Color3f(Color.red), 64);
-		} else {
-			mat = new Material(new Color3f(0, 0, 0.2f), new Color3f(0, 0, 0),
-					new Color3f(Color.blue), new Color3f(Color.green), 64);
 		}
 		mat.setColorTarget(3);
 		app.setMaterial(mat);
