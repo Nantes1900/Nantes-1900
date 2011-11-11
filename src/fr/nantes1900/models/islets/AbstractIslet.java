@@ -9,19 +9,22 @@ import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
-public abstract class AbstractIslet
-{
-    public class UnCompletedParametersException extends Exception
-    {
+public abstract class AbstractIslet {
+
+    public class UnCompletedParametersException extends Exception {
+
         private static final long serialVersionUID = 1L;
 
-        public UnCompletedParametersException()
-        {
+        public UnCompletedParametersException() {
             // Nothing here.
         }
     }
 
-    protected Mesh       initialTotalMesh;
+    protected Mesh initialTotalMesh;
+
+    public Vector3d getGravityNormal() {
+        return this.gravityNormal;
+    }
 
     /**
      * Change base matrix from the current base to a base which is ground-like
@@ -29,17 +32,14 @@ public abstract class AbstractIslet
      */
     protected double[][] matrix = new double[MatrixMethod.MATRIX_DIMENSION][MatrixMethod.MATRIX_DIMENSION];
 
-    protected Vector3d   gravityNormal;
+    protected Vector3d gravityNormal;
 
-    public AbstractIslet(Mesh m)
-    {
+    public AbstractIslet(Mesh m) {
         this.initialTotalMesh = m;
     }
 
-    protected void changeBase() throws UnCompletedParametersException
-    {
-        if (this.matrix == null || this.initialTotalMesh == null)
-        {
+    protected void changeBase() throws UnCompletedParametersException {
+        if (this.matrix == null || this.initialTotalMesh == null) {
             throw new UnCompletedParametersException();
         }
         this.initialTotalMesh.changeBase(this.matrix);
@@ -51,23 +51,19 @@ public abstract class AbstractIslet
      * @param normalGround
      *            the vector to build the matrix.
      */
-    protected void createChangeBaseMatrix()
-    {
-        try
-        {
+    protected void createChangeBaseMatrix() {
+        try {
             // Base change
             this.matrix = MatrixMethod.createOrthoBase(this.gravityNormal);
             MatrixMethod.changeBase(this.gravityNormal, this.matrix);
 
-        } catch (final SingularMatrixException e)
-        {
+        } catch (final SingularMatrixException e) {
             System.out.println("Error : the matrix is badly formed !");
             System.exit(1);
         }
     }
 
-    public Mesh getInitialTotalMesh()
-    {
+    public Mesh getInitialTotalMesh() {
         return this.initialTotalMesh;
     }
 
@@ -77,16 +73,13 @@ public abstract class AbstractIslet
      *            the name of the file
      * @return the mesh parsed
      */
-    protected void parseFile(final String fileName)
-    {
+    protected void parseFile(final String fileName) {
 
-        try
-        {
+        try {
             final ParserSTL parser = new ParserSTL(fileName);
             this.initialTotalMesh = parser.read();
 
-        } catch (final IOException e)
-        {
+        } catch (final IOException e) {
             System.out
                     .println("Error : the file is badly formed, not found or unreadable !");
             System.exit(1);
