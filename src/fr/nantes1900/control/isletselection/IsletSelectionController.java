@@ -123,10 +123,21 @@ public class IsletSelectionController
      * verification that the selected file is an islet file is made at the
      * selection in the tree.
      */
-    public void launchIsletTreatment()
+    public boolean launchIsletTreatment()
     {
-        computeGroundNormal();
-        this.parentController.launchIsletTreatment(this.selectedFile);
+        boolean processLaunched = false;
+        
+        if (!this.u3DController.getTrianglesSelected().isEmpty() && selectedFile != null)
+        {
+            computeGroundNormal();
+            this.parentController.launchIsletTreatment(this.selectedFile);
+            processLaunched = true;
+        } else
+        {
+            JOptionPane.showMessageDialog(isView, "Veuillez sélectionner un îlot et une normale pour lancer le traitement", "Traitement impossible", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        return processLaunched;
     }
 
     public void displayFile(DefaultMutableTreeNode node)
