@@ -23,7 +23,7 @@ public class GlobalController
      */
     public GlobalController()
     {
-        this.isletSelectionController = new IsletSelectionController();
+        this.isletSelectionController = new IsletSelectionController(this);
     }
 
     /**
@@ -33,6 +33,7 @@ public class GlobalController
      */
     public void launchIsletTreatment(File isletFile)
     {
-        // TODO
+        System.out.println("Traitement lancé sur l'îlot : "
+                + isletFile.getPath());
     }
 }

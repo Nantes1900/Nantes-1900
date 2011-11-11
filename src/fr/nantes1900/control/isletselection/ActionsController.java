@@ -7,6 +7,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 
 import fr.nantes1900.utils.FileTools;
@@ -26,11 +27,11 @@ public class ActionsController
      * The parent controller to give feedback to.
      */
     private IsletSelectionController parentController;
-    
+
     /**
      * Action listener of the launch button.
      */
-    private LaunchActionListener    laListener;
+    private LaunchActionListener     laListener;
 
     public IsletSelectionController getParentController()
     {
@@ -70,10 +71,9 @@ public class ActionsController
             }
 
         });
-
+        
         laListener = new LaunchActionListener(false);
         this.aView.getLaunchButton().addActionListener(laListener);
-
     }
 
     /**
@@ -88,24 +88,51 @@ public class ActionsController
     public void setComputeNormalMode()
     {
         laListener.setComputeNormalMode(true);
-        this.getActionsView().getHelpButton().setTooltip(FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL, FileTools.MESSAGETYPE_TOOLTIP));
-        this.getActionsView().getHelpButton().setHelpMessage(FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL, FileTools.MESSAGETYPE_MESSAGE), FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL, FileTools.MESSAGETYPE_TITLE));
+        this.getActionsView()
+                .getHelpButton()
+                .setTooltip(
+                        FileTools.readHelpMessage(
+                                FileTools.KEY_IS_GRAVITYNORMAL,
+                                FileTools.MESSAGETYPE_TOOLTIP));
+        this.getActionsView()
+                .getHelpButton()
+                .setHelpMessage(
+                        FileTools.readHelpMessage(
+                                FileTools.KEY_IS_GRAVITYNORMAL,
+                                FileTools.MESSAGETYPE_MESSAGE),
+                        FileTools.readHelpMessage(
+                                FileTools.KEY_IS_GRAVITYNORMAL,
+                                FileTools.MESSAGETYPE_TITLE));
         this.aView.getLaunchButton().setText("Sauver");
         this.aView.getLaunchButton().setEnabled(true);
     }
-    
+
     public void setLaunchMode()
     {
         laListener.setComputeNormalMode(false);
-        this.getActionsView().getHelpButton().setTooltip(FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS, FileTools.MESSAGETYPE_TOOLTIP));
-        this.getActionsView().getHelpButton().setHelpMessage(FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS, FileTools.MESSAGETYPE_MESSAGE), FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS, FileTools.MESSAGETYPE_TITLE));
+        this.getActionsView()
+                .getHelpButton()
+                .setTooltip(
+                        FileTools.readHelpMessage(
+                                FileTools.KEY_IS_LAUNCHPROCESS,
+                                FileTools.MESSAGETYPE_TOOLTIP));
+        this.getActionsView()
+                .getHelpButton()
+                .setHelpMessage(
+                        FileTools.readHelpMessage(
+                                FileTools.KEY_IS_LAUNCHPROCESS,
+                                FileTools.MESSAGETYPE_MESSAGE),
+                        FileTools.readHelpMessage(
+                                FileTools.KEY_IS_LAUNCHPROCESS,
+                                FileTools.MESSAGETYPE_TITLE));
+        this.aView.getLaunchButton().setText("Lancer");
         this.aView.getLaunchButton().setEnabled(true);
     }
-    
+
     public class LaunchActionListener implements ActionListener
     {
         private boolean computeNormal;
-        
+
         public LaunchActionListener(boolean computeNormal)
         {
             this.computeNormal = computeNormal;
@@ -117,7 +144,8 @@ public class ActionsController
             // If no gravity normal have been choosen
             if (computeNormal)
             {
-                boolean normalSaved = ActionsController.this.parentController.computeGravityNormal();
+                boolean normalSaved = ActionsController.this.parentController
+                        .computeGravityNormal();
                 if (normalSaved)
                 {
                     ActionsController.this.setLaunchMode();
@@ -125,11 +153,10 @@ public class ActionsController
             } else
             {
                 // If every normals have been choosen
-                ActionsController.this.parentController
-                .launchIsletTreatment();
+                ActionsController.this.parentController.launchIsletTreatment();
             }
         }
-        
+
         public void setComputeNormalMode(boolean computeNormal)
         {
             this.computeNormal = computeNormal;

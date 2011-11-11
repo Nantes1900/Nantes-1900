@@ -74,8 +74,9 @@ public class IsletSelectionController
     /**
      * Creates a new controller to handle the islet selection window.
      */
-    public IsletSelectionController()
+    public IsletSelectionController(GlobalController parentController)
     {
+        this.parentController = parentController;
         this.gtController = new GlobalTreeController(this);
         this.aController = new ActionsController(this);
         this.u3DController = new Universe3DController(this);
@@ -127,10 +128,15 @@ public class IsletSelectionController
     {
         boolean processLaunched = false;
 
-        if (!this.u3DController.getTrianglesSelected().isEmpty()
+        if ((!this.u3DController.getTrianglesSelected().isEmpty() || this.aController
+                .getActionsView().isGravityGroundCheckBoxSelected())
                 && selectedFile != null)
         {
-            computeGroundNormal();
+            if (!this.aController.getActionsView()
+                    .isGravityGroundCheckBoxSelected())
+            {
+                computeGroundNormal();
+            }
             this.parentController.launchIsletTreatment(this.selectedFile);
             processLaunched = true;
         } else

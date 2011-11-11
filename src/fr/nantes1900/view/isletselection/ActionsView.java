@@ -107,4 +107,9 @@ public class ActionsView extends JPanel
     {
         return this.bHelp;
     }
+    
+    public boolean isGravityGroundCheckBoxSelected()
+    {
+        return this.cbGravityGround.isSelected();
+    }
 }
