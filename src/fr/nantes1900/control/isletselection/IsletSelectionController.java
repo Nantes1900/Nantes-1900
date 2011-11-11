@@ -8,6 +8,7 @@ import java.io.IOException;
 
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.vecmath.Vector3d;
 
 import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
@@ -74,8 +75,9 @@ public class IsletSelectionController
     /**
      * Creates a new controller to handle the islet selection window.
      */
-    public IsletSelectionController()
+    public IsletSelectionController(GlobalController parentController)
     {
+        this.parentController = parentController;
         this.gtController = new GlobalTreeController(this);
         this.aController = new ActionsController(this);
         this.u3DController = new Universe3DController(this);
@@ -127,11 +129,19 @@ public class IsletSelectionController
     {
         boolean processLaunched = false;
 
-        if (!this.u3DController.getTrianglesSelected().isEmpty()
+        if ((!this.u3DController.getTrianglesSelected().isEmpty() || this.aController
+                .getActionsView().isGravityGroundCheckBoxSelected())
                 && selectedFile != null)
         {
-            computeGroundNormal();
-            this.parentController.launchIsletTreatment(this.selectedFile);
+            if (!this.aController.getActionsView()
+                    .isGravityGroundCheckBoxSelected())
+            {
+                computeGroundNormal();
+            } else
+            {
+                this.biController.useGravityNormalAsGroundNormal();
+            }
+            this.parentController.launchIsletTreatment(this.selectedFile, this.biController);
             processLaunched = true;
         } else
         {
@@ -143,6 +153,12 @@ public class IsletSelectionController
         }
 
         return processLaunched;
+    }
+
+    private Vector3d readGravityNormal()
+    {
+        // TODO Auto-generated method stub
+        return null;
     }
 
     public void displayFile(DefaultMutableTreeNode node)
@@ -196,7 +212,7 @@ public class IsletSelectionController
             JOptionPane
                     .showMessageDialog(
                             isView,
-                            "Sélectionné un îlot dans l'arbre puis sélectionnez des triangles pour créer la normale",
+                            "Sélectionnez un îlot dans l'arbre\npuis sélectionnez des triangles pour créer la normale\nou sélectionnez \"Utiliser la normale orientée selon la gravité\n",
                             "Aucun îlot ouvert", JOptionPane.ERROR_MESSAGE);
         }
 

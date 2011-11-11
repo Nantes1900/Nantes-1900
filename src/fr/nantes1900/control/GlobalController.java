@@ -23,16 +23,18 @@ public class GlobalController
      */
     public GlobalController()
     {
-        this.isletSelectionController = new IsletSelectionController();
+        this.isletSelectionController = new IsletSelectionController(this);
     }
 
     /**
      * Launches the treatment of an islet and opens the new window.
      * @param isletFile
      *            The file containing data of the islet to treat.
+     * @param biController 
      */
-    public void launchIsletTreatment(File isletFile)
+    public void launchIsletTreatment(File isletFile, BuildingsIsletController biController)
     {
-        // TODO
+        System.out.println("Traitement lancé sur l'îlot : "
+                + isletFile.getPath());
     }
 }
