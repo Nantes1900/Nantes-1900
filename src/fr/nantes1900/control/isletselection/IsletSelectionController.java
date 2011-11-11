@@ -74,8 +74,9 @@ public class IsletSelectionController
     /**
      * Creates a new controller to handle the islet selection window.
      */
-    public IsletSelectionController()
+    public IsletSelectionController(GlobalController parentController)
     {
+        this.parentController = parentController;
         this.gtController = new GlobalTreeController(this);
         this.aController = new ActionsController(this);
         this.u3DController = new Universe3DController(this);
@@ -95,16 +96,26 @@ public class IsletSelectionController
     {
         this.openedDirectory = newDirectory;
         this.gtController.updateDirectory(this.openedDirectory);
-        this.isView.setStatusBarText(FileTools.readHelpMessage("ISLaunchProcess", FileTools.MESSAGETYPE_STATUSBAR));
-        
+
         // checks if the gravity normal already exists
         File gravityNormal = new File(openedDirectory.getPath()
                 + "/gravity_ground.stl");
         if (!gravityNormal.exists())
         {
-            JOptionPane.showMessageDialog(isView, "La normale orientée selon la gravité n'a pas été trouvé dans le dossier ouvert.\nVeuillez en créer une nouvelle.", "Normale orientée selon la gravité inexistante", JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane
+                    .showMessageDialog(
+                            isView,
+                            "La normale orientée selon la gravité n'a pas été trouvé dans le dossier ouvert.\nVeuillez en créer une nouvelle.",
+                            "Normale orientée selon la gravité inexistante",
+                            JOptionPane.INFORMATION_MESSAGE);
             aController.setComputeNormalMode();
-            this.isView.setStatusBarText(FileTools.readHelpMessage("ISGravityNormal", FileTools.MESSAGETYPE_STATUSBAR));
+            this.isView.setStatusBarText(FileTools.readHelpMessage(
+                    "ISGravityNormal", FileTools.MESSAGETYPE_STATUSBAR));
+        } else
+        {
+            this.isView.setStatusBarText(FileTools.readHelpMessage(
+                    "ISLaunchProcess", FileTools.MESSAGETYPE_STATUSBAR));
+            aController.setLaunchMode();
         }
     }
 
@@ -113,44 +124,89 @@ public class IsletSelectionController
      * verification that the selected file is an islet file is made at the
      * selection in the tree.
      */
-    public void launchIsletTreatment()
+    public boolean launchIsletTreatment()
     {
-        computeGroundNormal();
-        this.parentController.launchIsletTreatment(this.selectedFile);
+        boolean processLaunched = false;
+
+        if ((!this.u3DController.getTrianglesSelected().isEmpty() || this.aController
+                .getActionsView().isGravityGroundCheckBoxSelected())
+                && selectedFile != null)
+        {
+            if (!this.aController.getActionsView()
+                    .isGravityGroundCheckBoxSelected())
+            {
+                computeGroundNormal();
+            }
+            this.parentController.launchIsletTreatment(this.selectedFile);
+            processLaunched = true;
+        } else
+        {
+            JOptionPane
+                    .showMessageDialog(
+                            isView,
+                            "Veuillez sélectionner un îlot et une normale pour lancer le traitement",
+                            "Traitement impossible", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return processLaunched;
     }
 
     public void displayFile(DefaultMutableTreeNode node)
     {
-        this.biController = new BuildingsIsletController(this,
-                this.u3DController);
         // Reads the file object of the Tree
         FileNode fileNode = (FileNode) node.getUserObject();
-        ParserSTL parser = new ParserSTL(fileNode.getEntireName());
-        AbstractBuildingsIslet resIslet;
-        try
+
+        if (fileNode.isFile())
         {
-            resIslet = new ResidentialIslet(parser.read());
-            this.getBiController().setIslet(resIslet);
-            this.getBiController().display();
-        } catch (IOException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            this.biController = new BuildingsIsletController(this,
+                    this.u3DController);
+
+            ParserSTL parser = new ParserSTL(fileNode.getEntireName());
+            this.selectedFile = (File) fileNode;
+
+            AbstractBuildingsIslet resIslet;
+            try
+            {
+                resIslet = new ResidentialIslet(parser.read());
+                this.getBiController().setIslet(resIslet);
+                this.getBiController().display();
+            } catch (IOException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 
-    public void computeGravityNormal()
+    public boolean computeGravityNormal()
     {
-        WriterSTL writer = new WriterSTL(this.openedDirectory
-                + "gravity_normal.stl");
-        Point point = new Point(1, 1, 1);
-        Edge edge = new Edge(point, point);
-        Triangle triangle = new Triangle(point, point, point, edge, edge, edge,
-                this.biController.computeNormalWithTrianglesSelected());
-        Mesh mesh = new Mesh();
-        mesh.add(triangle);
-        writer.setMesh(mesh);
-        writer.write();
+        boolean normalSaved = false;
+        if (selectedFile != null
+                && !this.u3DController.getTrianglesSelected().isEmpty())
+        {
+            WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
+                    + "gravity_normal.stl");
+            Point point = new Point(1, 1, 1);
+            Edge edge = new Edge(point, point);
+            Triangle triangle = new Triangle(point, point, point, edge, edge,
+                    edge,
+                    this.biController.computeNormalWithTrianglesSelected());
+            Mesh mesh = new Mesh();
+            mesh.add(triangle);
+            writer.setMesh(mesh);
+            writer.write();
+            System.out.println("Enregistré");
+            normalSaved = true;
+        } else
+        {
+            JOptionPane
+                    .showMessageDialog(
+                            isView,
+                            "Sélectionné un îlot dans l'arbre puis sélectionnez des triangles pour créer la normale",
+                            "Aucun îlot ouvert", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return normalSaved;
     }
 
     public BuildingsIsletController getBiController()
