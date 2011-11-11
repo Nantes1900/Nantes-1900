@@ -1,5 +1,7 @@
 package fr.nantes1900.control;
 
+import java.io.IOException;
+
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.control.display3d.Universe3DController;
@@ -9,6 +11,7 @@ import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet.UnimplementedException;
 import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.models.middle.Surface;
+import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.PolygonView;
 
@@ -278,6 +281,12 @@ public class BuildingsIsletController {
                         new PolygonView(roof.getPolygone()));
             }
         }
+    }
+
+    public void readGravityNormal(String fileName) throws IOException {
+        ParserSTL parser = new ParserSTL(fileName);
+        Mesh mesh = parser.read();
+        this.islet.setGravityNormal(mesh.averageNormal());
     }
 
     public Vector3d computeNormalWithTrianglesSelected() {

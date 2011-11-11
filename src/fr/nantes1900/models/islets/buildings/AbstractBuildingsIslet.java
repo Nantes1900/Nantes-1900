@@ -329,5 +329,4 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
     public void setGroundNormal(Vector3d groundNormalIn) {
         this.groundNormal = groundNormalIn;
     }
-
 }

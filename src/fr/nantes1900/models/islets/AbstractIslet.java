@@ -86,4 +86,9 @@ public abstract class AbstractIslet {
 
         }
     }
+
+    public void setGravityNormal(Vector3d newNormal) {
+        this.gravityNormal = newNormal;
+    }
+
 }
