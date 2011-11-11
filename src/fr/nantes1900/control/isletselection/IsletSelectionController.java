@@ -126,45 +126,57 @@ public class IsletSelectionController
     public boolean launchIsletTreatment()
     {
         boolean processLaunched = false;
-        
-        if (!this.u3DController.getTrianglesSelected().isEmpty() && selectedFile != null)
+
+        if (!this.u3DController.getTrianglesSelected().isEmpty()
+                && selectedFile != null)
         {
             computeGroundNormal();
             this.parentController.launchIsletTreatment(this.selectedFile);
             processLaunched = true;
         } else
         {
-            JOptionPane.showMessageDialog(isView, "Veuillez sélectionner un îlot et une normale pour lancer le traitement", "Traitement impossible", JOptionPane.ERROR_MESSAGE);
+            JOptionPane
+                    .showMessageDialog(
+                            isView,
+                            "Veuillez sélectionner un îlot et une normale pour lancer le traitement",
+                            "Traitement impossible", JOptionPane.ERROR_MESSAGE);
         }
-        
+
         return processLaunched;
     }
 
     public void displayFile(DefaultMutableTreeNode node)
     {
-        this.biController = new BuildingsIsletController(this,
-                this.u3DController);
         // Reads the file object of the Tree
         FileNode fileNode = (FileNode) node.getUserObject();
-        ParserSTL parser = new ParserSTL(fileNode.getEntireName());
-        this.selectedFile = new File(fileNode.getEntireName());
-        AbstractBuildingsIslet resIslet;
-        try
+
+        if (fileNode.isFile())
         {
-            resIslet = new ResidentialIslet(parser.read());
-            this.getBiController().setIslet(resIslet);
-            this.getBiController().display();
-        } catch (IOException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            this.biController = new BuildingsIsletController(this,
+                    this.u3DController);
+
+            ParserSTL parser = new ParserSTL(fileNode.getEntireName());
+            this.selectedFile = (File) fileNode;
+
+            AbstractBuildingsIslet resIslet;
+            try
+            {
+                resIslet = new ResidentialIslet(parser.read());
+                this.getBiController().setIslet(resIslet);
+                this.getBiController().display();
+            } catch (IOException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 
     public boolean computeGravityNormal()
     {
         boolean normalSaved = false;
-        if (selectedFile != null && !this.u3DController.getTrianglesSelected().isEmpty())
+        if (selectedFile != null
+                && !this.u3DController.getTrianglesSelected().isEmpty())
         {
             WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
                     + "gravity_normal.stl");
@@ -185,10 +197,9 @@ public class IsletSelectionController
                     .showMessageDialog(
                             isView,
                             "Sélectionné un îlot dans l'arbre puis sélectionnez des triangles pour créer la normale",
-                            "Aucun îlot ouvert",
-                            JOptionPane.ERROR_MESSAGE);
+                            "Aucun îlot ouvert", JOptionPane.ERROR_MESSAGE);
         }
-        
+
         return normalSaved;
     }
 
