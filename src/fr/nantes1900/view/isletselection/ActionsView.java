@@ -3,7 +3,12 @@
  */
 package fr.nantes1900.view.isletselection;
 
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
 import fr.nantes1900.utils.FileTools;
@@ -33,6 +38,11 @@ public class ActionsView extends JPanel
      * Button used to display some help.
      */
     private HelpButton        bHelp;
+    
+    /**
+     * Checkbox to select gravity normal as ground normal.
+     */
+    private JCheckBox cbGravityGround;
 
     /**
      * Creates a new panel containing the open and launch buttons.
@@ -46,10 +56,29 @@ public class ActionsView extends JPanel
                 FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_TOOLTIP),
                 FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_MESSAGE),
                 FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_TITLE));
-
-        this.add(this.bOpen);
-        this.add(this.bLaunch);
-        this.add(bHelp);
+        this.cbGravityGround = new JCheckBox("Utiliser la normale orientée selon la gravité");
+        
+        this.setLayout(new GridBagLayout());
+        this.add(this.bOpen,
+                new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
+                        GridBagConstraints.WEST,
+                        GridBagConstraints.HORIZONTAL,
+                        new Insets(5, 10, 5, 10), 0, 0));
+        this.add(this.bLaunch,
+                new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
+                        GridBagConstraints.WEST,
+                        GridBagConstraints.HORIZONTAL,
+                        new Insets(5, 10, 5, 10), 0, 0));
+        this.add(bHelp,
+                new GridBagConstraints(2, 0, GridBagConstraints.REMAINDER, 1, 0.0, 0.0,
+                        GridBagConstraints.WEST,
+                        GridBagConstraints.HORIZONTAL,
+                        new Insets(5, 10, 5, 10), 0, 0));
+        this.add(this.cbGravityGround,
+                new GridBagConstraints(0, 1, GridBagConstraints.REMAINDER, GridBagConstraints.REMAINDER, 0.0, 0.0,
+                        GridBagConstraints.EAST,
+                        GridBagConstraints.HORIZONTAL,
+                        new Insets(5, 10, 5, 10), 0, 0));
     }
 
     /**
