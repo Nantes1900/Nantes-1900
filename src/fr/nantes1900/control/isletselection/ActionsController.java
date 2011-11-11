@@ -91,6 +91,7 @@ public class ActionsController
         this.getActionsView().getHelpButton().setTooltip(FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL, FileTools.MESSAGETYPE_TOOLTIP));
         this.getActionsView().getHelpButton().setHelpMessage(FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL, FileTools.MESSAGETYPE_MESSAGE), FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL, FileTools.MESSAGETYPE_TITLE));
         this.aView.getLaunchButton().setText("Sauver");
+        this.aView.getLaunchButton().setEnabled(true);
     }
     
     public void setLaunchMode()
@@ -98,6 +99,7 @@ public class ActionsController
         laListener.setComputeNormalMode(false);
         this.getActionsView().getHelpButton().setTooltip(FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS, FileTools.MESSAGETYPE_TOOLTIP));
         this.getActionsView().getHelpButton().setHelpMessage(FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS, FileTools.MESSAGETYPE_MESSAGE), FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS, FileTools.MESSAGETYPE_TITLE));
+        this.aView.getLaunchButton().setEnabled(true);
     }
     
     public class LaunchActionListener implements ActionListener
@@ -112,11 +114,14 @@ public class ActionsController
         @Override
         public void actionPerformed(ActionEvent arg0)
         {
-            // TODO : make the test for gravity normal
             // If no gravity normal have been choosen
             if (computeNormal)
             {
-                ActionsController.this.parentController.computeGravityNormal();
+                boolean normalSaved = ActionsController.this.parentController.computeGravityNormal();
+                if (normalSaved)
+                {
+                    ActionsController.this.setLaunchMode();
+                }
             } else
             {
                 // If every normals have been choosen
