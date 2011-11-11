@@ -1,8 +1,8 @@
 package fr.nantes1900.utils;
 
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.Mesh;
-import fr.nantes1900.models.middle.Surface;
+import fr.nantes1900.models.extended.Surface;
 
 import java.util.ArrayList;
 import java.util.HashSet;

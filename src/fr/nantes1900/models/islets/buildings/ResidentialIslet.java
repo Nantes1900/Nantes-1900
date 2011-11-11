@@ -1,6 +1,6 @@
 package fr.nantes1900.models.islets.buildings;
 
-import fr.nantes1900.models.middle.Mesh;
+import fr.nantes1900.models.basis.Mesh;
 
 public class ResidentialIslet extends AbstractBuildingsIslet
 {

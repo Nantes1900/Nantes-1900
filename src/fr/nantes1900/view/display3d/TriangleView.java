@@ -35,14 +35,6 @@ public class TriangleView extends TriangleArray {
         // reactivate it if it is not too much for the computer.
     }
 
-    public Triangle getTriangle() {
-        return this.triangle;
-    }
-
-    public void setTriangle(Triangle triangleIn) {
-        this.triangle = triangleIn;
-    }
-
     public Vector3f convertNormal() {
         return new Vector3f((float) this.triangle.getNormal().getX(),
                 (float) this.triangle.getNormal().getY(), (float) this.triangle
@@ -53,5 +45,13 @@ public class TriangleView extends TriangleArray {
         return new Vector3f(-(float) this.triangle.getNormal().getX(),
                 -(float) this.triangle.getNormal().getY(),
                 -(float) this.triangle.getNormal().getZ());
+    }
+
+    public Triangle getTriangle() {
+        return this.triangle;
+    }
+
+    public void setTriangle(Triangle triangleIn) {
+        this.triangle = triangleIn;
     }
 }

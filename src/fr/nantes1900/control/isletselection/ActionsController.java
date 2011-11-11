@@ -33,11 +33,6 @@ public class ActionsController
      */
     private LaunchActionListener     laListener;
 
-    public IsletSelectionController getParentController()
-    {
-        return this.parentController;
-    }
-
     /**
      * Creates a new controller to handle the panel containing buttons to launch
      * the different actions.
@@ -83,6 +78,11 @@ public class ActionsController
     public ActionsView getActionsView()
     {
         return this.aView;
+    }
+
+    public IsletSelectionController getParentController()
+    {
+        return this.parentController;
     }
 
     public void setComputeNormalMode()

@@ -2,9 +2,9 @@ package test.fr.nantes1900.models.basis;
 
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.Polygon;
-import fr.nantes1900.models.middle.Polygon.BadFormedPolylineException;
+import fr.nantes1900.models.basis.Polygon.BadFormedPolylineException;
 
 import java.security.InvalidParameterException;
 import java.util.List;
@@ -74,111 +74,6 @@ public class EdgeTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.basis.Edge#computeMiddle()} .
-     */
-    @Test
-    public final void testComputeMiddle()
-    {
-        Assert.assertTrue(this.edge5.computeMiddle().equals(
-                new Point(1, 1.5, 1)));
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#contains(fr.nantes1900.models.basis.Point)}
-     * .
-     */
-    @Test
-    public final void testContains()
-    {
-        Assert.assertTrue(this.edge5.contains(this.point2));
-        Assert.assertFalse(this.edge5.contains(this.point1));
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#convertToVector3d()} .
-     */
-    @Test
-    public final void testConvertToVector3d()
-    {
-        Assert.assertTrue(this.edge5.convertToVector3d().equals(
-                new Vector3d(2, 1, 2)));
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#equals(java.lang.Object)} .
-     */
-    @Test
-    public final void testEqualsObject()
-    {
-        final Edge eTest = new Edge(this.point1, this.point2);
-        Assert.assertFalse(this.edge1.equals(this.edge2));
-        Assert.assertEquals(this.edge1, this.edge1);
-        Assert.assertEquals(this.edge1, eTest);
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#getNumberTriangles()} .
-     */
-    @Test
-    public final void testGetNumberTriangles()
-    {
-        Assert.assertTrue(this.edge1.getNumberTriangles() == 2);
-        Assert.assertTrue(this.edge5.getNumberTriangles() == 1);
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#getNumNeighbours(fr.nantes1900.models.middle.Polygon)}
-     * .
-     */
-    @Test
-    public final void testGetNumNeighbours()
-    {
-        final Polygon p = new Polygon();
-        p.add(this.edge1);
-        p.add(this.edge2);
-        p.add(this.edge3);
-        p.add(this.edge4);
-        Assert.assertTrue(this.edge1.getNumNeighbours(p) == 3);
-        Assert.assertTrue(this.edge2.getNumNeighbours(p) == 2);
-        try
-        {
-            this.edge5.getNumNeighbours(p);
-            Assert.fail();
-        } catch (final InvalidParameterException e)
-        {
-            // If it comes here, it's good.
-        }
-    }
-
-    /**
-     * Test method for {@link fr.nantes1900.models.basis.Edge#getTriangles()}
-     * and
-     * {@link fr.nantes1900.models.basis.Edge#addTriangle(fr.nantes1900.models.basis.Triangle)}
-     * . This test is also the test of addTriangle.
-     */
-    @Test
-    public final void testGetTriangleList()
-    {
-        final List<Triangle> list1 = this.edge1.getTriangles();
-        final List<Triangle> list2 = this.edge2.getTriangles();
-        final List<Triangle> list4 = this.edge4.getTriangles();
-
-        Assert.assertTrue(list1.contains(this.triangle1));
-        Assert.assertTrue(list1.contains(this.triangle2));
-
-        Assert.assertTrue(list2.contains(this.triangle1));
-        Assert.assertFalse(list2.contains(this.triangle2));
-
-        Assert.assertTrue(list4.contains(this.triangle2));
-        Assert.assertFalse(list4.contains(this.triangle1));
-    }
-
-    /**
      * Test method for
      * {@link fr.nantes1900.models.basis.Edge#isInCylinder3D(fr.nantes1900.models.basis.Point, double)}
      * .
@@ -243,25 +138,6 @@ public class EdgeTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#isNeighboor(fr.nantes1900.models.basis.Edge)}
-     * .
-     */
-    @Test
-    public final void testIsNeighboor()
-    {
-        Assert.assertTrue(this.edge1.isNeighboor(this.edge2));
-        Assert.assertFalse(this.edge3.isNeighboor(this.edge5));
-    }
-
-    /** Test method for {@link fr.nantes1900.models.basis.Edge#length()} . */
-    @Test
-    public final void testLength()
-    {
-        Assert.assertTrue(this.edge5.length() == 3);
-    }
-
-    /**
-     * Test method for
      * {@link fr.nantes1900.models.basis.Edge#orientedAs(fr.nantes1900.models.basis.Edge, double)}
      * .
      */
@@ -298,7 +174,7 @@ public class EdgeTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#returnNeighbour(fr.nantes1900.models.middle.Polygon, fr.nantes1900.models.basis.Point)}
+     * {@link fr.nantes1900.models.basis.Edge#returnNeighbour(fr.nantes1900.models.basis.Polygon, fr.nantes1900.models.basis.Point)}
      * .
      */
     @Test
@@ -326,6 +202,148 @@ public class EdgeTest extends TestCase
 
     /**
      * Test method for
+     * {@link fr.nantes1900.models.basis.Edge#sharedPoint(fr.nantes1900.models.basis.Edge)}
+     * .
+     */
+    @Test
+    public final static void testSharedPoint()
+    {
+        final Point p1 = new Point(0, 0, 0);
+        final Point p2 = new Point(0, 1, 0);
+        final Point p3 = new Point(-1, 2, 0);
+
+        final Edge e1 = new Edge(p1, p2);
+        final Edge e2 = new Edge(p1, p3);
+
+        Assert.assertTrue(e1.sharedPoint(e2) == p1);
+    }
+
+    /**
+     * Test method for {@link fr.nantes1900.models.basis.Edge#computeMiddle()} .
+     */
+    @Test
+    public final void testComputeMiddle()
+    {
+        Assert.assertTrue(this.edge5.computeMiddle().equals(
+                new Point(1, 1.5, 1)));
+    }
+
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.basis.Edge#contains(fr.nantes1900.models.basis.Point)}
+     * .
+     */
+    @Test
+    public final void testContains()
+    {
+        Assert.assertTrue(this.edge5.contains(this.point2));
+        Assert.assertFalse(this.edge5.contains(this.point1));
+    }
+
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.basis.Edge#convertToVector3d()} .
+     */
+    @Test
+    public final void testConvertToVector3d()
+    {
+        Assert.assertTrue(this.edge5.convertToVector3d().equals(
+                new Vector3d(2, 1, 2)));
+    }
+
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.basis.Edge#equals(java.lang.Object)} .
+     */
+    @Test
+    public final void testEqualsObject()
+    {
+        final Edge eTest = new Edge(this.point1, this.point2);
+        Assert.assertFalse(this.edge1.equals(this.edge2));
+        Assert.assertEquals(this.edge1, this.edge1);
+        Assert.assertEquals(this.edge1, eTest);
+    }
+
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.basis.Edge#getNumberTriangles()} .
+     */
+    @Test
+    public final void testGetNumberTriangles()
+    {
+        Assert.assertTrue(this.edge1.getNumberTriangles() == 2);
+        Assert.assertTrue(this.edge5.getNumberTriangles() == 1);
+    }
+
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.basis.Edge#getNumNeighbours(fr.nantes1900.models.basis.Polygon)}
+     * .
+     */
+    @Test
+    public final void testGetNumNeighbours()
+    {
+        final Polygon p = new Polygon();
+        p.add(this.edge1);
+        p.add(this.edge2);
+        p.add(this.edge3);
+        p.add(this.edge4);
+        Assert.assertTrue(this.edge1.getNumNeighbours(p) == 3);
+        Assert.assertTrue(this.edge2.getNumNeighbours(p) == 2);
+        try
+        {
+            this.edge5.getNumNeighbours(p);
+            Assert.fail();
+        } catch (final InvalidParameterException e)
+        {
+            // If it comes here, it's good.
+        }
+    }
+
+    /**
+     * Test method for {@link fr.nantes1900.models.basis.Edge#getTriangles()}
+     * and
+     * {@link fr.nantes1900.models.basis.Edge#addTriangle(fr.nantes1900.models.basis.Triangle)}
+     * . This test is also the test of addTriangle.
+     */
+    @Test
+    public final void testGetTriangleList()
+    {
+        final List<Triangle> list1 = this.edge1.getTriangles();
+        final List<Triangle> list2 = this.edge2.getTriangles();
+        final List<Triangle> list4 = this.edge4.getTriangles();
+
+        Assert.assertTrue(list1.contains(this.triangle1));
+        Assert.assertTrue(list1.contains(this.triangle2));
+
+        Assert.assertTrue(list2.contains(this.triangle1));
+        Assert.assertFalse(list2.contains(this.triangle2));
+
+        Assert.assertTrue(list4.contains(this.triangle2));
+        Assert.assertFalse(list4.contains(this.triangle1));
+    }
+
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.basis.Edge#isNeighboor(fr.nantes1900.models.basis.Edge)}
+     * .
+     */
+    @Test
+    public final void testIsNeighboor()
+    {
+        Assert.assertTrue(this.edge1.isNeighboor(this.edge2));
+        Assert.assertFalse(this.edge3.isNeighboor(this.edge5));
+    }
+
+    /** Test method for {@link fr.nantes1900.models.basis.Edge#length()} . */
+    @Test
+    public final void testLength()
+    {
+        Assert.assertTrue(this.edge5.length() == 3);
+    }
+
+    /**
+     * Test method for
      * {@link fr.nantes1900.models.basis.Edge#returnOther(fr.nantes1900.models.basis.Point)}
      * .
      */
@@ -348,24 +366,6 @@ public class EdgeTest extends TestCase
         Assert.assertTrue(this.edge1.returnOther(this.triangle1) == this.triangle2);
         Assert.assertTrue(this.edge1.returnOther(this.triangle2) == this.triangle1);
         Assert.assertTrue(this.edge2.returnOther(this.triangle1) == null);
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#sharedPoint(fr.nantes1900.models.basis.Edge)}
-     * .
-     */
-    @Test
-    public final static void testSharedPoint()
-    {
-        final Point p1 = new Point(0, 0, 0);
-        final Point p2 = new Point(0, 1, 0);
-        final Point p3 = new Point(-1, 2, 0);
-
-        final Edge e1 = new Edge(p1, p2);
-        final Edge e2 = new Edge(p1, p3);
-
-        Assert.assertTrue(e1.sharedPoint(e2) == p1);
     }
 
 }

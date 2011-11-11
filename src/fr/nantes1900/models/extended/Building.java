@@ -10,12 +10,11 @@ import javax.vecmath.Vector3d;
 
 import fr.nantes1900.constants.SeparationWallRoof;
 import fr.nantes1900.constants.SeparationWallsSeparationRoofs;
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.middle.Mesh;
-import fr.nantes1900.models.middle.Polygon;
-import fr.nantes1900.models.middle.Surface;
-import fr.nantes1900.models.middle.Surface.ImpossibleNeighboursOrderException;
-import fr.nantes1900.models.middle.Surface.InvalidSurfaceException;
+import fr.nantes1900.models.basis.Polygon;
+import fr.nantes1900.models.extended.Surface.ImpossibleNeighboursOrderException;
+import fr.nantes1900.models.extended.Surface.InvalidSurfaceException;
 import fr.nantes1900.utils.Algos;
 
 /**
@@ -30,21 +29,6 @@ public class Building
     private Mesh initialRoof;
 
     private Mesh noise;
-
-    public Mesh getInitialTotalMesh()
-    {
-        return this.initialTotalMesh;
-    }
-
-    public Mesh getInitialWall()
-    {
-        return this.initialWall;
-    }
-
-    public Mesh getInitialRoof()
-    {
-        return this.initialRoof;
-    }
 
     private final List<Surface> walls = new ArrayList<Surface>();
 
@@ -76,16 +60,6 @@ public class Building
                 this.noise.addAll(e);
             }
         }
-    }
-
-    public void separateWallRoof(Vector3d gravityNormal)
-    {
-        // Select the triangles which are oriented normal to normalGround.
-        this.initialWall = this.initialTotalMesh.orientedNormalTo(
-                gravityNormal, SeparationWallRoof.NORMALTO_ERROR);
-
-        this.initialRoof = new Mesh(this.initialTotalMesh);
-        this.initialRoof.remove(this.initialWall);
     }
 
     public void cutWalls()
@@ -198,6 +172,31 @@ public class Building
         }
     }
 
+    public Mesh getInitialRoof()
+    {
+        return this.initialRoof;
+    }
+
+    public Mesh getInitialTotalMesh()
+    {
+        return this.initialTotalMesh;
+    }
+
+    public Mesh getInitialWall()
+    {
+        return this.initialWall;
+    }
+
+    public final List<Surface> getRoofs()
+    {
+        return this.roofs;
+    }
+
+    public final List<Surface> getWalls()
+    {
+        return this.walls;
+    }
+
     public void orderNeighbours(final Surface grounds)
     {
         // Adds all the surfaces
@@ -219,6 +218,86 @@ public class Building
                 // If there is a problem, the treatment cannot continue.
             }
         }
+    }
+
+    public void reComputeGroundBounds()
+    {
+        // TODO : implement this method.
+    }
+
+    public DefaultMutableTreeNode returnTree()
+    {
+        DefaultMutableTreeNode currentNode = new DefaultMutableTreeNode();
+
+        for (int wallNumber = 0; wallNumber < this.walls.size(); wallNumber++)
+        {
+            currentNode.add(new DefaultMutableTreeNode("Wall " + wallNumber));
+        }
+
+        for (int roofNumber = 0; roofNumber < this.roofs.size(); roofNumber++)
+        {
+            currentNode.add(new DefaultMutableTreeNode("Roof " + roofNumber));
+        }
+
+        return currentNode;
+    }
+
+    // FIXME : what is the difference between searchForNeighbours and
+    // determinateNeighbours.
+    private void searchForNeighbours(final Surface grounds)
+    {
+        final Polygon groundsBounds = grounds.getMesh().returnUnsortedBounds();
+
+        final List<Surface> wholeList = new ArrayList<Surface>();
+        wholeList.addAll(this.walls);
+        wholeList.addAll(this.roofs);
+
+        // First we clear the neighbours.
+        for (final Surface m : wholeList)
+        {
+            m.getNeighbours().clear();
+        }
+        // And we clear the neighbours of the grounds.
+        grounds.getNeighbours().clear();
+
+        final List<Polygon> wholeBoundsList = new ArrayList<Polygon>();
+
+        // We compute the bounds to check if they share a common edge.
+        for (final Surface m : wholeList)
+        {
+            wholeBoundsList.add(m.getMesh().returnUnsortedBounds());
+        }
+
+        // Then we check every edge of the bounds to see if some are shared
+        // by two meshes. If they do, they are neighbours.
+        for (int i = 0; i < wholeBoundsList.size(); i = i + 1)
+        {
+            final Polygon polygone1 = wholeBoundsList.get(i);
+
+            for (int j = i + 1; j < wholeBoundsList.size(); j = j + 1)
+            {
+                final Polygon polygone2 = wholeBoundsList.get(j);
+                if (polygone1.isNeighbour(polygone2))
+                {
+                    wholeList.get(i).addNeighbour(wholeList.get(j));
+                }
+            }
+
+            if (polygone1.isNeighbour(groundsBounds))
+            {
+                wholeList.get(i).addNeighbour(grounds);
+            }
+        }
+    }
+
+    public void separateWallRoof(Vector3d gravityNormal)
+    {
+        // Select the triangles which are oriented normal to normalGround.
+        this.initialWall = this.initialTotalMesh.orientedNormalTo(
+                gravityNormal, SeparationWallRoof.NORMALTO_ERROR);
+
+        this.initialRoof = new Mesh(this.initialTotalMesh);
+        this.initialRoof.remove(this.initialWall);
     }
 
     public void sortSurfaces()
@@ -310,85 +389,5 @@ public class Building
         // Adds the oriented and neighbour noise to the roofs.
         Algos.blockTreatOrientedNoise(this.roofs, this.noise,
                 SeparationWallsSeparationRoofs.LARGE_ANGLE_ERROR);
-    }
-
-    public final List<Surface> getRoofs()
-    {
-        return this.roofs;
-    }
-
-    public final List<Surface> getWalls()
-    {
-        return this.walls;
-    }
-
-    public void reComputeGroundBounds()
-    {
-        // TODO : implement this method.
-    }
-
-    public DefaultMutableTreeNode returnTree()
-    {
-        DefaultMutableTreeNode currentNode = new DefaultMutableTreeNode();
-
-        for (int wallNumber = 0; wallNumber < this.walls.size(); wallNumber++)
-        {
-            currentNode.add(new DefaultMutableTreeNode("Wall " + wallNumber));
-        }
-
-        for (int roofNumber = 0; roofNumber < this.roofs.size(); roofNumber++)
-        {
-            currentNode.add(new DefaultMutableTreeNode("Roof " + roofNumber));
-        }
-
-        return currentNode;
-    }
-
-    // FIXME : what is the difference between searchForNeighbours and
-    // determinateNeighbours.
-    private void searchForNeighbours(final Surface grounds)
-    {
-        final Polygon groundsBounds = grounds.getMesh().returnUnsortedBounds();
-
-        final List<Surface> wholeList = new ArrayList<Surface>();
-        wholeList.addAll(this.walls);
-        wholeList.addAll(this.roofs);
-
-        // First we clear the neighbours.
-        for (final Surface m : wholeList)
-        {
-            m.getNeighbours().clear();
-        }
-        // And we clear the neighbours of the grounds.
-        grounds.getNeighbours().clear();
-
-        final List<Polygon> wholeBoundsList = new ArrayList<Polygon>();
-
-        // We compute the bounds to check if they share a common edge.
-        for (final Surface m : wholeList)
-        {
-            wholeBoundsList.add(m.getMesh().returnUnsortedBounds());
-        }
-
-        // Then we check every edge of the bounds to see if some are shared
-        // by two meshes. If they do, they are neighbours.
-        for (int i = 0; i < wholeBoundsList.size(); i = i + 1)
-        {
-            final Polygon polygone1 = wholeBoundsList.get(i);
-
-            for (int j = i + 1; j < wholeBoundsList.size(); j = j + 1)
-            {
-                final Polygon polygone2 = wholeBoundsList.get(j);
-                if (polygone1.isNeighbour(polygone2))
-                {
-                    wholeList.get(i).addNeighbour(wholeList.get(j));
-                }
-            }
-
-            if (polygone1.isNeighbour(groundsBounds))
-            {
-                wholeList.get(i).addNeighbour(grounds);
-            }
-        }
     }
 }

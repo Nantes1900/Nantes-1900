@@ -1,8 +1,7 @@
 package fr.nantes1900.models.extended;
 
-import fr.nantes1900.models.middle.Mesh;
-import fr.nantes1900.models.middle.Polygon;
-import fr.nantes1900.models.middle.Surface;
+import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.basis.Polygon;
 
 public class Roof extends Surface
 {

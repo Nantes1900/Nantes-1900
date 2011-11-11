@@ -53,14 +53,6 @@ public class Universe3DView extends JPanel {
      */
     private SimpleUniverse simpleUniverse;
 
-    public SimpleUniverse getSimpleUniverse() {
-        return this.simpleUniverse;
-    }
-
-    public void setSimpleUniverse(SimpleUniverse simpleUniverse) {
-        this.simpleUniverse = simpleUniverse;
-    }
-
     /**
      * Creates a new universe.
      * @param Universe3DController
@@ -81,12 +73,41 @@ public class Universe3DView extends JPanel {
         this.setPreferredSize(new Dimension(600, 600));
     }
 
-    public List<MeshView> getMeshesList() {
-        return this.meshesList;
+    /**
+     * Adds a mesh to the things displayed...
+     * @param meshView
+     */
+
+    public void addMesh(MeshView meshView) {
+
+        TransformGroup transformGroup = createTransformGroup(meshView);
+        this.simpleUniverse.addBranchGraph(this
+                .createSceneGraph(transformGroup));
+        // moving the camera so that we can see the mesh properly
+        translateCamera(meshView.getCentroid().getX(), meshView.getCentroid()
+                .getY(), meshView.getCentroid().getZ() + 30);
+        // changing the rotation center
+        this.u3DController.getMouseRotate().setCenter(
+                new Point3d(meshView.getCentroid().getX(), meshView
+                        .getCentroid().getY(), meshView.getCentroid().getZ()));
     }
 
-    public List<PolygonView> getPolygonsList() {
-        return this.polygonsList;
+    /**
+     * Adds a mesh to the things displayed...
+     * @param polygonView
+     */
+    public void addPolygon(PolygonView polygonView) {
+        // TODO Auto-generated method stub
+    }
+
+    /**
+     * Removes everything displayed !
+     */
+    public void clearAllMeshes() {
+        Canvas3D c = this.simpleUniverse.getCanvas();
+        this.simpleUniverse.cleanup();
+        this.simpleUniverse = new SimpleUniverse(c);
+        c.getView().setBackClipDistance(1000);
     }
 
     @SuppressWarnings("static-method")
@@ -118,43 +139,6 @@ public class Universe3DView extends JPanel {
 
         objRoot.compile();
         return objRoot;
-    }
-
-    /**
-     * Removes everything displayed !
-     */
-    public void clearAllMeshes() {
-        Canvas3D c = this.simpleUniverse.getCanvas();
-        this.simpleUniverse.cleanup();
-        this.simpleUniverse = new SimpleUniverse(c);
-        c.getView().setBackClipDistance(1000);
-    }
-
-    /**
-     * Adds a mesh to the things displayed...
-     * @param meshView
-     */
-
-    public void addMesh(MeshView meshView) {
-
-        TransformGroup transformGroup = createTransformGroup(meshView);
-        this.simpleUniverse.addBranchGraph(this
-                .createSceneGraph(transformGroup));
-        // moving the camera so that we can see the mesh properly
-        translateCamera(meshView.getCentroid().getX(), meshView.getCentroid()
-                .getY(), meshView.getCentroid().getZ() + 30);
-        // changing the rotation center
-        this.u3DController.getMouseRotate().setCenter(
-                new Point3d(meshView.getCentroid().getX(), meshView
-                        .getCentroid().getY(), meshView.getCentroid().getZ()));
-    }
-
-    /**
-     * Adds a mesh to the things displayed...
-     * @param polygonView
-     */
-    public void addPolygon(PolygonView polygonView) {
-        // TODO Auto-generated method stub
     }
 
     private TransformGroup createTransformGroup(MeshView meshView) {
@@ -228,6 +212,22 @@ public class Universe3DView extends JPanel {
         mouseTranslate.setSchedulingBounds(boundingSphere);
 
         return transformGroup;
+    }
+
+    public List<MeshView> getMeshesList() {
+        return this.meshesList;
+    }
+
+    public List<PolygonView> getPolygonsList() {
+        return this.polygonsList;
+    }
+
+    public SimpleUniverse getSimpleUniverse() {
+        return this.simpleUniverse;
+    }
+
+    public void setSimpleUniverse(SimpleUniverse simpleUniverse) {
+        this.simpleUniverse = simpleUniverse;
     }
 
     public void translateCamera(double x, double y, double z) {

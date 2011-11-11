@@ -32,96 +32,14 @@ public class NewMouseRotate extends MouseRotate{
 	private Transform3D translation2 = new Transform3D();
 	private Point3d center;
     
-    public Point3d getCenter() {
-		return center;
-	}
-
-	public void setCenter(Point3d center) {
-		this.center = center;
-	}
-
-	public void setCenter(TriangleView triangle) {
-		double x,y,z;
-		x = (triangle.getTriangle().getP1().getX()+ 
-				triangle.getTriangle().getP2().getX() +
-				triangle.getTriangle().getP3().getX())/3;
-		y = (triangle.getTriangle().getP1().getY()+ 
-				triangle.getTriangle().getP2().getY() +
-				triangle.getTriangle().getP3().getY())/3;
-		z = (triangle.getTriangle().getP1().getZ()+ 
-				triangle.getTriangle().getP2().getZ() +
-				triangle.getTriangle().getP3().getZ())/3;
-		setCenter(new Point3d(x,y,z));
-	}
-	
-	public NewMouseRotate(TransformGroup TG1, TransformGroup TG2, TransformGroup TG3){
+    public NewMouseRotate(TransformGroup TG1, TransformGroup TG2, TransformGroup TG3){
     	super();
     	this.tg1=TG1;
     	this.tg2=TG2;
     	this.tg3=TG3;    	    	    	 
     }
-    
-    public void processStimulus(@SuppressWarnings("rawtypes") Enumeration criteria) {
-        WakeupCriterion wakeup;
-        AWTEvent[] events;
-        MouseEvent evt;
 
-        while (criteria.hasMoreElements()) {
-            wakeup = (WakeupCriterion) criteria.nextElement();
-            if (wakeup instanceof  WakeupOnAWTEvent) {
-                events = ((WakeupOnAWTEvent) wakeup).getAWTEvent();
-                if (events.length > 0) {
-                    evt = (MouseEvent) events[events.length - 1];
-                    
-                    Point3d centerpoint=new Point3d();
-                    centerpoint.x=this.center.getX();
-                    centerpoint.y=this.center.getY();
-                    centerpoint.z=this.center.getZ();
-                    
-                    this.translation2.transform(centerpoint);
-                    currXform.transform(centerpoint);
-                    this.translation1.transform(centerpoint);
-   
-                    
-            		Vector3d vector1 = new Vector3d();
-            		Vector3d vector2 = new Vector3d();
-            		vector1.set(centerpoint.x,centerpoint.y,centerpoint.z);
-            		vector2.set(-this.center.getX(), -this.center.getY(), -this.center.getZ());            		
-            		
-            		this.translation1.setTranslation(vector1);
-            		this.translation2.setTranslation(vector2);
-                    
-            		tg1.setTransform(translation1);
-                    doNewProcess(evt);
-                    tg3.setTransform(translation2);
-                }
-            }
-
-            else if (wakeup instanceof  WakeupOnBehaviorPost) {
-                while (true) {
-                    // access to the queue must be synchronized
-                    synchronized (mouseq) {
-                        if (mouseq.isEmpty())
-                            break;
-                        evt = (MouseEvent) mouseq.remove(0);
-                        // consolidate MOUSE_DRAG events
-                        while ((evt.getID() == MouseEvent.MOUSE_DRAGGED)
-                                && !mouseq.isEmpty()
-                                && (((MouseEvent) mouseq.get(0))
-                                        .getID() == MouseEvent.MOUSE_DRAGGED)) {
-                            evt = (MouseEvent) mouseq.remove(0);
-                        }
-                    }
-                    doNewProcess(evt);
-                }
-            }
-
-        }
-        wakeupOn(mouseCriterion);
-    }
-    
-    
-    void doNewProcess(MouseEvent evt) {
+	void doNewProcess(MouseEvent evt) {
         int id;
         int dx, dy;
 
@@ -186,4 +104,86 @@ public class NewMouseRotate extends MouseRotate{
             }
         }
     }
+
+	public Point3d getCenter() {
+		return center;
+	}
+	
+	public void processStimulus(@SuppressWarnings("rawtypes") Enumeration criteria) {
+        WakeupCriterion wakeup;
+        AWTEvent[] events;
+        MouseEvent evt;
+
+        while (criteria.hasMoreElements()) {
+            wakeup = (WakeupCriterion) criteria.nextElement();
+            if (wakeup instanceof  WakeupOnAWTEvent) {
+                events = ((WakeupOnAWTEvent) wakeup).getAWTEvent();
+                if (events.length > 0) {
+                    evt = (MouseEvent) events[events.length - 1];
+                    
+                    Point3d centerpoint=new Point3d();
+                    centerpoint.x=this.center.getX();
+                    centerpoint.y=this.center.getY();
+                    centerpoint.z=this.center.getZ();
+                    
+                    this.translation2.transform(centerpoint);
+                    currXform.transform(centerpoint);
+                    this.translation1.transform(centerpoint);
+   
+                    
+            		Vector3d vector1 = new Vector3d();
+            		Vector3d vector2 = new Vector3d();
+            		vector1.set(centerpoint.x,centerpoint.y,centerpoint.z);
+            		vector2.set(-this.center.getX(), -this.center.getY(), -this.center.getZ());            		
+            		
+            		this.translation1.setTranslation(vector1);
+            		this.translation2.setTranslation(vector2);
+                    
+            		tg1.setTransform(translation1);
+                    doNewProcess(evt);
+                    tg3.setTransform(translation2);
+                }
+            }
+
+            else if (wakeup instanceof  WakeupOnBehaviorPost) {
+                while (true) {
+                    // access to the queue must be synchronized
+                    synchronized (mouseq) {
+                        if (mouseq.isEmpty())
+                            break;
+                        evt = (MouseEvent) mouseq.remove(0);
+                        // consolidate MOUSE_DRAG events
+                        while ((evt.getID() == MouseEvent.MOUSE_DRAGGED)
+                                && !mouseq.isEmpty()
+                                && (((MouseEvent) mouseq.get(0))
+                                        .getID() == MouseEvent.MOUSE_DRAGGED)) {
+                            evt = (MouseEvent) mouseq.remove(0);
+                        }
+                    }
+                    doNewProcess(evt);
+                }
+            }
+
+        }
+        wakeupOn(mouseCriterion);
+    }
+    
+    public void setCenter(Point3d center) {
+		this.center = center;
+	}
+    
+    
+    public void setCenter(TriangleView triangle) {
+		double x,y,z;
+		x = (triangle.getTriangle().getP1().getX()+ 
+				triangle.getTriangle().getP2().getX() +
+				triangle.getTriangle().getP3().getX())/3;
+		y = (triangle.getTriangle().getP1().getY()+ 
+				triangle.getTriangle().getP2().getY() +
+				triangle.getTriangle().getP3().getY())/3;
+		z = (triangle.getTriangle().getP1().getZ()+ 
+				triangle.getTriangle().getP2().getZ() +
+				triangle.getTriangle().getP3().getZ())/3;
+		setCenter(new Point3d(x,y,z));
+	}
 }

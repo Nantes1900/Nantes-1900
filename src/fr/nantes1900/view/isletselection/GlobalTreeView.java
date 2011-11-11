@@ -76,25 +76,25 @@ public class GlobalTreeView extends JPanel
 
     public class FileNode extends File
     {
-        public FileNode(File file)
-        {
-            super(file.getAbsolutePath());
-        }
-
         /**
 		 * 
 		 */
         private static final long serialVersionUID = 1L;
 
-        @Override
-        public String toString()
+        public FileNode(File file)
         {
-            return super.getName();
+            super(file.getAbsolutePath());
         }
 
         public String getEntireName()
         {
             return super.toString();
+        }
+
+        @Override
+        public String toString()
+        {
+            return super.getName();
         }
     }
 }

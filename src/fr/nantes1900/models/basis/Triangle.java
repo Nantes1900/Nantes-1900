@@ -1,6 +1,5 @@
 package fr.nantes1900.models.basis;
 
-import fr.nantes1900.models.middle.Mesh;
 
 import java.util.ArrayList;
 import java.util.Arrays;

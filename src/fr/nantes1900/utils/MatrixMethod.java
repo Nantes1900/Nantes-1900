@@ -10,32 +10,6 @@ public final class MatrixMethod
 {
 
     /**
-     * Implements an exception to signal a singular matrix.
-     * @author Daniel Lefevre
-     */
-    public static final class SingularMatrixException extends Exception
-    {
-
-        /**
-         * Version attribute.
-         */
-        private static final long  serialVersionUID = 1L;
-
-        /**
-         * Precision (as a double) to check if a matrix determinant is equal to
-         * zero.
-         */
-        public static final double ERROR_PRECISION  = 0.05;
-
-        /**
-         * Private constructor.
-         */
-        public SingularMatrixException()
-        {
-        }
-    }
-
-    /**
      * The dimension of the matrix used in the methods. Here, it's always 3.
      */
     public static final int MATRIX_DIMENSION = 3;
@@ -237,5 +211,31 @@ public final class MatrixMethod
         matrix1[2][2] = (a * e - b * d) / MatrixMethod.determinant(matrix);
 
         return matrix1;
+    }
+
+    /**
+     * Implements an exception to signal a singular matrix.
+     * @author Daniel Lefevre
+     */
+    public static final class SingularMatrixException extends Exception
+    {
+
+        /**
+         * Version attribute.
+         */
+        private static final long  serialVersionUID = 1L;
+
+        /**
+         * Precision (as a double) to check if a matrix determinant is equal to
+         * zero.
+         */
+        public static final double ERROR_PRECISION  = 0.05;
+
+        /**
+         * Private constructor.
+         */
+        public SingularMatrixException()
+        {
+        }
     }
 }

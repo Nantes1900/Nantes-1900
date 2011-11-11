@@ -1,8 +1,8 @@
 package fr.nantes1900.utils;
 
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.Mesh;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -22,26 +22,6 @@ import java.nio.ByteOrder;
 
 public class WriterSTL
 {
-
-    /**
-     * Implements an exception when no mesh is found on the writer.
-     * @author Daniel Lefevre
-     */
-    public final class NoMeshException extends Exception
-    {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        public NoMeshException()
-        {
-        }
-    }
 
     /**
      * Possible value of MODE. Intend to write ASCII STL files.
@@ -308,6 +288,26 @@ public class WriterSTL
         } catch (final FileNotFoundException e)
         {
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Implements an exception when no mesh is found on the writer.
+     * @author Daniel Lefevre
+     */
+    public final class NoMeshException extends Exception
+    {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        public NoMeshException()
+        {
         }
     }
 }

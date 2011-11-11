@@ -13,11 +13,11 @@ import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.models.basis.Edge;
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.ResidentialIslet;
-import fr.nantes1900.models.middle.Mesh;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.utils.WriterSTL;
@@ -85,6 +85,97 @@ public class IsletSelectionController {
         this.isView.setVisible(true);
     }
 
+    public boolean computeGravityNormal() {
+        boolean normalSaved = false;
+        if (this.selectedFile != null
+                && !this.u3DController.getTrianglesSelected().isEmpty()) {
+            WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
+                    + "/gravity_normal.stl");
+            Point point = new Point(1, 1, 1);
+            Edge edge = new Edge(point, point);
+            Triangle triangle = new Triangle(point, point, point, edge, edge,
+                    edge,
+                    this.biController.computeNormalWithTrianglesSelected());
+            Mesh mesh = new Mesh();
+            mesh.add(triangle);
+            writer.setMesh(mesh);
+            writer.write();
+            System.out.println("Enregistré");
+            normalSaved = true;
+        } else {
+            JOptionPane
+                    .showMessageDialog(
+                            this.isView,
+                            "Sélectionnez un îlot dans l'arbre\npuis sélectionnez des triangles pour créer la normale\nou sélectionnez \"Utiliser la normale orientée selon la gravité\n",
+                            "Aucun îlot ouvert", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return normalSaved;
+    }
+
+    public void computeGroundNormal() {
+        this.biController.setGroundNormal(this.biController
+                .computeNormalWithTrianglesSelected());
+    }
+
+    public void displayFile(DefaultMutableTreeNode node) {
+        // Reads the file object of the Tree
+        FileNode fileNode = (FileNode) node.getUserObject();
+
+        if (fileNode.isFile()) {
+            this.biController = new BuildingsIsletController(this,
+                    this.u3DController);
+
+            ParserSTL parser = new ParserSTL(fileNode.getEntireName());
+            this.selectedFile = (File) fileNode;
+
+            AbstractBuildingsIslet resIslet;
+            try {
+                resIslet = new ResidentialIslet(parser.read());
+                this.getBiController().setIslet(resIslet);
+                this.getBiController().display();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public BuildingsIsletController getBiController() {
+        return this.biController;
+    }
+
+    /**
+     * Launches the treatment of the selected file which is an islet file. The
+     * verification that the selected file is an islet file is made at the
+     * selection in the tree.
+     */
+    public boolean launchIsletTreatment() {
+        boolean processLaunched = false;
+
+        if ((!this.u3DController.getTrianglesSelected().isEmpty() || this.aController
+                .getActionsView().isGravityGroundCheckBoxSelected())
+                && this.selectedFile != null) {
+            if (!this.aController.getActionsView()
+                    .isGravityGroundCheckBoxSelected()) {
+                computeGroundNormal();
+            } else {
+                this.biController.useGravityNormalAsGroundNormal();
+            }
+            this.parentController.launchIsletTreatment(this.selectedFile,
+                    this.biController);
+            processLaunched = true;
+        } else {
+            JOptionPane
+                    .showMessageDialog(
+                            this.isView,
+                            "Veuillez sélectionner un îlot et une normale pour lancer le traitement",
+                            "Traitement impossible", JOptionPane.ERROR_MESSAGE);
+        }
+
+        return processLaunched;
+    }
+
     /**
      * Updates the directory containing the files of islets.
      * @param newDirectory
@@ -120,96 +211,5 @@ public class IsletSelectionController {
                     "ISLaunchProcess", FileTools.MESSAGETYPE_STATUSBAR));
             this.aController.setLaunchMode();
         }
-    }
-
-    /**
-     * Launches the treatment of the selected file which is an islet file. The
-     * verification that the selected file is an islet file is made at the
-     * selection in the tree.
-     */
-    public boolean launchIsletTreatment() {
-        boolean processLaunched = false;
-
-        if ((!this.u3DController.getTrianglesSelected().isEmpty() || this.aController
-                .getActionsView().isGravityGroundCheckBoxSelected())
-                && this.selectedFile != null) {
-            if (!this.aController.getActionsView()
-                    .isGravityGroundCheckBoxSelected()) {
-                computeGroundNormal();
-            } else {
-                this.biController.useGravityNormalAsGroundNormal();
-            }
-            this.parentController.launchIsletTreatment(this.selectedFile,
-                    this.biController);
-            processLaunched = true;
-        } else {
-            JOptionPane
-                    .showMessageDialog(
-                            this.isView,
-                            "Veuillez sélectionner un îlot et une normale pour lancer le traitement",
-                            "Traitement impossible", JOptionPane.ERROR_MESSAGE);
-        }
-
-        return processLaunched;
-    }
-
-    public void displayFile(DefaultMutableTreeNode node) {
-        // Reads the file object of the Tree
-        FileNode fileNode = (FileNode) node.getUserObject();
-
-        if (fileNode.isFile()) {
-            this.biController = new BuildingsIsletController(this,
-                    this.u3DController);
-
-            ParserSTL parser = new ParserSTL(fileNode.getEntireName());
-            this.selectedFile = (File) fileNode;
-
-            AbstractBuildingsIslet resIslet;
-            try {
-                resIslet = new ResidentialIslet(parser.read());
-                this.getBiController().setIslet(resIslet);
-                this.getBiController().display();
-            } catch (IOException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public boolean computeGravityNormal() {
-        boolean normalSaved = false;
-        if (this.selectedFile != null
-                && !this.u3DController.getTrianglesSelected().isEmpty()) {
-            WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
-                    + "/gravity_normal.stl");
-            Point point = new Point(1, 1, 1);
-            Edge edge = new Edge(point, point);
-            Triangle triangle = new Triangle(point, point, point, edge, edge,
-                    edge,
-                    this.biController.computeNormalWithTrianglesSelected());
-            Mesh mesh = new Mesh();
-            mesh.add(triangle);
-            writer.setMesh(mesh);
-            writer.write();
-            System.out.println("Enregistré");
-            normalSaved = true;
-        } else {
-            JOptionPane
-                    .showMessageDialog(
-                            this.isView,
-                            "Sélectionnez un îlot dans l'arbre\npuis sélectionnez des triangles pour créer la normale\nou sélectionnez \"Utiliser la normale orientée selon la gravité\n",
-                            "Aucun îlot ouvert", JOptionPane.ERROR_MESSAGE);
-        }
-
-        return normalSaved;
-    }
-
-    public BuildingsIsletController getBiController() {
-        return this.biController;
-    }
-
-    public void computeGroundNormal() {
-        this.biController.setGroundNormal(this.biController
-                .computeNormalWithTrianglesSelected());
     }
 }

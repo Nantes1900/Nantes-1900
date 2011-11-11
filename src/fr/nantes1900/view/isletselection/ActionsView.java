@@ -82,12 +82,12 @@ public class ActionsView extends JPanel
     }
 
     /**
-     * Returns the open folder button.
-     * @return The open button.
+     * Returns the help button.
+     * @return The help button.
      */
-    public JButton getOpenButton()
+    public HelpButton getHelpButton()
     {
-        return this.bOpen;
+        return this.bHelp;
     }
 
     /**
@@ -100,12 +100,12 @@ public class ActionsView extends JPanel
     }
 
     /**
-     * Returns the help button.
-     * @return The help button.
+     * Returns the open folder button.
+     * @return The open button.
      */
-    public HelpButton getHelpButton()
+    public JButton getOpenButton()
     {
-        return this.bHelp;
+        return this.bOpen;
     }
     
     public boolean isGravityGroundCheckBoxSelected()

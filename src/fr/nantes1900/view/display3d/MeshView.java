@@ -2,9 +2,9 @@ package fr.nantes1900.view.display3d;
 
 import java.util.HashSet;
 
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.Mesh;
 
 public class MeshView extends HashSet<TriangleView> {
 

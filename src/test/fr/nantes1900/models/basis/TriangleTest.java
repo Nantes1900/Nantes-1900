@@ -1,9 +1,9 @@
 package test.fr.nantes1900.models.basis;
 
 import fr.nantes1900.models.basis.Edge;
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.Mesh;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -61,6 +61,43 @@ public class TriangleTest extends TestCase {
     public TriangleTest() {
 	this.t = new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2,
 		this.e3, this.vect);
+    }
+
+    /**
+     * Test method for {@link nantes1900.models.basis.Triangle#getPoints()}.
+     */
+    public final static void testIsInPlanes() {
+	final Point p11 = new Point(0, 0, 0);
+	final Point p21 = new Point(0, 1, 0);
+	final Point p31 = new Point(1, 0, 0);
+	final Edge e11 = new Edge(p11, p21);
+	final Edge e21 = new Edge(p21, p31);
+	final Edge e31 = new Edge(p11, p31);
+	final Vector3d normal1 = new Vector3d(0, 0, 1);
+
+	final Point p4 = new Point(0, 0, 1);
+	final Point p5 = new Point(0, 1, 1);
+	final Point p6 = new Point(1, 0, 1);
+	final Edge e4 = new Edge(p11, p21);
+	final Edge e5 = new Edge(p21, p31);
+	final Edge e6 = new Edge(p11, p31);
+	final Vector3d normal2 = new Vector3d(0, 0, 1);
+
+	final Point p7 = new Point(0, 0, 2);
+	final Point p8 = new Point(0, 1, 2);
+	final Point p9 = new Point(1, 0, 2);
+	final Edge e7 = new Edge(p11, p21);
+	final Edge e8 = new Edge(p21, p31);
+	final Edge e9 = new Edge(p11, p31);
+	final Vector3d normal3 = new Vector3d(0, 0, 1);
+
+	final Triangle t1 = new Triangle(p11, p21, p31, e11, e21, e31, normal1);
+	final Triangle t2 = new Triangle(p4, p5, p6, e4, e5, e6, normal2);
+	final Triangle t3 = new Triangle(p7, p8, p9, e7, e8, e9, normal3);
+
+	Assert.assertTrue(t1.isInPlanes(t2.getNormal(), t2.getP1(), 1.1));
+	Assert.assertFalse(t1.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
+	Assert.assertTrue(t2.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
     }
 
     /**
@@ -184,43 +221,6 @@ public class TriangleTest extends TestCase {
 	Assert.assertTrue(pointList.get(0) == this.p1);
 	Assert.assertTrue(pointList.get(1) == this.p2);
 	Assert.assertTrue(pointList.get(2) == this.p3);
-    }
-
-    /**
-     * Test method for {@link nantes1900.models.basis.Triangle#getPoints()}.
-     */
-    public final static void testIsInPlanes() {
-	final Point p11 = new Point(0, 0, 0);
-	final Point p21 = new Point(0, 1, 0);
-	final Point p31 = new Point(1, 0, 0);
-	final Edge e11 = new Edge(p11, p21);
-	final Edge e21 = new Edge(p21, p31);
-	final Edge e31 = new Edge(p11, p31);
-	final Vector3d normal1 = new Vector3d(0, 0, 1);
-
-	final Point p4 = new Point(0, 0, 1);
-	final Point p5 = new Point(0, 1, 1);
-	final Point p6 = new Point(1, 0, 1);
-	final Edge e4 = new Edge(p11, p21);
-	final Edge e5 = new Edge(p21, p31);
-	final Edge e6 = new Edge(p11, p31);
-	final Vector3d normal2 = new Vector3d(0, 0, 1);
-
-	final Point p7 = new Point(0, 0, 2);
-	final Point p8 = new Point(0, 1, 2);
-	final Point p9 = new Point(1, 0, 2);
-	final Edge e7 = new Edge(p11, p21);
-	final Edge e8 = new Edge(p21, p31);
-	final Edge e9 = new Edge(p11, p31);
-	final Vector3d normal3 = new Vector3d(0, 0, 1);
-
-	final Triangle t1 = new Triangle(p11, p21, p31, e11, e21, e31, normal1);
-	final Triangle t2 = new Triangle(p4, p5, p6, e4, e5, e6, normal2);
-	final Triangle t3 = new Triangle(p7, p8, p9, e7, e8, e9, normal3);
-
-	Assert.assertTrue(t1.isInPlanes(t2.getNormal(), t2.getP1(), 1.1));
-	Assert.assertFalse(t1.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
-	Assert.assertTrue(t2.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
     }
 
     /**

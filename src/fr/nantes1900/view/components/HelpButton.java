@@ -89,35 +89,43 @@ public class HelpButton extends JButton implements MouseListener
         this.helpMessage = helpMessage;
     }
 
-    @Override
-    public void paintComponent(Graphics g)
+    /**
+     * Darkens of the desired amount the given color.
+     * @param color
+     *            Color to darken.
+     * @param amount
+     *            Amont to darken the color of.
+     * @return The darkened color.
+     */
+    private static Color darken(Color color, int amount)
     {
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
+        int red = (color.getRed() - amount < 0) ? 0 : color.getRed() - amount;
+        int green = (color.getGreen() - amount < 0) ? 0 : color.getGreen()
+                - amount;
+        int blue = (color.getBlue() - amount < 0) ? 0 : color.getBlue()
+                - amount;
+        Color colorLightened = new Color(red, green, blue);
+        return colorLightened;
+    }
 
-        g2d.setColor(new Color(
-                (textColorCurrent.getRed() + backgroundColorCurrent.getRed()) / 2,
-                (textColorCurrent.getGreen() + backgroundColorCurrent
-                        .getGreen()) / 2,
-                (textColorCurrent.getBlue() + backgroundColorCurrent.getBlue()) / 2));
-        g2d.fillOval(0, 0, 20, 20);
-
-        g2d.setColor(textColorCurrent);
-        g2d.fillOval(1, 1, 18, 18);
-
-        g2d.setColor(new Color(
-                (textColorCurrent.getRed() + backgroundColorCurrent.getRed()) / 2,
-                (textColorCurrent.getGreen() + backgroundColorCurrent
-                        .getGreen()) / 2,
-                (textColorCurrent.getBlue() + backgroundColorCurrent.getBlue()) / 2));
-        g2d.fillOval(2, 2, 16, 16);
-
-        g2d.setColor(backgroundColorCurrent);
-        g2d.fillOval(3, 3, 14, 14);
-
-        g2d.setColor(textColorCurrent);
-        g2d.drawString("?", 7, 15);
+    /**
+     * Lightens of the desired amount the given color.
+     * @param color
+     *            Color to lighten.
+     * @param amount
+     *            Amont to lighten the color of.
+     * @return The lightened color.
+     */
+    private static Color lighten(Color color, int amount)
+    {
+        int red = (color.getRed() + amount > 255) ? 255 : color.getRed()
+                + amount;
+        int green = (color.getGreen() + amount > 255) ? 255 : color.getGreen()
+                + amount;
+        int blue = (color.getBlue() + amount > 255) ? 255 : color.getBlue()
+                + amount;
+        Color colorLightened = new Color(red, green, blue);
+        return colorLightened;
     }
 
     @Override
@@ -160,7 +168,7 @@ public class HelpButton extends JButton implements MouseListener
             repaint();
         }
     }
-
+    
     @Override
     public void mouseReleased(MouseEvent arg0)
     {
@@ -187,6 +195,37 @@ public class HelpButton extends JButton implements MouseListener
             }
         }
     }
+
+    @Override
+    public void paintComponent(Graphics g)
+    {
+        Graphics2D g2d = (Graphics2D) g;
+        g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+
+        g2d.setColor(new Color(
+                (textColorCurrent.getRed() + backgroundColorCurrent.getRed()) / 2,
+                (textColorCurrent.getGreen() + backgroundColorCurrent
+                        .getGreen()) / 2,
+                (textColorCurrent.getBlue() + backgroundColorCurrent.getBlue()) / 2));
+        g2d.fillOval(0, 0, 20, 20);
+
+        g2d.setColor(textColorCurrent);
+        g2d.fillOval(1, 1, 18, 18);
+
+        g2d.setColor(new Color(
+                (textColorCurrent.getRed() + backgroundColorCurrent.getRed()) / 2,
+                (textColorCurrent.getGreen() + backgroundColorCurrent
+                        .getGreen()) / 2,
+                (textColorCurrent.getBlue() + backgroundColorCurrent.getBlue()) / 2));
+        g2d.fillOval(2, 2, 16, 16);
+
+        g2d.setColor(backgroundColorCurrent);
+        g2d.fillOval(3, 3, 14, 14);
+
+        g2d.setColor(textColorCurrent);
+        g2d.drawString("?", 7, 15);
+    }
     
     /**
      * Sets a new help message to show on a pop-up.
@@ -212,7 +251,7 @@ public class HelpButton extends JButton implements MouseListener
         this.helpMessage = message;
         this.title = title;
     }
-    
+
     /**
      * Sets a new tooltip text.
      * 
@@ -222,44 +261,5 @@ public class HelpButton extends JButton implements MouseListener
     public void setTooltip(String tooltip)
     {
         this.setToolTipText(tooltip);
-    }
-
-    /**
-     * Darkens of the desired amount the given color.
-     * @param color
-     *            Color to darken.
-     * @param amount
-     *            Amont to darken the color of.
-     * @return The darkened color.
-     */
-    private static Color darken(Color color, int amount)
-    {
-        int red = (color.getRed() - amount < 0) ? 0 : color.getRed() - amount;
-        int green = (color.getGreen() - amount < 0) ? 0 : color.getGreen()
-                - amount;
-        int blue = (color.getBlue() - amount < 0) ? 0 : color.getBlue()
-                - amount;
-        Color colorLightened = new Color(red, green, blue);
-        return colorLightened;
-    }
-
-    /**
-     * Lightens of the desired amount the given color.
-     * @param color
-     *            Color to lighten.
-     * @param amount
-     *            Amont to lighten the color of.
-     * @return The lightened color.
-     */
-    private static Color lighten(Color color, int amount)
-    {
-        int red = (color.getRed() + amount > 255) ? 255 : color.getRed()
-                + amount;
-        int green = (color.getGreen() + amount > 255) ? 255 : color.getGreen()
-                + amount;
-        int blue = (color.getBlue() + amount > 255) ? 255 : color.getBlue()
-                + amount;
-        Color colorLightened = new Color(red, green, blue);
-        return colorLightened;
     }
 }

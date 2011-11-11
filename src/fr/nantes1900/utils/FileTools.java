@@ -46,48 +46,9 @@ public class FileTools
      */
     public static final String KEY_IS_LAUNCHPROCESS  = "ISLaunchProcess";
 
-    /**
-     * Saves or update new properties in the given file. If the file doesn't
-     * exists, a new one is created.
-     * @param file
-     *            The file to save data in.
-     * @param prop
-     *            Data to save.
-     * @return true - Data have been correctly saved.\n false - A problem has
-     *         occurred during the saving process.
-     */
-    public static boolean saveProperties(File file, Properties prop)
+    public static String readHelpMessage(String keyName, String messageType)
     {
-        boolean saveOk = true;
-        DataOutputStream dos;
-        try
-        {
-            dos = new DataOutputStream(new BufferedOutputStream(
-                    new FileOutputStream(file)));
-            try
-            {
-                prop.store(dos, null); // 2nd parameter allows to store comments
-            } catch (IOException e)
-            {
-                saveOk = false;
-                System.err.println("IO exception during storage process: "
-                        + e.getMessage());
-            }
-            try
-            {
-                dos.close();
-            } catch (IOException e)
-            {
-                System.err.println("IO exeption while closing the stream: "
-                        + e.getMessage());
-            }
-        } catch (FileNotFoundException e1)
-        {
-            saveOk = false;
-            System.err.println("File wasn't found: " + e1.getMessage());
-        }
-
-        return saveOk;
+        return readProperty(new File("helpMessages.txt"), keyName + messageType);
     }
 
     /**
@@ -139,8 +100,47 @@ public class FileTools
         return readProperty;
     }
 
-    public static String readHelpMessage(String keyName, String messageType)
+    /**
+     * Saves or update new properties in the given file. If the file doesn't
+     * exists, a new one is created.
+     * @param file
+     *            The file to save data in.
+     * @param prop
+     *            Data to save.
+     * @return true - Data have been correctly saved.\n false - A problem has
+     *         occurred during the saving process.
+     */
+    public static boolean saveProperties(File file, Properties prop)
     {
-        return readProperty(new File("helpMessages.txt"), keyName + messageType);
+        boolean saveOk = true;
+        DataOutputStream dos;
+        try
+        {
+            dos = new DataOutputStream(new BufferedOutputStream(
+                    new FileOutputStream(file)));
+            try
+            {
+                prop.store(dos, null); // 2nd parameter allows to store comments
+            } catch (IOException e)
+            {
+                saveOk = false;
+                System.err.println("IO exception during storage process: "
+                        + e.getMessage());
+            }
+            try
+            {
+                dos.close();
+            } catch (IOException e)
+            {
+                System.err.println("IO exeption while closing the stream: "
+                        + e.getMessage());
+            }
+        } catch (FileNotFoundException e1)
+        {
+            saveOk = false;
+            System.err.println("File wasn't found: " + e1.getMessage());
+        }
+
+        return saveOk;
     }
 }

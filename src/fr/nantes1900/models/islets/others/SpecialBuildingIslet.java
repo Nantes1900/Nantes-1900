@@ -1,7 +1,7 @@
 package fr.nantes1900.models.islets.others;
 
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.islets.AbstractIslet;
-import fr.nantes1900.models.middle.Mesh;
 
 /**
  * Implements a special building object as a container of a mesh.

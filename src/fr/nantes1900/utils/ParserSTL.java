@@ -19,9 +19,9 @@ import java.util.StringTokenizer;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.models.basis.Edge;
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.Mesh;
 
 /**
  * Implements a STL parser : detects if it is an ASCII or a binary file, and
@@ -32,96 +32,6 @@ import fr.nantes1900.models.middle.Mesh;
  */
 public class ParserSTL
 {
-    /**
-     * Implements an exception when a triangle, a point, or an edge is bad
-     * formed.
-     * @author Daniel Lefevre
-     */
-    public static class BadMeshException extends Exception
-    {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        public BadMeshException()
-        {
-        }
-
-    }
-
-    /**
-     * Implements an exception when a triangle has two points identical.
-     * @author Daniel Lefevre
-     */
-    private static final class FlatTriangleException extends
-            ParserSTL.BadMeshException
-    {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        public FlatTriangleException()
-        {
-        }
-    }
-
-    /**
-     * Implements an exception when an edge has more than two triangles which
-     * contain it.
-     * @author Daniel Lefevre
-     */
-    private static final class MoreThanTwoTrianglesPerEdgeException extends
-            ParserSTL.BadMeshException
-    {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        public MoreThanTwoTrianglesPerEdgeException()
-        {
-        }
-    }
-
-    /**
-     * Implements an exception when a point has one coordinate too high.
-     * @author Daniel Lefevre
-     */
-    private static final class OutOfBoundsPointException extends
-            ParserSTL.BadMeshException
-    {
-
-        /**
-         * Version attribute.
-         */
-        private static final long   serialVersionUID = 1L;
-        /**
-         * Bound limit attribute.
-         */
-        private static final double BOUND_LIMIT      = 1e5;
-
-        /**
-         * Private constructor.
-         */
-        public OutOfBoundsPointException()
-        {
-        }
-    }
-
     /**
      * The set of triangle read in the file.
      */
@@ -548,5 +458,95 @@ public class ParserSTL
             return point;
         }
         return mapP;
+    }
+
+    /**
+     * Implements an exception when a triangle, a point, or an edge is bad
+     * formed.
+     * @author Daniel Lefevre
+     */
+    public static class BadMeshException extends Exception
+    {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        public BadMeshException()
+        {
+        }
+
+    }
+
+    /**
+     * Implements an exception when a triangle has two points identical.
+     * @author Daniel Lefevre
+     */
+    private static final class FlatTriangleException extends
+            ParserSTL.BadMeshException
+    {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        public FlatTriangleException()
+        {
+        }
+    }
+
+    /**
+     * Implements an exception when an edge has more than two triangles which
+     * contain it.
+     * @author Daniel Lefevre
+     */
+    private static final class MoreThanTwoTrianglesPerEdgeException extends
+            ParserSTL.BadMeshException
+    {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        public MoreThanTwoTrianglesPerEdgeException()
+        {
+        }
+    }
+
+    /**
+     * Implements an exception when a point has one coordinate too high.
+     * @author Daniel Lefevre
+     */
+    private static final class OutOfBoundsPointException extends
+            ParserSTL.BadMeshException
+    {
+
+        /**
+         * Version attribute.
+         */
+        private static final long   serialVersionUID = 1L;
+        /**
+         * Bound limit attribute.
+         */
+        private static final double BOUND_LIMIT      = 1e5;
+
+        /**
+         * Private constructor.
+         */
+        public OutOfBoundsPointException()
+        {
+        }
     }
 }

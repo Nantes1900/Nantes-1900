@@ -1,4 +1,4 @@
-package fr.nantes1900.models.middle;
+package fr.nantes1900.models.basis;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -6,9 +6,6 @@ import java.util.List;
 
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Triangle;
 
 /**
  * Implements a polyline : a suite of edges.
@@ -16,26 +13,6 @@ import fr.nantes1900.models.basis.Triangle;
  */
 public class Polygon
 {
-
-    /**
-     * Implements an exception used when the polyline is bad formed.
-     * @author Daniel Lefevre
-     */
-    public static final class BadFormedPolylineException extends Exception
-    {
-
-        /**
-         * Version attribute.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        public BadFormedPolylineException()
-        {
-        }
-    }
 
     /**
      * ID counter.
@@ -884,6 +861,26 @@ public class Polygon
         for (final Point p : this.pointList)
         {
             p.setZ(z);
+        }
+    }
+
+    /**
+     * Implements an exception used when the polyline is bad formed.
+     * @author Daniel Lefevre
+     */
+    public static final class BadFormedPolylineException extends Exception
+    {
+
+        /**
+         * Version attribute.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Private constructor.
+         */
+        public BadFormedPolylineException()
+        {
         }
     }
 }

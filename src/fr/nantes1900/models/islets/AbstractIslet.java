@@ -4,27 +4,14 @@ import java.io.IOException;
 
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.models.middle.Mesh;
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 public abstract class AbstractIslet {
 
-    public class UnCompletedParametersException extends Exception {
-
-        private static final long serialVersionUID = 1L;
-
-        public UnCompletedParametersException() {
-            // Nothing here.
-        }
-    }
-
     protected Mesh initialTotalMesh;
-
-    public Vector3d getGravityNormal() {
-        return this.gravityNormal;
-    }
 
     /**
      * Change base matrix from the current base to a base which is ground-like
@@ -63,6 +50,10 @@ public abstract class AbstractIslet {
         }
     }
 
+    public Vector3d getGravityNormal() {
+        return this.gravityNormal;
+    }
+
     public Mesh getInitialTotalMesh() {
         return this.initialTotalMesh;
     }
@@ -89,6 +80,15 @@ public abstract class AbstractIslet {
 
     public void setGravityNormal(Vector3d newNormal) {
         this.gravityNormal = newNormal;
+    }
+
+    public class UnCompletedParametersException extends Exception {
+
+        private static final long serialVersionUID = 1L;
+
+        public UnCompletedParametersException() {
+            // Nothing here.
+        }
     }
 
 }

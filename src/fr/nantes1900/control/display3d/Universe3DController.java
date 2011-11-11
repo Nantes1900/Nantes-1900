@@ -35,18 +35,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
     // private ArrayList<PolygonView> polygonsViewSelected;
 
-    public Universe3DView getUniverse3DView() {
-        return this.u3DView;
-    }
-
-    public NewMouseRotate getMouseRotate() {
-        return this.mouseRotate;
-    }
-
-    public void setMouseRotate(NewMouseRotate mouseRotate) {
-        this.mouseRotate = mouseRotate;
-    }
-
     public Universe3DController(
             IsletSelectionController isletSelectionController) {
         this.parentController = isletSelectionController;
@@ -54,14 +42,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         this.trianglesViewSelected = new ArrayList<TriangleView>();
     }
 
-    public void setPickCanvas(BranchGroup branchGroup) {
-        this.pickCanvas = new PickCanvas(this.u3DView.getSimpleUniverse()
-                .getCanvas(), branchGroup);
-        this.pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
-        this.u3DView.getSimpleUniverse().getCanvas().addMouseListener(this);
-        this.u3DView.getSimpleUniverse().getCanvas()
-                .addMouseMotionListener(this);
-
+    public NewMouseRotate getMouseRotate() {
+        return this.mouseRotate;
     }
 
     /**
@@ -75,6 +57,10 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             trianglesList.add(triangleView.getTriangle());
         }
         return trianglesList;
+    }
+
+    public Universe3DView getUniverse3DView() {
+        return this.u3DView;
     }
 
     @Override
@@ -114,12 +100,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     @Override
-    public void mouseMoved(MouseEvent e) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void mouseEntered(MouseEvent arg0) {
         // TODO Auto-generated method stub
 
@@ -132,6 +112,12 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     @Override
+    public void mouseMoved(MouseEvent e) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
     public void mousePressed(MouseEvent e) {
         System.out.println("Mouse Pressed");
     }
@@ -139,6 +125,20 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     @Override
     public void mouseReleased(MouseEvent e) {
         // TODO Auto-generated method stub
+
+    }
+
+    public void setMouseRotate(NewMouseRotate mouseRotate) {
+        this.mouseRotate = mouseRotate;
+    }
+
+    public void setPickCanvas(BranchGroup branchGroup) {
+        this.pickCanvas = new PickCanvas(this.u3DView.getSimpleUniverse()
+                .getCanvas(), branchGroup);
+        this.pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
+        this.u3DView.getSimpleUniverse().getCanvas().addMouseListener(this);
+        this.u3DView.getSimpleUniverse().getCanvas()
+                .addMouseMotionListener(this);
 
     }
 }

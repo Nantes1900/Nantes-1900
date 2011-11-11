@@ -1,10 +1,10 @@
 package test.fr.nantes1900.models;
 
 import fr.nantes1900.models.basis.Edge;
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.middle.Mesh;
-import fr.nantes1900.models.middle.Polygon;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
@@ -108,18 +108,8 @@ public class MeshTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.Mesh#averageNormal()}.
-     */
-    @Test
-    public final void testAverageNormal()
-    {
-        Assert.assertTrue(this.m.averageNormal().equals(
-                new Vector3d(0.5, 0, 0.5)));
-    }
-
-    /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.Mesh#changeBase(double[][])}.
+     * {@link fr.nantes1900.models.basis.Mesh#changeBase(double[][])}.
      */
     @Test
     public final static void testChangeBase()
@@ -162,32 +152,7 @@ public class MeshTest extends TestCase
     }
 
     /**
-     * Test method for
-     * {@link fr.nantes1900.models.middle.Mesh#contains(fr.nantes1900.models.basis.Edge)}
-     * .
-     */
-    @Test
-    public final void testContainsEdge()
-    {
-        Assert.assertTrue(this.m.contains(this.e1));
-        Assert.assertTrue(this.m.contains(this.e2));
-        Assert.assertTrue(this.m.contains(this.e3));
-        Assert.assertTrue(this.m.contains(this.e4));
-        Assert.assertTrue(this.m.contains(this.e5));
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.middle.Mesh#faceUnderZ(double)}.
-     */
-    @Test
-    public final void testFaceUnderZ()
-    {
-        Assert.assertTrue(this.m.faceUnderZ(2) == this.t1);
-    }
-
-    /**
-     * Test method for {@link fr.nantes1900.models.middle.Mesh#inPlanes()}.
+     * Test method for {@link fr.nantes1900.models.basis.Mesh#inPlanes()}.
      */
     @Test
     public final static void testInPlanes()
@@ -230,7 +195,7 @@ public class MeshTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.Mesh#intersection(fr.nantes1900.models.middle.Mesh, fr.nantes1900.models.middle.Mesh)}
+     * {@link fr.nantes1900.models.basis.Mesh#intersection(fr.nantes1900.models.basis.Mesh, fr.nantes1900.models.basis.Mesh)}
      * .
      */
     @Test
@@ -273,20 +238,7 @@ public class MeshTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.Mesh#isNeighbour(fr.nantes1900.models.middle.Mesh)}
-     * .
-     */
-    @Test
-    public final void testIsNeighbour()
-    {
-        final Mesh m1 = new Mesh();
-        m1.add(this.t1);
-        Assert.assertTrue(m1.isNeighbour(this.m));
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.middle.Mesh#isOrientedAs(fr.nantes1900.models.middle.Mesh, double)}
+     * {@link fr.nantes1900.models.basis.Mesh#isOrientedAs(fr.nantes1900.models.basis.Mesh, double)}
      * .
      */
     @Test
@@ -354,52 +306,7 @@ public class MeshTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.Mesh#orientedAs(javax.vecmath.Vector3d, double)}
-     * .
-     */
-    @Test
-    public final void testOrientedAs()
-    {
-        final Mesh oriented = this.m
-                .orientedAs(new Vector3d(0.1, 0.1, 0.9), 15);
-        Assert.assertTrue(oriented.contains(this.t1));
-        Assert.assertFalse(oriented.contains(this.t2));
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.middle.Mesh#orientedNormalTo(javax.vecmath.Vector3d, double)}
-     * .
-     */
-    @Test
-    public final void testOrientedNormalTo()
-    {
-        final Mesh oriented = this.m.orientedNormalTo(new Vector3d(0.1, 0.1,
-                0.9), 0.2);
-        Assert.assertTrue(oriented.contains(this.t2));
-        Assert.assertFalse(oriented.contains(this.t1));
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.middle.Mesh#remove(fr.nantes1900.models.middle.Mesh)}
-     * .
-     */
-    @Test
-    public final void testRemoveMesh()
-    {
-        final Mesh m1 = new Mesh(this.m);
-        final Mesh m2 = new Mesh();
-        m2.add(this.t1);
-
-        m1.remove(m2);
-
-        Assert.assertTrue(m1.contains(this.t2));
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.middle.Mesh#returnUnsortedBounds()}.
+     * {@link fr.nantes1900.models.basis.Mesh#returnUnsortedBounds()}.
      */
     @Test
     public final static void testReturnUnsortedBounds()
@@ -496,7 +403,100 @@ public class MeshTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.Mesh#xAverage()}.
+     * Test method for {@link fr.nantes1900.models.basis.Mesh#averageNormal()}.
+     */
+    @Test
+    public final void testAverageNormal()
+    {
+        Assert.assertTrue(this.m.averageNormal().equals(
+                new Vector3d(0.5, 0, 0.5)));
+    }
+
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.basis.Mesh#contains(fr.nantes1900.models.basis.Edge)}
+     * .
+     */
+    @Test
+    public final void testContainsEdge()
+    {
+        Assert.assertTrue(this.m.contains(this.e1));
+        Assert.assertTrue(this.m.contains(this.e2));
+        Assert.assertTrue(this.m.contains(this.e3));
+        Assert.assertTrue(this.m.contains(this.e4));
+        Assert.assertTrue(this.m.contains(this.e5));
+    }
+
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.basis.Mesh#faceUnderZ(double)}.
+     */
+    @Test
+    public final void testFaceUnderZ()
+    {
+        Assert.assertTrue(this.m.faceUnderZ(2) == this.t1);
+    }
+
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.basis.Mesh#isNeighbour(fr.nantes1900.models.basis.Mesh)}
+     * .
+     */
+    @Test
+    public final void testIsNeighbour()
+    {
+        final Mesh m1 = new Mesh();
+        m1.add(this.t1);
+        Assert.assertTrue(m1.isNeighbour(this.m));
+    }
+
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.basis.Mesh#orientedAs(javax.vecmath.Vector3d, double)}
+     * .
+     */
+    @Test
+    public final void testOrientedAs()
+    {
+        final Mesh oriented = this.m
+                .orientedAs(new Vector3d(0.1, 0.1, 0.9), 15);
+        Assert.assertTrue(oriented.contains(this.t1));
+        Assert.assertFalse(oriented.contains(this.t2));
+    }
+
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.basis.Mesh#orientedNormalTo(javax.vecmath.Vector3d, double)}
+     * .
+     */
+    @Test
+    public final void testOrientedNormalTo()
+    {
+        final Mesh oriented = this.m.orientedNormalTo(new Vector3d(0.1, 0.1,
+                0.9), 0.2);
+        Assert.assertTrue(oriented.contains(this.t2));
+        Assert.assertFalse(oriented.contains(this.t1));
+    }
+
+    /**
+     * Test method for
+     * {@link fr.nantes1900.models.basis.Mesh#remove(fr.nantes1900.models.basis.Mesh)}
+     * .
+     */
+    @Test
+    public final void testRemoveMesh()
+    {
+        final Mesh m1 = new Mesh(this.m);
+        final Mesh m2 = new Mesh();
+        m2.add(this.t1);
+
+        m1.remove(m2);
+
+        Assert.assertTrue(m1.contains(this.t2));
+    }
+
+    /**
+     * Test method for {@link fr.nantes1900.models.basis.Mesh#xAverage()}.
      */
     @Test
     public final void testXAverage()
@@ -506,7 +506,7 @@ public class MeshTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.Mesh#xBetween(double, double)}.
+     * {@link fr.nantes1900.models.basis.Mesh#xBetween(double, double)}.
      */
     @Test
     public final void testXBetween()
@@ -517,7 +517,7 @@ public class MeshTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.Mesh#xMax()}.
+     * Test method for {@link fr.nantes1900.models.basis.Mesh#xMax()}.
      */
     @Test
     public final void testXMax()
@@ -526,7 +526,7 @@ public class MeshTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.Mesh#xMin()}.
+     * Test method for {@link fr.nantes1900.models.basis.Mesh#xMin()}.
      */
     @Test
     public final void testXMin()
@@ -535,7 +535,7 @@ public class MeshTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.Mesh#yAverage()}.
+     * Test method for {@link fr.nantes1900.models.basis.Mesh#yAverage()}.
      */
     @Test
     public final void testYAverage()
@@ -545,7 +545,7 @@ public class MeshTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.Mesh#yBetween(double, double)}.
+     * {@link fr.nantes1900.models.basis.Mesh#yBetween(double, double)}.
      */
     @Test
     public final void testYBetween()
@@ -556,7 +556,7 @@ public class MeshTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.Mesh#yMax()}.
+     * Test method for {@link fr.nantes1900.models.basis.Mesh#yMax()}.
      */
     @Test
     public final void testYMax()
@@ -565,7 +565,7 @@ public class MeshTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.Mesh#yMin()}.
+     * Test method for {@link fr.nantes1900.models.basis.Mesh#yMin()}.
      */
     @Test
     public final void testYMin()
@@ -574,7 +574,7 @@ public class MeshTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.Mesh#zAverage()}.
+     * Test method for {@link fr.nantes1900.models.basis.Mesh#zAverage()}.
      */
     @Test
     public final void testZAverage()
@@ -584,7 +584,7 @@ public class MeshTest extends TestCase
 
     /**
      * Test method for
-     * {@link fr.nantes1900.models.middle.Mesh#zBetween(double, double)}.
+     * {@link fr.nantes1900.models.basis.Mesh#zBetween(double, double)}.
      */
     @Test
     public final void testZBetween()
@@ -595,7 +595,7 @@ public class MeshTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.Mesh#zMax()}.
+     * Test method for {@link fr.nantes1900.models.basis.Mesh#zMax()}.
      */
     @Test
     public final void testZMax()
@@ -604,7 +604,7 @@ public class MeshTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.Mesh#zMin()}.
+     * Test method for {@link fr.nantes1900.models.basis.Mesh#zMin()}.
      */
     @Test
     public final void testZMin()
@@ -613,7 +613,7 @@ public class MeshTest extends TestCase
     }
 
     /**
-     * Test method for {@link fr.nantes1900.models.middle.Mesh#zMinFace()}.
+     * Test method for {@link fr.nantes1900.models.basis.Mesh#zMinFace()}.
      */
     @Test
     public final void testZMinFace()

@@ -1,4 +1,4 @@
-package fr.nantes1900.models.middle;
+package fr.nantes1900.models.basis;
 
 import java.security.InvalidParameterException;
 import java.util.Collection;
@@ -7,9 +7,6 @@ import java.util.Set;
 
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 import fr.nantes1900.utils.WriterSTL;
