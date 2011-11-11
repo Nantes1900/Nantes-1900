@@ -139,7 +139,7 @@ public class IsletSelectionController
                 computeGroundNormal();
             } else
             {
-                this.biController.setGroundNormal(readGravityNormal());
+                this.biController.useGravityNormalAsGroundNormal();
             }
             this.parentController.launchIsletTreatment(this.selectedFile, this.biController);
             processLaunched = true;

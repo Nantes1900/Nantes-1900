@@ -9,4 +9,4 @@ ISGravityNormalMessage=La normale orientée selon la gravité représente la vertic
 ISLaunchProcessStatusbar=Sélectionnez un îlot à traiter
 ISLaunchProcessTooltip=Lancez le traitement
 ISLaunchProcessTitle=Lancer un traitement
-ISLaunchProcessMessage=Pour lancer le traitement, choisissez un ensemble de triangles qui représentent l'orientation moyenne du sol dans l'îlot à traiter.\nUne fois ces triangles sélectionnés, cliquez sur le bouton lancer.
+ISLaunchProcessMessage=Le traitement nécessite une normale représentant la verticale au sol de l'îlot.\nPour cela, choisissez un ensemble de triangles qui représentent l'orientation moyenne du sol dans l'îlot à traiter\nou cochez la case "Utiliser la normale orientée selon la gravité" qui utilisera la normale orientée selon la gravité comme normale pour le sol de cet îlot.\n\nUne fois la normale choisie, cliquez sur le bouton lancer.
