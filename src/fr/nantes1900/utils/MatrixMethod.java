@@ -56,7 +56,8 @@ public final class MatrixMethod
      */
     public static void changeBase(final Vector3d vect, final double[][] matrix)
     {
-        final double[] coord = {vect.x, vect.y, vect.z,};
+        final double[] coord = { vect.x, vect.y, vect.z,
+        };
         vect.set(MatrixMethod.changeBase(coord, matrix));
     }
 
@@ -223,13 +224,13 @@ public final class MatrixMethod
         /**
          * Version attribute.
          */
-        private static final long  serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
         /**
          * Precision (as a double) to check if a matrix determinant is equal to
          * zero.
          */
-        public static final double ERROR_PRECISION  = 0.05;
+        public static final double ERROR_PRECISION = 0.05;
 
         /**
          * Private constructor.

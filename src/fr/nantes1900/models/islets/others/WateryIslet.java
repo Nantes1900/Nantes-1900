@@ -3,10 +3,19 @@ package fr.nantes1900.models.islets.others;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.islets.AbstractIslet;
 
+/**
+ * Implements a watery islet as an islet.
+ * @author Daniel
+ */
 public class WateryIslet extends AbstractIslet
 {
 
-    public WateryIslet(Mesh m)
+    /**
+     * TODO.
+     * @param m
+     *            TODO.
+     */
+    public WateryIslet(final Mesh m)
     {
         super(m);
     }

@@ -22,25 +22,45 @@ import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
  */
 public class Surface
 {
+
     /**
      * List of the neighbours of this surface.
      */
-    private final List<Surface> neighbours = new ArrayList<Surface>();
+    private final List<Surface> neighbours = new ArrayList<>();
 
-    private Polygon             polygon    = new Polygon();
+    /**
+     * The polygon representing this surface (after simplification).
+     */
+    private Polygon polygon = new Polygon();
 
-    private Mesh                mesh       = new Mesh();
+    /**
+     * The mesh representing this surface (before simplification).
+     */
+    private Mesh mesh = new Mesh();
 
+    /**
+     * Empty constructor.
+     */
     public Surface()
     {
     }
 
-    public Surface(Mesh m)
+    /**
+     * Constructor from a Mesh.
+     * @param m
+     *            the mesh to build the surface
+     */
+    public Surface(final Mesh m)
     {
         this.setMesh(m);
     }
 
-    public Surface(Polygon p)
+    /**
+     * Constructor from a Polygon.
+     * @param p
+     *            the polygon to build the surface
+     */
+    public Surface(final Polygon p)
     {
         this.setPolygone(p);
     }
@@ -90,8 +110,7 @@ public class Surface
             final List<Surface> wallList, final Vector3d normalGround)
             throws InvalidSurfaceException
     {
-
-        final List<Surface> surfaces = new ArrayList<Surface>();
+        final List<Surface> surfaces = new ArrayList<>();
         surfaces.add(s1);
         surfaces.add(s2);
         surfaces.add(s3);
@@ -99,29 +118,28 @@ public class Surface
 
         try
         {
-
             // If there is two neighbours which have the same orientation, then
             // throw an exception.
             if (this.getMesh().isOrientedAs(s1.getMesh(),
-                    SimplificationSurfaces.IS_ORIENTED_FACTOR)
+                    SimplificationSurfaces.getIsOrientedFactor())
                     || this.getMesh().isOrientedAs(s2.getMesh(),
-                            SimplificationSurfaces.IS_ORIENTED_FACTOR)
+                            SimplificationSurfaces.getIsOrientedFactor())
                     || this.getMesh().isOrientedAs(s3.getMesh(),
-                            SimplificationSurfaces.IS_ORIENTED_FACTOR))
+                            SimplificationSurfaces.getIsOrientedFactor()))
             {
                 throw new ParallelPlanesException();
             }
             if (s1.getMesh().isOrientedAs(s2.getMesh(),
-                    SimplificationSurfaces.IS_ORIENTED_FACTOR)
+                    SimplificationSurfaces.getIsOrientedFactor())
                     || s2.getMesh().isOrientedAs(s3.getMesh(),
-                            SimplificationSurfaces.IS_ORIENTED_FACTOR))
+                            SimplificationSurfaces.getIsOrientedFactor()))
             {
                 throw new ParallelPlanesException();
             }
 
             // If one of the surfaces is a wall, rectifies its normal to be
             // vertical, and after finds the edges.
-            final List<Surface> list = new ArrayList<Surface>();
+            final List<Surface> list = new ArrayList<>();
             for (final Surface s : surfaces)
             {
                 if (s != this)
@@ -273,7 +291,7 @@ public class Surface
      */
     private List<Surface> getCommonNeighbours(final Surface surface)
     {
-        final List<Surface> ret = new ArrayList<Surface>();
+        final List<Surface> ret = new ArrayList<>();
         for (final Surface s : this.getNeighbours())
         {
             if (surface.getNeighbours().contains(s))
@@ -284,21 +302,29 @@ public class Surface
         return ret;
     }
 
-    public Mesh getMesh()
+    /**
+     * Getter.
+     * @return the lesh contained in this
+     */
+    public final Mesh getMesh()
     {
         return this.mesh;
     }
 
     /**
      * Getter.
-     * @return the neighbours
+     * @return the neighbours of this surface
      */
     public final List<Surface> getNeighbours()
     {
         return this.neighbours;
     }
 
-    public Polygon getPolygone()
+    /**
+     * Getter.
+     * @return the polygon contained in this
+     */
+    public final Polygon getPolygone()
     {
         return this.polygon;
     }
@@ -325,7 +351,7 @@ public class Surface
             final Surface grounds) throws ImpossibleNeighboursOrderException
     {
 
-        final List<Surface> neighboursOrdered = new ArrayList<Surface>();
+        final List<Surface> neighboursOrdered = new ArrayList<>();
 
         final int neighboursNumber = this.getNeighbours().size();
 
@@ -464,12 +490,22 @@ public class Surface
         return computedWallPlane;
     }
 
-    public void setMesh(Mesh meshIn)
+    /**
+     * Setter.
+     * @param meshIn
+     *            the new mesh
+     */
+    public final void setMesh(final Mesh meshIn)
     {
         this.mesh = meshIn;
     }
 
-    public void setPolygone(Polygon polygoneIn)
+    /**
+     * Setter.
+     * @param polygoneIn
+     *            the new polygon
+     */
+    public final void setPolygone(final Polygon polygoneIn)
     {
         this.polygon = polygoneIn;
     }

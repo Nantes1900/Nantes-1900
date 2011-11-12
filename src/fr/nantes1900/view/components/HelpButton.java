@@ -19,37 +19,45 @@ import javax.swing.JOptionPane;
  */
 public class HelpButton extends JButton implements MouseListener
 {
+
     /**
      * The current color of the text.
      */
-    private Color             textColorCurrent;
+    private Color textColorCurrent;
 
     /**
      * The normal wanted color for the text.
      */
-    private Color             textColor        = Color.BLUE;
+    private Color textColor = Color.BLUE;
 
     /**
      * The current value for the background.
      */
-    private Color             backgroundColorCurrent;
+    private Color backgroundColorCurrent;
 
     /**
      * The normal wanted color for the background.
      */
-    private Color             backgroundColor  = new Color(240, 240, 240);
+    private Color backgroundColor = new Color(240, 240, 240);
 
     /**
      * Indicates if the mouse is on the button area.
      */
-    private boolean           in               = false;
+    private boolean in = false;
 
     /**
      * Indicates if the left button of the mouse is pressed.
      */
-    private boolean           pressed          = false;
-    
+    private boolean pressed = false;
+
+    /**
+     * TODO.
+     */
     private String helpMessage;
+
+    /**
+     * TODO.
+     */
     private String title;
 
     /**
@@ -65,28 +73,51 @@ public class HelpButton extends JButton implements MouseListener
         this("");
     }
 
-    public HelpButton(String tooltip)
+    /**
+     * TODO.
+     * @param tooltip
+     *            TODO.
+     */
+    public HelpButton(final String tooltip)
     {
         this(tooltip, "");
     }
 
-    public HelpButton(String tooltip, String helpMessage)
+    /**
+     * TODO.
+     * @param tooltip
+     *            TODO.
+     * @param helpMessageIn
+     *            TODO.
+     */
+    public HelpButton(final String tooltip, final String helpMessageIn)
     {
-        this(tooltip, helpMessage, "");
+        this(tooltip, helpMessageIn, "");
     }
-    public HelpButton(String tooltip, String helpMessage, String title)
+
+    /**
+     * TODO.
+     * @param tooltip
+     *            TODO.
+     * @param helpMessageIn
+     *            TODO.
+     * @param titleIn
+     *            TODO.
+     */
+    public HelpButton(final String tooltip, final String helpMessageIn,
+            final String titleIn)
     {
-        this.textColorCurrent = textColor;
-        this.backgroundColorCurrent = backgroundColor;
+        this.textColorCurrent = this.textColor;
+        this.backgroundColorCurrent = this.backgroundColor;
         this.setPreferredSize(new Dimension(20, 20));
         this.setFocusPainted(false);
         this.setBorderPainted(false);
         this.setContentAreaFilled(false);
         this.addMouseListener(this);
-        
-        this.title = title;
+
+        this.title = titleIn;
         this.setToolTipText(tooltip);
-        this.helpMessage = helpMessage;
+        this.helpMessage = helpMessageIn;
     }
 
     /**
@@ -97,7 +128,7 @@ public class HelpButton extends JButton implements MouseListener
      *            Amont to darken the color of.
      * @return The darkened color.
      */
-    private static Color darken(Color color, int amount)
+    private static Color darken(final Color color, final int amount)
     {
         int red = (color.getRed() - amount < 0) ? 0 : color.getRed() - amount;
         int green = (color.getGreen() - amount < 0) ? 0 : color.getGreen()
@@ -116,7 +147,7 @@ public class HelpButton extends JButton implements MouseListener
      *            Amont to lighten the color of.
      * @return The lightened color.
      */
-    private static Color lighten(Color color, int amount)
+    private static Color lighten(final Color color, final int amount)
     {
         int red = (color.getRed() + amount > 255) ? 255 : color.getRed()
                 + amount;
@@ -129,136 +160,142 @@ public class HelpButton extends JButton implements MouseListener
     }
 
     @Override
-    public void mouseClicked(MouseEvent arg0)
+    public void mouseClicked(final MouseEvent arg0)
     {
+        // TODO.
     }
 
     @Override
-    public void mouseEntered(MouseEvent arg0)
+    public final void mouseEntered(final MouseEvent arg0)
     {
-        in = true;
-        textColorCurrent = lighten(textColor, 50);
-        backgroundColorCurrent = lighten(backgroundColor, 25);
+        this.in = true;
+        this.textColorCurrent = lighten(this.textColor, 50);
+        this.backgroundColorCurrent = lighten(this.backgroundColor, 25);
         revalidate();
         repaint();
     }
 
     @Override
-    public void mouseExited(MouseEvent arg0)
+    public final void mouseExited(final MouseEvent arg0)
     {
-        in = false;
-        if (!pressed)
+        this.in = false;
+        if (!this.pressed)
         {
-            textColorCurrent = textColor;
-            backgroundColorCurrent = backgroundColor;
+            this.textColorCurrent = this.textColor;
+            this.backgroundColorCurrent = this.backgroundColor;
             revalidate();
             repaint();
         }
     }
 
     @Override
-    public void mousePressed(MouseEvent arg0)
+    public final void mousePressed(final MouseEvent arg0)
     {
         if (arg0.getButton() == MouseEvent.BUTTON1)
         {
-            pressed = true;
-            textColorCurrent = darken(textColor, 100);
-            backgroundColorCurrent = backgroundColor;
+            this.pressed = true;
+            this.textColorCurrent = darken(this.textColor, 100);
+            this.backgroundColorCurrent = this.backgroundColor;
             revalidate();
             repaint();
         }
     }
-    
+
     @Override
-    public void mouseReleased(MouseEvent arg0)
+    public final void mouseReleased(final MouseEvent arg0)
     {
         if (arg0.getButton() == MouseEvent.BUTTON1)
         {
-            pressed = false;
+            this.pressed = false;
 
-            if (in)
+            if (this.in)
             {
-                textColorCurrent = lighten(textColor, 50);
-                backgroundColorCurrent = lighten(backgroundColor, 25);
+                this.textColorCurrent = lighten(this.textColor, 50);
+                this.backgroundColorCurrent = lighten(this.backgroundColor, 25);
             } else
             {
-                textColorCurrent = textColor;
-                backgroundColorCurrent = backgroundColor;
+                this.textColorCurrent = this.textColor;
+                this.backgroundColorCurrent = this.backgroundColor;
             }
             revalidate();
             repaint();
-            
-            if (! helpMessage.isEmpty())
+
+            if (!this.helpMessage.isEmpty())
             {
-                String title = (this.title.isEmpty()) ? "Informations complémentaires" : this.title;
-                JOptionPane.showMessageDialog(this, helpMessage, title, JOptionPane.INFORMATION_MESSAGE);
+                // TODO : title masque un attribut.
+                String title = (this.title.isEmpty()) ? "Informations complémentaires"
+                        : this.title;
+                JOptionPane.showMessageDialog(this, this.helpMessage, title,
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
 
     @Override
-    public void paintComponent(Graphics g)
+    public final void paintComponent(final Graphics g)
     {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
         g2d.setColor(new Color(
-                (textColorCurrent.getRed() + backgroundColorCurrent.getRed()) / 2,
-                (textColorCurrent.getGreen() + backgroundColorCurrent
+                (this.textColorCurrent.getRed() + this.backgroundColorCurrent
+                        .getRed()) / 2,
+                (this.textColorCurrent.getGreen() + this.backgroundColorCurrent
                         .getGreen()) / 2,
-                (textColorCurrent.getBlue() + backgroundColorCurrent.getBlue()) / 2));
+                (this.textColorCurrent.getBlue() + this.backgroundColorCurrent
+                        .getBlue()) / 2));
         g2d.fillOval(0, 0, 20, 20);
 
-        g2d.setColor(textColorCurrent);
+        g2d.setColor(this.textColorCurrent);
         g2d.fillOval(1, 1, 18, 18);
 
         g2d.setColor(new Color(
-                (textColorCurrent.getRed() + backgroundColorCurrent.getRed()) / 2,
-                (textColorCurrent.getGreen() + backgroundColorCurrent
+                (this.textColorCurrent.getRed() + this.backgroundColorCurrent
+                        .getRed()) / 2,
+                (this.textColorCurrent.getGreen() + this.backgroundColorCurrent
                         .getGreen()) / 2,
-                (textColorCurrent.getBlue() + backgroundColorCurrent.getBlue()) / 2));
+                (this.textColorCurrent.getBlue() + this.backgroundColorCurrent
+                        .getBlue()) / 2));
         g2d.fillOval(2, 2, 16, 16);
 
-        g2d.setColor(backgroundColorCurrent);
+        g2d.setColor(this.backgroundColorCurrent);
         g2d.fillOval(3, 3, 14, 14);
 
-        g2d.setColor(textColorCurrent);
+        g2d.setColor(this.textColorCurrent);
         g2d.drawString("?", 7, 15);
     }
-    
+
     /**
      * Sets a new help message to show on a pop-up.
-     * 
      * @param message
-     *          The new help message.
+     *            The new help message.
      */
-    public void setHelpMessage(String message)
+    public final void setHelpMessage(final String message)
     {
         this.setHelpMessage(message, "");
     }
 
     /**
      * Sets a new help message to show on a pop-up with the new title.
-     * 
      * @param message
-     *          The new help message.
-     * @param title
-     *          The new title.
+     *            The new help message.
+     * @param titleIn
+     *            The new title.
      */
-    public void setHelpMessage(String message, String title)
+    public final void
+            setHelpMessage(final String message, final String titleIn)
     {
         this.helpMessage = message;
-        this.title = title;
+        this.title = titleIn;
     }
 
     /**
      * Sets a new tooltip text.
-     * 
      * @param tooltip
-     *          The new text for the tooltip.
+     *            The new text for the tooltip.
      */
-    public void setTooltip(String tooltip)
+    public final void setTooltip(final String tooltip)
     {
         this.setToolTipText(tooltip);
     }

@@ -19,6 +19,7 @@ import fr.nantes1900.view.display3d.Universe3DView;
  */
 public class IsletSelectionView extends PFrame
 {
+
     /**
      * 
      */
@@ -27,17 +28,17 @@ public class IsletSelectionView extends PFrame
     /**
      * The panel containing the buttons to perform the different actions.
      */
-    private ActionsView       aView;
+    private ActionsView aView;
 
     /**
      * The tree allowing to select an islet.
      */
-    private GlobalTreeView    gtView;
+    private GlobalTreeView gtView;
 
     /**
      * The 3D view of the islet.
      */
-    private Universe3DView    u3DView;
+    private Universe3DView u3DView;
 
     /**
      * Creates a new frame to select an islet and launch the treatment.
@@ -46,10 +47,13 @@ public class IsletSelectionView extends PFrame
      *            actions.
      * @param globalTreeView
      *            The tree allowing to select an islet.
+     * @param buildingsIsletView
+     *            TODO.
      * @todo Handle the size issues.
      */
-    public IsletSelectionView(ActionsView actionsView,
-            GlobalTreeView globalTreeView, Universe3DView buildingsIsletView)
+    public IsletSelectionView(final ActionsView actionsView,
+            final GlobalTreeView globalTreeView,
+            final Universe3DView buildingsIsletView)
     {
         super();
         // initializes the frame
@@ -81,7 +85,9 @@ public class IsletSelectionView extends PFrame
                 new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0,
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(5, 10, 5, 10), 0, 0));
-        this.setStatusBarText(FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_STATUSBAR));
+        this.setStatusBarText(FileTools
+                .readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY,
+                        FileTools.MESSAGETYPE_STATUSBAR));
         pack();
     }
 }

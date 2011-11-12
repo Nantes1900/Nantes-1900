@@ -13,10 +13,12 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * @author Camille
+ * TODO.
+ * @author Camille Bouquet
  */
-public class FileTools
+public final class FileTools
 {
+
     /**
      * Text for the type of message status bar.
      */
@@ -24,29 +26,38 @@ public class FileTools
     /**
      * Text for the type of message tooltip for properties.
      */
-    public static final String MESSAGETYPE_TOOLTIP   = "Tooltip";
+    public static final String MESSAGETYPE_TOOLTIP = "Tooltip";
     /**
      * Text for the type of message title for properties.
      */
-    public static final String MESSAGETYPE_TITLE     = "Title";
+    public static final String MESSAGETYPE_TITLE = "Title";
     /**
      * Text for the type of message message for properties.
      */
-    public static final String MESSAGETYPE_MESSAGE   = "Message";
+    public static final String MESSAGETYPE_MESSAGE = "Message";
     /**
      * Key value corresponding to the open directory step.
      */
-    public static final String KEY_IS_OPENDIRECTORY  = "ISOpenDirectory";
+    public static final String KEY_IS_OPENDIRECTORY = "ISOpenDirectory";
     /**
      * Key value corresponding to the create gravity normal step.
      */
-    public static final String KEY_IS_GRAVITYNORMAL  = "ISGravityNormal";
+    public static final String KEY_IS_GRAVITYNORMAL = "ISGravityNormal";
     /**
      * Key value corresponding to the select islet to launch process step.
      */
-    public static final String KEY_IS_LAUNCHPROCESS  = "ISLaunchProcess";
+    public static final String KEY_IS_LAUNCHPROCESS = "ISLaunchProcess";
 
-    public static String readHelpMessage(String keyName, String messageType)
+    /**
+     * TODO.
+     * @param keyName
+     *            TODO.
+     * @param messageType
+     *            TODO.
+     * @return TODO.
+     */
+    public static String readHelpMessage(final String keyName,
+            final String messageType)
     {
         return readProperty(new File("helpMessages.txt"), keyName + messageType);
     }
@@ -56,9 +67,9 @@ public class FileTools
      * associated with the file.
      * @param file
      *            The file to read data from.
-     * @return Read properties.
+     * @return read properties.
      */
-    public static Properties readProperties(File file)
+    public static Properties readProperties(final File file)
     {
         FileReader fr;
         Properties prop = new Properties();
@@ -92,7 +103,7 @@ public class FileTools
      * @return The property to read as a String. If the property wasn't found,
      *         the string is empty.
      */
-    public static String readProperty(File file, String key)
+    public static String readProperty(final File file, final String key)
     {
         Properties prop = readProperties(file);
         String readProperty = prop.getProperty(key, "");
@@ -110,7 +121,8 @@ public class FileTools
      * @return true - Data have been correctly saved.\n false - A problem has
      *         occurred during the saving process.
      */
-    public static boolean saveProperties(File file, Properties prop)
+    public static boolean
+            saveProperties(final File file, final Properties prop)
     {
         boolean saveOk = true;
         DataOutputStream dos;
@@ -142,5 +154,12 @@ public class FileTools
         }
 
         return saveOk;
+    }
+
+    /**
+     * Private constructor.
+     */
+    private FileTools()
+    {
     }
 }

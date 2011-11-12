@@ -12,10 +12,10 @@ public class GroundIslet extends AbstractIslet
 
     /**
      * Constructor. Builds the Ground with an attribute as a String.
-     * @param type
-     *            the attribute
+     * @param m
+     *            TODO.
      */
-    public GroundIslet(Mesh m)
+    public GroundIslet(final Mesh m)
     {
         super(m);
     }
@@ -27,9 +27,9 @@ public class GroundIslet extends AbstractIslet
      */
     public final void buildFromMesh(final Mesh m)
     {
-        this.initialTotalMesh = new Mesh(m);
+        this.setInitialTotalMesh(new Mesh(m));
 
-        this.decimate(this.initialTotalMesh);
+        this.decimate(this.getInitialTotalMesh());
     }
 
     /**
@@ -48,7 +48,7 @@ public class GroundIslet extends AbstractIslet
      */
     public final Mesh getMesh()
     {
-        return this.initialTotalMesh;
+        return this.getInitialTotalMesh();
     }
 
     /**
@@ -70,6 +70,6 @@ public class GroundIslet extends AbstractIslet
      */
     public final void writeSTL(final String fileName)
     {
-        this.initialTotalMesh.writeSTL(fileName);
+        this.getInitialTotalMesh().writeSTL(fileName);
     }
 }

@@ -2,30 +2,58 @@ package fr.nantes1900.view.display3d;
 
 import fr.nantes1900.models.basis.Triangle;
 
+/**
+ * TODO.
+ * @author Daniel
+ */
 public class TriangleView
 {
-    public Triangle triangle;
+
+    /**
+     * TODO.
+     */
+    private Triangle triangle;
+    /**
+     * TODO.
+     */
     private boolean selected;
 
-    public TriangleView(Triangle triangleIn)
+    /**
+     * TODO.
+     * @param triangleIn
+     *            TODO.
+     */
+    public TriangleView(final Triangle triangleIn)
     {
         this.triangle = triangleIn;
     }
 
-    public void setSelected(boolean selectedIn)
+    /**
+     * TODO.
+     * @param selectedIn
+     *            TODO.
+     */
+    public final void setSelected(final boolean selectedIn)
     {
         this.selected = selectedIn;
     }
 
-    public boolean isSelected()
+    /**
+     * TODO.
+     * @return TODO.
+     */
+    public final boolean isSelected()
     {
         return this.selected;
     }
 
-    public Triangle getTriangle()
+    /**
+     * TODO.
+     * @return TODO.
+     */
+    public final Triangle getTriangle()
     {
         return this.triangle;
     }
-    
-  
+
 }

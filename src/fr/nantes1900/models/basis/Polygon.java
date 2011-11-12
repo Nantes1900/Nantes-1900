@@ -22,12 +22,12 @@ public class Polygon
     /**
      * List of the points of the polyline.
      */
-    private final List<Point> pointList = new ArrayList<Point>();
+    private final List<Point> pointList = new ArrayList<>();
 
     /**
      * List of the edges of the polyline.
      */
-    private final List<Edge>  edgeList  = new ArrayList<Edge>();
+    private final List<Edge>  edgeList  = new ArrayList<>();
 
     /**
      * Normal of the polyline.
@@ -89,7 +89,7 @@ public class Polygon
         // For each point, make the list of the edges which contain this point.
         for (final Point point : p.pointList)
         {
-            final List<Edge> belongings = new ArrayList<Edge>();
+            final List<Edge> belongings = new ArrayList<>();
 
             for (final Edge e : this.edgeList)
             {
@@ -233,7 +233,7 @@ public class Polygon
      */
     public final List<Point> getCylinder(final Edge e, final double error)
     {
-        final List<Point> ret = new ArrayList<Point>();
+        final List<Point> ret = new ArrayList<>();
 
         for (final Point p : this.pointList)
         {
@@ -277,7 +277,7 @@ public class Polygon
             throw new InvalidParameterException();
         }
 
-        final List<Edge> list = new ArrayList<Edge>();
+        final List<Edge> list = new ArrayList<>();
         for (final Edge e : this.edgeList)
         {
             if (e.contains(p))
@@ -340,7 +340,7 @@ public class Polygon
      */
     public final List<Double> getPointsAsCoordinates()
     {
-        final List<Double> list = new ArrayList<Double>();
+        final List<Double> list = new ArrayList<>();
         for (final Point p : this.pointList)
         {
             for (final double d : p.getPointAsCoordinates())
@@ -445,7 +445,7 @@ public class Polygon
      */
     public final void refresh()
     {
-        final List<Edge> edges = new ArrayList<Edge>(this.getEdgeList());
+        final List<Edge> edges = new ArrayList<>(this.getEdgeList());
         this.clear();
         this.addAll(edges);
     }
@@ -457,7 +457,7 @@ public class Polygon
      */
     public final void remove(final Edge e)
     {
-        final List<Edge> edges = new ArrayList<Edge>(this.edgeList);
+        final List<Edge> edges = new ArrayList<>(this.edgeList);
         edges.remove(e);
         this.clear();
         this.addAll(edges);
@@ -471,7 +471,7 @@ public class Polygon
      */
     public final void remove(final Polygon p)
     {
-        final List<Edge> edges = new ArrayList<Edge>(this.edgeList);
+        final List<Edge> edges = new ArrayList<>(this.edgeList);
         for (final Edge e : p.edgeList)
         {
             edges.remove(e);
@@ -518,8 +518,6 @@ public class Polygon
      * @param m
      *            the mesh where all the edges are expected to belong
      * @return the mesh composed all the triangles the edges belong to
-     * @throws EmptyPolylineException
-     *             if the polyline is empty
      */
     public final Mesh returnExistingMesh(final Mesh m)
     {

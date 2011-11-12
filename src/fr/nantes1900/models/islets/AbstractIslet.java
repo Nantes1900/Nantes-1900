@@ -9,24 +9,58 @@ import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
-public abstract class AbstractIslet {
+/**
+ * Implements an islet.
+ * @author Daniel
+ */
+public abstract class AbstractIslet
+{
 
-    protected Mesh initialTotalMesh;
+    /**
+     * The initial mesh before every treatment.
+     */
+    private Mesh initialTotalMesh;
+
+    /**
+     * Setter.
+     * @param initialTotalMeshIn
+     *            TODO.
+     */
+    public final void setInitialTotalMesh(final Mesh initialTotalMeshIn)
+    {
+        this.initialTotalMesh = initialTotalMeshIn;
+    }
 
     /**
      * Change base matrix from the current base to a base which is ground-like
      * oriented.
      */
-    protected double[][] matrix = new double[MatrixMethod.MATRIX_DIMENSION][MatrixMethod.MATRIX_DIMENSION];
+    private double[][] matrix = new double[MatrixMethod.MATRIX_DIMENSION][MatrixMethod.MATRIX_DIMENSION];
 
-    protected Vector3d gravityNormal;
+    /**
+     * The normal to the gravity.
+     */
+    private Vector3d gravityNormal;
 
-    public AbstractIslet(Mesh m) {
+    /**
+     * TODO.
+     * @param m
+     *            TODO.
+     */
+    public AbstractIslet(final Mesh m)
+    {
         this.initialTotalMesh = m;
     }
 
-    protected void changeBase() throws UnCompletedParametersException {
-        if (this.matrix == null || this.initialTotalMesh == null) {
+    /**
+     * TODO.
+     * @throws UnCompletedParametersException
+     *             TODO.
+     */
+    public final void changeBase() throws UnCompletedParametersException
+    {
+        if (this.matrix == null || this.initialTotalMesh == null)
+        {
             throw new UnCompletedParametersException();
         }
         this.initialTotalMesh.changeBase(this.matrix);
@@ -35,26 +69,37 @@ public abstract class AbstractIslet {
     /**
      * Creates a change base matrix with the normal to the ground. See the
      * MatrixMethod class for more informations.
-     * @param normalGround
-     *            the vector to build the matrix.
      */
-    protected void createChangeBaseMatrix() {
-        try {
+    protected final void createChangeBaseMatrix()
+    {
+        try
+        {
             // Base change
             this.matrix = MatrixMethod.createOrthoBase(this.gravityNormal);
             MatrixMethod.changeBase(this.gravityNormal, this.matrix);
 
-        } catch (final SingularMatrixException e) {
+        } catch (final SingularMatrixException e)
+        {
             System.out.println("Error : the matrix is badly formed !");
             System.exit(1);
         }
     }
 
-    public Vector3d getGravityNormal() {
+    /**
+     * Getter.
+     * @return the gravity normal
+     */
+    public final Vector3d getGravityNormal()
+    {
         return this.gravityNormal;
     }
 
-    public Mesh getInitialTotalMesh() {
+    /**
+     * Getter.
+     * @return the initial total mesh
+     */
+    public final Mesh getInitialTotalMesh()
+    {
         return this.initialTotalMesh;
     }
 
@@ -62,15 +107,17 @@ public abstract class AbstractIslet {
      * Parses a STL file. Uses the ParserSTL class.
      * @param fileName
      *            the name of the file
-     * @return the mesh parsed
      */
-    protected void parseFile(final String fileName) {
+    public final void parseFile(final String fileName)
+    {
 
-        try {
+        try
+        {
             final ParserSTL parser = new ParserSTL(fileName);
             this.initialTotalMesh = parser.read();
 
-        } catch (final IOException e) {
+        } catch (final IOException e)
+        {
             System.out
                     .println("Error : the file is badly formed, not found or unreadable !");
             System.exit(1);
@@ -78,17 +125,33 @@ public abstract class AbstractIslet {
         }
     }
 
-    public void setGravityNormal(Vector3d newNormal) {
+    /**
+     * Setter.
+     * @param newNormal
+     *            the new gravity normal
+     */
+    public final void setGravityNormal(final Vector3d newNormal)
+    {
         this.gravityNormal = newNormal;
     }
 
-    public class UnCompletedParametersException extends Exception {
+    /**
+     * Implements an exception if parameters have not been completed.
+     * @author Daniel
+     */
+    public final class UnCompletedParametersException extends Exception
+    {
 
+        /**
+         * Version attribute.
+         */
         private static final long serialVersionUID = 1L;
 
-        public UnCompletedParametersException() {
-            // Nothing here.
+        /**
+         * Private constructor.
+         */
+        public UnCompletedParametersException()
+        {
         }
     }
-
 }
