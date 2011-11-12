@@ -13,8 +13,11 @@ import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
+import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.Material;
 import javax.media.j3d.Shape3D;
+import javax.media.j3d.Texture2D;
+import javax.media.j3d.TextureAttributes;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.media.j3d.TriangleArray;
@@ -26,6 +29,7 @@ import javax.vecmath.Vector3f;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
+import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
@@ -170,24 +174,33 @@ public class Universe3DView extends JPanel {
 
         shape.addGeometry(meshView);
 
-        // FIXME
-        /*
-         * Appearance app = new Appearance(); Material mat = null; if (color ==
-         * Color.blue) { mat = new Material(new Color3f(0f, 0, 0.2f), new
-         * Color3f(0, 0, 0), new Color3f(Color.blue), new Color3f(Color.blue),
-         * 64); } else if (color == Color.red) { mat = new Material(new
-         * Color3f(0.2f, 0, 0), new Color3f(0, 0, 0), new Color3f(Color.red),
-         * new Color3f(Color.red), 64); } mat.setColorTarget(3);
-         * app.setMaterial(mat); this.setAppearance(app);
-         */
+       
+        //Appearence
+        Material mat = new Material(new Color3f(0, 0, 0f),
+				new Color3f(0, 0, 0), new Color3f(Color.white), new Color3f(
+						Color.white), 64);
+		mat.setColorTarget(3);
+
+		Appearance app = new Appearance();
+
+		app.setMaterial(mat);
+
+		TextureLoader loader = new TextureLoader("texture.jpg", null);
+		ImageComponent2D image = loader.getImage();
+		Texture2D texture = new Texture2D(Texture2D.BASE_LEVEL, Texture2D.RGB,
+				image.getWidth(), image.getHeight());
+		texture.setImage(0, image);
+		app.setTexture(texture);
+		TextureAttributes texAtt = new TextureAttributes();
+		texAtt.setTextureMode(TextureAttributes.MODULATE);
+		app.setTextureAttributes(texAtt);
 
         shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
         shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
 
         sceneRoot.addChild(shape);
-
-        // FIXME too !
-        // shape.setAppearance(app);
+        shape.setAppearance(app);
+       
         translationGroup2.addChild(sceneRoot);
 
         // Links the left button of the mouse with a rotation transformation
