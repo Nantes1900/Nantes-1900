@@ -4,8 +4,13 @@ package fr.nantes1900.constants;
  * Contains some coefficients used in the algorithms.
  * @author Daniel Lefevre
  */
-public class SimplificationSurfaces
+public final class SimplificationSurfaces
 {
+
+    /**
+     * The default value of the coefficient.
+     */
+    private static final double IS_ORIENTED_FACTOR_DEFAULT = 30;
 
     /**
      * Minimum angle between two neighbours of a surface. Used in the edges
@@ -13,6 +18,31 @@ public class SimplificationSurfaces
      * the same orientation, the intersection of them during the vectorization
      * will often creates aberrant points.
      */
-    public static double IS_ORIENTED_FACTOR = 30;
+    private static double isOrientedFactor = IS_ORIENTED_FACTOR_DEFAULT;
 
+    /**
+     * Getter.
+     * @return the is oriented factor
+     */
+    public static double getIsOrientedFactor()
+    {
+        return isOrientedFactor;
+    }
+
+    /**
+     * Setter.
+     * @param isOrientedFactorIn
+     *            the new is oriented factor
+     */
+    public static void setIsOrientedFactor(final double isOrientedFactorIn)
+    {
+        SimplificationSurfaces.isOrientedFactor = isOrientedFactorIn;
+    }
+
+    /**
+     * Private constructor.
+     */
+    private SimplificationSurfaces()
+    {
+    }
 }

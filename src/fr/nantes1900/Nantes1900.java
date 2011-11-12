@@ -7,10 +7,12 @@ import fr.nantes1900.control.GlobalController;
 
 /**
  * Implements a main class. Launch the UI.
- * @author Camille Bouquet
+ * @author Nicolas Bouillon, Camille Bouquet, Luc Jallerat, Daniel Lefevre, Siju
+ *         Wu
  */
-public class Nantes1900
+public final class Nantes1900
 {
+
     /**
      * Private constructor.
      */
