@@ -21,6 +21,7 @@ public class BuildingsIsletController
     private AbstractBuildingsIslet islet;
     private IsletSelectionController parentController;
     private Universe3DController u3DController;
+    private Vector3d gravityNormal;
 
     public BuildingsIsletController(
             IsletSelectionController isletSelectionController,
@@ -134,16 +135,18 @@ public class BuildingsIsletController
         case 8:
             this.islet.launchTreatment9();
             break;
+        default:
+            break;
         }
         this.incProgression();
         this.display();
     }
 
-    public void readGravityNormal(String fileName) throws IOException
+    public final void readGravityNormal(String fileName) throws IOException
     {
         ParserSTL parser = new ParserSTL(fileName);
         Mesh mesh = parser.read();
-        this.islet.setGravityNormal(mesh.averageNormal());
+        this.setGravityNormal(mesh.averageNormal());
     }
 
     public void setGroundNormal(Vector3d groundNormal)
@@ -322,5 +325,20 @@ public class BuildingsIsletController
                         new MeshView(roof.getMesh()));
             }
         }
+    }
+
+    public Vector3d getGravityNormal()
+    {
+        return gravityNormal;
+    }
+
+    public void setGravityNormal(Vector3d gravityNormal)
+    {
+        this.gravityNormal = gravityNormal;
+    }
+
+    public void putGravityNormal()
+    {
+        this.islet.setGravityNormal(this.gravityNormal);
     }
 }
