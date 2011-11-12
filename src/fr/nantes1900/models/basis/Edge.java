@@ -20,12 +20,12 @@ public class Edge
     /**
      * List of triangles containing this edge. The can be two triangles maximum.
      */
-    private List<Triangle> triangles = new ArrayList<Triangle>(2);
+    private List<Triangle> triangles = new ArrayList<>(2);
 
     /**
      * Array of two points describing the edge.
      */
-    private final Point[]  points    = new Point[2];
+    private final Point[] points = new Point[2];
 
     /**
      * Copy constructor. Caution : use it very cautiously, because it creates
@@ -37,7 +37,7 @@ public class Edge
     {
         this.points[0] = edge.getP1();
         this.points[1] = edge.getP2();
-        this.triangles = new ArrayList<Triangle>(edge.triangles);
+        this.triangles = new ArrayList<>(edge.triangles);
     }
 
     /**

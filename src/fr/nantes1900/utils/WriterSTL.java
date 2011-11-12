@@ -17,7 +17,7 @@ import java.nio.ByteOrder;
 /**
  * Implements a STL writer. This writer uses the ASCII or the binary format,
  * depending on the static attribute MODE.
- * @author Eric Berthe, Valentin Roger, Daniel Lefèvre
+ * @author Eric Berthe, Valentin Roger, Daniel Lefevre
  */
 
 public class WriterSTL
@@ -26,7 +26,7 @@ public class WriterSTL
     /**
      * Possible value of MODE. Intend to write ASCII STL files.
      */
-    public static final int ASCII_MODE  = 1;
+    public static final int ASCII_MODE = 1;
 
     /**
      * Possible value of MODE. Intend to write binary STL files.
@@ -36,17 +36,17 @@ public class WriterSTL
     /**
      * The name of the file to write in.
      */
-    private final String    fileName;
+    private final String fileName;
 
     /**
      * The mesh to write.
      */
-    private Mesh            mesh;
+    private Mesh mesh;
 
     /**
      * The mode of writing. Use the two constants : ASCII_MODE or BINARY_MODE.
      */
-    private int             writingMode = WriterSTL.BINARY_MODE;
+    private int writingMode = WriterSTL.BINARY_MODE;
 
     /**
      * Constructor.
@@ -163,7 +163,7 @@ public class WriterSTL
     }
 
     /**
-     * <<<<<<< HEAD Returns the value of the attribute MODE.
+     * Returns the value of the attribute MODE.
      * @return the attribute MODE
      */
     public final int getWriteMode()
@@ -255,6 +255,11 @@ public class WriterSTL
 
     }
 
+    /**
+     * Writes a mesh in an binary file.
+     * @throws IOException
+     *             if there is a problem in the opening or the closing operation
+     */
     private void writeSTLB() throws IOException
     {
         BufferedOutputStream stream = null;

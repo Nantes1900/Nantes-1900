@@ -92,7 +92,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         // Steprithm : detection of buildings considering their size.
         for (final Mesh m : thingsList)
         {
-            if (m.size() >= SeparationBuildings.BLOCK_BUILDING_SIZE_ERROR)
+            if (m.size() >= SeparationBuildings.getBlockBuildingSize())
             {
                 buildingList.add(m);
             } else
@@ -130,7 +130,11 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         return this.ground;
     }
 
-    public int getProgression()
+    /**
+     * Getter.
+     * @return the progression of the treatment
+     */
+    public final int getProgression()
     {
         return this.progression;
     }
@@ -141,8 +145,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     private void groundExtraction()
     {
         // Searches for ground-oriented triangles with an error.
-        Mesh meshOriented = this.initialTotalMesh.orientedAs(this.groundNormal,
-                SeparationGroundBuilding.ANGLE_GROUND_ERROR);
+        Mesh meshOriented = this.getInitialTotalMesh().orientedAs(
+                this.groundNormal,
+                SeparationGroundBuilding.getAngleGroundError());
 
         List<Mesh> thingsList;
         List<Mesh> groundsList = new ArrayList<>();
@@ -158,8 +163,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
 
         // We consider the altitude of the blocks on an axis parallel to the
         // normal ground.
-        final double highDiff = this.initialTotalMesh.zMax()
-                - this.initialTotalMesh.zMin();
+        final double highDiff = this.getInitialTotalMesh().zMax()
+                - this.getInitialTotalMesh().zMin();
 
         // Builds an axis normal to the current ground.
         final Edge axisNormalGround = new Edge(new Point(0, 0, 0), new Point(
@@ -178,7 +183,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
                     .getCentroid());
             if (projectedPoint.getZ() < pAverage.getZ()
                     || projectedPoint.distance(pAverage) < highDiff
-                            * SeparationGroundBuilding.ALTITUDE_ERROR)
+                            * SeparationGroundBuilding.getAltitureError())
             {
 
                 groundsList.add(m);
@@ -192,7 +197,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         groundsList = new ArrayList<>();
         for (final Mesh m : thingsList)
         {
-            if (m.size() > SeparationGrounds.BLOCK_GROUNDS_SIZE_ERROR)
+            if (m.size() > SeparationGrounds.getBlockGroundsSizeError())
             {
                 groundsList.add(m);
             }
@@ -201,8 +206,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         // Now that we found the real grounds, we extract the other
         // triangles
         // which are almost ground-oriented to add them.
-        meshOriented = this.initialTotalMesh.orientedAs(this.groundNormal,
-                SeparationGroundBuilding.LARGE_ANGLE_GROUND_ERROR);
+        meshOriented = this.getInitialTotalMesh().orientedAs(this.groundNormal,
+                SeparationGroundBuilding.getLargeAngleGroundError());
 
         // If the new grounds are neighbours from the old ones, they are
         // added to the real grounds.
@@ -229,7 +234,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     }
 
     /**
-     * GroundNormal
+     * TODO. GroundNormal
      */
     public final void launchTreatment0()
     {
@@ -244,17 +249,17 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     }
 
     /**
-     * SeparationGroundBuilding
+     * TODO. SeparationGroundBuilding
      */
     public final void launchTreatment1()
     {
         this.groundExtraction();
-        this.initialBuilding = new Mesh(this.initialTotalMesh);
+        this.initialBuilding = new Mesh(this.getInitialTotalMesh());
         this.initialBuilding.remove(this.initialGround);
     }
 
     /**
-     * SeparationBuildings
+     * TODO. SeparationBuildings
      */
     public final void launchTreatment2()
     {
@@ -265,7 +270,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     }
 
     /**
-     * CarveWallsBetweenBuildings
+     * TODO. CarveWallsBetweenBuildings
      */
     public final void launchTreatment3()
     {
@@ -273,18 +278,18 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     }
 
     /**
-     * SeparationWallRoof
+     * TODO. SeparationWallRoof
      */
     public final void launchTreatment4()
     {
         for (Building b : this.getBuildings())
         {
-            b.separateWallRoof(this.gravityNormal);
+            b.separateWallRoof(this.getGravityNormal());
         }
     }
 
     /**
-     * SeparationWallsAndSeparationRoofs
+     * TODO. SeparationWallsAndSeparationRoofs
      */
     public final void launchTreatment6()
     {
@@ -300,7 +305,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     }
 
     /**
-     * DeterminateNeighbours
+     * TODO. DeterminateNeighbours
      */
     public final void launchTreatment7()
     {
@@ -311,7 +316,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     }
 
     /**
-     * SortNeighbours
+     * TODO. SortNeighbours
      */
     public final void launchTreatment8()
     {
@@ -323,7 +328,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     }
 
     /**
-     * RecomputationGround
+     * TODO. RecomputationGround
      */
     public final void launchTreatment10()
     {
@@ -334,7 +339,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     }
 
     /**
-     * SimplificationSurfaces
+     * TODO. SimplificationSurfaces
      */
     public final void launchTreatment9()
     {

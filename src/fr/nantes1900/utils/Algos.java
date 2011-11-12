@@ -35,7 +35,7 @@ public final class Algos
      */
     public static List<Mesh> blockExtract(final Mesh m)
     {
-        final Set<Mesh> thingsList = new HashSet<Mesh>();
+        final Set<Mesh> thingsList = new HashSet<>();
         final Mesh mesh = new Mesh(m);
 
         while (!mesh.isEmpty())
@@ -48,7 +48,7 @@ public final class Algos
 
         }
 
-        return new ArrayList<Mesh>(thingsList);
+        return new ArrayList<>(thingsList);
     }
 
     /**
@@ -68,7 +68,7 @@ public final class Algos
             final double angleNormalErrorFactor)
     {
 
-        final List<Mesh> thingsList = new ArrayList<Mesh>();
+        final List<Mesh> thingsList = new ArrayList<>();
         final List<Mesh> meshList = Algos.blockExtract(m);
 
         for (final Mesh mesh : meshList)
@@ -99,10 +99,11 @@ public final class Algos
      *            the list of meshes to complete with noise
      * @param noise
      *            the whole noise
+     * @return TODO.
      */
     public static Mesh blockTreatNoise(final List<Mesh> list, final Mesh noise)
     {
-        final List<Mesh> m = new ArrayList<Mesh>();
+        final List<Mesh> m = new ArrayList<>();
         final Mesh result = new Mesh();
 
         for (final Mesh e : list)
@@ -135,12 +136,12 @@ public final class Algos
      * @param largeAngleNormalErrorFactor
      *            the error on the orientation
      */
-    // FIXME : I changed this, but there is maybe debug or test to make...
+    // TODO : I changed this, but there is maybe debug or test to make...
     public static void blockTreatOrientedNoise(final List<Surface> surfaceList,
             final Mesh noise, final double largeAngleNormalErrorFactor)
     {
 
-        final List<Surface> list = new ArrayList<Surface>();
+        final List<Surface> list = new ArrayList<>();
 
         for (final Surface e : surfaceList)
         {
@@ -174,7 +175,7 @@ public final class Algos
             final Mesh noise, final double errorPlanes)
     {
 
-        final List<Mesh> m = new ArrayList<Mesh>();
+        final List<Mesh> m = new ArrayList<>();
 
         for (final Mesh e : list)
         {

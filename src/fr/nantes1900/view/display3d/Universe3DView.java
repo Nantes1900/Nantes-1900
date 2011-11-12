@@ -5,19 +5,15 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.media.j3d.AmbientLight;
-import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
-import javax.media.j3d.Material;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
-import javax.media.j3d.TriangleArray;
 import javax.swing.JPanel;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
@@ -33,18 +29,28 @@ import fr.nantes1900.control.display3d.NewMouseRotate;
 import fr.nantes1900.control.display3d.Universe3DController;
 
 /**
- * @author Daniel
+ * TODO.
+ * @author TODO.
  */
-
-public class Universe3DView extends JPanel {
-
-    private static final long serialVersionUID = 1L;
-
-    private List<MeshView> meshesList = new ArrayList<MeshView>();
-    private List<PolygonView> polygonsList = new ArrayList<PolygonView>();
+public class Universe3DView extends JPanel
+{
 
     /**
-     * The Universe3DController attached
+     * Version ID.
+     */
+    private static final long serialVersionUID = 1L;
+
+    /**
+     * TODO.
+     */
+    private List<MeshView> meshesList = new ArrayList<>();
+    /**
+     * TODO.
+     */
+    private List<PolygonView> polygonsList = new ArrayList<>();
+
+    /**
+     * The Universe3DController attached.
      */
     private Universe3DController u3DController;
 
@@ -55,11 +61,12 @@ public class Universe3DView extends JPanel {
 
     /**
      * Creates a new universe.
-     * @param Universe3DController
+     * @param u3DControllerIn
+     *            TODO.
      */
-    public Universe3DView(Universe3DController u3DController) {
-
-        this.u3DController = u3DController;
+    public Universe3DView(final Universe3DController u3DControllerIn)
+    {
+        this.u3DController = u3DControllerIn;
         this.setLayout(new BorderLayout());
 
         Canvas3D c = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
@@ -76,10 +83,10 @@ public class Universe3DView extends JPanel {
     /**
      * Adds a mesh to the things displayed...
      * @param meshView
+     *            TODO.
      */
-
-    public void addMesh(MeshView meshView) {
-
+    public final void addMesh(final MeshView meshView)
+    {
         TransformGroup transformGroup = createTransformGroup(meshView);
         this.simpleUniverse.addBranchGraph(this
                 .createSceneGraph(transformGroup));
@@ -95,24 +102,32 @@ public class Universe3DView extends JPanel {
     /**
      * Adds a mesh to the things displayed...
      * @param polygonView
+     *            TODO.
      */
-    public void addPolygon(PolygonView polygonView) {
+    public void addPolygon(final PolygonView polygonView)
+    {
         // TODO Auto-generated method stub
     }
 
     /**
      * Removes everything displayed !
      */
-    public void clearAllMeshes() {
+    public final void clearAllMeshes()
+    {
         Canvas3D c = this.simpleUniverse.getCanvas();
         this.simpleUniverse.cleanup();
         this.simpleUniverse = new SimpleUniverse(c);
         c.getView().setBackClipDistance(1000);
     }
 
-    @SuppressWarnings("static-method")
-    private BranchGroup createSceneGraph(TransformGroup transformGroup) {
-
+    /**
+     * TODO.
+     * @param transformGroup
+     *            TODO.
+     * @return TODO.
+     */
+    private BranchGroup createSceneGraph(final TransformGroup transformGroup)
+    {
         BranchGroup objRoot = new BranchGroup();
         objRoot.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
         objRoot.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -141,7 +156,14 @@ public class Universe3DView extends JPanel {
         return objRoot;
     }
 
-    private TransformGroup createTransformGroup(MeshView meshView) {
+    /**
+     * TODO.
+     * @param meshView
+     *            TODO.
+     * @return TODO.
+     */
+    private TransformGroup createTransformGroup(final MeshView meshView)
+    {
         BoundingSphere boundingSphere = new BoundingSphere(new Point3d(0.0,
                 0.0, 0.0), 100000);
 
@@ -212,23 +234,55 @@ public class Universe3DView extends JPanel {
         return transformGroup;
     }
 
-    public List<MeshView> getMeshesList() {
+    /**
+     * Getter.
+     * @return the list of meshes
+     */
+    public final List<MeshView> getMeshesList()
+    {
         return this.meshesList;
     }
 
-    public List<PolygonView> getPolygonsList() {
+    /**
+     * Getter.
+     * @return the list of polygons
+     */
+    public final List<PolygonView> getPolygonsList()
+    {
         return this.polygonsList;
     }
 
-    public SimpleUniverse getSimpleUniverse() {
+    /**
+     * Getter.
+     * @return the simple universe
+     */
+    public final SimpleUniverse getSimpleUniverse()
+    {
         return this.simpleUniverse;
     }
 
-    public void setSimpleUniverse(SimpleUniverse simpleUniverse) {
-        this.simpleUniverse = simpleUniverse;
+    /**
+     * Setter.
+     * @param simpleUniverseIn
+     *            the new simple universe
+     */
+    public final void setSimpleUniverse(final SimpleUniverse simpleUniverseIn)
+    {
+        this.simpleUniverse = simpleUniverseIn;
     }
 
-    public void translateCamera(double x, double y, double z) {
+    /**
+     * TODO.
+     * @param x
+     *            TODO.
+     * @param y
+     *            TODO.
+     * @param z
+     *            TODO.
+     */
+    public final void translateCamera(final double x, final double y,
+            final double z)
+    {
         ViewingPlatform camera = this.simpleUniverse.getViewingPlatform();
         TransformGroup cameraTransformGroup = camera.getMultiTransformGroup()
                 .getTransformGroup(0);

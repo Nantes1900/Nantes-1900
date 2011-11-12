@@ -32,10 +32,11 @@ import fr.nantes1900.models.basis.Triangle;
  */
 public class ParserSTL
 {
+
     /**
      * The set of triangle read in the file.
      */
-    private Set<Triangle>     triangleSet;
+    private Set<Triangle> triangleSet;
 
     /**
      * The map of point to compute the references of the points.
@@ -45,12 +46,12 @@ public class ParserSTL
     /**
      * The map of edge to compute the references of the edges.
      */
-    private Map<Edge, Edge>   edgeMap;
+    private Map<Edge, Edge> edgeMap;
 
     /**
      * The name of the file to read.
      */
-    private final String      fileName;
+    private final String fileName;
 
     /**
      * Private constructor.
@@ -209,8 +210,8 @@ public class ParserSTL
                 final String openingWord = brokenLine.nextToken();
 
                 Set<Triangle> triangleMap;
-                this.pointMap = new HashMap<Point, Point>();
-                this.edgeMap = new HashMap<Edge, Edge>();
+                this.pointMap = new HashMap<>();
+                this.edgeMap = new HashMap<>();
 
                 // If the first word is solid, this means it's an ASCII file.
                 // If it's a binary file, it will not be found.
@@ -245,10 +246,10 @@ public class ParserSTL
 
         final Scanner scanner = new Scanner(new FileReader(this.fileName));
 
-        this.triangleSet = new HashSet<Triangle>();
+        this.triangleSet = new HashSet<>();
 
         final Vector3d currentVector = new Vector3d();
-        final List<Point> currentPoints = new ArrayList<Point>();
+        final List<Point> currentPoints = new ArrayList<>();
 
         // Reading the file
         try
@@ -336,7 +337,7 @@ public class ParserSTL
         final InputStream stream = new BufferedInputStream(new FileInputStream(
                 this.fileName));
 
-        this.triangleSet = new HashSet<Triangle>();
+        this.triangleSet = new HashSet<>();
 
         final int headerSize = 80;
 
@@ -536,11 +537,11 @@ public class ParserSTL
         /**
          * Version attribute.
          */
-        private static final long   serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
         /**
          * Bound limit attribute.
          */
-        private static final double BOUND_LIMIT      = 1e5;
+        private static final double BOUND_LIMIT = 1e5;
 
         /**
          * Private constructor.

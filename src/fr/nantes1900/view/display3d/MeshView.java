@@ -1,7 +1,6 @@
 package fr.nantes1900.view.display3d;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.TriangleArray;
@@ -13,15 +12,34 @@ import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
 
+/**
+ * TODO.
+ * @author TODO.
+ */
 public class MeshView extends TriangleArray
 {
+
+    /**
+     * TODO.
+     */
     private ArrayList<TriangleView> trianglesViewList;
 
-    private Point                   centroid;
+    /**
+     * TODO.
+     */
+    private Point centroid;
 
-    private Mesh                    mesh;
+    /**
+     * TODO.
+     */
+    private Mesh mesh;
 
-    public MeshView(Mesh m)
+    /**
+     * TODO.
+     * @param m
+     *            TODO.
+     */
+    public MeshView(final Mesh m)
     {
         super(m.size() * 3, GeometryArray.COORDINATES | GeometryArray.COLOR_3
                 | GeometryArray.NORMALS | GeometryArray.TEXTURE_COORDINATE_2);
@@ -30,10 +48,10 @@ public class MeshView extends TriangleArray
         this.centroid = m.getCentroid();
 
         this.trianglesViewList = new ArrayList<>();
-       for(Triangle triangle: this.mesh){
-    	   this.trianglesViewList.add(new TriangleView(triangle));
-       }
-        
+        for (Triangle triangle : this.mesh)
+        {
+            this.trianglesViewList.add(new TriangleView(triangle));
+        }
 
         this.setCapability(ALLOW_COLOR_WRITE);
         this.setCapability(ALLOW_COLOR_READ);
@@ -56,65 +74,86 @@ public class MeshView extends TriangleArray
                     .getP3().getX(), triangleView.getTriangle().getP3().getY(),
                     triangleView.getTriangle().getP3().getZ()));
 
-            this.setNormal(i,   convertNormal(triangleView.getTriangle()));
-            this.setNormal(i+1, convertNormal(triangleView.getTriangle()));
-            this.setNormal(i+2, convertNormal(triangleView.getTriangle()));
-           
+            this.setNormal(i, convertNormal(triangleView.getTriangle()));
+            this.setNormal(i + 1, convertNormal(triangleView.getTriangle()));
+            this.setNormal(i + 2, convertNormal(triangleView.getTriangle()));
 
-            // FIXME by Siju !
-           
-
+            // TODO : method setTextureCoordinate deprecated !
             this.setTextureCoordinate(i, new Point2f(0.0f, 1.0f));
             this.setTextureCoordinate(i + 1, new Point2f(0.0f, 0.0f));
             this.setTextureCoordinate(i + 2, new Point2f(1.0f, 0.0f));
-            
 
             i = i + 3;
         }
 
     }
-    
-    public ArrayList<TriangleView> getTriangleArray(){
-    	return this.trianglesViewList;
+
+    /**
+     * TODO.
+     * @return TODO.
+     */
+    public final ArrayList<TriangleView> getTriangleArray()
+    {
+        return this.trianglesViewList;
     }
 
-    // FIXME
-    public void select(int i)
+    /**
+     * TODO.
+     * @param i
+     *            TODO.
+     */
+    public final void select(int i)
     {
         this.trianglesViewList.get(i).setSelected(true);
+        // TODO : method deprecated.
         this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
         this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
         this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
     }
 
-    public void selectOrUnselect(int i){
-    	if(this.trianglesViewList.get(i).isSelected()){
-    		this.trianglesViewList.get(i).setSelected(false);
-    		
-    		this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
-            this.setTextureCoordinate(i * 3 + 1, new Point2f(0.0f, 0.0f));
-            this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
-    	}
-    	else{
-    		this.trianglesViewList.get(i).setSelected(true);
-    		
-    		this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
-            this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
-            this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
-    	}
-    }
-    // FIXME
-    public void changeColor(int i)
+    /**
+     * TODO.
+     * @param i
+     *            TODO.
+     */
+    public final void selectOrUnselect(final int i)
     {
         if (this.trianglesViewList.get(i).isSelected())
         {
+            this.trianglesViewList.get(i).setSelected(false);
+
+            // TODO : method deprecated
+            this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
+            this.setTextureCoordinate(i * 3 + 1, new Point2f(0.0f, 0.0f));
+            this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+        } else
+        {
+            this.trianglesViewList.get(i).setSelected(true);
+
+            // TODO : method deprecated
+            this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
+            this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
+            this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+        }
+    }
+
+    /**
+     * TODO.
+     * @param i
+     *            TODO.
+     */
+    public final void changeColor(final int i)
+    {
+        if (this.trianglesViewList.get(i).isSelected())
+        {
+            // TODO : method deprecated
             this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
             this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
             this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
         } else
         {
-            
 
+            // TODO : method deprecated
             this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
             this.setTextureCoordinate(i * 3 + 1, new Point2f(0.0f, 0.0f));
             this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
@@ -122,12 +161,23 @@ public class MeshView extends TriangleArray
 
     }
 
-    public Point getCentroid()
+    /**
+     * Getter.
+     * @return the centroid point
+     */
+    public final Point getCentroid()
     {
         return this.centroid;
     }
-    
-    public static Vector3f convertNormal(Triangle triangle) {
+
+    /**
+     * TODO.
+     * @param triangle
+     *            TODO.
+     * @return TODO.
+     */
+    public static Vector3f convertNormal(final Triangle triangle)
+    {
         Vector3f normalFloat = new Vector3f(
                 (float) triangle.getNormal().getX(), (float) triangle
                         .getNormal().getY(), (float) triangle.getNormal()

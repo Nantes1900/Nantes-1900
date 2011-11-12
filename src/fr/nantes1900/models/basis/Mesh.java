@@ -21,7 +21,7 @@ public class Mesh extends HashSet<Triangle>
     /**
      * Static integer to create new ID objects.
      */
-    private static int        currentID;
+    private static int currentID;
 
     /**
      * Version attribute.
@@ -31,7 +31,7 @@ public class Mesh extends HashSet<Triangle>
     /**
      * Object ID.
      */
-    private final int         iD;
+    private final int iD;
 
     /**
      * Void constructor.
@@ -82,8 +82,8 @@ public class Mesh extends HashSet<Triangle>
             throw new InvalidParameterException();
         }
 
-        final Set<Point> set = new HashSet<Point>();
-        final Set<Triangle> mesh = new HashSet<Triangle>();
+        final Set<Point> set = new HashSet<>();
+        final Set<Triangle> mesh = new HashSet<>();
 
         // Make a list of all the points, and base change them.
         for (final Triangle f : this)
@@ -241,7 +241,8 @@ public class Mesh extends HashSet<Triangle>
                 vect3);
         final double[][] matrixInv = MatrixMethod.getInversMatrix(matrix);
 
-        final double[] ds = {-d1, -d2, -d3};
+        final double[] ds = { -d1, -d2, -d3
+        };
         final double[] p = MatrixMethod.changeBase(ds, matrixInv);
         return new Point(p[0], p[1], p[2]);
     }
@@ -282,7 +283,8 @@ public class Mesh extends HashSet<Triangle>
     {
 
         final double convertDegreesToRadian = 180 / Math.PI;
-        return this.averageNormal().angle(w2.averageNormal()) < littleAngleNormalErrorFactor
+        return this.averageNormal().angle(w2.averageNormal()) 
+                < littleAngleNormalErrorFactor
                 / convertDegreesToRadian;
     }
 
@@ -296,11 +298,11 @@ public class Mesh extends HashSet<Triangle>
     public final double minimalDistance(final Mesh mesh)
     {
 
-        final Set<Point> hash1 = new HashSet<Point>();
+        final Set<Point> hash1 = new HashSet<>();
         final Polygon poly1 = this.returnUnsortedBounds();
         hash1.addAll(poly1.getPointList());
 
-        final Set<Point> hash2 = new HashSet<Point>();
+        final Set<Point> hash2 = new HashSet<>();
         final Polygon poly2 = mesh.returnUnsortedBounds();
         hash2.addAll(poly2.getPointList());
 

@@ -3,15 +3,29 @@ package fr.nantes1900.models.extended;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Polygon;
 
+/**
+ * Implements a roof as a surface.
+ * @author Daniel
+ */
 public class Roof extends Surface
 {
 
-    public Roof(Mesh m)
+    /**
+     * Constructor from a mesh.
+     * @param m
+     *            the mesh representing the roof
+     */
+    public Roof(final Mesh m)
     {
         super(m);
     }
 
-    public Roof(Polygon p)
+    /**
+     * Constructor from a polygon.
+     * @param p
+     *            the polygon representing the roof
+     */
+    public Roof(final Polygon p)
     {
         super(p);
     }

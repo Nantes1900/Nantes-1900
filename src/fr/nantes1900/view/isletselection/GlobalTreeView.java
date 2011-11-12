@@ -16,13 +16,21 @@ import javax.swing.tree.DefaultMutableTreeNode;
  */
 public class GlobalTreeView extends JPanel
 {
+
     /**
      * Version ID.
      */
     private static final long serialVersionUID = 1L;
 
-    private JTree             tree;
-    private JScrollPane       spTree;
+    /**
+     * TODO.
+     */
+    private JTree tree;
+
+    /**
+     * TODO.
+     */
+    private JScrollPane spTree;
 
     /**
      * Empty constructor.
@@ -34,7 +42,12 @@ public class GlobalTreeView extends JPanel
         this.add(this.spTree, BorderLayout.CENTER);
     }
 
-    public void displayDirectory(File newDirectory)
+    /**
+     * TODO.
+     * @param newDirectory
+     *            TODO.
+     */
+    public final void displayDirectory(final File newDirectory)
     {
         FileNode newDirectoryNode = new FileNode(newDirectory);
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(
@@ -45,8 +58,15 @@ public class GlobalTreeView extends JPanel
         this.spTree.setViewportView(this.tree);
     }
 
-    public void fillMyTree(DefaultMutableTreeNode root,
-            FileNode newDirectoryNode)
+    /**
+     * TODO.
+     * @param root
+     *            TODO.
+     * @param newDirectoryNode
+     *            TODO.
+     */
+    public final void fillMyTree(final DefaultMutableTreeNode root,
+            final FileNode newDirectoryNode)
     {
         File[] childrenFiles = newDirectoryNode.listFiles();
         if (childrenFiles.length > 0)
@@ -69,30 +89,48 @@ public class GlobalTreeView extends JPanel
         }
     }
 
-    public JTree getTree()
+    /**
+     * TODO.
+     * @return TODO.
+     */
+    public final JTree getTree()
     {
         return this.tree;
     }
 
+    /**
+     * TODO.
+     * @author TODO.
+     */
     public class FileNode extends File
     {
+
         /**
-		 * 
-		 */
+         * TODO.
+         */
         private static final long serialVersionUID = 1L;
 
-        public FileNode(File file)
+        /**
+         * TODO.
+         * @param file
+         *            TODO.
+         */
+        public FileNode(final File file)
         {
             super(file.getAbsolutePath());
         }
 
-        public String getEntireName()
+        /**
+         * TODO.
+         * @return TODO.
+         */
+        public final String getEntireName()
         {
             return super.toString();
         }
 
         @Override
-        public String toString()
+        public final String toString()
         {
             return super.getName();
         }

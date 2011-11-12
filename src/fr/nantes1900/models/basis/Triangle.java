@@ -1,6 +1,5 @@
 package fr.nantes1900.models.basis;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,7 +18,7 @@ public class Triangle
     /**
      * Array of three points of the triangle.
      */
-    private final Point[]  points = new Point[3];
+    private final Point[] points = new Point[3];
 
     /**
      * Normal of the triangle.
@@ -29,7 +28,7 @@ public class Triangle
     /**
      * Array of three edges of the triangle.
      */
-    private final Edge[]   edges  = new Edge[3];
+    private final Edge[] edges = new Edge[3];
 
     /**
      * Constructor of the triangle.
@@ -57,25 +56,6 @@ public class Triangle
         this.points[1] = point1;
         this.points[2] = point2;
         this.normal.set(normalNew);
-        this.edges[0] = edge1;
-        this.edges[1] = edge2;
-        this.edges[2] = edge3;
-        this.edges[0].addTriangle(this);
-        this.edges[1].addTriangle(this);
-        this.edges[2].addTriangle(this);
-    }
-    
-    public Triangle(final Point point0, final Point point1, final Point point2,
-            final Vector3d normalNew) {
-        
-        this.points[0] = point0;
-        this.points[1] = point1;
-        this.points[2] = point2;
-        this.normal.set(normalNew);
-        
-    	Edge edge1 = new Edge(point0, point1);
-        Edge edge2 = new Edge(point1, point2);
-        Edge edge3 = new Edge(point0, point2);
         this.edges[0] = edge1;
         this.edges[1] = edge2;
         this.edges[2] = edge3;
@@ -235,7 +215,7 @@ public class Triangle
      */
     public final List<Triangle> getNeighbours()
     {
-        final List<Triangle> list = new ArrayList<Triangle>();
+        final List<Triangle> list = new ArrayList<>();
         Triangle other;
 
         for (final Edge e : this.edges)
@@ -318,7 +298,7 @@ public class Triangle
      */
     public final List<Double> getPointsAsCoordinates()
     {
-        final List<Double> list = new ArrayList<Double>();
+        final List<Double> list = new ArrayList<>();
         for (final Point p : this.points)
         {
             for (final double d : p.getPointAsCoordinates())

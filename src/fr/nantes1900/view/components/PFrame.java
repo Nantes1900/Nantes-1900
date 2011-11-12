@@ -16,8 +16,12 @@ import javax.swing.JPanel;
  * Personnalized JFrame with a status bar on the bottom and a different look.
  * @author Camille
  */
+/**
+ * @author Daniel
+ */
 public class PFrame extends JFrame
 {
+
     /**
      * 
      */
@@ -26,12 +30,12 @@ public class PFrame extends JFrame
      * The status bar placed at the bottom which displays information for the
      * user.
      */
-    private JPanel            statusBar;
+    private JPanel statusBar;
 
     /**
      * Panel containing the other components.
      */
-    private JPanel            pComponents;
+    private JPanel pComponents;
 
     /**
      * Creates a new frame with an empty status bar.
@@ -51,12 +55,21 @@ public class PFrame extends JFrame
         this.getContentPane().add(this.pComponents, BorderLayout.CENTER);
     }
 
-    public JPanel getComponentsPanel()
+    /**
+     * TODO.
+     * @return TODO.
+     */
+    public final JPanel getComponentsPanel()
     {
         return this.pComponents;
     }
 
-    public void setStatusBarText(String text)
+    /**
+     * TODO.
+     * @param text
+     *            TODO.
+     */
+    public final void setStatusBarText(final String text)
     {
         this.statusBar.removeAll();
         this.statusBar.add(new JLabel(text));

@@ -61,7 +61,8 @@ public class Point
      */
     public final void changeBase(final double[][] matrix)
     {
-        final double[] coords = {this.x, this.y, this.z,};
+        final double[] coords = { this.x, this.y, this.z,
+        };
         this.set(MatrixMethod.changeBase(coords, matrix));
     }
 
@@ -121,7 +122,8 @@ public class Point
      */
     public final double[] getPointAsCoordinates()
     {
-        return new double[] {this.x, this.y, this.z,};
+        return new double[] { this.x, this.y, this.z,
+        };
     }
 
     /**

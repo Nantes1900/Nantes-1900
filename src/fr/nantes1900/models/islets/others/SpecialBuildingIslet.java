@@ -12,8 +12,10 @@ public class SpecialBuildingIslet extends AbstractIslet
 
     /**
      * Constructor.
+     * @param m
+     *            TODO.
      */
-    public SpecialBuildingIslet(Mesh m)
+    public SpecialBuildingIslet(final Mesh m)
     {
         super(m);
     }
@@ -24,7 +26,7 @@ public class SpecialBuildingIslet extends AbstractIslet
      */
     public final Mesh getMesh()
     {
-        return this.initialTotalMesh;
+        return this.getInitialTotalMesh();
     }
 
     /**
