@@ -112,16 +112,16 @@ public class IsletSelectionController
             mesh.add(triangle);
             writer.setMesh(mesh);
             writer.write();
-            System.out.println("Enregistré");
+            System.out.println("Enregistre");
             normalSaved = true;
         } else
         {
             JOptionPane.showMessageDialog(this.isView,
-                    "Sélectionnez un îlot dans l'arbre\npuis "
-                            + "sélectionnez des triangles pour créer la "
-                            + "normale\nou sélectionnez \"Utiliser la normale "
-                            + "orientée selon la gravité\n",
-                    "Aucun îlot ouvert", JOptionPane.ERROR_MESSAGE);
+                    "Sé–˜ectionnez un é »ot dans l'arbre\npuis "
+                            + "sé–˜ectionnez des triangles pour cré–‘r la "
+                            + "normale\nou sé–˜ectionnez \"Utiliser la normale "
+                            + "orienté–‘ selon la gravité–ˆn",
+                    "Aucun é »ot ouvert", JOptionPane.ERROR_MESSAGE);
         }
 
         return normalSaved;
@@ -203,7 +203,7 @@ public class IsletSelectionController
         } else
         {
             JOptionPane.showMessageDialog(this.isView,
-                    "Veuillez sélectionner un îlot et une normale pour "
+                    "Veuillez sé–˜ectionner un é »ot et une normale pour "
                             + "lancer le traitement", "Traitement impossible",
                     JOptionPane.ERROR_MESSAGE);
         }
@@ -227,10 +227,10 @@ public class IsletSelectionController
         if (!gravityNormal.exists())
         {
             JOptionPane.showMessageDialog(this.isView,
-                    "La normale orientée selon la gravité n'a pas été trouvé "
-                            + "dans le dossier ouvert.\nVeuillez en créer "
+                    "La normale orienté–‘ selon la gravitï¿½n'a pas é– ï¿½trouvï¿½"
+                            + "dans le dossier ouvert.\nVeuillez en cré–‘r "
                             + "une nouvelle.",
-                    "Normale orientée selon la gravité inexistante",
+                    "Normale orienté–‘ selon la gravitï¿½inexistante",
                     JOptionPane.INFORMATION_MESSAGE);
             this.aController.setComputeNormalMode();
             this.isView.setStatusBarText(FileTools.readHelpMessage(

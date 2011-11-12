@@ -168,9 +168,7 @@ public class Universe3DView extends JPanel {
 
         Shape3D shape = new Shape3D();
 
-        for (TriangleArray ta : meshView) {
-            shape.addGeometry(ta);
-        }
+        shape.addGeometry(meshView);
 
         // FIXME
         /*

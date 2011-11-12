@@ -3,6 +3,7 @@ package fr.nantes1900.control.display3d;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +16,7 @@ import com.sun.j3d.utils.picking.PickTool;
 
 import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.TriangleView;
 import fr.nantes1900.view.display3d.Universe3DView;
 
@@ -34,6 +36,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     private ArrayList<TriangleView> trianglesViewSelected;
 
     // private ArrayList<PolygonView> polygonsViewSelected;
+    private int xPressed;
+    private int yPressed;
 
     public Universe3DController(
             IsletSelectionController isletSelectionController) {
@@ -67,31 +71,54 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     public void mouseClicked(MouseEvent e) {
         int buttonDown = e.getButton();
 
-        if (buttonDown == MouseEvent.BUTTON1) { // Left button of the mouse
+        if (buttonDown == MouseEvent.BUTTON1) {
+
+            // Bouton gauche enfonc
+
             this.pickCanvas.setShapeLocation(e);
             PickResult result = this.pickCanvas.pickClosest();
             if (result == null) {
                 System.out.println("Nothing picked");
             } else {
-                PickIntersection pi = result.getIntersection(0);
-                TriangleView ta = (TriangleView) pi.getGeometryArray();
-                if (ta != null) {
-                    if (this.trianglesViewSelected.contains(ta)) {
-                        this.trianglesViewSelected.remove(ta);
-                        // FIXME
-                        // ta.changeColor(Color.blue);
-                    } else {
-                        this.trianglesViewSelected.add(ta);
-                        // FIXME
-                        // ta.changeColor(Color.red);
-                    }
-                    this.mouseRotate.setCenter(ta);
-                } else {
-                    System.out.println("null");
-                }
+
+            	PickIntersection PI=result.getIntersection(0);
+            	int []PointIndex=PI.getPrimitiveVertexIndices();
+            	int TriangleIndex=PointIndex[0]/3;
+            	MeshView triangleMeshView=(MeshView)PI.getGeometryArray();
+            	triangleMeshView.selectOrUnselect(TriangleIndex);         
+                mouseRotate.setCenter(triangleMeshView.getTriangleArray().get(TriangleIndex));
+
             }
         }
     }
+//    public void mouseClicked(MouseEvent e) {
+//        int buttonDown = e.getButton();
+//
+//        if (buttonDown == MouseEvent.BUTTON1) { // Left button of the mouse
+//            this.pickCanvas.setShapeLocation(e);
+//            PickResult result = this.pickCanvas.pickClosest();
+//            if (result == null) {
+//                System.out.println("Nothing picked");
+//            } else {
+//                PickIntersection pi = result.getIntersection(0);
+//                TriangleView ta = (TriangleView) pi.getGeometryArray();
+//                if (ta != null) {
+//                    if (this.trianglesViewSelected.contains(ta)) {
+//                        this.trianglesViewSelected.remove(ta);
+//                        // FIXME
+//                        // ta.changeColor(Color.blue);
+//                    } else {
+//                        this.trianglesViewSelected.add(ta);
+//                        // FIXME
+//                        // ta.changeColor(Color.red);
+//                    }
+//                    this.mouseRotate.setCenter(ta);
+//                } else {
+//                    System.out.println("null");
+//                }
+//            }
+//        }
+//    }
 
     @Override
     public void mouseDragged(MouseEvent arg0) {
@@ -120,12 +147,32 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     @Override
     public void mousePressed(MouseEvent e) {
         System.out.println("Mouse Pressed");
+        this.xPressed = e.getX();
+        this.yPressed = e.getY();
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        // TODO Auto-generated method stub
+        int buttonDown = e.getButton();
+        if (buttonDown == MouseEvent.BUTTON1) {
+            for (int x = this.xPressed; x < e.getX(); x = x + 2) {
+                for (int y = this.yPressed; y < e.getY(); y = y + 2) {
+                    this.pickCanvas.setShapeLocation(x, y);
+                    PickResult result = this.pickCanvas.pickClosest();
+                    if (result == null) {
+                        System.out.println("Nothing picked");
+                    } else {
+                    	PickIntersection PI=result.getIntersection(0);
+                    	int []PointIndex=PI.getPrimitiveVertexIndices();
+                    	int TriangleIndex=PointIndex[0]/3;
+                    	MeshView triangleMeshView=(MeshView)PI.getGeometryArray();
+                        triangleMeshView.select(TriangleIndex);
+                        mouseRotate.setCenter(triangleMeshView.getTriangleArray().get(TriangleIndex));
 
+                    }
+                }
+            }
+        }
     }
 
     public void setMouseRotate(NewMouseRotate mouseRotate) {

@@ -56,7 +56,7 @@ public class ActionsView extends JPanel
                 FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_TOOLTIP),
                 FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_MESSAGE),
                 FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_TITLE));
-        this.cbGravityGround = new JCheckBox("Utiliser la normale orientée selon la gravité");
+        this.cbGravityGround = new JCheckBox("Utiliser la normale orientée selon la gravite");
         
         this.setLayout(new GridBagLayout());
         this.add(this.bOpen,
