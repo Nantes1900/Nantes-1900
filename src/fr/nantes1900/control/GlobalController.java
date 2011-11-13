@@ -12,6 +12,7 @@ import fr.nantes1900.control.isletselection.IsletSelectionController;
  */
 public class GlobalController
 {
+
     /**
      * The controller of the selection window.
      */
@@ -30,11 +31,17 @@ public class GlobalController
      * Launches the treatment of an islet and opens the new window.
      * @param isletFile
      *            The file containing data of the islet to treat.
-     * @param biController 
+     * @param biController
      */
-    public void launchIsletTreatment(File isletFile, BuildingsIsletController biController)
+    public void launchIsletTreatment(File isletFile,
+            BuildingsIsletController biController)
     {
-        System.out.println("Traitement lancé sur l'îlot : "
+        // Launches the base change.
+        biController.launchNextTreatment();
+        System.out.println("Traitement lancï¿½ sur l'ï¿½lot : "
                 + isletFile.getPath());
+
+        // TODO : don't forget to pass reference to the biController to the
+        // IsletProcessController :).
     }
 }
