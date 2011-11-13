@@ -74,7 +74,7 @@ public class IsletSelectionController
     /**
      * Creates a new controller to handle the islet selection window.
      * @param parentControllerIn
-     *            TODO by Camille and Luc.
+     *            Controller which handles this one.
      */
     public IsletSelectionController(final GlobalController parentControllerIn)
     {
@@ -92,8 +92,10 @@ public class IsletSelectionController
     }
 
     /**
-     * TODO by Camille and Luc.
-     * @return TODO by Camille and Luc.
+     * Computes the gravity normal and stores it in a gravity_normal.stl file in the opened directory.
+     * @return
+     *      true - the normal has been correctly saved\n
+     *      false - the normal couldn't been stored because no file or triangles are selected.
      */
     public final boolean computeGravityNormal()
     {
@@ -128,7 +130,7 @@ public class IsletSelectionController
     }
 
     /**
-     * TODO by Camille and Luc.
+     * Computes the ground normal.
      */
     public final void computeGroundNormal()
     {
@@ -137,9 +139,9 @@ public class IsletSelectionController
     }
 
     /**
-     * TODO by Camille and Luc.
+     * Displays a file in the 3d universe selected in the tree.
      * @param node
-     *            TODO by Camille and Luc.
+     *            The node of the tree corresponding to the file to display.
      */
     public final void displayFile(final DefaultMutableTreeNode node)
     {
@@ -167,8 +169,9 @@ public class IsletSelectionController
     }
 
     /**
-     * TODO by Camille and Luc.
-     * @return TODO by Camille and Luc.
+     * Returns the building islet controller.
+     * @return 
+     *      The building islet controller.
      */
     public final BuildingsIsletController getBiController()
     {
@@ -179,7 +182,9 @@ public class IsletSelectionController
      * Launches the treatment of the selected file which is an islet file. The
      * verification that the selected file is an islet file is made at the
      * selection in the tree.
-     * @return TODO by Camille and Luc.
+     * @return 
+     *          true - the process of the selected islet has been correctly launched\n
+     *          false - the process wasn't launch, because no islet or ground normal are selected.
      */
     public final boolean launchIsletTreatment()
     {

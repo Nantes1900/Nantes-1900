@@ -23,42 +23,42 @@ public class HelpButton extends JButton implements MouseListener
     /**
      * The current color of the text.
      */
-    private Color textColorCurrent;
+    private Color             textColorCurrent;
 
     /**
      * The normal wanted color for the text.
      */
-    private Color textColor = Color.BLUE;
+    private Color             textColor        = Color.BLUE;
 
     /**
      * The current value for the background.
      */
-    private Color backgroundColorCurrent;
+    private Color             backgroundColorCurrent;
 
     /**
      * The normal wanted color for the background.
      */
-    private Color backgroundColor = new Color(240, 240, 240);
+    private Color             backgroundColor  = new Color(240, 240, 240);
 
     /**
      * Indicates if the mouse is on the button area.
      */
-    private boolean in = false;
+    private boolean           in               = false;
 
     /**
      * Indicates if the left button of the mouse is pressed.
      */
-    private boolean pressed = false;
+    private boolean           pressed          = false;
 
     /**
-     * TODO.
+     * Message to display in the pop-up.
      */
-    private String helpMessage;
+    private String            helpMessage;
 
     /**
-     * TODO.
+     * Title of the pop-up.
      */
-    private String title;
+    private String            title;
 
     /**
      * 
@@ -74,9 +74,10 @@ public class HelpButton extends JButton implements MouseListener
     }
 
     /**
-     * TODO.
+     * Creates a new help button with the given tooltip. If no message is set,
+     * no pop-up is showed when the button is clicked.
      * @param tooltip
-     *            TODO.
+     *            The tooltip to associate with this button.
      */
     public HelpButton(final String tooltip)
     {
@@ -84,11 +85,11 @@ public class HelpButton extends JButton implements MouseListener
     }
 
     /**
-     * TODO.
+     * Creates a new help button with the given message and tooltip.
      * @param tooltip
-     *            TODO.
+     *            The tooltip to associate with this button.
      * @param helpMessageIn
-     *            TODO.
+     *            Message to show in a pop-up when the button is clicked.
      */
     public HelpButton(final String tooltip, final String helpMessageIn)
     {
@@ -96,13 +97,14 @@ public class HelpButton extends JButton implements MouseListener
     }
 
     /**
-     * TODO.
+     * Creates a new help button with the given message, tooltip and pop-up
+     * title.
      * @param tooltip
-     *            TODO.
+     *            The tooltip to associate with this button.
      * @param helpMessageIn
-     *            TODO.
+     *            Message to show in a pop-up when the button is clicked.
      * @param titleIn
-     *            TODO.
+     *            The title of the pop-up.
      */
     public HelpButton(final String tooltip, final String helpMessageIn,
             final String titleIn)
@@ -162,7 +164,6 @@ public class HelpButton extends JButton implements MouseListener
     @Override
     public void mouseClicked(final MouseEvent arg0)
     {
-        // TODO.
     }
 
     @Override
@@ -222,7 +223,6 @@ public class HelpButton extends JButton implements MouseListener
 
             if (!this.helpMessage.isEmpty())
             {
-                // TODO : title masque un attribut.
                 String title = (this.title.isEmpty()) ? "Informations complémentaires"
                         : this.title;
                 JOptionPane.showMessageDialog(this, this.helpMessage, title,
