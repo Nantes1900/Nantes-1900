@@ -92,10 +92,10 @@ public class IsletSelectionController
     }
 
     /**
-     * Computes the gravity normal and stores it in a gravity_normal.stl file in the opened directory.
-     * @return
-     *      true - the normal has been correctly saved\n
-     *      false - the normal couldn't been stored because no file or triangles are selected.
+     * Computes the gravity normal and stores it in a gravity_normal.stl file in
+     * the opened directory.
+     * @return true - the normal has been correctly saved\n false - the normal
+     *         couldn't been stored because no file or triangles are selected.
      */
     public final boolean computeGravityNormal()
     {
@@ -122,8 +122,8 @@ public class IsletSelectionController
                     "S閘ectionnez un 頻ot dans l'arbre\npuis "
                             + "s閘ectionnez des triangles pour cr閑r la "
                             + "normale\nou s閘ectionnez \"Utiliser la normale "
-                            + "orient閑 selon la gravit閈n",
-                    "Aucun 頻ot ouvert", JOptionPane.ERROR_MESSAGE);
+                            + "orient閑 selon la gravit閈n", "Aucun 頻ot ouvert",
+                    JOptionPane.ERROR_MESSAGE);
         }
 
         return normalSaved;
@@ -170,8 +170,7 @@ public class IsletSelectionController
 
     /**
      * Returns the building islet controller.
-     * @return 
-     *      The building islet controller.
+     * @return The building islet controller.
      */
     public final BuildingsIsletController getBiController()
     {
@@ -182,9 +181,9 @@ public class IsletSelectionController
      * Launches the treatment of the selected file which is an islet file. The
      * verification that the selected file is an islet file is made at the
      * selection in the tree.
-     * @return 
-     *          true - the process of the selected islet has been correctly launched\n
-     *          false - the process wasn't launch, because no islet or ground normal are selected.
+     * @return true - the process of the selected islet has been correctly
+     *         launched\n false - the process wasn't launch, because no islet or
+     *         ground normal are selected.
      */
     public final boolean launchIsletTreatment()
     {
@@ -228,7 +227,7 @@ public class IsletSelectionController
 
         // checks if the gravity normal already exists
         File gravityNormal = new File(this.openedDirectory.getPath()
-                + "/gravity_ground.stl");
+                + "/gravity_normal.stl");
         if (!gravityNormal.exists())
         {
             JOptionPane.showMessageDialog(this.isView,
