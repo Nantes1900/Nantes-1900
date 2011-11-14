@@ -52,7 +52,7 @@ public class IsletSelectionController
     private BuildingsIsletController biController;
 
     /**
-     * View allowing to select an islet and launch a treatment.
+     * View allowing to select an islet and launch a process.
      */
     private IsletSelectionView isView;
 
@@ -74,7 +74,7 @@ public class IsletSelectionController
     /**
      * Creates a new controller to handle the islet selection window.
      * @param parentControllerIn
-     *            TODO by Camille and Luc.
+     *            Controller which handles this one.
      */
     public IsletSelectionController(final GlobalController parentControllerIn)
     {
@@ -92,8 +92,10 @@ public class IsletSelectionController
     }
 
     /**
-     * TODO by Camille and Luc.
-     * @return TODO by Camille and Luc.
+     * Computes the gravity normal and stores it in a gravity_normal.stl file in
+     * the opened directory.
+     * @return true - the normal has been correctly saved\n false - the normal
+     *         couldn't been stored because no file or triangles are selected.
      */
     public final boolean computeGravityNormal()
     {
@@ -101,6 +103,7 @@ public class IsletSelectionController
         if (this.selectedFile != null
                 && !this.u3DController.getTrianglesSelected().isEmpty())
         {
+            // TODO Move this code
             WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
                     + "/gravity_normal.stl");
             Point point = new Point(1, 1, 1);
@@ -120,15 +123,15 @@ public class IsletSelectionController
                     "S閘ectionnez un 頻ot dans l'arbre\npuis "
                             + "s閘ectionnez des triangles pour cr閑r la "
                             + "normale\nou s閘ectionnez \"Utiliser la normale "
-                            + "orient閑 selon la gravit閈n",
-                    "Aucun 頻ot ouvert", JOptionPane.ERROR_MESSAGE);
+                                    + "orient閑 selon la gravit閈n",
+                            "Aucun 頻ot ouvert", JOptionPane.ERROR_MESSAGE);
         }
 
         return normalSaved;
     }
 
     /**
-     * TODO by Camille and Luc.
+     * Computes the ground normal.
      */
     public final void computeGroundNormal()
     {
@@ -137,9 +140,9 @@ public class IsletSelectionController
     }
 
     /**
-     * TODO by Camille and Luc.
+     * Displays a file in the 3d universe selected in the tree.
      * @param node
-     *            TODO by Camille and Luc.
+     *            The node of the tree corresponding to the file to display.
      */
     public final void displayFile(final DefaultMutableTreeNode node)
     {
@@ -167,8 +170,8 @@ public class IsletSelectionController
     }
 
     /**
-     * TODO by Camille and Luc.
-     * @return TODO by Camille and Luc.
+     * Returns the building islet controller.
+     * @return The building islet controller.
      */
     public final BuildingsIsletController getBiController()
     {
@@ -179,9 +182,11 @@ public class IsletSelectionController
      * Launches the treatment of the selected file which is an islet file. The
      * verification that the selected file is an islet file is made at the
      * selection in the tree.
-     * @return TODO by Camille and Luc.
+     * @return true - the process of the selected islet has been correctly
+     *         launched\n false - the process wasn't launch, because no islet or
+     *         ground normal are selected.
      */
-    public final boolean launchIsletTreatment()
+    public final boolean launchIsletProcess()
     {
         boolean processLaunched = false;
 
@@ -197,7 +202,7 @@ public class IsletSelectionController
             {
                 this.biController.useGravityNormalAsGroundNormal();
             }
-            this.parentController.launchIsletTreatment(this.selectedFile,
+            this.parentController.launchIsletProcess(this.selectedFile,
                     this.biController);
             processLaunched = true;
         } else
@@ -223,7 +228,7 @@ public class IsletSelectionController
 
         // checks if the gravity normal already exists
         File gravityNormal = new File(this.openedDirectory.getPath()
-                + "/gravity_ground.stl");
+                + "/gravity_normal.stl");
         if (!gravityNormal.exists())
         {
             JOptionPane.showMessageDialog(this.isView,

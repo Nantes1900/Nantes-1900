@@ -56,8 +56,8 @@ public class PFrame extends JFrame
     }
 
     /**
-     * TODO.
-     * @return TODO.
+     * Returns the main container of this panel.
+     * @return the components panel.
      */
     public final JPanel getComponentsPanel()
     {
@@ -65,9 +65,9 @@ public class PFrame extends JFrame
     }
 
     /**
-     * TODO.
+     * Sets the text to display in the status bar.
      * @param text
-     *            TODO.
+     *            The text to display in the status bar.
      */
     public final void setStatusBarText(final String text)
     {

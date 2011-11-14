@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 /**
- * TODO.
+ * The class FileTools contains method to easily handle files with properties.
  * @author Camille Bouquet
  */
 public final class FileTools
@@ -49,12 +49,12 @@ public final class FileTools
     public static final String KEY_IS_LAUNCHPROCESS = "ISLaunchProcess";
 
     /**
-     * TODO.
+     * Reads a help message from the file helpMessage.txt with the key keyName+messageType.
      * @param keyName
-     *            TODO.
+     *            Name of the key corresponding generally to the button the message is associated with.
      * @param messageType
-     *            TODO.
-     * @return TODO.
+     *            The type of message to get : tooltip, help message, title or status bar.
+     * @return The read message.
      */
     public static String readHelpMessage(final String keyName,
             final String messageType)
@@ -154,12 +154,5 @@ public final class FileTools
         }
 
         return saveOk;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private FileTools()
-    {
     }
 }
