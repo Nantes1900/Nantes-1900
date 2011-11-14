@@ -48,7 +48,7 @@ public class IsletSelectionView extends PFrame
      * @param globalTreeView
      *            The tree allowing to select an islet.
      * @param buildingsIsletView
-     *            TODO.
+     *            The 3D view.
      * @todo Handle the size issues.
      */
     public IsletSelectionView(final ActionsView actionsView,
@@ -61,7 +61,8 @@ public class IsletSelectionView extends PFrame
         this.setMinimumSize(new Dimension(600, 600));
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+        this.setLocationRelativeTo(null);
+        
         // gets the view to add
         this.aView = actionsView;
         this.gtView = globalTreeView;
