@@ -203,7 +203,7 @@ public class Universe3DView extends JPanel
        
         //Appearence
         Material mat = new Material(new Color3f(0, 0, 0f),
-				new Color3f(0, 0, 0), new Color3f(Color.white), new Color3f(
+				new Color3f(0, 0.2f, 0), new Color3f(Color.white), new Color3f(
 						Color.white), 64);
 		mat.setColorTarget(3);
 

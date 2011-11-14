@@ -91,34 +91,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             }
         }
     }
-//    public void mouseClicked(MouseEvent e) {
-//        int buttonDown = e.getButton();
-//
-//        if (buttonDown == MouseEvent.BUTTON1) { // Left button of the mouse
-//            this.pickCanvas.setShapeLocation(e);
-//            PickResult result = this.pickCanvas.pickClosest();
-//            if (result == null) {
-//                System.out.println("Nothing picked");
-//            } else {
-//                PickIntersection pi = result.getIntersection(0);
-//                TriangleView ta = (TriangleView) pi.getGeometryArray();
-//                if (ta != null) {
-//                    if (this.trianglesViewSelected.contains(ta)) {
-//                        this.trianglesViewSelected.remove(ta);
-//                        // FIXME
-//                        // ta.changeColor(Color.blue);
-//                    } else {
-//                        this.trianglesViewSelected.add(ta);
-//                        // FIXME
-//                        // ta.changeColor(Color.red);
-//                    }
-//                    this.mouseRotate.setCenter(ta);
-//                } else {
-//                    System.out.println("null");
-//                }
-//            }
-//        }
-//    }
+
 
     @Override
     public void mouseDragged(MouseEvent arg0) {
