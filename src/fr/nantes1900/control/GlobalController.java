@@ -28,12 +28,12 @@ public class GlobalController
     }
 
     /**
-     * Launches the treatment of an islet and opens the new window.
+     * Launches the process of an islet and opens the new window.
      * @param isletFile
-     *            The file containing data of the islet to treat.
+     *            The file containing data of the islet to process.
      * @param biController
      */
-    public void launchIsletTreatment(File isletFile,
+    public void launchIsletProcess(File isletFile,
             BuildingsIsletController biController)
     {
         // Launches the base change.
