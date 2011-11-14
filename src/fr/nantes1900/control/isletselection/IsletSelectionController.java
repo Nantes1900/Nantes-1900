@@ -52,7 +52,7 @@ public class IsletSelectionController
     private BuildingsIsletController biController;
 
     /**
-     * View allowing to select an islet and launch a treatment.
+     * View allowing to select an islet and launch a process.
      */
     private IsletSelectionView isView;
 
@@ -103,6 +103,7 @@ public class IsletSelectionController
         if (this.selectedFile != null
                 && !this.u3DController.getTrianglesSelected().isEmpty())
         {
+            // TODO Move this code
             WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
                     + "/gravity_normal.stl");
             Point point = new Point(1, 1, 1);
@@ -185,7 +186,7 @@ public class IsletSelectionController
      *         launched\n false - the process wasn't launch, because no islet or
      *         ground normal are selected.
      */
-    public final boolean launchIsletTreatment()
+    public final boolean launchIsletProcess()
     {
         boolean processLaunched = false;
 
@@ -201,7 +202,7 @@ public class IsletSelectionController
             {
                 this.biController.useGravityNormalAsGroundNormal();
             }
-            this.parentController.launchIsletTreatment(this.selectedFile,
+            this.parentController.launchIsletProcess(this.selectedFile,
                     this.biController);
             processLaunched = true;
         } else

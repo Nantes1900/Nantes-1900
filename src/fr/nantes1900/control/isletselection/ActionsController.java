@@ -153,7 +153,7 @@ public class ActionsController
             } else
             {
                 // If every normals have been choosen
-                ActionsController.this.parentController.launchIsletTreatment();
+                ActionsController.this.parentController.launchIsletProcess();
             }
         }
 

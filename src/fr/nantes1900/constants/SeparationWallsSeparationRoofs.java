@@ -98,7 +98,7 @@ public final class SeparationWallsSeparationRoofs
     private static final double MIDDLE_ANGLE_ERROR_DEFAULT = 25;
 
     /**
-     * Error factor used during the treatment of the new neighbours : if the
+     * Error factor used during the process of the new neighbours : if the
      * angle between two surfaces which are neighbours is lesser than this
      * error, then they are merged to form only one wall.
      */
@@ -110,7 +110,7 @@ public final class SeparationWallsSeparationRoofs
     private static final double LARGE_ANGLE_ERROR_DEFAULT = 40;
 
     /**
-     * Error factor used during the noise treatment : maximum angle between two
+     * Error factor used during the noise process : maximum angle between two
      * triangles to determine that they belong to the same wall or roof. In
      * degrees.
      */
