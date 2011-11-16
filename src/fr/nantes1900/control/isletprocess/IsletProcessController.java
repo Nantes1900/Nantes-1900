@@ -3,6 +3,9 @@
  */
 package fr.nantes1900.control.isletprocess;
 
+import java.io.File;
+
+import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.view.isletprocess.IsletProcessView;
@@ -21,7 +24,7 @@ public class IsletProcessController
     private ParametersController pController;
     private Universe3DController u3DController;
     
-    public IsletProcessController(GlobalController parentController)
+    public IsletProcessController(GlobalController parentController, File isletFile, BuildingsIsletController biController)
     {
         this.parentController = parentController;
         
@@ -32,5 +35,6 @@ public class IsletProcessController
         this.u3DController = new Universe3DController();
         
         this.ipView = new IsletProcessView(cController.getView(), itController.getView(), nbController.getView(), pController.getView(), u3DController.getUniverse3DView());
+        this.ipView.setVisible(true);
     }
 }

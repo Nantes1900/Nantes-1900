@@ -6,6 +6,7 @@ package fr.nantes1900.control.isletselection;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -256,5 +257,10 @@ public class IsletSelectionController
                     "ISLaunchProcess", FileTools.MESSAGETYPE_STATUSBAR));
             this.aController.setLaunchMode();
         }
+    }
+
+    public JFrame getWindow()
+    {
+        return isView;
     }
 }
