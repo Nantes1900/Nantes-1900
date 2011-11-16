@@ -12,9 +12,12 @@ import fr.nantes1900.view.isletprocess.NavigationBarView;
 public class NavigationBarController
 {
     private NavigationBarView nbView;
+    private IsletProcessController parentController;
+    
     public NavigationBarController(IsletProcessController parentController)
     {
-        // TODO Auto-generated constructor stub
+        this.parentController = parentController;
+        this.nbView = new NavigationBarView();
     }
 
     public NavigationBarView getView()

@@ -12,10 +12,12 @@ import fr.nantes1900.view.isletprocess.IsletTreeView;
 public class IsletTreeController
 {
     private IsletTreeView itView;
+    private IsletProcessController parentController;
 
     public IsletTreeController(IsletProcessController parentController)
     {
-        // TODO Auto-generated constructor stub
+        this.parentController = parentController;
+        this.itView = new IsletTreeView();
     }
 
     public IsletTreeView getView()

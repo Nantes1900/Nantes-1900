@@ -12,12 +12,14 @@ import fr.nantes1900.view.isletprocess.CaracteristicsView;
  */
 public class CaracteristicsController
 {
+    private IsletProcessController parentController;
     private CaracteristicsView cView;
 
     public CaracteristicsController(
             IsletProcessController parentController)
     {
-        // TODO Auto-generated constructor stub
+        this.parentController = parentController;
+        this.cView = new CaracteristicsView();
     }
 
     public CaracteristicsView getView()

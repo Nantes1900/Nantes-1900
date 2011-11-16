@@ -12,10 +12,12 @@ import fr.nantes1900.view.isletprocess.ParametersView;
 public class ParametersController
 {
     private ParametersView pView;
+    private IsletProcessController parentController;
 
     public ParametersController(IsletProcessController parentController)
     {
-        // TODO Auto-generated constructor stub
+        this.parentController = parentController;
+        this.pView = new ParametersView();
     }
 
     public ParametersView getView()
