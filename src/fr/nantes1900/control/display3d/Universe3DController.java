@@ -30,8 +30,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     private PickCanvas pickCanvas;
     private NewMouseRotate mouseRotate;
 
-    private IsletSelectionController parentController;
-
     // private ArrayList<MeshView> meshesViewSelected;
     private ArrayList<TriangleView> trianglesViewSelected;
 
@@ -39,9 +37,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     private int xPressed;
     private int yPressed;
 
-    public Universe3DController(
-            IsletSelectionController isletSelectionController) {
-        this.parentController = isletSelectionController;
+    public Universe3DController() {
         this.u3DView = new Universe3DView(this);
         this.trianglesViewSelected = new ArrayList<TriangleView>();
     }

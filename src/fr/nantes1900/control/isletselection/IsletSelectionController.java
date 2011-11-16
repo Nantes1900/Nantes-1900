@@ -81,7 +81,7 @@ public class IsletSelectionController
         this.parentController = parentControllerIn;
         this.gtController = new GlobalTreeController(this);
         this.aController = new ActionsController(this);
-        this.u3DController = new Universe3DController(this);
+        this.u3DController = new Universe3DController();
         this.biController = new BuildingsIsletController(this,
                 this.u3DController);
 
