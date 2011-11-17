@@ -60,7 +60,7 @@ public class ActionsView extends JPanel
                 FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY,
                         FileTools.MESSAGETYPE_TITLE));
         this.cbGravityGround = new JCheckBox(
-                "Utiliser la normale orient�e selon la gravite");
+                "Utiliser la normale orientée selon la gravité");
 
         this.setLayout(new GridBagLayout());
         this.add(this.bOpen, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,

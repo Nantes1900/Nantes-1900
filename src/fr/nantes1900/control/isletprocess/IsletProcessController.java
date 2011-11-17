@@ -23,6 +23,7 @@ public class IsletProcessController
     private NavigationBarController nbController;
     private ParametersController pController;
     private Universe3DController u3DController;
+    private BuildingsIsletController biController;
     
     public IsletProcessController(GlobalController parentController, File isletFile, BuildingsIsletController biController)
     {
@@ -33,6 +34,8 @@ public class IsletProcessController
         this.nbController = new NavigationBarController(this);
         this.pController = new ParametersController(this);
         this.u3DController = new Universe3DController();
+        this.biController = biController;
+        this.biController.setUniverse3DController(u3DController);
         
         this.ipView = new IsletProcessView(cController.getView(), itController.getView(), nbController.getView(), pController.getView(), u3DController.getUniverse3DView());
         this.ipView.setVisible(true);

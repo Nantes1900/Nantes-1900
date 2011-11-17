@@ -122,11 +122,11 @@ public class IsletSelectionController
         } else
         {
             JOptionPane.showMessageDialog(this.isView,
-                    "S閘ectionnez un 頻ot dans l'arbre\npuis "
-                            + "s閘ectionnez des triangles pour cr閑r la "
-                            + "normale\nou s閘ectionnez \"Utiliser la normale "
-                                    + "orient閑 selon la gravit閈n",
-                            "Aucun 頻ot ouvert", JOptionPane.ERROR_MESSAGE);
+                    "Sélectionnez un îlot dans l'arbre\npuis "
+                            + "sélectionnez des triangles pour créer la "
+                            + "normale\nou sélectionnez \"Utiliser la normale "
+                                    + "orientée selon la gravité\n",
+                            "Aucun îlot ouvert", JOptionPane.ERROR_MESSAGE);
         }
 
         return normalSaved;
@@ -214,7 +214,7 @@ public class IsletSelectionController
         } else
         {
             JOptionPane.showMessageDialog(this.isView,
-                    "Veuillez s閘ectionner un 頻ot et une normale pour "
+                    "Veuillez sélectionner un îlot et une normale pour "
                             + "lancer le traitement", "Traitement impossible",
                     JOptionPane.ERROR_MESSAGE);
         }
@@ -238,10 +238,10 @@ public class IsletSelectionController
         if (!gravityNormal.exists())
         {
             JOptionPane.showMessageDialog(this.isView,
-                    "La normale orient閑 selon la gravit�n'a pas 閠�trouv�"
-                            + "dans le dossier ouvert.\nVeuillez en cr閑r "
+                    "La normale orientée selon la gravité n'a pas été trouvée"
+                            + "dans le dossier ouvert.\nVeuillez en créer "
                             + "une nouvelle.",
-                    "Normale orient閑 selon la gravit�inexistante",
+                    "Normale orientée selon la gravité inexistante",
                     JOptionPane.INFORMATION_MESSAGE);
             this.aController.setComputeNormalMode();
             this.isView.setStatusBarText(FileTools.readHelpMessage(
