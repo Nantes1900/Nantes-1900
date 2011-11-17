@@ -123,8 +123,8 @@ public class IsletSelectionController
                     "S閘ectionnez un 頻ot dans l'arbre\npuis "
                             + "s閘ectionnez des triangles pour cr閑r la "
                             + "normale\nou s閘ectionnez \"Utiliser la normale "
-                                    + "orient閑 selon la gravit閈n",
-                            "Aucun 頻ot ouvert", JOptionPane.ERROR_MESSAGE);
+                            + "orient閑 selon la gravit閈n", "Aucun 頻ot ouvert",
+                    JOptionPane.ERROR_MESSAGE);
         }
 
         return normalSaved;
@@ -157,6 +157,7 @@ public class IsletSelectionController
             AbstractBuildingsIslet resIslet;
             try
             {
+                // FIXME : it shouldn't be here, but in the biController...
                 resIslet = new ResidentialIslet(parser.read());
                 this.biController.setIslet(resIslet);
                 this.biController.putGravityNormal();

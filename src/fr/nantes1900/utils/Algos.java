@@ -1,13 +1,13 @@
 package fr.nantes1900.utils;
 
-import fr.nantes1900.models.basis.Mesh;
-import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.extended.Surface;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.extended.Surface;
 
 /**
  * Contains some algorithms used in the other classes.

@@ -1,67 +1,40 @@
 package fr.nantes1900.models.islets.buildings;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.constants.SeparationBuildings;
-import fr.nantes1900.constants.SeparationGroundBuilding;
-import fr.nantes1900.constants.SeparationGrounds;
-import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.extended.Building;
-import fr.nantes1900.models.extended.Ground;
-import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.AbstractIslet;
-import fr.nantes1900.utils.Algos;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep1;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep2;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep3;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep4;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep5;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep6;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep7;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep8;
 
 /**
  * Abstracts a building islet : residential or industrial. This class contains
  * all the methods to apply the treatments on the meshes.
- * @author Daniel Lefèvre
+ * @author Daniel Lefï¿½vre
  */
 public abstract class AbstractBuildingsIslet extends AbstractIslet
 {
 
-    /**
-     * The list of buildings contained in the islet after the separation.
-     */
-    private List<Building> buildings = new ArrayList<>();
-
-    /**
-     * The mesh containing all the buildings after the separation from the
-     * ground.
-     */
-    private Mesh initialBuilding;
-
-    /**
-     * The mesh containing all the grounds after the separation from the
-     * buildings.
-     */
-    private Mesh initialGround;
+    private BuildingsIsletStep1 biStep1;
+    private BuildingsIsletStep2 biStep2;
+    private BuildingsIsletStep3 biStep3;
+    private BuildingsIsletStep4 biStep4;
+    private BuildingsIsletStep5 biStep5;
+    private BuildingsIsletStep6 biStep6;
+    private BuildingsIsletStep7 biStep7;
+    private BuildingsIsletStep8 biStep8;
 
     /**
      * The number of the current step.
      */
     private int progression = 0;
-
-    /**
-     * The ground contained in the islet. Every grounds, even if separated, are
-     * stocked here.
-     */
-    private Ground ground;
-
-    /**
-     * Temporary variable used in the treatments.
-     */
-    private Surface groundForAlgorithm;
-
-    /**
-     * The mesh containing the noise during the treatments.
-     */
-    private Mesh noise;
 
     /**
      * The normal to the ground. Used to extract the grounds.
@@ -73,61 +46,18 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * @param m
      *            the mesh representing the islet
      */
-    public AbstractBuildingsIslet(final Mesh m)
+    public AbstractBuildingsIslet(Mesh initialMesh)
     {
-        super(m);
-    }
-
-    /**
-     * Extracts buildings by separating the blocks after the ground extraction.
-     */
-    private void buildingsExtraction()
-    {
-        final List<Mesh> buildingList = new ArrayList<>();
-
-        List<Mesh> thingsList;
-        // Extraction of the buildings.
-        thingsList = Algos.blockExtract(this.initialBuilding);
-
-        // Steprithm : detection of buildings considering their size.
-        for (final Mesh m : thingsList)
-        {
-            if (m.size() >= SeparationBuildings.getBlockBuildingSize())
-            {
-                buildingList.add(m);
-            } else
-            {
-                this.noise.addAll(m);
-            }
-        }
-
-        if (buildingList.size() == 0)
-        {
-            System.out.println("Error : no building found !");
-        }
-
-        for (Mesh m : buildingList)
-        {
-            this.buildings.add(new Building(m));
-        }
+        super(initialMesh);
     }
 
     /**
      * Getter.
-     * @return the list of buildings.
+     * @return the normal to the ground
      */
-    public final List<Building> getBuildings()
+    public final Vector3d getGroundNormal()
     {
-        return this.buildings;
-    }
-
-    /**
-     * Getter.
-     * @return the ground.
-     */
-    public final Ground getGround()
-    {
-        return this.ground;
+        return this.groundNormal;
     }
 
     /**
@@ -140,223 +70,80 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     }
 
     /**
-     * Extracts the grounds, using the groundExtract method.
+     * Incrementer. Used to increment the progression of the treamtent.
      */
-    private void groundExtraction()
+    public final void incProgression()
     {
-        // Searches for ground-oriented triangles with an error.
-        Mesh meshOriented = this.getInitialTotalMesh().orientedAs(
-                this.groundNormal,
-                SeparationGroundBuilding.getAngleGroundError());
+        this.progression++;
+    }
 
-        List<Mesh> thingsList;
-        List<Mesh> groundsList = new ArrayList<>();
-        // Extracts the blocks in the oriented triangles.
-        thingsList = Algos.blockExtract(meshOriented);
-
-        // FIXME : use MeshOriented.
-        Mesh wholeGround = new Mesh();
-        for (final Mesh f : thingsList)
-        {
-            wholeGround.addAll(f);
-        }
-
-        // We consider the altitude of the blocks on an axis parallel to the
-        // normal ground.
-        final double highDiff = this.getInitialTotalMesh().zMax()
-                - this.getInitialTotalMesh().zMin();
-
-        // Builds an axis normal to the current ground.
-        final Edge axisNormalGround = new Edge(new Point(0, 0, 0), new Point(
-                this.groundNormal.x, this.groundNormal.y, this.groundNormal.z));
-
-        // Project the current whole ground centroid on this axis.
-        final Point pAverage = axisNormalGround.project(wholeGround
-                .getCentroid());
-
-        // After this, for each block, consider the distance (on the
-        // axisNormalGround) as an altitude distance. If it is greater than
-        // the error, then it's not considered as ground.
-        for (final Mesh m : thingsList)
-        {
-            final Point projectedPoint = axisNormalGround.project(m
-                    .getCentroid());
-            if (projectedPoint.getZ() < pAverage.getZ()
-                    || projectedPoint.distance(pAverage) < highDiff
-                            * SeparationGroundBuilding.getAltitureError())
+    public final void launchTreatment()
+    {
+        switch (this.progression) {
+        case 0:
+            try
             {
-
-                groundsList.add(m);
-            }
-        }
-
-        // We consider the size of the blocks : if they're big enough,
-        // they're keeped. This is to avoid the parts of roofs, walls,
-        // etc...
-        thingsList = new ArrayList<>(groundsList);
-        groundsList = new ArrayList<>();
-        for (final Mesh m : thingsList)
-        {
-            if (m.size() > SeparationGrounds.getBlockGroundsSizeError())
+                this.changeBase();
+                this.biStep1 = new BuildingsIsletStep1(
+                        this.getInitialTotalMesh());
+            } catch (UnCompletedParametersException e)
             {
-                groundsList.add(m);
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
-        }
-
-        // Now that we found the real grounds, we extract the other
-        // triangles
-        // which are almost ground-oriented to add them.
-        meshOriented = this.getInitialTotalMesh().orientedAs(this.groundNormal,
-                SeparationGroundBuilding.getLargeAngleGroundError());
-
-        // If the new grounds are neighbours from the old ones, they are
-        // added to the real grounds.
-        thingsList = new ArrayList<>();
-        for (final Mesh m : groundsList)
-        {
-
-            final Mesh temp = new Mesh(m);
-            temp.addAll(meshOriented);
-            final Mesh ret = new Mesh();
-            m.getOne().returnNeighbours(ret, temp);
-            meshOriented.remove(ret);
-            thingsList.add(ret);
-        }
-        groundsList = thingsList;
-
-        wholeGround = new Mesh();
-        for (final Mesh f : groundsList)
-        {
-            wholeGround.addAll(f);
-        }
-
-        this.initialGround = new Ground(wholeGround);
-    }
-
-    /**
-     * TODO. GroundNormal
-     */
-    public final void launchTreatment0()
-    {
-        try
-        {
-            this.changeBase();
-        } catch (UnCompletedParametersException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            break;
+        case 1:
+            this.biStep2 = this.biStep1.launchTreatment();
+            break;
+        case 2:
+            this.biStep3 = this.biStep2.launchTreatment();
+            break;
+        case 3:
+            this.biStep4 = this.biStep3.launchTreatment();
+            break;
+        case 4:
+            this.biStep5 = this.biStep4.launchTreatment();
+            break;
+        case 5:
+            this.biStep6 = this.biStep5.launchTreatment();
+            break;
+        case 6:
+            this.biStep7 = this.biStep6.launchTreatment();
+            break;
+        case 7:
+            this.biStep8 = this.biStep7.launchTreatment();
+            break;
+        default:
+            // It shouldn't happen.
+            break;
         }
     }
 
-    /**
-     * TODO. SeparationGroundBuilding
-     */
-    public final void launchTreatment1()
+    public DefaultMutableTreeNode returnNode()
     {
-        this.groundExtraction();
-        this.initialBuilding = new Mesh(this.getInitialTotalMesh());
-        this.initialBuilding.remove(this.initialGround);
-    }
-
-    /**
-     * TODO. SeparationBuildings
-     */
-    public final void launchTreatment2()
-    {
-        this.noise = new Mesh();
-        this.buildingsExtraction();
-
-        this.ground = this.noiseTreatment();
-    }
-
-    /**
-     * TODO. CarveWallsBetweenBuildings
-     */
-    public final void launchTreatment3()
-    {
-        // TODO : implement this method.
-    }
-
-    /**
-     * TODO. SeparationWallRoof
-     */
-    public final void launchTreatment4()
-    {
-        for (Building b : this.getBuildings())
-        {
-            b.separateWallRoof(this.getGravityNormal());
+        switch (this.getProgression()) {
+        case 0:
+            // FIXME : how to do that ?
+            return null;
+        case 1:
+            return this.biStep1.returnNode();
+        case 2:
+            return this.biStep2.returnNode();
+        case 3:
+            return this.biStep3.returnNode();
+        case 4:
+            return this.biStep4.returnNode();
+        case 5:
+            return this.biStep5.returnNode();
+        case 6:
+            return this.biStep6.returnNode();
+        case 7:
+            return this.biStep7.returnNode();
+        case 8:
+            return this.biStep8.returnNode();
+        default:
+            return null;
         }
-    }
-
-    /**
-     * TODO. SeparationWallsAndSeparationRoofs
-     */
-    public final void launchTreatment6()
-    {
-        this.groundForAlgorithm = new Surface(this.ground);
-
-        for (Building building : this.getBuildings())
-        {
-            building.cutWalls();
-            building.cutRoofs(this.groundNormal);
-            building.treatNoise();
-            building.treatNewNeighbours(this.groundForAlgorithm);
-        }
-    }
-
-    /**
-     * TODO. DeterminateNeighbours
-     */
-    public final void launchTreatment7()
-    {
-        for (Building b : this.getBuildings())
-        {
-            b.determinateNeighbours(this.groundForAlgorithm);
-        }
-    }
-
-    /**
-     * TODO. SortNeighbours
-     */
-    public final void launchTreatment8()
-    {
-        for (Building b : this.getBuildings())
-        {
-            b.sortSurfaces();
-            b.orderNeighbours(this.groundForAlgorithm);
-        }
-    }
-
-    /**
-     * TODO. RecomputationGround
-     */
-    public final void launchTreatment10()
-    {
-        for (Building b : this.getBuildings())
-        {
-            b.reComputeGroundBounds();
-        }
-    }
-
-    /**
-     * TODO. SimplificationSurfaces
-     */
-    public final void launchTreatment9()
-    {
-        for (Building b : this.getBuildings())
-        {
-            b.determinateContours(this.groundNormal);
-        }
-    }
-
-    /**
-     * Treats the noise by calling the method Algos.blockTreatNoise.
-     * @return the ground of this islet
-     */
-    private Ground noiseTreatment()
-    {
-        List<Mesh> list = Algos.blockExtract(this.initialGround);
-        return new Ground(Algos.blockTreatNoise(list, this.noise));
     }
 
     /**
@@ -372,7 +159,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * Exception class used when an attribute has not been defined whereas the
      * algorithm has been launched.
-     * @author Daniel Lefèvre
+     * @author Daniel Lefevre
      */
     public final class VoidParameterException extends Exception
     {
@@ -388,40 +175,5 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         public VoidParameterException()
         {
         }
-    }
-
-    /**
-     * Incrementer. Used to increment the progression of the treamtent.
-     */
-    public final void incProgression()
-    {
-        this.progression++;
-    }
-
-    /**
-     * Getter.
-     * @return the mesh representing the initial building
-     */
-    public final Mesh getInitialBuilding()
-    {
-        return this.initialBuilding;
-    }
-
-    /**
-     * Getter.
-     * @return the mesh representing the initial ground
-     */
-    public final Mesh getInitialGround()
-    {
-        return this.initialGround;
-    }
-
-    /**
-     * Getter.
-     * @return the normal to the ground
-     */
-    public final Vector3d getGroundNormal()
-    {
-        return this.groundNormal;
     }
 }

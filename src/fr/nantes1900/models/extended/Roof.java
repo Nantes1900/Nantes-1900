@@ -29,4 +29,15 @@ public class Roof extends Surface
     {
         super(p);
     }
+
+    public Roof(final Roof r)
+    {
+        super(r);
+    }
+
+    @Override
+    public final String toString()
+    {
+        return "Roof";
+    }
 }

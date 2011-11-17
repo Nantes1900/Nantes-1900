@@ -29,4 +29,15 @@ public class Wall extends Surface
     {
         super(p);
     }
+
+    public Wall(Wall w)
+    {
+        super(w);
+    }
+
+    @Override
+    public final String toString()
+    {
+        return "Wall";
+    }
 }

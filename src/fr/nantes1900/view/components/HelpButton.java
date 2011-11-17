@@ -23,42 +23,42 @@ public class HelpButton extends JButton implements MouseListener
     /**
      * The current color of the text.
      */
-    private Color             textColorCurrent;
+    private Color textColorCurrent;
 
     /**
      * The normal wanted color for the text.
      */
-    private Color             textColor        = Color.BLUE;
+    private Color textColor = Color.BLUE;
 
     /**
      * The current value for the background.
      */
-    private Color             backgroundColorCurrent;
+    private Color backgroundColorCurrent;
 
     /**
      * The normal wanted color for the background.
      */
-    private Color             backgroundColor  = new Color(240, 240, 240);
+    private Color backgroundColor = new Color(240, 240, 240);
 
     /**
      * Indicates if the mouse is on the button area.
      */
-    private boolean           in               = false;
+    private boolean in = false;
 
     /**
      * Indicates if the left button of the mouse is pressed.
      */
-    private boolean           pressed          = false;
+    private boolean pressed = false;
 
     /**
      * Message to display in the pop-up.
      */
-    private String            helpMessage;
+    private String helpMessage;
 
     /**
      * Title of the pop-up.
      */
-    private String            title;
+    private String title;
 
     /**
      * 
@@ -223,7 +223,7 @@ public class HelpButton extends JButton implements MouseListener
 
             if (!this.helpMessage.isEmpty())
             {
-                String title = (this.title.isEmpty()) ? "Informations complémentaires"
+                String title = (this.title.isEmpty()) ? "Informations complï¿½mentaires"
                         : this.title;
                 JOptionPane.showMessageDialog(this, this.helpMessage, title,
                         JOptionPane.INFORMATION_MESSAGE);

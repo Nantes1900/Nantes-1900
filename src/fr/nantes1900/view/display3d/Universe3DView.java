@@ -12,10 +12,8 @@ import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
-
 import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.Material;
-
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Texture2D;
 import javax.media.j3d.TextureAttributes;
@@ -112,7 +110,7 @@ public class Universe3DView extends JPanel
      * @param polygonView
      *            TODO.
      */
-    public void addPolygon(final PolygonView polygonView)
+    public void addPolygonView(final PolygonView polygonView)
     {
         // TODO Auto-generated method stub
     }
@@ -200,33 +198,31 @@ public class Universe3DView extends JPanel
 
         shape.addGeometry(meshView);
 
-       
-        //Appearence
-        Material mat = new Material(new Color3f(0, 0, 0f),
-				new Color3f(0, 0.2f, 0), new Color3f(Color.white), new Color3f(
-						Color.white), 64);
-		mat.setColorTarget(3);
+        // Appearence
+        Material mat = new Material(new Color3f(0, 0, 0f), new Color3f(0, 0.2f,
+                0), new Color3f(Color.white), new Color3f(Color.white), 64);
+        mat.setColorTarget(3);
 
-		Appearance app = new Appearance();
+        Appearance app = new Appearance();
 
-		app.setMaterial(mat);
+        app.setMaterial(mat);
 
-		TextureLoader loader = new TextureLoader("texture.jpg", null);
-		ImageComponent2D image = loader.getImage();
-		Texture2D texture = new Texture2D(Texture2D.BASE_LEVEL, Texture2D.RGB,
-				image.getWidth(), image.getHeight());
-		texture.setImage(0, image);
-		app.setTexture(texture);
-		TextureAttributes texAtt = new TextureAttributes();
-		texAtt.setTextureMode(TextureAttributes.MODULATE);
-		app.setTextureAttributes(texAtt);
+        TextureLoader loader = new TextureLoader("texture.jpg", null);
+        ImageComponent2D image = loader.getImage();
+        Texture2D texture = new Texture2D(Texture2D.BASE_LEVEL, Texture2D.RGB,
+                image.getWidth(), image.getHeight());
+        texture.setImage(0, image);
+        app.setTexture(texture);
+        TextureAttributes texAtt = new TextureAttributes();
+        texAtt.setTextureMode(TextureAttributes.MODULATE);
+        app.setTextureAttributes(texAtt);
 
         shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
         shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
 
         sceneRoot.addChild(shape);
         shape.setAppearance(app);
-       
+
         translationGroup2.addChild(sceneRoot);
 
         // Links the left button of the mouse with a rotation transformation

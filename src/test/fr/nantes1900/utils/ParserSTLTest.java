@@ -1,12 +1,5 @@
 package test.fr.nantes1900.utils;
 
-import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Mesh;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.utils.ParserSTL;
-import fr.nantes1900.utils.WriterSTL;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +11,13 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.junit.Test;
+
+import fr.nantes1900.models.basis.Edge;
+import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.utils.ParserSTL;
+import fr.nantes1900.utils.WriterSTL;
 
 /**
  * A set of tests for the class Parser.

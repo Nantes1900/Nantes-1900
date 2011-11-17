@@ -6,14 +6,16 @@ import javax.vecmath.Vector3d;
 
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.control.isletselection.IsletSelectionController;
+import fr.nantes1900.control.steps.BuildingsIsletStep1Controller;
+import fr.nantes1900.control.steps.BuildingsIsletStep2Controller;
+import fr.nantes1900.control.steps.BuildingsIsletStep3Controller;
+import fr.nantes1900.control.steps.BuildingsIsletStep4Controller;
+import fr.nantes1900.control.steps.BuildingsIsletStep5Controller;
+import fr.nantes1900.control.steps.BuildingsIsletStep6Controller;
+import fr.nantes1900.control.steps.BuildingsIsletStep7Controller;
 import fr.nantes1900.models.basis.Mesh;
-import fr.nantes1900.models.extended.Building;
-import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
-import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet.VoidParameterException;
 import fr.nantes1900.utils.ParserSTL;
-import fr.nantes1900.view.display3d.MeshView;
-import fr.nantes1900.view.display3d.PolygonView;
 
 public class BuildingsIsletController
 {
@@ -23,322 +25,152 @@ public class BuildingsIsletController
     private Universe3DController u3DController;
     private Vector3d gravityNormal;
 
+    private BuildingsIsletStep1Controller biStep1Controller;
+    private BuildingsIsletStep2Controller biStep2Controller;
+    private BuildingsIsletStep3Controller biStep3Controller;
+    private BuildingsIsletStep4Controller biStep4Controller;
+    private BuildingsIsletStep5Controller biStep5Controller;
+    private BuildingsIsletStep6Controller biStep6Controller;
+    private BuildingsIsletStep7Controller biStep7Controller;
+    private BuildingsIsletStep7Controller biStep8Controller;
+
     public BuildingsIsletController(
-            IsletSelectionController isletSelectionController,
-            Universe3DController universe3DControllerIn)
+            final IsletSelectionController isletSelectionController,
+            final Universe3DController universe3DControllerIn)
     {
         this.parentController = isletSelectionController;
         this.u3DController = universe3DControllerIn;
     }
 
-    public Vector3d computeNormalWithTrianglesSelected()
+    public final Vector3d computeNormalWithTrianglesSelected()
     {
         Mesh mesh = new Mesh(this.u3DController.getTrianglesSelected());
         return mesh.averageNormal();
     }
 
+    // FIXME
     public void display()
     {
         this.u3DController.getUniverse3DView().clearAllMeshes();
 
         switch (this.islet.getProgression()) {
         case 0:
-            this.viewStep0();
+            // TODO : error
             break;
-
         case 1:
-            this.viewStep1();
+            this.biStep1Controller.viewStep();
             break;
-
         case 2:
-            this.viewStep2();
+            this.biStep2Controller.viewStep();
             break;
-
         case 3:
-            this.viewStep3();
+            this.biStep3Controller.viewStep();
             break;
-
         case 4:
-            this.viewStep4();
+            this.biStep4Controller.viewStep();
             break;
-
         case 5:
-            this.viewStep5();
+            this.biStep5Controller.viewStep();
             break;
-
         case 6:
-            this.viewStep6();
+            this.biStep6Controller.viewStep();
             break;
-
         case 7:
-            this.viewStep7();
+            this.biStep7Controller.viewStep();
             break;
-
         case 8:
-            this.viewStep8();
+            this.biStep8Controller.viewStep();
             break;
         }
     }
 
-    public AbstractBuildingsIslet getIslet()
+    public Vector3d getGravityNormal()
+    {
+        return this.gravityNormal;
+    }
+
+    public final AbstractBuildingsIslet getIslet()
     {
         return this.islet;
     }
 
-    public IsletSelectionController getIsletSelectionController()
+    public final IsletSelectionController getIsletSelectionController()
     {
         return this.parentController;
     }
 
-    public IsletSelectionController getParentController()
+    public final IsletSelectionController getParentController()
     {
         return this.parentController;
     }
 
-    public Universe3DController getU3dcontroller()
+    public final Universe3DController getU3DController()
     {
         return this.u3DController;
     }
 
-    private void incProgression()
+    private final void incProgression()
     {
         this.islet.incProgression();
     }
 
-    public void launchNextTreatment()
+    public final void launchNextTreatment()
     {
-        switch (this.islet.getProgression()) {
-        case 0:
-            this.islet.launchTreatment0();
-            break;
-        case 1:
-            this.islet.launchTreatment1();
-            break;
-        case 2:
-            this.islet.launchTreatment2();
-            break;
-        case 3:
-            this.islet.launchTreatment3();
-            break;
-        case 4:
-            this.islet.launchTreatment4();
-            break;
-        case 5:
-            this.islet.launchTreatment6();
-            break;
-        case 6:
-            this.islet.launchTreatment7();
-            break;
-        case 7:
-            this.islet.launchTreatment8();
-            break;
-        case 8:
-            this.islet.launchTreatment9();
-            break;
-        default:
-            break;
-        }
+        this.islet.launchTreatment();
+
         this.incProgression();
         this.display();
     }
 
-    public final void readGravityNormal(String fileName) throws IOException
+    public final void putGravityNormal()
+    {
+        this.islet.setGravityNormal(this.gravityNormal);
+    }
+
+    public final void readGravityNormal(final String fileName)
+            throws IOException
     {
         ParserSTL parser = new ParserSTL(fileName);
         Mesh mesh = parser.read();
         this.setGravityNormal(mesh.averageNormal());
     }
 
-    public void setGroundNormal(Vector3d groundNormal)
+    public final void setGravityNormal(final Vector3d gravityNormalIn)
+    {
+        this.gravityNormal = gravityNormalIn;
+    }
+
+    public final void setGroundNormal(final Vector3d groundNormal)
     {
         this.islet.setGroundNormal(groundNormal);
     }
 
-    public void setIslet(AbstractBuildingsIslet isletIn)
+    public final void setIslet(final AbstractBuildingsIslet isletIn)
     {
         this.islet = isletIn;
     }
 
-    public void setIsletSelectionController(
-            IsletSelectionController isletSelectionControllerIn)
+    public final void setIsletSelectionController(
+            final IsletSelectionController isletSelectionControllerIn)
     {
         this.parentController = isletSelectionControllerIn;
     }
 
-    public void
-            setParentController(IsletSelectionController parentControllerIn)
+    public final void setParentController(
+            final IsletSelectionController parentControllerIn)
     {
         this.parentController = parentControllerIn;
     }
 
-    public void setUniverse3DController(Universe3DController u3dcontrollerIn)
+    public final void setUniverse3DController(
+            Universe3DController u3dcontrollerIn)
     {
         this.u3DController = u3dcontrollerIn;
     }
 
-    public void useGravityNormalAsGroundNormal()
+    public final void useGravityNormalAsGroundNormal()
     {
         this.islet.setGroundNormal(this.islet.getGravityNormal());
     }
 
-    /**
-     * After step 8 : SimplificationSurfaces
-     */
-    public void viewBeforeStep9()
-    {
-        for (Building building : this.islet.getBuildings())
-        {
-            for (Surface wall : building.getWalls())
-            {
-                this.u3DController.getUniverse3DView().addPolygon(
-                        new PolygonView(wall.getPolygone()));
-            }
-            for (Surface roof : building.getRoofs())
-            {
-                this.u3DController.getUniverse3DView().addPolygon(
-                        new PolygonView(roof.getPolygone()));
-            }
-        }
-    }
-
-    /**
-     * View before every treatment.
-     */
-    public void viewStep0()
-    {
-        this.u3DController.getUniverse3DView().addMesh(
-                new MeshView(this.islet.getInitialTotalMesh()));
-    }
-
-    /**
-     * View after the base change.
-     */
-    public void viewStep1()
-    {
-        this.u3DController.getUniverse3DView().addMesh(
-                new MeshView(this.islet.getInitialTotalMesh()));
-    }
-
-    /**
-     * View after the separation between ground and building.
-     */
-    public final void viewStep2()
-    {
-        this.u3DController.getUniverse3DView().addMesh(
-                new MeshView(this.islet.getInitialBuilding()));
-        this.u3DController.getUniverse3DView().addMesh(
-                new MeshView(this.islet.getInitialGround()));
-    }
-
-    /**
-     * View after the separation between buildings.
-     */
-    public void viewStep3()
-    {
-        this.u3DController.getUniverse3DView().addMesh(
-                new MeshView(this.islet.getInitialGround()));
-
-        for (Building building : this.islet.getBuildings())
-        {
-            this.u3DController.getUniverse3DView().addMesh(
-                    new MeshView(building.getInitialTotalMesh()));
-        }
-    }
-
-    /**
-     * After carving the little walls.
-     */
-    public void viewStep4()
-    {
-        // Not implemented for now.
-    }
-
-    /**
-     * After SeparationWallRoof
-     */
-    public void viewStep5()
-    {
-        for (Building building : this.islet.getBuildings())
-        {
-            this.u3DController.getUniverse3DView().addMesh(
-                    new MeshView(building.getInitialWall()));
-            this.u3DController.getUniverse3DView().addMesh(
-                    new MeshView(building.getInitialRoof()));
-        }
-    }
-
-    /**
-     * After SeparationWallsAndSeparationRoofs
-     */
-    public void viewStep6()
-    {
-        for (Building building : this.islet.getBuildings())
-        {
-            for (Surface wall : building.getWalls())
-            {
-                this.u3DController.getUniverse3DView().addMesh(
-                        new MeshView(wall.getMesh()));
-            }
-            for (Surface roof : building.getRoofs())
-            {
-                this.u3DController.getUniverse3DView().addMesh(
-                        new MeshView(roof.getMesh()));
-            }
-        }
-    }
-
-    /**
-     * After DeterminateNeighbours
-     */
-    public void viewStep7()
-    {
-        for (Building building : this.islet.getBuildings())
-        {
-            for (Surface wall : building.getWalls())
-            {
-                this.u3DController.getUniverse3DView().addMesh(
-                        new MeshView(wall.getMesh()));
-            }
-            for (Surface roof : building.getRoofs())
-            {
-                this.u3DController.getUniverse3DView().addMesh(
-                        new MeshView(roof.getMesh()));
-            }
-        }
-    }
-
-    /**
-     * After SortNeighbours
-     */
-    public void viewStep8()
-    {
-        for (Building building : this.islet.getBuildings())
-        {
-            for (Surface wall : building.getWalls())
-            {
-                this.u3DController.getUniverse3DView().addMesh(
-                        new MeshView(wall.getMesh()));
-            }
-            for (Surface roof : building.getRoofs())
-            {
-                this.u3DController.getUniverse3DView().addMesh(
-                        new MeshView(roof.getMesh()));
-            }
-        }
-    }
-
-    public Vector3d getGravityNormal()
-    {
-        return gravityNormal;
-    }
-
-    public void setGravityNormal(Vector3d gravityNormal)
-    {
-        this.gravityNormal = gravityNormal;
-    }
-
-    public void putGravityNormal()
-    {
-        this.islet.setGravityNormal(this.gravityNormal);
-    }
 }

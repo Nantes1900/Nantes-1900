@@ -14,8 +14,8 @@ public class ResidentialIslet extends AbstractBuildingsIslet
      * @param m
      *            TODO.
      */
-    public ResidentialIslet(final Mesh m)
+    public ResidentialIslet(Mesh initialMesh)
     {
-        super(m);
+        super(initialMesh);
     }
 }

@@ -1,11 +1,5 @@
 package test.fr.nantes1900.models.basis;
 
-import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Polygon;
-import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.basis.Polygon.BadFormedPolylineException;
-
 import java.security.InvalidParameterException;
 import java.util.List;
 
@@ -16,6 +10,12 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import fr.nantes1900.models.basis.Edge;
+import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Polygon;
+import fr.nantes1900.models.basis.Polygon.BadFormedPolylineException;
+import fr.nantes1900.models.basis.Triangle;
+
 /**
  * A set of tests for the class Edge.
  * @author Daniel Lefevre
@@ -24,37 +24,37 @@ public class EdgeTest extends TestCase
 {
 
     /** Test attribute. */
-    private final Point    point1  = new Point(1, 0, -1);
+    private final Point point1 = new Point(1, 0, -1);
     /** Test attribute. */
-    private final Point    point2  = new Point(0, 1, 0);
+    private final Point point2 = new Point(0, 1, 0);
     /** Test attribute. */
-    private final Point    point3  = new Point(-1, 2, 1);
+    private final Point point3 = new Point(-1, 2, 1);
     /** Test attribute. */
-    private final Vector3d vect    = new Vector3d(0, 0, 1);
+    private final Vector3d vect = new Vector3d(0, 0, 1);
     /** Test attribute. */
-    private final Edge     edge1   = new Edge(this.point1, this.point2);
+    private final Edge edge1 = new Edge(this.point1, this.point2);
     /** Test attribute. */
-    private final Edge     edge2   = new Edge(this.point2, this.point3);
+    private final Edge edge2 = new Edge(this.point2, this.point3);
     /** Test attribute. */
-    private final Edge     edge3   = new Edge(this.point3, this.point1);
+    private final Edge edge3 = new Edge(this.point3, this.point1);
 
     /** Test attribute. */
     private final Triangle triangle1;
 
     /** Test attribute. */
-    private final Point    point4  = new Point(2, 2, 2);
+    private final Point point4 = new Point(2, 2, 2);
     /** Test attribute. */
-    private final Edge     edge4   = new Edge(this.point1, this.point4);
+    private final Edge edge4 = new Edge(this.point1, this.point4);
     /** Test attribute. */
-    private final Edge     edge5   = new Edge(this.point2, this.point4);
+    private final Edge edge5 = new Edge(this.point2, this.point4);
 
     /** Test attribute. */
     private final Triangle triangle2;
 
     /** Test attribute. */
-    private final Edge     edge6   = new Edge(this.point3, this.point4);
+    private final Edge edge6 = new Edge(this.point3, this.point4);
     /** Test attribute. */
-    private final Polygon  polygon = new Polygon();
+    private final Polygon polygon = new Polygon();
 
     /**
      * Constructor of the test class EdgeTest : creates a polyline for the
