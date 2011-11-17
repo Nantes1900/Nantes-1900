@@ -18,16 +18,6 @@ import fr.nantes1900.models.extended.Wall;
 public class BuildingStep7 extends AbstractBuildingStep
 {
 
-    public List<Wall> getWalls()
-    {
-        return walls;
-    }
-
-    public List<Roof> getRoofs()
-    {
-        return roofs;
-    }
-
     /**
      * TODO.
      */
@@ -78,6 +68,16 @@ public class BuildingStep7 extends AbstractBuildingStep
                 // If there is a problem, we cannot continue the treatment.
             }
         }
+    }
+
+    public List<Roof> getRoofs()
+    {
+        return roofs;
+    }
+
+    public List<Wall> getWalls()
+    {
+        return walls;
     }
 
     public BuildingStep8 launchTreatment()

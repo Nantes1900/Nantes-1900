@@ -23,6 +23,16 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
         this.grounds = groundsIn;
     }
 
+    public List<Building> getBuildings()
+    {
+        return buildings;
+    }
+
+    public Ground getGrounds()
+    {
+        return grounds;
+    }
+
     /**
      * TODO. SeparationWallsAndSeparationRoofs
      * @return TODO.
@@ -38,16 +48,6 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
         }
 
         return new BuildingsIsletStep5(this.buildings, this.grounds);
-    }
-
-    public List<Building> getBuildings()
-    {
-        return buildings;
-    }
-
-    public Ground getGrounds()
-    {
-        return grounds;
     }
 
     @Override

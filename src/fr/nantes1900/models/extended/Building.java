@@ -25,6 +25,18 @@ public class Building
     private BuildingStep7 bStep7;
     private BuildingStep8 bStep8;
 
+    private AbstractBuildingsIslet parentIslet;
+
+    /**
+     * TODO.
+     * @param mesh
+     *            TODO.
+     */
+    public Building(final Mesh mesh)
+    {
+        this.bStep3 = new BuildingStep3(mesh);
+    }
+
     public BuildingStep3 getbStep3()
     {
         return this.bStep3;
@@ -53,18 +65,6 @@ public class Building
     public BuildingStep8 getbStep8()
     {
         return this.bStep8;
-    }
-
-    private AbstractBuildingsIslet parentIslet;
-
-    /**
-     * TODO.
-     * @param mesh
-     *            TODO.
-     */
-    public Building(final Mesh mesh)
-    {
-        this.bStep3 = new BuildingStep3(mesh);
     }
 
     public void launchTreatment()

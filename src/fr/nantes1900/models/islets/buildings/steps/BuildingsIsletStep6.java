@@ -15,6 +15,12 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
     private Ground grounds;
     private Surface groundForAlgorithm;
 
+    public BuildingsIsletStep6(List<Building> buildingsIn, Ground groundsIn)
+    {
+        this.buildings = buildingsIn;
+        this.grounds = groundsIn;
+    }
+
     public List<Building> getBuildings()
     {
         return buildings;
@@ -23,12 +29,6 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
     public Ground getGrounds()
     {
         return grounds;
-    }
-
-    public BuildingsIsletStep6(List<Building> buildingsIn, Ground groundsIn)
-    {
-        this.buildings = buildingsIn;
-        this.grounds = groundsIn;
     }
 
     /**

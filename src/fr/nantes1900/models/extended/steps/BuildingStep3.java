@@ -14,16 +14,16 @@ public class BuildingStep3 extends AbstractBuildingStep
      */
     private Mesh initialTotalMesh;
 
-    public Mesh getInitialTotalMesh()
-    {
-        return this.initialTotalMesh;
-    }
-
     private Vector3d gravityNormal;
 
     public BuildingStep3(Mesh mesh)
     {
         this.initialTotalMesh = mesh;
+    }
+
+    public Mesh getInitialTotalMesh()
+    {
+        return this.initialTotalMesh;
     }
 
     // SeparateWallRoof.

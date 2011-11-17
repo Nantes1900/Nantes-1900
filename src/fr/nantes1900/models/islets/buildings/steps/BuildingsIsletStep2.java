@@ -30,16 +30,6 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
         this.initialGrounds = grounds;
     }
 
-    public Mesh getInitialBuildings()
-    {
-        return this.initialBuildings;
-    }
-
-    public Ground getInitialGrounds()
-    {
-        return this.initialGrounds;
-    }
-
     /**
      * Extracts buildings by separating the blocks after the ground extraction.
      * @param noise
@@ -79,6 +69,16 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
         }
 
         return buildings;
+    }
+
+    public Mesh getInitialBuildings()
+    {
+        return this.initialBuildings;
+    }
+
+    public Ground getInitialGrounds()
+    {
+        return this.initialGrounds;
     }
 
     @Override

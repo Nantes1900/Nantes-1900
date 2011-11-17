@@ -31,14 +31,14 @@ public class BuildingStep6 extends AbstractBuildingStep
         this.roofs = roofsIn;
     }
 
-    public List<Wall> getWalls()
-    {
-        return walls;
-    }
-
     public List<Roof> getRoofs()
     {
         return roofs;
+    }
+
+    public List<Wall> getWalls()
+    {
+        return walls;
     }
 
     @Override

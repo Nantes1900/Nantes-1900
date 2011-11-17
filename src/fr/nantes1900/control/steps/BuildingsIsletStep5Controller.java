@@ -15,6 +15,11 @@ public class BuildingsIsletStep5Controller extends
 {
 
     /**
+     * The 5th step of the treatment.
+     */
+    private BuildingsIsletStep5 biStep5;
+
+    /**
      * Constructor.
      * @param biStepIn
      *            the 6th step of the treatment
@@ -27,11 +32,6 @@ public class BuildingsIsletStep5Controller extends
         super(parentControllerIn);
         // TODO Auto-generated constructor stub
     }
-
-    /**
-     * The 5th step of the treatment.
-     */
-    private BuildingsIsletStep5 biStep5;
 
     @Override
     public final void viewStep()

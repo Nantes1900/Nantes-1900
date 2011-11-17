@@ -16,12 +16,6 @@ public abstract class AbstractBuildingsIsletStepController
     private BuildingsIsletController parentController;
 
     /**
-     * Abstract method which display the content of the islet, depending on the
-     * step.
-     */
-    public abstract void viewStep();
-
-    /**
      * Constructor.
      * @param parentControllerIn
      *            the parent controller
@@ -49,4 +43,10 @@ public abstract class AbstractBuildingsIsletStepController
     {
         return this.parentController.getU3DController().getUniverse3DView();
     }
+
+    /**
+     * Abstract method which display the content of the islet, depending on the
+     * step.
+     */
+    public abstract void viewStep();
 }

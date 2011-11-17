@@ -131,7 +131,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     {
         switch (this.getProgression()) {
         case 0:
-            // FIXME : how to do that ?
+            // TODO : error
             return null;
         case 1:
             return this.biStep1.returnNode();

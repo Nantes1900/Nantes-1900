@@ -13,6 +13,11 @@ public class BuildingsIsletStep2Controller extends
 {
 
     /**
+     * The 2th step of the treatment.
+     */
+    private BuildingsIsletStep2 biStep2;
+
+    /**
      * Constructor.
      * @param biStepIn
      *            the 6th step of the treatment
@@ -25,11 +30,6 @@ public class BuildingsIsletStep2Controller extends
         super(parentControllerIn);
         this.biStep2 = biStepIn;
     }
-
-    /**
-     * The 2th step of the treatment.
-     */
-    private BuildingsIsletStep2 biStep2;
 
     @Override
     public final void viewStep()

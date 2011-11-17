@@ -11,27 +11,25 @@ import fr.nantes1900.models.extended.Ground;
 public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
 {
 
-    
+    private List<Building> buildings;
+
+    private Ground grounds;
+
+    private Vector3d groundNormal;
+    private Vector3d gravityNormal;
+    public BuildingsIsletStep3(List<Building> buildings, Ground groundsIn)
+    {
+        this.buildings = buildings;
+        this.grounds = groundsIn;
+    }
     public List<Building> getBuildings()
     {
         return buildings;
     }
 
-    
     public Ground getGrounds()
     {
         return grounds;
-    }
-
-    private List<Building> buildings;
-    private Ground grounds;
-    private Vector3d groundNormal;
-    private Vector3d gravityNormal;
-
-    public BuildingsIsletStep3(List<Building> buildings, Ground groundsIn)
-    {
-        this.buildings = buildings;
-        this.grounds = groundsIn;
     }
 
     /**

@@ -24,23 +24,18 @@ import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 public class Surface
 {
 
-    public final DefaultMutableTreeNode returnNode()
-    {
-        return new DefaultMutableTreeNode(this);
-    }
-
     /**
      * List of the neighbours of this surface.
      */
     private final List<Surface> neighbours = new ArrayList<>();
 
-    // FIXME : a Surface is an abstract class implemented by a polygon OR a
-    // mesh.
-
     /**
      * The polygon representing this surface (after simplification).
      */
     private Polygon polygon = new Polygon();
+
+    // FIXME : a Surface is an abstract class implemented by a polygon OR a
+    // mesh.
 
     /**
      * The mesh representing this surface (before simplification).
@@ -468,6 +463,11 @@ public class Surface
                 m.returnNeighbours(ret, contain);
             }
         }
+    }
+
+    public final DefaultMutableTreeNode returnNode()
+    {
+        return new DefaultMutableTreeNode(this);
     }
 
     /**

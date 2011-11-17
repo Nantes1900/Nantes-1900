@@ -59,16 +59,6 @@ public class BuildingStep4 extends AbstractBuildingStep
         }
     }
 
-    public Mesh getInitialWall()
-    {
-        return initialWall;
-    }
-
-    public Mesh getInitialRoof()
-    {
-        return initialRoof;
-    }
-
     /**
      * TODO.
      */
@@ -90,6 +80,16 @@ public class BuildingStep4 extends AbstractBuildingStep
                 this.noise.addAll(e);
             }
         }
+    }
+
+    public Mesh getInitialRoof()
+    {
+        return initialRoof;
+    }
+
+    public Mesh getInitialWall()
+    {
+        return initialWall;
     }
 
     @Override

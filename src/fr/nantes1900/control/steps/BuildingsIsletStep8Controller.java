@@ -15,6 +15,11 @@ public class BuildingsIsletStep8Controller extends
 {
 
     /**
+     * The 8th step of the treatment.
+     */
+    private BuildingsIsletStep8 biStep8;
+
+    /**
      * Constructor.
      * @param biStepIn
      *            the 8th step of the treatment
@@ -27,11 +32,6 @@ public class BuildingsIsletStep8Controller extends
         super(parentControllerIn);
         this.biStep8 = biStepIn;
     }
-
-    /**
-     * The 8th step of the treatment.
-     */
-    private BuildingsIsletStep8 biStep8;
 
     @Override
     public final void viewStep()

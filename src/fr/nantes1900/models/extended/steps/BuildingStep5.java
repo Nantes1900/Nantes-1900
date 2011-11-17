@@ -37,16 +37,6 @@ public class BuildingStep5 extends AbstractBuildingStep
      */
     private Surface groundForAlgorithm;
 
-    public List<Wall> getWalls()
-    {
-        return walls;
-    }
-
-    public List<Roof> getRoofs()
-    {
-        return roofs;
-    }
-
     /**
      * @param wallsIn
      * @param roofsIn
@@ -117,6 +107,16 @@ public class BuildingStep5 extends AbstractBuildingStep
                 wholeList.get(i).addNeighbour(grounds);
             }
         }
+    }
+
+    public List<Roof> getRoofs()
+    {
+        return roofs;
+    }
+
+    public List<Wall> getWalls()
+    {
+        return walls;
     }
 
     @Override

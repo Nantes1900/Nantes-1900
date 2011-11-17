@@ -20,14 +20,14 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
     private Mesh initialTotalMeshAfterBaseChange;
     private Vector3d groundNormal;
 
-    public Mesh getInitialTotalMeshAfterBaseChange()
-    {
-        return initialTotalMeshAfterBaseChange;
-    }
-
     public BuildingsIsletStep1(Mesh initialMesh)
     {
         this.initialTotalMeshAfterBaseChange = initialMesh;
+    }
+
+    public Mesh getInitialTotalMeshAfterBaseChange()
+    {
+        return initialTotalMeshAfterBaseChange;
     }
 
     /**

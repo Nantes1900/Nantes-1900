@@ -23,6 +23,16 @@ public class BuildingsIsletStep7 extends AbstractBuildingsIsletStep
         this.grounds = groundsIn;
     }
 
+    public List<Building> getBuildings()
+    {
+        return buildings;
+    }
+
+    public Ground getGrounds()
+    {
+        return grounds;
+    }
+
     /**
      * TODO. SimplificationSurfaces
      * @return TODO.
@@ -36,16 +46,6 @@ public class BuildingsIsletStep7 extends AbstractBuildingsIsletStep
         }
 
         return new BuildingsIsletStep8(this.buildings, this.grounds);
-    }
-
-    public List<Building> getBuildings()
-    {
-        return buildings;
-    }
-
-    public Ground getGrounds()
-    {
-        return grounds;
     }
 
     @Override
