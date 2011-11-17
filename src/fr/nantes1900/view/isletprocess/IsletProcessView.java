@@ -49,22 +49,22 @@ public class IsletProcessView extends PFrame
         this.setLayout(new GridBagLayout());
 
         this.getComponentsPanel().add(nbView,
-                new GridBagConstraints(0, 0, GridBagConstraints.REMAINDER, 1, 0.0, 0.0,
+                new GridBagConstraints(0, 0, 2, 1, 0.0, 0.0,
                         GridBagConstraints.CENTER,
                         GridBagConstraints.HORIZONTAL,
                         new Insets(5, 10, 5, 10), 0, 0));
         this.getComponentsPanel().add(this.tabs,
-                new GridBagConstraints(0, 1, 1, GridBagConstraints.REMAINDER, 0.0, 0.0,
+                new GridBagConstraints(0, 1, 1, 2, 0.0, 0.0,
                         GridBagConstraints.CENTER,
                         GridBagConstraints.VERTICAL,
                         new Insets(5, 10, 5, 10), 0, 0));
         this.getComponentsPanel().add(u3DView,
-                new GridBagConstraints(1, 1, GridBagConstraints.REMAINDER, 1, 0.0, 0.0,
+                new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
                         GridBagConstraints.CENTER,
                         GridBagConstraints.BOTH,
                         new Insets(5, 10, 5, 10), 0, 0));
         this.getComponentsPanel().add(cView,
-                new GridBagConstraints(2, 1, GridBagConstraints.REMAINDER, GridBagConstraints.REMAINDER, 0.0, 0.0,
+                new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
                         GridBagConstraints.CENTER,
                         GridBagConstraints.HORIZONTAL,
                         new Insets(5, 10, 5, 10), 0, 0));
