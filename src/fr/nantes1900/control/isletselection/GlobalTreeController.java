@@ -20,7 +20,7 @@ public class GlobalTreeController
     /**
      * View of the tree.
      */
-    private GlobalTreeView           gtView;
+    private GlobalTreeView gtView;
 
     /**
      * The parent controller to give feedback to.
@@ -57,7 +57,9 @@ public class GlobalTreeController
     {
         this.gtView.displayDirectory(newDirectory);
         this.gtView.getTree().addTreeSelectionListener(
-                new TreeSelectionListener() {
+                new TreeSelectionListener()
+                {
+
                     @Override
                     public void valueChanged(TreeSelectionEvent e)
                     {

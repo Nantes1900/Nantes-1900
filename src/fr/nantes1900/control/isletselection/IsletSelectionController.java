@@ -161,6 +161,7 @@ public class IsletSelectionController
             AbstractBuildingsIslet resIslet;
             try
             {
+                // FIXME : it shouldn't be here, but in the biController...
                 resIslet = new ResidentialIslet(parser.read());
                 this.biController.setIslet(resIslet);
                 this.biController.putGravityNormal();

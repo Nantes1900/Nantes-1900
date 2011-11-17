@@ -21,6 +21,13 @@ public final class SimplificationSurfaces
     private static double isOrientedFactor = IS_ORIENTED_FACTOR_DEFAULT;
 
     /**
+     * Private constructor.
+     */
+    private SimplificationSurfaces()
+    {
+    }
+
+    /**
      * Getter.
      * @return the is oriented factor
      */
@@ -37,12 +44,5 @@ public final class SimplificationSurfaces
     public static void setIsOrientedFactor(final double isOrientedFactorIn)
     {
         SimplificationSurfaces.isOrientedFactor = isOrientedFactorIn;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private SimplificationSurfaces()
-    {
     }
 }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.constants.SimplificationSurfaces;
@@ -32,6 +33,9 @@ public class Surface
      * The polygon representing this surface (after simplification).
      */
     private Polygon polygon = new Polygon();
+
+    // FIXME : a Surface is an abstract class implemented by a polygon OR a
+    // mesh.
 
     /**
      * The mesh representing this surface (before simplification).
@@ -63,6 +67,16 @@ public class Surface
     public Surface(final Polygon p)
     {
         this.setPolygone(p);
+    }
+
+    /**
+     * Copy constructor.
+     * @param surface
+     *            the surface to copy.
+     */
+    public Surface(final Surface surface)
+    {
+        // TODO : code this.
     }
 
     /**
@@ -107,7 +121,7 @@ public class Surface
      */
     private Edge createEdge(final Surface s1, final Surface s2,
             final Surface s3, final Map<Point, Point> pointMap,
-            final List<Surface> wallList, final Vector3d normalGround)
+            final List<Wall> wallList, final Vector3d normalGround)
             throws InvalidSurfaceException
     {
         final List<Surface> surfaces = new ArrayList<>();
@@ -216,7 +230,7 @@ public class Surface
      * @throws InvalidSurfaceException
      *             if a problem happened
      */
-    public final Polygon findEdges(final List<Surface> wallList,
+    public final Polygon findEdges(final List<Wall> wallList,
             final Map<Point, Point> pointMap, final Vector3d normalGround)
             throws InvalidSurfaceException
     {
@@ -454,6 +468,11 @@ public class Surface
                 m.returnNeighbours(ret, contain);
             }
         }
+    }
+
+    public final DefaultMutableTreeNode returnNode()
+    {
+        return new DefaultMutableTreeNode(this);
     }
 
     /**

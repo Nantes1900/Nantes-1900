@@ -49,11 +49,14 @@ public final class FileTools
     public static final String KEY_IS_LAUNCHPROCESS = "ISLaunchProcess";
 
     /**
-     * Reads a help message from the file helpMessage.txt with the key keyName+messageType.
+     * Reads a help message from the file helpMessage.txt with the key
+     * keyName+messageType.
      * @param keyName
-     *            Name of the key corresponding generally to the button the message is associated with.
+     *            Name of the key corresponding generally to the button the
+     *            message is associated with.
      * @param messageType
-     *            The type of message to get : tooltip, help message, title or status bar.
+     *            The type of message to get : tooltip, help message, title or
+     *            status bar.
      * @return The read message.
      */
     public static String readHelpMessage(final String keyName,

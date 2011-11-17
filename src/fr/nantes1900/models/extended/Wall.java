@@ -29,4 +29,20 @@ public class Wall extends Surface
     {
         super(p);
     }
+
+    /**
+     * Copy constructor.
+     * @param w
+     *            the wall to copy
+     */
+    public Wall(final Wall w)
+    {
+        super(w);
+    }
+
+    @Override
+    public final String toString()
+    {
+        return "Wall";
+    }
 }

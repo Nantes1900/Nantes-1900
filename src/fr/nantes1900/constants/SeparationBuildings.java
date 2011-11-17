@@ -19,6 +19,13 @@ public final class SeparationBuildings
     private static double blockBuildingSize = BLOCK_BUILDING_SIZE_ERROR_DEFAULT;
 
     /**
+     * Private constructor.
+     */
+    private SeparationBuildings()
+    {
+    }
+
+    /**
      * Getter.
      * @return the block building size
      */
@@ -35,12 +42,5 @@ public final class SeparationBuildings
     public static void setBlockBuildingSize(final double blockBuildingSizeIn)
     {
         SeparationBuildings.blockBuildingSize = blockBuildingSizeIn;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private SeparationBuildings()
-    {
     }
 }

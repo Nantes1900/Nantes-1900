@@ -283,8 +283,7 @@ public class Mesh extends HashSet<Triangle>
     {
 
         final double convertDegreesToRadian = 180 / Math.PI;
-        return this.averageNormal().angle(w2.averageNormal()) 
-                < littleAngleNormalErrorFactor
+        return this.averageNormal().angle(w2.averageNormal()) < littleAngleNormalErrorFactor
                 / convertDegreesToRadian;
     }
 

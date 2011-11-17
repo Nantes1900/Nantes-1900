@@ -6,339 +6,304 @@ import javax.vecmath.Vector3d;
 
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.control.isletselection.IsletSelectionController;
+import fr.nantes1900.control.steps.BuildingsIsletStep1Controller;
+import fr.nantes1900.control.steps.BuildingsIsletStep2Controller;
+import fr.nantes1900.control.steps.BuildingsIsletStep3Controller;
+import fr.nantes1900.control.steps.BuildingsIsletStep4Controller;
+import fr.nantes1900.control.steps.BuildingsIsletStep5Controller;
+import fr.nantes1900.control.steps.BuildingsIsletStep6Controller;
+import fr.nantes1900.control.steps.BuildingsIsletStep7Controller;
 import fr.nantes1900.models.basis.Mesh;
-import fr.nantes1900.models.extended.Building;
-import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
-import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet.VoidParameterException;
 import fr.nantes1900.utils.ParserSTL;
-import fr.nantes1900.view.display3d.MeshView;
-import fr.nantes1900.view.display3d.PolygonView;
 
+/**
+ * Implements the controller of a building islet. Used to visualize the islets,
+ * to launch the treatments.
+ * @author Daniel
+ */
 public class BuildingsIsletController
 {
 
+    /**
+     * The buildings islet containing the model.
+     */
     private AbstractBuildingsIslet islet;
+    /**
+     * The islet selection controller, which is the parent of this.
+     */
     private IsletSelectionController parentController;
+    /**
+     * The universe 3D controller to interact with the universe 3D.
+     */
     private Universe3DController u3DController;
+    /**
+     * The normal of the gravity.
+     */
     private Vector3d gravityNormal;
 
+    /**
+     * The controller related to the first step of the treatment.
+     */
+    private BuildingsIsletStep1Controller biStep1Controller;
+
+    /**
+     * The controller related to the second step of the treatment.
+     */
+    private BuildingsIsletStep2Controller biStep2Controller;
+
+    /**
+     * The controller related to the third step of the treatment.
+     */
+    private BuildingsIsletStep3Controller biStep3Controller;
+
+    /**
+     * The controller related to the 4th step of the treatment.
+     */
+    private BuildingsIsletStep4Controller biStep4Controller;
+
+    /**
+     * The controller related to the 5th step of the treatment.
+     */
+    private BuildingsIsletStep5Controller biStep5Controller;
+
+    /**
+     * The controller related to the 6th step of the treatment.
+     */
+    private BuildingsIsletStep6Controller biStep6Controller;
+
+    /**
+     * The controller related to the 7th step of the treatment.
+     */
+    private BuildingsIsletStep7Controller biStep7Controller;
+
+    /**
+     * The controller related to the 8th step of the treatment.
+     */
+    private BuildingsIsletStep7Controller biStep8Controller;
+
+    /**
+     * Constructor.
+     * @param isletSelectionController
+     *            the controller of the islet selection
+     * @param universe3DControllerIn
+     *            the universe 3D controller
+     */
     public BuildingsIsletController(
-            IsletSelectionController isletSelectionController,
-            Universe3DController universe3DControllerIn)
+            final IsletSelectionController isletSelectionController,
+            final Universe3DController universe3DControllerIn)
     {
         this.parentController = isletSelectionController;
         this.u3DController = universe3DControllerIn;
     }
 
-    public Vector3d computeNormalWithTrianglesSelected()
+    /**
+     * TODO.
+     * @return TODO.
+     */
+    public final Vector3d computeNormalWithTrianglesSelected()
     {
         Mesh mesh = new Mesh(this.u3DController.getTrianglesSelected());
         return mesh.averageNormal();
     }
 
-    public void display()
+    /**
+     * TODO.
+     */
+    public final void display()
     {
         this.u3DController.getUniverse3DView().clearAllMeshes();
 
         switch (this.islet.getProgression()) {
         case 0:
-            this.viewStep0();
+            // TODO : error
             break;
-
         case 1:
-            this.viewStep1();
+            this.biStep1Controller.viewStep();
             break;
-
         case 2:
-            this.viewStep2();
+            this.biStep2Controller.viewStep();
             break;
-
         case 3:
-            this.viewStep3();
+            this.biStep3Controller.viewStep();
             break;
-
         case 4:
-            this.viewStep4();
+            this.biStep4Controller.viewStep();
             break;
-
         case 5:
-            this.viewStep5();
+            this.biStep5Controller.viewStep();
             break;
-
         case 6:
-            this.viewStep6();
+            this.biStep6Controller.viewStep();
             break;
-
         case 7:
-            this.viewStep7();
+            this.biStep7Controller.viewStep();
             break;
-
         case 8:
-            this.viewStep8();
+            this.biStep8Controller.viewStep();
+            break;
+        default:
+            // TODO : error
             break;
         }
     }
 
-    public AbstractBuildingsIslet getIslet()
+    /**
+     * Getter.
+     * @return the gravity normal
+     */
+    public final Vector3d getGravityNormal()
+    {
+        return this.gravityNormal;
+    }
+
+    /**
+     * Getter.
+     * @return the buildings islet
+     */
+    public final AbstractBuildingsIslet getIslet()
     {
         return this.islet;
     }
 
-    public IsletSelectionController getIsletSelectionController()
+    /**
+     * Getter.
+     * @return the controller of the islet selection
+     */
+    public final IsletSelectionController getIsletSelectionController()
     {
         return this.parentController;
     }
 
-    public IsletSelectionController getParentController()
+    /**
+     * Getter.
+     * @return the parent controller
+     */
+    public final IsletSelectionController getParentController()
     {
         return this.parentController;
     }
 
-    public Universe3DController getU3dcontroller()
+    /**
+     * Getter.
+     * @return the universe 3D controller
+     */
+    public final Universe3DController getU3DController()
     {
         return this.u3DController;
     }
 
+    /**
+     * Progression incrementation.
+     */
     private void incProgression()
     {
         this.islet.incProgression();
     }
 
-    public void launchNextTreatment()
+    /**
+     * Launch the next treatment. Calls the launchTreatment method from the
+     * BuildingsIslet.
+     */
+    public final void launchNextTreatment()
     {
-        switch (this.islet.getProgression()) {
-        case 0:
-            this.islet.launchTreatment0();
-            break;
-        case 1:
-            this.islet.launchTreatment1();
-            break;
-        case 2:
-            this.islet.launchTreatment2();
-            break;
-        case 3:
-            this.islet.launchTreatment3();
-            break;
-        case 4:
-            this.islet.launchTreatment4();
-            break;
-        case 5:
-            this.islet.launchTreatment6();
-            break;
-        case 6:
-            this.islet.launchTreatment7();
-            break;
-        case 7:
-            this.islet.launchTreatment8();
-            break;
-        case 8:
-            this.islet.launchTreatment9();
-            break;
-        default:
-            break;
-        }
+        this.islet.launchTreatment();
+
         this.incProgression();
         this.display();
     }
 
-    public final void readGravityNormal(String fileName) throws IOException
+    /**
+     * TODO.
+     */
+    public final void putGravityNormal()
+    {
+        this.islet.setGravityNormal(this.gravityNormal);
+    }
+
+    /**
+     * TODO.
+     * @param fileName
+     *            TODO.
+     * @throws IOException
+     *             TODO.
+     */
+    public final void readGravityNormal(final String fileName)
+            throws IOException
     {
         ParserSTL parser = new ParserSTL(fileName);
         Mesh mesh = parser.read();
         this.setGravityNormal(mesh.averageNormal());
     }
 
-    public void setGroundNormal(Vector3d groundNormal)
+    /**
+     * Setter.
+     * @param gravityNormalIn
+     *            the gravity normal
+     */
+    public final void setGravityNormal(final Vector3d gravityNormalIn)
+    {
+        this.gravityNormal = gravityNormalIn;
+    }
+
+    /**
+     * Setter.
+     * @param groundNormal
+     *            the ground normal
+     */
+    public final void setGroundNormal(final Vector3d groundNormal)
     {
         this.islet.setGroundNormal(groundNormal);
     }
 
-    public void setIslet(AbstractBuildingsIslet isletIn)
+    /**
+     * Setter.
+     * @param isletIn
+     *            the new buildings islet
+     */
+    public final void setIslet(final AbstractBuildingsIslet isletIn)
     {
         this.islet = isletIn;
     }
 
-    public void setIsletSelectionController(
-            IsletSelectionController isletSelectionControllerIn)
+    /**
+     * Setter.
+     * @param isletSelectionControllerIn
+     *            the controller of the islet selection
+     */
+    public final void setIsletSelectionController(
+            final IsletSelectionController isletSelectionControllerIn)
     {
         this.parentController = isletSelectionControllerIn;
     }
 
-    public void
-            setParentController(IsletSelectionController parentControllerIn)
+    /**
+     * Setter.
+     * @param parentControllerIn
+     *            the parent controller
+     */
+    public final void setParentController(
+            final IsletSelectionController parentControllerIn)
     {
         this.parentController = parentControllerIn;
     }
 
-    public void setUniverse3DController(Universe3DController u3dcontrollerIn)
+    /**
+     * Setter.
+     * @param u3dcontrollerIn
+     *            the universe 3D controller
+     */
+    public final void setUniverse3DController(
+            final Universe3DController u3dcontrollerIn)
     {
         this.u3DController = u3dcontrollerIn;
     }
 
-    public void useGravityNormalAsGroundNormal()
+    /**
+     * TODO.
+     */
+    public final void useGravityNormalAsGroundNormal()
     {
         this.islet.setGroundNormal(this.islet.getGravityNormal());
-    }
-
-    /**
-     * After step 8 : SimplificationSurfaces
-     */
-    public void viewBeforeStep9()
-    {
-        for (Building building : this.islet.getBuildings())
-        {
-            for (Surface wall : building.getWalls())
-            {
-                this.u3DController.getUniverse3DView().addPolygon(
-                        new PolygonView(wall.getPolygone()));
-            }
-            for (Surface roof : building.getRoofs())
-            {
-                this.u3DController.getUniverse3DView().addPolygon(
-                        new PolygonView(roof.getPolygone()));
-            }
-        }
-    }
-
-    /**
-     * View before every treatment.
-     */
-    public void viewStep0()
-    {
-        this.u3DController.getUniverse3DView().addMesh(
-                new MeshView(this.islet.getInitialTotalMesh()));
-    }
-
-    /**
-     * View after the base change.
-     */
-    public void viewStep1()
-    {
-        this.u3DController.getUniverse3DView().addMesh(
-                new MeshView(this.islet.getInitialTotalMesh()));
-    }
-
-    /**
-     * View after the separation between ground and building.
-     */
-    public final void viewStep2()
-    {
-        this.u3DController.getUniverse3DView().addMesh(
-                new MeshView(this.islet.getInitialBuilding()));
-        this.u3DController.getUniverse3DView().addMesh(
-                new MeshView(this.islet.getInitialGround()));
-    }
-
-    /**
-     * View after the separation between buildings.
-     */
-    public void viewStep3()
-    {
-        this.u3DController.getUniverse3DView().addMesh(
-                new MeshView(this.islet.getInitialGround()));
-
-        for (Building building : this.islet.getBuildings())
-        {
-            this.u3DController.getUniverse3DView().addMesh(
-                    new MeshView(building.getInitialTotalMesh()));
-        }
-    }
-
-    /**
-     * After carving the little walls.
-     */
-    public void viewStep4()
-    {
-        // Not implemented for now.
-    }
-
-    /**
-     * After SeparationWallRoof
-     */
-    public void viewStep5()
-    {
-        for (Building building : this.islet.getBuildings())
-        {
-            this.u3DController.getUniverse3DView().addMesh(
-                    new MeshView(building.getInitialWall()));
-            this.u3DController.getUniverse3DView().addMesh(
-                    new MeshView(building.getInitialRoof()));
-        }
-    }
-
-    /**
-     * After SeparationWallsAndSeparationRoofs
-     */
-    public void viewStep6()
-    {
-        for (Building building : this.islet.getBuildings())
-        {
-            for (Surface wall : building.getWalls())
-            {
-                this.u3DController.getUniverse3DView().addMesh(
-                        new MeshView(wall.getMesh()));
-            }
-            for (Surface roof : building.getRoofs())
-            {
-                this.u3DController.getUniverse3DView().addMesh(
-                        new MeshView(roof.getMesh()));
-            }
-        }
-    }
-
-    /**
-     * After DeterminateNeighbours
-     */
-    public void viewStep7()
-    {
-        for (Building building : this.islet.getBuildings())
-        {
-            for (Surface wall : building.getWalls())
-            {
-                this.u3DController.getUniverse3DView().addMesh(
-                        new MeshView(wall.getMesh()));
-            }
-            for (Surface roof : building.getRoofs())
-            {
-                this.u3DController.getUniverse3DView().addMesh(
-                        new MeshView(roof.getMesh()));
-            }
-        }
-    }
-
-    /**
-     * After SortNeighbours
-     */
-    public void viewStep8()
-    {
-        for (Building building : this.islet.getBuildings())
-        {
-            for (Surface wall : building.getWalls())
-            {
-                this.u3DController.getUniverse3DView().addMesh(
-                        new MeshView(wall.getMesh()));
-            }
-            for (Surface roof : building.getRoofs())
-            {
-                this.u3DController.getUniverse3DView().addMesh(
-                        new MeshView(roof.getMesh()));
-            }
-        }
-    }
-
-    public Vector3d getGravityNormal()
-    {
-        return gravityNormal;
-    }
-
-    public void setGravityNormal(Vector3d gravityNormal)
-    {
-        this.gravityNormal = gravityNormal;
-    }
-
-    public void putGravityNormal()
-    {
-        this.islet.setGravityNormal(this.gravityNormal);
     }
 }

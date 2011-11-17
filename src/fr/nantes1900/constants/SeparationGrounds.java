@@ -16,8 +16,14 @@ public final class SeparationGrounds
      * Coefficient used after the extraction of the grounds, to determine if a
      * ground has enough triangles to be considered as a real one.
      */
-    private static double blockGroundsSizeError = 
-            BLOCK_GROUNDS_SIZE_ERROR_DEFAULT;
+    private static double blockGroundsSizeError = BLOCK_GROUNDS_SIZE_ERROR_DEFAULT;
+
+    /**
+     * Private constructor.
+     */
+    private SeparationGrounds()
+    {
+    }
 
     /**
      * Getter.
@@ -37,12 +43,5 @@ public final class SeparationGrounds
             final double blockGroundsSizeErrorIn)
     {
         SeparationGrounds.blockGroundsSizeError = blockGroundsSizeErrorIn;
-    }
-
-    /**
-     * Private constructor.
-     */
-    private SeparationGrounds()
-    {
     }
 }

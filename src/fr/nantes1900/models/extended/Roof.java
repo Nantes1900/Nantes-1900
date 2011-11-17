@@ -29,4 +29,20 @@ public class Roof extends Surface
     {
         super(p);
     }
+
+    /**
+     * Copy constructor.
+     * @param r
+     *            the roof to copy
+     */
+    public Roof(final Roof r)
+    {
+        super(r);
+    }
+
+    @Override
+    public final String toString()
+    {
+        return "Roof";
+    }
 }

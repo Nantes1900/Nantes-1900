@@ -17,9 +17,10 @@ import test.fr.nantes1900.utils.ParserSTLTest;
  * @author Daniel Lefevre
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = {EdgeTest.class, PointTest.class, TriangleTest.class,
+@SuiteClasses(value = { EdgeTest.class, PointTest.class, TriangleTest.class,
         PolylineTest.class, MeshTest.class, MatrixMethodTest.class,
-        ParserSTLTest.class})
+        ParserSTLTest.class
+})
 public final class AllTests
 {
 

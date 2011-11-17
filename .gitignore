@@ -9,6 +9,11 @@
 /.settings
 /.checkstyle
 /bin
+<<<<<<< HEAD
+/*.gitignore
+/*.jpg
+=======
 /.gitignore
 *.jpg
 *.png
+>>>>>>> 4f0a40b4fc8d8229ec7259200c77044c94d37575

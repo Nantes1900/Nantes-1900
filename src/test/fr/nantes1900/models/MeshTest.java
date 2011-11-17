@@ -1,5 +1,12 @@
 package test.fr.nantes1900.models;
 
+import javax.vecmath.Vector3d;
+
+import junit.framework.Assert;
+import junit.framework.TestCase;
+
+import org.junit.Test;
+
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
@@ -7,13 +14,6 @@ import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
-
-import javax.vecmath.Vector3d;
-
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
-import org.junit.Test;
 
 /**
  * A set of tests for the class Mesh.
@@ -25,15 +25,15 @@ public class MeshTest extends TestCase
     /**
      * Test attribute.
      */
-    private final Point    p1    = new Point(1, 0, -1);
+    private final Point p1 = new Point(1, 0, -1);
     /**
      * Test attribute.
      */
-    private final Point    p2    = new Point(0, 1, 0);
+    private final Point p2 = new Point(0, 1, 0);
     /**
      * Test attribute.
      */
-    private final Point    p3    = new Point(-1, 2, 1);
+    private final Point p3 = new Point(-1, 2, 1);
     /**
      * Test attribute.
      */
@@ -41,15 +41,15 @@ public class MeshTest extends TestCase
     /**
      * Test attribute.
      */
-    private final Edge     e1    = new Edge(this.p1, this.p2);
+    private final Edge e1 = new Edge(this.p1, this.p2);
     /**
      * Test attribute.
      */
-    private final Edge     e2    = new Edge(this.p2, this.p3);
+    private final Edge e2 = new Edge(this.p2, this.p3);
     /**
      * Test attribute.
      */
-    private final Edge     e3    = new Edge(this.p3, this.p1);
+    private final Edge e3 = new Edge(this.p3, this.p1);
     /**
      * Test attribute.
      */
@@ -58,15 +58,15 @@ public class MeshTest extends TestCase
     /**
      * Test attribute.
      */
-    private final Point    p4    = new Point(4, 5, 4);
+    private final Point p4 = new Point(4, 5, 4);
     /**
      * Test attribute.
      */
-    private final Point    p5    = new Point(2, -3, -3);
+    private final Point p5 = new Point(2, -3, -3);
     /**
      * Test attribute.
      */
-    private final Point    p6    = new Point(-2, 4, -5);
+    private final Point p6 = new Point(-2, 4, -5);
     /**
      * Test attribute.
      */
@@ -74,15 +74,15 @@ public class MeshTest extends TestCase
     /**
      * Test attribute.
      */
-    private final Edge     e4    = new Edge(this.p4, this.p5);
+    private final Edge e4 = new Edge(this.p4, this.p5);
     /**
      * Test attribute.
      */
-    private final Edge     e5    = new Edge(this.p5, this.p6);
+    private final Edge e5 = new Edge(this.p5, this.p6);
     /**
      * Test attribute.
      */
-    private final Edge     e6    = new Edge(this.p6, this.p4);
+    private final Edge e6 = new Edge(this.p6, this.p4);
     /**
      * Test attribute.
      */
@@ -91,7 +91,7 @@ public class MeshTest extends TestCase
     /**
      * Test attribute.
      */
-    private final Mesh     m     = new Mesh();
+    private final Mesh m = new Mesh();
 
     /**
      * Constructor of the MeshTest class : creating the mesh which will be an

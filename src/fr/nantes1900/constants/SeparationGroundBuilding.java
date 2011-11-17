@@ -41,8 +41,7 @@ public final class SeparationGroundBuilding
      * (gravity-oriented) to the ground that can describe a ground triangle. In
      * degrees.
      */
-    private static double largeAngleGroundError = 
-            LARGE_ANGLE_GROUND_ERROR_DEFAULT;
+    private static double largeAngleGroundError = LARGE_ANGLE_GROUND_ERROR_DEFAULT;
 
     /**
      * Private constructor.
@@ -106,8 +105,7 @@ public final class SeparationGroundBuilding
     public static void setLargeAngleGroundError(
             final double largeAngleGroundErrorIn)
     {
-        SeparationGroundBuilding.largeAngleGroundError = 
-                largeAngleGroundErrorIn;
+        SeparationGroundBuilding.largeAngleGroundError = largeAngleGroundErrorIn;
     }
 
 }

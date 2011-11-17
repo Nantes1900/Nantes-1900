@@ -1,13 +1,13 @@
 package fr.nantes1900.models.basis;
 
-import fr.nantes1900.models.basis.Polygon.BadFormedPolylineException;
-
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import javax.vecmath.Vector3d;
+
+import fr.nantes1900.models.basis.Polygon.BadFormedPolylineException;
 
 /**
  * Implement an edge composed of two points, and the triangles containing this

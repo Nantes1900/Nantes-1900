@@ -90,6 +90,55 @@ public class MeshView extends TriangleArray
 
     /**
      * TODO.
+     * @param triangle
+     *            TODO.
+     * @return TODO.
+     */
+    public static Vector3f convertNormal(final Triangle triangle)
+    {
+        Vector3f normalFloat = new Vector3f(
+                (float) triangle.getNormal().getX(), (float) triangle
+                        .getNormal().getY(), (float) triangle.getNormal()
+                        .getZ());
+        return normalFloat;
+
+    }
+
+    /**
+     * TODO.
+     * @param i
+     *            TODO.
+     */
+    public final void changeColor(final int i)
+    {
+        if (this.trianglesViewList.get(i).isSelected())
+        {
+            // TODO : method deprecated
+            this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
+            this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
+            this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+        } else
+        {
+
+            // TODO : method deprecated
+            this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
+            this.setTextureCoordinate(i * 3 + 1, new Point2f(0.0f, 0.0f));
+            this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+        }
+
+    }
+
+    /**
+     * Getter.
+     * @return the centroid point
+     */
+    public final Point getCentroid()
+    {
+        return this.centroid;
+    }
+
+    /**
+     * TODO.
      * @return TODO.
      */
     public final ArrayList<TriangleView> getTriangleArray()
@@ -135,54 +184,5 @@ public class MeshView extends TriangleArray
             this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
             this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
         }
-    }
-
-    /**
-     * TODO.
-     * @param i
-     *            TODO.
-     */
-    public final void changeColor(final int i)
-    {
-        if (this.trianglesViewList.get(i).isSelected())
-        {
-            // TODO : method deprecated
-            this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
-            this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
-            this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
-        } else
-        {
-
-            // TODO : method deprecated
-            this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
-            this.setTextureCoordinate(i * 3 + 1, new Point2f(0.0f, 0.0f));
-            this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
-        }
-
-    }
-
-    /**
-     * Getter.
-     * @return the centroid point
-     */
-    public final Point getCentroid()
-    {
-        return this.centroid;
-    }
-
-    /**
-     * TODO.
-     * @param triangle
-     *            TODO.
-     * @return TODO.
-     */
-    public static Vector3f convertNormal(final Triangle triangle)
-    {
-        Vector3f normalFloat = new Vector3f(
-                (float) triangle.getNormal().getX(), (float) triangle
-                        .getNormal().getY(), (float) triangle.getNormal()
-                        .getZ());
-        return normalFloat;
-
     }
 }

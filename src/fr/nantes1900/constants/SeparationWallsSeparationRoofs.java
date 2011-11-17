@@ -33,74 +33,14 @@ public final class SeparationWallsSeparationRoofs
     private static double roofAngleError = ROOF_ANGLE_ERROR_DEFAULT;
 
     /**
-     * Setter.
-     * @param roofAngleErrorIn
-     *            the new roof angle error
-     */
-    public static void setRoofAngleError(final double roofAngleErrorIn)
-    {
-        SeparationWallsSeparationRoofs.roofAngleError = roofAngleErrorIn;
-    }
-
-    /**
-     * Setter.
-     * @param middleAngleErrorIn
-     *            the new middle angle error
-     */
-    public static void setMiddleAngleError(final double middleAngleErrorIn)
-    {
-        SeparationWallsSeparationRoofs.middleAngleError = middleAngleErrorIn;
-    }
-
-    /**
-     * Setter.
-     * @param largeAngleErrorIn
-     *            the new large angle error
-     */
-    public static void setLargeAngleError(final double largeAngleErrorIn)
-    {
-        SeparationWallsSeparationRoofs.largeAngleError = largeAngleErrorIn;
-    }
-
-    /**
-     * Setter.
-     * @param wallSizeErrorIn
-     *            the new wall size error
-     */
-    public static void setWallSizeError(final double wallSizeErrorIn)
-    {
-        SeparationWallsSeparationRoofs.wallSizeError = wallSizeErrorIn;
-    }
-
-    /**
-     * Setter.
-     * @param roofSizeErrorIn
-     *            the new roof size error
-     */
-    public static void setRoofSizeError(final double roofSizeErrorIn)
-    {
-        SeparationWallsSeparationRoofs.roofSizeError = roofSizeErrorIn;
-    }
-
-    /**
-     * Setter.
-     * @param planesErrorIn
-     *            the new planes error
-     */
-    public static void setPlanesError(final double planesErrorIn)
-    {
-        SeparationWallsSeparationRoofs.planesError = planesErrorIn;
-    }
-
-    /**
      * The default value of the coefficient.
      */
     private static final double MIDDLE_ANGLE_ERROR_DEFAULT = 25;
 
     /**
-     * Error factor used during the process of the new neighbours : if the
-     * angle between two surfaces which are neighbours is lesser than this
-     * error, then they are merged to form only one wall.
+     * Error factor used during the process of the new neighbours : if the angle
+     * between two surfaces which are neighbours is lesser than this error, then
+     * they are merged to form only one wall.
      */
     private static double middleAngleError = MIDDLE_ANGLE_ERROR_DEFAULT;
 
@@ -222,11 +162,71 @@ public final class SeparationWallsSeparationRoofs
 
     /**
      * Setter.
+     * @param largeAngleErrorIn
+     *            the new large angle error
+     */
+    public static void setLargeAngleError(final double largeAngleErrorIn)
+    {
+        SeparationWallsSeparationRoofs.largeAngleError = largeAngleErrorIn;
+    }
+
+    /**
+     * Setter.
+     * @param middleAngleErrorIn
+     *            the new middle angle error
+     */
+    public static void setMiddleAngleError(final double middleAngleErrorIn)
+    {
+        SeparationWallsSeparationRoofs.middleAngleError = middleAngleErrorIn;
+    }
+
+    /**
+     * Setter.
+     * @param planesErrorIn
+     *            the new planes error
+     */
+    public static void setPlanesError(final double planesErrorIn)
+    {
+        SeparationWallsSeparationRoofs.planesError = planesErrorIn;
+    }
+
+    /**
+     * Setter.
+     * @param roofAngleErrorIn
+     *            the new roof angle error
+     */
+    public static void setRoofAngleError(final double roofAngleErrorIn)
+    {
+        SeparationWallsSeparationRoofs.roofAngleError = roofAngleErrorIn;
+    }
+
+    /**
+     * Setter.
+     * @param roofSizeErrorIn
+     *            the new roof size error
+     */
+    public static void setRoofSizeError(final double roofSizeErrorIn)
+    {
+        SeparationWallsSeparationRoofs.roofSizeError = roofSizeErrorIn;
+    }
+
+    /**
+     * Setter.
      * @param wallAngleErrorIn
      *            the new wall angle error
      */
     public static void setWallAngleError(final double wallAngleErrorIn)
     {
         SeparationWallsSeparationRoofs.wallAngleError = wallAngleErrorIn;
+    }
+
+    /**
+     * Setter.
+     * @param wallSizeErrorIn
+     *            the new wall size error
+     */
+    public static void setWallSizeError(final double wallSizeErrorIn)
+    {
+        SeparationWallsSeparationRoofs.wallSizeError = wallSizeErrorIn;
     }
 }

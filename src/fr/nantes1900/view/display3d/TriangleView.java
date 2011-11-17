@@ -30,12 +30,11 @@ public class TriangleView
 
     /**
      * TODO.
-     * @param selectedIn
-     *            TODO.
+     * @return TODO.
      */
-    public final void setSelected(final boolean selectedIn)
+    public final Triangle getTriangle()
     {
-        this.selected = selectedIn;
+        return this.triangle;
     }
 
     /**
@@ -49,11 +48,12 @@ public class TriangleView
 
     /**
      * TODO.
-     * @return TODO.
+     * @param selectedIn
+     *            TODO.
      */
-    public final Triangle getTriangle()
+    public final void setSelected(final boolean selectedIn)
     {
-        return this.triangle;
+        this.selected = selectedIn;
     }
 
 }

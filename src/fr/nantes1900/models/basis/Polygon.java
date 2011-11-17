@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.vecmath.Vector3d;
 
-
 /**
  * Implements a polyline : a suite of edges.
  * @author Daniel Lefevre
@@ -17,7 +16,7 @@ public class Polygon
     /**
      * ID counter.
      */
-    private static int        currentID;
+    private static int currentID;
 
     /**
      * List of the points of the polyline.
@@ -27,17 +26,17 @@ public class Polygon
     /**
      * List of the edges of the polyline.
      */
-    private final List<Edge>  edgeList  = new ArrayList<>();
+    private final List<Edge> edgeList = new ArrayList<>();
 
     /**
      * Normal of the polyline.
      */
-    private Vector3d          normal    = new Vector3d();
+    private Vector3d normal = new Vector3d();
 
     /**
      * ID of the polyline.
      */
-    private final int         iD;
+    private final int iD;
 
     /**
      * Void constructor.

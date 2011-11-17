@@ -6,8 +6,8 @@ import javax.vecmath.Vector3d;
 
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.utils.MatrixMethod;
-import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
+import fr.nantes1900.utils.ParserSTL;
 
 /**
  * Implements an islet.
@@ -20,16 +20,6 @@ public abstract class AbstractIslet
      * The initial mesh before every treatment.
      */
     private Mesh initialTotalMesh;
-
-    /**
-     * Setter.
-     * @param initialTotalMeshIn
-     *            TODO.
-     */
-    public final void setInitialTotalMesh(final Mesh initialTotalMeshIn)
-    {
-        this.initialTotalMesh = initialTotalMeshIn;
-    }
 
     /**
      * Change base matrix from the current base to a base which is ground-like
@@ -133,6 +123,16 @@ public abstract class AbstractIslet
     public final void setGravityNormal(final Vector3d newNormal)
     {
         this.gravityNormal = newNormal;
+    }
+
+    /**
+     * Setter.
+     * @param initialTotalMeshIn
+     *            TODO.
+     */
+    public final void setInitialTotalMesh(final Mesh initialTotalMeshIn)
+    {
+        this.initialTotalMesh = initialTotalMeshIn;
     }
 
     /**

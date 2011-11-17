@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
-import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
 
 import fr.nantes1900.utils.FileTools;
@@ -18,10 +17,11 @@ import fr.nantes1900.view.isletselection.ActionsView;
  */
 public class ActionsController
 {
+
     /**
      * The panel containing buttons to launch the different actions.
      */
-    private ActionsView              aView;
+    private ActionsView aView;
 
     /**
      * The parent controller to give feedback to.
@@ -31,7 +31,7 @@ public class ActionsController
     /**
      * Action listener of the launch button.
      */
-    private LaunchActionListener     laListener;
+    private LaunchActionListener laListener;
 
     /**
      * Creates a new controller to handle the panel containing buttons to launch
@@ -42,7 +42,8 @@ public class ActionsController
     {
         this.parentController = isletSelectionController;
         this.aView = new ActionsView();
-        this.aView.getOpenButton().addActionListener(new ActionListener() {
+        this.aView.getOpenButton().addActionListener(new ActionListener()
+        {
 
             @Override
             public void actionPerformed(ActionEvent arg0)
@@ -66,7 +67,7 @@ public class ActionsController
             }
 
         });
-        
+
         laListener = new LaunchActionListener(false);
         this.aView.getLaunchButton().addActionListener(laListener);
     }
@@ -131,6 +132,7 @@ public class ActionsController
 
     public class LaunchActionListener implements ActionListener
     {
+
         private boolean computeNormal;
 
         public LaunchActionListener(boolean computeNormal)

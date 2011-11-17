@@ -1,9 +1,5 @@
 package fr.nantes1900.utils;
 
-import fr.nantes1900.models.basis.Mesh;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Triangle;
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -13,6 +9,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+
+import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Triangle;
 
 /**
  * Implements a STL writer. This writer uses the ASCII or the binary format,
