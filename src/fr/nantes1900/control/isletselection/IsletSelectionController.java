@@ -3,9 +3,11 @@
  */
 package fr.nantes1900.control.isletselection;
 
+import java.awt.Cursor;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -81,7 +83,7 @@ public class IsletSelectionController
         this.parentController = parentControllerIn;
         this.gtController = new GlobalTreeController(this);
         this.aController = new ActionsController(this);
-        this.u3DController = new Universe3DController(this);
+        this.u3DController = new Universe3DController();
         this.biController = new BuildingsIsletController(this,
                 this.u3DController);
 
@@ -146,6 +148,8 @@ public class IsletSelectionController
      */
     public final void displayFile(final DefaultMutableTreeNode node)
     {
+        Cursor cursor = new Cursor(Cursor.WAIT_CURSOR);
+        this.isView.setCursor(cursor);
         // Reads the file object of the Tree
         FileNode fileNode = (FileNode) node.getUserObject();
 
@@ -168,6 +172,8 @@ public class IsletSelectionController
                 e.printStackTrace();
             }
         }
+        cursor = new Cursor(Cursor.DEFAULT_CURSOR);
+        this.isView.setCursor(cursor);
     }
 
     /**
@@ -257,5 +263,10 @@ public class IsletSelectionController
                     "ISLaunchProcess", FileTools.MESSAGETYPE_STATUSBAR));
             this.aController.setLaunchMode();
         }
+    }
+
+    public JFrame getWindow()
+    {
+        return isView;
     }
 }

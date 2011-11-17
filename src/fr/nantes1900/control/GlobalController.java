@@ -5,6 +5,7 @@ package fr.nantes1900.control;
 
 import java.io.File;
 
+import fr.nantes1900.control.isletprocess.IsletProcessController;
 import fr.nantes1900.control.isletselection.IsletSelectionController;
 
 /**
@@ -16,8 +17,8 @@ public class GlobalController
     /**
      * The controller of the selection window.
      */
-    @SuppressWarnings("unused")
     private IsletSelectionController isletSelectionController;
+    private IsletProcessController isletProcessController;
 
     /**
      * Creates a new global controller which creates others global controllers.
@@ -38,10 +39,13 @@ public class GlobalController
     {
         // Launches the base change.
         biController.launchNextTreatment();
-        System.out.println("Traitement lanc� sur l'�lot : "
+        System.out.println("Traitement lancé sur l'îlot : "
                 + isletFile.getPath());
 
         // TODO : don't forget to pass reference to the biController to the
         // IsletProcessController :).
+        isletProcessController = new IsletProcessController(this, isletFile,
+                biController);
+        isletSelectionController.getWindow().setVisible(false);
     }
 }
