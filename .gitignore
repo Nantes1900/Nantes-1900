@@ -10,3 +10,5 @@
 /.checkstyle
 /bin
 /.gitignore
+*.jpg
+*.png
