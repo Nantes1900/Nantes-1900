@@ -69,9 +69,14 @@ public class Surface
         this.setPolygone(p);
     }
 
-    public Surface(Surface w)
+    /**
+     * Copy constructor.
+     * @param surface
+     *            the surface to copy.
+     */
+    public Surface(final Surface surface)
     {
-        // FIXME
+        // TODO : code this.
     }
 
     /**

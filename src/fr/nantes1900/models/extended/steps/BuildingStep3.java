@@ -47,7 +47,7 @@ public class BuildingStep3 extends AbstractBuildingStep
         return new DefaultMutableTreeNode(this.initialTotalMesh);
     }
 
-    public void setArguments(Vector3d gravityNormalIn)
+    public final void setArguments(final Vector3d gravityNormalIn)
     {
         this.gravityNormal = gravityNormalIn;
     }

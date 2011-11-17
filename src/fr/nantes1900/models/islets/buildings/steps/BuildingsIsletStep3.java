@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 
@@ -17,19 +18,28 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
 
     private Vector3d groundNormal;
     private Vector3d gravityNormal;
+
+    private Mesh noise;
+
+    public Mesh getNoise()
+    {
+        return this.noise;
+    }
+
     public BuildingsIsletStep3(List<Building> buildings, Ground groundsIn)
     {
         this.buildings = buildings;
         this.grounds = groundsIn;
     }
+
     public List<Building> getBuildings()
     {
-        return buildings;
+        return this.buildings;
     }
 
     public Ground getGrounds()
     {
-        return grounds;
+        return this.grounds;
     }
 
     /**

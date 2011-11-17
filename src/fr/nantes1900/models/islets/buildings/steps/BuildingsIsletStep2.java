@@ -17,6 +17,8 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
     private Mesh initialBuildings;
     private Ground initialGrounds;
 
+    private Mesh noise;
+
     /**
      * Constructor.
      * @param buildings
@@ -32,11 +34,9 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
 
     /**
      * Extracts buildings by separating the blocks after the ground extraction.
-     * @param noise
-     *            .
      * @return TODO.
      */
-    private List<Building> buildingsExtraction(final Mesh noise)
+    private List<Building> buildingsExtraction()
     {
         final List<Mesh> buildingList = new ArrayList<>();
 
@@ -52,7 +52,7 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
                 buildingList.add(m);
             } else
             {
-                noise.addAll(m);
+                this.noise.addAll(m);
             }
         }
 
@@ -71,12 +71,20 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
         return buildings;
     }
 
-    public Mesh getInitialBuildings()
+    /**
+     * Getter.
+     * @return the set of every buildings
+     */
+    public final Mesh getInitialBuildings()
     {
         return this.initialBuildings;
     }
 
-    public Ground getInitialGrounds()
+    /**
+     * Getter.
+     * @return the set of every grounds
+     */
+    public final Ground getInitialGrounds()
     {
         return this.initialGrounds;
     }
@@ -84,25 +92,23 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
     @Override
     public final BuildingsIsletStep3 launchTreatment()
     {
-        Mesh noise = new Mesh();
+        this.noise = new Mesh();
 
-        List<Building> buildings = this.buildingsExtraction(noise);
+        List<Building> buildings = this.buildingsExtraction();
 
-        this.initialGrounds = this.noiseTreatment(noise);
+        this.initialGrounds = this.noiseTreatment();
 
         return new BuildingsIsletStep3(buildings, this.initialGrounds);
     }
 
     /**
      * Treats the noise by calling the method Algos.blockTreatNoise.
-     * @param noise
-     *            TODO.
      * @return the ground of this islet
      */
-    private Ground noiseTreatment(final Mesh noise)
+    private Ground noiseTreatment()
     {
         List<Mesh> list = Algos.blockExtract(this.initialGrounds);
-        return new Ground(Algos.blockTreatNoise(list, noise));
+        return new Ground(Algos.blockTreatNoise(list, this.noise));
     }
 
     @Override
