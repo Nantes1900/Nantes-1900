@@ -6,21 +6,35 @@ import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep8;
 import fr.nantes1900.view.display3d.PolygonView;
 
+/**
+ * Implements the controller of the 8th step of the treatment.
+ * @author Daniel
+ */
 public class BuildingsIsletStep8Controller extends
         AbstractBuildingsIsletStepController
 {
 
-    public BuildingsIsletStep8Controller(BuildingsIsletStep8 biStepIn,
-            BuildingsIsletController parentControllerIn)
+    /**
+     * Constructor.
+     * @param biStepIn
+     *            the 8th step of the treatment
+     * @param parentControllerIn
+     *            the parent controller
+     */
+    public BuildingsIsletStep8Controller(final BuildingsIsletStep8 biStepIn,
+            final BuildingsIsletController parentControllerIn)
     {
         super(parentControllerIn);
         this.biStep8 = biStepIn;
     }
 
+    /**
+     * The 8th step of the treatment.
+     */
     private BuildingsIsletStep8 biStep8;
 
     @Override
-    public void viewStep()
+    public final void viewStep()
     {
         for (Building building : this.biStep8.getBuildings())
         {

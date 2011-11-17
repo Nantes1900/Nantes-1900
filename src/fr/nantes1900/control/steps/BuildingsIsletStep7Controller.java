@@ -6,17 +6,31 @@ import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep7;
 import fr.nantes1900.view.display3d.MeshView;
 
+/**
+ * Implements the controller of the 7th step of the treatment.
+ * @author Daniel
+ */
 public class BuildingsIsletStep7Controller extends
         AbstractBuildingsIsletStepController
 {
 
-    public BuildingsIsletStep7Controller(BuildingsIsletStep7 biStepIn,
-            BuildingsIsletController parentControllerIn)
+    /**
+     * Constructor.
+     * @param biStepIn
+     *            the 7th step of the treatment
+     * @param parentControllerIn
+     *            the parent controller
+     */
+    public BuildingsIsletStep7Controller(final BuildingsIsletStep7 biStepIn,
+            final BuildingsIsletController parentControllerIn)
     {
         super(parentControllerIn);
         this.biStep7 = biStepIn;
     }
 
+    /**
+     * The 7th step of the treatment.
+     */
     private BuildingsIsletStep7 biStep7;
 
     @Override

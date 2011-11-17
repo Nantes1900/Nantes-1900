@@ -43,10 +43,10 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
 
     /**
      * Constructor. Stocks the mesh in the initialTotalMesh variable.
-     * @param m
+     * @param initialMesh
      *            the mesh representing the islet
      */
-    public AbstractBuildingsIslet(Mesh initialMesh)
+    public AbstractBuildingsIslet(final Mesh initialMesh)
     {
         super(initialMesh);
     }
@@ -77,6 +77,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         this.progression++;
     }
 
+    /**
+     * Launch the treatment, considering the progression.
+     */
     public final void launchTreatment()
     {
         switch (this.progression) {
@@ -119,7 +122,12 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         }
     }
 
-    public DefaultMutableTreeNode returnNode()
+    /**
+     * Return a node containing the tree depending of the progression of the
+     * treatment.
+     * @return the node
+     */
+    public final DefaultMutableTreeNode returnNode()
     {
         switch (this.getProgression()) {
         case 0:

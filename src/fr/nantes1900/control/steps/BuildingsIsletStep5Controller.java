@@ -6,20 +6,35 @@ import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep5;
 import fr.nantes1900.view.display3d.MeshView;
 
+/**
+ * Implements the controller of the 5th step of the treatment.
+ * @author Daniel
+ */
 public class BuildingsIsletStep5Controller extends
         AbstractBuildingsIsletStepController
 {
 
-    public BuildingsIsletStep5Controller(BuildingsIsletStep5 biStepIn,
-            BuildingsIsletController parentControllerIn)
+    /**
+     * Constructor.
+     * @param biStepIn
+     *            the 6th step of the treatment
+     * @param parentControllerIn
+     *            the parent controller
+     */
+    public BuildingsIsletStep5Controller(final BuildingsIsletStep5 biStepIn,
+            final BuildingsIsletController parentControllerIn)
     {
         super(parentControllerIn);
         // TODO Auto-generated constructor stub
     }
 
+    /**
+     * The 5th step of the treatment.
+     */
     private BuildingsIsletStep5 biStep5;
 
-    public void viewStep()
+    @Override
+    public final void viewStep()
     {
         for (Building building : this.biStep5.getBuildings())
         {

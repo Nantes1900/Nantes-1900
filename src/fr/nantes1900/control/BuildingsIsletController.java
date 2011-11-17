@@ -17,23 +17,78 @@ import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.utils.ParserSTL;
 
+/**
+ * Implements the controller of a building islet. Used to visualize the islets,
+ * to launch the treatments.
+ * @author Daniel
+ */
 public class BuildingsIsletController
 {
 
+    /**
+     * The buildings islet containing the model.
+     */
     private AbstractBuildingsIslet islet;
+    /**
+     * The islet selection controller, which is the parent of this.
+     */
     private IsletSelectionController parentController;
+    /**
+     * The universe 3D controller to interact with the universe 3D.
+     */
     private Universe3DController u3DController;
+    /**
+     * The normal of the gravity.
+     */
     private Vector3d gravityNormal;
 
+    /**
+     * The controller related to the first step of the treatment.
+     */
     private BuildingsIsletStep1Controller biStep1Controller;
+
+    /**
+     * The controller related to the second step of the treatment.
+     */
     private BuildingsIsletStep2Controller biStep2Controller;
+
+    /**
+     * The controller related to the third step of the treatment.
+     */
     private BuildingsIsletStep3Controller biStep3Controller;
+
+    /**
+     * The controller related to the 4th step of the treatment.
+     */
     private BuildingsIsletStep4Controller biStep4Controller;
+
+    /**
+     * The controller related to the 5th step of the treatment.
+     */
     private BuildingsIsletStep5Controller biStep5Controller;
+
+    /**
+     * The controller related to the 6th step of the treatment.
+     */
     private BuildingsIsletStep6Controller biStep6Controller;
+
+    /**
+     * The controller related to the 7th step of the treatment.
+     */
     private BuildingsIsletStep7Controller biStep7Controller;
+
+    /**
+     * The controller related to the 8th step of the treatment.
+     */
     private BuildingsIsletStep7Controller biStep8Controller;
 
+    /**
+     * Constructor.
+     * @param isletSelectionController
+     *            the controller of the islet selection
+     * @param universe3DControllerIn
+     *            the universe 3D controller
+     */
     public BuildingsIsletController(
             final IsletSelectionController isletSelectionController,
             final Universe3DController universe3DControllerIn)
@@ -42,14 +97,20 @@ public class BuildingsIsletController
         this.u3DController = universe3DControllerIn;
     }
 
+    /**
+     * TODO.
+     * @return TODO.
+     */
     public final Vector3d computeNormalWithTrianglesSelected()
     {
         Mesh mesh = new Mesh(this.u3DController.getTrianglesSelected());
         return mesh.averageNormal();
     }
 
-    // FIXME
-    public void display()
+    /**
+     * TODO.
+     */
+    public final void display()
     {
         this.u3DController.getUniverse3DView().clearAllMeshes();
 
@@ -81,39 +142,69 @@ public class BuildingsIsletController
         case 8:
             this.biStep8Controller.viewStep();
             break;
+        default:
+            // TODO : error
+            break;
         }
     }
 
-    public Vector3d getGravityNormal()
+    /**
+     * Getter.
+     * @return the gravity normal
+     */
+    public final Vector3d getGravityNormal()
     {
         return this.gravityNormal;
     }
 
+    /**
+     * Getter.
+     * @return the buildings islet
+     */
     public final AbstractBuildingsIslet getIslet()
     {
         return this.islet;
     }
 
+    /**
+     * Getter.
+     * @return the controller of the islet selection
+     */
     public final IsletSelectionController getIsletSelectionController()
     {
         return this.parentController;
     }
 
+    /**
+     * Getter.
+     * @return the parent controller
+     */
     public final IsletSelectionController getParentController()
     {
         return this.parentController;
     }
 
+    /**
+     * Getter.
+     * @return the universe 3D controller
+     */
     public final Universe3DController getU3DController()
     {
         return this.u3DController;
     }
 
-    private final void incProgression()
+    /**
+     * Progression incrementation.
+     */
+    private void incProgression()
     {
         this.islet.incProgression();
     }
 
+    /**
+     * Launch the next treatment. Calls the launchTreatment method from the
+     * BuildingsIslet.
+     */
     public final void launchNextTreatment()
     {
         this.islet.launchTreatment();
@@ -122,11 +213,21 @@ public class BuildingsIsletController
         this.display();
     }
 
+    /**
+     * TODO.
+     */
     public final void putGravityNormal()
     {
         this.islet.setGravityNormal(this.gravityNormal);
     }
 
+    /**
+     * TODO.
+     * @param fileName
+     *            TODO.
+     * @throws IOException
+     *             TODO.
+     */
     public final void readGravityNormal(final String fileName)
             throws IOException
     {
@@ -135,42 +236,74 @@ public class BuildingsIsletController
         this.setGravityNormal(mesh.averageNormal());
     }
 
+    /**
+     * Setter.
+     * @param gravityNormalIn
+     *            the gravity normal
+     */
     public final void setGravityNormal(final Vector3d gravityNormalIn)
     {
         this.gravityNormal = gravityNormalIn;
     }
 
+    /**
+     * Setter.
+     * @param groundNormal
+     *            the ground normal
+     */
     public final void setGroundNormal(final Vector3d groundNormal)
     {
         this.islet.setGroundNormal(groundNormal);
     }
 
+    /**
+     * Setter.
+     * @param isletIn
+     *            the new buildings islet
+     */
     public final void setIslet(final AbstractBuildingsIslet isletIn)
     {
         this.islet = isletIn;
     }
 
+    /**
+     * Setter.
+     * @param isletSelectionControllerIn
+     *            the controller of the islet selection
+     */
     public final void setIsletSelectionController(
             final IsletSelectionController isletSelectionControllerIn)
     {
         this.parentController = isletSelectionControllerIn;
     }
 
+    /**
+     * Setter.
+     * @param parentControllerIn
+     *            the parent controller
+     */
     public final void setParentController(
             final IsletSelectionController parentControllerIn)
     {
         this.parentController = parentControllerIn;
     }
 
+    /**
+     * Setter.
+     * @param u3dcontrollerIn
+     *            the universe 3D controller
+     */
     public final void setUniverse3DController(
-            Universe3DController u3dcontrollerIn)
+            final Universe3DController u3dcontrollerIn)
     {
         this.u3DController = u3dcontrollerIn;
     }
 
+    /**
+     * TODO.
+     */
     public final void useGravityNormalAsGroundNormal()
     {
         this.islet.setGroundNormal(this.islet.getGravityNormal());
     }
-
 }
