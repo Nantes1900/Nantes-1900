@@ -36,7 +36,7 @@ public class ParserSTL
     /**
      * The set of triangle read in the file.
      */
-    private Set<Triangle> triangleSet;
+    private Set<Triangle>     triangleSet;
 
     /**
      * The map of point to compute the references of the points.
@@ -46,12 +46,12 @@ public class ParserSTL
     /**
      * The map of edge to compute the references of the edges.
      */
-    private Map<Edge, Edge> edgeMap;
+    private Map<Edge, Edge>   edgeMap;
 
     /**
      * The name of the file to read.
      */
-    private final String fileName;
+    private final String      fileName;
 
     /**
      * Private constructor.
@@ -93,8 +93,8 @@ public class ParserSTL
                     && "normal".equals(brokenLine.nextToken()))
             {
                 currentVector.set(Double.parseDouble(brokenLine.nextToken()),
-                        Double.parseDouble(brokenLine.nextToken()),
-                        Double.parseDouble(brokenLine.nextToken()));
+                        Double.parseDouble(brokenLine.nextToken()), Double
+                                .parseDouble(brokenLine.nextToken()));
 
                 currentVector.normalize();
             }
@@ -205,8 +205,8 @@ public class ParserSTL
         {
             if (scanner.hasNextLine())
             {
-                final StringTokenizer brokenLine = new StringTokenizer(
-                        scanner.nextLine(), " ");
+                final StringTokenizer brokenLine = new StringTokenizer(scanner
+                        .nextLine(), " ");
                 final String openingWord = brokenLine.nextToken();
 
                 Set<Triangle> triangleMap;
@@ -293,8 +293,6 @@ public class ParserSTL
 
                         this.triangleSet.add(new Triangle(p1, p2, p3, e1, e2,
                                 e3, currentVector));
-
-                        System.out.println(this.triangleSet.size());
 
                     } catch (final MoreThanTwoTrianglesPerEdgeException e)
                     {
@@ -395,9 +393,6 @@ public class ParserSTL
                 // above.
             }
         }
-
-        System.out.println(counterError
-                + " triangles removed from the mesh during the parsing !");
 
         stream.close();
         return this.triangleSet;
@@ -537,11 +532,11 @@ public class ParserSTL
         /**
          * Version attribute.
          */
-        private static final long serialVersionUID = 1L;
+        private static final long   serialVersionUID = 1L;
         /**
          * Bound limit attribute.
          */
-        private static final double BOUND_LIMIT = 1e5;
+        private static final double BOUND_LIMIT      = 1e5;
 
         /**
          * Private constructor.
