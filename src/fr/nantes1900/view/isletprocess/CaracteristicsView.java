@@ -4,6 +4,7 @@
 package fr.nantes1900.view.isletprocess;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -30,6 +31,9 @@ public abstract class CaracteristicsView extends JPanel
         this.setBorder(new TitledBorder(BorderFactory.createRaisedSoftBevelBorder(), "Caractéristiques"));
         bValidate = new JButton("Valider");
         pContent = new JPanel();
+        FlowLayout contentLayout = new FlowLayout();
+        contentLayout.setAlignment(FlowLayout.LEFT);
+        pContent.setLayout(contentLayout);
         
         this.setLayout(new BorderLayout());
         this.add(bValidate, BorderLayout.EAST);
