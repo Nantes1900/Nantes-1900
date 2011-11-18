@@ -14,21 +14,24 @@ import javax.vecmath.Vector3d;
  */
 public class Triangle
 {
-
+    /**
+     * Number of vertices of a triangle.
+     */
+    private static final int NB_VERTICES = 3;
     /**
      * Array of three points of the triangle.
      */
-    private final Point[] points = new Point[3];
+    private final Point[]    points      = new Point[NB_VERTICES];
 
     /**
      * Normal of the triangle.
      */
-    private final Vector3d normal = new Vector3d();
+    private final Vector3d   normal      = new Vector3d();
 
     /**
      * Array of three edges of the triangle.
      */
-    private final Edge[] edges = new Edge[3];
+    private final Edge[]     edges       = new Edge[NB_VERTICES];
 
     /**
      * Constructor of the triangle.
@@ -47,8 +50,12 @@ public class Triangle
      * @param normalNew
      *            the normal of the triangle
      */
-    public Triangle(final Point point0, final Point point1, final Point point2,
-            final Edge edge1, final Edge edge2, final Edge edge3,
+    public Triangle(final Point point0,
+            final Point point1,
+            final Point point2,
+            final Edge edge1,
+            final Edge edge2,
+            final Edge edge3,
             final Vector3d normalNew)
     {
 
@@ -113,7 +120,7 @@ public class Triangle
     public final boolean angularTolerance(final Vector3d vector,
             final double error)
     {
-        return this.normal.angle(vector) * 180.0 / Math.PI < error;
+        return this.normal.angle(vector) * Edge.CONVERSION_PI_DEGREES < error;
     }
 
     /**
@@ -296,6 +303,7 @@ public class Triangle
      * Returns a collection of Double composed of the coordinates of the points.
      * @return a collection of the coordinates of the points
      */
+    @SuppressWarnings("boxing")
     public final List<Double> getPointsAsCoordinates()
     {
         final List<Double> list = new ArrayList<>();
@@ -334,12 +342,13 @@ public class Triangle
      * @return true if the first point of the triangle is located between those
      *         two planes, false otherwise.
      */
-    public final boolean isInPlanes(final Vector3d vect, final Point p,
+    public final boolean isInPlanes(final Vector3d vect,
+            final Point p,
             final double error)
     {
 
-        final Edge axisNormalGround = new Edge(new Point(0, 0, 0), new Point(
-                vect.x, vect.y, vect.z));
+        final Edge axisNormalGround = new Edge(new Point(0, 0, 0),
+                new Point(vect.x, vect.y, vect.z));
 
         final Point pAverage = axisNormalGround.project(p);
 
@@ -425,8 +434,11 @@ public class Triangle
     @Override
     public final String toString()
     {
-        return this.points[0].toString() + "\n" + this.points[1].toString()
-                + "\n" + this.points[2].toString() + "\n"
+        return this.points[0].toString() + "\n"
+                + this.points[1].toString()
+                + "\n"
+                + this.points[2].toString()
+                + "\n"
                 + this.normal.toString();
     }
 
@@ -436,8 +448,7 @@ public class Triangle
      */
     public final double xAverage()
     {
-        return (this.points[0].getX() + this.points[1].getX() + this.points[2]
-                .getX()) / 3;
+        return (this.points[0].getX() + this.points[1].getX() + this.points[2].getX()) / Triangle.NB_VERTICES;
     }
 
     /**
@@ -446,8 +457,8 @@ public class Triangle
      */
     public final double xMax()
     {
-        return Math.max(this.points[0].getX(),
-                Math.max(this.points[1].getX(), this.points[2].getX()));
+        return Math.max(this.points[0].getX(), Math.max(this.points[1].getX(),
+                this.points[2].getX()));
     }
 
     /**
@@ -473,8 +484,8 @@ public class Triangle
      */
     public final double xMin()
     {
-        return Math.min(this.points[0].getX(),
-                Math.min(this.points[1].getX(), this.points[2].getX()));
+        return Math.min(this.points[0].getX(), Math.min(this.points[1].getX(),
+                this.points[2].getX()));
     }
 
     /**
@@ -500,8 +511,7 @@ public class Triangle
      */
     public final double yAverage()
     {
-        return (this.points[0].getY() + this.points[1].getY() + this.points[2]
-                .getY()) / 3;
+        return (this.points[0].getY() + this.points[1].getY() + this.points[2].getY()) / Triangle.NB_VERTICES;
     }
 
     /**
@@ -510,8 +520,8 @@ public class Triangle
      */
     public final double yMax()
     {
-        return Math.max(this.points[0].getY(),
-                Math.max(this.points[1].getY(), this.points[2].getY()));
+        return Math.max(this.points[0].getY(), Math.max(this.points[1].getY(),
+                this.points[2].getY()));
     }
 
     /**
@@ -537,8 +547,8 @@ public class Triangle
      */
     public final double yMin()
     {
-        return Math.min(this.points[0].getY(),
-                Math.min(this.points[1].getY(), this.points[2].getY()));
+        return Math.min(this.points[0].getY(), Math.min(this.points[1].getY(),
+                this.points[2].getY()));
     }
 
     /**
@@ -566,7 +576,7 @@ public class Triangle
     {
         final double zAverage = this.points[0].getZ() + this.points[1].getZ()
                 + this.points[2].getZ();
-        return zAverage / 3;
+        return zAverage / Triangle.NB_VERTICES;
     }
 
     /**
@@ -575,8 +585,8 @@ public class Triangle
      */
     public final double zMax()
     {
-        return Math.max(this.points[0].getZ(),
-                Math.max(this.points[1].getZ(), this.points[2].getZ()));
+        return Math.max(this.points[0].getZ(), Math.max(this.points[1].getZ(),
+                this.points[2].getZ()));
     }
 
     /**
@@ -602,8 +612,8 @@ public class Triangle
      */
     public final double zMin()
     {
-        return Math.min(this.points[0].getZ(),
-                Math.min(this.points[1].getZ(), this.points[2].getZ()));
+        return Math.min(this.points[0].getZ(), Math.min(this.points[1].getZ(),
+                this.points[2].getZ()));
     }
 
     /**

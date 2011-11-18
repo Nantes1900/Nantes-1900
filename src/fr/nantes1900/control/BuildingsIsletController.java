@@ -51,12 +51,120 @@ public class BuildingsIsletController
      * @param universe3DControllerIn
      *            the universe 3D controller
      */
-    public BuildingsIsletController(
-            final IsletSelectionController isletSelectionController,
+    public BuildingsIsletController(final IsletSelectionController isletSelectionController,
             final Universe3DController universe3DControllerIn)
     {
         this.parentController = isletSelectionController;
         this.u3DController = universe3DControllerIn;
+    }
+
+    /**
+     * Changes the type of a list of triangles.
+     * @param trianglesSelected
+     *            the list of triangles
+     * @param type
+     *            the new type of these triangles
+     */
+    public final void action2(final List<Triangle> trianglesSelected,
+            final int type)
+    {
+        if (type == ActionTypes.TURN_TO_BUILDING)
+        {
+            // The user wants these triangles to turn building.
+            this.islet.getBiStep2()
+                    .getInitialGrounds()
+                    .removeAll(trianglesSelected);
+            this.islet.getBiStep2()
+                    .getInitialBuildings()
+                    .addAll(trianglesSelected);
+        } else if (type == ActionTypes.TURN_TO_GROUND)
+        {
+            // The user wants these triangles to turn ground.
+            this.islet.getBiStep2()
+                    .getInitialBuildings()
+                    .removeAll(trianglesSelected);
+            this.islet.getBiStep2()
+                    .getInitialGrounds()
+                    .addAll(trianglesSelected);
+        }
+    }
+
+    /**
+     * TODO.
+     * @param trianglesSelected
+     *            TODO
+     * @param actionType
+     *            TODO
+     */
+    public final void action3(final List<Triangle> trianglesSelected,
+            final int actionType)
+    {
+        if (actionType == ActionTypes.REMOVE)
+        {
+            for (Building building : this.islet.getBiStep3().getBuildings())
+            {
+                building.getbStep3()
+                        .getInitialTotalMesh()
+                        .removeAll(trianglesSelected);
+            }
+            this.islet.getBiStep3().getGrounds().removeAll(trianglesSelected);
+        } else if (actionType == ActionTypes.TURN_TO_BUILDING)
+        {
+            this.islet.getBiStep3()
+                    .getBuildings()
+                    .add(new Building(new Mesh(trianglesSelected)));
+            this.islet.getBiStep3().getNoise().removeAll(trianglesSelected);
+        }
+        // LOOK : else : error.
+    }
+
+    /**
+     * TODO.
+     * @param mesh
+     *            TODO
+     * @param actionType
+     *            TODO
+     */
+    public final void action3(final Mesh mesh, final int actionType)
+    {
+        if (actionType == ActionTypes.TURN_TO_NOISE)
+        {
+            this.islet.getBiStep3()
+                    .getBuildings()
+                    .remove(this.returnBuildingContaining3(mesh));
+            this.islet.getBiStep3().getNoise().addAll(mesh);
+        } else if (actionType == ActionTypes.TURN_TO_BUILDING)
+        {
+            this.islet.getBiStep3().getBuildings().add(new Building(mesh));
+            this.islet.getBiStep3().getNoise().removeAll(mesh);
+        }
+        // LOOK : else : error.
+    }
+
+    /**
+     * TODO.
+     * @param trianglesSelected
+     *            TODO
+     * @param actionType
+     *            TODO
+     */
+    public final void action4(final List<Triangle> trianglesSelected,
+            final int actionType)
+    {
+        Building building = this.searchForBuildingContaining4(trianglesSelected);
+        if (building != null)
+        {
+            if (actionType == ActionTypes.TURN_TO_WALL)
+            {
+                building.getbStep4().getInitialWall().addAll(trianglesSelected);
+                building.getbStep4().getInitialRoof().remove(trianglesSelected);
+            } else if (actionType == ActionTypes.TURN_TO_ROOF)
+            {
+                building.getbStep4().getInitialRoof().addAll(trianglesSelected);
+                building.getbStep4().getInitialWall().remove(trianglesSelected);
+            }
+        }
+        // TODO : elese : error.
     }
 
     /**
@@ -78,31 +186,31 @@ public class BuildingsIsletController
 
         switch (this.islet.getProgression())
         {
-            case 0:
+            case AbstractBuildingsIslet.ZERO_STEP:
                 this.viewStep0();
             break;
-            case 1:
+            case AbstractBuildingsIslet.FIRST_STEP:
                 this.viewStep1();
             break;
-            case 2:
+            case AbstractBuildingsIslet.SECOND_STEP:
                 this.viewStep2();
             break;
-            case 3:
+            case AbstractBuildingsIslet.THIRD_STEP:
                 this.viewStep3();
             break;
-            case 4:
+            case AbstractBuildingsIslet.FOURTH_STEP:
                 this.viewStep4();
             break;
-            case 5:
+            case AbstractBuildingsIslet.FIFTH_STEP:
                 this.viewStep5();
             break;
-            case 6:
+            case AbstractBuildingsIslet.SIXTH_STEP:
                 this.viewStep6();
             break;
-            case 7:
+            case AbstractBuildingsIslet.SEVENTH_STEP:
                 this.viewStep7();
             break;
-            case 8:
+            case AbstractBuildingsIslet.EIGHTH_STEP:
                 this.viewStep8();
             break;
             default:
@@ -148,6 +256,135 @@ public class BuildingsIsletController
     }
 
     /**
+     * Getter.
+     * @return the universe 3D controller
+     */
+    public final Universe3DController getU3DController()
+    {
+        return this.u3DController;
+    }
+
+    /**
+     * Progression incrementation.
+     */
+    private void incProgression()
+    {
+        this.islet.incProgression();
+    }
+
+    /**
+     * Launch the treatment, considering the progression.
+     */
+    public final void launchTreatment()
+    {
+        switch (this.islet.getProgression())
+        {
+            case AbstractBuildingsIslet.ZERO_STEP:
+                this.launchTreatment0();
+            break;
+            case AbstractBuildingsIslet.FIRST_STEP:
+                this.launchTreatment1();
+            break;
+            case AbstractBuildingsIslet.SECOND_STEP:
+                this.launchTreatment2();
+            break;
+            case AbstractBuildingsIslet.THIRD_STEP:
+                this.launchTreatment3();
+            break;
+            case AbstractBuildingsIslet.FOURTH_STEP:
+                this.launchTreatment4();
+            break;
+            case AbstractBuildingsIslet.FIFTH_STEP:
+                this.launchTreatment5();
+            break;
+            case AbstractBuildingsIslet.SIXTH_STEP:
+                this.launchTreatment6();
+            break;
+            case AbstractBuildingsIslet.SEVENTH_STEP:
+                this.launchTreatment7();
+            break;
+            default:
+            // It shouldn't happen.
+            break;
+        }
+
+        this.incProgression();
+        this.display();
+    }
+
+    /**
+     * Launches the first treatment.
+     */
+    public final void launchTreatment0()
+    {
+        try
+        {
+            this.islet.changeBase();
+            this.islet.setBiStep1(new BuildingsIsletStep1(this.islet.getInitialTotalMesh()));
+        } catch (UnCompletedParametersException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Launches the first treatment.
+     */
+    public final void launchTreatment1()
+    {
+        this.islet.setBiStep2(this.islet.getBiStep1().launchTreatment());
+    }
+
+    /**
+     * Launches the second treatment.
+     */
+    public final void launchTreatment2()
+    {
+        this.islet.setBiStep3(this.islet.getBiStep2().launchTreatment());
+    }
+
+    /**
+     * Launches the third treatment.
+     */
+    public final void launchTreatment3()
+    {
+        this.islet.setBiStep4(this.islet.getBiStep3().launchTreatment());
+    }
+
+    /**
+     * Launches the fourth treatment.
+     */
+    public final void launchTreatment4()
+    {
+        this.islet.setBiStep5(this.islet.getBiStep4().launchTreatment());
+    }
+
+    /**
+     * Launches the fifth treatment.
+     */
+    public final void launchTreatment5()
+    {
+        this.islet.setBiStep6(this.islet.getBiStep5().launchTreatment());
+    }
+
+    /**
+     * Launches the sixth treatment.
+     */
+    public final void launchTreatment6()
+    {
+        this.islet.setBiStep7(this.islet.getBiStep6().launchTreatment());
+    }
+
+    /**
+     * Launches the seventh treatment.
+     */
+    public final void launchTreatment7()
+    {
+        this.islet.setBiStep8(this.islet.getBiStep7().launchTreatment());
+    }
+
+    /**
      * TODO.
      */
     public final void putGravityNormal()
@@ -162,12 +399,53 @@ public class BuildingsIsletController
      * @throws IOException
      *             TODO.
      */
-    public final void readGravityNormal(final String fileName)
-            throws IOException
+    public final void
+            readGravityNormal(final String fileName) throws IOException
     {
         ParserSTL parser = new ParserSTL(fileName);
         Mesh mesh = parser.read();
         this.setGravityNormal(mesh.averageNormal());
+    }
+
+    /**
+     * TODO.
+     * @param mesh
+     *            TODO
+     * @return TODO
+     */
+    public final Building returnBuildingContaining3(final Mesh mesh)
+    {
+        for (Building building : this.islet.getBiStep3().getBuildings())
+        {
+            if (building.getbStep3().getInitialTotalMesh() == mesh)
+            {
+                return null;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * TODO.
+     * @param trianglesSelected
+     *            TODO
+     * @return TODO
+     */
+    private Building
+            searchForBuildingContaining4(final List<Triangle> trianglesSelected)
+    {
+        for (Building building : this.islet.getBiStep4().getBuildings())
+        {
+            if (building.getbStep4()
+                    .getInitialWall()
+                    .containsAll(trianglesSelected) || building.getbStep4()
+                    .getInitialRoof()
+                    .containsAll(trianglesSelected))
+            {
+                return building;
+            }
+        }
+        return null;
     }
 
     /**
@@ -205,8 +483,8 @@ public class BuildingsIsletController
      * @param isletSelectionControllerIn
      *            the controller of the islet selection
      */
-    public final void setIsletSelectionController(
-            final IsletSelectionController isletSelectionControllerIn)
+    public final void
+            setIsletSelectionController(final IsletSelectionController isletSelectionControllerIn)
     {
         this.parentController = isletSelectionControllerIn;
     }
@@ -216,8 +494,8 @@ public class BuildingsIsletController
      * @param parentControllerIn
      *            the parent controller
      */
-    public final void setParentController(
-            final IsletSelectionController parentControllerIn)
+    public final void
+            setParentController(final IsletSelectionController parentControllerIn)
     {
         this.parentController = parentControllerIn;
     }
@@ -227,8 +505,8 @@ public class BuildingsIsletController
      * @param u3dcontrollerIn
      *            the universe 3D controller
      */
-    public final void setUniverse3DController(
-            final Universe3DController u3dcontrollerIn)
+    public final void
+            setUniverse3DController(final Universe3DController u3dcontrollerIn)
     {
         this.u3DController = u3dcontrollerIn;
     }
@@ -242,336 +520,161 @@ public class BuildingsIsletController
     }
 
     /**
-     * Getter.
-     * @return the universe 3D controller
+     * Displays the zero step.
      */
-    public final Universe3DController getU3DController()
-    {
-        return this.u3DController;
-    }
-
-    /**
-     * Progression incrementation.
-     */
-    private void incProgression()
-    {
-        this.islet.incProgression();
-    }
-
-    /**
-     * Launch the treatment, considering the progression.
-     */
-    public final void launchTreatment()
-    {
-        switch (this.islet.getProgression())
-        {
-            case 0:
-                this.launchTreatment0();
-            break;
-            case 1:
-                this.launchTreatment1();
-            break;
-            case 2:
-                this.launchTreatment2();
-            break;
-            case 3:
-                this.launchTreatment3();
-            break;
-            case 4:
-                this.launchTreatment4();
-            break;
-            case 5:
-                this.launchTreatment5();
-            break;
-            case 6:
-                this.launchTreatment6();
-            break;
-            case 7:
-                this.launchTreatment7();
-            break;
-            default:
-            // It shouldn't happen.
-            break;
-        }
-
-        this.incProgression();
-        this.display();
-    }
-
-    public final void launchTreatment0()
-    {
-        try
-        {
-            this.islet.changeBase();
-            this.islet.setBiStep1(new BuildingsIsletStep1(this.islet
-                    .getInitialTotalMesh()));
-        } catch (UnCompletedParametersException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-
-    public final void launchTreatment2()
-    {
-        this.islet.setBiStep3(this.islet.getBiStep2().launchTreatment());
-    }
-
-    public final void launchTreatment3()
-    {
-        this.islet.setBiStep4(this.islet.getBiStep3().launchTreatment());
-    }
-
-    public final void launchTreatment4()
-    {
-        this.islet.setBiStep5(this.islet.getBiStep4().launchTreatment());
-    }
-
-    public final void launchTreatment5()
-    {
-        this.islet.setBiStep6(this.islet.getBiStep5().launchTreatment());
-    }
-
-    public final void launchTreatment6()
-    {
-        this.islet.setBiStep7(this.islet.getBiStep6().launchTreatment());
-    }
-
-    public final void launchTreatment7()
-    {
-        this.islet.setBiStep8(this.islet.getBiStep7().launchTreatment());
-    }
-
     public final void viewStep0()
     {
-        this.getU3DController().getUniverse3DView().addMesh(
-                new MeshView(this.islet.getInitialTotalMesh()));
+        this.getU3DController()
+                .getUniverse3DView()
+                .addMesh(new MeshView(this.islet.getInitialTotalMesh()));
     }
 
+    /**
+     * Displays the first step.
+     */
     public final void viewStep1()
     {
-        this.getU3DController().getUniverse3DView().addMesh(
-                new MeshView(this.islet.getBiStep1()
+        this.getU3DController()
+                .getUniverse3DView()
+                .addMesh(new MeshView(this.islet.getBiStep1()
                         .getInitialTotalMeshAfterBaseChange()));
     }
 
-    public final void launchTreatment1()
-    {
-        this.islet.setBiStep2(this.islet.getBiStep1().launchTreatment());
-    }
-
     /**
-     * Changes the type of a list of triangles.
-     * @param trianglesSelected
-     *            the list of triangles
-     * @param type
-     *            the new type of these triangles
+     * Displays the second step.
      */
-    public final void action2(final List<Triangle> trianglesSelected,
-            final int type)
-    {
-        if (type == ActionTypes.TURN_TO_BUILDING)
-        {
-            // The user wants these triangles to turn building.
-            this.islet.getBiStep2().getInitialGrounds().removeAll(
-                    trianglesSelected);
-            this.islet.getBiStep2().getInitialBuildings().addAll(
-                    trianglesSelected);
-        } else if (type == ActionTypes.TURN_TO_GROUND)
-        {
-            // The user wants these triangles to turn ground.
-            this.islet.getBiStep2().getInitialBuildings().removeAll(
-                    trianglesSelected);
-            this.islet.getBiStep2().getInitialGrounds().addAll(
-                    trianglesSelected);
-        }
-    }
-
     public final void viewStep2()
     {
-        this.getU3DController().getUniverse3DView().addMesh(
-                new MeshView(this.islet.getBiStep2().getInitialBuildings()));
-        this.getU3DController().getUniverse3DView().addMesh(
-                new MeshView(this.islet.getBiStep2().getInitialGrounds()));
+        this.getU3DController()
+                .getUniverse3DView()
+                .addMesh(new MeshView(this.islet.getBiStep2()
+                        .getInitialBuildings()));
+        this.getU3DController()
+                .getUniverse3DView()
+                .addMesh(new MeshView(this.islet.getBiStep2()
+                        .getInitialGrounds()));
 
         // Also display the noise.
     }
 
-    public final void action3(Mesh mesh, int actionType)
-    {
-        if (actionType == ActionTypes.TURN_TO_NOISE)
-        {
-            this.islet.getBiStep3().getBuildings().remove(
-                    this.returnBuildingContaining3(mesh));
-            this.islet.getBiStep3().getNoise().addAll(mesh);
-        } else if (actionType == ActionTypes.TURN_TO_BUILDING)
-        {
-            this.islet.getBiStep3().getBuildings().add(new Building(mesh));
-            this.islet.getBiStep3().getNoise().removeAll(mesh);
-        } else
-        {
-            // LOOK : error.
-        }
-    }
-
-    public final Building returnBuildingContaining3(Mesh mesh)
-    {
-        for (Building building : this.islet.getBiStep3().getBuildings())
-        {
-            if (building.getbStep3().getInitialTotalMesh() == mesh)
-            {
-                return null;
-            }
-        }
-        return null;
-    }
-
-    public final void action3(List<Triangle> trianglesSelected, int actionType)
-    {
-        if (actionType == ActionTypes.REMOVE)
-        {
-            for (Building building : this.islet.getBiStep3().getBuildings())
-            {
-                building.getbStep3().getInitialTotalMesh().removeAll(
-                        trianglesSelected);
-            }
-            this.islet.getBiStep3().getGrounds().removeAll(trianglesSelected);
-        } else if (actionType == ActionTypes.TURN_TO_BUILDING)
-        {
-            this.islet.getBiStep3().getBuildings().add(
-                    new Building(new Mesh(trianglesSelected)));
-            this.islet.getBiStep3().getNoise().removeAll(trianglesSelected);
-        } else
-        {
-            // LOOK : error.
-        }
-    }
-
+    /**
+     * Displays the third step.
+     */
     public final void viewStep3()
     {
-        this.getU3DController().getUniverse3DView().addMesh(
-                new MeshView(this.islet.getBiStep3().getGrounds()));
+        this.getU3DController()
+                .getUniverse3DView()
+                .addMesh(new MeshView(this.islet.getBiStep3().getGrounds()));
 
         for (Building building : this.islet.getBiStep3().getBuildings())
         {
-            this.getU3DController().getUniverse3DView().addMesh(
-                    new MeshView(building.getbStep3().getInitialTotalMesh()));
+            this.getU3DController()
+                    .getUniverse3DView()
+                    .addMesh(new MeshView(building.getbStep3()
+                            .getInitialTotalMesh()));
         }
     }
 
-    public final void action4(List<Triangle> trianglesSelected, int actionType)
-    {
-        Building building = this
-                .searchForBuildingContaining4(trianglesSelected);
-        if (building != null)
-        {
-            if (actionType == ActionTypes.TURN_TO_WALL)
-            {
-                building.getbStep4().getInitialWall().addAll(trianglesSelected);
-                building.getbStep4().getInitialRoof().remove(trianglesSelected);
-            } else if (actionType == ActionTypes.TURN_TO_ROOF)
-            {
-                building.getbStep4().getInitialRoof().addAll(trianglesSelected);
-                building.getbStep4().getInitialWall().remove(trianglesSelected);
-            }
-        } else
-        {
-            // TODO : error.
-        }
-
-    }
-
-    private Building searchForBuildingContaining4(
-            final List<Triangle> trianglesSelected)
-    {
-        for (Building building : this.islet.getBiStep4().getBuildings())
-        {
-            if (building.getbStep4().getInitialWall().containsAll(
-                    trianglesSelected)
-                    || building.getbStep4().getInitialRoof().containsAll(
-                            trianglesSelected))
-            {
-                return building;
-            }
-        }
-        return null;
-    }
-
+    /**
+     * Displays the fourth step.
+     */
     public final void viewStep4()
     {
         for (Building building : this.islet.getBiStep4().getBuildings())
         {
-            this.getU3DController().getUniverse3DView().addMesh(
-                    new MeshView(building.getbStep4().getInitialWall()));
-            this.getU3DController().getUniverse3DView().addMesh(
-                    new MeshView(building.getbStep4().getInitialRoof()));
+            this.getU3DController()
+                    .getUniverse3DView()
+                    .addMesh(new MeshView(building.getbStep4().getInitialWall()));
+            this.getU3DController()
+                    .getUniverse3DView()
+                    .addMesh(new MeshView(building.getbStep4().getInitialRoof()));
         }
     }
 
+    /**
+     * Displays the fifth step.
+     */
     public final void viewStep5()
     {
         for (Building building : this.islet.getBiStep5().getBuildings())
         {
             for (Surface wall : building.getbStep5().getWalls())
             {
-                this.getU3DController().getUniverse3DView().addMesh(
-                        new MeshView(wall.getMesh()));
+                this.getU3DController()
+                        .getUniverse3DView()
+                        .addMesh(new MeshView(wall.getMesh()));
             }
             for (Surface roof : building.getbStep5().getRoofs())
             {
-                this.getU3DController().getUniverse3DView().addMesh(
-                        new MeshView(roof.getMesh()));
+                this.getU3DController()
+                        .getUniverse3DView()
+                        .addMesh(new MeshView(roof.getMesh()));
             }
         }
     }
 
+    /**
+     * Displays the sixth step.
+     */
     public final void viewStep6()
     {
         for (Building building : this.islet.getBiStep6().getBuildings())
         {
             for (Surface wall : building.getbStep6().getWalls())
             {
-                this.getU3DController().getUniverse3DView().addMesh(
-                        new MeshView(wall.getMesh()));
+                this.getU3DController()
+                        .getUniverse3DView()
+                        .addMesh(new MeshView(wall.getMesh()));
             }
             for (Surface roof : building.getbStep6().getRoofs())
             {
-                this.getU3DController().getUniverse3DView().addMesh(
-                        new MeshView(roof.getMesh()));
+                this.getU3DController()
+                        .getUniverse3DView()
+                        .addMesh(new MeshView(roof.getMesh()));
             }
         }
     }
 
+    /**
+     * Displays the seventh step.
+     */
     public final void viewStep7()
     {
         for (Building building : this.islet.getBiStep7().getBuildings())
         {
             for (Surface wall : building.getbStep7().getWalls())
             {
-                this.getU3DController().getUniverse3DView().addMesh(
-                        new MeshView(wall.getMesh()));
+                this.getU3DController()
+                        .getUniverse3DView()
+                        .addMesh(new MeshView(wall.getMesh()));
             }
             for (Surface roof : building.getbStep7().getRoofs())
             {
-                this.getU3DController().getUniverse3DView().addMesh(
-                        new MeshView(roof.getMesh()));
+                this.getU3DController()
+                        .getUniverse3DView()
+                        .addMesh(new MeshView(roof.getMesh()));
             }
         }
     }
 
+    /**
+     * Displays the eigth step.
+     */
     public final void viewStep8()
     {
         for (Building building : this.islet.getBiStep8().getBuildings())
         {
             for (Surface wall : building.getbStep8().getWalls())
             {
-                this.getU3DController().getUniverse3DView().addPolygonView(
-                        new PolygonView(wall.getPolygone()));
+                this.getU3DController()
+                        .getUniverse3DView()
+                        .addPolygonView(new PolygonView(wall.getPolygone()));
             }
             for (Surface roof : building.getbStep8().getRoofs())
             {
-                this.getU3DController().getUniverse3DView().addPolygonView(
-                        new PolygonView(roof.getPolygone()));
+                this.getU3DController()
+                        .getUniverse3DView()
+                        .addPolygonView(new PolygonView(roof.getPolygone()));
             }
         }
     }

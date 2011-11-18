@@ -36,17 +36,17 @@ public class IsletSelectionController
      * The controller of the panel containing buttons to perform the different
      * actions.
      */
-    private ActionsController aController;
+    private ActionsController        aController;
 
     /**
      * The controller of the tree used to select an islet.
      */
-    private GlobalTreeController gtController;
+    private GlobalTreeController     gtController;
 
     /**
      * The controller of the 3D view which shows a selected islet.
      */
-    private Universe3DController u3DController;
+    private Universe3DController     u3DController;
 
     /**
      * The controller of the selected islet.
@@ -56,22 +56,22 @@ public class IsletSelectionController
     /**
      * View allowing to select an islet and launch a process.
      */
-    private IsletSelectionView isView;
+    private IsletSelectionView       isView;
 
     /**
      * The opened directory corresponding.
      */
-    private File openedDirectory;
+    private File                     openedDirectory;
 
     /**
      * The selected file in the tree.
      */
-    private File selectedFile;
+    private File                     selectedFile;
 
     /**
      * The parent controller which handles this one.
      */
-    private GlobalController parentController;
+    private GlobalController         parentController;
 
     /**
      * Creates a new controller to handle the islet selection window.
@@ -102,15 +102,18 @@ public class IsletSelectionController
     public final boolean computeGravityNormal()
     {
         boolean normalSaved = false;
-        if (this.selectedFile != null
-                && !this.u3DController.getTrianglesSelected().isEmpty())
+        if (this.selectedFile != null && !this.u3DController.getTrianglesSelected()
+                .isEmpty())
         {
             // TODO Move this code
-            WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
-                    + "/gravity_normal.stl");
+            WriterSTL writer = new WriterSTL(this.openedDirectory.getPath() + "/gravity_normal.stl");
             Point point = new Point(1, 1, 1);
             Edge edge = new Edge(point, point);
-            Triangle triangle = new Triangle(point, point, point, edge, edge,
+            Triangle triangle = new Triangle(point,
+                    point,
+                    point,
+                    edge,
+                    edge,
                     edge,
                     this.biController.computeNormalWithTrianglesSelected());
             Mesh mesh = new Mesh();
@@ -122,11 +125,11 @@ public class IsletSelectionController
         } else
         {
             JOptionPane.showMessageDialog(this.isView,
-                    "Sélectionnez un îlot dans l'arbre\npuis "
-                            + "sélectionnez des triangles pour créer la "
+                    "Sélectionnez un îlot dans l'arbre\npuis " + "sélectionnez des triangles pour créer la "
                             + "normale\nou sélectionnez \"Utiliser la normale "
-                                    + "orientée selon la gravité\n",
-                            "Aucun îlot ouvert", JOptionPane.ERROR_MESSAGE);
+                            + "orientée selon la gravité\n",
+                    "Aucun îlot ouvert",
+                    JOptionPane.ERROR_MESSAGE);
         }
 
         return normalSaved;
@@ -137,8 +140,7 @@ public class IsletSelectionController
      */
     public final void computeGroundNormal()
     {
-        this.biController.setGroundNormal(this.biController
-                .computeNormalWithTrianglesSelected());
+        this.biController.setGroundNormal(this.biController.computeNormalWithTrianglesSelected());
     }
 
     /**
@@ -197,9 +199,8 @@ public class IsletSelectionController
     {
         boolean processLaunched = false;
 
-        if ((!this.u3DController.getTrianglesSelected().isEmpty() || this.aController
-                .getActionsView().isGravityGroundCheckBoxSelected())
-                && this.selectedFile != null)
+        if ((!this.u3DController.getTrianglesSelected().isEmpty() || this.aController.getActionsView()
+                .isGravityGroundCheckBoxSelected()) && this.selectedFile != null)
         {
             if (!this.aController.getActionsView()
                     .isGravityGroundCheckBoxSelected())
@@ -215,8 +216,8 @@ public class IsletSelectionController
         } else
         {
             JOptionPane.showMessageDialog(this.isView,
-                    "Veuillez sélectionner un îlot et une normale pour "
-                            + "lancer le traitement", "Traitement impossible",
+                    "Veuillez sélectionner un îlot et une normale pour " + "lancer le traitement",
+                    "Traitement impossible",
                     JOptionPane.ERROR_MESSAGE);
         }
 
@@ -234,19 +235,17 @@ public class IsletSelectionController
         this.gtController.updateDirectory(this.openedDirectory);
 
         // checks if the gravity normal already exists
-        File gravityNormal = new File(this.openedDirectory.getPath()
-                + "/gravity_normal.stl");
+        File gravityNormal = new File(this.openedDirectory.getPath() + "/gravity_normal.stl");
         if (!gravityNormal.exists())
         {
             JOptionPane.showMessageDialog(this.isView,
-                    "La normale orientée selon la gravité n'a pas été trouvée"
-                            + "dans le dossier ouvert.\nVeuillez en créer "
+                    "La normale orientée selon la gravité n'a pas été trouvée" + "dans le dossier ouvert.\nVeuillez en créer "
                             + "une nouvelle.",
                     "Normale orientée selon la gravité inexistante",
                     JOptionPane.INFORMATION_MESSAGE);
             this.aController.setComputeNormalMode();
-            this.isView.setStatusBarText(FileTools.readHelpMessage(
-                    "ISGravityNormal", FileTools.MESSAGETYPE_STATUSBAR));
+            this.isView.setStatusBarText(FileTools.readHelpMessage("ISGravityNormal",
+                    FileTools.MESSAGETYPE_STATUSBAR));
         } else
         {
             try
@@ -259,14 +258,18 @@ public class IsletSelectionController
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            this.isView.setStatusBarText(FileTools.readHelpMessage(
-                    "ISLaunchProcess", FileTools.MESSAGETYPE_STATUSBAR));
+            this.isView.setStatusBarText(FileTools.readHelpMessage("ISLaunchProcess",
+                    FileTools.MESSAGETYPE_STATUSBAR));
             this.aController.setLaunchMode();
         }
     }
 
-    public JFrame getWindow()
+    /**
+     * TODO.
+     * @return TODO
+     */
+    public final JFrame getWindow()
     {
-        return isView;
+        return this.isView;
     }
 }

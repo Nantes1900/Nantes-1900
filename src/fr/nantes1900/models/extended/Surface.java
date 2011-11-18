@@ -32,7 +32,7 @@ public class Surface
     /**
      * The polygon representing this surface (after simplification).
      */
-    private Polygon polygon = new Polygon();
+    private Polygon             polygon    = new Polygon();
 
     // FIXME : a Surface is an abstract class implemented by a polygon OR a
     // mesh.
@@ -40,7 +40,7 @@ public class Surface
     /**
      * The mesh representing this surface (before simplification).
      */
-    private Mesh mesh = new Mesh();
+    private Mesh                mesh       = new Mesh();
 
     /**
      * Empty constructor.
@@ -119,10 +119,12 @@ public class Surface
      * @throws InvalidSurfaceException
      *             if the algorithm cannot comput the edge
      */
-    private Edge createEdge(final Surface s1, final Surface s2,
-            final Surface s3, final Map<Point, Point> pointMap,
-            final List<Wall> wallList, final Vector3d normalGround)
-            throws InvalidSurfaceException
+    private Edge createEdge(final Surface s1,
+            final Surface s2,
+            final Surface s3,
+            final Map<Point, Point> pointMap,
+            final List<Wall> wallList,
+            final Vector3d normalGround) throws InvalidSurfaceException
     {
         final List<Surface> surfaces = new ArrayList<>();
         surfaces.add(s1);
@@ -135,8 +137,8 @@ public class Surface
             // If there is two neighbours which have the same orientation, then
             // throw an exception.
             if (this.getMesh().isOrientedAs(s1.getMesh(),
-                    SimplificationSurfaces.getIsOrientedFactor())
-                    || this.getMesh().isOrientedAs(s2.getMesh(),
+                    SimplificationSurfaces.getIsOrientedFactor()) || this.getMesh()
+                    .isOrientedAs(s2.getMesh(),
                             SimplificationSurfaces.getIsOrientedFactor())
                     || this.getMesh().isOrientedAs(s3.getMesh(),
                             SimplificationSurfaces.getIsOrientedFactor()))
@@ -144,8 +146,8 @@ public class Surface
                 throw new ParallelPlanesException();
             }
             if (s1.getMesh().isOrientedAs(s2.getMesh(),
-                    SimplificationSurfaces.getIsOrientedFactor())
-                    || s2.getMesh().isOrientedAs(s3.getMesh(),
+                    SimplificationSurfaces.getIsOrientedFactor()) || s2.getMesh()
+                    .isOrientedAs(s3.getMesh(),
                             SimplificationSurfaces.getIsOrientedFactor()))
             {
                 throw new ParallelPlanesException();
@@ -231,8 +233,8 @@ public class Surface
      *             if a problem happened
      */
     public final Polygon findEdges(final List<Wall> wallList,
-            final Map<Point, Point> pointMap, final Vector3d normalGround)
-            throws InvalidSurfaceException
+            final Map<Point, Point> pointMap,
+            final Vector3d normalGround) throws InvalidSurfaceException
     {
 
         final Polygon edges = new Polygon();
@@ -242,22 +244,31 @@ public class Surface
         for (int i = 0; i < this.getNeighbours().size() - 2; ++i)
         {
 
-            edges.add(this.createEdge(this.getNeighbours().get(i), this
-                    .getNeighbours().get(i + 1), this.getNeighbours()
-                    .get(i + 2), pointMap, wallList, normalGround));
+            edges.add(this.createEdge(this.getNeighbours().get(i),
+                    this.getNeighbours().get(i + 1),
+                    this.getNeighbours().get(i + 2),
+                    pointMap,
+                    wallList,
+                    normalGround));
         }
 
         final int size = this.getNeighbours().size();
 
         // We add the last missing edges which where not treated in the
         // loop.
-        edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
-                .getNeighbours().get(size - 1), this.getNeighbours().get(0),
-                pointMap, wallList, normalGround));
+        edges.add(this.createEdge(this.getNeighbours().get(size - 2),
+                this.getNeighbours().get(size - 1),
+                this.getNeighbours().get(0),
+                pointMap,
+                wallList,
+                normalGround));
 
-        edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
-                .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
-                wallList, normalGround));
+        edges.add(this.createEdge(this.getNeighbours().get(size - 1),
+                this.getNeighbours().get(0),
+                this.getNeighbours().get(1),
+                pointMap,
+                wallList,
+                normalGround));
 
         return edges;
     }
@@ -282,8 +293,8 @@ public class Surface
         // closest one.
         for (final Surface s : this.getNeighbours())
         {
-            if (!neighboursOrdered.contains(s)
-                    && !current.getNeighbours().contains(s))
+            if (!neighboursOrdered.contains(s) && !current.getNeighbours()
+                    .contains(s))
             {
                 if (current.getMesh().minimalDistance(s.getMesh()) < distanceMin)
                 {
@@ -470,6 +481,10 @@ public class Surface
         }
     }
 
+    /**
+     * Returns a node containing this surface.
+     * @return the node
+     */
     public final DefaultMutableTreeNode returnNode()
     {
         return new DefaultMutableTreeNode(this);
@@ -489,11 +504,13 @@ public class Surface
 
         final Surface computedWallPlane = new Surface();
 
-        final Point centroid = new Point(this.getMesh().xAverage(), this
-                .getMesh().yAverage(), this.getMesh().zAverage());
+        final Point centroid = new Point(this.getMesh().xAverage(),
+                this.getMesh().yAverage(),
+                this.getMesh().zAverage());
 
-        final Point p1 = new Point(centroid.getX() + 1, centroid.getY()
-                - averageNormal.getX() / averageNormal.getY(), centroid.getZ());
+        final Point p1 = new Point(centroid.getX() + 1,
+                centroid.getY() - averageNormal.getX() / averageNormal.getY(),
+                centroid.getZ());
 
         final Point p3 = centroid;
 
@@ -503,8 +520,13 @@ public class Surface
         final Vector3d vect = new Vector3d();
         vect.cross(normalGround, e2.convertToVector3d());
 
-        computedWallPlane.getMesh().add(
-                new Triangle(p1, p1, p3, e1, e2, e2, vect));
+        computedWallPlane.getMesh().add(new Triangle(p1,
+                p1,
+                p3,
+                e1,
+                e2,
+                e2,
+                vect));
 
         return computedWallPlane;
     }

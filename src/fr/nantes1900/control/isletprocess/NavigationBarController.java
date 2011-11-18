@@ -9,13 +9,13 @@ import fr.nantes1900.view.isletprocess.NavigationBarView;
 
 /**
  * @author Camille
- *
  */
+// FIXME : Javadoc
 public class NavigationBarController extends JToolBar
 {
-    private NavigationBarView nbView;
+    private NavigationBarView      nbView;
     private IsletProcessController parentController;
-    
+
     public NavigationBarController(IsletProcessController parentController)
     {
         this.parentController = parentController;

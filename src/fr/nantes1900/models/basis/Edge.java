@@ -20,12 +20,21 @@ public class Edge
     /**
      * List of triangles containing this edge. The can be two triangles maximum.
      */
-    private List<Triangle> triangles = new ArrayList<>(2);
+    private List<Triangle>     triangles             = new ArrayList<>(2);
 
     /**
      * Array of two points describing the edge.
      */
-    private final Point[] points = new Point[2];
+    private final Point[]      points                = new Point[2];
+
+    /**
+     * The coefficient pi in degrees.
+     */
+    public static final double PI_DEGREES            = 180;
+    /**
+     * The coefficients to convert pi to degrees.
+     */
+    public static final double CONVERSION_PI_DEGREES = Edge.PI_DEGREES / Math.PI;
 
     /**
      * Copy constructor. Caution : use it very cautiously, because it creates
@@ -75,9 +84,9 @@ public class Edge
      */
     public final Point computeMiddle()
     {
-        return new Point((this.getP1().getX() + this.getP2().getX()) / 2, (this
-                .getP1().getY() + this.getP2().getY()) / 2, (this.getP1()
-                .getZ() + this.getP2().getZ()) / 2);
+        return new Point((this.getP1().getX() + this.getP2().getX()) / 2,
+                (this.getP1().getY() + this.getP2().getY()) / 2,
+                (this.getP1().getZ() + this.getP2().getZ()) / 2);
     }
 
     /**
@@ -99,9 +108,9 @@ public class Edge
      */
     public final Vector3d convertToVector3d()
     {
-        return new Vector3d(this.getP2().getX() - this.getP1().getX(), this
-                .getP2().getY() - this.getP1().getY(), this.getP2().getZ()
-                - this.getP1().getZ());
+        return new Vector3d(this.getP2().getX() - this.getP1().getX(),
+                this.getP2().getY() - this.getP1().getY(),
+                this.getP2().getZ() - this.getP1().getZ());
     }
 
     /*
@@ -123,8 +132,7 @@ public class Edge
         {
             return false;
         }
-        return ((Edge) obj).contains(this.points[0])
-                && ((Edge) obj).contains(this.points[1]);
+        return ((Edge) obj).contains(this.points[0]) && ((Edge) obj).contains(this.points[1]);
     }
 
     /**
@@ -252,10 +260,9 @@ public class Edge
         final double z2 = this.getP2().getZ();
         final double z3 = point.getZ();
 
-        final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
-                * (z2 - z1))
-                / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
-                        * (z2 - z1));
+        final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1) * (z2 - z1)) / ((x2 - x1) * (x2 - x1)
+                + (y2 - y1)
+                * (y2 - y1) + (z2 - z1) * (z2 - z1));
 
         final double x4 = lambda * (x2 - x1) + x1;
         final double y4 = lambda * (y2 - y1) + y1;
@@ -301,8 +308,9 @@ public class Edge
             c = -p1.getY() - a * p1.getX();
         }
 
-        return a * point.getX() + b * point.getY() < -c + error
-                && a * point.getX() + b * point.getY() > -c - error;
+        return a * point.getX() + b * point.getY() < -c + error && a * point.getX()
+                + b
+                * point.getY() > -c - error;
     }
 
     /**
@@ -331,10 +339,9 @@ public class Edge
         final double z2 = this.getP2().getZ();
         final double z3 = point.getZ();
 
-        final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
-                * (z2 - z1))
-                / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
-                        * (z2 - z1));
+        final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1) * (z2 - z1)) / ((x2 - x1) * (x2 - x1)
+                + (y2 - y1)
+                * (y2 - y1) + (z2 - z1) * (z2 - z1));
 
         final double x4 = lambda * (x2 - x1) + x1;
         final double y4 = lambda * (y2 - y1) + y1;
@@ -383,21 +390,20 @@ public class Edge
     {
 
         // Builds two vectors and normalize them.
-        final Vector3d vect1 = new Vector3d(
-                e.getP2().getX() - e.getP1().getX(), e.getP2().getY()
-                        - e.getP1().getY(), e.getP2().getZ() - e.getP1().getZ());
+        final Vector3d vect1 = new Vector3d(e.getP2().getX() - e.getP1().getX(),
+                e.getP2().getY() - e.getP1().getY(),
+                e.getP2().getZ() - e.getP1().getZ());
         vect1.normalize();
 
-        final Vector3d vect2 = new Vector3d(this.getP2().getX()
-                - this.getP1().getX(), this.getP2().getY()
-                - this.getP1().getY(), this.getP2().getZ()
-                - this.getP1().getZ());
+        final Vector3d vect2 = new Vector3d(this.getP2().getX() - this.getP1()
+                .getX(),
+                this.getP2().getY() - this.getP1().getY(),
+                this.getP2().getZ() - this.getP1().getZ());
         vect2.normalize();
 
         // Then calls the angle function to check their orientation.
-        final double convertDegreeRadian = 180 / Math.PI;
-        return (vect1.angle(vect2) < (error / convertDegreeRadian))
-                || vect1.angle(vect2) > (((180 - error) / convertDegreeRadian));
+        final double convertDegreeRadian = Edge.CONVERSION_PI_DEGREES;
+        return (vect1.angle(vect2) < (error / convertDegreeRadian)) || vect1.angle(vect2) > (((Edge.PI_DEGREES - error) / convertDegreeRadian));
     }
 
     /**
@@ -426,10 +432,9 @@ public class Edge
         final double z2 = p2.getZ();
         final double z3 = p3.getZ();
 
-        final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
-                * (z2 - z1))
-                / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
-                        * (z2 - z1));
+        final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1) * (z2 - z1)) / ((x2 - x1) * (x2 - x1)
+                + (y2 - y1)
+                * (y2 - y1) + (z2 - z1) * (z2 - z1));
 
         final double x4 = lambda * (x2 - x1) + x1;
         final double y4 = lambda * (y2 - y1) + y1;
@@ -450,8 +455,8 @@ public class Edge
      * @throws BadFormedPolylineException
      *             if a point in the polyline does not belong to the two edges
      */
-    public final Edge returnNeighbour(final Polygon b, final Point p)
-            throws BadFormedPolylineException
+    public final Edge
+            returnNeighbour(final Polygon b, final Point p) throws BadFormedPolylineException
     {
 
         final List<Edge> list = b.getNeighbours(p);

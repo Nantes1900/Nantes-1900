@@ -13,34 +13,34 @@ import com.sun.j3d.utils.picking.PickIntersection;
 import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.picking.PickTool;
 
-import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.TriangleView;
 import fr.nantes1900.view.display3d.Universe3DView;
 
+// FIXME : Javadoc
 public class Universe3DController implements MouseListener, MouseMotionListener
 {
 
     /**
      * The view of the 3D objets to show.
      */
-    private Universe3DView u3DView;
+    private Universe3DView          u3DView;
 
-    private PickCanvas pickCanvas;
-    private NewMouseRotate mouseRotate;
+    private PickCanvas              pickCanvas;
+    private NewMouseRotate          mouseRotate;
 
     // private ArrayList<MeshView> meshesViewSelected;
     private ArrayList<TriangleView> trianglesViewSelected;
 
     // private ArrayList<PolygonView> polygonsViewSelected;
-    private int xPressed;
-    private int yPressed;
+    private int                     xPressed;
+    private int                     yPressed;
 
     public Universe3DController()
     {
         this.u3DView = new Universe3DView(this);
-        this.trianglesViewSelected = new ArrayList<TriangleView>();
+        this.trianglesViewSelected = new ArrayList<>();
     }
 
     public NewMouseRotate getMouseRotate()
@@ -91,8 +91,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 int TriangleIndex = PointIndex[0] / 3;
                 MeshView triangleMeshView = (MeshView) PI.getGeometryArray();
                 triangleMeshView.selectOrUnselect(TriangleIndex);
-                mouseRotate.setCenter(triangleMeshView.getTriangleArray().get(
-                        TriangleIndex));
+                mouseRotate.setCenter(triangleMeshView.getTriangleArray()
+                        .get(TriangleIndex));
 
             }
         }
@@ -154,11 +154,10 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                         PickIntersection PI = result.getIntersection(0);
                         int[] PointIndex = PI.getPrimitiveVertexIndices();
                         int TriangleIndex = PointIndex[0] / 3;
-                        MeshView triangleMeshView = (MeshView) PI
-                                .getGeometryArray();
+                        MeshView triangleMeshView = (MeshView) PI.getGeometryArray();
                         triangleMeshView.select(TriangleIndex);
-                        mouseRotate.setCenter(triangleMeshView
-                                .getTriangleArray().get(TriangleIndex));
+                        mouseRotate.setCenter(triangleMeshView.getTriangleArray()
+                                .get(TriangleIndex));
 
                     }
                 }
@@ -177,7 +176,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 .getCanvas(), branchGroup);
         this.pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
         this.u3DView.getSimpleUniverse().getCanvas().addMouseListener(this);
-        this.u3DView.getSimpleUniverse().getCanvas()
+        this.u3DView.getSimpleUniverse()
+                .getCanvas()
                 .addMouseMotionListener(this);
 
     }

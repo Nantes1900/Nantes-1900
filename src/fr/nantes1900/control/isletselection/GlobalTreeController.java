@@ -20,7 +20,7 @@ public class GlobalTreeController
     /**
      * View of the tree.
      */
-    private GlobalTreeView gtView;
+    private GlobalTreeView           gtView;
 
     /**
      * The parent controller to give feedback to.
@@ -31,9 +31,9 @@ public class GlobalTreeController
      * Creates a new controller to handle the tree used to select and view an
      * islet.
      * @param isletSelectionController
+     *            TODO.
      */
-    public GlobalTreeController(
-            IsletSelectionController isletSelectionController)
+    public GlobalTreeController(final IsletSelectionController isletSelectionController)
     {
         this.parentController = isletSelectionController;
         this.gtView = new GlobalTreeView();
@@ -43,31 +43,39 @@ public class GlobalTreeController
      * Returns the view of the tree associated with this controller.
      * @return The view of the tree.
      */
-    public GlobalTreeView getGlobalTreeView()
+    public final GlobalTreeView getGlobalTreeView()
     {
         return this.gtView;
     }
 
     /**
      * Updates the root directory.
-     * @param mockupDirectory
+     * @param newDirectory
      *            The new root directory.
      */
-    public void updateDirectory(File newDirectory)
+    public final void updateDirectory(final File newDirectory)
     {
         this.gtView.displayDirectory(newDirectory);
-        this.gtView.getTree().addTreeSelectionListener(
-                new TreeSelectionListener()
-                {
+        this.gtView.getTree()
+                .addTreeSelectionListener(new TreeSelectionListener() {
 
                     @Override
-                    public void valueChanged(TreeSelectionEvent e)
+                    public void valueChanged(final TreeSelectionEvent e)
                     {
-                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
-                                .getPath().getLastPathComponent();
-                        GlobalTreeController.this.parentController
+                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath()
+                                .getLastPathComponent();
+                        GlobalTreeController.this.getParentController()
                                 .displayFile(node);
                     }
                 });
+    }
+
+    /**
+     * TODO.
+     * @return TODO
+     */
+    protected final IsletSelectionController getParentController()
+    {
+        return this.parentController;
     }
 }
