@@ -34,12 +34,12 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * The number of the current step.
      */
-    private int progression = 0;
+    private int                 progression = 0;
 
     /**
      * The normal to the ground. Used to extract the grounds.
      */
-    private Vector3d groundNormal;
+    private Vector3d            groundNormal;
 
     /**
      * Constructor. Stocks the mesh in the initialTotalMesh variable.
@@ -78,79 +78,35 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     }
 
     /**
-     * Launch the treatment, considering the progression.
-     */
-    public final void launchTreatment()
-    {
-        switch (this.progression) {
-        case 0:
-            try
-            {
-                this.changeBase();
-                this.biStep1 = new BuildingsIsletStep1(
-                        this.getInitialTotalMesh());
-            } catch (UnCompletedParametersException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-            break;
-        case 1:
-            this.biStep2 = this.biStep1.launchTreatment();
-            break;
-        case 2:
-            this.biStep3 = this.biStep2.launchTreatment();
-            break;
-        case 3:
-            this.biStep4 = this.biStep3.launchTreatment();
-            break;
-        case 4:
-            this.biStep5 = this.biStep4.launchTreatment();
-            break;
-        case 5:
-            this.biStep6 = this.biStep5.launchTreatment();
-            break;
-        case 6:
-            this.biStep7 = this.biStep6.launchTreatment();
-            break;
-        case 7:
-            this.biStep8 = this.biStep7.launchTreatment();
-            break;
-        default:
-            // It shouldn't happen.
-            break;
-        }
-    }
-
-    /**
      * Return a node containing the tree depending of the progression of the
      * treatment.
      * @return the node
      */
     public final DefaultMutableTreeNode returnNode()
     {
-        switch (this.getProgression()) {
-        case 0:
-            // TODO : error
-            return null;
-        case 1:
-            return this.biStep1.returnNode();
-        case 2:
-            return this.biStep2.returnNode();
-        case 3:
-            return this.biStep3.returnNode();
-        case 4:
-            return this.biStep4.returnNode();
-        case 5:
-            return this.biStep5.returnNode();
-        case 6:
-            return this.biStep6.returnNode();
-        case 7:
-            return this.biStep7.returnNode();
-        case 8:
-            return this.biStep8.returnNode();
-        default:
-            return null;
+        switch (this.getProgression())
+        {
+            case 0:
+                // TODO : error
+                return null;
+            case 1:
+                return this.biStep1.returnNode();
+            case 2:
+                return this.biStep2.returnNode();
+            case 3:
+                return this.biStep3.returnNode();
+            case 4:
+                return this.biStep4.returnNode();
+            case 5:
+                return this.biStep5.returnNode();
+            case 6:
+                return this.biStep6.returnNode();
+            case 7:
+                return this.biStep7.returnNode();
+            case 8:
+                return this.biStep8.returnNode();
+            default:
+                return null;
         }
     }
 
@@ -183,5 +139,95 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         public VoidParameterException()
         {
         }
+    }
+
+    public BuildingsIsletStep1 getBiStep1()
+    {
+        return this.biStep1;
+    }
+
+    public void setBiStep1(BuildingsIsletStep1 biStep1In)
+    {
+        this.biStep1 = biStep1In;
+    }
+
+    public BuildingsIsletStep2 getBiStep2()
+    {
+        return this.biStep2;
+    }
+
+    public void setBiStep2(BuildingsIsletStep2 biStep2In)
+    {
+        this.biStep2 = biStep2In;
+    }
+
+    public BuildingsIsletStep3 getBiStep3()
+    {
+        return this.biStep3;
+    }
+
+    public void setBiStep3(BuildingsIsletStep3 biStep3)
+    {
+        this.biStep3 = biStep3;
+    }
+
+    public BuildingsIsletStep4 getBiStep4()
+    {
+        return this.biStep4;
+    }
+
+    public void setBiStep4(BuildingsIsletStep4 biStep4)
+    {
+        this.biStep4 = biStep4;
+    }
+
+    public BuildingsIsletStep5 getBiStep5()
+    {
+        return this.biStep5;
+    }
+
+    public void setBiStep5(BuildingsIsletStep5 biStep5)
+    {
+        this.biStep5 = biStep5;
+    }
+
+    public BuildingsIsletStep6 getBiStep6()
+    {
+        return this.biStep6;
+    }
+
+    public void setBiStep6(BuildingsIsletStep6 biStep6)
+    {
+        this.biStep6 = biStep6;
+    }
+
+    public BuildingsIsletStep7 getBiStep7()
+    {
+        return this.biStep7;
+    }
+
+    public void setBiStep7(BuildingsIsletStep7 biStep7)
+    {
+        this.biStep7 = biStep7;
+    }
+
+    public BuildingsIsletStep8 getBiStep8()
+    {
+        return this.biStep8;
+    }
+
+    public void setBiStep8(BuildingsIsletStep8 biStep8)
+    {
+        this.biStep8 = biStep8;
+    }
+
+    public void setProgression(int progression)
+    {
+        this.progression = progression;
+    }
+
+    public void setBIStep2(final BuildingsIsletStep2 biStepIn)
+    {
+        this.biStep2 = biStepIn;
     }
 }

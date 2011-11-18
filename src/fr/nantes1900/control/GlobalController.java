@@ -38,7 +38,7 @@ public class GlobalController
             BuildingsIsletController biController)
     {
         // Launches the base change.
-        biController.launchNextTreatment();
+        biController.launchTreatment();
         System.out.println("Traitement lancé sur l'îlot : "
                 + isletFile.getPath());
 
