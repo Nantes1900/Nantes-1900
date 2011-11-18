@@ -7,11 +7,11 @@ import fr.nantes1900.view.isletprocess.IsletTreeView;
 
 /**
  * @author Camille
- *
  */
+// FIXME : Javadoc
 public class IsletTreeController
 {
-    private IsletTreeView itView;
+    private IsletTreeView          itView;
     private IsletProcessController parentController;
 
     public IsletTreeController(IsletProcessController parentController)

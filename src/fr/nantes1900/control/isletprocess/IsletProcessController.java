@@ -12,23 +12,25 @@ import fr.nantes1900.view.isletprocess.IsletProcessView;
 
 /**
  * @author Camille
- *
  */
+// FIXME : Javadoc
 public class IsletProcessController
 {
-    private GlobalController parentController;
-    private IsletProcessView ipView;
+    private GlobalController         parentController;
+    private IsletProcessView         ipView;
     private CaracteristicsController cController;
-    private IsletTreeController itController;
-    private NavigationBarController nbController;
-    private ParametersController pController;
-    private Universe3DController u3DController;
+    private IsletTreeController      itController;
+    private NavigationBarController  nbController;
+    private ParametersController     pController;
+    private Universe3DController     u3DController;
     private BuildingsIsletController biController;
-    
-    public IsletProcessController(GlobalController parentController, File isletFile, BuildingsIsletController biController)
+
+    public IsletProcessController(GlobalController parentController,
+            File isletFile,
+            BuildingsIsletController biController)
     {
         this.parentController = parentController;
-        
+
         this.cController = new CaracteristicsController(this);
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
@@ -37,8 +39,12 @@ public class IsletProcessController
         this.biController = biController;
         this.biController.setUniverse3DController(u3DController);
         biController.display();
-        
-        this.ipView = new IsletProcessView(cController.getView(), itController.getView(), nbController.getView(), pController.getView(), u3DController.getUniverse3DView());
+
+        this.ipView = new IsletProcessView(cController.getView(),
+                itController.getView(),
+                nbController.getView(),
+                pController.getView(),
+                u3DController.getUniverse3DView());
         this.ipView.setVisible(true);
     }
 }

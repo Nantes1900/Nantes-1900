@@ -21,7 +21,7 @@ public class ActionsController
     /**
      * The panel containing buttons to launch the different actions.
      */
-    private ActionsView aView;
+    private ActionsView              aView;
 
     /**
      * The parent controller to give feedback to.
@@ -31,22 +31,22 @@ public class ActionsController
     /**
      * Action listener of the launch button.
      */
-    private LaunchActionListener laListener;
+    private LaunchActionListener     laListener;
 
     /**
      * Creates a new controller to handle the panel containing buttons to launch
      * the different actions.
      * @param isletSelectionController
+     *            TODO.
      */
-    public ActionsController(IsletSelectionController isletSelectionController)
+    public ActionsController(final IsletSelectionController isletSelectionController)
     {
         this.parentController = isletSelectionController;
         this.aView = new ActionsView();
-        this.aView.getOpenButton().addActionListener(new ActionListener()
-        {
+        this.aView.getOpenButton().addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent arg0)
+            public void actionPerformed(final ActionEvent arg0)
             {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -54,8 +54,7 @@ public class ActionsController
 
                 fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
 
-                if (fileChooser.showOpenDialog(ActionsController.this
-                        .getActionsView()) == JFileChooser.APPROVE_OPTION)
+                if (fileChooser.showOpenDialog(ActionsController.this.getActionsView()) == JFileChooser.APPROVE_OPTION)
                 {
                     File file = fileChooser.getSelectedFile();
                     if (file.isDirectory())
@@ -68,85 +67,97 @@ public class ActionsController
 
         });
 
-        laListener = new LaunchActionListener(false);
-        this.aView.getLaunchButton().addActionListener(laListener);
+        this.laListener = new LaunchActionListener(false);
+        this.aView.getLaunchButton().addActionListener(this.laListener);
     }
 
     /**
      * Returns the actions view associated with this controller.
      * @return The actions view.
      */
-    public ActionsView getActionsView()
+    public final ActionsView getActionsView()
     {
         return this.aView;
     }
 
-    public IsletSelectionController getParentController()
+    /**
+     * TODO.
+     * @return TODO.
+     */
+    public final IsletSelectionController getParentController()
     {
         return this.parentController;
     }
 
-    public void setComputeNormalMode()
+    /**
+     * TODO.
+     */
+    public final void setComputeNormalMode()
     {
-        laListener.setComputeNormalMode(true);
+        this.laListener.setComputeNormalMode(true);
         this.getActionsView()
                 .getHelpButton()
-                .setTooltip(
-                        FileTools.readHelpMessage(
-                                FileTools.KEY_IS_GRAVITYNORMAL,
-                                FileTools.MESSAGETYPE_TOOLTIP));
+                .setTooltip(FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL,
+                        FileTools.MESSAGETYPE_TOOLTIP));
         this.getActionsView()
                 .getHelpButton()
-                .setHelpMessage(
-                        FileTools.readHelpMessage(
-                                FileTools.KEY_IS_GRAVITYNORMAL,
-                                FileTools.MESSAGETYPE_MESSAGE),
-                        FileTools.readHelpMessage(
-                                FileTools.KEY_IS_GRAVITYNORMAL,
+                .setHelpMessage(FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL,
+                        FileTools.MESSAGETYPE_MESSAGE),
+                        FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL,
                                 FileTools.MESSAGETYPE_TITLE));
         this.aView.getLaunchButton().setText("Sauver");
         this.aView.getLaunchButton().setEnabled(true);
     }
 
-    public void setLaunchMode()
+    /**
+     * TODO.
+     */
+    public final void setLaunchMode()
     {
-        laListener.setComputeNormalMode(false);
+        this.laListener.setComputeNormalMode(false);
         this.getActionsView()
                 .getHelpButton()
-                .setTooltip(
-                        FileTools.readHelpMessage(
-                                FileTools.KEY_IS_LAUNCHPROCESS,
-                                FileTools.MESSAGETYPE_TOOLTIP));
+                .setTooltip(FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS,
+                        FileTools.MESSAGETYPE_TOOLTIP));
         this.getActionsView()
                 .getHelpButton()
-                .setHelpMessage(
-                        FileTools.readHelpMessage(
-                                FileTools.KEY_IS_LAUNCHPROCESS,
-                                FileTools.MESSAGETYPE_MESSAGE),
-                        FileTools.readHelpMessage(
-                                FileTools.KEY_IS_LAUNCHPROCESS,
+                .setHelpMessage(FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS,
+                        FileTools.MESSAGETYPE_MESSAGE),
+                        FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS,
                                 FileTools.MESSAGETYPE_TITLE));
         this.aView.getLaunchButton().setText("Lancer");
         this.aView.getLaunchButton().setEnabled(true);
     }
 
+    /**
+     * TODO.
+     * @author Daniel
+     */
     public class LaunchActionListener implements ActionListener
     {
 
+        /**
+         * TODO.
+         */
         private boolean computeNormal;
 
-        public LaunchActionListener(boolean computeNormal)
+        /**
+         * TODO.
+         * @param computeNormalIn
+         *            TODO
+         */
+        public LaunchActionListener(final boolean computeNormalIn)
         {
-            this.computeNormal = computeNormal;
+            this.computeNormal = computeNormalIn;
         }
 
         @Override
-        public void actionPerformed(ActionEvent arg0)
+        public final void actionPerformed(final ActionEvent arg0)
         {
             // If no gravity normal have been choosen
-            if (computeNormal)
+            if (this.computeNormal)
             {
-                boolean normalSaved = ActionsController.this.parentController
+                boolean normalSaved = ActionsController.this.getParentController()
                         .computeGravityNormal();
                 if (normalSaved)
                 {
@@ -155,13 +166,19 @@ public class ActionsController
             } else
             {
                 // If every normals have been choosen
-                ActionsController.this.parentController.launchIsletProcess();
+                ActionsController.this.getParentController()
+                        .launchIsletProcess();
             }
         }
 
-        public void setComputeNormalMode(boolean computeNormal)
+        /**
+         * TODO.
+         * @param computeNormalIn
+         *            TODO.
+         */
+        public final void setComputeNormalMode(final boolean computeNormalIn)
         {
-            this.computeNormal = computeNormal;
+            this.computeNormal = computeNormalIn;
         }
     }
 }

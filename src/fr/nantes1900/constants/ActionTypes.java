@@ -1,14 +1,36 @@
 package fr.nantes1900.constants;
 
-public class ActionTypes
+/**
+ * Contains some constants describing the actions the user can do in the model.
+ * @author Daniel Lefèvre
+ */
+public final class ActionTypes
 {
 
+    /**
+     * To convert the things selected to building.
+     */
     public static final int TURN_TO_BUILDING = 0;
-    public static final int TURN_TO_GROUND = 1;
-    public static final int TURN_TO_WALL = 2;
-    public static final int TURN_TO_ROOF = 3;
-    public static final int TURN_TO_NOISE = 4;
-    public static final int REMOVE = 4;
+    /**
+     * To convert the things selected to ground.
+     */
+    public static final int TURN_TO_GROUND   = 1;
+    /**
+     * To convert the things selected to wall.
+     */
+    public static final int TURN_TO_WALL     = 2;
+    /**
+     * To convert the things selected to roof.
+     */
+    public static final int TURN_TO_ROOF     = 3;
+    /**
+     * To convert the things selected to noise.
+     */
+    public static final int TURN_TO_NOISE    = 4;
+    /**
+     * To remove the things selected.
+     */
+    public static final int REMOVE           = 4;
 
     /**
      * Empty constructor.

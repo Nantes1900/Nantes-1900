@@ -7,11 +7,11 @@ import fr.nantes1900.view.isletprocess.ParametersView;
 
 /**
  * @author Camille
- *
  */
+// FIXME : Javadoc
 public class ParametersController
 {
-    private ParametersView pView;
+    private ParametersView         pView;
     private IsletProcessController parentController;
 
     public ParametersController(IsletProcessController parentController)

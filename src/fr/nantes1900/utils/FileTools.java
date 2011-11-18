@@ -20,33 +20,40 @@ public final class FileTools
 {
 
     /**
+     * Private constructor.
+     */
+    private FileTools()
+    {
+    }
+
+    /**
      * Text for the type of message status bar.
      */
     public static final String MESSAGETYPE_STATUSBAR = "Statusbar";
     /**
      * Text for the type of message tooltip for properties.
      */
-    public static final String MESSAGETYPE_TOOLTIP = "Tooltip";
+    public static final String MESSAGETYPE_TOOLTIP   = "Tooltip";
     /**
      * Text for the type of message title for properties.
      */
-    public static final String MESSAGETYPE_TITLE = "Title";
+    public static final String MESSAGETYPE_TITLE     = "Title";
     /**
      * Text for the type of message message for properties.
      */
-    public static final String MESSAGETYPE_MESSAGE = "Message";
+    public static final String MESSAGETYPE_MESSAGE   = "Message";
     /**
      * Key value corresponding to the open directory step.
      */
-    public static final String KEY_IS_OPENDIRECTORY = "ISOpenDirectory";
+    public static final String KEY_IS_OPENDIRECTORY  = "ISOpenDirectory";
     /**
      * Key value corresponding to the create gravity normal step.
      */
-    public static final String KEY_IS_GRAVITYNORMAL = "ISGravityNormal";
+    public static final String KEY_IS_GRAVITYNORMAL  = "ISGravityNormal";
     /**
      * Key value corresponding to the select islet to launch process step.
      */
-    public static final String KEY_IS_LAUNCHPROCESS = "ISLaunchProcess";
+    public static final String KEY_IS_LAUNCHPROCESS  = "ISLaunchProcess";
 
     /**
      * Reads a help message from the file helpMessage.txt with the key
@@ -90,8 +97,7 @@ public final class FileTools
             System.err.println("File wasn't found:" + e.getMessage());
         } catch (IOException e)
         {
-            System.err.println("IO exception when loading properties: "
-                    + e.getMessage());
+            System.err.println("IO exception when loading properties: " + e.getMessage());
         }
 
         return prop;
@@ -131,24 +137,21 @@ public final class FileTools
         DataOutputStream dos;
         try
         {
-            dos = new DataOutputStream(new BufferedOutputStream(
-                    new FileOutputStream(file)));
+            dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
             try
             {
                 prop.store(dos, null); // 2nd parameter allows to store comments
             } catch (IOException e)
             {
                 saveOk = false;
-                System.err.println("IO exception during storage process: "
-                        + e.getMessage());
+                System.err.println("IO exception during storage process: " + e.getMessage());
             }
             try
             {
                 dos.close();
             } catch (IOException e)
             {
-                System.err.println("IO exeption while closing the stream: "
-                        + e.getMessage());
+                System.err.println("IO exeption while closing the stream: " + e.getMessage());
             }
         } catch (FileNotFoundException e1)
         {
