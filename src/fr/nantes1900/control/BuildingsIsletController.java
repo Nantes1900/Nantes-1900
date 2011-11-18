@@ -79,7 +79,7 @@ public class BuildingsIsletController
         switch (this.islet.getProgression())
         {
             case 0:
-            // TODO : error
+                this.viewStep0();
             break;
             case 1:
                 this.viewStep1();
@@ -340,6 +340,12 @@ public class BuildingsIsletController
     public final void launchTreatment7()
     {
         this.islet.setBiStep8(this.islet.getBiStep7().launchTreatment());
+    }
+
+    public final void viewStep0()
+    {
+        this.getU3DController().getUniverse3DView().addMesh(
+                new MeshView(this.islet.getInitialTotalMesh()));
     }
 
     public final void viewStep1()
