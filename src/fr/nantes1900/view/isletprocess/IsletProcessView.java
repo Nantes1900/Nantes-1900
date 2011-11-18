@@ -34,9 +34,9 @@ public class IsletProcessView extends PFrame
             IsletTreeView isletTreeView, NavigationBarView navigationBarView,
             ParametersView parametersView, Universe3DView universe3dView)
     {
-        this.setMinimumSize(new Dimension(800, 800));
-        this.setPreferredSize(new Dimension(800, 800));
-        
+        this.setMinimumSize(new Dimension(1000, 1000));
+        this.setPreferredSize(new Dimension(1000, 1000));
+
         this.cView = caracteristicsView;
         this.itView = isletTreeView;
         this.nbView = navigationBarView;
@@ -48,23 +48,25 @@ public class IsletProcessView extends PFrame
 
         this.setLayout(new GridBagLayout());
 
-        this.getComponentsPanel().add(nbView,
+        this.getComponentsPanel().add(
+                nbView,
                 new GridBagConstraints(0, 0, 2, 1, 0.0, 0.0,
                         GridBagConstraints.CENTER,
                         GridBagConstraints.HORIZONTAL,
                         new Insets(5, 10, 5, 10), 0, 0));
-        this.getComponentsPanel().add(this.tabs,
+        this.getComponentsPanel().add(
+                this.tabs,
                 new GridBagConstraints(0, 1, 1, 2, 0.0, 0.0,
-                        GridBagConstraints.CENTER,
-                        GridBagConstraints.VERTICAL,
+                        GridBagConstraints.CENTER, GridBagConstraints.VERTICAL,
                         new Insets(5, 10, 5, 10), 0, 0));
-        this.getComponentsPanel().add(u3DView,
+        this.getComponentsPanel().add(
+                u3DView,
                 new GridBagConstraints(1, 1, 1, 1, 0.0, 0.0,
-                        GridBagConstraints.CENTER,
-                        GridBagConstraints.BOTH,
+                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(5, 10, 5, 10), 0, 0));
-        this.getComponentsPanel().add(cView,
-                new GridBagConstraints(2, 1, 1, 1, 0.0, 0.0,
+        this.getComponentsPanel().add(
+                cView,
+                new GridBagConstraints(1, 3, 1, 1, 0.0, 0.0,
                         GridBagConstraints.CENTER,
                         GridBagConstraints.HORIZONTAL,
                         new Insets(5, 10, 5, 10), 0, 0));
