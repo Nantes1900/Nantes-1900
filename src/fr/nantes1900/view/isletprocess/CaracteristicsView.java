@@ -35,7 +35,9 @@ public class CaracteristicsView extends JPanel
         this.setBorder(new TitledBorder(BorderFactory
                 .createRaisedSoftBevelBorder(), "Caractéristiques"));
         bValidate = new JButton("Valider");
+        // Disable the validate button for this empty characteristic panel
         bValidate.setEnabled(false);
+        
         pContent = new JPanel();
         FlowLayout contentLayout = new FlowLayout();
         contentLayout.setAlignment(FlowLayout.LEFT);

@@ -7,12 +7,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.j3d.BranchGroup;
+import javax.swing.event.EventListenerList;
 
 import com.sun.j3d.utils.picking.PickCanvas;
 import com.sun.j3d.utils.picking.PickIntersection;
 import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.picking.PickTool;
 
+import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.TriangleView;
@@ -37,6 +39,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     private int                     xPressed;
     private int                     yPressed;
 
+    private final EventListenerList  listeners = new EventListenerList();
+    
     public Universe3DController()
     {
         this.u3DView = new Universe3DView(this);
@@ -181,4 +185,16 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 .addMouseMotionListener(this);
 
     }
+
+    public void addElementsSelectedListener(ElementsSelectedListener listener)
+    {
+        listeners.add(ElementsSelectedListener.class, listener);
+    }
+
+    public void
+            removeElementsSelectedListener(ElementsSelectedListener listener)
+    {
+        listeners.remove(ElementsSelectedListener.class, listener);
+    }
+
 }

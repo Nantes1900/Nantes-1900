@@ -5,17 +5,17 @@ package fr.nantes1900.control.isletprocess;
 
 import java.io.File;
 
-import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
+import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.view.isletprocess.IsletProcessView;
 
 /**
  * @author Camille
  */
 // FIXME : Javadoc
-public class IsletProcessController
+public class IsletProcessController implements ElementsSelectedListener
 {
     private GlobalController         parentController;
     private IsletProcessView         ipView;
@@ -45,13 +45,14 @@ public class IsletProcessController
                 itController.getView(), nbController.getView(),
                 pController.getView(), u3DController.getUniverse3DView());
         this.ipView.setVisible(true);
+        this.u3DController.addElementsSelectedListener(this);
     }
 
     /**
-     * Launches an action depending of the actual step with the given action type.
-     * 
+     * Launches an action depending of the actual step with the given action
+     * type.
      * @param actionType
-     *          Type of the action to execute
+     *            Type of the action to execute
      * @see ActionTypes, {@link BuildingsIsletController}
      */
     public void launchAction(int actionType)
@@ -59,8 +60,9 @@ public class IsletProcessController
         switch (progression)
         {
             case 2:
-                this.biController.action2(u3DController.getTrianglesSelected(), actionType);
-                break;
+                this.biController.action2(u3DController.getTrianglesSelected(),
+                        actionType);
+            break;
         }
     }
 }
