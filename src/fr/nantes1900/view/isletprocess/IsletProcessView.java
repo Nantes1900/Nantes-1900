@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 
 import fr.nantes1900.view.components.PFrame;
@@ -36,8 +37,10 @@ public class IsletProcessView extends PFrame
             ParametersView parametersView,
             Universe3DView universe3dView)
     {
-        this.setMinimumSize(new Dimension(800, 800));
-        this.setPreferredSize(new Dimension(800, 800));
+        super();
+        this.setMinimumSize(new Dimension(1000, 1000));
+        this.setPreferredSize(new Dimension(1000, 1000));
+        this.setLocationRelativeTo(null);
 
         this.cView = caracteristicsView;
         this.itView = isletTreeView;
@@ -48,7 +51,7 @@ public class IsletProcessView extends PFrame
         this.tabs.addTab("Paramètres", pView);
         this.tabs.addTab("Arbre", itView);
 
-        this.setLayout(new GridBagLayout());
+        this.getComponentsPanel().setLayout(new GridBagLayout());
 
         this.getComponentsPanel().add(nbView,
                 new GridBagConstraints(0,
@@ -98,6 +101,53 @@ public class IsletProcessView extends PFrame
                         new Insets(5, 10, 5, 10),
                         0,
                         0));
+        this.getComponentsPanel().add(nbView,
+                new GridBagConstraints(0,
+                        0,
+                        2,
+                        1,
+                        0.0,
+                        0.0,
+                        GridBagConstraints.CENTER,
+                        GridBagConstraints.HORIZONTAL,
+                        new Insets(5, 10, 5, 10),
+                        0,
+                        0));
+        this.getComponentsPanel().add(this.tabs,
+                new GridBagConstraints(0,
+                        1,
+                        1,
+                        2,
+                        0.0,
+                        0.0,
+                        GridBagConstraints.CENTER,
+                        GridBagConstraints.BOTH,
+                        new Insets(5, 10, 5, 10),
+                        0,
+                        0));
+        this.getComponentsPanel().add(u3DView,
+                new GridBagConstraints(1,
+                        1,
+                        1,
+                        1,
+                        0.0,
+                        0.0,
+                        GridBagConstraints.CENTER,
+                        GridBagConstraints.BOTH,
+                        new Insets(5, 10, 5, 10),
+                        0,
+                        0));
+        this.getComponentsPanel().add(cView,
+                new GridBagConstraints(1,
+                        3,
+                        1,
+                        1,
+                        0.0,
+                        0.0,
+                        GridBagConstraints.CENTER,
+                        GridBagConstraints.BOTH,
+                        new Insets(5, 10, 5, 10),
+                        0,
+                        0));
     }
-
 }

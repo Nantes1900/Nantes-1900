@@ -3,6 +3,7 @@
  */
 package fr.nantes1900.control.isletprocess;
 
+import fr.nantes1900.view.isletprocess.CaracteristicsStep2View;
 import fr.nantes1900.view.isletprocess.CaracteristicsView;
 
 /**
@@ -17,7 +18,7 @@ public class CaracteristicsController
     public CaracteristicsController(IsletProcessController parentController)
     {
         this.parentController = parentController;
-        this.cView = new CaracteristicsView();
+        this.cView = new CaracteristicsStep2View();
     }
 
     public CaracteristicsView getView()
