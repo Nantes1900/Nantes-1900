@@ -8,7 +8,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-import javax.swing.JButton;
 import javax.swing.JTabbedPane;
 
 import fr.nantes1900.view.components.PFrame;
@@ -54,8 +53,7 @@ public class IsletProcessView extends PFrame
         this.getComponentsPanel().add(
                 nbView,
                 new GridBagConstraints(0, 0, 2, 1, 1.0, 0.20,
-                        GridBagConstraints.CENTER,
-                        GridBagConstraints.BOTH,
+                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(10, 10, 5, 10), 0, 0));
         this.getComponentsPanel().add(
                 this.tabs,
@@ -70,8 +68,7 @@ public class IsletProcessView extends PFrame
         this.getComponentsPanel().add(
                 cView,
                 new GridBagConstraints(1, 2, 1, 1, 0.60, 0.20,
-                        GridBagConstraints.CENTER,
-                        GridBagConstraints.BOTH,
+                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(5, 5, 10, 10), 0, 0));
     }
 }

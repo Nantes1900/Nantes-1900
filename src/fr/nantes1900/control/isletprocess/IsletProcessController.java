@@ -5,6 +5,7 @@ package fr.nantes1900.control.isletprocess;
 
 import java.io.File;
 
+import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
@@ -31,7 +32,6 @@ public class IsletProcessController
     {
         this.parentController = parentController;
 
-        // TODO : modify when we can show other steps. Set an empty caracteristic panel.
         this.cController = new CaracteristicsController(this);
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
@@ -47,6 +47,13 @@ public class IsletProcessController
         this.ipView.setVisible(true);
     }
 
+    /**
+     * Launches an action depending of the actual step with the given action type.
+     * 
+     * @param actionType
+     *          Type of the action to execute
+     * @see ActionTypes, {@link BuildingsIsletController}
+     */
     public void launchAction(int actionType)
     {
         switch (progression)

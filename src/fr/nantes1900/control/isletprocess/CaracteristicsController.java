@@ -3,7 +3,6 @@
  */
 package fr.nantes1900.control.isletprocess;
 
-import fr.nantes1900.view.isletprocess.CaracteristicsStep2View;
 import fr.nantes1900.view.isletprocess.CaracteristicsView;
 
 /**
