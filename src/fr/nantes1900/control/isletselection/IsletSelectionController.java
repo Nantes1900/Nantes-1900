@@ -12,12 +12,14 @@ import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.control.BuildingsIsletController;
+import fr.nantes1900.control.BuildingsIsletController.InvalidCaseException;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.ResidentialIslet;
 import fr.nantes1900.utils.FileTools;
@@ -158,23 +160,9 @@ public class IsletSelectionController
 
         if (fileNode.isFile())
         {
-            ParserSTL parser = new ParserSTL(fileNode.getEntireName());
+            this.biController.readFile(fileNode.getEntireName());
             this.selectedFile = fileNode;
-
-            AbstractBuildingsIslet resIslet;
-            try
-            {
-                // TODO by Daniel : it shouldn't be here, but in the
-                // biController...
-                resIslet = new ResidentialIslet(parser.read());
-                this.biController.setIslet(resIslet);
-                this.biController.putGravityNormal();
-                this.biController.display();
-            } catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            this.biController.display();
         }
         cursor = new Cursor(Cursor.DEFAULT_CURSOR);
         this.isView.setCursor(cursor);

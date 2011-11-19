@@ -12,9 +12,10 @@ import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Surface;
-import fr.nantes1900.models.islets.AbstractIslet.UnCompletedParametersException;
+import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
-import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep1;
+import fr.nantes1900.models.islets.buildings.ResidentialIslet;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.PolygonView;
@@ -56,6 +57,9 @@ public class BuildingsIsletController
     {
         this.parentController = isletSelectionController;
         this.u3DController = universe3DControllerIn;
+        // LOOK : maybe it would be good to choose between industrial islet and
+        // residential islet.
+        this.islet = new ResidentialIslet();
     }
 
     /**
@@ -164,7 +168,7 @@ public class BuildingsIsletController
                 building.getbStep4().getInitialWall().remove(trianglesSelected);
             }
         }
-        // TODO : elese : error.
+        // TODO : else : error.
     }
 
     /**
@@ -178,44 +182,50 @@ public class BuildingsIsletController
     }
 
     /**
-     * TODO.
+     * Dsisplays the set of meshes, considering the progression of the
+     * treatement.
      */
     public final void display()
     {
         this.u3DController.getUniverse3DView().clearAllMeshes();
 
-        switch (this.islet.getProgression())
+        try
         {
-            case AbstractBuildingsIslet.ZERO_STEP:
-                this.viewStep0();
-            break;
-            case AbstractBuildingsIslet.FIRST_STEP:
-                this.viewStep1();
-            break;
-            case AbstractBuildingsIslet.SECOND_STEP:
-                this.viewStep2();
-            break;
-            case AbstractBuildingsIslet.THIRD_STEP:
-                this.viewStep3();
-            break;
-            case AbstractBuildingsIslet.FOURTH_STEP:
-                this.viewStep4();
-            break;
-            case AbstractBuildingsIslet.FIFTH_STEP:
-                this.viewStep5();
-            break;
-            case AbstractBuildingsIslet.SIXTH_STEP:
-                this.viewStep6();
-            break;
-            case AbstractBuildingsIslet.SEVENTH_STEP:
-                this.viewStep7();
-            break;
-            case AbstractBuildingsIslet.EIGHTH_STEP:
-                this.viewStep8();
-            break;
-            default:
-            // TODO : error
-            break;
+            switch (this.islet.getProgression())
+            {
+                case AbstractBuildingsIslet.ZERO_STEP:
+                    this.viewStep0();
+                break;
+                case AbstractBuildingsIslet.FIRST_STEP:
+                    this.viewStep1();
+                break;
+                case AbstractBuildingsIslet.SECOND_STEP:
+                    this.viewStep2();
+                break;
+                case AbstractBuildingsIslet.THIRD_STEP:
+                    this.viewStep3();
+                break;
+                case AbstractBuildingsIslet.FOURTH_STEP:
+                    this.viewStep4();
+                break;
+                case AbstractBuildingsIslet.FIFTH_STEP:
+                    this.viewStep5();
+                break;
+                case AbstractBuildingsIslet.SIXTH_STEP:
+                    this.viewStep6();
+                break;
+                case AbstractBuildingsIslet.SEVENTH_STEP:
+                    this.viewStep7();
+                break;
+                case AbstractBuildingsIslet.EIGHTH_STEP:
+                    this.viewStep8();
+                break;
+                default:
+                    throw new InvalidCaseException();
+            }
+        } catch (InvalidCaseException e)
+        {
+            System.out.println("Big problem");
         }
     }
 
@@ -277,39 +287,44 @@ public class BuildingsIsletController
      */
     public final void launchTreatment()
     {
-        switch (this.islet.getProgression())
+        try
         {
-            case AbstractBuildingsIslet.ZERO_STEP:
-                this.launchTreatment0();
-            break;
-            case AbstractBuildingsIslet.FIRST_STEP:
-                this.launchTreatment1();
-            break;
-            case AbstractBuildingsIslet.SECOND_STEP:
-                this.launchTreatment2();
-            break;
-            case AbstractBuildingsIslet.THIRD_STEP:
-                this.launchTreatment3();
-            break;
-            case AbstractBuildingsIslet.FOURTH_STEP:
-                this.launchTreatment4();
-            break;
-            case AbstractBuildingsIslet.FIFTH_STEP:
-                this.launchTreatment5();
-            break;
-            case AbstractBuildingsIslet.SIXTH_STEP:
-                this.launchTreatment6();
-            break;
-            case AbstractBuildingsIslet.SEVENTH_STEP:
-                this.launchTreatment7();
-            break;
-            default:
-            // It shouldn't happen.
-            break;
-        }
+            switch (this.islet.getProgression())
+            {
+                case AbstractBuildingsIslet.ZERO_STEP:
+                    this.launchTreatment0();
+                break;
+                case AbstractBuildingsIslet.FIRST_STEP:
+                    this.launchTreatment1();
+                break;
+                case AbstractBuildingsIslet.SECOND_STEP:
+                    this.launchTreatment2();
+                break;
+                case AbstractBuildingsIslet.THIRD_STEP:
+                    this.launchTreatment3();
+                break;
+                case AbstractBuildingsIslet.FOURTH_STEP:
+                    this.launchTreatment4();
+                break;
+                case AbstractBuildingsIslet.FIFTH_STEP:
+                    this.launchTreatment5();
+                break;
+                case AbstractBuildingsIslet.SIXTH_STEP:
+                    this.launchTreatment6();
+                break;
+                case AbstractBuildingsIslet.SEVENTH_STEP:
+                    this.launchTreatment7();
+                break;
+                default:
+                    throw new InvalidCaseException();
+            }
 
-        this.incProgression();
-        this.display();
+            this.incProgression();
+            this.display();
+        } catch (InvalidCaseException e)
+        {
+            System.out.println("Big problem");
+        }
     }
 
     /**
@@ -317,19 +332,8 @@ public class BuildingsIsletController
      */
     private void launchTreatment0()
     {
-        try
-        {
-            // TODO : create a step 0 instead of base change directly the
-            // initalTotalMesh.
-            this.islet.setGravityNormal(this.gravityNormal);
-            this.islet.createChangeBaseMatrix();
-            this.islet.changeBase();
-            this.islet.setBiStep1(new BuildingsIsletStep1(this.islet.getInitialTotalMesh()));
-        } catch (UnCompletedParametersException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        this.islet.getBiStep0().setArguments(this.gravityNormal);
+        this.islet.setBiStep1(this.islet.getBiStep0().launchTreatment());
     }
 
     /**
@@ -530,7 +534,8 @@ public class BuildingsIsletController
     {
         this.getU3DController()
                 .getUniverse3DView()
-                .addMesh(new MeshView(this.islet.getInitialTotalMesh()));
+                .addMesh(new MeshView(this.islet.getBiStep0()
+                        .getInitialTotalMesh()));
     }
 
     /**
@@ -681,5 +686,36 @@ public class BuildingsIsletController
                         .addPolygonView(new PolygonView(roof.getPolygone()));
             }
         }
+    }
+
+    /**
+     * Implements an exception thrown when a switch-case operation is place in a
+     * wrong case.
+     * @author Daniel Lefèvre
+     */
+    public class InvalidCaseException extends Exception
+    {
+        /**
+         * Version ID.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /**
+         * Constructor.
+         */
+        public InvalidCaseException()
+        {
+        }
+    }
+
+    /**
+     * Parses the file and builds the first step of the BuildingIslet.
+     * @param fileName
+     *            the name of the file
+     */
+    public final void readFile(final String fileName)
+    {
+        this.islet.setBiStep0(new BuildingsIsletStep0(AbstractIslet.parseFile(fileName)));
+        this.islet.getBiStep0().setArguments(this.gravityNormal);
     }
 }

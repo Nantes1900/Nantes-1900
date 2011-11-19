@@ -38,7 +38,7 @@ public class IsletProcessController
         this.u3DController = new Universe3DController();
         this.biController = biController;
         this.biController.setUniverse3DController(u3DController);
-        biController.display();
+        this.biController.display();
 
         this.ipView = new IsletProcessView(cController.getView(),
                 itController.getView(),

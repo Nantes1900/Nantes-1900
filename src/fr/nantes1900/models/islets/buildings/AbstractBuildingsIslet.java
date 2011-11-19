@@ -3,8 +3,8 @@ package fr.nantes1900.models.islets.buildings;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.islets.AbstractIslet;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep1;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep2;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep3;
@@ -13,27 +13,20 @@ import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep5;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep6;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep7;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep8;
+import fr.nantes1900.utils.MatrixMethod;
 
 /**
  * Abstracts a building islet : residential or industrial. This class contains
  * all the methods to apply the treatments on the meshes.
- * @author Daniel Lef�vre
- */
-/**
- * @author Daniel
- */
-/**
- * @author Daniel
- */
-/**
- * @author Daniel
- */
-/**
- * @author Daniel
+ * @author Daniel Lefèvre
  */
 public abstract class AbstractBuildingsIslet extends AbstractIslet
 {
 
+    /**
+     * The zero building islet step.
+     */
+    private BuildingsIsletStep0 biStep0;
     /**
      * The first building islet step.
      */
@@ -75,6 +68,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * The number of the step 1.
      */
     public static final int     FIRST_STEP   = 1;
+
     /**
      * The number of the step 2.
      */
@@ -103,7 +97,6 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * The number of the step 8.
      */
     public static final int     EIGHTH_STEP  = 8;
-
     /**
      * The number of the current step.
      */
@@ -115,13 +108,24 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     private Vector3d            groundNormal;
 
     /**
-     * Constructor. Stocks the mesh in the initialTotalMesh variable.
-     * @param initialMesh
-     *            the mesh representing the islet
+     * The normal to the gravity.
      */
-    public AbstractBuildingsIslet(final Mesh initialMesh)
+    private Vector3d            gravityNormal;
+
+    /**
+     * Constructor. Stocks the mesh in the initialTotalMesh variable.
+     */
+    public AbstractBuildingsIslet()
     {
-        super(initialMesh);
+    }
+
+    /**
+     * Getter.
+     * @return the zero step
+     */
+    public final BuildingsIsletStep0 getBiStep0()
+    {
+        return this.biStep0;
     }
 
     /**
@@ -257,6 +261,16 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
 
     /**
      * Setter.
+     * @param biStepIn
+     *            the zero step
+     */
+    public final void setBiStep0(final BuildingsIsletStep0 biStepIn)
+    {
+        this.biStep0 = biStepIn;
+    }
+
+    /**
+     * Setter.
      * @param biStep1In
      *            the first step
      */
@@ -353,6 +367,16 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     public final void setProgression(final int progressionIn)
     {
         this.progression = progressionIn;
+    }
+
+    public Vector3d getGravityNormal()
+    {
+        return gravityNormal;
+    }
+
+    public void setGravityNormal(Vector3d gravityNormal)
+    {
+        this.gravityNormal = gravityNormal;
     }
 
     /**
