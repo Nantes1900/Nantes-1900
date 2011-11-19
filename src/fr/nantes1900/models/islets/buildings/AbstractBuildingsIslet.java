@@ -229,14 +229,16 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * Return a node containing the tree depending of the progression of the
      * treatment.
      * @return the node
+     * @throws InvalidCaseException
+     *             if the case in not valid (more than 8 or less than 0)
      */
-    public final DefaultMutableTreeNode returnNode()
+    public final DefaultMutableTreeNode
+            returnNode() throws InvalidCaseException
     {
         switch (this.getProgression())
         {
             case AbstractBuildingsIslet.ZERO_STEP:
-                // TODO : error
-                return null;
+                throw new InvalidCaseException();
             case AbstractBuildingsIslet.FIRST_STEP:
                 return this.biStep1.returnNode();
             case AbstractBuildingsIslet.SECOND_STEP:
@@ -385,26 +387,5 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     public final void setGravityNormal(final Vector3d gravityNormalIn)
     {
         this.gravityNormal = gravityNormalIn;
-    }
-
-    /**
-     * Exception class used when an attribute has not been defined whereas the
-     * algorithm has been launched.
-     * @author Daniel Lefevre
-     */
-    public final class VoidParameterException extends Exception
-    {
-
-        /**
-         * Version ID.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        public VoidParameterException()
-        {
-        }
     }
 }

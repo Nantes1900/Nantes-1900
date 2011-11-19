@@ -14,32 +14,39 @@ import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.Wall;
 import fr.nantes1900.utils.Algos;
 
+/**
+ * TODO.
+ * @author Daniel
+ */
 public class BuildingStep5 extends AbstractBuildingStep
 {
 
     /**
-     * 
+     * The mesh representing the noise.
      */
     private Mesh       noise;
 
     /**
-     * TODO.
+     * The list of walls.
      */
     private List<Wall> walls = new ArrayList<>();
 
     /**
-     * TODO.
+     * The list of roofs.
      */
     private List<Roof> roofs = new ArrayList<>();
 
     /**
-     * 
+     * The ground as a surface used in treatments.
      */
     private Surface    groundForAlgorithm;
 
     /**
+     * Constructor.
      * @param wallsIn
+     *            the list of walls
      * @param roofsIn
+     *            the list of roofs
      */
     public BuildingStep5(final List<Wall> wallsIn, final List<Roof> roofsIn)
     {
@@ -110,14 +117,22 @@ public class BuildingStep5 extends AbstractBuildingStep
         }
     }
 
-    public List<Roof> getRoofs()
+    /**
+     * Getter.
+     * @return the list of roofs
+     */
+    public final List<Roof> getRoofs()
     {
-        return roofs;
+        return this.roofs;
     }
 
-    public List<Wall> getWalls()
+    /**
+     * Getter.
+     * @return the list of walls
+     */
+    public final List<Wall> getWalls()
     {
-        return walls;
+        return this.walls;
     }
 
     @Override
@@ -158,6 +173,13 @@ public class BuildingStep5 extends AbstractBuildingStep
         return currentNode;
     }
 
+    /**
+     * Setter.
+     * @param noiseIn
+     *            the noise
+     * @param groundForAlgorithmIn
+     *            the ground as surface used in treatments
+     */
     public final void setArguments(final Mesh noiseIn,
             final Surface groundForAlgorithmIn)
     {

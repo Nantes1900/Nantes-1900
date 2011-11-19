@@ -14,6 +14,7 @@ import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
+import fr.nantes1900.models.islets.buildings.InvalidCaseException;
 import fr.nantes1900.models.islets.buildings.ResidentialIslet;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.utils.ParserSTL;
@@ -685,26 +686,6 @@ public class BuildingsIsletController
                         .getUniverse3DView()
                         .addPolygonView(new PolygonView(roof.getPolygone()));
             }
-        }
-    }
-
-    /**
-     * Implements an exception thrown when a switch-case operation is place in a
-     * wrong case.
-     * @author Daniel Lefèvre
-     */
-    public class InvalidCaseException extends Exception
-    {
-        /**
-         * Version ID.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Constructor.
-         */
-        public InvalidCaseException()
-        {
         }
     }
 

@@ -5,44 +5,78 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.Surface.ImpossibleNeighboursOrderException;
 import fr.nantes1900.models.extended.Wall;
 
+/**
+ * Implements a building step : a state of the building. This step is after
+ * TODO.
+ * @author Daniel
+ */
 public class BuildingStep6 extends AbstractBuildingStep
 {
 
     /**
-     * TODO.
+     * The list of walls.
      */
-    private List<Wall> walls = new ArrayList<>();
+    private List<Wall>       walls                    = new ArrayList<>();
 
     /**
-     * TODO.
+     * The list of roofs.
      */
-    private List<Roof> roofs = new ArrayList<>();
-    private Surface    groundForAlgorithm;
+    private List<Roof>       roofs                    = new ArrayList<>();
 
-    public BuildingStep6(List<Wall> wallsIn, List<Roof> roofsIn)
+    /**
+     * The ground as a surface used in treatments.
+     */
+    private Surface          groundForAlgorithm;
+
+    /**
+     * Number minimal of neighbours to be considered as a real surface.
+     */
+    private static final int NUMBER_MIN_OF_NEIGHBOURS = 3;
+
+    /**
+     * Constructor.
+     * @param wallsIn
+     *            the list of walls
+     * @param roofsIn
+     *            the list of roofs
+     */
+    public BuildingStep6(final List<Wall> wallsIn, final List<Roof> roofsIn)
     {
         this.walls = wallsIn;
         this.roofs = roofsIn;
     }
 
-    public List<Roof> getRoofs()
+    /**
+     * Getter.
+     * @return the list of roofs
+     */
+    public final List<Roof> getRoofs()
     {
-        return roofs;
+        return this.roofs;
     }
 
-    public List<Wall> getWalls()
+    /**
+     * Getter.
+     * @return the list of walls
+     */
+    public final List<Wall> getWalls()
     {
-        return walls;
+        return this.walls;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchTreatment
+     * ()
+     */
     @Override
-    public BuildingStep7 launchTreatment()
+    public final BuildingStep7 launchTreatment()
     {
         this.sortSurfaces();
         // TODO : if null ?
@@ -89,104 +123,58 @@ public class BuildingStep6 extends AbstractBuildingStep
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#returnNode()
+     */
     @Override
-    public DefaultMutableTreeNode returnNode()
+    public final DefaultMutableTreeNode returnNode()
     {
         // FIXME
         return null;
     }
 
-    // FIXME : what is the difference between searchForNeighbours and
-    // determinateNeighbours.
     /**
-     * TODO.
-     * @param grounds
-     *            TODO.
+     * Setter.
+     * @param groundForAlgorithmIn
+     *            the ground as a surface used in algorithms
      */
-    private void searchForNeighbours(final Surface grounds)
-    {
-        final Polygon groundsBounds = grounds.getMesh().returnUnsortedBounds();
-
-        final List<Surface> wholeList = new ArrayList<>();
-        wholeList.addAll(this.walls);
-        wholeList.addAll(this.roofs);
-
-        // First we clear the neighbours.
-        for (final Surface m : wholeList)
-        {
-            m.getNeighbours().clear();
-        }
-        // And we clear the neighbours of the grounds.
-        grounds.getNeighbours().clear();
-
-        final List<Polygon> wholeBoundsList = new ArrayList<>();
-
-        // We compute the bounds to check if they share a common edge.
-        for (final Surface m : wholeList)
-        {
-            wholeBoundsList.add(m.getMesh().returnUnsortedBounds());
-        }
-
-        // Then we check every edge of the bounds to see if some are shared
-        // by two meshes. If they do, they are neighbours.
-        for (int i = 0; i < wholeBoundsList.size(); i = i + 1)
-        {
-            final Polygon polygone1 = wholeBoundsList.get(i);
-
-            for (int j = i + 1; j < wholeBoundsList.size(); j = j + 1)
-            {
-                final Polygon polygone2 = wholeBoundsList.get(j);
-                if (polygone1.isNeighbour(polygone2))
-                {
-                    wholeList.get(i).addNeighbour(wholeList.get(j));
-                }
-            }
-
-            if (polygone1.isNeighbour(groundsBounds))
-            {
-                wholeList.get(i).addNeighbour(grounds);
-            }
-        }
-    }
-
-    public void setArguments(Surface groundForAlgorithmIn)
+    public final void setArguments(final Surface groundForAlgorithmIn)
     {
         this.groundForAlgorithm = groundForAlgorithmIn;
     }
 
     /**
-     * TODO.
+     * Removes every surfaces which have less than or equal 2 neighbours : it is
+     * considered they are not really real surfaces.
      */
-    public final void sortSurfaces()
+    private void sortSurfaces()
     {
-        int counter = 0;
         for (int i = 0; i < this.walls.size(); i++)
         {
             final Surface s = this.walls.get(i);
-            if (s.getNeighbours().size() < 3)
+            if (s.getNeighbours().size() < NUMBER_MIN_OF_NEIGHBOURS)
             {
                 this.walls.remove(s);
                 for (final Surface neighbour : s.getNeighbours())
                 {
                     neighbour.getNeighbours().remove(s);
                 }
-                counter++;
             }
         }
         for (int i = 0; i < this.roofs.size(); i++)
         {
             final Surface s = this.roofs.get(i);
-            if (s.getNeighbours().size() < 3)
+            if (s.getNeighbours().size() < NUMBER_MIN_OF_NEIGHBOURS)
             {
                 this.roofs.remove(s);
                 for (final Surface neighbour : s.getNeighbours())
                 {
                     neighbour.getNeighbours().remove(s);
                 }
-                counter++;
             }
         }
-        System.out.println(" Isolated surfaces (not treated) : " + counter);
     }
 
 }

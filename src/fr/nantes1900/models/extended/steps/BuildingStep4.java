@@ -14,27 +14,61 @@ import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.Wall;
 import fr.nantes1900.utils.Algos;
 
+/**
+ * Implements a building step : a state of the building. This step is after the
+ * separation between walls and before the separation of each walls and roofs.
+ * roofs.
+ * @author Daniel Lefèvre
+ */
 public class BuildingStep4 extends AbstractBuildingStep
 {
 
+    /**
+     * The mesh containg all the walls.
+     */
     private Mesh       initialWall;
+    /**
+     * The mesh containing all the roofs.
+     */
     private Mesh       initialRoof;
+    /**
+     * The mesh containing the noise.
+     */
     private Mesh       noise;
+    /**
+     * The normal to the ground.
+     */
     private Vector3d   groundNormal;
+    /**
+     * The ground as a surface for the treatments.
+     */
     private Surface    groundForAlgorithm;
-    private List<Wall> walls;
-    private List<Roof> roofs;
 
-    public BuildingStep4(Mesh initialWallIn, Mesh initialRoofIn)
+    /**
+     * The list of walls.
+     */
+    private List<Wall> walls = new ArrayList<>();
+
+    /**
+     * The list of roofs.
+     */
+    private List<Roof> roofs = new ArrayList<>();
+
+    /**
+     * Constructor.
+     * @param initialWallIn
+     *            the entire walls
+     * @param initialRoofIn
+     *            the entire roofs
+     */
+    public BuildingStep4(final Mesh initialWallIn, final Mesh initialRoofIn)
     {
         this.initialWall = initialWallIn;
         this.initialRoof = initialRoofIn;
     }
 
     /**
-     * TODO.
-     * @param groundNormal
-     *            TODO.
+     * Separate the entire roof in many roofs.
      */
     public final void cutRoofs()
     {
@@ -59,7 +93,7 @@ public class BuildingStep4 extends AbstractBuildingStep
     }
 
     /**
-     * TODO.
+     * Separate the entire wall in many walls.
      */
     public final void cutWalls()
     {
@@ -80,14 +114,22 @@ public class BuildingStep4 extends AbstractBuildingStep
         }
     }
 
-    public Mesh getInitialRoof()
+    /**
+     * Getter.
+     * @return the initial roof
+     */
+    public final Mesh getInitialRoof()
     {
-        return initialRoof;
+        return this.initialRoof;
     }
 
-    public Mesh getInitialWall()
+    /**
+     * Getter.
+     * @return the initial wall
+     */
+    public final Mesh getInitialWall()
     {
-        return initialWall;
+        return this.initialWall;
     }
 
     @Override
@@ -175,8 +217,15 @@ public class BuildingStep4 extends AbstractBuildingStep
         }
     }
 
-    public void setArguments(Vector3d groundNormalIn,
-            Surface groundForAlgorithmIn)
+    /**
+     * Setter.
+     * @param groundNormalIn
+     *            the normal the ground
+     * @param groundForAlgorithmIn
+     *            the ground as a surface for the treatments
+     */
+    public final void setArguments(final Vector3d groundNormalIn,
+            final Surface groundForAlgorithmIn)
     {
         // TODO : check if this method has been called before lauching
         // treatment.
@@ -186,45 +235,10 @@ public class BuildingStep4 extends AbstractBuildingStep
 
     /**
      * TODO.
-     */
-    public final void sortSurfaces()
-    {
-        int counter = 0;
-        for (int i = 0; i < this.walls.size(); i++)
-        {
-            final Surface s = this.walls.get(i);
-            if (s.getNeighbours().size() < 3)
-            {
-                this.walls.remove(s);
-                for (final Surface neighbour : s.getNeighbours())
-                {
-                    neighbour.getNeighbours().remove(s);
-                }
-                counter++;
-            }
-        }
-        for (int i = 0; i < this.roofs.size(); i++)
-        {
-            final Surface s = this.roofs.get(i);
-            if (s.getNeighbours().size() < 3)
-            {
-                this.roofs.remove(s);
-                for (final Surface neighbour : s.getNeighbours())
-                {
-                    neighbour.getNeighbours().remove(s);
-                }
-                counter++;
-            }
-        }
-        System.out.println(" Isolated surfaces (not treated) : " + counter);
-    }
-
-    /**
-     * TODO.
      * @param grounds
      *            TODO.
      */
-    public final void treatNewNeighbours(final Surface grounds)
+    private void treatNewNeighbours(final Surface grounds)
     {
         this.searchForNeighbours(grounds);
 
@@ -273,7 +287,7 @@ public class BuildingStep4 extends AbstractBuildingStep
     /**
      * TODO.
      */
-    public final void treatNoise()
+    private void treatNoise()
     {
         List<Surface> wallsOut = new ArrayList<>();
         for (Wall w : this.walls)

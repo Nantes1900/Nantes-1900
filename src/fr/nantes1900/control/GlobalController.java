@@ -5,7 +5,6 @@ package fr.nantes1900.control;
 
 import java.io.File;
 
-import fr.nantes1900.control.BuildingsIsletController.InvalidCaseException;
 import fr.nantes1900.control.isletprocess.IsletProcessController;
 import fr.nantes1900.control.isletselection.IsletSelectionController;
 

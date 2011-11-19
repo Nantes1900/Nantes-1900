@@ -6,27 +6,50 @@ import javax.vecmath.Vector3d;
 import fr.nantes1900.constants.SeparationWallRoof;
 import fr.nantes1900.models.basis.Mesh;
 
+/**
+ * Implements a building step : a state of the building. This step is after the
+ * separation of each buildings and before the separation between walls and
+ * roofs.
+ * @author Daniel Lefèvre
+ */
 public class BuildingStep3 extends AbstractBuildingStep
 {
 
     /**
-     * TODO.
+     * The initial total mesh representing the building.
      */
     private Mesh     initialTotalMesh;
 
+    /**
+     * The gravity normal.
+     */
     private Vector3d gravityNormal;
 
-    public BuildingStep3(Mesh mesh)
+    /**
+     * Constructor.
+     * @param mesh
+     *            the mesh representing the entire building.
+     */
+    public BuildingStep3(final Mesh mesh)
     {
         this.initialTotalMesh = mesh;
     }
 
-    public Mesh getInitialTotalMesh()
+    /**
+     * Getter.
+     * @return the entire mesh
+     */
+    public final Mesh getInitialTotalMesh()
     {
         return this.initialTotalMesh;
     }
 
-    // SeparateWallRoof.
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchTreatment
+     * ()
+     */
     @Override
     public final BuildingStep4 launchTreatment()
     {
@@ -40,6 +63,11 @@ public class BuildingStep3 extends AbstractBuildingStep
         return new BuildingStep4(initialWall, initialRoof);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#returnNode()
+     */
     @Override
     public final DefaultMutableTreeNode returnNode()
     {
@@ -47,9 +75,13 @@ public class BuildingStep3 extends AbstractBuildingStep
         return new DefaultMutableTreeNode(this.initialTotalMesh);
     }
 
+    /**
+     * Setter.
+     * @param gravityNormalIn
+     *            the gravity normal
+     */
     public final void setArguments(final Vector3d gravityNormalIn)
     {
         this.gravityNormal = gravityNormalIn;
     }
-
 }

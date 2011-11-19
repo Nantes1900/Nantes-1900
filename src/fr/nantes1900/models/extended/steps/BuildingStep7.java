@@ -15,22 +15,36 @@ import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.Surface.InvalidSurfaceException;
 import fr.nantes1900.models.extended.Wall;
 
+/**
+ * TODO.
+ * @author Daniel
+ */
 public class BuildingStep7 extends AbstractBuildingStep
 {
 
     /**
-     * TODO.
+     * The list of walls.
      */
     private List<Wall> walls = new ArrayList<>();
 
     /**
-     * TODO.
+     * The list of roofs.
      */
     private List<Roof> roofs = new ArrayList<>();
 
+    /**
+     * The normal to the ground.
+     */
     private Vector3d   groundNormal;
 
-    public BuildingStep7(List<Wall> wallsIn, List<Roof> roofsIn)
+    /**
+     * Constructor.
+     * @param wallsIn
+     *            the list of walls
+     * @param roofsIn
+     *            the list of roofs
+     */
+    public BuildingStep7(final List<Wall> wallsIn, final List<Roof> roofsIn)
     {
         this.walls = wallsIn;
         this.roofs = roofsIn;
@@ -71,17 +85,32 @@ public class BuildingStep7 extends AbstractBuildingStep
         }
     }
 
-    public List<Roof> getRoofs()
+    /**
+     * Getter.
+     * @return the list of roofs
+     */
+    public final List<Roof> getRoofs()
     {
-        return roofs;
+        return this.roofs;
     }
 
-    public List<Wall> getWalls()
+    /**
+     * Getter.
+     * @return the list of walls
+     */
+    public final List<Wall> getWalls()
     {
-        return walls;
+        return this.walls;
     }
 
-    public BuildingStep8 launchTreatment()
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchTreatment
+     * ()
+     */
+    @Override
+    public final BuildingStep8 launchTreatment()
     {
         this.determinateContours(this.groundNormal);
 
@@ -99,13 +128,18 @@ public class BuildingStep7 extends AbstractBuildingStep
     }
 
     @Override
-    public DefaultMutableTreeNode returnNode()
+    public final DefaultMutableTreeNode returnNode()
     {
         // TODO Auto-generated method stub
         return null;
     }
 
-    public void setArguments(Vector3d groundNormalIn)
+    /**
+     * Setter.
+     * @param groundNormalIn
+     *            the normal to the ground
+     */
+    public final void setArguments(final Vector3d groundNormalIn)
     {
         this.groundNormal = groundNormalIn;
     }
