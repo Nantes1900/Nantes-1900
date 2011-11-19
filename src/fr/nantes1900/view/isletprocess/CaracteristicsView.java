@@ -35,6 +35,7 @@ public class CaracteristicsView extends JPanel
         this.setBorder(new TitledBorder(BorderFactory
                 .createRaisedSoftBevelBorder(), "Caractéristiques"));
         bValidate = new JButton("Valider");
+        bValidate.setEnabled(false);
         pContent = new JPanel();
         FlowLayout contentLayout = new FlowLayout();
         contentLayout.setAlignment(FlowLayout.LEFT);
