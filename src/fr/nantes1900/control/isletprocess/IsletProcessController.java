@@ -32,7 +32,7 @@ public class IsletProcessController
         this.parentController = parentController;
 
         // TODO : modify when we can show other steps. Set an empty caracteristic panel.
-        this.cController = new CaracteristicsStep2Controller(this);
+        this.cController = new CaracteristicsController(this);
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
         this.pController = new ParametersController(this);

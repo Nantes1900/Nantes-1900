@@ -10,7 +10,7 @@ import fr.nantes1900.view.isletprocess.CaracteristicsView;
  * @author Camille
  */
 // FIXME : Javadoc
-public abstract class CaracteristicsController
+public class CaracteristicsController
 {
     protected IsletProcessController parentController;
     protected CaracteristicsView     cView;
@@ -18,6 +18,7 @@ public abstract class CaracteristicsController
     public CaracteristicsController(IsletProcessController parentController)
     {
         this.parentController = parentController;
+        cView = new CaracteristicsView();
     }
 
     public CaracteristicsView getView()

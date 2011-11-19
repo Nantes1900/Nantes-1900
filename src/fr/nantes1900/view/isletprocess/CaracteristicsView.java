@@ -22,7 +22,7 @@ import fr.nantes1900.view.components.HelpButton;
 /**
  * @author Camille
  */
-public abstract class CaracteristicsView extends JPanel
+public class CaracteristicsView extends JPanel
 {
     protected JButton bValidate;
     protected JPanel pContent;
