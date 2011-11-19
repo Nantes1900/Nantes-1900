@@ -28,22 +28,22 @@ public class ActionsView extends JPanel
     /**
      * Button used to open a mockup part.
      */
-    private JButton bOpen;
+    private JButton           bOpen;
 
     /**
      * Button used to launch the process of an islet.
      */
-    private JButton bLaunch;
+    private JButton           bLaunch;
 
     /**
      * Button used to display some help.
      */
-    private HelpButton bHelp;
+    private HelpButton        bHelp;
 
     /**
      * Checkbox to select gravity normal as ground normal.
      */
-    private JCheckBox cbGravityGround;
+    private JCheckBox         cbGravityGround;
 
     /**
      * Creates a new panel containing the open and launch buttons.
@@ -53,30 +53,59 @@ public class ActionsView extends JPanel
         this.bOpen = new JButton("Ouvrir");
         this.bLaunch = new JButton("Lancer");
         this.bLaunch.setEnabled(false);
-        this.bHelp = new HelpButton(FileTools.readHelpMessage(
-                FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_TOOLTIP),
+        this.bHelp = new HelpButton(FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY,
+                FileTools.MESSAGETYPE_TOOLTIP),
                 FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY,
                         FileTools.MESSAGETYPE_MESSAGE),
                 FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY,
                         FileTools.MESSAGETYPE_TITLE));
-        this.cbGravityGround = new JCheckBox(
-                "Utiliser la normale orientée selon la gravité");
+        this.cbGravityGround = new JCheckBox("Utiliser la normale orientée selon la gravité");
 
         this.setLayout(new GridBagLayout());
-        this.add(this.bOpen, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
-                new Insets(5, 10, 5, 10), 0, 0));
-        this.add(this.bLaunch, new GridBagConstraints(1, 0, 1, 1, 0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
-                new Insets(5, 10, 5, 10), 0, 0));
-        this.add(bHelp, new GridBagConstraints(2, 0,
-                GridBagConstraints.REMAINDER, 1, 0.0, 0.0,
-                GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
-                new Insets(5, 10, 5, 10), 0, 0));
-        this.add(this.cbGravityGround, new GridBagConstraints(0, 1,
-                GridBagConstraints.REMAINDER, GridBagConstraints.REMAINDER,
-                0.0, 0.0, GridBagConstraints.EAST,
-                GridBagConstraints.HORIZONTAL, new Insets(5, 10, 5, 10), 0, 0));
+        this.add(this.bOpen, new GridBagConstraints(0,
+                0,
+                1,
+                1,
+                0.0,
+                0.0,
+                GridBagConstraints.WEST,
+                GridBagConstraints.HORIZONTAL,
+                new Insets(5, 10, 5, 10),
+                0,
+                0));
+        this.add(this.bLaunch, new GridBagConstraints(1,
+                0,
+                1,
+                1,
+                0.0,
+                0.0,
+                GridBagConstraints.WEST,
+                GridBagConstraints.HORIZONTAL,
+                new Insets(5, 10, 5, 10),
+                0,
+                0));
+        this.add(bHelp, new GridBagConstraints(2,
+                0,
+                GridBagConstraints.REMAINDER,
+                1,
+                0.0,
+                0.0,
+                GridBagConstraints.WEST,
+                GridBagConstraints.HORIZONTAL,
+                new Insets(5, 10, 5, 10),
+                0,
+                0));
+        this.add(this.cbGravityGround, new GridBagConstraints(0,
+                1,
+                GridBagConstraints.REMAINDER,
+                GridBagConstraints.REMAINDER,
+                0.0,
+                0.0,
+                GridBagConstraints.EAST,
+                GridBagConstraints.HORIZONTAL,
+                new Insets(5, 10, 5, 10),
+                0,
+                0));
     }
 
     /**

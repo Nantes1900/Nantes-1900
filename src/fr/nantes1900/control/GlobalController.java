@@ -18,7 +18,10 @@ public class GlobalController
      * The controller of the selection window.
      */
     private IsletSelectionController isletSelectionController;
-    private IsletProcessController isletProcessController;
+    /**
+     * TODO.
+     */
+    private IsletProcessController   isletProcessController;
 
     /**
      * Creates a new global controller which creates others global controllers.
@@ -33,19 +36,18 @@ public class GlobalController
      * @param isletFile
      *            The file containing data of the islet to process.
      * @param biController
+     *            TODO.
      */
-    public void launchIsletProcess(File isletFile,
-            BuildingsIsletController biController)
+    public final void launchIsletProcess(final File isletFile,
+            final BuildingsIsletController biController)
     {
-        // Launches the base change.
+        // Launches the base change : the treatmen 0.
         biController.launchTreatment();
-        System.out.println("Traitement lancé sur l'îlot : "
-                + isletFile.getPath());
+        System.out.println("Traitement lancé sur l'îlot : " + isletFile.getPath());
 
-        // TODO : don't forget to pass reference to the biController to the
-        // IsletProcessController :).
-        isletProcessController = new IsletProcessController(this, isletFile,
+        this.isletProcessController = new IsletProcessController(this,
+                isletFile,
                 biController);
-        isletSelectionController.getWindow().setVisible(false);
+        this.isletSelectionController.getWindow().setVisible(false);
     }
 }

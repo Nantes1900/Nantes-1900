@@ -49,6 +49,15 @@ public class GlobalTreeController
     }
 
     /**
+     * TODO.
+     * @return TODO
+     */
+    protected final IsletSelectionController getParentController()
+    {
+        return this.parentController;
+    }
+
+    /**
      * Updates the root directory.
      * @param newDirectory
      *            The new root directory.
@@ -68,14 +77,5 @@ public class GlobalTreeController
                                 .displayFile(node);
                     }
                 });
-    }
-
-    /**
-     * TODO.
-     * @return TODO
-     */
-    protected final IsletSelectionController getParentController()
-    {
-        return this.parentController;
     }
 }

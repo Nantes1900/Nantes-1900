@@ -25,15 +25,15 @@ public class TriangleTest extends TestCase
     /**
      * Test attribute.
      */
-    private final Point p1 = new Point(1, 0, -1);
+    private final Point    p1   = new Point(1, 0, -1);
     /**
      * Test attribute.
      */
-    private final Point p2 = new Point(0, 1, 0);
+    private final Point    p2   = new Point(0, 1, 0);
     /**
      * Test attribute.
      */
-    private final Point p3 = new Point(-1, 2, 1);
+    private final Point    p3   = new Point(-1, 2, 1);
     /**
      * Test attribute.
      */
@@ -41,15 +41,15 @@ public class TriangleTest extends TestCase
     /**
      * Test attribute.
      */
-    private final Edge e1 = new Edge(this.p1, this.p2);
+    private final Edge     e1   = new Edge(this.p1, this.p2);
     /**
      * Test attribute.
      */
-    private final Edge e2 = new Edge(this.p2, this.p3);
+    private final Edge     e2   = new Edge(this.p2, this.p3);
     /**
      * Test attribute.
      */
-    private final Edge e3 = new Edge(this.p3, this.p1);
+    private final Edge     e3   = new Edge(this.p3, this.p1);
     /**
      * Test attribute.
      */
@@ -60,8 +60,13 @@ public class TriangleTest extends TestCase
      */
     public TriangleTest()
     {
-        this.t = new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2,
-                this.e3, this.vect);
+        this.t = new Triangle(this.p1,
+                this.p2,
+                this.p3,
+                this.e1,
+                this.e2,
+                this.e3,
+                this.vect);
     }
 
     /**
@@ -114,8 +119,13 @@ public class TriangleTest extends TestCase
     public final void testAngularTolerance()
     {
         final Vector3d vector = new Vector3d(0, 1, 0);
-        final Triangle tBis = new Triangle(this.p1, this.p2, this.p3, this.e1,
-                this.e2, this.e3, vector);
+        final Triangle tBis = new Triangle(this.p1,
+                this.p2,
+                this.p3,
+                this.e1,
+                this.e2,
+                this.e3,
+                vector);
 
         Assert.assertFalse(this.t.angularTolerance(vector, 60));
         Assert.assertFalse(this.t.angularTolerance(tBis, 60));
@@ -157,8 +167,13 @@ public class TriangleTest extends TestCase
     @Test
     public final void testEqualsObject()
     {
-        final Triangle tBis = new Triangle(this.p1, this.p2, this.p3, this.e1,
-                this.e2, this.e3, this.vect);
+        final Triangle tBis = new Triangle(this.p1,
+                this.p2,
+                this.p3,
+                this.e1,
+                this.e2,
+                this.e3,
+                this.vect);
         Assert.assertTrue(this.t.equals(tBis));
         Assert.assertTrue(tBis.equals(this.t));
     }
@@ -179,11 +194,26 @@ public class TriangleTest extends TestCase
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
 
-        final Triangle t2 = new Triangle(this.p1, this.p2, p4, this.e1, e4, e5,
+        final Triangle t2 = new Triangle(this.p1,
+                this.p2,
+                p4,
+                this.e1,
+                e4,
+                e5,
                 this.vect);
-        final Triangle t3 = new Triangle(this.p1, this.p3, p5, this.e3, e6, e7,
+        final Triangle t3 = new Triangle(this.p1,
+                this.p3,
+                p5,
+                this.e3,
+                e6,
+                e7,
                 this.vect);
-        final Triangle t4 = new Triangle(this.p2, this.p3, p6, this.e2, e8, e9,
+        final Triangle t4 = new Triangle(this.p2,
+                this.p3,
+                p6,
+                this.e2,
+                e8,
+                e9,
                 this.vect);
 
         final List<Triangle> l = this.t.getNeighbours();
@@ -248,11 +278,26 @@ public class TriangleTest extends TestCase
         final Edge e7 = new Edge(this.p2, p5);
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
-        final Triangle t2 = new Triangle(this.p1, this.p2, p4, this.e1, e4, e5,
+        final Triangle t2 = new Triangle(this.p1,
+                this.p2,
+                p4,
+                this.e1,
+                e4,
+                e5,
                 this.vect);
-        final Triangle t3 = new Triangle(this.p1, this.p3, p5, this.e3, e6, e7,
+        final Triangle t3 = new Triangle(this.p1,
+                this.p3,
+                p5,
+                this.e3,
+                e6,
+                e7,
                 this.vect);
-        final Triangle t4 = new Triangle(this.p2, this.p3, p6, this.e2, e8, e9,
+        final Triangle t4 = new Triangle(this.p2,
+                this.p3,
+                p6,
+                this.e2,
+                e8,
+                e9,
                 this.vect);
 
         Assert.assertFalse(this.t.isNeighboor(this.t));
@@ -296,13 +341,33 @@ public class TriangleTest extends TestCase
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
         final Edge e10 = new Edge(p5, p6);
-        final Triangle t2 = new Triangle(this.p1, this.p2, p4, this.e1, e4, e5,
+        final Triangle t2 = new Triangle(this.p1,
+                this.p2,
+                p4,
+                this.e1,
+                e4,
+                e5,
                 this.vect);
-        final Triangle t3 = new Triangle(this.p1, this.p3, p5, this.e3, e6, e7,
+        final Triangle t3 = new Triangle(this.p1,
+                this.p3,
+                p5,
+                this.e3,
+                e6,
+                e7,
                 this.vect);
-        final Triangle t4 = new Triangle(this.p2, this.p3, p6, this.e2, e8, e9,
+        final Triangle t4 = new Triangle(this.p2,
+                this.p3,
+                p6,
+                this.e2,
+                e8,
+                e9,
                 this.vect);
-        final Triangle t5 = new Triangle(this.p1, p5, p6, e6, e8, e10,
+        final Triangle t5 = new Triangle(this.p1,
+                p5,
+                p6,
+                e6,
+                e8,
+                e10,
                 this.vect);
 
         final Mesh contain = new Mesh();
@@ -313,11 +378,18 @@ public class TriangleTest extends TestCase
         contain.add(t5);
 
         final Triangle t6 = new Triangle(new Point(0.05, 0.05, 0.05),
-                new Point(0.05, 0.05, 0.05), new Point(0.05, 0.05, 0.05),
-                new Edge(new Point(0.05, 0.05, 0.05), new Point(0.05, 0.05,
-                        0.05)), new Edge(new Point(0.05, 0.05, 0.05),
-                        new Point(0.05, 0.05, 0.05)), new Edge(new Point(0.05,
-                        0.05, 0.05), new Point(0.05, 0.05, 0.05)), this.vect);
+                new Point(0.05, 0.05, 0.05),
+                new Point(0.05, 0.05, 0.05),
+                new Edge(new Point(0.05, 0.05, 0.05), new Point(0.05,
+                        0.05,
+                        0.05)),
+                new Edge(new Point(0.05, 0.05, 0.05), new Point(0.05,
+                        0.05,
+                        0.05)),
+                new Edge(new Point(0.05, 0.05, 0.05), new Point(0.05,
+                        0.05,
+                        0.05)),
+                this.vect);
 
         final Mesh ret = new Mesh();
         this.t.returnNeighbours(ret, contain);

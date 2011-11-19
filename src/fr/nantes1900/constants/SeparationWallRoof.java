@@ -17,7 +17,7 @@ public final class SeparationWallRoof
      * triangle normal is normal to the ground (to determine if it's a wall).
      * Not in degrees !
      */
-    private static double normalToError = NORMALTO_ERROR_DEFAULT;
+    private static double       normalToError          = NORMALTO_ERROR_DEFAULT;
 
     /**
      * Private constructor.

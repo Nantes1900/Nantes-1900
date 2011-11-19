@@ -47,8 +47,7 @@ public final class PointTest extends TestCase
             p.changeBase(matrix);
 
             final Point pChanged = new Point(0, 0, 0);
-            final double[] coords = { x, y, z
-            };
+            final double[] coords = {x, y, z};
             pChanged.set(MatrixMethod.changeBase(coords, matrix));
 
             Assert.assertTrue(p.equals(pChanged));
@@ -72,9 +71,8 @@ public final class PointTest extends TestCase
         final double y = 435.23134144;
         final double z = -210.35681944;
         final Point p2 = new Point(x, y, z);
-        Assert.assertTrue(p1.distance(p2) == Math.sqrt(Math.pow(
-                p2.getX() - p1.getX(), 2)
-                + Math.pow(p2.getY() - p1.getY(), 2)
+        Assert.assertTrue(p1.distance(p2) == Math.sqrt(Math.pow(p2.getX() - p1.getX(),
+                2) + Math.pow(p2.getY() - p1.getY(), 2)
                 + Math.pow(p2.getZ() - p1.getZ(), 2)));
     }
 
@@ -139,8 +137,7 @@ public final class PointTest extends TestCase
     @Test
     public static void testSetDoubleArray()
     {
-        final double[] a = { 0.1, 0.2, 0.4
-        };
+        final double[] a = {0.1, 0.2, 0.4};
         final Point p1 = new Point(0, 0, 0);
         p1.set(a);
 

@@ -105,7 +105,7 @@ public class IsletSelectionController
         if (this.selectedFile != null && !this.u3DController.getTrianglesSelected()
                 .isEmpty())
         {
-            // TODO Move this code
+            // TODO by Daniel : Move this code
             WriterSTL writer = new WriterSTL(this.openedDirectory.getPath() + "/gravity_normal.stl");
             Point point = new Point(1, 1, 1);
             Edge edge = new Edge(point, point);
@@ -124,6 +124,7 @@ public class IsletSelectionController
             normalSaved = true;
         } else
         {
+            // TODO : put this text in the text file (or XML for Luc).
             JOptionPane.showMessageDialog(this.isView,
                     "Sélectionnez un îlot dans l'arbre\npuis " + "sélectionnez des triangles pour créer la "
                             + "normale\nou sélectionnez \"Utiliser la normale "
@@ -163,7 +164,8 @@ public class IsletSelectionController
             AbstractBuildingsIslet resIslet;
             try
             {
-                // FIXME : it shouldn't be here, but in the biController...
+                // TODO by Daniel : it shouldn't be here, but in the
+                // biController...
                 resIslet = new ResidentialIslet(parser.read());
                 this.biController.setIslet(resIslet);
                 this.biController.putGravityNormal();
@@ -188,6 +190,15 @@ public class IsletSelectionController
     }
 
     /**
+     * TODO.
+     * @return TODO
+     */
+    public final JFrame getWindow()
+    {
+        return this.isView;
+    }
+
+    /**
      * Launches the treatment of the selected file which is an islet file. The
      * verification that the selected file is an islet file is made at the
      * selection in the tree.
@@ -205,7 +216,7 @@ public class IsletSelectionController
             if (!this.aController.getActionsView()
                     .isGravityGroundCheckBoxSelected())
             {
-                computeGroundNormal();
+                this.computeGroundNormal();
             } else
             {
                 this.biController.useGravityNormalAsGroundNormal();
@@ -215,6 +226,7 @@ public class IsletSelectionController
             processLaunched = true;
         } else
         {
+            // TODO by Luc : put this text in a XML file.
             JOptionPane.showMessageDialog(this.isView,
                     "Veuillez sélectionner un îlot et une normale pour " + "lancer le traitement",
                     "Traitement impossible",
@@ -262,14 +274,5 @@ public class IsletSelectionController
                     FileTools.MESSAGETYPE_STATUSBAR));
             this.aController.setLaunchMode();
         }
-    }
-
-    /**
-     * TODO.
-     * @return TODO
-     */
-    public final JFrame getWindow()
-    {
-        return this.isView;
     }
 }

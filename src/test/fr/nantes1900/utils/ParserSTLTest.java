@@ -81,19 +81,19 @@ public final class ParserSTLTest extends TestCase
             final Mesh readA = parserA.read();
             Assert.assertTrue(readA.size() == 2);
             final List<Triangle> readListA = new ArrayList<Triangle>(readA);
-            Assert.assertTrue(readListA.get(0).equals(t1)
-                    || readListA.get(0).equals(t2));
-            Assert.assertTrue(readListA.get(1).equals(t1)
-                    || readListA.get(1).equals(t2));
+            Assert.assertTrue(readListA.get(0).equals(t1) || readListA.get(0)
+                    .equals(t2));
+            Assert.assertTrue(readListA.get(1).equals(t1) || readListA.get(1)
+                    .equals(t2));
 
             final ParserSTL parserB = new ParserSTL("WriterTestB.stl");
             final Mesh readB = parserB.read();
             Assert.assertTrue(readB.size() == 2);
             final List<Triangle> readListB = new ArrayList<Triangle>(readB);
-            Assert.assertTrue(readListB.get(0).equals(t1)
-                    || readListB.get(0).equals(t2));
-            Assert.assertTrue(readListB.get(1).equals(t1)
-                    || readListB.get(1).equals(t2));
+            Assert.assertTrue(readListB.get(0).equals(t1) || readListB.get(0)
+                    .equals(t2));
+            Assert.assertTrue(readListB.get(1).equals(t1) || readListB.get(1)
+                    .equals(t2));
 
         } catch (final IOException e)
         {

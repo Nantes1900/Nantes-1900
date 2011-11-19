@@ -27,45 +27,45 @@ public class PolylineTest extends TestCase
     /**
      * Test attribute.
      */
-    private final Point p1 = new Point(1, 0, -1);
+    private final Point   p1 = new Point(1, 0, -1);
     /**
      * Test attribute.
      */
-    private final Point p2 = new Point(0, 1, 0);
+    private final Point   p2 = new Point(0, 1, 0);
     /**
      * Test attribute.
      */
-    private final Point p3 = new Point(-1, 2, 1);
+    private final Point   p3 = new Point(-1, 2, 1);
     /**
      * Test attribute.
      */
-    private final Point p4 = new Point(2, 2, 2);
+    private final Point   p4 = new Point(2, 2, 2);
 
     /**
      * Test attribute.
      */
-    private final Edge e1 = new Edge(this.p1, this.p2);
+    private final Edge    e1 = new Edge(this.p1, this.p2);
     /**
      * Test attribute.
      */
-    private final Edge e2 = new Edge(this.p2, this.p3);
+    private final Edge    e2 = new Edge(this.p2, this.p3);
     /**
      * Test attribute.
      */
-    private final Edge e3 = new Edge(this.p3, this.p1);
+    private final Edge    e3 = new Edge(this.p3, this.p1);
     /**
      * Test attribute.
      */
-    private final Edge e4 = new Edge(this.p1, this.p4);
+    private final Edge    e4 = new Edge(this.p1, this.p4);
     /**
      * Test attribute.
      */
-    private final Edge e5 = new Edge(this.p2, this.p4);
+    private final Edge    e5 = new Edge(this.p2, this.p4);
 
     /**
      * Test attribute.
      */
-    private final Polygon p = new Polygon();
+    private final Polygon p  = new Polygon();
 
     /**
      * Constructor of the PolylineTest object : create a polyline by adding 3
@@ -100,7 +100,8 @@ public class PolylineTest extends TestCase
         try
         {
             pol.changeBase(MatrixMethod.createOrthoBase(new Vector3d(1, 0, 0),
-                    new Vector3d(0, 1, 0), new Vector3d(0, 0, 1)));
+                    new Vector3d(0, 1, 0),
+                    new Vector3d(0, 0, 1)));
             Assert.assertTrue(point1.equals(new Point(1, 0, -1)));
             Assert.assertTrue(point2.equals(new Point(0, 1, 0)));
             Assert.assertTrue(point3.equals(new Point(-1, 2, 1)));
@@ -181,14 +182,11 @@ public class PolylineTest extends TestCase
         m = polygon.returnCentroidMesh();
         final Point centroid = new Point(0.5, 0.5, -0.5);
 
-        Assert.assertTrue(m.getOne().getP1() == point1
-                || m.getOne().getP1() == point2
+        Assert.assertTrue(m.getOne().getP1() == point1 || m.getOne().getP1() == point2
                 || m.getOne().getP1().equals(centroid));
-        Assert.assertTrue(m.getOne().getP2() == point1
-                || m.getOne().getP2() == point2
+        Assert.assertTrue(m.getOne().getP2() == point1 || m.getOne().getP2() == point2
                 || m.getOne().getP2().equals(centroid));
-        Assert.assertTrue(m.getOne().getP3() == point1
-                || m.getOne().getP3() == point2
+        Assert.assertTrue(m.getOne().getP3() == point1 || m.getOne().getP3() == point2
                 || m.getOne().getP3().equals(centroid));
     }
 
@@ -208,13 +206,23 @@ public class PolylineTest extends TestCase
         final Edge edge1 = new Edge(point1, point2);
         final Edge edge2 = new Edge(point2, point3);
         final Edge edge3 = new Edge(point3, point1);
-        final Triangle t1 = new Triangle(point1, point2, point3, edge1, edge2,
-                edge3, new Vector3d(0, 0, 0));
+        final Triangle t1 = new Triangle(point1,
+                point2,
+                point3,
+                edge1,
+                edge2,
+                edge3,
+                new Vector3d(0, 0, 0));
 
         final Edge edge4 = new Edge(point1, point4);
         final Edge edge5 = new Edge(point2, point4);
-        final Triangle t2 = new Triangle(point1, point2, point4, edge1, edge4,
-                edge5, new Vector3d(0, 0, 1));
+        final Triangle t2 = new Triangle(point1,
+                point2,
+                point4,
+                edge1,
+                edge4,
+                edge5,
+                new Vector3d(0, 0, 1));
 
         final Polygon polygon = new Polygon();
         polygon.add(edge1);

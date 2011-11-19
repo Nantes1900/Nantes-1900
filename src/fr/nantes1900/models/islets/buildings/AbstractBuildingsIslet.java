@@ -126,6 +126,78 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
 
     /**
      * Getter.
+     * @return the first step
+     */
+    public final BuildingsIsletStep1 getBiStep1()
+    {
+        return this.biStep1;
+    }
+
+    /**
+     * Getter.
+     * @return the second step
+     */
+    public final BuildingsIsletStep2 getBiStep2()
+    {
+        return this.biStep2;
+    }
+
+    /**
+     * Getter.
+     * @return the third step
+     */
+    public final BuildingsIsletStep3 getBiStep3()
+    {
+        return this.biStep3;
+    }
+
+    /**
+     * Getter.
+     * @return the fourth step
+     */
+    public final BuildingsIsletStep4 getBiStep4()
+    {
+        return this.biStep4;
+    }
+
+    /**
+     * Getter.
+     * @return the fifth step
+     */
+    public final BuildingsIsletStep5 getBiStep5()
+    {
+        return this.biStep5;
+    }
+
+    /**
+     * Getter.
+     * @return the sixth step
+     */
+    public final BuildingsIsletStep6 getBiStep6()
+    {
+        return this.biStep6;
+    }
+
+    /**
+     * Getter.
+     * @return the seventh step
+     */
+    public final BuildingsIsletStep7 getBiStep7()
+    {
+        return this.biStep7;
+    }
+
+    /**
+     * Getter.
+     * @return the eighth step
+     */
+    public final BuildingsIsletStep8 getBiStep8()
+    {
+        return this.biStep8;
+    }
+
+    /**
+     * Getter.
      * @return the normal to the ground
      */
     public final Vector3d getGroundNormal()
@@ -185,12 +257,102 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
 
     /**
      * Setter.
+     * @param biStep1In
+     *            the first step
+     */
+    public final void setBiStep1(final BuildingsIsletStep1 biStep1In)
+    {
+        this.biStep1 = biStep1In;
+    }
+
+    /**
+     * Setter.
+     * @param biStep2In
+     *            the second step
+     */
+    public final void setBiStep2(final BuildingsIsletStep2 biStep2In)
+    {
+        this.biStep2 = biStep2In;
+    }
+
+    /**
+     * Setter.
+     * @param biStep3In
+     *            the third step
+     */
+    public final void setBiStep3(final BuildingsIsletStep3 biStep3In)
+    {
+        this.biStep3 = biStep3In;
+    }
+
+    /**
+     * Setter.
+     * @param biStep4In
+     *            the fourth step
+     */
+    public final void setBiStep4(final BuildingsIsletStep4 biStep4In)
+    {
+        this.biStep4 = biStep4In;
+    }
+
+    /**
+     * Setter.
+     * @param biStep5In
+     *            the fifth step
+     */
+    public final void setBiStep5(final BuildingsIsletStep5 biStep5In)
+    {
+        this.biStep5 = biStep5In;
+    }
+
+    /**
+     * Setter.
+     * @param biStep6In
+     *            the sixth step
+     */
+    public final void setBiStep6(final BuildingsIsletStep6 biStep6In)
+    {
+        this.biStep6 = biStep6In;
+    }
+
+    /**
+     * Setter.
+     * @param biStep7In
+     *            the seventh step
+     */
+    public final void setBiStep7(final BuildingsIsletStep7 biStep7In)
+    {
+        this.biStep7 = biStep7In;
+    }
+
+    /**
+     * Setter.
+     * @param biStep8In
+     *            the eighth step
+     */
+    public final void setBiStep8(final BuildingsIsletStep8 biStep8In)
+    {
+        this.biStep8 = biStep8In;
+    }
+
+    /**
+     * Setter.
      * @param groundNormalIn
      *            the normal to set as ground normal
      */
     public final void setGroundNormal(final Vector3d groundNormalIn)
     {
         this.groundNormal = groundNormalIn;
+    }
+
+    /**
+     * Setter.
+     * @param progressionIn
+     *            the progression
+     */
+    public final void setProgression(final int progressionIn)
+    {
+        this.progression = progressionIn;
     }
 
     /**
@@ -212,167 +374,5 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         public VoidParameterException()
         {
         }
-    }
-
-    /**
-     * Getter.
-     * @return the first step
-     */
-    public final BuildingsIsletStep1 getBiStep1()
-    {
-        return this.biStep1;
-    }
-
-    /**
-     * Setter.
-     * @param biStep1In
-     *            the first step
-     */
-    public final void setBiStep1(final BuildingsIsletStep1 biStep1In)
-    {
-        this.biStep1 = biStep1In;
-    }
-
-    /**
-     * Getter.
-     * @return the second step
-     */
-    public final BuildingsIsletStep2 getBiStep2()
-    {
-        return this.biStep2;
-    }
-
-    /**
-     * Setter.
-     * @param biStep2In
-     *            the second step
-     */
-    public final void setBiStep2(final BuildingsIsletStep2 biStep2In)
-    {
-        this.biStep2 = biStep2In;
-    }
-
-    /**
-     * Getter.
-     * @return the third step
-     */
-    public final BuildingsIsletStep3 getBiStep3()
-    {
-        return this.biStep3;
-    }
-
-    /**
-     * Setter.
-     * @param biStep3In
-     *            the third step
-     */
-    public final void setBiStep3(final BuildingsIsletStep3 biStep3In)
-    {
-        this.biStep3 = biStep3In;
-    }
-
-    /**
-     * Getter.
-     * @return the fourth step
-     */
-    public final BuildingsIsletStep4 getBiStep4()
-    {
-        return this.biStep4;
-    }
-
-    /**
-     * Setter.
-     * @param biStep4In
-     *            the fourth step
-     */
-    public final void setBiStep4(final BuildingsIsletStep4 biStep4In)
-    {
-        this.biStep4 = biStep4In;
-    }
-
-    /**
-     * Getter.
-     * @return the fifth step
-     */
-    public final BuildingsIsletStep5 getBiStep5()
-    {
-        return this.biStep5;
-    }
-
-    /**
-     * Setter.
-     * @param biStep5In
-     *            the fifth step
-     */
-    public final void setBiStep5(final BuildingsIsletStep5 biStep5In)
-    {
-        this.biStep5 = biStep5In;
-    }
-
-    /**
-     * Getter.
-     * @return the sixth step
-     */
-    public final BuildingsIsletStep6 getBiStep6()
-    {
-        return this.biStep6;
-    }
-
-    /**
-     * Setter.
-     * @param biStep6In
-     *            the sixth step
-     */
-    public final void setBiStep6(final BuildingsIsletStep6 biStep6In)
-    {
-        this.biStep6 = biStep6In;
-    }
-
-    /**
-     * Getter.
-     * @return the seventh step
-     */
-    public final BuildingsIsletStep7 getBiStep7()
-    {
-        return this.biStep7;
-    }
-
-    /**
-     * Setter.
-     * @param biStep7In
-     *            the seventh step
-     */
-    public final void setBiStep7(final BuildingsIsletStep7 biStep7In)
-    {
-        this.biStep7 = biStep7In;
-    }
-
-    /**
-     * Getter.
-     * @return the eighth step
-     */
-    public final BuildingsIsletStep8 getBiStep8()
-    {
-        return this.biStep8;
-    }
-
-    /**
-     * Setter.
-     * @param biStep8In
-     *            the eighth step
-     */
-    public final void setBiStep8(final BuildingsIsletStep8 biStep8In)
-    {
-        this.biStep8 = biStep8In;
-    }
-
-    /**
-     * Setter.
-     * @param progressionIn
-     *            the progression
-     */
-    public final void setProgression(final int progressionIn)
-    {
-        this.progression = progressionIn;
     }
 }

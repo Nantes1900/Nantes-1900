@@ -19,7 +19,7 @@ public abstract class AbstractIslet
     /**
      * The initial mesh before every treatment.
      */
-    private Mesh initialTotalMesh;
+    private Mesh       initialTotalMesh;
 
     /**
      * Change base matrix from the current base to a base which is ground-like
@@ -30,7 +30,7 @@ public abstract class AbstractIslet
     /**
      * The normal to the gravity.
      */
-    private Vector3d gravityNormal;
+    private Vector3d   gravityNormal;
 
     /**
      * TODO.
@@ -60,7 +60,7 @@ public abstract class AbstractIslet
      * Creates a change base matrix with the normal to the ground. See the
      * MatrixMethod class for more informations.
      */
-    protected final void createChangeBaseMatrix()
+    public final void createChangeBaseMatrix()
     {
         try
         {
@@ -108,8 +108,7 @@ public abstract class AbstractIslet
 
         } catch (final IOException e)
         {
-            System.out
-                    .println("Error : the file is badly formed, not found or unreadable !");
+            System.out.println("Error : the file is badly formed, not found or unreadable !");
             System.exit(1);
 
         }

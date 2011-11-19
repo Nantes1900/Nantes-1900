@@ -20,7 +20,7 @@ public class BuildingStep5 extends AbstractBuildingStep
     /**
      * 
      */
-    private Mesh noise;
+    private Mesh       noise;
 
     /**
      * TODO.
@@ -35,7 +35,7 @@ public class BuildingStep5 extends AbstractBuildingStep
     /**
      * 
      */
-    private Surface groundForAlgorithm;
+    private Surface    groundForAlgorithm;
 
     /**
      * @param wallsIn
@@ -68,7 +68,8 @@ public class BuildingStep5 extends AbstractBuildingStep
             final Mesh fake = new Mesh(m.getMesh());
             wholeListFakes.add(fake);
         }
-        Algos.blockTreatPlanedNoise(wholeListFakes, this.noise,
+        Algos.blockTreatPlanedNoise(wholeListFakes,
+                this.noise,
                 SeparationWallsSeparationRoofs.getPlanesError());
 
         // First we clear the neighbours.

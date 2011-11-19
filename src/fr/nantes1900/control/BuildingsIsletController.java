@@ -315,10 +315,14 @@ public class BuildingsIsletController
     /**
      * Launches the first treatment.
      */
-    public final void launchTreatment0()
+    private void launchTreatment0()
     {
         try
         {
+            // TODO : create a step 0 instead of base change directly the
+            // initalTotalMesh.
+            this.islet.setGravityNormal(this.gravityNormal);
+            this.islet.createChangeBaseMatrix();
             this.islet.changeBase();
             this.islet.setBiStep1(new BuildingsIsletStep1(this.islet.getInitialTotalMesh()));
         } catch (UnCompletedParametersException e)
@@ -331,7 +335,7 @@ public class BuildingsIsletController
     /**
      * Launches the first treatment.
      */
-    public final void launchTreatment1()
+    private void launchTreatment1()
     {
         this.islet.setBiStep2(this.islet.getBiStep1().launchTreatment());
     }
@@ -339,7 +343,7 @@ public class BuildingsIsletController
     /**
      * Launches the second treatment.
      */
-    public final void launchTreatment2()
+    private void launchTreatment2()
     {
         this.islet.setBiStep3(this.islet.getBiStep2().launchTreatment());
     }
@@ -347,7 +351,7 @@ public class BuildingsIsletController
     /**
      * Launches the third treatment.
      */
-    public final void launchTreatment3()
+    private void launchTreatment3()
     {
         this.islet.setBiStep4(this.islet.getBiStep3().launchTreatment());
     }
@@ -355,7 +359,7 @@ public class BuildingsIsletController
     /**
      * Launches the fourth treatment.
      */
-    public final void launchTreatment4()
+    private void launchTreatment4()
     {
         this.islet.setBiStep5(this.islet.getBiStep4().launchTreatment());
     }
@@ -363,7 +367,7 @@ public class BuildingsIsletController
     /**
      * Launches the fifth treatment.
      */
-    public final void launchTreatment5()
+    private void launchTreatment5()
     {
         this.islet.setBiStep6(this.islet.getBiStep5().launchTreatment());
     }
@@ -371,7 +375,7 @@ public class BuildingsIsletController
     /**
      * Launches the sixth treatment.
      */
-    public final void launchTreatment6()
+    private void launchTreatment6()
     {
         this.islet.setBiStep7(this.islet.getBiStep6().launchTreatment());
     }
@@ -379,7 +383,7 @@ public class BuildingsIsletController
     /**
      * Launches the seventh treatment.
      */
-    public final void launchTreatment7()
+    private void launchTreatment7()
     {
         this.islet.setBiStep8(this.islet.getBiStep7().launchTreatment());
     }
@@ -554,7 +558,7 @@ public class BuildingsIsletController
                 .addMesh(new MeshView(this.islet.getBiStep2()
                         .getInitialGrounds()));
 
-        // Also display the noise.
+        // TODO : Also display the noise.
     }
 
     /**

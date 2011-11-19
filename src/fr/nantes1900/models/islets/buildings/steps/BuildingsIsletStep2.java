@@ -14,10 +14,10 @@ import fr.nantes1900.utils.Algos;
 public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
 {
 
-    private Mesh initialBuildings;
+    private Mesh   initialBuildings;
     private Ground initialGrounds;
 
-    private Mesh noise;
+    private Mesh   noise;
 
     /**
      * Constructor.
@@ -115,10 +115,8 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
     public final DefaultMutableTreeNode returnNode()
     {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
-        DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(
-                this.initialBuildings);
-        DefaultMutableTreeNode node2 = new DefaultMutableTreeNode(
-                this.initialGrounds);
+        DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(this.initialBuildings);
+        DefaultMutableTreeNode node2 = new DefaultMutableTreeNode(this.initialGrounds);
 
         root.add(node1);
         root.add(node2);

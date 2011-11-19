@@ -28,7 +28,7 @@ public class BuildingStep7 extends AbstractBuildingStep
      */
     private List<Roof> roofs = new ArrayList<>();
 
-    private Vector3d groundNormal;
+    private Vector3d   groundNormal;
 
     public BuildingStep7(List<Wall> wallsIn, List<Roof> roofsIn)
     {
@@ -59,7 +59,8 @@ public class BuildingStep7 extends AbstractBuildingStep
             {
                 // When the neighbours are sorted, finds the intersection of
                 // them to find the edges of this surface.
-                final Polygon p = surface.findEdges(this.walls, pointMap,
+                final Polygon p = surface.findEdges(this.walls,
+                        pointMap,
                         normalGround);
 
                 surface.setPolygone(p);

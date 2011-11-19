@@ -17,11 +17,11 @@ import fr.nantes1900.utils.Algos;
 public class BuildingStep4 extends AbstractBuildingStep
 {
 
-    private Mesh initialWall;
-    private Mesh initialRoof;
-    private Mesh noise;
-    private Vector3d groundNormal;
-    private Surface groundForAlgorithm;
+    private Mesh       initialWall;
+    private Mesh       initialRoof;
+    private Mesh       noise;
+    private Vector3d   groundNormal;
+    private Surface    groundForAlgorithm;
     private List<Wall> walls;
     private List<Roof> roofs;
 
@@ -39,8 +39,7 @@ public class BuildingStep4 extends AbstractBuildingStep
     public final void cutRoofs()
     {
         // Cut the mesh in parts, considering their orientation.
-        final List<Mesh> thingsList = Algos.blockOrientedExtract(
-                this.initialRoof,
+        final List<Mesh> thingsList = Algos.blockOrientedExtract(this.initialRoof,
                 SeparationWallsSeparationRoofs.getRoofAngleError());
 
         // Considering their size and their orientation, sort the blocks in
@@ -48,8 +47,8 @@ public class BuildingStep4 extends AbstractBuildingStep
         // it is not keeped.
         for (final Mesh e : thingsList)
         {
-            if ((e.size() >= SeparationWallsSeparationRoofs.getRoofSizeError())
-                    && (e.averageNormal().dot(this.groundNormal) > 0))
+            if ((e.size() >= SeparationWallsSeparationRoofs.getRoofSizeError()) && (e.averageNormal()
+                    .dot(this.groundNormal) > 0))
             {
                 this.roofs.add(new Roof(e));
             } else
@@ -65,8 +64,7 @@ public class BuildingStep4 extends AbstractBuildingStep
     public final void cutWalls()
     {
         // Cut the mesh in parts, considering their orientation.
-        final List<Mesh> thingsList = Algos.blockOrientedExtract(
-                this.initialWall,
+        final List<Mesh> thingsList = Algos.blockOrientedExtract(this.initialWall,
                 SeparationWallsSeparationRoofs.getWallAngleError());
 
         // Considering their size, sort the blocks in walls or noise.
@@ -288,11 +286,13 @@ public class BuildingStep4 extends AbstractBuildingStep
             roofsOut.add(r);
         }
         // Adds the oriented and neighbour noise to the walls.
-        Algos.blockTreatOrientedNoise(wallsOut, this.noise,
+        Algos.blockTreatOrientedNoise(wallsOut,
+                this.noise,
                 SeparationWallsSeparationRoofs.getLargeAngleError());
 
         // Adds the oriented and neighbour noise to the roofs.
-        Algos.blockTreatOrientedNoise(roofsOut, this.noise,
+        Algos.blockTreatOrientedNoise(roofsOut,
+                this.noise,
                 SeparationWallsSeparationRoofs.getLargeAngleError());
     }
 

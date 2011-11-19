@@ -12,13 +12,14 @@ public class BuildingsIsletStep8 extends AbstractBuildingsIsletStep
 
     private List<Building> buildings;
 
-    private Ground grounds;
+    private Ground         grounds;
 
     public BuildingsIsletStep8(List<Building> buildingsIn, Ground groundsIn)
     {
         this.buildings = buildingsIn;
         this.grounds = groundsIn;
     }
+
     public List<Building> getBuildings()
     {
         return buildings;

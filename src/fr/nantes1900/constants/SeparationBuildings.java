@@ -16,7 +16,7 @@ public final class SeparationBuildings
      * Coefficient used after the extraction of the building, to determine if a
      * building has enough triangles to be considered as a real building.
      */
-    private static double blockBuildingSize = BLOCK_BUILDING_SIZE_ERROR_DEFAULT;
+    private static double       blockBuildingSize                 = BLOCK_BUILDING_SIZE_ERROR_DEFAULT;
 
     /**
      * Private constructor.

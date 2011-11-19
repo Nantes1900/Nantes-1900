@@ -24,37 +24,37 @@ public class EdgeTest extends TestCase
 {
 
     /** Test attribute. */
-    private final Point point1 = new Point(1, 0, -1);
+    private final Point    point1  = new Point(1, 0, -1);
     /** Test attribute. */
-    private final Point point2 = new Point(0, 1, 0);
+    private final Point    point2  = new Point(0, 1, 0);
     /** Test attribute. */
-    private final Point point3 = new Point(-1, 2, 1);
+    private final Point    point3  = new Point(-1, 2, 1);
     /** Test attribute. */
-    private final Vector3d vect = new Vector3d(0, 0, 1);
+    private final Vector3d vect    = new Vector3d(0, 0, 1);
     /** Test attribute. */
-    private final Edge edge1 = new Edge(this.point1, this.point2);
+    private final Edge     edge1   = new Edge(this.point1, this.point2);
     /** Test attribute. */
-    private final Edge edge2 = new Edge(this.point2, this.point3);
+    private final Edge     edge2   = new Edge(this.point2, this.point3);
     /** Test attribute. */
-    private final Edge edge3 = new Edge(this.point3, this.point1);
+    private final Edge     edge3   = new Edge(this.point3, this.point1);
 
     /** Test attribute. */
     private final Triangle triangle1;
 
     /** Test attribute. */
-    private final Point point4 = new Point(2, 2, 2);
+    private final Point    point4  = new Point(2, 2, 2);
     /** Test attribute. */
-    private final Edge edge4 = new Edge(this.point1, this.point4);
+    private final Edge     edge4   = new Edge(this.point1, this.point4);
     /** Test attribute. */
-    private final Edge edge5 = new Edge(this.point2, this.point4);
+    private final Edge     edge5   = new Edge(this.point2, this.point4);
 
     /** Test attribute. */
     private final Triangle triangle2;
 
     /** Test attribute. */
-    private final Edge edge6 = new Edge(this.point3, this.point4);
+    private final Edge     edge6   = new Edge(this.point3, this.point4);
     /** Test attribute. */
-    private final Polygon polygon = new Polygon();
+    private final Polygon  polygon = new Polygon();
 
     /**
      * Constructor of the test class EdgeTest : creates a polyline for the
@@ -63,10 +63,20 @@ public class EdgeTest extends TestCase
     public EdgeTest()
     {
 
-        this.triangle1 = new Triangle(this.point1, this.point2, this.point3,
-                this.edge1, this.edge2, this.edge3, this.vect);
-        this.triangle2 = new Triangle(this.point1, this.point2, this.point4,
-                this.edge1, this.edge4, this.edge5, this.vect);
+        this.triangle1 = new Triangle(this.point1,
+                this.point2,
+                this.point3,
+                this.edge1,
+                this.edge2,
+                this.edge3,
+                this.vect);
+        this.triangle2 = new Triangle(this.point1,
+                this.point2,
+                this.point4,
+                this.edge1,
+                this.edge4,
+                this.edge5,
+                this.vect);
         this.polygon.add(this.edge1);
         this.polygon.add(this.edge2);
         this.polygon.add(this.edge4);
@@ -224,8 +234,8 @@ public class EdgeTest extends TestCase
     @Test
     public final void testComputeMiddle()
     {
-        Assert.assertTrue(this.edge5.computeMiddle().equals(
-                new Point(1, 1.5, 1)));
+        Assert.assertTrue(this.edge5.computeMiddle()
+                .equals(new Point(1, 1.5, 1)));
     }
 
     /**
@@ -247,8 +257,9 @@ public class EdgeTest extends TestCase
     @Test
     public final void testConvertToVector3d()
     {
-        Assert.assertTrue(this.edge5.convertToVector3d().equals(
-                new Vector3d(2, 1, 2)));
+        Assert.assertTrue(this.edge5.convertToVector3d().equals(new Vector3d(2,
+                1,
+                2)));
     }
 
     /**

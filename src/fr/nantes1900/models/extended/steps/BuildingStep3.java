@@ -12,7 +12,7 @@ public class BuildingStep3 extends AbstractBuildingStep
     /**
      * TODO.
      */
-    private Mesh initialTotalMesh;
+    private Mesh     initialTotalMesh;
 
     private Vector3d gravityNormal;
 
@@ -31,8 +31,8 @@ public class BuildingStep3 extends AbstractBuildingStep
     public final BuildingStep4 launchTreatment()
     {
         // Selects the triangles which are oriented normal to normalGround.
-        Mesh initialWall = this.initialTotalMesh.orientedNormalTo(
-                this.gravityNormal, SeparationWallRoof.getNormalToError());
+        Mesh initialWall = this.initialTotalMesh.orientedNormalTo(this.gravityNormal,
+                SeparationWallRoof.getNormalToError());
 
         Mesh initialRoof = new Mesh(this.initialTotalMesh);
         initialRoof.remove(initialWall);

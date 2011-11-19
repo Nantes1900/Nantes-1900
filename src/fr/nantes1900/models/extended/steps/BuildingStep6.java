@@ -23,7 +23,7 @@ public class BuildingStep6 extends AbstractBuildingStep
      * TODO.
      */
     private List<Roof> roofs = new ArrayList<>();
-    private Surface groundForAlgorithm;
+    private Surface    groundForAlgorithm;
 
     public BuildingStep6(List<Wall> wallsIn, List<Roof> roofsIn)
     {

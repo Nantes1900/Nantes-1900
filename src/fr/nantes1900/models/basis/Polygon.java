@@ -16,7 +16,7 @@ public class Polygon
     /**
      * ID counter.
      */
-    private static int currentID;
+    private static int        currentID;
 
     /**
      * List of the points of the polyline.
@@ -26,17 +26,17 @@ public class Polygon
     /**
      * List of the edges of the polyline.
      */
-    private final List<Edge> edgeList = new ArrayList<>();
+    private final List<Edge>  edgeList  = new ArrayList<>();
 
     /**
      * Normal of the polyline.
      */
-    private Vector3d normal = new Vector3d();
+    private Vector3d          normal    = new Vector3d();
 
     /**
      * ID of the polyline.
      */
-    private final int iD;
+    private final int         iD;
 
     /**
      * Void constructor.
@@ -400,8 +400,8 @@ public class Polygon
      */
     public final double lengthAverage()
     {
-        return Math.sqrt(Math.pow(this.xLengthAverage(), 2)
-                + Math.pow(this.yLengthAverage(), 2)
+        return Math.sqrt(Math.pow(this.xLengthAverage(), 2) + Math.pow(this.yLengthAverage(),
+                2)
                 + Math.pow(this.zLengthAverage(), 2));
     }
 
@@ -493,7 +493,8 @@ public class Polygon
         }
         final Mesh ens = new Mesh();
 
-        final Point centroid = new Point(this.xAverage(), this.yAverage(),
+        final Point centroid = new Point(this.xAverage(),
+                this.yAverage(),
                 this.zAverage());
         final Vector3d normalVect = new Vector3d(0, 0, -1);
 
@@ -501,9 +502,13 @@ public class Polygon
 
         for (final Point p : this.pointList)
         {
-            ens.add(new Triangle(before, centroid, p,
-                    new Edge(centroid, before), new Edge(before, p), new Edge(
-                            p, centroid), normalVect));
+            ens.add(new Triangle(before,
+                    centroid,
+                    p,
+                    new Edge(centroid, before),
+                    new Edge(before, p),
+                    new Edge(p, centroid),
+                    normalVect));
             before = p;
         }
 
@@ -586,8 +591,8 @@ public class Polygon
         final Polygon b = new Polygon();
         for (final Edge e : this.edgeList)
         {
-            if (e.getP1().getX() > Math.min(m1, m2)
-                    && e.getP1().getX() < Math.max(m1, m2)
+            if (e.getP1().getX() > Math.min(m1, m2) && e.getP1().getX() < Math.max(m1,
+                    m2)
                     && e.getP2().getX() > Math.min(m1, m2)
                     && e.getP2().getX() < Math.max(m1, m2))
             {
@@ -674,8 +679,8 @@ public class Polygon
         final Polygon b = new Polygon();
         for (final Edge e : this.edgeList)
         {
-            if (e.getP1().getY() > Math.min(m1, m2)
-                    && e.getP1().getY() < Math.max(m1, m2)
+            if (e.getP1().getY() > Math.min(m1, m2) && e.getP1().getY() < Math.max(m1,
+                    m2)
                     && e.getP2().getY() > Math.min(m1, m2)
                     && e.getP2().getY() < Math.max(m1, m2))
             {
@@ -762,8 +767,8 @@ public class Polygon
         final Polygon b = new Polygon();
         for (final Edge e : this.edgeList)
         {
-            if (e.getP1().getZ() > Math.min(m1, m2)
-                    && e.getP1().getZ() < Math.max(m1, m2)
+            if (e.getP1().getZ() > Math.min(m1, m2) && e.getP1().getZ() < Math.max(m1,
+                    m2)
                     && e.getP2().getZ() > Math.min(m1, m2)
                     && e.getP2().getZ() < Math.max(m1, m2))
             {

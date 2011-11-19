@@ -17,7 +17,7 @@ import fr.nantes1900.utils.Algos;
 public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
 {
 
-    private Mesh initialTotalMeshAfterBaseChange;
+    private Mesh     initialTotalMeshAfterBaseChange;
     private Vector3d groundNormal;
 
     public BuildingsIsletStep1(Mesh initialMesh)
@@ -37,8 +37,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
     private Ground groundExtraction()
     {
         // Searches for ground-oriented triangles with an error.
-        Mesh meshOriented = this.initialTotalMeshAfterBaseChange.orientedAs(
-                this.groundNormal,
+        Mesh meshOriented = this.initialTotalMeshAfterBaseChange.orientedAs(this.groundNormal,
                 SeparationGroundBuilding.getAngleGroundError());
 
         List<Mesh> thingsList;
@@ -55,27 +54,24 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
 
         // We consider the altitude of the blocks on an axis parallel to the
         // normal ground.
-        final double highDiff = this.initialTotalMeshAfterBaseChange.zMax()
-                - this.initialTotalMeshAfterBaseChange.zMin();
+        final double highDiff = this.initialTotalMeshAfterBaseChange.zMax() - this.initialTotalMeshAfterBaseChange.zMin();
 
         // Builds an axis normal to the current ground.
-        final Edge axisNormalGround = new Edge(new Point(0, 0, 0), new Point(
-                this.groundNormal.x, this.groundNormal.y, this.groundNormal.z));
+        final Edge axisNormalGround = new Edge(new Point(0, 0, 0),
+                new Point(this.groundNormal.x,
+                        this.groundNormal.y,
+                        this.groundNormal.z));
 
         // Project the current whole ground centroid on this axis.
-        final Point pAverage = axisNormalGround.project(wholeGround
-                .getCentroid());
+        final Point pAverage = axisNormalGround.project(wholeGround.getCentroid());
 
         // After this, for each block, consider the distance (on the
         // axisNormalGround) as an altitude distance. If it is greater than
         // the error, then it's not considered as ground.
         for (final Mesh m : thingsList)
         {
-            final Point projectedPoint = axisNormalGround.project(m
-                    .getCentroid());
-            if (projectedPoint.getZ() < pAverage.getZ()
-                    || projectedPoint.distance(pAverage) < highDiff
-                            * SeparationGroundBuilding.getAltitureError())
+            final Point projectedPoint = axisNormalGround.project(m.getCentroid());
+            if (projectedPoint.getZ() < pAverage.getZ() || projectedPoint.distance(pAverage) < highDiff * SeparationGroundBuilding.getAltitureError())
             {
                 groundsList.add(m);
             }
@@ -97,8 +93,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
         // Now that we found the real grounds, we extract the other
         // triangles
         // which are almost ground-oriented to add them.
-        meshOriented = this.initialTotalMeshAfterBaseChange.orientedAs(
-                this.groundNormal,
+        meshOriented = this.initialTotalMeshAfterBaseChange.orientedAs(this.groundNormal,
                 SeparationGroundBuilding.getLargeAngleGroundError());
 
         // If the new grounds are neighbours from the old ones, they are
@@ -143,8 +138,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
     public final DefaultMutableTreeNode returnNode()
     {
         // TODO : create a method toString in the class Mesh to use it here.
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(
-                this.initialTotalMeshAfterBaseChange);
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(this.initialTotalMeshAfterBaseChange);
         return node;
     }
 

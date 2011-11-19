@@ -16,7 +16,7 @@ public class TriangleView
     /**
      * TODO.
      */
-    private boolean selected;
+    private boolean  selected;
 
     /**
      * TODO.

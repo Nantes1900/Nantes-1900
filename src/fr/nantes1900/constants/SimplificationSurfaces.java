@@ -18,7 +18,7 @@ public final class SimplificationSurfaces
      * the same orientation, the intersection of them during the vectorization
      * will often creates aberrant points.
      */
-    private static double isOrientedFactor = IS_ORIENTED_FACTOR_DEFAULT;
+    private static double       isOrientedFactor           = IS_ORIENTED_FACTOR_DEFAULT;
 
     /**
      * Private constructor.

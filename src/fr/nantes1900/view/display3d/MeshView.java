@@ -27,12 +27,12 @@ public class MeshView extends TriangleArray
     /**
      * TODO.
      */
-    private Point centroid;
+    private Point                   centroid;
 
     /**
      * TODO.
      */
-    private Mesh mesh;
+    private Mesh                    mesh;
 
     /**
      * TODO.
@@ -42,7 +42,8 @@ public class MeshView extends TriangleArray
     public MeshView(final Mesh m)
     {
         super(m.size() * 3, GeometryArray.COORDINATES | GeometryArray.COLOR_3
-                | GeometryArray.NORMALS | GeometryArray.TEXTURE_COORDINATE_2);
+                | GeometryArray.NORMALS
+                | GeometryArray.TEXTURE_COORDINATE_2);
 
         this.mesh = m;
         this.centroid = m.getCentroid();
@@ -65,13 +66,19 @@ public class MeshView extends TriangleArray
             triangleView.setSelected(false);
 
             this.setCoordinate(i, new Point3d(triangleView.getTriangle()
-                    .getP1().getX(), triangleView.getTriangle().getP1().getY(),
+                    .getP1()
+                    .getX(),
+                    triangleView.getTriangle().getP1().getY(),
                     triangleView.getTriangle().getP1().getZ()));
             this.setCoordinate(i + 1, new Point3d(triangleView.getTriangle()
-                    .getP2().getX(), triangleView.getTriangle().getP2().getY(),
+                    .getP2()
+                    .getX(),
+                    triangleView.getTriangle().getP2().getY(),
                     triangleView.getTriangle().getP2().getZ()));
             this.setCoordinate(i + 2, new Point3d(triangleView.getTriangle()
-                    .getP3().getX(), triangleView.getTriangle().getP3().getY(),
+                    .getP3()
+                    .getX(),
+                    triangleView.getTriangle().getP3().getY(),
                     triangleView.getTriangle().getP3().getZ()));
 
             this.setNormal(i, convertNormal(triangleView.getTriangle()));
@@ -96,10 +103,9 @@ public class MeshView extends TriangleArray
      */
     public static Vector3f convertNormal(final Triangle triangle)
     {
-        Vector3f normalFloat = new Vector3f(
-                (float) triangle.getNormal().getX(), (float) triangle
-                        .getNormal().getY(), (float) triangle.getNormal()
-                        .getZ());
+        Vector3f normalFloat = new Vector3f((float) triangle.getNormal().getX(),
+                (float) triangle.getNormal().getY(),
+                (float) triangle.getNormal().getZ());
         return normalFloat;
 
     }

@@ -18,12 +18,12 @@ import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 public class Building
 {
 
-    private BuildingStep3 bStep3;
-    private BuildingStep4 bStep4;
-    private BuildingStep5 bStep5;
-    private BuildingStep6 bStep6;
-    private BuildingStep7 bStep7;
-    private BuildingStep8 bStep8;
+    private BuildingStep3          bStep3;
+    private BuildingStep4          bStep4;
+    private BuildingStep5          bStep5;
+    private BuildingStep6          bStep6;
+    private BuildingStep7          bStep7;
+    private BuildingStep8          bStep8;
 
     private AbstractBuildingsIslet parentIslet;
 
@@ -69,32 +69,33 @@ public class Building
 
     public void launchTreatment()
     {
-        switch (this.parentIslet.getProgression()) {
-        case 0:
+        switch (this.parentIslet.getProgression())
+        {
+            case 0:
             // TODO : error
             break;
-        case 1:
+            case 1:
             // TODO : error
             break;
-        case 2:
+            case 2:
             // TODO : error
             break;
-        case 3:
-            this.bStep4 = this.bStep3.launchTreatment();
+            case 3:
+                this.bStep4 = this.bStep3.launchTreatment();
             break;
-        case 4:
-            this.bStep5 = this.bStep4.launchTreatment();
+            case 4:
+                this.bStep5 = this.bStep4.launchTreatment();
             break;
-        case 5:
-            this.bStep6 = this.bStep5.launchTreatment();
+            case 5:
+                this.bStep6 = this.bStep5.launchTreatment();
             break;
-        case 6:
-            this.bStep7 = this.bStep6.launchTreatment();
+            case 6:
+                this.bStep7 = this.bStep6.launchTreatment();
             break;
-        case 7:
-            this.bStep8 = this.bStep7.launchTreatment();
+            case 7:
+                this.bStep8 = this.bStep7.launchTreatment();
             break;
-        default:
+            default:
             // TODO : error
             break;
         }
@@ -102,30 +103,31 @@ public class Building
 
     public DefaultMutableTreeNode returnNode()
     {
-        switch (this.parentIslet.getProgression()) {
-        case 0:
-            // FIXME : how to do that ?
-            return null;
-        case 1:
-            // TODO : error
-            return null;
-        case 2:
-            // TODO : error
-            return null;
-        case 3:
-            return this.bStep3.returnNode();
-        case 4:
-            return this.bStep4.returnNode();
-        case 5:
-            return this.bStep5.returnNode();
-        case 6:
-            return this.bStep6.returnNode();
-        case 7:
-            return this.bStep7.returnNode();
-        case 8:
-            return this.bStep8.returnNode();
-        default:
-            return null;
+        switch (this.parentIslet.getProgression())
+        {
+            case 0:
+                // FIXME : how to do that ?
+                return null;
+            case 1:
+                // TODO : error
+                return null;
+            case 2:
+                // TODO : error
+                return null;
+            case 3:
+                return this.bStep3.returnNode();
+            case 4:
+                return this.bStep4.returnNode();
+            case 5:
+                return this.bStep5.returnNode();
+            case 6:
+                return this.bStep6.returnNode();
+            case 7:
+                return this.bStep7.returnNode();
+            case 8:
+                return this.bStep8.returnNode();
+            default:
+                return null;
         }
 
     }

@@ -32,8 +32,7 @@ public final class MatrixMethodTest extends TestCase
     @Test
     public static void testChangeBaseDoubleArrayDoubleArrayArray()
     {
-        final double[] coord = { 0, 1, 0
-        };
+        final double[] coord = {0, 1, 0};
         final Vector3d vect = new Vector3d(0, 0, 1);
         try
         {
@@ -130,7 +129,8 @@ public final class MatrixMethodTest extends TestCase
         try
         {
             final double[][] matrix = MatrixMethod.createOrthoBase(vect1,
-                    vect2, vect3);
+                    vect2,
+                    vect3);
             Assert.assertTrue(matrix[0][0] == 0);
             Assert.assertTrue(matrix[0][1] == 0);
             Assert.assertTrue(matrix[0][2] == 1);

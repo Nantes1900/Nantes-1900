@@ -14,17 +14,12 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
 
     private List<Building> buildings;
 
-    private Ground grounds;
+    private Ground         grounds;
 
-    private Vector3d groundNormal;
-    private Vector3d gravityNormal;
+    private Vector3d       groundNormal;
+    private Vector3d       gravityNormal;
 
-    private Mesh noise;
-
-    public Mesh getNoise()
-    {
-        return this.noise;
-    }
+    private Mesh           noise;
 
     public BuildingsIsletStep3(List<Building> buildings, Ground groundsIn)
     {
@@ -40,6 +35,11 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
     public Ground getGrounds()
     {
         return this.grounds;
+    }
+
+    public Mesh getNoise()
+    {
+        return this.noise;
     }
 
     /**

@@ -23,42 +23,42 @@ public class HelpButton extends JButton implements MouseListener
     /**
      * The current color of the text.
      */
-    private Color textColorCurrent;
+    private Color             textColorCurrent;
 
     /**
      * The normal wanted color for the text.
      */
-    private Color textColor = Color.BLUE;
+    private Color             textColor        = Color.BLUE;
 
     /**
      * The current value for the background.
      */
-    private Color backgroundColorCurrent;
+    private Color             backgroundColorCurrent;
 
     /**
      * The normal wanted color for the background.
      */
-    private Color backgroundColor = new Color(240, 240, 240);
+    private Color             backgroundColor  = new Color(240, 240, 240);
 
     /**
      * Indicates if the mouse is on the button area.
      */
-    private boolean in = false;
+    private boolean           in               = false;
 
     /**
      * Indicates if the left button of the mouse is pressed.
      */
-    private boolean pressed = false;
+    private boolean           pressed          = false;
 
     /**
      * Message to display in the pop-up.
      */
-    private String helpMessage;
+    private String            helpMessage;
 
     /**
      * Title of the pop-up.
      */
-    private String title;
+    private String            title;
 
     /**
      * 
@@ -106,7 +106,8 @@ public class HelpButton extends JButton implements MouseListener
      * @param titleIn
      *            The title of the pop-up.
      */
-    public HelpButton(final String tooltip, final String helpMessageIn,
+    public HelpButton(final String tooltip,
+            final String helpMessageIn,
             final String titleIn)
     {
         this.textColorCurrent = this.textColor;
@@ -133,10 +134,10 @@ public class HelpButton extends JButton implements MouseListener
     private static Color darken(final Color color, final int amount)
     {
         int red = (color.getRed() - amount < 0) ? 0 : color.getRed() - amount;
-        int green = (color.getGreen() - amount < 0) ? 0 : color.getGreen()
-                - amount;
-        int blue = (color.getBlue() - amount < 0) ? 0 : color.getBlue()
-                - amount;
+        int green = (color.getGreen() - amount < 0) ? 0
+                : color.getGreen() - amount;
+        int blue = (color.getBlue() - amount < 0) ? 0
+                : color.getBlue() - amount;
         Color colorLightened = new Color(red, green, blue);
         return colorLightened;
     }
@@ -151,12 +152,12 @@ public class HelpButton extends JButton implements MouseListener
      */
     private static Color lighten(final Color color, final int amount)
     {
-        int red = (color.getRed() + amount > 255) ? 255 : color.getRed()
-                + amount;
-        int green = (color.getGreen() + amount > 255) ? 255 : color.getGreen()
-                + amount;
-        int blue = (color.getBlue() + amount > 255) ? 255 : color.getBlue()
-                + amount;
+        int red = (color.getRed() + amount > 255) ? 255
+                : color.getRed() + amount;
+        int green = (color.getGreen() + amount > 255) ? 255
+                : color.getGreen() + amount;
+        int blue = (color.getBlue() + amount > 255) ? 255
+                : color.getBlue() + amount;
         Color colorLightened = new Color(red, green, blue);
         return colorLightened;
     }
@@ -225,7 +226,9 @@ public class HelpButton extends JButton implements MouseListener
             {
                 String title = (this.title.isEmpty()) ? "Informations compl�mentaires"
                         : this.title;
-                JOptionPane.showMessageDialog(this, this.helpMessage, title,
+                JOptionPane.showMessageDialog(this,
+                        this.helpMessage,
+                        title,
                         JOptionPane.INFORMATION_MESSAGE);
             }
         }
@@ -238,25 +241,17 @@ public class HelpButton extends JButton implements MouseListener
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
 
-        g2d.setColor(new Color(
-                (this.textColorCurrent.getRed() + this.backgroundColorCurrent
-                        .getRed()) / 2,
-                (this.textColorCurrent.getGreen() + this.backgroundColorCurrent
-                        .getGreen()) / 2,
-                (this.textColorCurrent.getBlue() + this.backgroundColorCurrent
-                        .getBlue()) / 2));
+        g2d.setColor(new Color((this.textColorCurrent.getRed() + this.backgroundColorCurrent.getRed()) / 2,
+                (this.textColorCurrent.getGreen() + this.backgroundColorCurrent.getGreen()) / 2,
+                (this.textColorCurrent.getBlue() + this.backgroundColorCurrent.getBlue()) / 2));
         g2d.fillOval(0, 0, 20, 20);
 
         g2d.setColor(this.textColorCurrent);
         g2d.fillOval(1, 1, 18, 18);
 
-        g2d.setColor(new Color(
-                (this.textColorCurrent.getRed() + this.backgroundColorCurrent
-                        .getRed()) / 2,
-                (this.textColorCurrent.getGreen() + this.backgroundColorCurrent
-                        .getGreen()) / 2,
-                (this.textColorCurrent.getBlue() + this.backgroundColorCurrent
-                        .getBlue()) / 2));
+        g2d.setColor(new Color((this.textColorCurrent.getRed() + this.backgroundColorCurrent.getRed()) / 2,
+                (this.textColorCurrent.getGreen() + this.backgroundColorCurrent.getGreen()) / 2,
+                (this.textColorCurrent.getBlue() + this.backgroundColorCurrent.getBlue()) / 2));
         g2d.fillOval(2, 2, 16, 16);
 
         g2d.setColor(this.backgroundColorCurrent);

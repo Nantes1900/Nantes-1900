@@ -13,9 +13,9 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
 {
 
     private List<Building> buildings;
-    private Ground grounds;
-    private Surface groundForAlgorithm;
-    private Vector3d groundNormal;
+    private Ground         grounds;
+    private Surface        groundForAlgorithm;
+    private Vector3d       groundNormal;
 
     public BuildingsIsletStep5(List<Building> buildingsIn, Ground groundsIn)
     {

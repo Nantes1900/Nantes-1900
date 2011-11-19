@@ -20,16 +20,10 @@ public final class FileTools
 {
 
     /**
-     * Private constructor.
-     */
-    private FileTools()
-    {
-    }
-
-    /**
      * Text for the type of message status bar.
      */
     public static final String MESSAGETYPE_STATUSBAR = "Statusbar";
+
     /**
      * Text for the type of message tooltip for properties.
      */
@@ -54,6 +48,13 @@ public final class FileTools
      * Key value corresponding to the select islet to launch process step.
      */
     public static final String KEY_IS_LAUNCHPROCESS  = "ISLaunchProcess";
+
+    /**
+     * Private constructor.
+     */
+    private FileTools()
+    {
+    }
 
     /**
      * Reads a help message from the file helpMessage.txt with the key
