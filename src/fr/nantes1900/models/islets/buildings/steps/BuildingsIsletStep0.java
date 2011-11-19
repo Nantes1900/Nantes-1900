@@ -9,7 +9,9 @@ import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 /**
- * @author Daniel
+ * Implements a step of the treatment. This step is after the parsing and before
+ * the base change.
+ * @author Daniel Lefèvre
  */
 public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
 {
@@ -30,9 +32,9 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
     private Vector3d   gravityNormal;
 
     /**
-     * TODO.
+     * Changes the base of the mesh.
      * @throws UnCompletedParametersException
-     *             TODO.
+     *             if the matrix or the mesh has not been initialized
      */
     public final void changeBase() throws UnCompletedParametersException
     {
@@ -97,7 +99,6 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
             this.changeBase();
         } catch (UnCompletedParametersException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 

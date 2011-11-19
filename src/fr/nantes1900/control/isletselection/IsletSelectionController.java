@@ -12,18 +12,13 @@ import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.control.BuildingsIsletController;
-import fr.nantes1900.control.BuildingsIsletController.InvalidCaseException;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.islets.AbstractIslet;
-import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
-import fr.nantes1900.models.islets.buildings.ResidentialIslet;
 import fr.nantes1900.utils.FileTools;
-import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.utils.WriterSTL;
 import fr.nantes1900.view.isletselection.GlobalTreeView.FileNode;
 import fr.nantes1900.view.isletselection.IsletSelectionView;

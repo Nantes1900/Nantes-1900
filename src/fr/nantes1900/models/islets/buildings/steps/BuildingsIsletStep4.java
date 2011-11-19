@@ -9,28 +9,62 @@ import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
 
+/**
+ * Implements a step of the treatment. This step is after the separation between
+ * walls and roofs and before the separation between walls and the separation
+ * between roofs.
+ * @author Daniel Lefèvre
+ */
 public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
 {
 
+    /**
+     * The list of buildings.
+     */
     private List<Building> buildings;
+    /**
+     * The grounds.
+     */
     private Ground         grounds;
+    /**
+     * The ground under the surface type for some treatments.
+     */
     private Surface        groundForAlgorithm;
+    /**
+     * The normal to the ground used in treatments.
+     */
     private Vector3d       groundNormal;
 
-    public BuildingsIsletStep4(List<Building> cutBuildings, Ground groundsIn)
+    /**
+     * Constructor.
+     * @param cutBuildings
+     *            the list of buildings
+     * @param groundsIn
+     *            the grounds
+     */
+    public BuildingsIsletStep4(final List<Building> cutBuildings,
+            final Ground groundsIn)
     {
         this.buildings = cutBuildings;
         this.grounds = groundsIn;
     }
 
-    public List<Building> getBuildings()
+    /**
+     * Getter.
+     * @return the list of buildings
+     */
+    public final List<Building> getBuildings()
     {
-        return buildings;
+        return this.buildings;
     }
 
-    public Ground getGrounds()
+    /**
+     * Getter.
+     * @return the grounds
+     */
+    public final Ground getGrounds()
     {
-        return grounds;
+        return this.grounds;
     }
 
     /**
@@ -44,14 +78,22 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
 
         for (Building b : this.buildings)
         {
+            b.getbStep4().setArguments(this.groundNormal,
+                    this.groundForAlgorithm);
             b.launchTreatment();
         }
 
         return new BuildingsIsletStep5(this.buildings, this.grounds);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #returnNode()
+     */
     @Override
-    public DefaultMutableTreeNode returnNode()
+    public final DefaultMutableTreeNode returnNode()
     {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
         for (Building b : this.buildings)
@@ -65,7 +107,12 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
         return root;
     }
 
-    public void setArguments(Vector3d groundNormalIn)
+    /**
+     * Setter.
+     * @param groundNormalIn
+     *            the normal to the ground.
+     */
+    public final void setArguments(final Vector3d groundNormalIn)
     {
         this.groundNormal = groundNormalIn;
     }

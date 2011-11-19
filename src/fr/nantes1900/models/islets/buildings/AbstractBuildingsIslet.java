@@ -13,7 +13,6 @@ import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep5;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep6;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep7;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep8;
-import fr.nantes1900.utils.MatrixMethod;
 
 /**
  * Abstracts a building islet : residential or industrial. This class contains
@@ -369,14 +368,23 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         this.progression = progressionIn;
     }
 
-    public Vector3d getGravityNormal()
+    /**
+     * Getter.
+     * @return the gravity normal
+     */
+    public final Vector3d getGravityNormal()
     {
-        return gravityNormal;
+        return this.gravityNormal;
     }
 
-    public void setGravityNormal(Vector3d gravityNormal)
+    /**
+     * Setter.
+     * @param gravityNormalIn
+     *            the new gravity normal
+     */
+    public final void setGravityNormal(final Vector3d gravityNormalIn)
     {
-        this.gravityNormal = gravityNormal;
+        this.gravityNormal = gravityNormalIn;
     }
 
     /**

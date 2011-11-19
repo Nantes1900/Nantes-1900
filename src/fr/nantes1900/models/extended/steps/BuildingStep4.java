@@ -175,7 +175,7 @@ public class BuildingStep4 extends AbstractBuildingStep
         }
     }
 
-    public void serArguments(Vector3d groundNormalIn,
+    public void setArguments(Vector3d groundNormalIn,
             Surface groundForAlgorithmIn)
     {
         // TODO : check if this method has been called before lauching

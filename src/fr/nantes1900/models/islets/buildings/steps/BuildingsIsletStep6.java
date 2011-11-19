@@ -8,27 +8,57 @@ import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
 
+/**
+ * Implements a step of the treatment. This step is after the determination of
+ * the neighbours and before the sort of the neighbours.
+ * @author Daniel Lefèvre
+ */
 public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
 {
 
+    /**
+     * The list of buildings.
+     */
     private List<Building> buildings;
+    /**
+     * The grounds.
+     */
     private Ground         grounds;
+    /**
+     * The ground as a surface used in treatments.
+     */
     private Surface        groundForAlgorithm;
 
-    public BuildingsIsletStep6(List<Building> buildingsIn, Ground groundsIn)
+    /**
+     * Constructor.
+     * @param buildingsIn
+     *            the list of buildings
+     * @param groundsIn
+     *            te grounds
+     */
+    public BuildingsIsletStep6(final List<Building> buildingsIn,
+            final Ground groundsIn)
     {
         this.buildings = buildingsIn;
         this.grounds = groundsIn;
     }
 
-    public List<Building> getBuildings()
+    /**
+     * Getter.
+     * @return the list of buildings
+     */
+    public final List<Building> getBuildings()
     {
-        return buildings;
+        return this.buildings;
     }
 
-    public Ground getGrounds()
+    /**
+     * Getter.
+     * @return the grounds
+     */
+    public final Ground getGrounds()
     {
-        return grounds;
+        return this.grounds;
     }
 
     /**
@@ -40,6 +70,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
     {
         for (Building b : this.buildings)
         {
+            b.getbStep6().setArguments(this.groundForAlgorithm);
             b.launchTreatment();
         }
 
@@ -59,5 +90,15 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
         root.add(nodeG);
 
         return root;
+    }
+
+    /**
+     * Setter.
+     * @param groundForAlgorithmIn
+     *            the ground as a surface for the treatments
+     */
+    public final void setArguments(final Surface groundForAlgorithmIn)
+    {
+        this.groundForAlgorithm = groundForAlgorithmIn;
     }
 }

@@ -11,20 +11,34 @@ import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.utils.Algos;
 
+/**
+ * Implements a step of the treatment. This step is after the separation between
+ * grounds and buildings and before the separation between buildings.
+ * @author Daniel Lefèvre
+ */
 public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
 {
 
+    /**
+     * The mesh containing every buildings.
+     */
     private Mesh   initialBuildings;
+    /**
+     * The mesh containing every grounds.
+     */
     private Ground initialGrounds;
 
+    /**
+     * The mesh containing the noise during the treatments.
+     */
     private Mesh   noise;
 
     /**
      * Constructor.
      * @param buildings
-     *            TODO.
+     *            the mesh containing all the buildings
      * @param grounds
-     *            TODO.
+     *            the mesh containing all the grounds
      */
     public BuildingsIsletStep2(final Mesh buildings, final Ground grounds)
     {
@@ -34,7 +48,7 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
 
     /**
      * Extracts buildings by separating the blocks after the ground extraction.
-     * @return TODO.
+     * @return the list of the different buildings
      */
     private List<Building> buildingsExtraction()
     {

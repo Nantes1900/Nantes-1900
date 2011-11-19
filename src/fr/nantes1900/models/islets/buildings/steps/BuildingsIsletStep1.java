@@ -14,25 +14,45 @@ import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.utils.Algos;
 
+/**
+ * Implements a step of the treatment. This step is after the base change and
+ * before the separation between grounds and buildings.
+ * @author Daniel Lefèvre
+ */
 public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
 {
 
+    /**
+     * The initial total mesh after the base change.
+     */
     private Mesh     initialTotalMeshAfterBaseChange;
+    /**
+     * The normal to the ground.
+     */
     private Vector3d groundNormal;
 
-    public BuildingsIsletStep1(Mesh initialMesh)
+    /**
+     * Constructor.
+     * @param initialMesh
+     *            the mesh after the base change representing the total islet
+     */
+    public BuildingsIsletStep1(final Mesh initialMesh)
     {
         this.initialTotalMeshAfterBaseChange = initialMesh;
     }
 
-    public Mesh getInitialTotalMeshAfterBaseChange()
+    /**
+     * Getter.
+     * @return the mesh
+     */
+    public final Mesh getInitialTotalMeshAfterBaseChange()
     {
-        return initialTotalMeshAfterBaseChange;
+        return this.initialTotalMeshAfterBaseChange;
     }
 
     /**
      * Extracts the grounds, using the groundExtract method.
-     * @return TODO.
+     * @return the ground extracted
      */
     private Ground groundExtraction()
     {

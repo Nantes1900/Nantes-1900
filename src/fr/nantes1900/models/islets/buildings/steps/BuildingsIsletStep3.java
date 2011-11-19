@@ -9,47 +9,87 @@ import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 
+/**
+ * Implements a step of the treatment. This step is after the separation between
+ * buildings and before the separation between walls and roofs.
+ * @author Daniel Lefèvre
+ */
 public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
 {
 
+    /**
+     * The list of buildings contained in the islet.
+     */
     private List<Building> buildings;
 
+    /**
+     * The grounds.
+     */
     private Ground         grounds;
 
-    private Vector3d       groundNormal;
+    /**
+     * The gravity normal used in algorithms.
+     */
     private Vector3d       gravityNormal;
 
+    /**
+     * The noise used in algorithms.
+     */
     private Mesh           noise;
 
-    public BuildingsIsletStep3(List<Building> buildings, Ground groundsIn)
+    /**
+     * Constructor.
+     * @param buildingsIn
+     *            the list of buildings
+     * @param groundsIn
+     *            the ground
+     */
+    public BuildingsIsletStep3(final List<Building> buildingsIn,
+            final Ground groundsIn)
     {
-        this.buildings = buildings;
+        this.buildings = buildingsIn;
         this.grounds = groundsIn;
     }
 
-    public List<Building> getBuildings()
+    /**
+     * Getter.
+     * @return the list of buildings
+     */
+    public final List<Building> getBuildings()
     {
         return this.buildings;
     }
 
-    public Ground getGrounds()
+    /**
+     * Getter.
+     * @return the grounds
+     */
+    public final Ground getGrounds()
     {
         return this.grounds;
     }
 
-    public Mesh getNoise()
+    /**
+     * Getter.
+     * @return the noise
+     */
+    public final Mesh getNoise()
     {
         return this.noise;
     }
 
-    /**
-     * TODO. SeparationWallRoof
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #launchTreatment()
      */
     @Override
     public final BuildingsIsletStep4 launchTreatment()
     {
         for (Building b : this.buildings)
         {
+            b.getbStep3().setArguments(this.gravityNormal);
             b.launchTreatment();
         }
 
@@ -71,9 +111,13 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
         return root;
     }
 
-    public void setArguments(Vector3d groundNormalIn, Vector3d gravityNormalIn)
+    /**
+     * Setter.
+     * @param gravityNormalIn
+     *            the gravity normal used in treatments
+     */
+    public final void setArguments(final Vector3d gravityNormalIn)
     {
-        this.groundNormal = groundNormalIn;
         this.gravityNormal = gravityNormalIn;
     }
 }
