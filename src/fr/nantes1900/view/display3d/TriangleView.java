@@ -16,6 +16,7 @@ public class TriangleView
     /**
      * TODO.
      */
+    // FIXME : remove this attribute.
     private boolean  selected;
 
     /**

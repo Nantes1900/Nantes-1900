@@ -10,6 +10,11 @@ import fr.nantes1900.models.basis.Polygon;
 public class Roof extends Surface
 {
 
+    public Roof()
+    {
+        // TODO Auto-generated constructor stub
+    }
+
     /**
      * Constructor from a mesh.
      * @param m

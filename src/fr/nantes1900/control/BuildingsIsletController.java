@@ -11,11 +11,14 @@ import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Building;
+import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.extended.Wall;
 import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.InvalidCaseException;
 import fr.nantes1900.models.islets.buildings.ResidentialIslet;
+import fr.nantes1900.models.islets.buildings.UnCompletedParametersException;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.view.display3d.MeshView;
@@ -64,14 +67,16 @@ public class BuildingsIsletController
     }
 
     /**
-     * Changes the type of a list of triangles.
+     * Changes the type of a list of triangles. To call only during the second
+     * step.
      * @param trianglesSelected
      *            the list of triangles
      * @param type
      *            the new type of these triangles
+     * @throws InvalidCaseException
      */
     public final void action2(final List<Triangle> trianglesSelected,
-            final int type)
+            final int type) throws InvalidCaseException
     {
         if (type == ActionTypes.TURN_TO_BUILDING)
         {
@@ -91,6 +96,9 @@ public class BuildingsIsletController
             this.islet.getBiStep2()
                     .getInitialGrounds()
                     .addAll(trianglesSelected);
+        } else
+        {
+            throw new InvalidCaseException();
         }
     }
 
@@ -100,9 +108,11 @@ public class BuildingsIsletController
      *            TODO
      * @param actionType
      *            TODO
+     * @throws InvalidCaseException
+     *             TODO
      */
     public final void action3(final List<Triangle> trianglesSelected,
-            final int actionType)
+            final int actionType) throws InvalidCaseException
     {
         if (actionType == ActionTypes.REMOVE)
         {
@@ -119,8 +129,10 @@ public class BuildingsIsletController
                     .getBuildings()
                     .add(new Building(new Mesh(trianglesSelected)));
             this.islet.getBiStep3().getNoise().removeAll(trianglesSelected);
+        } else
+        {
+            throw new InvalidCaseException();
         }
-        // LOOK : else : error.
     }
 
     /**
@@ -129,8 +141,11 @@ public class BuildingsIsletController
      *            TODO
      * @param actionType
      *            TODO
+     * @throws InvalidCaseException
+     *             TODO
      */
-    public final void action3(final Mesh mesh, final int actionType)
+    public final void
+            action3(final Mesh mesh, final int actionType) throws InvalidCaseException
     {
         if (actionType == ActionTypes.TURN_TO_NOISE)
         {
@@ -142,8 +157,10 @@ public class BuildingsIsletController
         {
             this.islet.getBiStep3().getBuildings().add(new Building(mesh));
             this.islet.getBiStep3().getNoise().removeAll(mesh);
+        } else
+        {
+            throw new InvalidCaseException();
         }
-        // LOOK : else : error.
     }
 
     /**
@@ -152,9 +169,14 @@ public class BuildingsIsletController
      *            TODO
      * @param actionType
      *            TODO
+     * @throws InvalidCaseException
+     *             TODO
+     * @throws UnCompletedParametersException
+     *             TODO
      */
     public final void action4(final List<Triangle> trianglesSelected,
-            final int actionType)
+            final int actionType) throws InvalidCaseException,
+            UnCompletedParametersException
     {
         Building building = this.searchForBuildingContaining4(trianglesSelected);
         if (building != null)
@@ -167,9 +189,147 @@ public class BuildingsIsletController
             {
                 building.getbStep4().getInitialRoof().addAll(trianglesSelected);
                 building.getbStep4().getInitialWall().remove(trianglesSelected);
+            } else
+            {
+                throw new InvalidCaseException();
+            }
+        } else
+        {
+            throw new UnCompletedParametersException();
+        }
+    }
+
+    private Building
+            searchForBuildingContaining4(List<Triangle> trianglesSelected)
+    {
+        for (Building building : this.islet.getBiStep4().getBuildings())
+        {
+            if (building.getbStep4()
+                    .getInitialWall()
+                    .containsAll(trianglesSelected) || building.getbStep4()
+                    .getInitialRoof()
+                    .containsAll(trianglesSelected))
+            {
+                return building;
             }
         }
-        // TODO : else : error.
+        return null;
+    }
+
+    /**
+     * TODO.
+     * @param surfacesSelected
+     *            TODO
+     * @param type
+     *            TODO
+     * @throws InvalidCaseException
+     *             TODO
+     * @throws UnCompletedParametersException
+     *             TODO
+     */
+    public final void action5(final List<Surface> surfacesSelected,
+            final int type) throws InvalidCaseException,
+            UnCompletedParametersException
+    {
+        Building building = this.searchForBuildingContaining5(surfacesSelected);
+        if (building != null)
+        {
+            if (type == ActionTypes.MERGE)
+            {
+                if (building.getbStep5()
+                        .getWalls()
+                        .contains(surfacesSelected.get(0)))
+                {
+                    // It means the meshes selected belong to the walls.
+                    building.getbStep5().getWalls().removeAll(surfacesSelected);
+                    Wall sum = new Wall();
+                    for (Surface s : surfacesSelected)
+                    {
+                        sum.getMesh().addAll(s.getMesh());
+                    }
+                    building.getbStep5().getWalls().add(sum);
+                } else
+                {
+                    // It means the meshes selected belong to the roofs.
+                    building.getbStep5().getRoofs().removeAll(surfacesSelected);
+                    Roof sum = new Roof();
+                    for (Surface s : surfacesSelected)
+                    {
+                        sum.getMesh().addAll(s.getMesh());
+                    }
+                    building.getbStep5().getRoofs().add(sum);
+                }
+            } else if (type == ActionTypes.TURN_TO_NOISE)
+            {
+                building.getbStep5().getWalls().removeAll(surfacesSelected);
+                building.getbStep5().getRoofs().removeAll(surfacesSelected);
+                for (Surface s : surfacesSelected)
+                {
+                    building.getbStep5().getNoise().addAll(s.getMesh());
+                }
+            } else
+            {
+                throw new InvalidCaseException();
+            }
+        } else
+        {
+            throw new UnCompletedParametersException();
+        }
+    }
+
+    /**
+     * TODO.
+     * @param surfacesSelected
+     *            TODO
+     * @param currentSurface
+     *            TODO
+     * @param actionType
+     *            TODO
+     * @throws InvalidCaseException
+     *             TODO
+     */
+    public static final void action6(final List<Surface> surfacesSelected,
+            final Surface currentSurface,
+            final int actionType) throws InvalidCaseException
+    {
+        if (actionType == ActionTypes.ADD_NEIGHBOURS)
+        {
+            currentSurface.getNeighbours().addAll(surfacesSelected);
+        } else if (actionType == ActionTypes.REMOVE_NEIGHBOURS)
+        {
+            currentSurface.getNeighbours().removeAll(surfacesSelected);
+        } else
+        {
+            throw new InvalidCaseException();
+        }
+    }
+
+    /**
+     * TODO.
+     * @param surfaceToMove
+     *            TODO
+     * @param currentSurface
+     *            TODO
+     * @param actionType
+     *            TODO
+     * @throws InvalidCaseException
+     *             TODO
+     */
+    public static final void action7(final Surface surfaceToMove,
+            final Surface currentSurface,
+            final int actionType) throws InvalidCaseException
+    {
+        List<Surface> neighbours = currentSurface.getNeighbours();
+        if (actionType == ActionTypes.UP_NEIGHBOUR)
+        {
+            neighbours.set(neighbours.indexOf(surfaceToMove) - 1, surfaceToMove);
+        } else if (actionType == ActionTypes.DOWN_NEIGHBOUR)
+        {
+            neighbours.set(neighbours.indexOf(surfaceToMove) + 1, surfaceToMove);
+        } else
+        {
+            throw new InvalidCaseException();
+        }
     }
 
     /**
@@ -436,25 +596,25 @@ public class BuildingsIsletController
 
     /**
      * TODO.
-     * @param trianglesSelected
+     * @param surfacesSelected
      *            TODO
      * @return TODO
+     * @throws UnCompletedParametersException
+     *             TODO
      */
     private Building
-            searchForBuildingContaining4(final List<Triangle> trianglesSelected)
+            searchForBuildingContaining5(final List<Surface> surfacesSelected) throws UnCompletedParametersException
     {
-        for (Building building : this.islet.getBiStep4().getBuildings())
+        for (Building b : this.islet.getBiStep5().getBuildings())
         {
-            if (building.getbStep4()
-                    .getInitialWall()
-                    .containsAll(trianglesSelected) || building.getbStep4()
-                    .getInitialRoof()
-                    .containsAll(trianglesSelected))
+            if (b.getbStep5().getWalls().containsAll(surfacesSelected) || b.getbStep5()
+                    .getRoofs()
+                    .containsAll(surfacesSelected))
             {
-                return building;
+                return b;
             }
         }
-        return null;
+        throw new UnCompletedParametersException();
     }
 
     /**
@@ -668,7 +828,7 @@ public class BuildingsIsletController
     }
 
     /**
-     * Displays the eigth step.
+     * Displays the eighth step.
      */
     public final void viewStep8()
     {

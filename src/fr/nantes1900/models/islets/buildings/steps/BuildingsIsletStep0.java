@@ -32,6 +32,16 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
     private Vector3d   gravityNormal;
 
     /**
+     * Constructor.
+     * @param mesh
+     *            the mesh representing the entire islet
+     */
+    public BuildingsIsletStep0(final Mesh mesh)
+    {
+        this.initialTotalMesh = mesh;
+    }
+
+    /**
      * Changes the base of the mesh.
      * @throws UnCompletedParametersException
      *             if the matrix or the mesh has not been initialized
@@ -65,23 +75,12 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
     }
 
     /**
-     * Constructor.
-     * @param mesh
-     *            the mesh representing the entire islet
+     * Getter.
+     * @return the initial total mesh
      */
-    public BuildingsIsletStep0(final Mesh mesh)
+    public final Mesh getInitialTotalMesh()
     {
-        this.initialTotalMesh = mesh;
-    }
-
-    /**
-     * Initialize some arguments needed for the treatement.
-     * @param gravityNormalIn
-     *            the normal to the gravity
-     */
-    public final void setArguments(final Vector3d gravityNormalIn)
-    {
-        this.gravityNormal = gravityNormalIn;
+        return this.initialTotalMesh;
     }
 
     /*
@@ -120,12 +119,13 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
     }
 
     /**
-     * Getter.
-     * @return the initial total mesh
+     * Initialize some arguments needed for the treatement.
+     * @param gravityNormalIn
+     *            the normal to the gravity
      */
-    public final Mesh getInitialTotalMesh()
+    public final void setArguments(final Vector3d gravityNormalIn)
     {
-        return this.initialTotalMesh;
+        this.gravityNormal = gravityNormalIn;
     }
 
 }

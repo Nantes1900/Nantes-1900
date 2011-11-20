@@ -117,6 +117,11 @@ public class BuildingStep5 extends AbstractBuildingStep
         }
     }
 
+    public Mesh getNoise()
+    {
+        return this.noise;
+    }
+
     /**
      * Getter.
      * @return the list of roofs
