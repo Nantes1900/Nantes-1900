@@ -21,16 +21,21 @@ import fr.nantes1900.view.components.HelpButton;
 /**
  * @author Camille
  */
-public abstract class CaracteristicsView extends JPanel
+public class CaracteristicsView extends JPanel
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
     protected JButton bValidate;
     protected JPanel  pContent;
 
     public CaracteristicsView()
     {
-        this.setBorder(new TitledBorder(BorderFactory.createRaisedSoftBevelBorder(),
-                "Caractéristiques"));
+        this.setBorder(new TitledBorder(BorderFactory
+                .createRaisedSoftBevelBorder(), "Caractéristiques"));
         bValidate = new JButton("Valider");
+        bValidate.setEnabled(false);
         pContent = new JPanel();
         FlowLayout contentLayout = new FlowLayout();
         contentLayout.setAlignment(FlowLayout.LEFT);
@@ -42,45 +47,20 @@ public abstract class CaracteristicsView extends JPanel
     }
 
     protected JPanel createSimpleCaracteristic(JComponent caracteristic,
-            String title,
-            HelpButton helpButton)
+            String title, HelpButton helpButton)
     {
         JPanel caracteristicPanel = new JPanel();
 
         caracteristicPanel.setLayout(new GridBagLayout());
-        caracteristicPanel.add(new JLabel(title), new GridBagConstraints(0,
-                0,
-                1,
-                1,
-                0.0,
-                0.0,
-                GridBagConstraints.CENTER,
-                GridBagConstraints.HORIZONTAL,
-                new Insets(5, 10, 5, 10),
-                0,
-                0));
-        caracteristicPanel.add(caracteristic, new GridBagConstraints(1,
-                0,
-                1,
-                1,
-                0.0,
-                0.0,
-                GridBagConstraints.CENTER,
-                GridBagConstraints.HORIZONTAL,
-                new Insets(5, 10, 5, 10),
-                0,
-                0));
-        caracteristicPanel.add(helpButton, new GridBagConstraints(2,
-                0,
-                1,
-                1,
-                0.0,
-                0.0,
-                GridBagConstraints.CENTER,
-                GridBagConstraints.HORIZONTAL,
-                new Insets(5, 10, 5, 10),
-                0,
-                0));
+        caracteristicPanel.add(new JLabel(title), new GridBagConstraints(0, 0,
+                1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL, new Insets(5, 10, 5, 10), 0, 0));
+        caracteristicPanel.add(caracteristic, new GridBagConstraints(1, 0, 1,
+                1, 0.0, 0.0, GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL, new Insets(5, 10, 5, 10), 0, 0));
+        caracteristicPanel.add(helpButton, new GridBagConstraints(2, 0, 1, 1,
+                0.0, 0.0, GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL, new Insets(5, 10, 5, 10), 0, 0));
 
         return caracteristicPanel;
     }
@@ -88,5 +68,10 @@ public abstract class CaracteristicsView extends JPanel
     protected void addCaracteristic(JPanel caracteristicPanel)
     {
         this.pContent.add(caracteristicPanel);
+    }
+
+    public JButton getValidateButton()
+    {
+        return this.bValidate;
     }
 }

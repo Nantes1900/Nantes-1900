@@ -39,7 +39,8 @@ public class ActionsController
      * @param isletSelectionController
      *            TODO.
      */
-    public ActionsController(final IsletSelectionController isletSelectionController)
+    public ActionsController(
+            final IsletSelectionController isletSelectionController)
     {
         this.parentController = isletSelectionController;
         this.aView = new ActionsView();
@@ -54,7 +55,8 @@ public class ActionsController
 
                 fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
 
-                if (fileChooser.showOpenDialog(ActionsController.this.getActionsView()) == JFileChooser.APPROVE_OPTION)
+                if (fileChooser.showOpenDialog(ActionsController.this
+                        .getActionsView()) == JFileChooser.APPROVE_OPTION)
                 {
                     File file = fileChooser.getSelectedFile();
                     if (file.isDirectory())
@@ -97,13 +99,18 @@ public class ActionsController
         this.laListener.setComputeNormalMode(true);
         this.getActionsView()
                 .getHelpButton()
-                .setTooltip(FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL,
-                        FileTools.MESSAGETYPE_TOOLTIP));
+                .setTooltip(
+                        FileTools.readHelpMessage(
+                                FileTools.KEY_IS_GRAVITYNORMAL,
+                                FileTools.MESSAGETYPE_TOOLTIP));
         this.getActionsView()
                 .getHelpButton()
-                .setHelpMessage(FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL,
-                        FileTools.MESSAGETYPE_MESSAGE),
-                        FileTools.readHelpMessage(FileTools.KEY_IS_GRAVITYNORMAL,
+                .setHelpMessage(
+                        FileTools.readHelpMessage(
+                                FileTools.KEY_IS_GRAVITYNORMAL,
+                                FileTools.MESSAGETYPE_MESSAGE),
+                        FileTools.readHelpMessage(
+                                FileTools.KEY_IS_GRAVITYNORMAL,
                                 FileTools.MESSAGETYPE_TITLE));
         this.aView.getLaunchButton().setText("Sauver");
         this.aView.getLaunchButton().setEnabled(true);
@@ -115,36 +122,43 @@ public class ActionsController
     public final void setLaunchMode()
     {
         this.laListener.setComputeNormalMode(false);
+        this.aView.getGravityCheckBox().setEnabled(true);
         this.getActionsView()
                 .getHelpButton()
-                .setTooltip(FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS,
-                        FileTools.MESSAGETYPE_TOOLTIP));
+                .setTooltip(
+                        FileTools.readHelpMessage(
+                                FileTools.KEY_IS_LAUNCHPROCESS,
+                                FileTools.MESSAGETYPE_TOOLTIP));
         this.getActionsView()
                 .getHelpButton()
-                .setHelpMessage(FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS,
-                        FileTools.MESSAGETYPE_MESSAGE),
-                        FileTools.readHelpMessage(FileTools.KEY_IS_LAUNCHPROCESS,
+                .setHelpMessage(
+                        FileTools.readHelpMessage(
+                                FileTools.KEY_IS_LAUNCHPROCESS,
+                                FileTools.MESSAGETYPE_MESSAGE),
+                        FileTools.readHelpMessage(
+                                FileTools.KEY_IS_LAUNCHPROCESS,
                                 FileTools.MESSAGETYPE_TITLE));
         this.aView.getLaunchButton().setText("Lancer");
         this.aView.getLaunchButton().setEnabled(true);
     }
 
     /**
-     * TODO.
-     * @author Daniel
+     * Listener of the launch button. The performed action depends on the mode :
+     * save the gravity normal or launch an islet treatment.
+     * @author Camille
      */
     public class LaunchActionListener implements ActionListener
     {
 
         /**
-         * TODO.
+         * Indicates if the mode is to save the gravity normal or not.
          */
         private boolean computeNormal;
 
         /**
-         * TODO.
+         * Creates a new launch action listener with the current mode.
          * @param computeNormalIn
-         *            TODO
+         *            The current mode.
          */
         public LaunchActionListener(final boolean computeNormalIn)
         {
@@ -154,11 +168,11 @@ public class ActionsController
         @Override
         public final void actionPerformed(final ActionEvent arg0)
         {
-            // If no gravity normal have been choosen
+            // If no gravity normal have been chosen
             if (this.computeNormal)
             {
-                boolean normalSaved = ActionsController.this.getParentController()
-                        .computeGravityNormal();
+                boolean normalSaved = ActionsController.this
+                        .getParentController().computeGravityNormal();
                 if (normalSaved)
                 {
                     ActionsController.this.setLaunchMode();
