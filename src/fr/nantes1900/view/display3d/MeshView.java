@@ -48,9 +48,13 @@ public class MeshView extends TriangleArray
         this.centroid = m.getCentroid();
 
         this.trianglesViewList = new ArrayList<>();
+        int triangleCount=0;
         for (Triangle triangle : this.mesh)
         {
-            this.trianglesViewList.add(new TriangleView(triangle));
+        	TriangleView triangleView=new TriangleView(triangle);
+            this.trianglesViewList.add(triangleView);
+            triangle.setTriangleViewIndex(triangleCount);
+            triangleCount++;
         }
 
         this.setCapability(ALLOW_COLOR_WRITE);
@@ -110,6 +114,17 @@ public class MeshView extends TriangleArray
         this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
         this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
     }
+    /**
+     * TODO.
+     * @param i
+     *            TODO.
+     */
+    public void unselect(int i){
+		this.trianglesViewList.get(i).setSelected(false);
+		this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
+		this.setTextureCoordinate(i * 3 + 1, new Point2f(0.0f, 0.0f));
+		this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+	}
 
     /**
      * TODO.

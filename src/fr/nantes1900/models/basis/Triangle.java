@@ -15,6 +15,7 @@ import javax.vecmath.Vector3d;
 public class Triangle
 {
 
+	private int triangleViewIndex;
     /**
      * Array of three points of the triangle.
      */
@@ -621,5 +622,21 @@ public class Triangle
             }
         }
         return null;
+    }
+    
+    public int getTriangleViewIndex() {
+    	
+		return triangleViewIndex;
+	}
+
+	public void setTriangleViewIndex(int triangleViewIndex) {
+		
+		this.triangleViewIndex = triangleViewIndex;
+	}
+	
+    public final boolean isParalleTo(final Vector3d norm, final double error) 
+    {
+        return this.normal.angle(norm) < error && this.normal.angle(norm) > -error;
+	
     }
 }
