@@ -9,6 +9,7 @@ import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
+import fr.nantes1900.models.islets.buildings.InvalidCaseException;
 import fr.nantes1900.view.isletprocess.IsletProcessView;
 
 /**
@@ -28,7 +29,8 @@ public class IsletProcessController
     private int                      progression;
 
     public IsletProcessController(GlobalController parentController,
-            File isletFile, BuildingsIsletController biController)
+            File isletFile,
+            BuildingsIsletController biController)
     {
         this.parentController = parentController;
 
@@ -42,16 +44,18 @@ public class IsletProcessController
         this.biController.display();
 
         this.ipView = new IsletProcessView(cController.getView(),
-                itController.getView(), nbController.getView(),
-                pController.getView(), u3DController.getUniverse3DView());
+                itController.getView(),
+                nbController.getView(),
+                pController.getView(),
+                u3DController.getUniverse3DView());
         this.ipView.setVisible(true);
     }
 
     /**
-     * Launches an action depending of the actual step with the given action type.
-     * 
+     * Launches an action depending of the actual step with the given action
+     * type.
      * @param actionType
-     *          Type of the action to execute
+     *            Type of the action to execute
      * @see ActionTypes, {@link BuildingsIsletController}
      */
     public void launchAction(int actionType)
@@ -59,8 +63,16 @@ public class IsletProcessController
         switch (progression)
         {
             case 2:
-                this.biController.action2(u3DController.getTrianglesSelected(), actionType);
-                break;
+                try
+                {
+                    this.biController.action2(u3DController.getTrianglesSelected(),
+                            actionType);
+                } catch (InvalidCaseException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            break;
         }
     }
 }
