@@ -1,6 +1,5 @@
 package fr.nantes1900.models.extended.steps;
 
-import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,9 +8,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import fr.nantes1900.constants.SeparationWallsSeparationRoofs;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Polygon;
+import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.Wall;
+import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.utils.Algos;
 
 /**
@@ -37,9 +38,9 @@ public class BuildingStep5 extends AbstractBuildingStep
     private List<Roof> roofs = new ArrayList<>();
 
     /**
-     * The ground as a surface used in treatments.
+     * The grounds.
      */
-    private Surface    groundForAlgorithm;
+    private Ground     ground;
 
     /**
      * Constructor.
@@ -55,13 +56,12 @@ public class BuildingStep5 extends AbstractBuildingStep
     }
 
     /**
-     * TODO.
-     * @param grounds
-     *            TODO.
+     * Determinates the neighbours of a surface.
      */
-    public final void determinateNeighbours(final Surface grounds)
+    public final void determinateNeighbours()
     {
-        final Polygon groundsBounds = grounds.getMesh().returnUnsortedBounds();
+        final Polygon groundsBounds = this.ground.getMesh()
+                .returnUnsortedBounds();
 
         final List<Surface> wholeList = new ArrayList<>();
         wholeList.addAll(this.walls);
@@ -85,7 +85,7 @@ public class BuildingStep5 extends AbstractBuildingStep
             s.getNeighbours().clear();
         }
         // And we clear the neighbours of the grounds.
-        grounds.getNeighbours().clear();
+        this.ground.getNeighbours().clear();
 
         // We compute the bounds to check if they share a common edge.
         final List<Polygon> wholeBoundsList = new ArrayList<>();
@@ -112,7 +112,7 @@ public class BuildingStep5 extends AbstractBuildingStep
 
             if (polygone1.isNeighbour(groundsBounds))
             {
-                wholeList.get(i).addNeighbour(grounds);
+                wholeList.get(i).addNeighbour(this.ground);
             }
         }
     }
@@ -145,13 +145,13 @@ public class BuildingStep5 extends AbstractBuildingStep
     }
 
     @Override
-    public final BuildingStep6 launchTreatment()
+    public final BuildingStep6 launchTreatment() throws NullArgumentException
     {
-        if (this.groundForAlgorithm == null)
+        if (this.ground == null || this.noise == null)
         {
-            throw new InvalidParameterException();
+            throw new NullArgumentException();
         }
-        this.determinateNeighbours(this.groundForAlgorithm);
+        this.determinateNeighbours();
 
         List<Wall> wallsCopy = new ArrayList<>();
         for (Wall w : this.walls)
@@ -186,13 +186,12 @@ public class BuildingStep5 extends AbstractBuildingStep
      * Setter.
      * @param noiseIn
      *            the noise
-     * @param groundForAlgorithmIn
+     * @param groundIn
      *            the ground as surface used in treatments
      */
-    public final void setArguments(final Mesh noiseIn,
-            final Surface groundForAlgorithmIn)
+    public final void setArguments(final Mesh noiseIn, final Ground groundIn)
     {
         this.noise = noiseIn;
-        this.groundForAlgorithm = groundForAlgorithmIn;
+        this.ground = groundIn;
     }
 }

@@ -4,7 +4,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.models.islets.AbstractIslet;
-import fr.nantes1900.models.islets.buildings.exception.InvalidCaseException;
+import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep1;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep2;

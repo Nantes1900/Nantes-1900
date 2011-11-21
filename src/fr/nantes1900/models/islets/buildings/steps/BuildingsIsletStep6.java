@@ -6,7 +6,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
-import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.steps.BuildingStep6;
 
 /**
@@ -25,10 +24,6 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
      * The grounds.
      */
     private Ground         grounds;
-    /**
-     * The ground as a surface used in treatments.
-     */
-    private Surface        groundForAlgorithm;
 
     /**
      * Constructor.
@@ -72,7 +67,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
         for (Building b : this.buildings)
         {
             BuildingStep6 buildingStep = (BuildingStep6) b.getbStep();
-            buildingStep.setArguments(this.groundForAlgorithm);
+            buildingStep.setArguments(this.grounds);
             b.launchTreatment();
         }
 
@@ -96,11 +91,11 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
 
     /**
      * Setter.
-     * @param groundForAlgorithmIn
-     *            the ground as a surface for the treatments
+     * @param groundsIn
+     *            the grounds
      */
-    public final void setArguments(final Surface groundForAlgorithmIn)
+    public final void setArguments(final Ground groundsIn)
     {
-        this.groundForAlgorithm = groundForAlgorithmIn;
+        this.grounds = groundsIn;
     }
 }

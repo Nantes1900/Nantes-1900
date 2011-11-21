@@ -23,8 +23,9 @@ import fr.nantes1900.models.extended.steps.BuildingStep8;
 import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.ResidentialIslet;
-import fr.nantes1900.models.islets.buildings.exception.InvalidCaseException;
-import fr.nantes1900.models.islets.buildings.exception.UnCompletedParametersException;
+import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
+import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.view.display3d.MeshView;
@@ -80,6 +81,7 @@ public class BuildingsIsletController
      * @param type
      *            the new type of these triangles
      * @throws InvalidCaseException
+     *             if the type of action is not possible in this method
      */
     public final void action2(final List<Triangle> trianglesSelected,
             final int type) throws InvalidCaseException
@@ -89,6 +91,7 @@ public class BuildingsIsletController
             // The user wants these triangles to turn building.
             this.islet.getBiStep2()
                     .getInitialGrounds()
+                    .getMesh()
                     .removeAll(trianglesSelected);
             this.islet.getBiStep2()
                     .getInitialBuildings()
@@ -101,6 +104,7 @@ public class BuildingsIsletController
                     .removeAll(trianglesSelected);
             this.islet.getBiStep2()
                     .getInitialGrounds()
+                    .getMesh()
                     .addAll(trianglesSelected);
         } else
         {
@@ -109,13 +113,14 @@ public class BuildingsIsletController
     }
 
     /**
-     * TODO.
+     * Changes the type of a list of triangles (remove them or turn them to
+     * building). To call only during the third step.
      * @param trianglesSelected
-     *            TODO
+     *            the list of triangles
      * @param actionType
-     *            TODO
+     *            the new type of the triangles
      * @throws InvalidCaseException
-     *             TODO
+     *             if the type of action is not possible in this method
      */
     public final void action3(final List<Triangle> trianglesSelected,
             final int actionType) throws InvalidCaseException
@@ -127,7 +132,10 @@ public class BuildingsIsletController
                 BuildingStep3 buildingStep = (BuildingStep3) building.getbStep();
                 buildingStep.getInitialTotalMesh().removeAll(trianglesSelected);
             }
-            this.islet.getBiStep3().getGrounds().removeAll(trianglesSelected);
+            this.islet.getBiStep3()
+                    .getGrounds()
+                    .getMesh()
+                    .removeAll(trianglesSelected);
         } else if (actionType == ActionTypes.TURN_TO_BUILDING)
         {
             this.islet.getBiStep3()
@@ -141,13 +149,14 @@ public class BuildingsIsletController
     }
 
     /**
-     * TODO.
+     * Changes the type of a mesh (in noise or in real building). To call only
+     * during the third step.
      * @param mesh
-     *            TODO
+     *            the mesh
      * @param actionType
-     *            TODO
+     *            the new type of the mesh
      * @throws InvalidCaseException
-     *             TODO
+     *             if the type of action is not possible in this method
      */
     public final void
             action3(final Mesh mesh, final int actionType) throws InvalidCaseException
@@ -169,19 +178,17 @@ public class BuildingsIsletController
     }
 
     /**
-     * TODO.
+     * Changes the type of a list of triangles. To call only during the fourth
+     * step.
      * @param trianglesSelected
-     *            TODO
+     *            the list of triangles
      * @param actionType
-     *            TODO
+     *            the new type of the triangles
      * @throws InvalidCaseException
-     *             TODO
-     * @throws UnCompletedParametersException
-     *             TODO
+     *             if the type of action is not possible in this method
      */
     public final void action4(final List<Triangle> trianglesSelected,
-            final int actionType) throws InvalidCaseException,
-            UnCompletedParametersException
+            final int actionType) throws InvalidCaseException
     {
         Building building = this.searchForBuildingContaining4(trianglesSelected);
         BuildingStep4 buildingStep = (BuildingStep4) building.getbStep();
@@ -201,10 +208,11 @@ public class BuildingsIsletController
     }
 
     /**
-     * TODO.
+     * Searches in the list of buildings for the building which contains the
+     * triangles selected.
      * @param trianglesSelected
-     *            TODO
-     * @return TODO
+     *            the triangles
+     * @return the building containing <strong>all</strong> the triangles
      */
     private Building
             searchForBuildingContaining4(final List<Triangle> trianglesSelected)
@@ -222,23 +230,24 @@ public class BuildingsIsletController
     }
 
     /**
-     * TODO.
+     * Changes the type of the list of surfaces. To call onyl during the fifth
+     * step.
      * @param surfacesSelected
-     *            TODO
-     * @param type
-     *            TODO
+     *            the list of surfaces
+     * @param actionType
+     *            the new type of the surfaces
      * @throws InvalidCaseException
-     *             TODO
+     *             if the type of action is not possible in this method
      * @throws UnCompletedParametersException
-     *             TODO
+     *             if the surfaces are not contained in only one building
      */
     public final void action5(final List<Surface> surfacesSelected,
-            final int type) throws InvalidCaseException,
+            final int actionType) throws InvalidCaseException,
             UnCompletedParametersException
     {
         Building building = this.searchForBuildingContaining5(surfacesSelected);
         BuildingStep5 buildingStep = (BuildingStep5) building.getbStep();
-        if (type == ActionTypes.MERGE)
+        if (actionType == ActionTypes.MERGE)
         {
             if (buildingStep.getWalls().contains(surfacesSelected.get(0)))
             {
@@ -261,7 +270,7 @@ public class BuildingsIsletController
                 }
                 buildingStep.getRoofs().add(sum);
             }
-        } else if (type == ActionTypes.TURN_TO_NOISE)
+        } else if (actionType == ActionTypes.TURN_TO_NOISE)
         {
             buildingStep.getWalls().removeAll(surfacesSelected);
             buildingStep.getRoofs().removeAll(surfacesSelected);
@@ -276,15 +285,16 @@ public class BuildingsIsletController
     }
 
     /**
-     * TODO.
+     * Modifies characteristics of the list of surfaces (add neighbour, or
+     * remove). To call only in the sixth step.
      * @param surfacesSelected
-     *            TODO
+     *            the list of surfaces
      * @param currentSurface
-     *            TODO
+     *            the current surface, where to add or remove neighbours
      * @param actionType
-     *            TODO
+     *            the type of action to make
      * @throws InvalidCaseException
-     *             TODO
+     *             if the type of action is not possible in this method
      */
     public static final void action6(final List<Surface> surfacesSelected,
             final Surface currentSurface,
@@ -303,15 +313,16 @@ public class BuildingsIsletController
     }
 
     /**
-     * TODO.
+     * Changes the order of the list of neighbours of one surface. To call only
+     * in the seventh step.
      * @param surfaceToMove
-     *            TODO
+     *            the neighbour whose order has to be changed
      * @param currentSurface
-     *            TODO
+     *            the surface we want to change neighbours order of
      * @param actionType
-     *            TODO
+     *            the type of action
      * @throws InvalidCaseException
-     *             TODO
+     *             if the type of action is not possible in this method
      */
     public static final void action7(final Surface surfaceToMove,
             final Surface currentSurface,
@@ -331,8 +342,9 @@ public class BuildingsIsletController
     }
 
     /**
-     * TODO.
-     * @return TODO.
+     * Computes the average normal with the triangles selected in the universe
+     * 3D controller.
+     * @return the average normal
      */
     public final Vector3d computeNormalWithTrianglesSelected()
     {
@@ -491,6 +503,7 @@ public class BuildingsIsletController
      */
     private void launchTreatment0()
     {
+        // TODO : exception if not arguments ?
         this.islet.getBiStep0().setArguments(this.gravityNormal);
         this.islet.setBiStep1(this.islet.getBiStep0().launchTreatment());
     }
@@ -500,7 +513,14 @@ public class BuildingsIsletController
      */
     private void launchTreatment1()
     {
-        this.islet.setBiStep2(this.islet.getBiStep1().launchTreatment());
+        try
+        {
+            this.islet.getBiStep1().setArguments(this.gravityNormal);
+            this.islet.setBiStep2(this.islet.getBiStep1().launchTreatment());
+        } catch (NullArgumentException e)
+        {
+            System.out.println("Oupss.");
+        }
     }
 
     /**
@@ -552,7 +572,7 @@ public class BuildingsIsletController
     }
 
     /**
-     * TODO.
+     * Sets the gravity normal in the islet attribute.
      */
     public final void putGravityNormal()
     {
@@ -560,11 +580,12 @@ public class BuildingsIsletController
     }
 
     /**
-     * TODO.
+     * Reads the file containing the gravity normal and put it in this gravity
+     * normal.
      * @param fileName
-     *            TODO.
+     *            the way of the file of the gravity normal
      * @throws IOException
-     *             TODO.
+     *             if the file cannot be read
      */
     public final void
             readGravityNormal(final String fileName) throws IOException
@@ -575,10 +596,10 @@ public class BuildingsIsletController
     }
 
     /**
-     * TODO.
+     * Returns the building containing the mesh. To call only in the third step.
      * @param mesh
-     *            TODO
-     * @return TODO
+     *            the mesh to check
+     * @return the building containing the mesh
      */
     public final Building returnBuildingContaining3(final Mesh mesh)
     {
@@ -594,12 +615,13 @@ public class BuildingsIsletController
     }
 
     /**
-     * TODO.
+     * Searches in the list of the buildings the one which contains all the
+     * surfaces selected.
      * @param surfacesSelected
-     *            TODO
-     * @return TODO
+     *            the list of surfaces
+     * @return the building containing <strong>all</strong> these surfaces
      * @throws UnCompletedParametersException
-     *             TODO
+     *             if no building contains all of these surfaces
      */
     private Building
             searchForBuildingContaining5(final List<Surface> surfacesSelected) throws UnCompletedParametersException
@@ -680,7 +702,7 @@ public class BuildingsIsletController
     }
 
     /**
-     * TODO.
+     * Sets the islet ground normal with the gravity normal.
      */
     public final void useGravityNormalAsGroundNormal()
     {
@@ -721,9 +743,12 @@ public class BuildingsIsletController
         this.getU3DController()
                 .getUniverse3DView()
                 .addMesh(new MeshView(this.islet.getBiStep2()
-                        .getInitialGrounds()));
+                        .getInitialGrounds()
+                        .getMesh()));
 
-        // TODO : Also display the noise.
+        this.getU3DController()
+                .getUniverse3DView()
+                .addMesh(new MeshView(this.islet.getBiStep2().getNoise()));
     }
 
     /**
@@ -733,7 +758,9 @@ public class BuildingsIsletController
     {
         this.getU3DController()
                 .getUniverse3DView()
-                .addMesh(new MeshView(this.islet.getBiStep3().getGrounds()));
+                .addMesh(new MeshView(this.islet.getBiStep3()
+                        .getGrounds()
+                        .getMesh()));
 
         for (Building building : this.islet.getBiStep3().getBuildings())
         {
@@ -782,6 +809,10 @@ public class BuildingsIsletController
                         .addMesh(new MeshView(roof.getMesh()));
             }
         }
+
+        this.getU3DController()
+                .getUniverse3DView()
+                .addMesh(new MeshView(this.islet.getBiStep5().getNoise()));
     }
 
     /**
@@ -851,6 +882,7 @@ public class BuildingsIsletController
                         .addPolygonView(new PolygonView(roof.getPolygone()));
             }
         }
+        // TODO : displays with other colors the surfaces not well computed.
     }
 
     /**

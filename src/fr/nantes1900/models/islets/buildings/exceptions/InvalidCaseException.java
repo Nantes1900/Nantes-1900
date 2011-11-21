@@ -1,4 +1,4 @@
-package fr.nantes1900.models.islets.buildings.exception;
+package fr.nantes1900.models.islets.buildings.exceptions;
 
 /**
  * Implements an exception thrown when a switch-case operation is place in a

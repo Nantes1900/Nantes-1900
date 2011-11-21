@@ -64,7 +64,7 @@ public class BuildingStep8 extends AbstractBuildingStep
     @Override
     public final AbstractBuildingStep launchTreatment()
     {
-        // TODO : return an error : not implemented.
+        // No more treatments for now : this method do nothing.
         return null;
     }
 
@@ -76,7 +76,7 @@ public class BuildingStep8 extends AbstractBuildingStep
     @Override
     public final DefaultMutableTreeNode returnNode()
     {
-        // TODO Auto-generated method stub
+        // FIXME
         return null;
     }
 }

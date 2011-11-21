@@ -27,20 +27,17 @@ public class Surface
     /**
      * List of the neighbours of this surface.
      */
-    private final List<Surface> neighbours = new ArrayList<>();
+    private List<Surface> neighbours = new ArrayList<>();
 
     /**
      * The polygon representing this surface (after simplification).
      */
-    private Polygon             polygon    = new Polygon();
-
-    // FIXME : a Surface is an abstract class implemented by a polygon OR a
-    // mesh.
+    private Polygon       polygon    = new Polygon();
 
     /**
      * The mesh representing this surface (before simplification).
      */
-    private Mesh                mesh       = new Mesh();
+    private Mesh          mesh       = new Mesh();
 
     /**
      * Empty constructor.
@@ -76,7 +73,9 @@ public class Surface
      */
     public Surface(final Surface surface)
     {
-        // TODO : code this.
+        this.mesh = surface.mesh;
+        this.neighbours = surface.neighbours;
+        this.polygon = surface.polygon;
     }
 
     /**

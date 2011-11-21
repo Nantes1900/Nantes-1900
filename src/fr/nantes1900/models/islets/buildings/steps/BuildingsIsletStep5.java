@@ -7,7 +7,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
-import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.steps.BuildingStep5;
 
 /**
@@ -28,13 +27,18 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      */
     private Ground         grounds;
     /**
-     * The ground under a Surface type used in treatments.
-     */
-    private Surface        groundForAlgorithm;
-    /**
      * The noise used in the algorithms.
      */
     private Mesh           noise;
+
+    /**
+     * Getter.
+     * @return the noise
+     */
+    public final Mesh getNoise()
+    {
+        return this.noise;
+    }
 
     /**
      * Constructor.
@@ -68,9 +72,11 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
         return this.grounds;
     }
 
-    /**
-     * TODO. DeterminateNeighbours
-     * @return TODO.
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #launchTreatment()
      */
     @Override
     public final BuildingsIsletStep6 launchTreatment()
@@ -78,7 +84,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
         for (Building b : this.buildings)
         {
             BuildingStep5 buildingStep = (BuildingStep5) b.getbStep();
-            buildingStep.setArguments(this.noise, this.groundForAlgorithm);
+            buildingStep.setArguments(this.noise, this.grounds);
             b.launchTreatment();
         }
 
@@ -110,13 +116,12 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      * Setter.
      * @param noiseIn
      *            the noise
-     * @param groundForAlgorithmIn
-     *            the grounds as a surface used in treatments
+     * @param groundsIn
+     *            the grounds
      */
-    public final void setArguments(final Mesh noiseIn,
-            final Surface groundForAlgorithmIn)
+    public final void setArguments(final Mesh noiseIn, final Ground groundsIn)
     {
         this.noise = noiseIn;
-        this.groundForAlgorithm = groundForAlgorithmIn;
+        this.grounds = groundsIn;
     }
 }

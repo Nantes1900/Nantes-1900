@@ -12,6 +12,7 @@ import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.extended.Ground;
+import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.utils.Algos;
 
 /**
@@ -65,7 +66,6 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
         // Extracts the blocks in the oriented triangles.
         thingsList = Algos.blockExtract(meshOriented);
 
-        // FIXME : use MeshOriented.
         Mesh wholeGround = new Mesh();
         for (final Mesh f : thingsList)
         {
@@ -139,16 +139,21 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
         return new Ground(wholeGround);
     }
 
-    /**
-     * TODO. SeparationGroundBuilding
-     * @return TODO.
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #launchTreatment()
      */
     @Override
-    public final BuildingsIsletStep2 launchTreatment()
+    public final BuildingsIsletStep2
+            launchTreatment() throws NullArgumentException
     {
-        // TODO : test if the setArguments has been correctly called.
+        if (this.groundNormal == null)
+        {
+            throw new NullArgumentException();
+        }
         Ground initialGround = groundExtraction();
-        // TODO : implement the method toString in the Mesh part();
         Mesh initialBuildings = new Mesh(this.initialTotalMeshAfterBaseChange);
         initialBuildings.remove(initialGround);
         return new BuildingsIsletStep2(initialBuildings, initialGround);

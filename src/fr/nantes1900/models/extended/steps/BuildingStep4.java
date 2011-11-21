@@ -9,9 +9,11 @@ import javax.vecmath.Vector3d;
 import fr.nantes1900.constants.SeparationWallsSeparationRoofs;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Polygon;
+import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.Wall;
+import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.utils.Algos;
 
 /**
@@ -40,9 +42,9 @@ public class BuildingStep4 extends AbstractBuildingStep
      */
     private Vector3d   groundNormal;
     /**
-     * The ground as a surface for the treatments.
+     * The grounds.
      */
-    private Surface    groundForAlgorithm;
+    private Ground     grounds;
 
     /**
      * The list of walls.
@@ -132,13 +134,20 @@ public class BuildingStep4 extends AbstractBuildingStep
         return this.initialWall;
     }
 
+    /* (non-Javadoc)
+     * @see fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchTreatment()
+     */
     @Override
-    public final BuildingStep5 launchTreatment()
+    public final BuildingStep5 launchTreatment() throws NullArgumentException
     {
+        if (this.groundNormal == null || this.grounds == null)
+        {
+            throw new NullArgumentException();
+        }
         this.cutWalls();
         this.cutRoofs();
         this.treatNoise();
-        this.treatNewNeighbours(this.groundForAlgorithm);
+        this.treatNewNeighbours();
 
         List<Wall> wallsCopy = new ArrayList<>();
         for (Wall w : this.walls)
@@ -164,16 +173,14 @@ public class BuildingStep4 extends AbstractBuildingStep
         return root;
     }
 
-    // FIXME : what is the difference between searchForNeighbours and
-    // determinateNeighbours.
     /**
-     * TODO.
-     * @param grounds
-     *            TODO.
+     * Searches for every surfaces to check if it shares an edge with another
+     * surface : then they are neighbours.
      */
-    private void searchForNeighbours(final Surface grounds)
+    private void searchForNeighbours()
     {
-        final Polygon groundsBounds = grounds.getMesh().returnUnsortedBounds();
+        final Polygon groundsBounds = this.grounds.getMesh()
+                .returnUnsortedBounds();
 
         final List<Surface> wholeList = new ArrayList<>();
         wholeList.addAll(this.walls);
@@ -185,7 +192,7 @@ public class BuildingStep4 extends AbstractBuildingStep
             m.getNeighbours().clear();
         }
         // And we clear the neighbours of the grounds.
-        grounds.getNeighbours().clear();
+        this.grounds.getNeighbours().clear();
 
         final List<Polygon> wholeBoundsList = new ArrayList<>();
 
@@ -212,7 +219,7 @@ public class BuildingStep4 extends AbstractBuildingStep
 
             if (polygone1.isNeighbour(groundsBounds))
             {
-                wholeList.get(i).addNeighbour(grounds);
+                wholeList.get(i).addNeighbour(this.grounds);
             }
         }
     }
@@ -221,26 +228,24 @@ public class BuildingStep4 extends AbstractBuildingStep
      * Setter.
      * @param groundNormalIn
      *            the normal the ground
-     * @param groundForAlgorithmIn
-     *            the ground as a surface for the treatments
+     * @param groundsIn
+     *            the grounds
      */
     public final void setArguments(final Vector3d groundNormalIn,
-            final Surface groundForAlgorithmIn)
+            final Ground groundsIn)
     {
-        // TODO : check if this method has been called before lauching
-        // treatment.
         this.groundNormal = groundNormalIn;
-        this.groundForAlgorithm = groundForAlgorithmIn;
+        this.grounds = groundsIn;
     }
 
     /**
-     * TODO.
-     * @param grounds
-     *            TODO.
+     * After the noise addition, if some of the walls or some of the roofs are
+     * now neighbours (they share an edge) and have the same orientation, then
+     * they are added to form only one wall or roof.
      */
-    private void treatNewNeighbours(final Surface grounds)
+    private void treatNewNeighbours()
     {
-        this.searchForNeighbours(grounds);
+        this.searchForNeighbours();
 
         // After the noise addition, if some of the walls or some of the
         // roofs are now neighbours (they share an edge) and have the same
@@ -285,7 +290,8 @@ public class BuildingStep4 extends AbstractBuildingStep
     }
 
     /**
-     * TODO.
+     * Treats the current noise to add it as much as possible in the roofs or
+     * the walls.
      */
     private void treatNoise()
     {

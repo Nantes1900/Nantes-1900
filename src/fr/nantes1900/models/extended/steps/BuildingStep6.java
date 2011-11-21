@@ -5,15 +5,17 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.Surface.ImpossibleNeighboursOrderException;
 import fr.nantes1900.models.extended.Wall;
+import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
- * Implements a building step : a state of the building. This step is after
- * TODO.
- * @author Daniel
+ * Implements a building step : a state of the building. This step is after the
+ * determination of the neighbours and before the sort of neighbours.
+ * @author Daniel Lefevre
  */
 public class BuildingStep6 extends AbstractBuildingStep
 {
@@ -29,9 +31,9 @@ public class BuildingStep6 extends AbstractBuildingStep
     private List<Roof>       roofs                    = new ArrayList<>();
 
     /**
-     * The ground as a surface used in treatments.
+     * The grounds.
      */
-    private Surface          groundForAlgorithm;
+    private Ground           ground;
 
     /**
      * Number minimal of neighbours to be considered as a real surface.
@@ -76,11 +78,16 @@ public class BuildingStep6 extends AbstractBuildingStep
      * ()
      */
     @Override
-    public final BuildingStep7 launchTreatment()
+    public final BuildingStep7 launchTreatment() throws NullArgumentException
     {
+        if (this.ground == null)
+        {
+            throw new NullArgumentException();
+        }
+
         this.sortSurfaces();
-        // TODO : if null ?
-        this.orderNeighbours(this.groundForAlgorithm);
+
+        this.orderNeighbours();
 
         List<Wall> wallsCopy = new ArrayList<>();
         for (Wall w : this.walls)
@@ -96,11 +103,10 @@ public class BuildingStep6 extends AbstractBuildingStep
     }
 
     /**
-     * TODO.
-     * @param grounds
-     *            TODO.
+     * Orders the neighbours by calling the method orderNeighbours from the
+     * class Surface.
      */
-    public final void orderNeighbours(final Surface grounds)
+    public final void orderNeighbours()
     {
         // Adds all the surfaces
         final List<Surface> wholeList = new ArrayList<>();
@@ -114,7 +120,7 @@ public class BuildingStep6 extends AbstractBuildingStep
                 // Orders its neighbours in order to treat them.
                 // If the neighbours of one surface are not 2 per 2 neighbours
                 // each other, then it tries to correct it.
-                surface.orderNeighbours(wholeList, grounds);
+                surface.orderNeighbours(wholeList, this.ground);
 
             } catch (final ImpossibleNeighboursOrderException e)
             {
@@ -137,12 +143,12 @@ public class BuildingStep6 extends AbstractBuildingStep
 
     /**
      * Setter.
-     * @param groundForAlgorithmIn
-     *            the ground as a surface used in algorithms
+     * @param groundIn
+     *            the grounds
      */
-    public final void setArguments(final Surface groundForAlgorithmIn)
+    public final void setArguments(final Ground groundIn)
     {
-        this.groundForAlgorithm = groundForAlgorithmIn;
+        this.ground = groundIn;
     }
 
     /**

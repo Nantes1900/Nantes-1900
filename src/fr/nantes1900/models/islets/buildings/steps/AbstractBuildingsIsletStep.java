@@ -2,6 +2,8 @@ package fr.nantes1900.models.islets.buildings.steps;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+
 /**
  * Abstract the steps of the islet treatment. Each step must be able to launch
  * the next treatment and to return a TreeNode for the JTree.
@@ -13,8 +15,12 @@ public abstract class AbstractBuildingsIsletStep
     /**
      * Launches the treatment.
      * @return the next step
+     * @throws NullArgumentException
+     *             when an argument needed in the treatment have not been
+     *             initialized
      */
-    public abstract AbstractBuildingsIsletStep launchTreatment();
+    public abstract AbstractBuildingsIsletStep
+            launchTreatment() throws NullArgumentException;
 
     /**
      * Builds a tree node for the JTree.

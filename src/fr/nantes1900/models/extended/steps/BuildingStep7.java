@@ -14,6 +14,7 @@ import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.Surface.InvalidSurfaceException;
 import fr.nantes1900.models.extended.Wall;
+import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
  * TODO.
@@ -51,11 +52,9 @@ public class BuildingStep7 extends AbstractBuildingStep
     }
 
     /**
-     * TODO.
-     * @param normalGround
-     *            TODO.
+     * Computes the contour of the surface, using the sorted neighbours.
      */
-    public final void determinateContours(final Vector3d normalGround)
+    public final void determinateContours()
     {
         // Creates the map where the points and edges will be put : if one
         // point is created a second time, it will be given the same
@@ -75,7 +74,7 @@ public class BuildingStep7 extends AbstractBuildingStep
                 // them to find the edges of this surface.
                 final Polygon p = surface.findEdges(this.walls,
                         pointMap,
-                        normalGround);
+                        this.groundNormal);
 
                 surface.setPolygone(p);
             } catch (final InvalidSurfaceException e)
@@ -110,9 +109,13 @@ public class BuildingStep7 extends AbstractBuildingStep
      * ()
      */
     @Override
-    public final BuildingStep8 launchTreatment()
+    public final BuildingStep8 launchTreatment() throws NullArgumentException
     {
-        this.determinateContours(this.groundNormal);
+        if (this.groundNormal == null)
+        {
+            throw new NullArgumentException();
+        }
+        this.determinateContours();
 
         List<Wall> wallsCopy = new ArrayList<>();
         for (Wall w : this.walls)
@@ -130,7 +133,7 @@ public class BuildingStep7 extends AbstractBuildingStep
     @Override
     public final DefaultMutableTreeNode returnNode()
     {
-        // TODO Auto-generated method stub
+        // FIXME
         return null;
     }
 

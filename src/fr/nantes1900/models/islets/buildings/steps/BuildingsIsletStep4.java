@@ -7,7 +7,6 @@ import javax.vecmath.Vector3d;
 
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
-import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.steps.BuildingStep4;
 
 /**
@@ -27,10 +26,6 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
      * The grounds.
      */
     private Ground         grounds;
-    /**
-     * The ground under the surface type for some treatments.
-     */
-    private Surface        groundForAlgorithm;
     /**
      * The normal to the ground used in treatments.
      */
@@ -75,13 +70,10 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
     @Override
     public final BuildingsIsletStep5 launchTreatment()
     {
-        this.groundForAlgorithm = new Surface(this.grounds);
-
         for (Building b : this.buildings)
         {
             BuildingStep4 buildingStep = (BuildingStep4) b.getbStep();
-            buildingStep.setArguments(this.groundNormal,
-                    this.groundForAlgorithm);
+            buildingStep.setArguments(this.groundNormal, this.grounds);
             b.launchTreatment();
         }
 
