@@ -19,6 +19,9 @@ import fr.nantes1900.view.display3d.TriangleView;
 import fr.nantes1900.view.display3d.Universe3DView;
 
 // FIXME : Javadoc
+/**
+ * TODO.
+ */
 public class Universe3DController implements MouseListener, MouseMotionListener
 {
 
@@ -26,24 +29,42 @@ public class Universe3DController implements MouseListener, MouseMotionListener
      * The view of the 3D objets to show.
      */
     private Universe3DView          u3DView;
-
+    /**
+     * TODO.
+     */
     private PickCanvas              pickCanvas;
+    /**
+     * TODO.
+     */
     private NewMouseRotate          mouseRotate;
 
-    // private ArrayList<MeshView> meshesViewSelected;
+    /**
+     * TODO.
+     */
     private ArrayList<TriangleView> trianglesViewSelected;
-
-    // private ArrayList<PolygonView> polygonsViewSelected;
+    /**
+     * TODO.
+     */
     private int                     xPressed;
+    /**
+     * TODO.
+     */
     private int                     yPressed;
 
+    /**
+     * TODO.
+     */
     public Universe3DController()
     {
         this.u3DView = new Universe3DView(this);
         this.trianglesViewSelected = new ArrayList<>();
     }
 
-    public NewMouseRotate getMouseRotate()
+    /**
+     * TODO.
+     * @return TODO
+     */
+    public final NewMouseRotate getMouseRotate()
     {
         return this.mouseRotate;
     }
@@ -51,9 +72,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     /**
      * Returns the list of Triangle associated with the trianglesView contained
      * in trianglesViewSelected.
-     * @return
+     * @return the list of selected triangles
      */
-    public List<Triangle> getTrianglesSelected()
+    public final List<Triangle> getTrianglesSelected()
     {
         List<Triangle> trianglesList = new ArrayList<>();
         for (TriangleView triangleView : this.trianglesViewSelected)
@@ -63,13 +84,21 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         return trianglesList;
     }
 
-    public Universe3DView getUniverse3DView()
+    /**
+     * Getter.
+     * @return the universe 3D view
+     */
+    public final Universe3DView getUniverse3DView()
     {
         return this.u3DView;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
     @Override
-    public void mouseClicked(MouseEvent e)
+    public final void mouseClicked(final MouseEvent e)
     {
         int buttonDown = e.getButton();
 
@@ -85,57 +114,86 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 System.out.println("Nothing picked");
             } else
             {
+                PickIntersection pickIntersection = result.getIntersection(0);
+                int[] pointIndex = pickIntersection.getPrimitiveVertexIndices();
+                int triangleIndex = pointIndex[0] / 3;
 
-                PickIntersection PI = result.getIntersection(0);
-                int[] PointIndex = PI.getPrimitiveVertexIndices();
-                int TriangleIndex = PointIndex[0] / 3;
-                MeshView triangleMeshView = (MeshView) PI.getGeometryArray();
-                triangleMeshView.selectOrUnselect(TriangleIndex);
-                mouseRotate.setCenter(triangleMeshView.getTriangleArray()
-                        .get(TriangleIndex));
+                MeshView triangleMeshView = (MeshView) pickIntersection.getGeometryArray();
 
+                triangleMeshView.selectOrUnselect(triangleIndex);
+
+                this.mouseRotate.setCenter(triangleMeshView.getTriangleArray()
+                        .get(triangleIndex));
             }
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * java.awt.event.MouseMotionListener#mouseDragged(java.awt.event.MouseEvent
+     * )
+     */
     @Override
-    public void mouseDragged(MouseEvent arg0)
+    public void mouseDragged(final MouseEvent arg0)
     {
         // TODO Auto-generated method stub
 
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
+     */
     @Override
-    public void mouseEntered(MouseEvent arg0)
+    public void mouseEntered(final MouseEvent arg0)
     {
         // TODO Auto-generated method stub
 
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
+     */
     @Override
-    public void mouseExited(MouseEvent e)
+    public void mouseExited(final MouseEvent e)
     {
         // TODO Auto-generated method stub
 
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * java.awt.event.MouseMotionListener#mouseMoved(java.awt.event.MouseEvent)
+     */
     @Override
-    public void mouseMoved(MouseEvent e)
+    public void mouseMoved(final MouseEvent e)
     {
         // TODO Auto-generated method stub
 
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
+     */
     @Override
-    public void mousePressed(MouseEvent e)
+    public final void mousePressed(final MouseEvent e)
     {
         System.out.println("Mouse Pressed");
         this.xPressed = e.getX();
         this.yPressed = e.getY();
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
+     */
     @Override
-    public void mouseReleased(MouseEvent e)
+    public final void mouseReleased(final MouseEvent e)
     {
         int buttonDown = e.getButton();
         if (buttonDown == MouseEvent.BUTTON1)
@@ -156,7 +214,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                         int TriangleIndex = PointIndex[0] / 3;
                         MeshView triangleMeshView = (MeshView) PI.getGeometryArray();
                         triangleMeshView.select(TriangleIndex);
-                        mouseRotate.setCenter(triangleMeshView.getTriangleArray()
+                        this.mouseRotate.setCenter(triangleMeshView.getTriangleArray()
                                 .get(TriangleIndex));
 
                     }
@@ -165,12 +223,18 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         }
     }
 
-    public void setMouseRotate(NewMouseRotate mouseRotate)
+    /**
+     * @param mouseRotate
+     */
+    public final void setMouseRotate(final NewMouseRotate mouseRotate)
     {
         this.mouseRotate = mouseRotate;
     }
 
-    public void setPickCanvas(BranchGroup branchGroup)
+    /**
+     * @param branchGroup
+     */
+    public final void setPickCanvas(final BranchGroup branchGroup)
     {
         this.pickCanvas = new PickCanvas(this.u3DView.getSimpleUniverse()
                 .getCanvas(), branchGroup);

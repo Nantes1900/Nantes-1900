@@ -193,13 +193,13 @@ public class IsletSelectionController
                 .getActionsView().isGravityGroundCheckBoxSelected())
                 && this.selectedFile != null)
         {
-            if (!this.aController.getActionsView()
+            if (this.aController.getActionsView()
                     .isGravityGroundCheckBoxSelected())
             {
-                this.computeGroundNormal();
+                this.biController.useGravityNormalAsGroundNormal();
             } else
             {
-                this.biController.useGravityNormalAsGroundNormal();
+                this.computeGroundNormal();
             }
             this.parentController.launchIsletProcess(this.selectedFile,
                     this.biController);

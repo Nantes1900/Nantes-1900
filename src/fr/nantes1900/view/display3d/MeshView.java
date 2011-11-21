@@ -157,7 +157,7 @@ public class MeshView extends TriangleArray
      * @param i
      *            TODO.
      */
-    public final void select(int i)
+    public final void select(final int i)
     {
         this.trianglesViewList.get(i).setSelected(true);
         // TODO : method deprecated.

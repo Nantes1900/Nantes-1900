@@ -199,8 +199,14 @@ public class BuildingsIsletController
         }
     }
 
+    /**
+     * TODO.
+     * @param trianglesSelected
+     *            TODO
+     * @return TODO
+     */
     private Building
-            searchForBuildingContaining4(List<Triangle> trianglesSelected)
+            searchForBuildingContaining4(final List<Triangle> trianglesSelected)
     {
         for (Building building : this.islet.getBiStep4().getBuildings())
         {
