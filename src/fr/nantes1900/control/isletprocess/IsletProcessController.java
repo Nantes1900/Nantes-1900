@@ -9,6 +9,7 @@ import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.listener.ElementsSelectedListener;
+import fr.nantes1900.models.islets.buildings.InvalidCaseException;
 import fr.nantes1900.view.isletprocess.IsletProcessView;
 
 /**
@@ -28,7 +29,8 @@ public class IsletProcessController implements ElementsSelectedListener
     private int                      progression;
 
     public IsletProcessController(GlobalController parentController,
-            File isletFile, BuildingsIsletController biController)
+            File isletFile,
+            BuildingsIsletController biController)
     {
         this.parentController = parentController;
 
@@ -42,8 +44,10 @@ public class IsletProcessController implements ElementsSelectedListener
         this.biController.display();
 
         this.ipView = new IsletProcessView(cController.getView(),
-                itController.getView(), nbController.getView(),
-                pController.getView(), u3DController.getUniverse3DView());
+                itController.getView(),
+                nbController.getView(),
+                pController.getView(),
+                u3DController.getUniverse3DView());
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
     }
@@ -60,8 +64,15 @@ public class IsletProcessController implements ElementsSelectedListener
         switch (progression)
         {
             case 2:
-                this.biController.action2(u3DController.getTrianglesSelected(),
-                        actionType);
+                try
+                {
+                    this.biController.action2(u3DController.getTrianglesSelected(),
+                            actionType);
+                } catch (InvalidCaseException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             break;
         }
     }

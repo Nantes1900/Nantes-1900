@@ -201,6 +201,15 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
 
     /**
      * Getter.
+     * @return the gravity normal
+     */
+    public final Vector3d getGravityNormal()
+    {
+        return this.gravityNormal;
+    }
+
+    /**
+     * Getter.
      * @return the normal to the ground
      */
     public final Vector3d getGroundNormal()
@@ -352,6 +361,16 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
 
     /**
      * Setter.
+     * @param gravityNormalIn
+     *            the new gravity normal
+     */
+    public final void setGravityNormal(final Vector3d gravityNormalIn)
+    {
+        this.gravityNormal = gravityNormalIn;
+    }
+
+    /**
+     * Setter.
      * @param groundNormalIn
      *            the normal to set as ground normal
      */
@@ -368,24 +387,5 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     public final void setProgression(final int progressionIn)
     {
         this.progression = progressionIn;
-    }
-
-    /**
-     * Getter.
-     * @return the gravity normal
-     */
-    public final Vector3d getGravityNormal()
-    {
-        return this.gravityNormal;
-    }
-
-    /**
-     * Setter.
-     * @param gravityNormalIn
-     *            the new gravity normal
-     */
-    public final void setGravityNormal(final Vector3d gravityNormalIn)
-    {
-        this.gravityNormal = gravityNormalIn;
     }
 }
