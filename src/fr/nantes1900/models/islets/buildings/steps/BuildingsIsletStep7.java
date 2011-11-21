@@ -7,6 +7,7 @@ import javax.vecmath.Vector3d;
 
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
+import fr.nantes1900.models.extended.steps.BuildingStep7;
 
 /**
  * Implements a step of the treatment. This step is after the sort of the
@@ -75,7 +76,8 @@ public class BuildingsIsletStep7 extends AbstractBuildingsIsletStep
     {
         for (Building b : this.buildings)
         {
-            b.getbStep7().setArguments(this.groundNormal);
+            BuildingStep7 buildingStep = (BuildingStep7) b.getbStep();
+            buildingStep.setArguments(this.groundNormal);
             b.launchTreatment();
         }
 

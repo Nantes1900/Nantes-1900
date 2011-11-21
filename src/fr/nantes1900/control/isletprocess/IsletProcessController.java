@@ -9,7 +9,7 @@ import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.listener.ElementsSelectedListener;
-import fr.nantes1900.models.islets.buildings.InvalidCaseException;
+import fr.nantes1900.models.islets.buildings.exception.InvalidCaseException;
 import fr.nantes1900.view.isletprocess.IsletProcessView;
 
 /**

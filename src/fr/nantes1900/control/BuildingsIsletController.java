@@ -14,11 +14,17 @@ import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.Wall;
+import fr.nantes1900.models.extended.steps.BuildingStep3;
+import fr.nantes1900.models.extended.steps.BuildingStep4;
+import fr.nantes1900.models.extended.steps.BuildingStep5;
+import fr.nantes1900.models.extended.steps.BuildingStep6;
+import fr.nantes1900.models.extended.steps.BuildingStep7;
+import fr.nantes1900.models.extended.steps.BuildingStep8;
 import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
-import fr.nantes1900.models.islets.buildings.InvalidCaseException;
 import fr.nantes1900.models.islets.buildings.ResidentialIslet;
-import fr.nantes1900.models.islets.buildings.UnCompletedParametersException;
+import fr.nantes1900.models.islets.buildings.exception.InvalidCaseException;
+import fr.nantes1900.models.islets.buildings.exception.UnCompletedParametersException;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.view.display3d.MeshView;
@@ -118,9 +124,8 @@ public class BuildingsIsletController
         {
             for (Building building : this.islet.getBiStep3().getBuildings())
             {
-                building.getbStep3()
-                        .getInitialTotalMesh()
-                        .removeAll(trianglesSelected);
+                BuildingStep3 buildingStep = (BuildingStep3) building.getbStep();
+                buildingStep.getInitialTotalMesh().removeAll(trianglesSelected);
             }
             this.islet.getBiStep3().getGrounds().removeAll(trianglesSelected);
         } else if (actionType == ActionTypes.TURN_TO_BUILDING)
@@ -179,23 +184,19 @@ public class BuildingsIsletController
             UnCompletedParametersException
     {
         Building building = this.searchForBuildingContaining4(trianglesSelected);
-        if (building != null)
+        BuildingStep4 buildingStep = (BuildingStep4) building.getbStep();
+
+        if (actionType == ActionTypes.TURN_TO_WALL)
         {
-            if (actionType == ActionTypes.TURN_TO_WALL)
-            {
-                building.getbStep4().getInitialWall().addAll(trianglesSelected);
-                building.getbStep4().getInitialRoof().remove(trianglesSelected);
-            } else if (actionType == ActionTypes.TURN_TO_ROOF)
-            {
-                building.getbStep4().getInitialRoof().addAll(trianglesSelected);
-                building.getbStep4().getInitialWall().remove(trianglesSelected);
-            } else
-            {
-                throw new InvalidCaseException();
-            }
+            buildingStep.getInitialWall().addAll(trianglesSelected);
+            buildingStep.getInitialRoof().remove(trianglesSelected);
+        } else if (actionType == ActionTypes.TURN_TO_ROOF)
+        {
+            buildingStep.getInitialRoof().addAll(trianglesSelected);
+            buildingStep.getInitialWall().remove(trianglesSelected);
         } else
         {
-            throw new UnCompletedParametersException();
+            throw new InvalidCaseException();
         }
     }
 
@@ -210,10 +211,8 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep4().getBuildings())
         {
-            if (building.getbStep4()
-                    .getInitialWall()
-                    .containsAll(trianglesSelected) || building.getbStep4()
-                    .getInitialRoof()
+            BuildingStep4 buildingStep = (BuildingStep4) building.getbStep();
+            if (buildingStep.getInitialWall().containsAll(trianglesSelected) || buildingStep.getInitialRoof()
                     .containsAll(trianglesSelected))
             {
                 return building;
@@ -238,48 +237,41 @@ public class BuildingsIsletController
             UnCompletedParametersException
     {
         Building building = this.searchForBuildingContaining5(surfacesSelected);
-        if (building != null)
+        BuildingStep5 buildingStep = (BuildingStep5) building.getbStep();
+        if (type == ActionTypes.MERGE)
         {
-            if (type == ActionTypes.MERGE)
+            if (buildingStep.getWalls().contains(surfacesSelected.get(0)))
             {
-                if (building.getbStep5()
-                        .getWalls()
-                        .contains(surfacesSelected.get(0)))
-                {
-                    // It means the meshes selected belong to the walls.
-                    building.getbStep5().getWalls().removeAll(surfacesSelected);
-                    Wall sum = new Wall();
-                    for (Surface s : surfacesSelected)
-                    {
-                        sum.getMesh().addAll(s.getMesh());
-                    }
-                    building.getbStep5().getWalls().add(sum);
-                } else
-                {
-                    // It means the meshes selected belong to the roofs.
-                    building.getbStep5().getRoofs().removeAll(surfacesSelected);
-                    Roof sum = new Roof();
-                    for (Surface s : surfacesSelected)
-                    {
-                        sum.getMesh().addAll(s.getMesh());
-                    }
-                    building.getbStep5().getRoofs().add(sum);
-                }
-            } else if (type == ActionTypes.TURN_TO_NOISE)
-            {
-                building.getbStep5().getWalls().removeAll(surfacesSelected);
-                building.getbStep5().getRoofs().removeAll(surfacesSelected);
+                // It means the meshes selected belong to the walls.
+                buildingStep.getWalls().removeAll(surfacesSelected);
+                Wall sum = new Wall();
                 for (Surface s : surfacesSelected)
                 {
-                    building.getbStep5().getNoise().addAll(s.getMesh());
+                    sum.getMesh().addAll(s.getMesh());
                 }
+                buildingStep.getWalls().add(sum);
             } else
             {
-                throw new InvalidCaseException();
+                // It means the meshes selected belong to the roofs.
+                buildingStep.getRoofs().removeAll(surfacesSelected);
+                Roof sum = new Roof();
+                for (Surface s : surfacesSelected)
+                {
+                    sum.getMesh().addAll(s.getMesh());
+                }
+                buildingStep.getRoofs().add(sum);
+            }
+        } else if (type == ActionTypes.TURN_TO_NOISE)
+        {
+            buildingStep.getWalls().removeAll(surfacesSelected);
+            buildingStep.getRoofs().removeAll(surfacesSelected);
+            for (Surface s : surfacesSelected)
+            {
+                buildingStep.getNoise().addAll(s.getMesh());
             }
         } else
         {
-            throw new UnCompletedParametersException();
+            throw new InvalidCaseException();
         }
     }
 
@@ -592,7 +584,8 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep3().getBuildings())
         {
-            if (building.getbStep3().getInitialTotalMesh() == mesh)
+            BuildingStep3 buildingStep = (BuildingStep3) building.getbStep();
+            if (buildingStep.getInitialTotalMesh() == mesh)
             {
                 return null;
             }
@@ -611,13 +604,13 @@ public class BuildingsIsletController
     private Building
             searchForBuildingContaining5(final List<Surface> surfacesSelected) throws UnCompletedParametersException
     {
-        for (Building b : this.islet.getBiStep5().getBuildings())
+        for (Building building : this.islet.getBiStep5().getBuildings())
         {
-            if (b.getbStep5().getWalls().containsAll(surfacesSelected) || b.getbStep5()
-                    .getRoofs()
+            BuildingStep5 buildingStep = (BuildingStep5) building.getbStep();
+            if (buildingStep.getWalls().containsAll(surfacesSelected) || buildingStep.getRoofs()
                     .containsAll(surfacesSelected))
             {
-                return b;
+                return building;
             }
         }
         throw new UnCompletedParametersException();
@@ -744,10 +737,10 @@ public class BuildingsIsletController
 
         for (Building building : this.islet.getBiStep3().getBuildings())
         {
+            BuildingStep3 buildingStep = (BuildingStep3) building.getbStep();
             this.getU3DController()
                     .getUniverse3DView()
-                    .addMesh(new MeshView(building.getbStep3()
-                            .getInitialTotalMesh()));
+                    .addMesh(new MeshView(buildingStep.getInitialTotalMesh()));
         }
     }
 
@@ -758,12 +751,13 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep4().getBuildings())
         {
+            BuildingStep4 buildingStep = (BuildingStep4) building.getbStep();
             this.getU3DController()
                     .getUniverse3DView()
-                    .addMesh(new MeshView(building.getbStep4().getInitialWall()));
+                    .addMesh(new MeshView(buildingStep.getInitialWall()));
             this.getU3DController()
                     .getUniverse3DView()
-                    .addMesh(new MeshView(building.getbStep4().getInitialRoof()));
+                    .addMesh(new MeshView(buildingStep.getInitialRoof()));
         }
     }
 
@@ -774,13 +768,14 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep5().getBuildings())
         {
-            for (Surface wall : building.getbStep5().getWalls())
+            BuildingStep5 buildingStep = (BuildingStep5) building.getbStep();
+            for (Surface wall : buildingStep.getWalls())
             {
                 this.getU3DController()
                         .getUniverse3DView()
                         .addMesh(new MeshView(wall.getMesh()));
             }
-            for (Surface roof : building.getbStep5().getRoofs())
+            for (Surface roof : buildingStep.getRoofs())
             {
                 this.getU3DController()
                         .getUniverse3DView()
@@ -796,13 +791,14 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep6().getBuildings())
         {
-            for (Surface wall : building.getbStep6().getWalls())
+            BuildingStep6 buildingStep = (BuildingStep6) building.getbStep();
+            for (Surface wall : buildingStep.getWalls())
             {
                 this.getU3DController()
                         .getUniverse3DView()
                         .addMesh(new MeshView(wall.getMesh()));
             }
-            for (Surface roof : building.getbStep6().getRoofs())
+            for (Surface roof : buildingStep.getRoofs())
             {
                 this.getU3DController()
                         .getUniverse3DView()
@@ -818,13 +814,14 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep7().getBuildings())
         {
-            for (Surface wall : building.getbStep7().getWalls())
+            BuildingStep7 buildingStep = (BuildingStep7) building.getbStep();
+            for (Surface wall : buildingStep.getWalls())
             {
                 this.getU3DController()
                         .getUniverse3DView()
                         .addMesh(new MeshView(wall.getMesh()));
             }
-            for (Surface roof : building.getbStep7().getRoofs())
+            for (Surface roof : buildingStep.getRoofs())
             {
                 this.getU3DController()
                         .getUniverse3DView()
@@ -840,13 +837,14 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep8().getBuildings())
         {
-            for (Surface wall : building.getbStep8().getWalls())
+            BuildingStep8 buildingStep = (BuildingStep8) building.getbStep();
+            for (Surface wall : buildingStep.getWalls())
             {
                 this.getU3DController()
                         .getUniverse3DView()
                         .addPolygonView(new PolygonView(wall.getPolygone()));
             }
-            for (Surface roof : building.getbStep8().getRoofs())
+            for (Surface roof : buildingStep.getRoofs())
             {
                 this.getU3DController()
                         .getUniverse3DView()

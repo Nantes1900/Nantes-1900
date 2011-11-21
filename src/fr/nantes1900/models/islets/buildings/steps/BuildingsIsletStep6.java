@@ -7,6 +7,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.extended.steps.BuildingStep6;
 
 /**
  * Implements a step of the treatment. This step is after the determination of
@@ -70,7 +71,8 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
     {
         for (Building b : this.buildings)
         {
-            b.getbStep6().setArguments(this.groundForAlgorithm);
+            BuildingStep6 buildingStep = (BuildingStep6) b.getbStep();
+            buildingStep.setArguments(this.groundForAlgorithm);
             b.launchTreatment();
         }
 

@@ -8,6 +8,7 @@ import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.extended.steps.BuildingStep5;
 
 /**
  * Implements a step of the treatment. This step is after the separation between
@@ -76,7 +77,8 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
     {
         for (Building b : this.buildings)
         {
-            b.getbStep5().setArguments(this.noise, this.groundForAlgorithm);
+            BuildingStep5 buildingStep = (BuildingStep5) b.getbStep();
+            buildingStep.setArguments(this.noise, this.groundForAlgorithm);
             b.launchTreatment();
         }
 

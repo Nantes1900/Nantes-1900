@@ -4,6 +4,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.models.islets.AbstractIslet;
+import fr.nantes1900.models.islets.buildings.exception.InvalidCaseException;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep1;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep2;
@@ -21,7 +22,6 @@ import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep8;
  */
 public abstract class AbstractBuildingsIslet extends AbstractIslet
 {
-
     /**
      * The zero building islet step.
      */
@@ -67,7 +67,6 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * The number of the step 1.
      */
     public static final int     FIRST_STEP   = 1;
-
     /**
      * The number of the step 2.
      */

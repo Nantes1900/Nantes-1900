@@ -8,6 +8,7 @@ import javax.vecmath.Vector3d;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.extended.steps.BuildingStep4;
 
 /**
  * Implements a step of the treatment. This step is after the separation between
@@ -78,7 +79,8 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
 
         for (Building b : this.buildings)
         {
-            b.getbStep4().setArguments(this.groundNormal,
+            BuildingStep4 buildingStep = (BuildingStep4) b.getbStep();
+            buildingStep.setArguments(this.groundNormal,
                     this.groundForAlgorithm);
             b.launchTreatment();
         }
