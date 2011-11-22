@@ -52,6 +52,8 @@ public class IsletProcessController implements ElementsSelectedListener
         this.u3DController.addElementsSelectedListener(this);
     }
 
+    public BuildingsIsletController getBiController(){return this.biController;}
+    
     /**
      * Launches an action depending of the actual step with the given action
      * type.

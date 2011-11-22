@@ -498,6 +498,20 @@ public class BuildingsIsletController
         }
     }
 
+    public void abortTreatment(){
+        /*
+         * FILL ME WITH ALL YOU CAN
+         * C'est simple, suffit de dire qu'il est au traitement 0 ! ;)
+         */
+    }
+    
+    public void lastTreatment(){
+        /*
+         * Va au traitement du niveau n-1
+         */
+        System.out.println("LastTreatment");
+    }
+    
     /**
      * Launches the first treatment.
      */
