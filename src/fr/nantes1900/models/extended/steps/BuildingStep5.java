@@ -16,8 +16,10 @@ import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.utils.Algos;
 
 /**
- * TODO.
- * @author Daniel
+ * Implements a building step : a state of the building. This step is after
+ * separation between walls and between roofs and before the determination of
+ * the neighbours of each surfaces.
+ * @author Daniel Lefèvre
  */
 public class BuildingStep5 extends AbstractBuildingStep
 {
@@ -178,6 +180,8 @@ public class BuildingStep5 extends AbstractBuildingStep
         {
             currentNode.add(new DefaultMutableTreeNode(r.returnNode()));
         }
+        currentNode.add(new DefaultMutableTreeNode(this.noise));
+        currentNode.add(new DefaultMutableTreeNode(this.ground));
 
         return currentNode;
     }

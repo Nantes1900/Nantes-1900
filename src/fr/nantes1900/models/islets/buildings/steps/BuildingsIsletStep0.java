@@ -113,7 +113,6 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
     @Override
     public final DefaultMutableTreeNode returnNode()
     {
-        // TODO : create a method toString in the class Mesh to use it here.
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(this.initialTotalMesh);
         return node;
     }

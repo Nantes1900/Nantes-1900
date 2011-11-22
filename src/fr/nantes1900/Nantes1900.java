@@ -4,13 +4,6 @@
 package fr.nantes1900;
 
 import fr.nantes1900.control.GlobalController;
-import fr.nantes1900.control.display3d.Universe3DController;
-import fr.nantes1900.view.display3d.Universe3DView;
-import fr.nantes1900.view.isletprocess.CaracteristicsView;
-import fr.nantes1900.view.isletprocess.IsletProcessView;
-import fr.nantes1900.view.isletprocess.IsletTreeView;
-import fr.nantes1900.view.isletprocess.NavigationBarView;
-import fr.nantes1900.view.isletprocess.ParametersView;
 
 /**
  * Implements a main class. Launch the UI.

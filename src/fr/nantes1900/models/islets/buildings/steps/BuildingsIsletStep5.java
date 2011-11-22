@@ -105,9 +105,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
         {
             root.add(b.returnNode());
         }
-        DefaultMutableTreeNode nodeG = new DefaultMutableTreeNode(this.grounds);
-
-        root.add(nodeG);
+        root.add(new DefaultMutableTreeNode(this.grounds));
 
         return root;
     }

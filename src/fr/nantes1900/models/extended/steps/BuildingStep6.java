@@ -137,8 +137,18 @@ public class BuildingStep6 extends AbstractBuildingStep
     @Override
     public final DefaultMutableTreeNode returnNode()
     {
-        // FIXME
-        return null;
+        DefaultMutableTreeNode currentNode = new DefaultMutableTreeNode();
+        for (Wall w : this.walls)
+        {
+            currentNode.add(new DefaultMutableTreeNode(w.returnNode()));
+        }
+        for (Roof r : this.roofs)
+        {
+            currentNode.add(new DefaultMutableTreeNode(r.returnNode()));
+        }
+        currentNode.add(new DefaultMutableTreeNode(this.ground));
+
+        return currentNode;
     }
 
     /**

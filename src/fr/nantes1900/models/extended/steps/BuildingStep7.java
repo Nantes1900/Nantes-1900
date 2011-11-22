@@ -17,8 +17,9 @@ import fr.nantes1900.models.extended.Wall;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
- * TODO.
- * @author Daniel
+ * Implements a building step : a state of the building. This step is after the
+ * sort of each surfaces and before the determination of the contour.
+ * @author Daniel Lefèvre
  */
 public class BuildingStep7 extends AbstractBuildingStep
 {
@@ -133,8 +134,17 @@ public class BuildingStep7 extends AbstractBuildingStep
     @Override
     public final DefaultMutableTreeNode returnNode()
     {
-        // FIXME
-        return null;
+        DefaultMutableTreeNode currentNode = new DefaultMutableTreeNode();
+        for (Wall w : this.walls)
+        {
+            currentNode.add(new DefaultMutableTreeNode(w.returnNode()));
+        }
+        for (Roof r : this.roofs)
+        {
+            currentNode.add(new DefaultMutableTreeNode(r.returnNode()));
+        }
+
+        return currentNode;
     }
 
     /**

@@ -57,9 +57,11 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
         return this.grounds;
     }
 
-    /**
-     * TODO. SortNeighbours
-     * @return TODO.
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #launchTreatment()
      */
     @Override
     public final BuildingsIsletStep7 launchTreatment()
@@ -74,6 +76,12 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
         return new BuildingsIsletStep7(this.buildings, this.grounds);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #returnNode()
+     */
     @Override
     public final DefaultMutableTreeNode returnNode()
     {
@@ -82,9 +90,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
         {
             root.add(b.returnNode());
         }
-        DefaultMutableTreeNode nodeG = new DefaultMutableTreeNode(this.grounds);
-
-        root.add(nodeG);
+        root.add(new DefaultMutableTreeNode(this.grounds));
 
         return root;
     }

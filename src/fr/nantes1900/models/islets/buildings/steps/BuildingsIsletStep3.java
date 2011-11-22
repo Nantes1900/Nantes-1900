@@ -98,6 +98,12 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
         return new BuildingsIsletStep4(this.buildings, this.grounds);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #returnNode()
+     */
     @Override
     public final DefaultMutableTreeNode returnNode()
     {
@@ -106,9 +112,8 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
         {
             root.add(b.returnNode());
         }
-        DefaultMutableTreeNode nodeG = new DefaultMutableTreeNode(this.grounds);
-
-        root.add(nodeG);
+        root.add(new DefaultMutableTreeNode(this.grounds));
+        root.add(new DefaultMutableTreeNode(this.noise));
 
         return root;
     }

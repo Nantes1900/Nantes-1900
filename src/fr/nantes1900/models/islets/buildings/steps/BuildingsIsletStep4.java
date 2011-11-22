@@ -63,9 +63,11 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
         return this.grounds;
     }
 
-    /**
-     * TODO. SeparationWallsAndSeparationRoofs
-     * @return TODO.
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #launchTreatment()
      */
     @Override
     public final BuildingsIsletStep5 launchTreatment()
@@ -94,9 +96,7 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
         {
             root.add(b.returnNode());
         }
-        DefaultMutableTreeNode nodeG = new DefaultMutableTreeNode(this.grounds);
-
-        root.add(nodeG);
+        root.add(new DefaultMutableTreeNode(this.grounds));
 
         return root;
     }

@@ -134,8 +134,11 @@ public class BuildingStep4 extends AbstractBuildingStep
         return this.initialWall;
     }
 
-    /* (non-Javadoc)
-     * @see fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchTreatment()
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchTreatment
+     * ()
      */
     @Override
     public final BuildingStep5 launchTreatment() throws NullArgumentException
@@ -169,6 +172,7 @@ public class BuildingStep4 extends AbstractBuildingStep
 
         root.add(new DefaultMutableTreeNode(this.initialWall));
         root.add(new DefaultMutableTreeNode(this.initialRoof));
+        root.add(new DefaultMutableTreeNode(this.noise));
 
         return root;
     }
