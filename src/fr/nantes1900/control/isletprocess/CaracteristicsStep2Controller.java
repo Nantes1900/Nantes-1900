@@ -9,16 +9,20 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 
 import fr.nantes1900.constants.ActionTypes;
+import fr.nantes1900.constants.Characteristics;
 import fr.nantes1900.view.isletprocess.CaracteristicsStep2View;
 
 /**
+ * Characteristics panel for the second step of process of an islet.
+ * 
+ * User can select one or more triangles and modifies the type they belong to : building or ground.
  * @author Camille
- *
+ * @author Luc
  */
 public class CaracteristicsStep2Controller extends CaracteristicsController
 {
-
     /**
+     * Constructor.
      * @param parentController
      */
     public CaracteristicsStep2Controller(IsletProcessController parentController)
@@ -35,11 +39,11 @@ public class CaracteristicsStep2Controller extends CaracteristicsController
                 int actionType = -1;
                 switch (typeChosen)
                 {
-                    case CaracteristicsStep2View.TYPE_GROUND:
+                    case Characteristics.TYPE_GROUND:
                         actionType = ActionTypes.TURN_TO_GROUND;
                         break;
                         
-                    case CaracteristicsStep2View.TYPE_BUILDING:
+                    case Characteristics.TYPE_BUILDING:
                         actionType = ActionTypes.TURN_TO_BUILDING;
                         break;
                 }
