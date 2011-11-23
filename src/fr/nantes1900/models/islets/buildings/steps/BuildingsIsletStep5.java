@@ -83,7 +83,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
     {
         for (Building b : this.buildings)
         {
-            BuildingStep5 buildingStep = (BuildingStep5) b.getbStep();
+            BuildingStep5 buildingStep = b.getbStep5();
             buildingStep.setArguments(this.noise, this.grounds);
             b.launchTreatment();
         }
