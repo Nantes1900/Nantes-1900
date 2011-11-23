@@ -1,11 +1,5 @@
 package test.fr.nantes1900.models.basis;
 
-import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Polygon;
-import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.basis.Polygon.BadFormedPolylineException;
-
 import java.security.InvalidParameterException;
 import java.util.List;
 
@@ -15,6 +9,12 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.junit.Test;
+
+import fr.nantes1900.models.basis.Edge;
+import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Polygon;
+import fr.nantes1900.models.basis.Polygon.BadFormedPolylineException;
+import fr.nantes1900.models.basis.Triangle;
 
 /**
  * A set of tests for the class Edge.
@@ -63,10 +63,20 @@ public class EdgeTest extends TestCase
     public EdgeTest()
     {
 
-        this.triangle1 = new Triangle(this.point1, this.point2, this.point3,
-                this.edge1, this.edge2, this.edge3, this.vect);
-        this.triangle2 = new Triangle(this.point1, this.point2, this.point4,
-                this.edge1, this.edge4, this.edge5, this.vect);
+        this.triangle1 = new Triangle(this.point1,
+                this.point2,
+                this.point3,
+                this.edge1,
+                this.edge2,
+                this.edge3,
+                this.vect);
+        this.triangle2 = new Triangle(this.point1,
+                this.point2,
+                this.point4,
+                this.edge1,
+                this.edge4,
+                this.edge5,
+                this.vect);
         this.polygon.add(this.edge1);
         this.polygon.add(this.edge2);
         this.polygon.add(this.edge4);
@@ -224,8 +234,8 @@ public class EdgeTest extends TestCase
     @Test
     public final void testComputeMiddle()
     {
-        Assert.assertTrue(this.edge5.computeMiddle().equals(
-                new Point(1, 1.5, 1)));
+        Assert.assertTrue(this.edge5.computeMiddle()
+                .equals(new Point(1, 1.5, 1)));
     }
 
     /**
@@ -247,8 +257,9 @@ public class EdgeTest extends TestCase
     @Test
     public final void testConvertToVector3d()
     {
-        Assert.assertTrue(this.edge5.convertToVector3d().equals(
-                new Vector3d(2, 1, 2)));
+        Assert.assertTrue(this.edge5.convertToVector3d().equals(new Vector3d(2,
+                1,
+                2)));
     }
 
     /**

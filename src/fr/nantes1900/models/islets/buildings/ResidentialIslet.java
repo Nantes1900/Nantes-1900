@@ -1,21 +1,16 @@
 package fr.nantes1900.models.islets.buildings;
 
-import fr.nantes1900.models.basis.Mesh;
-
 /**
- * Implements a redisential islet as an abstract buildings islet.
- * @author Daniel
+ * Implements a residential islet as an abstract buildings islet.
+ * @author Daniel Lefèvre
  */
 public class ResidentialIslet extends AbstractBuildingsIslet
 {
 
     /**
-     * TODO.
-     * @param m
-     *            TODO.
+     * Constructor.
      */
-    public ResidentialIslet(final Mesh m)
+    public ResidentialIslet()
     {
-        super(m);
     }
 }

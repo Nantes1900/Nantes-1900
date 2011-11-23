@@ -56,8 +56,7 @@ public final class MatrixMethod
      */
     public static void changeBase(final Vector3d vect, final double[][] matrix)
     {
-        final double[] coord = { vect.x, vect.y, vect.z,
-        };
+        final double[] coord = {vect.x, vect.y, vect.z,};
         vect.set(MatrixMethod.changeBase(coord, matrix));
     }
 
@@ -72,8 +71,8 @@ public final class MatrixMethod
      *             if the baseVector is oriented as (0, 0, -1), because the
      *             matrix would be singular
      */
-    public static double[][] createOrthoBase(final Vector3d baseVector)
-            throws SingularMatrixException
+    public static double[][]
+            createOrthoBase(final Vector3d baseVector) throws SingularMatrixException
     {
 
         final Vector3d b = new Vector3d(baseVector);
@@ -126,8 +125,8 @@ public final class MatrixMethod
      *             if the matrix is singular
      */
     public static double[][] createOrthoBase(final Vector3d vect1,
-            final Vector3d vect2, final Vector3d vect3)
-            throws SingularMatrixException
+            final Vector3d vect2,
+            final Vector3d vect3) throws SingularMatrixException
     {
 
         final Vector3d b = new Vector3d(vect1);
@@ -168,8 +167,23 @@ public final class MatrixMethod
         final double f = matrix[1][2];
         final double i = matrix[2][2];
 
-        return a * e * i + b * f * g + c * d * h - c * e * g - f * h * a - i
-                * b * d;
+        return a * e
+                * i
+                + b
+                * f
+                * g
+                + c
+                * d
+                * h
+                - c
+                * e
+                * g
+                - f
+                * h
+                * a
+                - i
+                * b
+                * d;
     }
 
     /**
@@ -180,13 +194,12 @@ public final class MatrixMethod
      * @throws SingularMatrixException
      *             if the matrix is singular.
      */
-    public static double[][] getInversMatrix(final double[][] matrix)
-            throws SingularMatrixException
+    public static double[][]
+            getInversMatrix(final double[][] matrix) throws SingularMatrixException
     {
         final double[][] matrix1 = new double[MatrixMethod.MATRIX_DIMENSION][MatrixMethod.MATRIX_DIMENSION];
 
-        if (MatrixMethod.determinant(matrix) < SingularMatrixException.ERROR_PRECISION
-                && MatrixMethod.determinant(matrix) > -SingularMatrixException.ERROR_PRECISION)
+        if (MatrixMethod.determinant(matrix) < SingularMatrixException.ERROR_PRECISION && MatrixMethod.determinant(matrix) > -SingularMatrixException.ERROR_PRECISION)
         {
             throw new SingularMatrixException();
         }
@@ -224,13 +237,13 @@ public final class MatrixMethod
         /**
          * Version attribute.
          */
-        private static final long serialVersionUID = 1L;
+        private static final long  serialVersionUID = 1L;
 
         /**
          * Precision (as a double) to check if a matrix determinant is equal to
          * zero.
          */
-        public static final double ERROR_PRECISION = 0.05;
+        public static final double ERROR_PRECISION  = 0.05;
 
         /**
          * Private constructor.

@@ -1,13 +1,13 @@
 package fr.nantes1900.utils;
 
-import fr.nantes1900.models.basis.Mesh;
-import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.extended.Surface;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.extended.Surface;
 
 /**
  * Contains some algorithms used in the other classes.
@@ -138,7 +138,8 @@ public final class Algos
      */
     // TODO : I changed this, but there is maybe debug or test to make...
     public static void blockTreatOrientedNoise(final List<Surface> surfaceList,
-            final Mesh noise, final double largeAngleNormalErrorFactor)
+            final Mesh noise,
+            final double largeAngleNormalErrorFactor)
     {
 
         final List<Surface> list = new ArrayList<>();
@@ -172,7 +173,8 @@ public final class Algos
      *            the distance between the two planes
      */
     public static void blockTreatPlanedNoise(final List<Mesh> list,
-            final Mesh noise, final double errorPlanes)
+            final Mesh noise,
+            final double errorPlanes)
     {
 
         final List<Mesh> m = new ArrayList<>();
@@ -181,7 +183,8 @@ public final class Algos
         {
             final Mesh meshAndNoise = new Mesh(e);
             meshAndNoise.addAll(noise.inPlanes(e.averageNormal(),
-                    e.getCentroid(), errorPlanes));
+                    e.getCentroid(),
+                    errorPlanes));
             final Mesh mes = new Mesh();
             e.getOne().returnNeighbours(mes, meshAndNoise);
             m.add(mes);

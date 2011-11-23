@@ -21,7 +21,7 @@ public class Mesh extends HashSet<Triangle>
     /**
      * Static integer to create new ID objects.
      */
-    private static int currentID;
+    private static int        currentID;
 
     /**
      * Version attribute.
@@ -31,7 +31,7 @@ public class Mesh extends HashSet<Triangle>
     /**
      * Object ID.
      */
-    private final int iD;
+    private final int         iD;
 
     /**
      * Void constructor.
@@ -181,7 +181,8 @@ public class Mesh extends HashSet<Triangle>
      *            the distance between the two planes and p
      * @return the triangles which are between those two planes
      */
-    public final Mesh inPlanes(final Vector3d vect, final Point p,
+    public final Mesh inPlanes(final Vector3d vect,
+            final Point p,
             final double error)
     {
         final Mesh ret = new Mesh();
@@ -209,8 +210,8 @@ public class Mesh extends HashSet<Triangle>
      * @throws SingularMatrixException
      *             if the planes are not well oriented
      */
-    public final Point intersection(final Mesh m2, final Mesh m3)
-            throws SingularMatrixException
+    public final Point
+            intersection(final Mesh m2, final Mesh m3) throws SingularMatrixException
     {
 
         final Vector3d vect1 = this.averageNormal();
@@ -221,28 +222,37 @@ public class Mesh extends HashSet<Triangle>
         final double a1 = vect1.x;
         final double b1 = vect1.y;
         final double c1 = vect1.z;
-        final double d1 = -this.xAverage() * a1 - this.yAverage() * b1
-                - this.zAverage() * c1;
+        final double d1 = -this.xAverage() * a1
+                - this.yAverage()
+                * b1
+                - this.zAverage()
+                * c1;
 
         final double a2 = vect2.x;
         final double b2 = vect2.y;
         final double c2 = vect2.z;
-        final double d2 = -m2.xAverage() * a2 - m2.yAverage() * b2
-                - m2.zAverage() * c2;
+        final double d2 = -m2.xAverage() * a2
+                - m2.yAverage()
+                * b2
+                - m2.zAverage()
+                * c2;
 
         final double a3 = vect3.x;
         final double b3 = vect3.y;
         final double c3 = vect3.z;
-        final double d3 = -m3.xAverage() * a3 - m3.yAverage() * b3
-                - m3.zAverage() * c3;
+        final double d3 = -m3.xAverage() * a3
+                - m3.yAverage()
+                * b3
+                - m3.zAverage()
+                * c3;
 
         // Inverses the matrix to find the intersection point.
-        final double[][] matrix = MatrixMethod.createOrthoBase(vect1, vect2,
+        final double[][] matrix = MatrixMethod.createOrthoBase(vect1,
+                vect2,
                 vect3);
         final double[][] matrixInv = MatrixMethod.getInversMatrix(matrix);
 
-        final double[] ds = { -d1, -d2, -d3
-        };
+        final double[] ds = {-d1, -d2, -d3};
         final double[] p = MatrixMethod.changeBase(ds, matrixInv);
         return new Point(p[0], p[1], p[2]);
     }
@@ -282,10 +292,8 @@ public class Mesh extends HashSet<Triangle>
             final double littleAngleNormalErrorFactor)
     {
 
-        final double convertDegreesToRadian = 180 / Math.PI;
-        return this.averageNormal().angle(w2.averageNormal()) 
-                < littleAngleNormalErrorFactor
-                / convertDegreesToRadian;
+        final double convertDegreesToRadian = Edge.CONVERSION_PI_DEGREES;
+        return this.averageNormal().angle(w2.averageNormal()) < littleAngleNormalErrorFactor / convertDegreesToRadian;
     }
 
     /**

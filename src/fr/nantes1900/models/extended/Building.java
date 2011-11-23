@@ -1,484 +1,193 @@
 package fr.nantes1900.models.extended;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.vecmath.Vector3d;
 
-import fr.nantes1900.constants.SeparationWallRoof;
-import fr.nantes1900.constants.SeparationWallsSeparationRoofs;
 import fr.nantes1900.models.basis.Mesh;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Polygon;
-import fr.nantes1900.models.extended.Surface.ImpossibleNeighboursOrderException;
-import fr.nantes1900.models.extended.Surface.InvalidSurfaceException;
-import fr.nantes1900.utils.Algos;
+import fr.nantes1900.models.extended.steps.BuildingStep3;
+import fr.nantes1900.models.extended.steps.BuildingStep4;
+import fr.nantes1900.models.extended.steps.BuildingStep5;
+import fr.nantes1900.models.extended.steps.BuildingStep6;
+import fr.nantes1900.models.extended.steps.BuildingStep7;
+import fr.nantes1900.models.extended.steps.BuildingStep8;
+import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
+import fr.nantes1900.models.islets.buildings.InvalidCaseException;
 
 /**
- * Implements a building as two lists of surfaces : walls and roofs.
+ * Implements a building as containing 6 steps representing the state of the
+ * building during the treatments 3 to 8.
  * @author Daniel Lefevre
  */
 public class Building
 {
 
     /**
-     * TODO.
+     * The third building step.
      */
-    private Mesh initialTotalMesh;
+    private BuildingStep3          bStep3;
     /**
-     * TODO.
+     * The fourth building step.
      */
-    private Mesh initialWall;
+    private BuildingStep4          bStep4;
     /**
-     * TODO.
+     * The fifth building step.
      */
-    private Mesh initialRoof;
+    private BuildingStep5          bStep5;
+    /**
+     * The sixth building step.
+     */
+    private BuildingStep6          bStep6;
+    /**
+     * The seventh building step.
+     */
+    private BuildingStep7          bStep7;
+    /**
+     * The eighth building step.
+     */
+    private BuildingStep8          bStep8;
 
     /**
-     * TODO.
+     * The parent islet.
      */
-    private Mesh noise;
+    private AbstractBuildingsIslet parentIslet;
 
     /**
-     * TODO.
-     */
-    private final List<Surface> walls = new ArrayList<>();
-
-    /**
-     * TODO.
-     */
-    private final List<Surface> roofs = new ArrayList<>();
-
-    /**
-     * TODO.
+     * Constructor.
      * @param mesh
-     *            TODO.
+     *            the mesh representing the building
      */
     public Building(final Mesh mesh)
     {
-        this.initialTotalMesh = mesh;
-    }
-
-    /**
-     * TODO.
-     * @param groundNormal
-     *            TODO.
-     */
-    public final void cutRoofs(final Vector3d groundNormal)
-    {
-        // Cut the mesh in parts, considering their orientation.
-        final List<Mesh> thingsList = Algos.blockOrientedExtract(
-                this.initialRoof,
-                SeparationWallsSeparationRoofs.getRoofAngleError());
-
-        // Considering their size and their orientation, sort the blocks in
-        // roofs or noise. If a wall is oriented in direction of the ground,
-        // it is not keeped.
-        for (final Mesh e : thingsList)
-        {
-            if ((e.size() >= SeparationWallsSeparationRoofs.getRoofSizeError())
-                    && (e.averageNormal().dot(groundNormal) > 0))
-            {
-                this.roofs.add(new Roof(e));
-            } else
-            {
-                this.noise.addAll(e);
-            }
-        }
-    }
-
-    /**
-     * TODO.
-     */
-    public final void cutWalls()
-    {
-        Mesh building = new Mesh(this.initialTotalMesh);
-
-        // Cut the mesh in parts, considering their orientation.
-        final List<Mesh> thingsList = Algos.blockOrientedExtract(
-                this.initialWall,
-                SeparationWallsSeparationRoofs.getWallAngleError());
-
-        // Considering their size, sort the blocks in walls or noise.
-        for (final Mesh e : thingsList)
-        {
-            building.remove(e);
-            if (e.size() >= SeparationWallsSeparationRoofs.getWallSizeError())
-            {
-                this.walls.add(new Wall(e));
-            } else
-            {
-                this.noise.addAll(e);
-            }
-        }
-    }
-
-    /**
-     * TODO.
-     * @param normalGround
-     *            TODO.
-     */
-    public final void determinateContours(final Vector3d normalGround)
-    {
-        // Creates the map where the points and edges will be put : if one
-        // point is created a second time, it will be given the same
-        // reference as the other one having the same values.
-        final Map<Point, Point> pointMap = new HashMap<>();
-
-        // Adds all the surfaces
-        final List<Surface> wholeList = new ArrayList<>();
-        wholeList.addAll(this.walls);
-        wholeList.addAll(this.roofs);
-
-        for (final Surface surface : wholeList)
-        {
-            try
-            {
-                // When the neighbours are sorted, finds the intersection of
-                // them to find the edges of this surface.
-                final Polygon p = surface.findEdges(this.walls, pointMap,
-                        normalGround);
-
-                surface.setPolygone(p);
-            } catch (final InvalidSurfaceException e)
-            {
-                // If there is a problem, we cannot continue the treatment.
-            }
-        }
-    }
-
-    /**
-     * TODO.
-     * @param grounds
-     *            TODO.
-     */
-    public final void determinateNeighbours(final Surface grounds)
-    {
-        final Polygon groundsBounds = grounds.getMesh().returnUnsortedBounds();
-
-        final List<Surface> wholeList = new ArrayList<>();
-        wholeList.addAll(this.walls);
-        wholeList.addAll(this.roofs);
-
-        // To find every neighbours, we complete every holes between roofs
-        // and walls by adding all the noise.
-        final List<Mesh> wholeListFakes = new ArrayList<>();
-        for (final Surface m : wholeList)
-        {
-            final Mesh fake = new Mesh(m.getMesh());
-            wholeListFakes.add(fake);
-        }
-        Algos.blockTreatPlanedNoise(wholeListFakes, this.noise,
-                SeparationWallsSeparationRoofs.getPlanesError());
-
-        // First we clear the neighbours.
-        for (final Surface s : wholeList)
-        {
-            s.getNeighbours().clear();
-        }
-        // And we clear the neighbours of the grounds.
-        grounds.getNeighbours().clear();
-
-        // We compute the bounds to check if they share a common edge.
-        final List<Polygon> wholeBoundsList = new ArrayList<>();
-        for (final Mesh m : wholeListFakes)
-        {
-            wholeBoundsList.add(m.returnUnsortedBounds());
-        }
-
-        // Then we check every edge of the bounds to see if some are shared by
-        // two meshes. If they do, they are neighbours.
-        for (int i = 0; i < wholeBoundsList.size(); i = i + 1)
-        {
-            final Polygon polygone1 = wholeBoundsList.get(i);
-
-            for (int j = i + 1; j < wholeBoundsList.size(); j = j + 1)
-            {
-                final Polygon polygone2 = wholeBoundsList.get(j);
-
-                if (polygone1.isNeighbour(polygone2))
-                {
-                    wholeList.get(i).addNeighbour(wholeList.get(j));
-                }
-            }
-
-            if (polygone1.isNeighbour(groundsBounds))
-            {
-                wholeList.get(i).addNeighbour(grounds);
-            }
-        }
+        this.bStep3 = new BuildingStep3(mesh);
     }
 
     /**
      * Getter.
-     * @return the initial roof
+     * @return the third step
      */
-    public final Mesh getInitialRoof()
+    public final BuildingStep3 getbStep3()
     {
-        return this.initialRoof;
+        return this.bStep3;
     }
 
     /**
      * Getter.
-     * @return the initial total mesh
+     * @return the fourth step
      */
-    public final Mesh getInitialTotalMesh()
+    public final BuildingStep4 getbStep4()
     {
-        return this.initialTotalMesh;
+        return this.bStep4;
     }
 
     /**
      * Getter.
-     * @return the initial wall
+     * @return the fifth step
      */
-    public final Mesh getInitialWall()
+    public final BuildingStep5 getbStep5()
     {
-        return this.initialWall;
+        return this.bStep5;
     }
 
     /**
      * Getter.
-     * @return the list of roofs
+     * @return the sixth step
      */
-    public final List<Surface> getRoofs()
+    public final BuildingStep6 getbStep6()
     {
-        return this.roofs;
+        return this.bStep6;
     }
 
     /**
      * Getter.
-     * @return the list of walls
+     * @return the seventh step
      */
-    public final List<Surface> getWalls()
+    public final BuildingStep7 getbStep7()
     {
-        return this.walls;
+        return this.bStep7;
     }
 
     /**
-     * TODO.
-     * @param grounds
-     *            TODO.
+     * Getter.
+     * @return the eighth step
      */
-    public final void orderNeighbours(final Surface grounds)
+    public final BuildingStep8 getbStep8()
     {
-        // Adds all the surfaces
-        final List<Surface> wholeList = new ArrayList<>();
-        wholeList.addAll(this.walls);
-        wholeList.addAll(this.roofs);
+        return this.bStep8;
+    }
 
-        for (final Surface surface : wholeList)
+    /**
+     * Launches the treatment corresponding to the progression.
+     */
+    public final void launchTreatment()
+    {
+        try
         {
-            try
+            switch (this.parentIslet.getProgression())
             {
-                // Orders its neighbours in order to treat them.
-                // If the neighbours of one surface are not 2 per 2 neighbours
-                // each other, then it tries to correct it.
-                surface.orderNeighbours(wholeList, grounds);
-
-            } catch (final ImpossibleNeighboursOrderException e)
-            {
-                // If there is a problem, the treatment cannot continue.
+                case AbstractBuildingsIslet.ZERO_STEP:
+                    throw new InvalidCaseException();
+                case AbstractBuildingsIslet.FIRST_STEP:
+                    throw new InvalidCaseException();
+                case AbstractBuildingsIslet.SECOND_STEP:
+                    throw new InvalidCaseException();
+                case AbstractBuildingsIslet.THIRD_STEP:
+                    this.bStep4 = this.bStep3.launchTreatment();
+                break;
+                case AbstractBuildingsIslet.FOURTH_STEP:
+                    this.bStep5 = this.bStep4.launchTreatment();
+                break;
+                case AbstractBuildingsIslet.FIFTH_STEP:
+                    this.bStep6 = this.bStep5.launchTreatment();
+                break;
+                case AbstractBuildingsIslet.SIXTH_STEP:
+                    this.bStep7 = this.bStep6.launchTreatment();
+                break;
+                case AbstractBuildingsIslet.SEVENTH_STEP:
+                    this.bStep8 = this.bStep7.launchTreatment();
+                break;
+                default:
+                    throw new InvalidCaseException();
             }
+        } catch (InvalidCaseException e)
+        {
+            System.out.println("Big problem");
         }
     }
 
     /**
-     * TODO.
+     * Creates a tree node for the JTree.
+     * @return the mutable tree node
      */
-    public void reComputeGroundBounds()
+    public final DefaultMutableTreeNode returnNode()
     {
-        // TODO : implement this method.
-    }
-
-    /**
-     * TODO.
-     * @return TODO.
-     */
-    public final DefaultMutableTreeNode returnTree()
-    {
-        DefaultMutableTreeNode currentNode = new DefaultMutableTreeNode();
-
-        for (int wallNumber = 0; wallNumber < this.walls.size(); wallNumber++)
+        try
         {
-            currentNode.add(new DefaultMutableTreeNode("Wall " + wallNumber));
-        }
-
-        for (int roofNumber = 0; roofNumber < this.roofs.size(); roofNumber++)
-        {
-            currentNode.add(new DefaultMutableTreeNode("Roof " + roofNumber));
-        }
-
-        return currentNode;
-    }
-
-    // FIXME : what is the difference between searchForNeighbours and
-    // determinateNeighbours.
-    /**
-     * TODO.
-     * @param grounds
-     *            TODO.
-     */
-    private void searchForNeighbours(final Surface grounds)
-    {
-        final Polygon groundsBounds = grounds.getMesh().returnUnsortedBounds();
-
-        final List<Surface> wholeList = new ArrayList<>();
-        wholeList.addAll(this.walls);
-        wholeList.addAll(this.roofs);
-
-        // First we clear the neighbours.
-        for (final Surface m : wholeList)
-        {
-            m.getNeighbours().clear();
-        }
-        // And we clear the neighbours of the grounds.
-        grounds.getNeighbours().clear();
-
-        final List<Polygon> wholeBoundsList = new ArrayList<>();
-
-        // We compute the bounds to check if they share a common edge.
-        for (final Surface m : wholeList)
-        {
-            wholeBoundsList.add(m.getMesh().returnUnsortedBounds());
-        }
-
-        // Then we check every edge of the bounds to see if some are shared
-        // by two meshes. If they do, they are neighbours.
-        for (int i = 0; i < wholeBoundsList.size(); i = i + 1)
-        {
-            final Polygon polygone1 = wholeBoundsList.get(i);
-
-            for (int j = i + 1; j < wholeBoundsList.size(); j = j + 1)
+            switch (this.parentIslet.getProgression())
             {
-                final Polygon polygone2 = wholeBoundsList.get(j);
-                if (polygone1.isNeighbour(polygone2))
-                {
-                    wholeList.get(i).addNeighbour(wholeList.get(j));
-                }
+                case AbstractBuildingsIslet.ZERO_STEP:
+                    throw new InvalidCaseException();
+                case AbstractBuildingsIslet.FIRST_STEP:
+                    throw new InvalidCaseException();
+                case AbstractBuildingsIslet.SECOND_STEP:
+                    throw new InvalidCaseException();
+                case AbstractBuildingsIslet.THIRD_STEP:
+                    return this.bStep3.returnNode();
+                case AbstractBuildingsIslet.FOURTH_STEP:
+                    return this.bStep4.returnNode();
+                case AbstractBuildingsIslet.FIFTH_STEP:
+                    return this.bStep5.returnNode();
+                case AbstractBuildingsIslet.SIXTH_STEP:
+                    return this.bStep6.returnNode();
+                case AbstractBuildingsIslet.SEVENTH_STEP:
+                    return this.bStep7.returnNode();
+                case AbstractBuildingsIslet.EIGHTH_STEP:
+                    return this.bStep8.returnNode();
+                default:
+                    throw new InvalidCaseException();
             }
-
-            if (polygone1.isNeighbour(groundsBounds))
-            {
-                wholeList.get(i).addNeighbour(grounds);
-            }
-        }
-    }
-
-    /**
-     * TODO.
-     * @param gravityNormal
-     *            TODO.
-     */
-    public final void separateWallRoof(final Vector3d gravityNormal)
-    {
-        // Select the triangles which are oriented normal to normalGround.
-        this.initialWall = this.initialTotalMesh.orientedNormalTo(
-                gravityNormal, SeparationWallRoof.getNormalToError());
-
-        this.initialRoof = new Mesh(this.initialTotalMesh);
-        this.initialRoof.remove(this.initialWall);
-    }
-
-    /**
-     * TODO.
-     */
-    public final void sortSurfaces()
-    {
-        int counter = 0;
-        for (int i = 0; i < this.walls.size(); i++)
+        } catch (InvalidCaseException e)
         {
-            final Surface s = this.walls.get(i);
-            if (s.getNeighbours().size() < 3)
-            {
-                this.walls.remove(s);
-                for (final Surface neighbour : s.getNeighbours())
-                {
-                    neighbour.getNeighbours().remove(s);
-                }
-                counter++;
-            }
+            System.out.println("Big problem");
+            return null;
         }
-        for (int i = 0; i < this.roofs.size(); i++)
-        {
-            final Surface s = this.roofs.get(i);
-            if (s.getNeighbours().size() < 3)
-            {
-                this.roofs.remove(s);
-                for (final Surface neighbour : s.getNeighbours())
-                {
-                    neighbour.getNeighbours().remove(s);
-                }
-                counter++;
-            }
-        }
-        System.out.println(" Isolated surfaces (not treated) : " + counter);
-    }
-
-    /**
-     * TODO.
-     * @param grounds
-     *            TODO.
-     */
-    public final void treatNewNeighbours(final Surface grounds)
-    {
-        this.searchForNeighbours(grounds);
-
-        // After the noise addition, if some of the walls or some of the
-        // roofs are now neighbours (they share an edge) and have the same
-        // orientation, then they are added to form only one wall or roof.
-
-        // Wall is prioritary : it means that if a roof touch a wall, this
-        // roof is added to the wall, and not the inverse.
-
-        final List<Surface> wholeList = new ArrayList<>();
-        wholeList.addAll(this.walls);
-        wholeList.addAll(this.roofs);
-
-        for (int i = 0; i < wholeList.size(); i = i + 1)
-        {
-            final Surface surface = wholeList.get(i);
-
-            final List<Surface> oriented = new ArrayList<>();
-            final List<Surface> ret = new ArrayList<>();
-
-            for (final Surface m : wholeList)
-            {
-                if (m.getMesh().isOrientedAs(surface.getMesh(),
-                        SeparationWallsSeparationRoofs.getMiddleAngleError()))
-                {
-                    oriented.add(m);
-                }
-            }
-
-            surface.returnNeighbours(ret, oriented);
-
-            for (final Surface m : ret)
-            {
-                if (m != surface)
-                {
-                    surface.getMesh().addAll(m.getMesh());
-                    wholeList.remove(m);
-                    this.walls.remove(m);
-                    this.roofs.remove(m);
-                }
-            }
-        }
-    }
-
-    /**
-     * TODO.
-     */
-    public final void treatNoise()
-    {
-        // Adds the oriented and neighbour noise to the walls.
-        Algos.blockTreatOrientedNoise(this.walls, this.noise,
-                SeparationWallsSeparationRoofs.getLargeAngleError());
-
-        // Adds the oriented and neighbour noise to the roofs.
-        Algos.blockTreatOrientedNoise(this.roofs, this.noise,
-                SeparationWallsSeparationRoofs.getLargeAngleError());
     }
 }

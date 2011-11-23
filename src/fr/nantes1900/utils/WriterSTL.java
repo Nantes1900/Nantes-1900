@@ -1,9 +1,5 @@
 package fr.nantes1900.utils;
 
-import fr.nantes1900.models.basis.Mesh;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Triangle;
-
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
@@ -13,6 +9,10 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+
+import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Triangle;
 
 /**
  * Implements a STL writer. This writer uses the ASCII or the binary format,
@@ -26,7 +26,7 @@ public class WriterSTL
     /**
      * Possible value of MODE. Intend to write ASCII STL files.
      */
-    public static final int ASCII_MODE = 1;
+    public static final int ASCII_MODE  = 1;
 
     /**
      * Possible value of MODE. Intend to write binary STL files.
@@ -36,17 +36,17 @@ public class WriterSTL
     /**
      * The name of the file to write in.
      */
-    private final String fileName;
+    private final String    fileName;
 
     /**
      * The mesh to write.
      */
-    private Mesh mesh;
+    private Mesh            mesh;
 
     /**
      * The mode of writing. Use the two constants : ASCII_MODE or BINARY_MODE.
      */
-    private int writingMode = WriterSTL.BINARY_MODE;
+    private int             writingMode = WriterSTL.BINARY_MODE;
 
     /**
      * Constructor.
@@ -86,15 +86,22 @@ public class WriterSTL
             // Write facet normal : to begin a triangle with writing its normal.
             String s1 = "\nfacet normal";
 
-            s1 += " " + triangle.getNormal().x + " " + triangle.getNormal().y
-                    + " " + triangle.getNormal().z;
+            s1 += " " + triangle.getNormal().x
+                    + " "
+                    + triangle.getNormal().y
+                    + " "
+                    + triangle.getNormal().z;
 
             // Write outer loop : to begin to write the three points.
             writer.write(s1 + "\nouter loop");
             // Write the three points.
             for (final Point p : triangle.getPoints())
             {
-                writer.write("\nvertex" + " " + p.getX() + " " + p.getY() + " "
+                writer.write("\nvertex" + " "
+                        + p.getX()
+                        + " "
+                        + p.getY()
+                        + " "
                         + p.getZ());
             }
 
@@ -265,8 +272,7 @@ public class WriterSTL
         BufferedOutputStream stream = null;
         try
         {
-            stream = new BufferedOutputStream(new FileOutputStream(
-                    this.fileName));
+            stream = new BufferedOutputStream(new FileOutputStream(this.fileName));
 
             // Writes a 80-byte long header. Possibility to write the name of
             // the author.

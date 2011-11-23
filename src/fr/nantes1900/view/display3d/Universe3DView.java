@@ -12,10 +12,8 @@ import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
-
 import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.Material;
-
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Texture2D;
 import javax.media.j3d.TextureAttributes;
@@ -46,16 +44,16 @@ public class Universe3DView extends JPanel
     /**
      * Version ID.
      */
-    private static final long serialVersionUID = 1L;
+    private static final long    serialVersionUID = 1L;
 
     /**
      * TODO.
      */
-    private List<MeshView> meshesList = new ArrayList<>();
+    private List<MeshView>       meshesList       = new ArrayList<>();
     /**
      * TODO.
      */
-    private List<PolygonView> polygonsList = new ArrayList<>();
+    private List<PolygonView>    polygonsList     = new ArrayList<>();
 
     /**
      * The Universe3DController attached.
@@ -65,7 +63,7 @@ public class Universe3DView extends JPanel
     /**
      * The universe.
      */
-    private SimpleUniverse simpleUniverse;
+    private SimpleUniverse       simpleUniverse;
 
     /**
      * Creates a new universe.
@@ -96,15 +94,15 @@ public class Universe3DView extends JPanel
     public final void addMesh(final MeshView meshView)
     {
         TransformGroup transformGroup = createTransformGroup(meshView);
-        this.simpleUniverse.addBranchGraph(this
-                .createSceneGraph(transformGroup));
+        this.simpleUniverse.addBranchGraph(this.createSceneGraph(transformGroup));
         // moving the camera so that we can see the mesh properly
         translateCamera(meshView.getCentroid().getX(), meshView.getCentroid()
                 .getY(), meshView.getCentroid().getZ() + 30);
         // changing the rotation center
-        this.u3DController.getMouseRotate().setCenter(
-                new Point3d(meshView.getCentroid().getX(), meshView
-                        .getCentroid().getY(), meshView.getCentroid().getZ()));
+        this.u3DController.getMouseRotate()
+                .setCenter(new Point3d(meshView.getCentroid().getX(),
+                        meshView.getCentroid().getY(),
+                        meshView.getCentroid().getZ()));
     }
 
     /**
@@ -112,7 +110,7 @@ public class Universe3DView extends JPanel
      * @param polygonView
      *            TODO.
      */
-    public void addPolygon(final PolygonView polygonView)
+    public void addPolygonView(final PolygonView polygonView)
     {
         // TODO Auto-generated method stub
     }
@@ -144,15 +142,17 @@ public class Universe3DView extends JPanel
 
         // //////////////// Lights
         // Light bound
-        BoundingSphere lightBounds = new BoundingSphere(new Point3d(0.0, 0.0,
+        BoundingSphere lightBounds = new BoundingSphere(new Point3d(0.0,
+                0.0,
                 0.0), 100000.0);
         // Ambient light
-        AmbientLight ambLight = new AmbientLight(true, new Color3f(1.0f, 1.0f,
+        AmbientLight ambLight = new AmbientLight(true, new Color3f(1.0f,
+                1.0f,
                 1.0f));
         ambLight.setInfluencingBounds(lightBounds);
         // Directional light
-        DirectionalLight headLight = new DirectionalLight(new Color3f(
-                Color.white), new Vector3f(1.0f, -1.0f, -1.0f));
+        DirectionalLight headLight = new DirectionalLight(new Color3f(Color.white),
+                new Vector3f(1.0f, -1.0f, -1.0f));
         headLight.setInfluencingBounds(lightBounds);
 
         objRoot.addChild(ambLight);
@@ -173,7 +173,8 @@ public class Universe3DView extends JPanel
     private TransformGroup createTransformGroup(final MeshView meshView)
     {
         BoundingSphere boundingSphere = new BoundingSphere(new Point3d(0.0,
-                0.0, 0.0), 100000);
+                0.0,
+                0.0), 100000);
 
         TransformGroup transformGroup = new TransformGroup();
         transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -200,38 +201,40 @@ public class Universe3DView extends JPanel
 
         shape.addGeometry(meshView);
 
-       
-        //Appearence
-        Material mat = new Material(new Color3f(0, 0, 0f),
-				new Color3f(0, 0.2f, 0), new Color3f(Color.white), new Color3f(
-						Color.white), 64);
-		mat.setColorTarget(3);
+        // Appearence
+        Material mat = new Material(new Color3f(0, 0, 0f), new Color3f(0,
+                0.2f,
+                0), new Color3f(Color.white), new Color3f(Color.white), 64);
+        mat.setColorTarget(3);
 
-		Appearance app = new Appearance();
+        Appearance app = new Appearance();
 
-		app.setMaterial(mat);
+        app.setMaterial(mat);
 
-		TextureLoader loader = new TextureLoader("texture.jpg", null);
-		ImageComponent2D image = loader.getImage();
-		Texture2D texture = new Texture2D(Texture2D.BASE_LEVEL, Texture2D.RGB,
-				image.getWidth(), image.getHeight());
-		texture.setImage(0, image);
-		app.setTexture(texture);
-		TextureAttributes texAtt = new TextureAttributes();
-		texAtt.setTextureMode(TextureAttributes.MODULATE);
-		app.setTextureAttributes(texAtt);
+        TextureLoader loader = new TextureLoader("texture.jpg", null);
+        ImageComponent2D image = loader.getImage();
+        Texture2D texture = new Texture2D(Texture2D.BASE_LEVEL,
+                Texture2D.RGB,
+                image.getWidth(),
+                image.getHeight());
+        texture.setImage(0, image);
+        app.setTexture(texture);
+        TextureAttributes texAtt = new TextureAttributes();
+        texAtt.setTextureMode(TextureAttributes.MODULATE);
+        app.setTextureAttributes(texAtt);
 
         shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
         shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
 
         sceneRoot.addChild(shape);
         shape.setAppearance(app);
-       
+
         translationGroup2.addChild(sceneRoot);
 
         // Links the left button of the mouse with a rotation transformation
         NewMouseRotate mouseRotate = new NewMouseRotate(translationGroup1,
-                rotationGroup, translationGroup2);
+                rotationGroup,
+                translationGroup2);
         mouseRotate.setSchedulingBounds(boundingSphere);
         translationGroup2.addChild(mouseRotate);
         this.u3DController.setMouseRotate(mouseRotate);
@@ -299,7 +302,8 @@ public class Universe3DView extends JPanel
      * @param z
      *            TODO.
      */
-    public final void translateCamera(final double x, final double y,
+    public final void translateCamera(final double x,
+            final double y,
             final double z)
     {
         ViewingPlatform camera = this.simpleUniverse.getViewingPlatform();

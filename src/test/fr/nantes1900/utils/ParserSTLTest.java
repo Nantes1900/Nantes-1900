@@ -1,12 +1,5 @@
 package test.fr.nantes1900.utils;
 
-import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Mesh;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.utils.ParserSTL;
-import fr.nantes1900.utils.WriterSTL;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -18,6 +11,13 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.junit.Test;
+
+import fr.nantes1900.models.basis.Edge;
+import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.utils.ParserSTL;
+import fr.nantes1900.utils.WriterSTL;
 
 /**
  * A set of tests for the class Parser.
@@ -81,19 +81,19 @@ public final class ParserSTLTest extends TestCase
             final Mesh readA = parserA.read();
             Assert.assertTrue(readA.size() == 2);
             final List<Triangle> readListA = new ArrayList<Triangle>(readA);
-            Assert.assertTrue(readListA.get(0).equals(t1)
-                    || readListA.get(0).equals(t2));
-            Assert.assertTrue(readListA.get(1).equals(t1)
-                    || readListA.get(1).equals(t2));
+            Assert.assertTrue(readListA.get(0).equals(t1) || readListA.get(0)
+                    .equals(t2));
+            Assert.assertTrue(readListA.get(1).equals(t1) || readListA.get(1)
+                    .equals(t2));
 
             final ParserSTL parserB = new ParserSTL("WriterTestB.stl");
             final Mesh readB = parserB.read();
             Assert.assertTrue(readB.size() == 2);
             final List<Triangle> readListB = new ArrayList<Triangle>(readB);
-            Assert.assertTrue(readListB.get(0).equals(t1)
-                    || readListB.get(0).equals(t2));
-            Assert.assertTrue(readListB.get(1).equals(t1)
-                    || readListB.get(1).equals(t2));
+            Assert.assertTrue(readListB.get(0).equals(t1) || readListB.get(0)
+                    .equals(t2));
+            Assert.assertTrue(readListB.get(1).equals(t1) || readListB.get(1)
+                    .equals(t2));
 
         } catch (final IOException e)
         {

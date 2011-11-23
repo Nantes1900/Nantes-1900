@@ -1,14 +1,14 @@
 package test.fr.nantes1900.utils;
 
-import fr.nantes1900.utils.MatrixMethod;
-import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
-
 import javax.vecmath.Vector3d;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.junit.Test;
+
+import fr.nantes1900.utils.MatrixMethod;
+import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 /**
  * A set of tests for the class MatrixMethod.
@@ -129,7 +129,8 @@ public final class MatrixMethodTest extends TestCase
         try
         {
             final double[][] matrix = MatrixMethod.createOrthoBase(vect1,
-                    vect2, vect3);
+                    vect2,
+                    vect3);
             Assert.assertTrue(matrix[0][0] == 0);
             Assert.assertTrue(matrix[0][1] == 0);
             Assert.assertTrue(matrix[0][2] == 1);

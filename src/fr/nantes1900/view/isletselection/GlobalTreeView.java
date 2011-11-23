@@ -25,12 +25,12 @@ public class GlobalTreeView extends JPanel
     /**
      * TODO.
      */
-    private JTree tree;
+    private JTree             tree;
 
     /**
      * TODO.
      */
-    private JScrollPane spTree;
+    private JScrollPane       spTree;
 
     /**
      * Empty constructor.
@@ -50,8 +50,7 @@ public class GlobalTreeView extends JPanel
     public final void displayDirectory(final File newDirectory)
     {
         FileNode newDirectoryNode = new FileNode(newDirectory);
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(
-                newDirectoryNode);
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(newDirectoryNode);
         this.fillMyTree(root, newDirectoryNode);
 
         this.tree = new JTree(root);
@@ -74,8 +73,7 @@ public class GlobalTreeView extends JPanel
             for (File file : childrenFiles)
             {
                 FileNode currentNode = new FileNode(file);
-                DefaultMutableTreeNode child = new DefaultMutableTreeNode(
-                        currentNode);
+                DefaultMutableTreeNode child = new DefaultMutableTreeNode(currentNode);
 
                 if (file.isDirectory())
                 {

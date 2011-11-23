@@ -10,6 +10,11 @@ import fr.nantes1900.models.basis.Polygon;
 public class Wall extends Surface
 {
 
+    public Wall()
+    {
+        // TODO Auto-generated constructor stub
+    }
+
     /**
      * Constructor from a mesh.
      * @param m
@@ -28,5 +33,21 @@ public class Wall extends Surface
     public Wall(final Polygon p)
     {
         super(p);
+    }
+
+    /**
+     * Copy constructor.
+     * @param w
+     *            the wall to copy
+     */
+    public Wall(final Wall w)
+    {
+        super(w);
+    }
+
+    @Override
+    public final String toString()
+    {
+        return "Wall";
     }
 }

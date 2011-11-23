@@ -10,6 +10,11 @@ import fr.nantes1900.models.basis.Polygon;
 public class Roof extends Surface
 {
 
+    public Roof()
+    {
+        // TODO Auto-generated constructor stub
+    }
+
     /**
      * Constructor from a mesh.
      * @param m
@@ -28,5 +33,21 @@ public class Roof extends Surface
     public Roof(final Polygon p)
     {
         super(p);
+    }
+
+    /**
+     * Copy constructor.
+     * @param r
+     *            the roof to copy
+     */
+    public Roof(final Roof r)
+    {
+        super(r);
+    }
+
+    @Override
+    public final String toString()
+    {
+        return "Roof";
     }
 }

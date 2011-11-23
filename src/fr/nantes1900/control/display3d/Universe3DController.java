@@ -3,15 +3,13 @@ package fr.nantes1900.control.display3d;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.j3d.BranchGroup;
+
 import javax.vecmath.Vector3d;
-
-
-
+import javax.swing.event.EventListenerList;
 
 
 import com.sun.j3d.utils.picking.PickCanvas;
@@ -20,13 +18,20 @@ import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.picking.PickTool;
 
 import fr.nantes1900.control.isletselection.IsletSelectionController;
+import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Triangle;
 
 import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.TriangleView;
 import fr.nantes1900.view.display3d.Universe3DView;
 
-public class Universe3DController implements MouseListener, MouseMotionListener {
+// FIXME : Javadoc
+/**
+ * TODO.
+ */
+public class Universe3DController implements MouseListener, MouseMotionListener
+{
+
 
 	/**
 	 * The view of the 3D objets to show.
@@ -37,6 +42,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	private NewMouseRotate mouseRotate;
 
 	private IsletSelectionController parentController;
+	
+	private final EventListenerList  listeners = new EventListenerList();
 
 	// private ArrayList<MeshView> meshesViewSelected;
 	private ArrayList<TriangleView> trianglesViewSelected;
@@ -68,12 +75,11 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		return this.mouseRotate;
 	}
 
-	/**
-	 * Returns the list of Triangle associated with the trianglesView contained
-	 * in trianglesViewSelected.
-	 * 
-	 * @return what ?
-	 */
+	 /**
+     * Returns the list of Triangle associated with the trianglesView contained
+     * in trianglesViewSelected.
+     * @return the list of selected triangles
+     */
 	public List<Triangle> getTrianglesSelected() {
 		List<Triangle> trianglesList = new ArrayList<>();
 		for (TriangleView triangleView : this.trianglesViewSelected) {
@@ -105,7 +111,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	            	int TriangleIndex=PointIndex[0]/3;
 	            	MeshView triangleMeshView=(MeshView)PI.getGeometryArray();
 	                this.triangleMeshView=triangleMeshView;
-	            	
+
 //	            	triangleMeshView.selectOrUnselect(TriangleIndex); 
 	            	triangleMeshView.select(TriangleIndex);
 	            	if(trianglePicked.contains(TriangleIndex)==false){
@@ -286,17 +292,72 @@ public void selectVoisin(int TriangleIndex,List<Integer>triangleNewSelected,Mesh
 		// }
 	}
 
-	public void setMouseRotate(NewMouseRotate mouseRotate) {
-		this.mouseRotate = mouseRotate;
-	}
+	
+	
 
-	public void setPickCanvas(BranchGroup branchGroup) {
-		this.pickCanvas = new PickCanvas(this.u3DView.getSimpleUniverse()
-				.getCanvas(), branchGroup);
-		this.pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
-		this.u3DView.getSimpleUniverse().getCanvas().addMouseListener(this);
-		this.u3DView.getSimpleUniverse().getCanvas()
-				.addMouseMotionListener(this);
 
-	}
+
+
+ 
+    
+    /**
+     * TODO.
+     */
+    public Universe3DController()
+    {
+        this.u3DView = new Universe3DView(this);
+        this.trianglesViewSelected = new ArrayList<>();
+    }
+
+  
+
+   
+   
+
+ 
+
+  
+
+
+   
+ 
+ 
+
+    
+
+    /**
+     * @param mouseRotate
+     */
+    public final void setMouseRotate(final NewMouseRotate mouseRotate)
+    {
+        this.mouseRotate = mouseRotate;
+    }
+
+    /**
+     * @param branchGroup
+     */
+    public final void setPickCanvas(final BranchGroup branchGroup)
+    {
+        this.pickCanvas = new PickCanvas(this.u3DView.getSimpleUniverse()
+                .getCanvas(), branchGroup);
+        this.pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
+        this.u3DView.getSimpleUniverse().getCanvas().addMouseListener(this);
+        this.u3DView.getSimpleUniverse()
+                .getCanvas()
+                .addMouseMotionListener(this);
+
+    }
+
+    public void addElementsSelectedListener(ElementsSelectedListener listener)
+    {
+        listeners.add(ElementsSelectedListener.class, listener);
+    }
+
+    public void
+            removeElementsSelectedListener(ElementsSelectedListener listener)
+    {
+        listeners.remove(ElementsSelectedListener.class, listener);
+    }
+
+
 }

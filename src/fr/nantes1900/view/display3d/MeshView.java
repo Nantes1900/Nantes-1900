@@ -13,36 +13,37 @@ import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
 
 /**
- * TODO.
+ * MeshView is a class extended of the class TriangleArray. It's used to display all the triangles of the mesh.
  * @author TODO.
  */
 public class MeshView extends TriangleArray
 {
 
     /**
-     * TODO.
+     * Generate a list to save all the TriangleView.
      */
     private ArrayList<TriangleView> trianglesViewList;
 
     /**
-     * TODO.
+     * The center of the mesh.
      */
-    private Point centroid;
+    private Point                   centroid;
 
     /**
-     * TODO.
+     * The mesh of the things displayed.
      */
-    private Mesh mesh;
+    private Mesh                    mesh;
 
+    
     /**
-     * TODO.
-     * @param m
-     *            TODO.
+     * The method of constructor of the class MeshView
+     * @param m The mesh of the things displayed.
      */
     public MeshView(final Mesh m)
     {
         super(m.size() * 3, GeometryArray.COORDINATES | GeometryArray.COLOR_3
-                | GeometryArray.NORMALS | GeometryArray.TEXTURE_COORDINATE_2);
+                | GeometryArray.NORMALS
+                | GeometryArray.TEXTURE_COORDINATE_2);
 
         this.mesh = m;
         this.centroid = m.getCentroid();
@@ -69,13 +70,19 @@ public class MeshView extends TriangleArray
             triangleView.setSelected(false);
 
             this.setCoordinate(i, new Point3d(triangleView.getTriangle()
-                    .getP1().getX(), triangleView.getTriangle().getP1().getY(),
+                    .getP1()
+                    .getX(),
+                    triangleView.getTriangle().getP1().getY(),
                     triangleView.getTriangle().getP1().getZ()));
             this.setCoordinate(i + 1, new Point3d(triangleView.getTriangle()
-                    .getP2().getX(), triangleView.getTriangle().getP2().getY(),
+                    .getP2()
+                    .getX(),
+                    triangleView.getTriangle().getP2().getY(),
                     triangleView.getTriangle().getP2().getZ()));
             this.setCoordinate(i + 2, new Point3d(triangleView.getTriangle()
-                    .getP3().getX(), triangleView.getTriangle().getP3().getY(),
+                    .getP3()
+                    .getX(),
+                    triangleView.getTriangle().getP3().getY(),
                     triangleView.getTriangle().getP3().getZ()));
 
             this.setNormal(i, convertNormal(triangleView.getTriangle()));
@@ -92,31 +99,12 @@ public class MeshView extends TriangleArray
 
     }
 
-    /**
-     * TODO.
-     * @return TODO.
-     */
-    public final ArrayList<TriangleView> getTriangleArray()
-    {
-        return this.trianglesViewList;
-    }
+   
 
+  
     /**
      * TODO.
-     * @param i
-     *            TODO.
-     */
-    public final void select(int i)
-    {
-        this.trianglesViewList.get(i).setSelected(true);
-        // TODO : method deprecated.
-        this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
-        this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
-        this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
-    }
-    /**
-     * TODO.
-     * @param i
+     * @param i The index of the triangle which to be unselected. 
      *            TODO.
      */
     public void unselect(int i){
@@ -129,27 +117,17 @@ public class MeshView extends TriangleArray
     /**
      * TODO.
      * @param i
+
      *            TODO.
+     * @return TODO.
      */
-    public final void selectOrUnselect(final int i)
+    public static Vector3f convertNormal(final Triangle triangle)
     {
-        if (this.trianglesViewList.get(i).isSelected())
-        {
-            this.trianglesViewList.get(i).setSelected(false);
+        Vector3f normalFloat = new Vector3f((float) triangle.getNormal().getX(),
+                (float) triangle.getNormal().getY(),
+                (float) triangle.getNormal().getZ());
+        return normalFloat;
 
-            // TODO : method deprecated
-            this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
-            this.setTextureCoordinate(i * 3 + 1, new Point2f(0.0f, 0.0f));
-            this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
-        } else
-        {
-            this.trianglesViewList.get(i).setSelected(true);
-
-            // TODO : method deprecated
-            this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
-            this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
-            this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
-        }
     }
 
     /**
@@ -187,17 +165,50 @@ public class MeshView extends TriangleArray
 
     /**
      * TODO.
-     * @param triangle
-     *            TODO.
      * @return TODO.
      */
-    public static Vector3f convertNormal(final Triangle triangle)
+    public final ArrayList<TriangleView> getTriangleArray()
     {
-        Vector3f normalFloat = new Vector3f(
-                (float) triangle.getNormal().getX(), (float) triangle
-                        .getNormal().getY(), (float) triangle.getNormal()
-                        .getZ());
-        return normalFloat;
+        return this.trianglesViewList;
+    }
 
+    /**
+     * TODO.
+     * @param i
+     *            TODO.
+     */
+    public final void select(final int i)
+    {
+        this.trianglesViewList.get(i).setSelected(true);
+        // TODO : method deprecated.
+        this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
+        this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
+        this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+    }
+
+    /**
+     * TODO.
+     * @param i
+     *            TODO.
+     */
+    public final void selectOrUnselect(final int i)
+    {
+        if (this.trianglesViewList.get(i).isSelected())
+        {
+            this.trianglesViewList.get(i).setSelected(false);
+
+            // TODO : method deprecated
+            this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
+            this.setTextureCoordinate(i * 3 + 1, new Point2f(0.0f, 0.0f));
+            this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+        } else
+        {
+            this.trianglesViewList.get(i).setSelected(true);
+
+            // TODO : method deprecated
+            this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
+            this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
+            this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+        }
     }
 }

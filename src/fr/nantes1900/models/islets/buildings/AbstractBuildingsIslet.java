@@ -1,133 +1,220 @@
 package fr.nantes1900.models.islets.buildings;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.constants.SeparationBuildings;
-import fr.nantes1900.constants.SeparationGroundBuilding;
-import fr.nantes1900.constants.SeparationGrounds;
-import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Mesh;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.extended.Building;
-import fr.nantes1900.models.extended.Ground;
-import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.AbstractIslet;
-import fr.nantes1900.utils.Algos;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep1;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep2;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep3;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep4;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep5;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep6;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep7;
+import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep8;
 
 /**
  * Abstracts a building islet : residential or industrial. This class contains
  * all the methods to apply the treatments on the meshes.
- * @author Daniel Lefèvre
+ * @author Daniel LefÃ¨vre
  */
 public abstract class AbstractBuildingsIslet extends AbstractIslet
 {
 
     /**
-     * The list of buildings contained in the islet after the separation.
+     * The zero building islet step.
      */
-    private List<Building> buildings = new ArrayList<>();
+    private BuildingsIsletStep0 biStep0;
+    /**
+     * The first building islet step.
+     */
+    private BuildingsIsletStep1 biStep1;
+    /**
+     * The second building islet step.
+     */
+    private BuildingsIsletStep2 biStep2;
+    /**
+     * The third building islet step.
+     */
+    private BuildingsIsletStep3 biStep3;
+    /**
+     * The fourth building islet step.
+     */
+    private BuildingsIsletStep4 biStep4;
+    /**
+     * The fifth building islet step.
+     */
+    private BuildingsIsletStep5 biStep5;
+    /**
+     * The sixth building islet step.
+     */
+    private BuildingsIsletStep6 biStep6;
+    /**
+     * The seventh building islet step.
+     */
+    private BuildingsIsletStep7 biStep7;
+    /**
+     * The eighth building islet step.
+     */
+    private BuildingsIsletStep8 biStep8;
 
     /**
-     * The mesh containing all the buildings after the separation from the
-     * ground.
+     * The number of the step 0.
      */
-    private Mesh initialBuilding;
+    public static final int     ZERO_STEP    = 0;
+    /**
+     * The number of the step 1.
+     */
+    public static final int     FIRST_STEP   = 1;
 
     /**
-     * The mesh containing all the grounds after the separation from the
-     * buildings.
+     * The number of the step 2.
      */
-    private Mesh initialGround;
-
+    public static final int     SECOND_STEP  = 2;
+    /**
+     * The number of the step 3.
+     */
+    public static final int     THIRD_STEP   = 3;
+    /**
+     * The number of the step 4.
+     */
+    public static final int     FOURTH_STEP  = 4;
+    /**
+     * The number of the step 5.
+     */
+    public static final int     FIFTH_STEP   = 5;
+    /**
+     * The number of the step 6.
+     */
+    public static final int     SIXTH_STEP   = 6;
+    /**
+     * The number of the step 7.
+     */
+    public static final int     SEVENTH_STEP = 7;
+    /**
+     * The number of the step 8.
+     */
+    public static final int     EIGHTH_STEP  = 8;
     /**
      * The number of the current step.
      */
-    private int progression = 0;
-
-    /**
-     * The ground contained in the islet. Every grounds, even if separated, are
-     * stocked here.
-     */
-    private Ground ground;
-
-    /**
-     * Temporary variable used in the treatments.
-     */
-    private Surface groundForAlgorithm;
-
-    /**
-     * The mesh containing the noise during the treatments.
-     */
-    private Mesh noise;
+    private int                 progression  = 0;
 
     /**
      * The normal to the ground. Used to extract the grounds.
      */
-    private Vector3d groundNormal;
+    private Vector3d            groundNormal;
+
+    /**
+     * The normal to the gravity.
+     */
+    private Vector3d            gravityNormal;
 
     /**
      * Constructor. Stocks the mesh in the initialTotalMesh variable.
-     * @param m
-     *            the mesh representing the islet
      */
-    public AbstractBuildingsIslet(final Mesh m)
+    public AbstractBuildingsIslet()
     {
-        super(m);
-    }
-
-    /**
-     * Extracts buildings by separating the blocks after the ground extraction.
-     */
-    private void buildingsExtraction()
-    {
-        final List<Mesh> buildingList = new ArrayList<>();
-
-        List<Mesh> thingsList;
-        // Extraction of the buildings.
-        thingsList = Algos.blockExtract(this.initialBuilding);
-
-        // Steprithm : detection of buildings considering their size.
-        for (final Mesh m : thingsList)
-        {
-            if (m.size() >= SeparationBuildings.getBlockBuildingSize())
-            {
-                buildingList.add(m);
-            } else
-            {
-                this.noise.addAll(m);
-            }
-        }
-
-        if (buildingList.size() == 0)
-        {
-            System.out.println("Error : no building found !");
-        }
-
-        for (Mesh m : buildingList)
-        {
-            this.buildings.add(new Building(m));
-        }
     }
 
     /**
      * Getter.
-     * @return the list of buildings.
+     * @return the zero step
      */
-    public final List<Building> getBuildings()
+    public final BuildingsIsletStep0 getBiStep0()
     {
-        return this.buildings;
+        return this.biStep0;
     }
 
     /**
      * Getter.
-     * @return the ground.
+     * @return the first step
      */
-    public final Ground getGround()
+    public final BuildingsIsletStep1 getBiStep1()
     {
-        return this.ground;
+        return this.biStep1;
+    }
+
+    /**
+     * Getter.
+     * @return the second step
+     */
+    public final BuildingsIsletStep2 getBiStep2()
+    {
+        return this.biStep2;
+    }
+
+    /**
+     * Getter.
+     * @return the third step
+     */
+    public final BuildingsIsletStep3 getBiStep3()
+    {
+        return this.biStep3;
+    }
+
+    /**
+     * Getter.
+     * @return the fourth step
+     */
+    public final BuildingsIsletStep4 getBiStep4()
+    {
+        return this.biStep4;
+    }
+
+    /**
+     * Getter.
+     * @return the fifth step
+     */
+    public final BuildingsIsletStep5 getBiStep5()
+    {
+        return this.biStep5;
+    }
+
+    /**
+     * Getter.
+     * @return the sixth step
+     */
+    public final BuildingsIsletStep6 getBiStep6()
+    {
+        return this.biStep6;
+    }
+
+    /**
+     * Getter.
+     * @return the seventh step
+     */
+    public final BuildingsIsletStep7 getBiStep7()
+    {
+        return this.biStep7;
+    }
+
+    /**
+     * Getter.
+     * @return the eighth step
+     */
+    public final BuildingsIsletStep8 getBiStep8()
+    {
+        return this.biStep8;
+    }
+
+    /**
+     * Getter.
+     * @return the gravity normal
+     */
+    public final Vector3d getGravityNormal()
+    {
+        return this.gravityNormal;
+    }
+
+    /**
+     * Getter.
+     * @return the normal to the ground
+     */
+    public final Vector3d getGroundNormal()
+    {
+        return this.groundNormal;
     }
 
     /**
@@ -140,223 +227,146 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     }
 
     /**
-     * Extracts the grounds, using the groundExtract method.
+     * Incrementer. Used to increment the progression of the treamtent.
      */
-    private void groundExtraction()
+    public final void incProgression()
     {
-        // Searches for ground-oriented triangles with an error.
-        Mesh meshOriented = this.getInitialTotalMesh().orientedAs(
-                this.groundNormal,
-                SeparationGroundBuilding.getAngleGroundError());
-
-        List<Mesh> thingsList;
-        List<Mesh> groundsList = new ArrayList<>();
-        // Extracts the blocks in the oriented triangles.
-        thingsList = Algos.blockExtract(meshOriented);
-
-        // FIXME : use MeshOriented.
-        Mesh wholeGround = new Mesh();
-        for (final Mesh f : thingsList)
-        {
-            wholeGround.addAll(f);
-        }
-
-        // We consider the altitude of the blocks on an axis parallel to the
-        // normal ground.
-        final double highDiff = this.getInitialTotalMesh().zMax()
-                - this.getInitialTotalMesh().zMin();
-
-        // Builds an axis normal to the current ground.
-        final Edge axisNormalGround = new Edge(new Point(0, 0, 0), new Point(
-                this.groundNormal.x, this.groundNormal.y, this.groundNormal.z));
-
-        // Project the current whole ground centroid on this axis.
-        final Point pAverage = axisNormalGround.project(wholeGround
-                .getCentroid());
-
-        // After this, for each block, consider the distance (on the
-        // axisNormalGround) as an altitude distance. If it is greater than
-        // the error, then it's not considered as ground.
-        for (final Mesh m : thingsList)
-        {
-            final Point projectedPoint = axisNormalGround.project(m
-                    .getCentroid());
-            if (projectedPoint.getZ() < pAverage.getZ()
-                    || projectedPoint.distance(pAverage) < highDiff
-                            * SeparationGroundBuilding.getAltitureError())
-            {
-
-                groundsList.add(m);
-            }
-        }
-
-        // We consider the size of the blocks : if they're big enough,
-        // they're keeped. This is to avoid the parts of roofs, walls,
-        // etc...
-        thingsList = new ArrayList<>(groundsList);
-        groundsList = new ArrayList<>();
-        for (final Mesh m : thingsList)
-        {
-            if (m.size() > SeparationGrounds.getBlockGroundsSizeError())
-            {
-                groundsList.add(m);
-            }
-        }
-
-        // Now that we found the real grounds, we extract the other
-        // triangles
-        // which are almost ground-oriented to add them.
-        meshOriented = this.getInitialTotalMesh().orientedAs(this.groundNormal,
-                SeparationGroundBuilding.getLargeAngleGroundError());
-
-        // If the new grounds are neighbours from the old ones, they are
-        // added to the real grounds.
-        thingsList = new ArrayList<>();
-        for (final Mesh m : groundsList)
-        {
-
-            final Mesh temp = new Mesh(m);
-            temp.addAll(meshOriented);
-            final Mesh ret = new Mesh();
-            m.getOne().returnNeighbours(ret, temp);
-            meshOriented.remove(ret);
-            thingsList.add(ret);
-        }
-        groundsList = thingsList;
-
-        wholeGround = new Mesh();
-        for (final Mesh f : groundsList)
-        {
-            wholeGround.addAll(f);
-        }
-
-        this.initialGround = new Ground(wholeGround);
+        this.progression++;
     }
 
     /**
-     * TODO. GroundNormal
+     * Return a node containing the tree depending of the progression of the
+     * treatment.
+     * @return the node
+     * @throws InvalidCaseException
+     *             if the case in not valid (more than 8 or less than 0)
      */
-    public final void launchTreatment0()
+    public final DefaultMutableTreeNode
+            returnNode() throws InvalidCaseException
     {
-        try
+        switch (this.getProgression())
         {
-            this.changeBase();
-        } catch (UnCompletedParametersException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            case AbstractBuildingsIslet.ZERO_STEP:
+                throw new InvalidCaseException();
+            case AbstractBuildingsIslet.FIRST_STEP:
+                return this.biStep1.returnNode();
+            case AbstractBuildingsIslet.SECOND_STEP:
+                return this.biStep2.returnNode();
+            case AbstractBuildingsIslet.THIRD_STEP:
+                return this.biStep3.returnNode();
+            case AbstractBuildingsIslet.FOURTH_STEP:
+                return this.biStep4.returnNode();
+            case AbstractBuildingsIslet.FIFTH_STEP:
+                return this.biStep5.returnNode();
+            case AbstractBuildingsIslet.SIXTH_STEP:
+                return this.biStep6.returnNode();
+            case AbstractBuildingsIslet.SEVENTH_STEP:
+                return this.biStep7.returnNode();
+            case AbstractBuildingsIslet.EIGHTH_STEP:
+                return this.biStep8.returnNode();
+            default:
+                return null;
         }
     }
 
     /**
-     * TODO. SeparationGroundBuilding
+     * Setter.
+     * @param biStepIn
+     *            the zero step
      */
-    public final void launchTreatment1()
+    public final void setBiStep0(final BuildingsIsletStep0 biStepIn)
     {
-        this.groundExtraction();
-        this.initialBuilding = new Mesh(this.getInitialTotalMesh());
-        this.initialBuilding.remove(this.initialGround);
+        this.biStep0 = biStepIn;
     }
 
     /**
-     * TODO. SeparationBuildings
+     * Setter.
+     * @param biStep1In
+     *            the first step
      */
-    public final void launchTreatment2()
+    public final void setBiStep1(final BuildingsIsletStep1 biStep1In)
     {
-        this.noise = new Mesh();
-        this.buildingsExtraction();
-
-        this.ground = this.noiseTreatment();
+        this.biStep1 = biStep1In;
     }
 
     /**
-     * TODO. CarveWallsBetweenBuildings
+     * Setter.
+     * @param biStep2In
+     *            the second step
      */
-    public final void launchTreatment3()
+    public final void setBiStep2(final BuildingsIsletStep2 biStep2In)
     {
-        // TODO : implement this method.
+        this.biStep2 = biStep2In;
     }
 
     /**
-     * TODO. SeparationWallRoof
+     * Setter.
+     * @param biStep3In
+     *            the third step
      */
-    public final void launchTreatment4()
+    public final void setBiStep3(final BuildingsIsletStep3 biStep3In)
     {
-        for (Building b : this.getBuildings())
-        {
-            b.separateWallRoof(this.getGravityNormal());
-        }
+        this.biStep3 = biStep3In;
     }
 
     /**
-     * TODO. SeparationWallsAndSeparationRoofs
+     * Setter.
+     * @param biStep4In
+     *            the fourth step
      */
-    public final void launchTreatment6()
+    public final void setBiStep4(final BuildingsIsletStep4 biStep4In)
     {
-        this.groundForAlgorithm = new Surface(this.ground);
-
-        for (Building building : this.getBuildings())
-        {
-            building.cutWalls();
-            building.cutRoofs(this.groundNormal);
-            building.treatNoise();
-            building.treatNewNeighbours(this.groundForAlgorithm);
-        }
+        this.biStep4 = biStep4In;
     }
 
     /**
-     * TODO. DeterminateNeighbours
+     * Setter.
+     * @param biStep5In
+     *            the fifth step
      */
-    public final void launchTreatment7()
+    public final void setBiStep5(final BuildingsIsletStep5 biStep5In)
     {
-        for (Building b : this.getBuildings())
-        {
-            b.determinateNeighbours(this.groundForAlgorithm);
-        }
+        this.biStep5 = biStep5In;
     }
 
     /**
-     * TODO. SortNeighbours
+     * Setter.
+     * @param biStep6In
+     *            the sixth step
      */
-    public final void launchTreatment8()
+    public final void setBiStep6(final BuildingsIsletStep6 biStep6In)
     {
-        for (Building b : this.getBuildings())
-        {
-            b.sortSurfaces();
-            b.orderNeighbours(this.groundForAlgorithm);
-        }
+        this.biStep6 = biStep6In;
     }
 
     /**
-     * TODO. RecomputationGround
+     * Setter.
+     * @param biStep7In
+     *            the seventh step
      */
-    public final void launchTreatment10()
+    public final void setBiStep7(final BuildingsIsletStep7 biStep7In)
     {
-        for (Building b : this.getBuildings())
-        {
-            b.reComputeGroundBounds();
-        }
+        this.biStep7 = biStep7In;
     }
 
     /**
-     * TODO. SimplificationSurfaces
+     * Setter.
+     * @param biStep8In
+     *            the eighth step
      */
-    public final void launchTreatment9()
+    public final void setBiStep8(final BuildingsIsletStep8 biStep8In)
     {
-        for (Building b : this.getBuildings())
-        {
-            b.determinateContours(this.groundNormal);
-        }
+        this.biStep8 = biStep8In;
     }
 
     /**
-     * Treats the noise by calling the method Algos.blockTreatNoise.
-     * @return the ground of this islet
+     * Setter.
+     * @param gravityNormalIn
+     *            the new gravity normal
      */
-    private Ground noiseTreatment()
+    public final void setGravityNormal(final Vector3d gravityNormalIn)
     {
-        List<Mesh> list = Algos.blockExtract(this.initialGround);
-        return new Ground(Algos.blockTreatNoise(list, this.noise));
+        this.gravityNormal = gravityNormalIn;
     }
 
     /**
@@ -370,58 +380,12 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     }
 
     /**
-     * Exception class used when an attribute has not been defined whereas the
-     * algorithm has been launched.
-     * @author Daniel Lefèvre
+     * Setter.
+     * @param progressionIn
+     *            the progression
      */
-    public final class VoidParameterException extends Exception
+    public final void setProgression(final int progressionIn)
     {
-
-        /**
-         * Version ID.
-         */
-        private static final long serialVersionUID = 1L;
-
-        /**
-         * Private constructor.
-         */
-        public VoidParameterException()
-        {
-        }
-    }
-
-    /**
-     * Incrementer. Used to increment the progression of the treamtent.
-     */
-    public final void incProgression()
-    {
-        this.progression++;
-    }
-
-    /**
-     * Getter.
-     * @return the mesh representing the initial building
-     */
-    public final Mesh getInitialBuilding()
-    {
-        return this.initialBuilding;
-    }
-
-    /**
-     * Getter.
-     * @return the mesh representing the initial ground
-     */
-    public final Mesh getInitialGround()
-    {
-        return this.initialGround;
-    }
-
-    /**
-     * Getter.
-     * @return the normal to the ground
-     */
-    public final Vector3d getGroundNormal()
-    {
-        return this.groundNormal;
+        this.progression = progressionIn;
     }
 }

@@ -28,22 +28,22 @@ public class ActionsView extends JPanel
     /**
      * Button used to open a mockup part.
      */
-    private JButton bOpen;
+    private JButton           bOpen;
 
     /**
      * Button used to launch the process of an islet.
      */
-    private JButton bLaunch;
+    private JButton           bLaunch;
 
     /**
      * Button used to display some help.
      */
-    private HelpButton bHelp;
+    private HelpButton        bHelp;
 
     /**
      * Checkbox to select gravity normal as ground normal.
      */
-    private JCheckBox cbGravityGround;
+    private JCheckBox         cbGravityGround;
 
     /**
      * Creates a new panel containing the open and launch buttons.
@@ -60,7 +60,8 @@ public class ActionsView extends JPanel
                 FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY,
                         FileTools.MESSAGETYPE_TITLE));
         this.cbGravityGround = new JCheckBox(
-                "Utiliser la normale orient�e selon la gravite");
+                "Utiliser la normale orientée selon la gravité");
+        this.cbGravityGround.setEnabled(false);
 
         this.setLayout(new GridBagLayout());
         this.add(this.bOpen, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
@@ -104,6 +105,15 @@ public class ActionsView extends JPanel
     public final JButton getOpenButton()
     {
         return this.bOpen;
+    }
+
+    /**
+     * Returns the use gravity normal as ground normal check box.
+     * @return The use gravity normal as ground normal check box.
+     */
+    public final JCheckBox getGravityCheckBox()
+    {
+        return this.cbGravityGround;
     }
 
     /**

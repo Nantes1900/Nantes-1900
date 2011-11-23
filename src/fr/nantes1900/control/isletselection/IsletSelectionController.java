@@ -3,9 +3,11 @@
  */
 package fr.nantes1900.control.isletselection;
 
+import java.awt.Cursor;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
@@ -16,10 +18,7 @@ import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
-import fr.nantes1900.models.islets.buildings.ResidentialIslet;
 import fr.nantes1900.utils.FileTools;
-import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.utils.WriterSTL;
 import fr.nantes1900.view.isletselection.GlobalTreeView.FileNode;
 import fr.nantes1900.view.isletselection.IsletSelectionView;
@@ -34,17 +33,17 @@ public class IsletSelectionController
      * The controller of the panel containing buttons to perform the different
      * actions.
      */
-    private ActionsController aController;
+    private ActionsController        aController;
 
     /**
      * The controller of the tree used to select an islet.
      */
-    private GlobalTreeController gtController;
+    private GlobalTreeController     gtController;
 
     /**
      * The controller of the 3D view which shows a selected islet.
      */
-    private Universe3DController u3DController;
+    private Universe3DController     u3DController;
 
     /**
      * The controller of the selected islet.
@@ -54,22 +53,22 @@ public class IsletSelectionController
     /**
      * View allowing to select an islet and launch a process.
      */
-    private IsletSelectionView isView;
+    private IsletSelectionView       isView;
 
     /**
      * The opened directory corresponding.
      */
-    private File openedDirectory;
+    private File                     openedDirectory;
 
     /**
      * The selected file in the tree.
      */
-    private File selectedFile;
+    private File                     selectedFile;
 
     /**
      * The parent controller which handles this one.
      */
-    private GlobalController parentController;
+    private GlobalController         parentController;
 
     /**
      * Creates a new controller to handle the islet selection window.
@@ -81,7 +80,7 @@ public class IsletSelectionController
         this.parentController = parentControllerIn;
         this.gtController = new GlobalTreeController(this);
         this.aController = new ActionsController(this);
-        this.u3DController = new Universe3DController(this);
+        this.u3DController = new Universe3DController();
         this.biController = new BuildingsIsletController(this,
                 this.u3DController);
 
@@ -103,7 +102,7 @@ public class IsletSelectionController
         if (this.selectedFile != null
                 && !this.u3DController.getTrianglesSelected().isEmpty())
         {
-            // TODO Move this code
+            // TODO by Daniel : Move this code
             WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
                     + "/gravity_normal.stl");
             Point point = new Point(1, 1, 1);
@@ -119,12 +118,11 @@ public class IsletSelectionController
             normalSaved = true;
         } else
         {
+            // TODO : put this text in the text file (or XML for Luc).
             JOptionPane.showMessageDialog(this.isView,
-                    "S閘ectionnez un 頻ot dans l'arbre\npuis "
-                            + "s閘ectionnez des triangles pour cr閑r la "
-                            + "normale\nou s閘ectionnez \"Utiliser la normale "
-                                    + "orient閑 selon la gravit閈n",
-                            "Aucun 頻ot ouvert", JOptionPane.ERROR_MESSAGE);
+                    "Sélectionnez un îlot dans l'arbre\npuis "
+                            + "sélectionnez des triangles pour créer la normale.",
+                    "Sauvegarde impossible", JOptionPane.ERROR_MESSAGE);
         }
 
         return normalSaved;
@@ -146,27 +144,19 @@ public class IsletSelectionController
      */
     public final void displayFile(final DefaultMutableTreeNode node)
     {
+        Cursor cursor = new Cursor(Cursor.WAIT_CURSOR);
+        this.isView.setCursor(cursor);
         // Reads the file object of the Tree
         FileNode fileNode = (FileNode) node.getUserObject();
 
         if (fileNode.isFile())
         {
-            ParserSTL parser = new ParserSTL(fileNode.getEntireName());
+            this.biController.readFile(fileNode.getEntireName());
             this.selectedFile = fileNode;
-
-            AbstractBuildingsIslet resIslet;
-            try
-            {
-                resIslet = new ResidentialIslet(parser.read());
-                this.biController.setIslet(resIslet);
-                this.biController.putGravityNormal();
-                this.biController.display();
-            } catch (IOException e)
-            {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+            this.biController.display();
         }
+        cursor = new Cursor(Cursor.DEFAULT_CURSOR);
+        this.isView.setCursor(cursor);
     }
 
     /**
@@ -176,6 +166,15 @@ public class IsletSelectionController
     public final BuildingsIsletController getBiController()
     {
         return this.biController;
+    }
+
+    /**
+     * TODO.
+     * @return TODO
+     */
+    public final JFrame getWindow()
+    {
+        return this.isView;
     }
 
     /**
@@ -194,22 +193,24 @@ public class IsletSelectionController
                 .getActionsView().isGravityGroundCheckBoxSelected())
                 && this.selectedFile != null)
         {
-            if (!this.aController.getActionsView()
+            if (this.aController.getActionsView()
                     .isGravityGroundCheckBoxSelected())
             {
-                computeGroundNormal();
+                this.biController.useGravityNormalAsGroundNormal();
             } else
             {
-                this.biController.useGravityNormalAsGroundNormal();
+                this.computeGroundNormal();
             }
             this.parentController.launchIsletProcess(this.selectedFile,
                     this.biController);
             processLaunched = true;
         } else
         {
+            // TODO by Luc : put this text in a XML file.
             JOptionPane.showMessageDialog(this.isView,
-                    "Veuillez s閘ectionner un 頻ot et une normale pour "
-                            + "lancer le traitement", "Traitement impossible",
+                    "Veuillez sélectionner un îlot et une normale pour "
+                            + "lancer le traitement\nou sélectionnez \"Utiliser la normale "
+                            + "orientée selon la gravité\n", "Traitement impossible",
                     JOptionPane.ERROR_MESSAGE);
         }
 
@@ -232,10 +233,10 @@ public class IsletSelectionController
         if (!gravityNormal.exists())
         {
             JOptionPane.showMessageDialog(this.isView,
-                    "La normale orient閑 selon la gravit�n'a pas 閠�trouv�"
-                            + "dans le dossier ouvert.\nVeuillez en cr閑r "
+                    "La normale orientée selon la gravité n'a pas été trouvée "
+                            + "dans le dossier ouvert.\nVeuillez en créer "
                             + "une nouvelle.",
-                    "Normale orient閑 selon la gravit�inexistante",
+                    "Normale orientée selon la gravité inexistante",
                     JOptionPane.INFORMATION_MESSAGE);
             this.aController.setComputeNormalMode();
             this.isView.setStatusBarText(FileTools.readHelpMessage(
