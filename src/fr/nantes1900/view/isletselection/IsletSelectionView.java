@@ -70,44 +70,25 @@ public class IsletSelectionView extends PFrame
 
         // adds the different views
         this.getComponentsPanel().setLayout(new GridBagLayout());
-        this.getComponentsPanel().add(this.aView,
-                new GridBagConstraints(0,
-                        0,
-                        1,
-                        1,
-                        0.0,
-                        0.0,
+        this.getComponentsPanel().add(
+                this.aView,
+                new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
                         GridBagConstraints.CENTER,
                         GridBagConstraints.HORIZONTAL,
-                        new Insets(5, 10, 5, 10),
-                        0,
-                        0));
-        this.getComponentsPanel().add(this.gtView,
-                new GridBagConstraints(0,
-                        1,
-                        1,
-                        1,
-                        0.0,
-                        0.0,
-                        GridBagConstraints.CENTER,
-                        GridBagConstraints.BOTH,
-                        new Insets(5, 10, 5, 10),
-                        0,
-                        0));
-        this.getComponentsPanel().add(this.u3DView,
-                new GridBagConstraints(1,
-                        0,
-                        1,
-                        2,
-                        0.0,
-                        0.0,
-                        GridBagConstraints.CENTER,
-                        GridBagConstraints.BOTH,
-                        new Insets(5, 10, 5, 10),
-                        0,
-                        0));
-        this.setStatusBarText(FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY,
-                FileTools.MESSAGETYPE_STATUSBAR));
+                        new Insets(10, 10, 5, 10), 0, 0));
+        this.getComponentsPanel().add(
+                this.gtView,
+                new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                        new Insets(10, 10, 5, 10), 0, 0));
+        this.getComponentsPanel().add(
+                this.u3DView,
+                new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0,
+                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                        new Insets(10, 10, 5, 10), 0, 0));
+        this.setStatusBarText(FileTools
+                .readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY,
+                        FileTools.MESSAGETYPE_STATUSBAR));
         pack();
     }
 }
