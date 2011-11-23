@@ -13,31 +13,31 @@ import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
 
 /**
- * TODO.
+ * MeshView is a class extended of the class TriangleArray. It's used to display all the triangles of the mesh.
  * @author TODO.
  */
 public class MeshView extends TriangleArray
 {
 
     /**
-     * TODO.
+     * Generate a list to save all the TriangleView.
      */
     private ArrayList<TriangleView> trianglesViewList;
 
     /**
-     * TODO.
+     * The center of the mesh.
      */
     private Point                   centroid;
 
     /**
-     * TODO.
+     * The mesh of the things displayed.
      */
     private Mesh                    mesh;
 
+    
     /**
-     * TODO.
-     * @param m
-     *            TODO.
+     * The method of constructor of the class MeshView
+     * @param m The mesh of the things displayed.
      */
     public MeshView(final Mesh m)
     {
@@ -49,9 +49,13 @@ public class MeshView extends TriangleArray
         this.centroid = m.getCentroid();
 
         this.trianglesViewList = new ArrayList<>();
+        int triangleCount=0;
         for (Triangle triangle : this.mesh)
         {
-            this.trianglesViewList.add(new TriangleView(triangle));
+        	TriangleView triangleView=new TriangleView(triangle);
+            this.trianglesViewList.add(triangleView);
+            triangle.setTriangleViewIndex(triangleCount);
+            triangleCount++;
         }
 
         this.setCapability(ALLOW_COLOR_WRITE);
@@ -95,9 +99,25 @@ public class MeshView extends TriangleArray
 
     }
 
+   
+
+  
     /**
      * TODO.
-     * @param triangle
+     * @param i The index of the triangle which to be unselected. 
+     *            TODO.
+     */
+    public void unselect(int i){
+		this.trianglesViewList.get(i).setSelected(false);
+		this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
+		this.setTextureCoordinate(i * 3 + 1, new Point2f(0.0f, 0.0f));
+		this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+	}
+
+    /**
+     * TODO.
+     * @param i
+
      *            TODO.
      * @return TODO.
      */

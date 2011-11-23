@@ -241,12 +241,14 @@ public class Universe3DView extends JPanel
 
         // Links the middle button of the mouse with a zoom transformation
         MouseZoom mouseZoom = new MouseZoom();
+        mouseZoom.setFactor(2);
         mouseZoom.setTransformGroup(transformGroup);
         transformGroup.addChild(mouseZoom);
         mouseZoom.setSchedulingBounds(boundingSphere);
 
         // Links the right button of the mouse with a translation transformation
         MouseTranslate mouseTranslate = new MouseTranslate();
+        mouseTranslate.setFactor(2);
         mouseTranslate.setTransformGroup(transformGroup);
         transformGroup.addChild(mouseTranslate);
         mouseTranslate.setSchedulingBounds(boundingSphere);
