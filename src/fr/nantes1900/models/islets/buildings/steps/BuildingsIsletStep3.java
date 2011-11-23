@@ -8,6 +8,7 @@ import javax.vecmath.Vector3d;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
+import fr.nantes1900.models.extended.steps.BuildingStep3;
 
 /**
  * Implements a step of the treatment. This step is after the separation between
@@ -89,13 +90,20 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
     {
         for (Building b : this.buildings)
         {
-            b.getbStep3().setArguments(this.gravityNormal);
+            BuildingStep3 buildingStep = (BuildingStep3) b.getbStep();
+            buildingStep.setArguments(this.gravityNormal);
             b.launchTreatment();
         }
 
         return new BuildingsIsletStep4(this.buildings, this.grounds);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #returnNode()
+     */
     @Override
     public final DefaultMutableTreeNode returnNode()
     {
@@ -104,9 +112,8 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
         {
             root.add(b.returnNode());
         }
-        DefaultMutableTreeNode nodeG = new DefaultMutableTreeNode(this.grounds);
-
-        root.add(nodeG);
+        root.add(new DefaultMutableTreeNode(this.grounds));
+        root.add(new DefaultMutableTreeNode(this.noise));
 
         return root;
     }

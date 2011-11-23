@@ -3,7 +3,9 @@
  */
 package fr.nantes1900.view.isletprocess;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -35,7 +37,7 @@ public class IsletProcessView extends PFrame
             ParametersView parametersView, Universe3DView universe3dView)
     {
         super();
-        this.setMinimumSize(new Dimension(1000, 1000));
+        this.setMinimumSize(new Dimension(800, 800));
         this.setPreferredSize(new Dimension(1000, 1000));
         this.setLocationRelativeTo(null);
 
@@ -47,14 +49,15 @@ public class IsletProcessView extends PFrame
         this.tabs = new JTabbedPane();
         this.tabs.addTab("Paramètres", pView);
         this.tabs.addTab("Arbre", itView);
-
+        
         this.getComponentsPanel().setLayout(new GridBagLayout());
-
+        
         this.getComponentsPanel().add(
                 nbView,
                 new GridBagConstraints(0, 0, 2, 1, 1.0, 0.20,
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(10, 10, 5, 10), 0, 0));
+        
         this.getComponentsPanel().add(
                 this.tabs,
                 new GridBagConstraints(0, 1, 1, 2, 0.40, 1.0,

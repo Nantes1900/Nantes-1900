@@ -9,8 +9,9 @@ import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Wall;
 
 /**
- * TODO.
- * @author Daniel
+ * Implements a building step : a state of the building. This step is the last
+ * step.
+ * @author Daniel Lefèvre
  */
 public class BuildingStep8 extends AbstractBuildingStep
 {
@@ -64,7 +65,7 @@ public class BuildingStep8 extends AbstractBuildingStep
     @Override
     public final AbstractBuildingStep launchTreatment()
     {
-        // TODO : return an error : not implemented.
+        // No more treatments for now : this method do nothing.
         return null;
     }
 
@@ -76,7 +77,16 @@ public class BuildingStep8 extends AbstractBuildingStep
     @Override
     public final DefaultMutableTreeNode returnNode()
     {
-        // TODO Auto-generated method stub
-        return null;
+        DefaultMutableTreeNode currentNode = new DefaultMutableTreeNode();
+        for (Wall w : this.walls)
+        {
+            currentNode.add(new DefaultMutableTreeNode(w.returnNode()));
+        }
+        for (Roof r : this.roofs)
+        {
+            currentNode.add(new DefaultMutableTreeNode(r.returnNode()));
+        }
+
+        return currentNode;
     }
 }

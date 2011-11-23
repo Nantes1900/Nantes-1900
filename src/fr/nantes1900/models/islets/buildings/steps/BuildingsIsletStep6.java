@@ -6,7 +6,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
-import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.extended.steps.BuildingStep6;
 
 /**
  * Implements a step of the treatment. This step is after the determination of
@@ -24,10 +24,6 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
      * The grounds.
      */
     private Ground         grounds;
-    /**
-     * The ground as a surface used in treatments.
-     */
-    private Surface        groundForAlgorithm;
 
     /**
      * Constructor.
@@ -61,22 +57,31 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
         return this.grounds;
     }
 
-    /**
-     * TODO. SortNeighbours
-     * @return TODO.
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #launchTreatment()
      */
     @Override
     public final BuildingsIsletStep7 launchTreatment()
     {
         for (Building b : this.buildings)
         {
-            b.getbStep6().setArguments(this.groundForAlgorithm);
+            BuildingStep6 buildingStep = (BuildingStep6) b.getbStep();
+            buildingStep.setArguments(this.grounds);
             b.launchTreatment();
         }
 
         return new BuildingsIsletStep7(this.buildings, this.grounds);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #returnNode()
+     */
     @Override
     public final DefaultMutableTreeNode returnNode()
     {
@@ -85,20 +90,18 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
         {
             root.add(b.returnNode());
         }
-        DefaultMutableTreeNode nodeG = new DefaultMutableTreeNode(this.grounds);
-
-        root.add(nodeG);
+        root.add(new DefaultMutableTreeNode(this.grounds));
 
         return root;
     }
 
     /**
      * Setter.
-     * @param groundForAlgorithmIn
-     *            the ground as a surface for the treatments
+     * @param groundsIn
+     *            the grounds
      */
-    public final void setArguments(final Surface groundForAlgorithmIn)
+    public final void setArguments(final Ground groundsIn)
     {
-        this.groundForAlgorithm = groundForAlgorithmIn;
+        this.grounds = groundsIn;
     }
 }

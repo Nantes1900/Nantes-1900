@@ -29,9 +29,18 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
     private Ground initialGrounds;
 
     /**
+     * Getter.
+     * @return the noise
+     */
+    public final Mesh getNoise()
+    {
+        return this.noise;
+    }
+
+    /**
      * The mesh containing the noise during the treatments.
      */
-    private Mesh   noise;
+    private Mesh noise;
 
     /**
      * Constructor.
@@ -121,7 +130,7 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
      */
     private Ground noiseTreatment()
     {
-        List<Mesh> list = Algos.blockExtract(this.initialGrounds);
+        List<Mesh> list = Algos.blockExtract(this.initialGrounds.getMesh());
         return new Ground(Algos.blockTreatNoise(list, this.noise));
     }
 

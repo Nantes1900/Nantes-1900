@@ -4,7 +4,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.models.basis.Mesh;
-import fr.nantes1900.models.islets.buildings.UnCompletedParametersException;
+import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
@@ -113,7 +113,6 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
     @Override
     public final DefaultMutableTreeNode returnNode()
     {
-        // TODO : create a method toString in the class Mesh to use it here.
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(this.initialTotalMesh);
         return node;
     }

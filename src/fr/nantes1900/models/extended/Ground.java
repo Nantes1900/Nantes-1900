@@ -6,14 +6,8 @@ import fr.nantes1900.models.basis.Mesh;
  * Implements a ground as a mesh representing the ground surface.
  * @author Daniel
  */
-public final class Ground extends Mesh
+public final class Ground extends Surface
 {
-
-    /**
-     * Version attribute.
-     */
-    private static final long serialVersionUID = 1L;
-
     /**
      * Constructor from a Mesh.
      * @param m
@@ -22,5 +16,15 @@ public final class Ground extends Mesh
     public Ground(final Mesh m)
     {
         super(m);
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see java.util.AbstractCollection#toString()
+     */
+    @Override
+    public String toString()
+    {
+        return "Ground";
     }
 }

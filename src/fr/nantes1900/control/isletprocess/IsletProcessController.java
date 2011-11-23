@@ -9,7 +9,7 @@ import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.listener.ElementsSelectedListener;
-import fr.nantes1900.models.islets.buildings.InvalidCaseException;
+import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.view.isletprocess.IsletProcessView;
 
 /**
@@ -52,6 +52,8 @@ public class IsletProcessController implements ElementsSelectedListener
         this.u3DController.addElementsSelectedListener(this);
     }
 
+    public BuildingsIsletController getBiController(){return this.biController;}
+    
     /**
      * Launches an action depending of the actual step with the given action
      * type.

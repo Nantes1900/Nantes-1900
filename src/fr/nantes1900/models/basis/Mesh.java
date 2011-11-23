@@ -53,6 +53,16 @@ public class Mesh extends HashSet<Triangle>
         this.iD = ++Mesh.currentID;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.util.AbstractCollection#toString()
+     */
+    @Override
+    public String toString()
+    {
+        return "Mesh";
+    }
+
     /**
      * Computes the average normal of all triangles composing this mesh.
      * @return average The average Vector3d normal.

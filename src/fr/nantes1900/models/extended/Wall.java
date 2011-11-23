@@ -10,9 +10,11 @@ import fr.nantes1900.models.basis.Polygon;
 public class Wall extends Surface
 {
 
+    /**
+     * Void constructor.
+     */
     public Wall()
     {
-        // TODO Auto-generated constructor stub
     }
 
     /**

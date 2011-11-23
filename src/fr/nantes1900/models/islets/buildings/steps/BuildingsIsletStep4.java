@@ -7,7 +7,7 @@ import javax.vecmath.Vector3d;
 
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
-import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.extended.steps.BuildingStep4;
 
 /**
  * Implements a step of the treatment. This step is after the separation between
@@ -26,10 +26,6 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
      * The grounds.
      */
     private Ground         grounds;
-    /**
-     * The ground under the surface type for some treatments.
-     */
-    private Surface        groundForAlgorithm;
     /**
      * The normal to the ground used in treatments.
      */
@@ -67,19 +63,19 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
         return this.grounds;
     }
 
-    /**
-     * TODO. SeparationWallsAndSeparationRoofs
-     * @return TODO.
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #launchTreatment()
      */
     @Override
     public final BuildingsIsletStep5 launchTreatment()
     {
-        this.groundForAlgorithm = new Surface(this.grounds);
-
         for (Building b : this.buildings)
         {
-            b.getbStep4().setArguments(this.groundNormal,
-                    this.groundForAlgorithm);
+            BuildingStep4 buildingStep = (BuildingStep4) b.getbStep();
+            buildingStep.setArguments(this.groundNormal, this.grounds);
             b.launchTreatment();
         }
 
@@ -100,9 +96,7 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
         {
             root.add(b.returnNode());
         }
-        DefaultMutableTreeNode nodeG = new DefaultMutableTreeNode(this.grounds);
-
-        root.add(nodeG);
+        root.add(new DefaultMutableTreeNode(this.grounds));
 
         return root;
     }
