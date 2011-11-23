@@ -5,12 +5,14 @@ package fr.nantes1900.control.isletprocess;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
 import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.constants.Characteristics;
-import fr.nantes1900.view.isletprocess.CaracteristicsStep2View;
+import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
 
 /**
  * Characteristics panel for the second step of process of an islet.
@@ -21,20 +23,25 @@ import fr.nantes1900.view.isletprocess.CaracteristicsStep2View;
  */
 public class CaracteristicsStep2Controller extends CaracteristicsController
 {
+    public ArrayList<Triangle> trianglesList;
     /**
      * Constructor.
      * @param parentController
+     * @param triangleSelected 
      */
-    public CaracteristicsStep2Controller(IsletProcessController parentController)
+    public CaracteristicsStep2Controller(IsletProcessController parentController, Triangle triangleSelected)
     {
         super(parentController);
-        this.cView = new CaracteristicsStep2View();
+        trianglesList = new ArrayList<Triangle>();
+        trianglesList.add(triangleSelected);
+        
+        this.cView = new CharacteristicsStep2View();
         this.cView.getValidateButton().addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                String typeChosen = ((CaracteristicsStep2View) cView).getTypeSelected();
+                String typeChosen = ((CharacteristicsStep2View) cView).getTypeSelected();
                 
                 int actionType = -1;
                 switch (typeChosen)
@@ -50,7 +57,7 @@ public class CaracteristicsStep2Controller extends CaracteristicsController
                 
                 if (actionType != -1)
                 {
-                    CaracteristicsStep2Controller.this.parentController.launchAction(actionType);
+                    CaracteristicsStep2Controller.this.parentController.launchAction(2, actionType, Characteristics.SELECTION_TYPE_TRIANGLE);
                     // TODO : remove when visual test is ok
                     System.out.println("Type modifié en " + typeChosen);
                 } else
@@ -60,5 +67,11 @@ public class CaracteristicsStep2Controller extends CaracteristicsController
             }
             
         });
+    }
+    
+    public void addTriangleSelected(Triangle triangleSelected)
+    {
+        this.trianglesList.add(triangleSelected);
+        ((CharacteristicsStep2View) this.cView).setType("");
     }
 }

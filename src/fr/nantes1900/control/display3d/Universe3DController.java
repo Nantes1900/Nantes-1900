@@ -19,6 +19,7 @@ import com.sun.j3d.utils.picking.PickTool;
 
 import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.listener.ElementsSelectedListener;
+import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
 
 import fr.nantes1900.view.display3d.MeshView;
@@ -55,7 +56,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 	private List<Integer> trianglePicked=new ArrayList<Integer>();
 	private List<Integer> selectedIndex=new ArrayList<Integer>();
 	private MeshView triangleMeshView;
-
+	
 	/**
 	 * @param isletSelectionController
 	 */
@@ -118,6 +119,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 	            		this.trianglePicked.add(TriangleIndex);
 	            		this.selectedIndex.add(this.trianglePicked.size());
 	            		this.trianglesViewSelected.add(this.triangleMeshView.getTriangleArray().get(TriangleIndex));
+	            		fireTriangleSelected(this.triangleMeshView.getTriangleArray().get(TriangleIndex).getTriangle());
 	            	}          	
 	                this.mouseRotate.setCenter(triangleMeshView.getTriangleArray().get(TriangleIndex));
 	                
@@ -359,5 +361,40 @@ public void selectVoisin(int TriangleIndex,List<Integer>triangleNewSelected,Mesh
         listeners.remove(ElementsSelectedListener.class, listener);
     }
 
-
+    private void fireTriangleSelected(Triangle triangleSelected)
+    {
+        ElementsSelectedListener[] ESListeners =
+                listeners.getListeners(ElementsSelectedListener.class);
+        for (ElementsSelectedListener listener : ESListeners)
+        {
+            listener.triangleSelected(triangleSelected);
+        }
+    }
+    private void firePolygonSelected(Polygon polygonSelected)
+    {
+        ElementsSelectedListener[] ESListeners =
+                listeners.getListeners(ElementsSelectedListener.class);
+        for (ElementsSelectedListener listener : ESListeners)
+        {
+            listener.polygonSelected(polygonSelected);
+        }
+    }
+    private void fireTriangleDeselected(Triangle triangleDeselected)
+    {
+        ElementsSelectedListener[] ESListeners =
+                listeners.getListeners(ElementsSelectedListener.class);
+        for (ElementsSelectedListener listener : ESListeners)
+        {
+            listener.triangleSelected(triangleDeselected);
+        }
+    }
+    private void firePolygonDeselected(Polygon polygonDeselected)
+    {
+        ElementsSelectedListener[] ESListeners =
+                listeners.getListeners(ElementsSelectedListener.class);
+        for (ElementsSelectedListener listener : ESListeners)
+        {
+            listener.polygonDeselected(polygonDeselected);
+        }
+    }
 }
