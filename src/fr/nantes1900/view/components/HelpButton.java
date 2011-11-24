@@ -112,6 +112,7 @@ public class HelpButton extends JButton implements MouseListener
     {
         this.textColorCurrent = this.textColor;
         this.backgroundColorCurrent = this.backgroundColor;
+        this.setMinimumSize(new Dimension(20, 20));
         this.setPreferredSize(new Dimension(20, 20));
         this.setFocusPainted(false);
         this.setBorderPainted(false);

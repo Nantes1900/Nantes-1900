@@ -5,7 +5,7 @@ import javax.swing.JComboBox;
 import fr.nantes1900.constants.Characteristics;
 import fr.nantes1900.view.components.HelpButton;
 
-public class CaracteristicsStep2View extends CaracteristicsView
+public class CharacteristicsStep2View extends CaracteristicsView
 {
     /**
      * default serial UID
@@ -13,10 +13,10 @@ public class CaracteristicsStep2View extends CaracteristicsView
     private static final long serialVersionUID = 1L;
     private JComboBox<String> cbType;
     
-    public CaracteristicsStep2View()
+    public CharacteristicsStep2View()
     {
         super();
-        String[] types = {Characteristics.TYPE_BUILDING, Characteristics.TYPE_GROUND};
+        String[] types = {"", Characteristics.TYPE_BUILDING, Characteristics.TYPE_GROUND};
         
         cbType = new JComboBox<String>(types);
         this.addCaracteristic(createSimpleCaracteristic(cbType, "Type", new HelpButton()));
@@ -25,5 +25,11 @@ public class CaracteristicsStep2View extends CaracteristicsView
     public String getTypeSelected()
     {
         return (String) cbType.getSelectedItem();
+    }
+    
+
+    public void setType(String string)
+    {
+        this.cbType.setSelectedItem(string);
     }
 }

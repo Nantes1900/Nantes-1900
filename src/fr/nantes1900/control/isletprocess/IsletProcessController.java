@@ -9,6 +9,8 @@ import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.listener.ElementsSelectedListener;
+import fr.nantes1900.models.basis.Polygon;
+import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.view.isletprocess.IsletProcessView;
 
@@ -29,8 +31,7 @@ public class IsletProcessController implements ElementsSelectedListener
     private int                      progression;
 
     public IsletProcessController(GlobalController parentController,
-            File isletFile,
-            BuildingsIsletController biController)
+            File isletFile, BuildingsIsletController biController)
     {
         this.parentController = parentController;
 
@@ -44,16 +45,17 @@ public class IsletProcessController implements ElementsSelectedListener
         this.biController.display();
 
         this.ipView = new IsletProcessView(cController.getView(),
-                itController.getView(),
-                nbController.getView(),
-                pController.getView(),
-                u3DController.getUniverse3DView());
+                itController.getView(), nbController.getView(),
+                pController.getView(), u3DController.getUniverse3DView());
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
     }
 
-    public BuildingsIsletController getBiController(){return this.biController;}
-    
+    public BuildingsIsletController getBiController()
+    {
+        return this.biController;
+    }
+
     /**
      * Launches an action depending of the actual step with the given action
      * type.
@@ -61,15 +63,15 @@ public class IsletProcessController implements ElementsSelectedListener
      *            Type of the action to execute
      * @see ActionTypes, {@link BuildingsIsletController}
      */
-    public void launchAction(int actionType)
+    public void launchAction(int step, int actionType, int selectionMode)
     {
-        switch (progression)
+        switch (step)
         {
             case 2:
                 try
                 {
-                    this.biController.action2(u3DController.getTrianglesSelected(),
-                            actionType);
+                    this.biController.action2(
+                            u3DController.getTrianglesSelected(), actionType);
                 } catch (InvalidCaseException e)
                 {
                     // TODO Auto-generated catch block
@@ -77,5 +79,44 @@ public class IsletProcessController implements ElementsSelectedListener
                 }
             break;
         }
+    }
+
+    @Override
+    public void triangleSelected(Triangle triangleSelected)
+    {
+        switch (progression)
+        {
+            case 2:
+                if (!(this.cController instanceof CaracteristicsStep2Controller))
+                {
+                    this.cController = new CaracteristicsStep2Controller(this, triangleSelected);
+                    this.ipView.setCharacteristicsView(cController.getView());
+                } else
+                {
+                    ((CaracteristicsStep2Controller) this.cController).addTriangleSelected(triangleSelected);
+                }
+            break;
+        }
+    }
+
+    @Override
+    public void polygonSelected(Polygon trianglesSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void triangleDeselected(Triangle triangleSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void polygonDeselected(Polygon trianglesSelected)
+    {
+        // TODO Auto-generated method stub
+
     }
 }

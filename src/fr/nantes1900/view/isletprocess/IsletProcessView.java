@@ -74,4 +74,11 @@ public class IsletProcessView extends PFrame
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(5, 5, 10, 10), 0, 0));
     }
+
+    public void setCharacteristicsView(CaracteristicsView view)
+    {
+        this.cView = view;
+        validate();
+        repaint();
+    }
 }

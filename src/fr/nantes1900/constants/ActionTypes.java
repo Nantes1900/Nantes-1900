@@ -6,7 +6,6 @@ package fr.nantes1900.constants;
  */
 public final class ActionTypes
 {
-
     /**
      * To convert the things selected to building.
      */
