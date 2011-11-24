@@ -151,8 +151,7 @@ public class IsletSelectionController
      */
     public final void displayFile(final DefaultMutableTreeNode node)
     {
-        Cursor cursor = new Cursor(Cursor.WAIT_CURSOR);
-        this.isView.setCursor(cursor);
+        this.isView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         // Reads the file object of the Tree
         FileNode fileNode = (FileNode) node.getUserObject();
 
@@ -162,8 +161,7 @@ public class IsletSelectionController
             this.selectedFile = fileNode;
             this.biController.display();
         }
-        cursor = new Cursor(Cursor.DEFAULT_CURSOR);
-        this.isView.setCursor(cursor);
+        this.isView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
     /**
