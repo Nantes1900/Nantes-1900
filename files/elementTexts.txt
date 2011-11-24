@@ -1,0 +1,2 @@
+﻿#date
+LaunchButton=Lancer

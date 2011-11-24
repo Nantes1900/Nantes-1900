@@ -10,6 +10,7 @@ import java.awt.Insets;
 
 import javax.swing.JFrame;
 
+import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.PFrame;
 import fr.nantes1900.view.display3d.Universe3DView;
@@ -87,8 +88,8 @@ public class IsletSelectionView extends PFrame
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(10, 10, 5, 10), 0, 0));
         this.setStatusBarText(FileTools
-                .readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY,
-                        FileTools.MESSAGETYPE_STATUSBAR));
+                .readHelpMessage(TextsKeys.KEY_IS_OPENDIRECTORY,
+                        TextsKeys.MESSAGETYPE_STATUSBAR));
         pack();
     }
 }
