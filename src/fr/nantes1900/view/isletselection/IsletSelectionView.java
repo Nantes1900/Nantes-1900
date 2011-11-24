@@ -69,19 +69,19 @@ public class IsletSelectionView extends PFrame
         this.u3DView = buildingsIsletView;
 
         // adds the different views
-        this.getComponentsPanel().setLayout(new GridBagLayout());
-        this.getComponentsPanel().add(
+        this.pComponents.setLayout(new GridBagLayout());
+        this.pComponents.add(
                 this.aView,
                 new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
                         GridBagConstraints.CENTER,
                         GridBagConstraints.HORIZONTAL,
                         new Insets(10, 10, 5, 10), 0, 0));
-        this.getComponentsPanel().add(
+        this.pComponents.add(
                 this.gtView,
                 new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(10, 10, 5, 10), 0, 0));
-        this.getComponentsPanel().add(
+        this.pComponents.add(
                 this.u3DView,
                 new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0,
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
