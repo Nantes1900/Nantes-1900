@@ -47,11 +47,11 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      * @throws UnCompletedParametersException
      *             if the matrix or the mesh has not been initialized
      */
-    public final void changeBase() throws UnCompletedParametersException
+    public final void changeBase() throws NullArgumentException
     {
         if (this.matrix == null || this.initialTotalMesh == null)
         {
-            throw new UnCompletedParametersException();
+            throw new NullArgumentException();
         }
         this.initialTotalMesh.changeBase(this.matrix);
     }
@@ -96,21 +96,11 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      * #launchTreatment()
      */
     @Override
-    public final BuildingsIsletStep1 launchTreatment()
+    public final BuildingsIsletStep1
+            launchTreatment() throws NullArgumentException
     {
-        try
-        {
-            this.createChangeBaseMatrix();
-            this.changeBase();
-        } catch (UnCompletedParametersException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch (NullArgumentException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+        this.createChangeBaseMatrix();
+        this.changeBase();
 
         return new BuildingsIsletStep1(this.initialTotalMesh);
     }
@@ -136,6 +126,11 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
     public final void setArguments(final Vector3d gravityNormalIn)
     {
         this.gravityNormal = gravityNormalIn;
+    }
+
+    public double[][] getMatrix()
+    {
+        return this.matrix;
     }
 
 }

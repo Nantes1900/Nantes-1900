@@ -153,7 +153,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
         {
             throw new NullArgumentException();
         }
-        Ground initialGround = groundExtraction();
+        Ground initialGround = this.groundExtraction();
         Mesh initialBuildings = new Mesh(this.initialTotalMeshAfterBaseChange);
         initialBuildings.remove(initialGround);
         return new BuildingsIsletStep2(initialBuildings, initialGround);

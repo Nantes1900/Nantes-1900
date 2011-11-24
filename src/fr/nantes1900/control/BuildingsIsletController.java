@@ -27,6 +27,7 @@ import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
+import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.PolygonView;
@@ -51,10 +52,6 @@ public class BuildingsIsletController
      * The universe 3D controller to interact with the universe 3D.
      */
     private Universe3DController     u3DController;
-    /**
-     * The normal of the gravity.
-     */
-    private Vector3d                 gravityNormal;
 
     /**
      * Constructor.
@@ -402,15 +399,6 @@ public class BuildingsIsletController
 
     /**
      * Getter.
-     * @return the gravity normal
-     */
-    public final Vector3d getGravityNormal()
-    {
-        return this.gravityNormal;
-    }
-
-    /**
-     * Getter.
      * @return the buildings islet
      */
     public final AbstractBuildingsIslet getIslet()
@@ -494,7 +482,10 @@ public class BuildingsIsletController
             this.display();
         } catch (InvalidCaseException e)
         {
-            System.out.println("Big problem");
+            System.out.println("Invalid case exc.");
+        } catch (NullArgumentException e)
+        {
+            System.out.println("Null argument exc.");
         }
     }
 
@@ -511,27 +502,29 @@ public class BuildingsIsletController
 
     /**
      * Launches the first treatment.
+     * @throws NullArgumentException
      */
-    private void launchTreatment0()
+    private void launchTreatment0() throws NullArgumentException
     {
-        // TODO : exception if not arguments ?
-        this.islet.getBiStep0().setArguments(this.gravityNormal);
+        if (this.islet.getGravityNormal() == null)
+        {
+            throw new NullArgumentException();
+        }
+        // FIXME : remove the setArguments : allow each step to access to its
+        // islet parent and get everything it wants.
+        this.islet.getBiStep0().setArguments(this.islet.getGravityNormal());
         this.islet.setBiStep1(this.islet.getBiStep0().launchTreatment());
+        MatrixMethod.changeBase(this.islet.getGroundNormal(),
+                this.islet.getBiStep0().getMatrix());
     }
 
     /**
      * Launches the first treatment.
      */
-    private void launchTreatment1()
+    private void launchTreatment1() throws NullArgumentException
     {
-        try
-        {
-            this.islet.getBiStep1().setArguments(this.gravityNormal);
-            this.islet.setBiStep2(this.islet.getBiStep1().launchTreatment());
-        } catch (NullArgumentException e)
-        {
-            System.out.println("Oupss.");
-        }
+        this.islet.getBiStep1().setArguments(this.islet.getGravityNormal());
+        this.islet.setBiStep2(this.islet.getBiStep1().launchTreatment());
     }
 
     /**
@@ -587,7 +580,7 @@ public class BuildingsIsletController
      */
     public final void putGravityNormal()
     {
-        this.islet.setGravityNormal(this.gravityNormal);
+        this.islet.setGravityNormal(this.islet.getGravityNormal());
     }
 
     /**
@@ -603,7 +596,7 @@ public class BuildingsIsletController
     {
         ParserSTL parser = new ParserSTL(fileName);
         Mesh mesh = parser.read();
-        this.setGravityNormal(mesh.averageNormal());
+        this.islet.setGravityNormal(mesh.averageNormal());
     }
 
     /**
@@ -647,16 +640,6 @@ public class BuildingsIsletController
             }
         }
         throw new UnCompletedParametersException();
-    }
-
-    /**
-     * Setter.
-     * @param gravityNormalIn
-     *            the gravity normal
-     */
-    public final void setGravityNormal(final Vector3d gravityNormalIn)
-    {
-        this.gravityNormal = gravityNormalIn;
     }
 
     /**
@@ -904,6 +887,5 @@ public class BuildingsIsletController
     public final void readFile(final String fileName)
     {
         this.islet.setBiStep0(new BuildingsIsletStep0(AbstractIslet.parseFile(fileName)));
-        this.islet.getBiStep0().setArguments(this.gravityNormal);
     }
 }
