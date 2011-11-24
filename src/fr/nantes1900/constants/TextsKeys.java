@@ -36,7 +36,7 @@ public final class TextsKeys
      * Key value corresponding to the select islet to launch process step.
      */
     public static final String KEY_LAUNCHBUTTON  = "LaunchButton";
-
-    
-    public TextsKeys(){};
+    public static final String ERROR_RETURNNODE = "Probleme dans le returnNode de BuildingsIsletController";
+    public TextsKeys(){
+    }
 }

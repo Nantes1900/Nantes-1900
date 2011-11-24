@@ -36,12 +36,12 @@ public class IsletProcessController implements ElementsSelectedListener
     {
         this.parentController = parentController;
         this.progression = 1;
+        this.biController = biController;
         this.cController = new CharacteristicsController(this);
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
         this.pController = new ParametersController(this);
         this.u3DController = new Universe3DController();
-        this.biController = biController;
         this.biController.setUniverse3DController(u3DController);
         this.biController.display();
 
@@ -61,9 +61,13 @@ public class IsletProcessController implements ElementsSelectedListener
     {
         Cursor cursor = new Cursor(Cursor.WAIT_CURSOR);
         this.ipView.setCursor(cursor);
+        System.out.println("launched");
         this.biController.launchTreatment();
+        System.out.println("finished");
         this.progression++;
-        cursor = new Cursor(Cursor.DEFAULT_CURSOR);
+
+        this.itController.refreshView();
+        this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
     /**

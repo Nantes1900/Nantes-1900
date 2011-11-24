@@ -24,7 +24,8 @@ public class IsletTreeView extends JPanel
         this.add(this.spTree, BorderLayout.CENTER);
     }
     
-    public void buildTree(DefaultMutableTreeNode Root){
-        
+    public void buildTree(DefaultMutableTreeNode root){
+        this.tree = new JTree(root);
+        this.spTree.setViewportView(this.tree);
     }
 }
