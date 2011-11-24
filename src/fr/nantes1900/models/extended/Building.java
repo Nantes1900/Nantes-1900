@@ -10,8 +10,6 @@ import fr.nantes1900.models.extended.steps.BuildingStep5;
 import fr.nantes1900.models.extended.steps.BuildingStep6;
 import fr.nantes1900.models.extended.steps.BuildingStep7;
 import fr.nantes1900.models.extended.steps.BuildingStep8;
-import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
-import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
@@ -25,50 +23,45 @@ public class Building
     /**
      * The third building step.
      */
-    private BuildingStep3          bStep3;
+    private BuildingStep3 bStep3;
     /**
      * The fourth building step.
      */
-    private BuildingStep4          bStep4;
+    private BuildingStep4 bStep4;
     /**
      * The fifth building step.
      */
-    private BuildingStep5          bStep5;
+    private BuildingStep5 bStep5;
     /**
      * The sixth building step.
      */
-    private BuildingStep6          bStep6;
+    private BuildingStep6 bStep6;
     /**
      * The seventh building step.
      */
-    private BuildingStep7          bStep7;
+    private BuildingStep7 bStep7;
     /**
      * The eighth building step.
      */
-    private BuildingStep8          bStep8;
-
-    /**
-     * The parent islet.
-     */
-    private AbstractBuildingsIslet parentIslet;
+    private BuildingStep8 bStep8;
 
     /**
      * The gravity normal.
      */
-    private Vector3d               gravityNormal;
+    private Vector3d      gravityNormal;
 
     /**
      * The ground.
      */
-    private Ground                 grounds;
+    private Ground        grounds;
     /**
      * The normal to the ground.
      */
-    private Vector3d               groundNormal;
+    private Vector3d      groundNormal;
     /**
      * The noise.
      */
-    private Mesh                   noise;
+    private Mesh          noise;
 
     /**
      * Constructor.
@@ -136,87 +129,71 @@ public class Building
 
     /**
      * Launches the treatment corresponding to the progression.
+     * @throws NullArgumentException
      */
-    public final void launchTreatment()
+    public final void launchTreatment3() throws NullArgumentException
     {
-        try
-        {
-            switch (this.parentIslet.getProgression())
-            {
-                case AbstractBuildingsIslet.ZERO_STEP:
-                    throw new InvalidCaseException();
-                case AbstractBuildingsIslet.FIRST_STEP:
-                    throw new InvalidCaseException();
-                case AbstractBuildingsIslet.SECOND_STEP:
-                    throw new InvalidCaseException();
-                case AbstractBuildingsIslet.THIRD_STEP:
-                    this.bStep3.setArguments(this.gravityNormal);
-                    this.bStep4 = this.bStep3.launchTreatment();
-                break;
-                case AbstractBuildingsIslet.FOURTH_STEP:
-                    this.bStep4.setArguments(this.groundNormal, this.grounds);
-                    this.bStep4 = this.bStep3.launchTreatment();
-                break;
-                case AbstractBuildingsIslet.FIFTH_STEP:
-                    this.bStep5.setArguments(this.noise, this.grounds);
-                    this.bStep5 = this.bStep4.launchTreatment();
-                break;
-                case AbstractBuildingsIslet.SIXTH_STEP:
-                    this.bStep6.setArguments(this.grounds);
-                    this.bStep6 = this.bStep5.launchTreatment();
-                break;
-                case AbstractBuildingsIslet.SEVENTH_STEP:
-                    this.bStep7.setArguments(this.groundNormal);
-                    this.bStep7 = this.bStep6.launchTreatment();
-                break;
-                default:
-                    throw new InvalidCaseException();
-            }
-        } catch (InvalidCaseException e)
-        {
-            System.out.println("Big problem");
-        } catch (NullArgumentException e)
-        {
-            System.out.println("Big problem 2");
-        }
+        this.bStep3.setArguments(this.gravityNormal);
+        this.bStep4 = this.bStep3.launchTreatment();
+    }
+
+    public final void launchTreatment4() throws NullArgumentException
+    {
+        this.bStep4.setArguments(this.groundNormal, this.grounds);
+        this.bStep5 = this.bStep4.launchTreatment();
+
+    }
+
+    public final void launchTreatment5() throws NullArgumentException
+    {
+        this.bStep5.setArguments(this.noise, this.grounds);
+        this.bStep6 = this.bStep5.launchTreatment();
+    }
+
+    public final void launchTreatment6() throws NullArgumentException
+    {
+        this.bStep6.setArguments(this.grounds);
+        this.bStep7 = this.bStep6.launchTreatment();
+    }
+
+    public final void launchTreatment7() throws NullArgumentException
+    {
+        this.bStep7.setArguments(this.groundNormal);
+        this.bStep8 = this.bStep7.launchTreatment();
     }
 
     /**
-     * Creates a tree node for the JTree.
+     * TODO.
      * @return the mutable tree node
      */
-    public final DefaultMutableTreeNode returnNode()
+    public final DefaultMutableTreeNode returnNode3()
     {
-        try
-        {
-            switch (this.parentIslet.getProgression())
-            {
-                case AbstractBuildingsIslet.ZERO_STEP:
-                    throw new InvalidCaseException();
-                case AbstractBuildingsIslet.FIRST_STEP:
-                    throw new InvalidCaseException();
-                case AbstractBuildingsIslet.SECOND_STEP:
-                    throw new InvalidCaseException();
-                case AbstractBuildingsIslet.THIRD_STEP:
-                    return this.bStep3.returnNode();
-                case AbstractBuildingsIslet.FOURTH_STEP:
-                    return this.bStep4.returnNode();
-                case AbstractBuildingsIslet.FIFTH_STEP:
-                    return this.bStep5.returnNode();
-                case AbstractBuildingsIslet.SIXTH_STEP:
-                    return this.bStep6.returnNode();
-                case AbstractBuildingsIslet.SEVENTH_STEP:
-                    return this.bStep7.returnNode();
-                case AbstractBuildingsIslet.EIGHTH_STEP:
-                    return this.bStep8.returnNode();
-                default:
-                    throw new InvalidCaseException();
-            }
-        } catch (InvalidCaseException e)
-        {
-            System.out.println("Big problem");
-            return null;
-        }
+        return this.bStep3.returnNode();
+    }
+
+    public final DefaultMutableTreeNode returnNode4()
+    {
+        return this.bStep4.returnNode();
+    }
+
+    public final DefaultMutableTreeNode returnNode5()
+    {
+        return this.bStep5.returnNode();
+    }
+
+    public final DefaultMutableTreeNode returnNode6()
+    {
+        return this.bStep6.returnNode();
+    }
+
+    public final DefaultMutableTreeNode returnNode7()
+    {
+        return this.bStep7.returnNode();
+    }
+
+    public final DefaultMutableTreeNode returnNode8()
+    {
+        return this.bStep8.returnNode();
     }
 
     /**

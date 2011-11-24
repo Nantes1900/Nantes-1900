@@ -8,6 +8,7 @@ import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.steps.BuildingStep5;
+import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
  * Implements a step of the treatment. This step is after the separation between
@@ -79,13 +80,13 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      * #launchTreatment()
      */
     @Override
-    public final BuildingsIsletStep6 launchTreatment()
+    public final BuildingsIsletStep6 launchTreatment() throws NullArgumentException
     {
         for (Building b : this.buildings)
         {
             BuildingStep5 buildingStep = b.getbStep5();
             buildingStep.setArguments(this.noise, this.grounds);
-            b.launchTreatment();
+            b.launchTreatment5();
         }
 
         return new BuildingsIsletStep6(this.buildings, this.grounds);
@@ -103,7 +104,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
         for (Building b : this.buildings)
         {
-            root.add(b.returnNode());
+            root.add(b.returnNode5());
         }
         root.add(new DefaultMutableTreeNode(this.grounds));
 

@@ -82,7 +82,7 @@ public class BuildingsIsletStep8 extends AbstractBuildingsIsletStep
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
         for (Building b : this.buildings)
         {
-            root.add(b.returnNode());
+            root.add(b.returnNode8());
         }
         root.add(new DefaultMutableTreeNode(this.grounds));
 
