@@ -59,14 +59,14 @@ public class IsletProcessController implements ElementsSelectedListener
 
     public void launchProcess()
     {
-        Cursor cursor = new Cursor(Cursor.WAIT_CURSOR);
-        this.ipView.setCursor(cursor);
+        this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         System.out.println("launched");
         this.biController.launchTreatment();
         System.out.println("finished");
         this.progression++;
 
         this.itController.refreshView();
+
         this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
     }
 
