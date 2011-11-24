@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
@@ -244,7 +245,7 @@ public class IsletSelectionController
                     JOptionPane.INFORMATION_MESSAGE);
             this.aController.setComputeNormalMode();
             this.isView.setStatusBarText(FileTools.readHelpMessage("ISGravityNormal",
-                    FileTools.MESSAGETYPE_STATUSBAR));
+                    TextsKeys.MESSAGETYPE_STATUSBAR));
         } else
         {
             try
@@ -258,7 +259,7 @@ public class IsletSelectionController
                 e.printStackTrace();
             }
             this.isView.setStatusBarText(FileTools.readHelpMessage("ISLaunchProcess",
-                    FileTools.MESSAGETYPE_STATUSBAR));
+                    TextsKeys.MESSAGETYPE_STATUSBAR));
             this.aController.setLaunchMode();
         }
     }

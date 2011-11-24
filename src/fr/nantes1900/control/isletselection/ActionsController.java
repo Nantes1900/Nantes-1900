@@ -9,6 +9,7 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 
+import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletselection.ActionsView;
 
@@ -101,17 +102,17 @@ public class ActionsController
                 .getHelpButton()
                 .setTooltip(
                         FileTools.readHelpMessage(
-                                FileTools.KEY_IS_GRAVITYNORMAL,
-                                FileTools.MESSAGETYPE_TOOLTIP));
+                                TextsKeys.KEY_IS_GRAVITYNORMAL,
+                                TextsKeys.MESSAGETYPE_TOOLTIP));
         this.getActionsView()
                 .getHelpButton()
                 .setHelpMessage(
                         FileTools.readHelpMessage(
-                                FileTools.KEY_IS_GRAVITYNORMAL,
-                                FileTools.MESSAGETYPE_MESSAGE),
+                                TextsKeys.KEY_IS_GRAVITYNORMAL,
+                                TextsKeys.MESSAGETYPE_MESSAGE),
                         FileTools.readHelpMessage(
-                                FileTools.KEY_IS_GRAVITYNORMAL,
-                                FileTools.MESSAGETYPE_TITLE));
+                                TextsKeys.KEY_IS_GRAVITYNORMAL,
+                                TextsKeys.MESSAGETYPE_TITLE));
         this.aView.getLaunchButton().setText("Sauver");
         this.aView.getLaunchButton().setEnabled(true);
     }
@@ -127,17 +128,17 @@ public class ActionsController
                 .getHelpButton()
                 .setTooltip(
                         FileTools.readHelpMessage(
-                                FileTools.KEY_IS_LAUNCHPROCESS,
-                                FileTools.MESSAGETYPE_TOOLTIP));
+                                TextsKeys.KEY_IS_LAUNCHPROCESS,
+                                TextsKeys.MESSAGETYPE_TOOLTIP));
         this.getActionsView()
                 .getHelpButton()
                 .setHelpMessage(
                         FileTools.readHelpMessage(
-                                FileTools.KEY_IS_LAUNCHPROCESS,
-                                FileTools.MESSAGETYPE_MESSAGE),
+                                TextsKeys.KEY_IS_LAUNCHPROCESS,
+                                TextsKeys.MESSAGETYPE_MESSAGE),
                         FileTools.readHelpMessage(
-                                FileTools.KEY_IS_LAUNCHPROCESS,
-                                FileTools.MESSAGETYPE_TITLE));
+                                TextsKeys.KEY_IS_LAUNCHPROCESS,
+                                TextsKeys.MESSAGETYPE_TITLE));
         this.aView.getLaunchButton().setText("Lancer");
         this.aView.getLaunchButton().setEnabled(true);
     }

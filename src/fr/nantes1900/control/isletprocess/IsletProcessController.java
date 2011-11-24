@@ -35,7 +35,7 @@ public class IsletProcessController implements ElementsSelectedListener
             File isletFile, BuildingsIsletController biController)
     {
         this.parentController = parentController;
-        this.progression = 2;
+        this.progression = 1;
         this.cController = new CharacteristicsController(this);
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
