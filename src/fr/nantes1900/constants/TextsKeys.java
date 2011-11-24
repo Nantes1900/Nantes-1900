@@ -22,6 +22,8 @@ public final class TextsKeys
     /**
      * Key value corresponding to the open directory step.
      */
+    public static final String MESSAGETYPE_ERREUR_LOADING   = "Loading Error";
+    
     public static final String KEY_IS_OPENDIRECTORY  = "ISOpenDirectory";
     /**
      * Key value corresponding to the create gravity normal step.
@@ -36,7 +38,10 @@ public final class TextsKeys
      * Key value corresponding to the select islet to launch process step.
      */
     public static final String KEY_LAUNCHBUTTON  = "LaunchButton";
-    public static final String ERROR_RETURNNODE = "Probleme dans le returnNode de BuildingsIsletController";
+    public static final String KEY_ABORTBUTTON  = "AbortButton";
+    public static final String KEY_BACKBUTTON  = "BackButton";
+    public static final String KEY_PROCESSTITLE1  = "ProcessTitle1";
+    public static final String ERROR_RETURNNODE = "ReturnNode";
     public TextsKeys(){
     }
 }
