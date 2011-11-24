@@ -74,7 +74,7 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
     {
         for (Building b : this.buildings)
         {
-            BuildingStep4 buildingStep = (BuildingStep4) b.getbStep();
+            BuildingStep4 buildingStep = b.getbStep4();
             buildingStep.setArguments(this.groundNormal, this.grounds);
             b.launchTreatment();
         }

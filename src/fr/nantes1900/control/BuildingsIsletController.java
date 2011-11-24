@@ -129,7 +129,7 @@ public class BuildingsIsletController
         {
             for (Building building : this.islet.getBiStep3().getBuildings())
             {
-                BuildingStep3 buildingStep = (BuildingStep3) building.getbStep();
+                BuildingStep3 buildingStep = building.getbStep3();
                 buildingStep.getInitialTotalMesh().removeAll(trianglesSelected);
             }
             this.islet.getBiStep3()
@@ -191,7 +191,7 @@ public class BuildingsIsletController
             final int actionType) throws InvalidCaseException
     {
         Building building = this.searchForBuildingContaining4(trianglesSelected);
-        BuildingStep4 buildingStep = (BuildingStep4) building.getbStep();
+        BuildingStep4 buildingStep = building.getbStep4();
 
         if (actionType == ActionTypes.TURN_TO_WALL)
         {
@@ -219,7 +219,7 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep4().getBuildings())
         {
-            BuildingStep4 buildingStep = (BuildingStep4) building.getbStep();
+            BuildingStep4 buildingStep = building.getbStep4();
             if (buildingStep.getInitialWall().containsAll(trianglesSelected) || buildingStep.getInitialRoof()
                     .containsAll(trianglesSelected))
             {
@@ -246,7 +246,7 @@ public class BuildingsIsletController
             UnCompletedParametersException
     {
         Building building = this.searchForBuildingContaining5(surfacesSelected);
-        BuildingStep5 buildingStep = (BuildingStep5) building.getbStep();
+        BuildingStep5 buildingStep = building.getbStep5();
         if (actionType == ActionTypes.MERGE)
         {
             if (buildingStep.getWalls().contains(surfacesSelected.get(0)))
@@ -503,7 +503,7 @@ public class BuildingsIsletController
         // FIXME
     }
 
-    public void lastTreatment()
+    public void getPreviousTreatment()
     {
         // FIXME
         System.out.println("LastTreatment");
@@ -616,7 +616,7 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep3().getBuildings())
         {
-            BuildingStep3 buildingStep = (BuildingStep3) building.getbStep();
+            BuildingStep3 buildingStep = building.getbStep3();
             if (buildingStep.getInitialTotalMesh() == mesh)
             {
                 return null;
@@ -639,7 +639,7 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep5().getBuildings())
         {
-            BuildingStep5 buildingStep = (BuildingStep5) building.getbStep();
+            BuildingStep5 buildingStep = building.getbStep5();
             if (buildingStep.getWalls().containsAll(surfacesSelected) || buildingStep.getRoofs()
                     .containsAll(surfacesSelected))
             {
@@ -775,7 +775,7 @@ public class BuildingsIsletController
 
         for (Building building : this.islet.getBiStep3().getBuildings())
         {
-            BuildingStep3 buildingStep = (BuildingStep3) building.getbStep();
+            BuildingStep3 buildingStep = building.getbStep3();
             this.getU3DController()
                     .getUniverse3DView()
                     .addMesh(new MeshView(buildingStep.getInitialTotalMesh()));
@@ -789,7 +789,7 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep4().getBuildings())
         {
-            BuildingStep4 buildingStep = (BuildingStep4) building.getbStep();
+            BuildingStep4 buildingStep = building.getbStep4();
             this.getU3DController()
                     .getUniverse3DView()
                     .addMesh(new MeshView(buildingStep.getInitialWall()));
@@ -806,7 +806,7 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep5().getBuildings())
         {
-            BuildingStep5 buildingStep = (BuildingStep5) building.getbStep();
+            BuildingStep5 buildingStep = building.getbStep5();
             for (Surface wall : buildingStep.getWalls())
             {
                 this.getU3DController()
@@ -833,7 +833,7 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep6().getBuildings())
         {
-            BuildingStep6 buildingStep = (BuildingStep6) building.getbStep();
+            BuildingStep6 buildingStep = building.getbStep6();
             for (Surface wall : buildingStep.getWalls())
             {
                 this.getU3DController()
@@ -856,7 +856,7 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep7().getBuildings())
         {
-            BuildingStep7 buildingStep = (BuildingStep7) building.getbStep();
+            BuildingStep7 buildingStep = building.getbStep7();
             for (Surface wall : buildingStep.getWalls())
             {
                 this.getU3DController()
@@ -879,7 +879,7 @@ public class BuildingsIsletController
     {
         for (Building building : this.islet.getBiStep8().getBuildings())
         {
-            BuildingStep8 buildingStep = (BuildingStep8) building.getbStep();
+            BuildingStep8 buildingStep = building.getbStep8();
             for (Surface wall : buildingStep.getWalls())
             {
                 this.getU3DController()

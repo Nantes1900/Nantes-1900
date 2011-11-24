@@ -6,7 +6,7 @@ package fr.nantes1900;
 import fr.nantes1900.control.GlobalController;
 
 /**
- * Implements a main class. Launch the UI.
+ * Launches the GUI.
  * @author Nicolas Bouillon, Camille Bouquet, Luc Jallerat, Daniel Lefevre, Siju
  *         Wu
  */
