@@ -5,14 +5,15 @@ package fr.nantes1900.control.isletprocess;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
 import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.constants.Characteristics;
-import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
+import fr.nantes1900.view.isletprocess.CharacteristicsStep3ElementsView;
+import fr.nantes1900.view.isletprocess.CharacteristicsStep3TrianglesView;
 
 /**
  * Characteristics panel for the second step of process of an islet.
@@ -21,33 +22,31 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
  * @author Camille
  * @author Luc
  */
-public class CharacteristicsStep2Controller extends CharacteristicsController
+public class CharacteristicsStep3ElementsController extends CharacteristicsController
 {
-    public ArrayList<Triangle> trianglesList;
+    public Mesh element;
     /**
      * Constructor.
      * @param parentController
      * @param triangleSelected 
      */
-    public CharacteristicsStep2Controller(IsletProcessController parentController, Triangle triangleSelected)
+    public CharacteristicsStep3ElementsController(IsletProcessController parentController, Mesh elementSelected)
     {
         super(parentController);
-        trianglesList = new ArrayList<Triangle>();
-        trianglesList.add(triangleSelected);
-        
-        this.cView = new CharacteristicsStep2View();
+        element = elementSelected;        
+        this.cView = new CharacteristicsStep3ElementsView();
         this.cView.getValidateButton().addActionListener(new ActionListener(){
 
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                String typeChosen = ((CharacteristicsStep2View) cView).getTypeSelected();
+                String typeChosen = ((CharacteristicsStep3TrianglesView) cView).getElementSelected();
                 
                 int actionType = -1;
                 switch (typeChosen)
                 {
-                    case Characteristics.TYPE_GROUND:
-                        actionType = ActionTypes.TURN_TO_GROUND;
+                    case Characteristics.TYPE_NOISE:
+                        actionType = ActionTypes.TURN_TO_NOISE;
                         break;
                         
                     case Characteristics.TYPE_BUILDING:
@@ -57,24 +56,24 @@ public class CharacteristicsStep2Controller extends CharacteristicsController
                 
                 if (actionType != -1)
                 {
-                    CharacteristicsStep2Controller.this.parentController.launchAction(2, actionType, Characteristics.SELECTION_TYPE_TRIANGLE);
+                    CharacteristicsStep3ElementsController.this.parentController.launchAction(3, actionType, Characteristics.SELECTION_TYPE_ELEMENT);
                 } else
                 {
                     JOptionPane.showMessageDialog(cView, "Le type choisi est incorrrect", "Validation impossible", JOptionPane.ERROR_MESSAGE);
                 }
             }
-            
         });
     }
     
-    public ArrayList<Triangle> getTriangles()
+    public void setElementSelected(Mesh elementSelected)
     {
-        return this.trianglesList;
+        this.element = elementSelected;
+        ((CharacteristicsStep2View) this.cView).setType("");
     }
     
-    public void addTriangleSelected(Triangle triangleSelected)
+    public Mesh getElement()
     {
-        this.trianglesList.add(triangleSelected);
-        ((CharacteristicsStep2View) this.cView).setType("");
+        return this.element;
+                
     }
 }

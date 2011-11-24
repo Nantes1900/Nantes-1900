@@ -6,6 +6,7 @@ package fr.nantes1900.control.isletprocess;
 import java.awt.Cursor;
 import java.io.File;
 
+import fr.nantes1900.constants.Characteristics;
 import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
@@ -85,13 +86,39 @@ public class IsletProcessController implements ElementsSelectedListener
                 try
                 {
                     this.biController.action2(
-                            u3DController.getTrianglesSelected(), actionType);
+                            ((CharacteristicsStep2Controller) cController).getTriangles(), actionType);
                 } catch (InvalidCaseException e)
                 {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             break;
+            
+            case 3:
+                if (selectionMode == Characteristics.SELECTION_TYPE_ELEMENT)
+                {
+                    try
+                    {
+                        this.biController.action3(
+                                ((CharacteristicsStep3ElementsController) cController).getElement(), actionType);
+                    } catch (InvalidCaseException e)
+                    {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                } else if (selectionMode == Characteristics.SELECTION_TYPE_TRIANGLE)
+                {
+                    try
+                    {
+                        this.biController.action3(
+                                ((CharacteristicsStep3TrianglesController) cController).getTriangles(), actionType);
+                    } catch (InvalidCaseException e)
+                    {
+                        // TODO Auto-generated catch block
+                        e.printStackTrace();
+                    }
+                }
+                break;
         }
     }
 
@@ -113,6 +140,19 @@ public class IsletProcessController implements ElementsSelectedListener
                             .addTriangleSelected(triangleSelected);
                 }
             break;
+            case 3:
+                // If the characteristic panel is of another type.
+                if (!(this.cController instanceof CharacteristicsStep3TrianglesController))
+                {
+                    this.cController = new CharacteristicsStep3TrianglesController(this,
+                            triangleSelected);
+                    this.ipView.setCharacteristicsView(cController.getView());
+                } else
+                {
+                    ((CharacteristicsStep3TrianglesController) this.cController)
+                    .addTriangleSelected(triangleSelected);
+                }
+                break;
         }
     }
 
