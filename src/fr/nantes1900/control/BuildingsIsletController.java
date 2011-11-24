@@ -3,6 +3,7 @@ package fr.nantes1900.control;
 import java.io.IOException;
 import java.util.List;
 
+import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.constants.ActionTypes;
@@ -172,6 +173,12 @@ public class BuildingsIsletController
         {
             throw new InvalidCaseException();
         }
+    }
+
+    public final DefaultMutableTreeNode
+            returnNode() throws InvalidCaseException
+    {
+        return this.islet.returnNode();
     }
 
     /**
@@ -739,10 +746,6 @@ public class BuildingsIsletController
                 .addMesh(new MeshView(this.islet.getBiStep2()
                         .getInitialGrounds()
                         .getMesh()));
-
-        this.getU3DController()
-                .getUniverse3DView()
-                .addMesh(new MeshView(this.islet.getBiStep2().getNoise()));
     }
 
     /**
