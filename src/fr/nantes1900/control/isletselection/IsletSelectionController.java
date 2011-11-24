@@ -24,7 +24,8 @@ import fr.nantes1900.view.isletselection.GlobalTreeView.FileNode;
 import fr.nantes1900.view.isletselection.IsletSelectionView;
 
 /**
- * @author Camille
+ * TODO.
+ * @author Camille Bouquet
  */
 public class IsletSelectionController
 {
@@ -96,6 +97,11 @@ public class IsletSelectionController
      * @return true - the normal has been correctly saved\n false - the normal
      *         couldn't been stored because no file or triangles are selected.
      */
+    // TODO by Camille or Luc : correct this. This method should not return a
+    // boolean, but nothing.
+    // If an error happens (no file or triangles not selected, then throw an
+    // exception : it has been created for that case !
+
     public final boolean computeGravityNormal()
     {
         boolean normalSaved = false;
