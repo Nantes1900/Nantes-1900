@@ -21,7 +21,7 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
  * @author Camille
  * @author Luc
  */
-public class CaracteristicsStep2Controller extends CaracteristicsController
+public class CharacteristicsStep2Controller extends CharacteristicsController
 {
     public ArrayList<Triangle> trianglesList;
     /**
@@ -29,7 +29,7 @@ public class CaracteristicsStep2Controller extends CaracteristicsController
      * @param parentController
      * @param triangleSelected 
      */
-    public CaracteristicsStep2Controller(IsletProcessController parentController, Triangle triangleSelected)
+    public CharacteristicsStep2Controller(IsletProcessController parentController, Triangle triangleSelected)
     {
         super(parentController);
         trianglesList = new ArrayList<Triangle>();
@@ -57,7 +57,7 @@ public class CaracteristicsStep2Controller extends CaracteristicsController
                 
                 if (actionType != -1)
                 {
-                    CaracteristicsStep2Controller.this.parentController.launchAction(2, actionType, Characteristics.SELECTION_TYPE_TRIANGLE);
+                    CharacteristicsStep2Controller.this.parentController.launchAction(2, actionType, Characteristics.SELECTION_TYPE_TRIANGLE);
                     // TODO : remove when visual test is ok
                     System.out.println("Type modifié en " + typeChosen);
                 } else

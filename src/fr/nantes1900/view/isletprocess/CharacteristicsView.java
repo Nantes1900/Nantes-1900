@@ -21,7 +21,7 @@ import fr.nantes1900.view.components.HelpButton;
 /**
  * @author Camille
  */
-public class CaracteristicsView extends JPanel
+public class CharacteristicsView extends JPanel
 {
     /**
      * 
@@ -30,7 +30,7 @@ public class CaracteristicsView extends JPanel
     protected JButton bValidate;
     protected JPanel  pContent;
 
-    public CaracteristicsView()
+    public CharacteristicsView()
     {
         this.setBorder(new TitledBorder(BorderFactory
                 .createRaisedSoftBevelBorder(), "Caractéristiques"));

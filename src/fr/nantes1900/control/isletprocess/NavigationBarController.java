@@ -61,9 +61,7 @@ public class NavigationBarController extends JToolBar
             @Override
             public void actionPerformed(final ActionEvent arg0)
             {
-                NavigationBarController.this.getParentController()
-                        .getBiController()
-                        .launchTreatment();
+                NavigationBarController.this.getParentController().launchProcess();
             }
         });
     }

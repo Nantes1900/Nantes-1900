@@ -3,6 +3,7 @@
  */
 package fr.nantes1900.control.isletprocess;
 
+import java.awt.Cursor;
 import java.io.File;
 
 import fr.nantes1900.control.BuildingsIsletController;
@@ -22,7 +23,7 @@ public class IsletProcessController implements ElementsSelectedListener
 {
     private GlobalController         parentController;
     private IsletProcessView         ipView;
-    private CaracteristicsController cController;
+    private CharacteristicsController cController;
     private IsletTreeController      itController;
     private NavigationBarController  nbController;
     private ParametersController     pController;
@@ -34,8 +35,8 @@ public class IsletProcessController implements ElementsSelectedListener
             File isletFile, BuildingsIsletController biController)
     {
         this.parentController = parentController;
-
-        this.cController = new CaracteristicsController(this);
+        this.progression = 2;
+        this.cController = new CharacteristicsController(this);
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
         this.pController = new ParametersController(this);
@@ -54,6 +55,15 @@ public class IsletProcessController implements ElementsSelectedListener
     public BuildingsIsletController getBiController()
     {
         return this.biController;
+    }
+
+    public void launchProcess()
+    {
+        Cursor cursor = new Cursor(Cursor.WAIT_CURSOR);
+        this.ipView.setCursor(cursor);
+        this.biController.launchTreatment();
+        this.progression++;
+        cursor = new Cursor(Cursor.DEFAULT_CURSOR);
     }
 
     /**
@@ -87,13 +97,16 @@ public class IsletProcessController implements ElementsSelectedListener
         switch (progression)
         {
             case 2:
-                if (!(this.cController instanceof CaracteristicsStep2Controller))
+                // If the characteristic panel is of another type.
+                if (!(this.cController instanceof CharacteristicsStep2Controller))
                 {
-                    this.cController = new CaracteristicsStep2Controller(this, triangleSelected);
+                    this.cController = new CharacteristicsStep2Controller(this,
+                            triangleSelected);
                     this.ipView.setCharacteristicsView(cController.getView());
                 } else
                 {
-                    ((CaracteristicsStep2Controller) this.cController).addTriangleSelected(triangleSelected);
+                    ((CharacteristicsStep2Controller) this.cController)
+                            .addTriangleSelected(triangleSelected);
                 }
             break;
         }
