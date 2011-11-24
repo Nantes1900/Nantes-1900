@@ -99,16 +99,23 @@ public class IsletSelectionController
     public final boolean computeGravityNormal()
     {
         boolean normalSaved = false;
-        if (this.selectedFile != null
-                && !this.u3DController.getTrianglesSelected().isEmpty())
+        if (this.selectedFile != null && !this.u3DController.getTrianglesSelected()
+                .isEmpty())
         {
             // TODO by Daniel : Move this code
-            WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
-                    + "/gravity_normal.stl");
-            Point point = new Point(1, 1, 1);
-            Edge edge = new Edge(point, point);
-            Triangle triangle = new Triangle(point, point, point, edge, edge,
-                    edge,
+            WriterSTL writer = new WriterSTL(this.openedDirectory.getPath() + "/gravity_normal.stl");
+            Point point1 = new Point(1, 1, 1);
+            Point point2 = new Point(2, 2, 2);
+            Point point3 = new Point(0, 0, 0);
+            Edge edge1 = new Edge(point1, point2);
+            Edge edge2 = new Edge(point1, point3);
+            Edge edge3 = new Edge(point3, point2);
+            Triangle triangle = new Triangle(point1,
+                    point2,
+                    point3,
+                    edge1,
+                    edge2,
+                    edge3,
                     this.biController.computeNormalWithTrianglesSelected());
             Mesh mesh = new Mesh();
             mesh.add(triangle);
@@ -120,9 +127,9 @@ public class IsletSelectionController
         {
             // TODO : put this text in the text file (or XML for Luc).
             JOptionPane.showMessageDialog(this.isView,
-                    "Sélectionnez un îlot dans l'arbre\npuis "
-                            + "sélectionnez des triangles pour créer la normale.",
-                    "Sauvegarde impossible", JOptionPane.ERROR_MESSAGE);
+                    "Sélectionnez un îlot dans l'arbre\npuis " + "sélectionnez des triangles pour créer la normale.",
+                    "Sauvegarde impossible",
+                    JOptionPane.ERROR_MESSAGE);
         }
 
         return normalSaved;
@@ -133,8 +140,7 @@ public class IsletSelectionController
      */
     public final void computeGroundNormal()
     {
-        this.biController.setGroundNormal(this.biController
-                .computeNormalWithTrianglesSelected());
+        this.biController.setGroundNormal(this.biController.computeNormalWithTrianglesSelected());
     }
 
     /**
@@ -189,9 +195,8 @@ public class IsletSelectionController
     {
         boolean processLaunched = false;
 
-        if ((!this.u3DController.getTrianglesSelected().isEmpty() || this.aController
-                .getActionsView().isGravityGroundCheckBoxSelected())
-                && this.selectedFile != null)
+        if ((!this.u3DController.getTrianglesSelected().isEmpty() || this.aController.getActionsView()
+                .isGravityGroundCheckBoxSelected()) && this.selectedFile != null)
         {
             this.isView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             if (this.aController.getActionsView()
@@ -209,9 +214,9 @@ public class IsletSelectionController
         {
             // TODO by Luc : put this text in a XML file.
             JOptionPane.showMessageDialog(this.isView,
-                    "Veuillez sélectionner un îlot et une normale pour "
-                            + "lancer le traitement\nou sélectionnez \"Utiliser la normale "
-                            + "orientée selon la gravité\n", "Traitement impossible",
+                    "Veuillez sélectionner un îlot et une normale pour " + "lancer le traitement\nou sélectionnez \"Utiliser la normale "
+                            + "orientée selon la gravité\n",
+                    "Traitement impossible",
                     JOptionPane.ERROR_MESSAGE);
         }
 
@@ -229,19 +234,17 @@ public class IsletSelectionController
         this.gtController.updateDirectory(this.openedDirectory);
 
         // checks if the gravity normal already exists
-        File gravityNormal = new File(this.openedDirectory.getPath()
-                + "/gravity_normal.stl");
+        File gravityNormal = new File(this.openedDirectory.getPath() + "/gravity_normal.stl");
         if (!gravityNormal.exists())
         {
             JOptionPane.showMessageDialog(this.isView,
-                    "La normale orientée selon la gravité n'a pas été trouvée "
-                            + "dans le dossier ouvert.\nVeuillez en créer "
+                    "La normale orientée selon la gravité n'a pas été trouvée " + "dans le dossier ouvert.\nVeuillez en créer "
                             + "une nouvelle.",
                     "Normale orientée selon la gravité inexistante",
                     JOptionPane.INFORMATION_MESSAGE);
             this.aController.setComputeNormalMode();
-            this.isView.setStatusBarText(FileTools.readHelpMessage(
-                    "ISGravityNormal", FileTools.MESSAGETYPE_STATUSBAR));
+            this.isView.setStatusBarText(FileTools.readHelpMessage("ISGravityNormal",
+                    FileTools.MESSAGETYPE_STATUSBAR));
         } else
         {
             try
@@ -254,8 +257,8 @@ public class IsletSelectionController
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-            this.isView.setStatusBarText(FileTools.readHelpMessage(
-                    "ISLaunchProcess", FileTools.MESSAGETYPE_STATUSBAR));
+            this.isView.setStatusBarText(FileTools.readHelpMessage("ISLaunchProcess",
+                    FileTools.MESSAGETYPE_STATUSBAR));
             this.aController.setLaunchMode();
         }
     }

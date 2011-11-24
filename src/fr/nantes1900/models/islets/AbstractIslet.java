@@ -27,6 +27,7 @@ public abstract class AbstractIslet
 
         } catch (final IOException e)
         {
+            // LOOK : maybe put this somewhere else.
             System.out.println("Error : the file is badly formed, not found or unreadable !");
             System.exit(1);
             return null;
