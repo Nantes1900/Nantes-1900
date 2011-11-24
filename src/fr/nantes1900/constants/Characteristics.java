@@ -26,9 +26,19 @@ public abstract class Characteristics
     public static final String TYPE_GROUND             = "Sol";
 
     /**
-     * Type ground.
+     * Type noise.
      */
-    public static final String TYPE_NOISE             = "Bruit";
+    public static final String TYPE_NOISE              = "Bruit";
+
+    /**
+     * Type wall.
+     */
+    public static final String TYPE_WALL               = "Mur";
+
+    /**
+     * Type roof.
+     */
+    public static final String TYPE_ROOF               = "Toit";
 
     /**
      * Constructor.

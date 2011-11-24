@@ -22,15 +22,15 @@ import fr.nantes1900.view.isletprocess.IsletProcessView;
 // FIXME : Javadoc
 public class IsletProcessController implements ElementsSelectedListener
 {
-    private GlobalController         parentController;
-    private IsletProcessView         ipView;
+    private GlobalController          parentController;
+    private IsletProcessView          ipView;
     private CharacteristicsController cController;
-    private IsletTreeController      itController;
-    private NavigationBarController  nbController;
-    private ParametersController     pController;
-    private Universe3DController     u3DController;
-    private BuildingsIsletController biController;
-    private int                      progression;
+    private IsletTreeController       itController;
+    private NavigationBarController   nbController;
+    private ParametersController      pController;
+    private Universe3DController      u3DController;
+    private BuildingsIsletController  biController;
+    private int                       progression;
 
     public IsletProcessController(GlobalController parentController,
             File isletFile, BuildingsIsletController biController)
@@ -86,21 +86,24 @@ public class IsletProcessController implements ElementsSelectedListener
                 try
                 {
                     this.biController.action2(
-                            ((CharacteristicsStep2Controller) cController).getTriangles(), actionType);
+                            ((CharacteristicsStep2Controller) cController)
+                                    .getTriangles(), actionType);
                 } catch (InvalidCaseException e)
                 {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             break;
-            
+
             case 3:
                 if (selectionMode == Characteristics.SELECTION_TYPE_ELEMENT)
                 {
                     try
                     {
-                        this.biController.action3(
-                                ((CharacteristicsStep3ElementsController) cController).getElement(), actionType);
+                        this.biController
+                                .action3(
+                                        ((CharacteristicsStep3ElementsController) cController)
+                                                .getElement(), actionType);
                     } catch (InvalidCaseException e)
                     {
                         // TODO Auto-generated catch block
@@ -110,15 +113,29 @@ public class IsletProcessController implements ElementsSelectedListener
                 {
                     try
                     {
-                        this.biController.action3(
-                                ((CharacteristicsStep3TrianglesController) cController).getTriangles(), actionType);
+                        this.biController
+                                .action3(
+                                        ((CharacteristicsStep3TrianglesController) cController)
+                                                .getTriangles(), actionType);
                     } catch (InvalidCaseException e)
                     {
                         // TODO Auto-generated catch block
                         e.printStackTrace();
                     }
                 }
-                break;
+            break;
+            case 4:
+                try
+                {
+                    this.biController.action4(
+                            ((CharacteristicsStep4Controller) cController)
+                                    .getTriangles(), actionType);
+                } catch (InvalidCaseException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            break;
         }
     }
 
@@ -141,18 +158,32 @@ public class IsletProcessController implements ElementsSelectedListener
                 }
             break;
             case 3:
+                // TODO check the selection mode when it will be created
                 // If the characteristic panel is of another type.
                 if (!(this.cController instanceof CharacteristicsStep3TrianglesController))
                 {
-                    this.cController = new CharacteristicsStep3TrianglesController(this,
-                            triangleSelected);
+                    this.cController = new CharacteristicsStep3TrianglesController(
+                            this, triangleSelected);
                     this.ipView.setCharacteristicsView(cController.getView());
                 } else
                 {
                     ((CharacteristicsStep3TrianglesController) this.cController)
-                    .addTriangleSelected(triangleSelected);
+                            .addTriangleSelected(triangleSelected);
                 }
-                break;
+            break;
+            case 4:
+                // If the characteristic panel is of another type.
+                if (!(this.cController instanceof CharacteristicsStep4Controller))
+                {
+                    this.cController = new CharacteristicsStep4Controller(this,
+                            triangleSelected);
+                    this.ipView.setCharacteristicsView(cController.getView());
+                } else
+                {
+                    ((CharacteristicsStep4Controller) this.cController)
+                            .addTriangleSelected(triangleSelected);
+                }
+            break;
         }
     }
 
