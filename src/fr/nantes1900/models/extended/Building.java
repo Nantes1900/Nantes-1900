@@ -128,7 +128,7 @@ public class Building
     }
 
     /**
-     * Launches the treatment corresponding to the progression.
+     * TODO.
      * @throws NullArgumentException
      */
     public final void launchTreatment3() throws NullArgumentException
@@ -139,9 +139,8 @@ public class Building
 
     public final void launchTreatment4() throws NullArgumentException
     {
-        this.bStep4.setArguments(this.groundNormal, this.grounds);
+        this.bStep4.setArguments(this.groundNormal, this.grounds, this.noise);
         this.bStep5 = this.bStep4.launchTreatment();
-
     }
 
     public final void launchTreatment5() throws NullArgumentException

@@ -533,6 +533,26 @@ public class BuildingsIsletController
     }
 
     /**
+     * Returns the neighbours.
+     * @param s
+     * @return
+     */
+    public List<Surface> getCaracteristics6(Surface s)
+    {
+        return s.getNeighbours();
+    }
+
+    /**
+     * Returns the neighbours.
+     * @param s
+     * @return
+     */
+    public List<Surface> getCaracteristics7(Surface s)
+    {
+        return s.getNeighbours();
+    }
+
+    /**
      * Returns the building containing the mesh. To call only in the third step.
      * @param mesh
      *            the mesh to check

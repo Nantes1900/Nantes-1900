@@ -50,6 +50,6 @@ public class Wall extends Surface
     @Override
     public final String toString()
     {
-        return "Wall";
+        return "Wall " + this.getID();
     }
 }

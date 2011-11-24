@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.steps.BuildingStep4;
@@ -31,6 +32,8 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
      * The normal to the ground used in treatments.
      */
     private Vector3d       groundNormal;
+
+    private Mesh           noise;
 
     /**
      * Constructor.
@@ -77,7 +80,9 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
         for (Building b : this.buildings)
         {
             BuildingStep4 buildingStep = b.getbStep4();
-            buildingStep.setArguments(this.groundNormal, this.grounds);
+            buildingStep.setArguments(this.groundNormal,
+                    this.grounds,
+                    this.noise);
             b.launchTreatment4();
         }
 
@@ -108,8 +113,9 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
      * @param groundNormalIn
      *            the normal to the ground.
      */
-    public final void setArguments(final Vector3d groundNormalIn)
+    public final void setArguments(final Vector3d groundNormalIn, Mesh noiseIn)
     {
         this.groundNormal = groundNormalIn;
+        this.noise = noiseIn;
     }
 }
