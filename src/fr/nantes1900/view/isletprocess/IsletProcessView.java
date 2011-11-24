@@ -87,6 +87,5 @@ public class IsletProcessView extends PFrame
         
         this.pComponents.revalidate();
         this.pComponents.repaint();
-        System.out.println("panneau caractéristique mis à jour");
     }
 }

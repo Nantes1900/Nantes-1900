@@ -193,6 +193,7 @@ public class IsletSelectionController
                 .getActionsView().isGravityGroundCheckBoxSelected())
                 && this.selectedFile != null)
         {
+            this.isView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             if (this.aController.getActionsView()
                     .isGravityGroundCheckBoxSelected())
             {

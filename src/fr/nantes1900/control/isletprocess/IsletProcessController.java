@@ -94,10 +94,10 @@ public class IsletProcessController implements ElementsSelectedListener
     @Override
     public void triangleSelected(Triangle triangleSelected)
     {
-        System.out.println("triangleSelectionné");
         switch (progression)
         {
             case 2:
+                // If the characteristic panel is of another type.
                 if (!(this.cController instanceof CharacteristicsStep2Controller))
                 {
                     this.cController = new CharacteristicsStep2Controller(this,
