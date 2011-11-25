@@ -33,7 +33,8 @@ public class IsletProcessController implements ElementsSelectedListener
     private int                       progression;
 
     public IsletProcessController(GlobalController parentController,
-            File isletFile, BuildingsIsletController biController)
+            File isletFile,
+            BuildingsIsletController biController)
     {
         this.parentController = parentController;
         this.progression = 1;
@@ -47,8 +48,10 @@ public class IsletProcessController implements ElementsSelectedListener
         this.biController.display();
 
         this.ipView = new IsletProcessView(cController.getView(),
-                itController.getView(), nbController.getView(),
-                pController.getView(), u3DController.getUniverse3DView());
+                itController.getView(),
+                nbController.getView(),
+                pController.getView(),
+                u3DController.getUniverse3DView());
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
     }
@@ -61,9 +64,7 @@ public class IsletProcessController implements ElementsSelectedListener
     public void launchProcess()
     {
         this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        System.out.println("launched");
         this.biController.launchTreatment();
-        System.out.println("finished");
         this.progression++;
 
         this.itController.refreshView();
@@ -85,9 +86,8 @@ public class IsletProcessController implements ElementsSelectedListener
             case 2:
                 try
                 {
-                    this.biController.action2(
-                            ((CharacteristicsStep2Controller) cController)
-                                    .getTriangles(), actionType);
+                    this.biController.action2(((CharacteristicsStep2Controller) cController).getTriangles(),
+                            actionType);
                 } catch (InvalidCaseException e)
                 {
                     // TODO Auto-generated catch block
@@ -100,10 +100,8 @@ public class IsletProcessController implements ElementsSelectedListener
                 {
                     try
                     {
-                        this.biController
-                                .action3(
-                                        ((CharacteristicsStep3ElementsController) cController)
-                                                .getElement(), actionType);
+                        this.biController.action3(((CharacteristicsStep3ElementsController) cController).getElement(),
+                                actionType);
                     } catch (InvalidCaseException e)
                     {
                         // TODO Auto-generated catch block
@@ -113,10 +111,8 @@ public class IsletProcessController implements ElementsSelectedListener
                 {
                     try
                     {
-                        this.biController
-                                .action3(
-                                        ((CharacteristicsStep3TrianglesController) cController)
-                                                .getTriangles(), actionType);
+                        this.biController.action3(((CharacteristicsStep3TrianglesController) cController).getTriangles(),
+                                actionType);
                     } catch (InvalidCaseException e)
                     {
                         // TODO Auto-generated catch block
@@ -127,9 +123,8 @@ public class IsletProcessController implements ElementsSelectedListener
             case 4:
                 try
                 {
-                    this.biController.action4(
-                            ((CharacteristicsStep4Controller) cController)
-                                    .getTriangles(), actionType);
+                    this.biController.action4(((CharacteristicsStep4Controller) cController).getTriangles(),
+                            actionType);
                 } catch (InvalidCaseException e)
                 {
                     // TODO Auto-generated catch block
@@ -153,8 +148,7 @@ public class IsletProcessController implements ElementsSelectedListener
                     this.ipView.setCharacteristicsView(cController.getView());
                 } else
                 {
-                    ((CharacteristicsStep2Controller) this.cController)
-                            .addTriangleSelected(triangleSelected);
+                    ((CharacteristicsStep2Controller) this.cController).addTriangleSelected(triangleSelected);
                 }
             break;
             case 3:
@@ -162,13 +156,12 @@ public class IsletProcessController implements ElementsSelectedListener
                 // If the characteristic panel is of another type.
                 if (!(this.cController instanceof CharacteristicsStep3TrianglesController))
                 {
-                    this.cController = new CharacteristicsStep3TrianglesController(
-                            this, triangleSelected);
+                    this.cController = new CharacteristicsStep3TrianglesController(this,
+                            triangleSelected);
                     this.ipView.setCharacteristicsView(cController.getView());
                 } else
                 {
-                    ((CharacteristicsStep3TrianglesController) this.cController)
-                            .addTriangleSelected(triangleSelected);
+                    ((CharacteristicsStep3TrianglesController) this.cController).addTriangleSelected(triangleSelected);
                 }
             break;
             case 4:
@@ -180,8 +173,7 @@ public class IsletProcessController implements ElementsSelectedListener
                     this.ipView.setCharacteristicsView(cController.getView());
                 } else
                 {
-                    ((CharacteristicsStep4Controller) this.cController)
-                            .addTriangleSelected(triangleSelected);
+                    ((CharacteristicsStep4Controller) this.cController).addTriangleSelected(triangleSelected);
                 }
             break;
         }
