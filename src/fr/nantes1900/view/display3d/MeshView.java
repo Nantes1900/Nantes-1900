@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.TriangleArray;
-import javax.vecmath.Point2f;
+
 import javax.vecmath.Point3d;
 import javax.vecmath.TexCoord2f;
 import javax.vecmath.Vector3f;
