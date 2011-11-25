@@ -208,7 +208,8 @@ public class Universe3DView extends JPanel
         mat.setColorTarget(3);
 
         Appearance app = new Appearance();
-
+        app.setCapability(Appearance.ALLOW_MATERIAL_READ);
+        app.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
         app.setMaterial(mat);
 
         TextureLoader loader = new TextureLoader("texture.jpg", null);
