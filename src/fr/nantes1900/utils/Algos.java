@@ -67,7 +67,6 @@ public final class Algos
     public static List<Mesh> blockOrientedExtract(final Mesh m,
             final double angleNormalErrorFactor)
     {
-
         final List<Mesh> thingsList = new ArrayList<>();
         final List<Mesh> meshList = Algos.blockExtract(m);
 
@@ -75,6 +74,8 @@ public final class Algos
         {
             while (!mesh.isEmpty())
             {
+                // FIXME : remove that.
+                System.out.println(mesh.size());
                 final Mesh e = new Mesh();
                 final Triangle tri = mesh.getOne();
 

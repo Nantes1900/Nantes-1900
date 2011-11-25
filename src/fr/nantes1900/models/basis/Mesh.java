@@ -58,7 +58,7 @@ public class Mesh extends HashSet<Triangle>
      * @see java.util.AbstractCollection#toString()
      */
     @Override
-    public String toString()
+    public final String toString()
     {
         return "Mesh " + this.iD;
     }
