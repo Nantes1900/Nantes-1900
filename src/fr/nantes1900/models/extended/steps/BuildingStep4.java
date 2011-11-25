@@ -148,10 +148,15 @@ public class BuildingStep4 extends AbstractBuildingStep
         {
             throw new NullArgumentException();
         }
+        System.out.println("Beg cut walls");
         this.cutWalls();
+        System.out.println("Beg cut roofs");
         this.cutRoofs();
+        System.out.println("Beg tr noise");
         this.treatNoise();
+        System.out.println("Beg tr new neighb");
         this.treatNewNeighbours();
+        System.out.println("End tr new neighb");
 
         List<Wall> wallsCopy = new ArrayList<>();
         for (Wall w : this.walls)
@@ -235,6 +240,8 @@ public class BuildingStep4 extends AbstractBuildingStep
      *            the normal the ground
      * @param groundsIn
      *            the grounds
+     * @param noiseIn
+     *            the noise
      */
     public final void setArguments(final Vector3d groundNormalIn,
             final Ground groundsIn,
