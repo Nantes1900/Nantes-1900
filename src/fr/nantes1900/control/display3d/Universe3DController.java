@@ -52,21 +52,48 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	private final EventListenerList listeners = new EventListenerList();
 
 	// private ArrayList<MeshView> meshesViewSelected;
+	/**
+	 * A list of all the triangles selected.
+	 */
 	private ArrayList<TriangleView> trianglesViewSelected;
 
+	/**
+	 * A list of all the meshes selected.
+	 */
 	private ArrayList<MeshView> triangleMesh = new ArrayList<MeshView>();
 	// private ArrayList<PolygonView> polygonsViewSelected;
+	/**
+	 * The x coordinate of the mouse on the screen.
+	 */
 	private int xPressed;
+	/**
+	 * The y coordinate of the mouse on the screen.
+	 */
 	private int yPressed;
 
+	/**
+	 * 
+	 */
 	private List<Integer> trianglePicked = new ArrayList<Integer>();
+	/**
+	 * 
+	 */
 	private ArrayList<Integer> selectedIndex = new ArrayList<Integer>();
 
+	/**
+	 * The MeshView selected each time.
+	 */
 	private MeshView triangleMeshView;
 
-	private MeshView triangleMeshLastSelected;
+	/**
+	 * The MeshView selected in the last time.
+	 */
+	public static MeshView triangleMeshLastSelected;
 
-	private Shape3D shape3DLastSelected;
+	/**
+	 * The Shape3D selected in the last time.
+	 */
+	public static Shape3D shape3DLastSelected;
 
 	/**
 	 * @param isletSelectionController
@@ -112,40 +139,46 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
 		if (buttonDown == MouseEvent.BUTTON1) {
 
-			// Bouton gauche enfonc
+			// Left click of the mouse.
 
 			this.pickCanvas.setShapeLocation(e);
 			PickResult result = this.pickCanvas.pickClosest();
 			if (result == null) {
-				// System.out.println("Nothing picked");
+
 			} else {
 
-				PickIntersection PI = result.getIntersection(0);
+				PickIntersection pickIntersection = result.getIntersection(0);
 
-				int[] PointIndex = PI.getPrimitiveVertexIndices();
+				int[] PointIndex = pickIntersection.getPrimitiveVertexIndices();
 				int TriangleIndex = PointIndex[0] / 3;
 
-				MeshView triangleMeshView = (MeshView) PI.getGeometryArray();
+				MeshView triangleMeshView = (MeshView) pickIntersection
+						.getGeometryArray();
 				this.triangleMeshView = triangleMeshView;
 
+				// If the mesh clicked is not selected, select the mesh, change
+				// the color of the mesh.
 				if (this.triangleMeshView.getMeshSelectedOrNot() == false) {
 					// return the shape3D selected
 					Shape3D shapePicked = (Shape3D) result
 							.getNode(PickResult.SHAPE3D);
 					this.selectShape3D(shapePicked);
 					this.triangleMeshView.selectMesh();
-					if (this.shape3DLastSelected != null) {
-						if (this.shape3DLastSelected != shapePicked) {
-							this.unselectShape3D(this.shape3DLastSelected);
-							this.triangleMeshLastSelected.unselectMesh();
+					if (Universe3DController.shape3DLastSelected != null) {
+						if (Universe3DController.shape3DLastSelected != shapePicked) {
+							this.unselectShape3D(Universe3DController.shape3DLastSelected);
+							Universe3DController.triangleMeshLastSelected
+									.unselectMesh();
 
 						}
 
 					}
-					this.shape3DLastSelected = shapePicked;
-					this.triangleMeshLastSelected = this.triangleMeshView;
+					Universe3DController.shape3DLastSelected = shapePicked;
+					Universe3DController.triangleMeshLastSelected = this.triangleMeshView;
 				}
 
+				// If the mesh is selected, select the triangle where the mouse
+				// is.
 				else {
 					triangleMeshView.select(TriangleIndex);
 					if (trianglePicked.contains(TriangleIndex) == false) {
@@ -165,60 +198,119 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 			}
 		} else if (buttonDown == MouseEvent.BUTTON3) {
 
-			// Bouton gauche enfonc
+			// Right click of the mouse.
 
 			this.pickCanvas.setShapeLocation(e);
 			PickResult result = this.pickCanvas.pickClosest();
 			if (result == null) {
-				// System.out.println("Nothing picked");
+
 			} else {
 
-				PickIntersection PI = result.getIntersection(0);
-				int[] PointIndex = PI.getPrimitiveVertexIndices();
+				PickIntersection pickIntersection = result.getIntersection(0);
+				int[] PointIndex = pickIntersection.getPrimitiveVertexIndices();
 				int TriangleIndex = PointIndex[0] / 3;
-				MeshView triangleMeshView = (MeshView) PI.getGeometryArray();
+				MeshView triangleMeshView = (MeshView) pickIntersection
+						.getGeometryArray();
 				this.triangleMeshView = triangleMeshView;
 
+				// If the mesh is not selected, select the mesh and change the
+				// color.
 				if (this.triangleMeshView.getMeshSelectedOrNot() == false) {
 					// return the shape3D selected
 					Shape3D shapePicked = (Shape3D) result
 							.getNode(PickResult.SHAPE3D);
 					this.selectShape3D(shapePicked);
 					this.triangleMeshView.selectMesh();
-					if (this.shape3DLastSelected != null) {
-						if (this.shape3DLastSelected != shapePicked) {
-							this.unselectShape3D(this.shape3DLastSelected);
-							this.triangleMeshLastSelected.unselectMesh();
+					if (Universe3DController.shape3DLastSelected != null) {
+						if (Universe3DController.shape3DLastSelected != shapePicked) {
+							this.unselectShape3D(Universe3DController.shape3DLastSelected);
+							Universe3DController.triangleMeshLastSelected
+									.unselectMesh();
 
 						}
 
 					}
-					this.shape3DLastSelected = shapePicked;
-					this.triangleMeshLastSelected = this.triangleMeshView;
-				} else {
-					triangleMeshView.select(TriangleIndex);
-					if (this.trianglesViewSelected
-							.contains(this.triangleMeshView.getTriangleArray()
-									.get(TriangleIndex)) == false) {
-						this.trianglesViewSelected.add(this.triangleMeshView
-								.getTriangleArray().get(TriangleIndex));
-						// ///////////////////
-						this.triangleMesh.add(triangleMeshView);
-						// ////////////////////
-					}
-
-					List<Integer> triangleNewSelected = new ArrayList<Integer>();
-
-					triangleNewSelected.add(TriangleIndex);
-					// this.trianglePicked.add(TriangleIndex);
-					int turn = 30;
-					selectVoisin(TriangleIndex, triangleNewSelected,
-							triangleMeshView, turn);
-					this.mouseRotate.setCenter(triangleMeshView
-							.getTriangleArray().get(TriangleIndex));
-					this.selectedIndex
-							.add(this.trianglesViewSelected.size() - 1);
+					Universe3DController.shape3DLastSelected = shapePicked;
+					Universe3DController.triangleMeshLastSelected = this.triangleMeshView;
 				}
+				// If the mesh is selcted, select the triangle where the mouse
+				// is and its neighbours.
+				else {
+					if(triangleMeshView.getTriangleArray().get(TriangleIndex).isSelected()==false){
+						triangleMeshView.select(TriangleIndex);
+						if (this.trianglesViewSelected
+								.contains(this.triangleMeshView.getTriangleArray()
+										.get(TriangleIndex)) == false) {
+							this.trianglesViewSelected.add(this.triangleMeshView
+									.getTriangleArray().get(TriangleIndex));
+
+							this.triangleMesh.add(triangleMeshView);
+
+						}
+
+						List<Integer> triangleNewSelected = new ArrayList<Integer>();
+
+						triangleNewSelected.add(TriangleIndex);
+
+						int turn = 30;
+						selectVoisin(TriangleIndex, triangleNewSelected,
+								triangleMeshView, turn);
+						this.mouseRotate.setCenter(triangleMeshView
+								.getTriangleArray().get(TriangleIndex));
+						this.selectedIndex
+								.add(this.trianglesViewSelected.size() - 1);
+					}
+					else{
+						
+						
+						
+						 if(this.trianglesViewSelected.contains(this.triangleMeshView.getTriangleArray().get(TriangleIndex))){
+						
+						 int
+						 triangleIndex=this.trianglesViewSelected.indexOf(this.triangleMeshView.getTriangleArray().get(TriangleIndex));
+						 int beginIndex=0;
+						 int finishIndex=0;
+						 int indexOfBeginIndex=0;
+						 int indexOfFinishIndex=0;
+						 for(int i=0;i<this.selectedIndex.size();i++){
+						 if(i==0&&this.selectedIndex.get(i)>=triangleIndex){
+						 beginIndex=-1;
+						 finishIndex=this.selectedIndex.get(i);
+						 break;
+						 }
+						 else{
+						 if(this.selectedIndex.get(i)<triangleIndex&&this.selectedIndex.get(i+1)>=triangleIndex){
+						 beginIndex=this.selectedIndex.get(i);
+						 finishIndex=this.selectedIndex.get(i+1);
+						 indexOfBeginIndex=i;
+						 indexOfFinishIndex=i+1;
+						 break;
+						 }
+						 }
+						 }
+						
+						 for(int i=finishIndex;i>beginIndex;i--){
+						 TriangleView triangleSelected=this.trianglesViewSelected.get(i);
+						 int index=triangleSelected.getTriangle().getTriangleViewIndex();
+						 this.triangleMeshView.unselect(index);
+						 this.trianglesViewSelected.remove(i);
+						
+						 }
+						
+						 this.selectedIndex.remove(indexOfFinishIndex);
+						 for(int i=indexOfFinishIndex;i<this.selectedIndex.size();i++){
+						 int index=this.selectedIndex.get(i);
+						 this.selectedIndex.set(i, index-(finishIndex-beginIndex));
+						
+						 }
+						
+						 }
+						
+						
+						 
+					}
+					}
+					
 
 			}
 		}
@@ -296,13 +388,18 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
 	}
 
-	// slectionner des triangles autour du triangle clique, turn est le tour de
-	// selection. le premier tour,
-	// on selectionne trois voisins du triangle clique, le deuxieme tour, on
-	// selectionne des voisins de ces trois triangles,
-	// pour chaque tour, on refait comme ca
-	// triangleSelected pour recuperer des triangles selectionnes
-	// triangleNewSelected sauvgarder des triangels selctionnes dans chaque tour
+	/**
+	 * Select the triangles around the triangle clicked.
+	 * 
+	 * @param TriangleIndex
+	 *            The index of the triangle clicked in the list of TriangleView.
+	 * @param triangleNewSelected
+	 *            The indexs of the triagles selected in each turn.
+	 * @param triangleMeshView
+	 *            The MeshView selected.
+	 * @param turn
+	 *            The time of the recurrence to find the neighbour.
+	 */
 	public void selectVoisin(int TriangleIndex,
 			List<Integer> triangleNewSelected, MeshView triangleMeshView,
 			int turn) {
@@ -333,9 +430,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 									.add(this.triangleMeshView
 											.getTriangleArray().get(
 													triangleNeighbourIndex));
-							// //////////
+
 							this.triangleMesh.add(this.triangleMeshView);
-							// ///////////////////////
+
 							triangleCount.add(triangleNeighbourIndex);
 						}
 
@@ -355,57 +452,34 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
 	@Override
 	public void mouseDragged(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
+		// Empty.
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-
+		// Empty.
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		// Empty.
 	}
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		// Empty.
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// System.out.println("Mouse Pressed");
+
 		this.xPressed = e.getX();
 		this.yPressed = e.getY();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// int buttonDown = e.getButton();
-		// if (buttonDown == MouseEvent.BUTTON1) {
-		// for (int x = this.xPressed; x < e.getX(); x = x + 2) {
-		// for (int y = this.yPressed; y < e.getY(); y = y + 2) {
-		// this.pickCanvas.setShapeLocation(x, y);
-		// PickResult result = this.pickCanvas.pickClosest();
-		// if (result == null) {
-		// System.out.println("Nothing picked");
-		// } else {
-		// PickIntersection PI=result.getIntersection(0);
-		// int []PointIndex=PI.getPrimitiveVertexIndices();
-		// int TriangleIndex=PointIndex[0]/3;
-		// MeshView triangleMeshView=(MeshView)PI.getGeometryArray();
-		// triangleMeshView.select(TriangleIndex);
-		// mouseRotate.setCenter(triangleMeshView.getTriangleArray().get(TriangleIndex));
-		//
-		// }
-		// }
-		// }
-		// }
+
 	}
 
 	/**
@@ -452,6 +526,12 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
 	}
 
+	/**
+	 * Change the material of the Shape3D
+	 * 
+	 * @param shape
+	 *            The Shape3D of the mesh selected.
+	 */
 	public void selectShape3D(Shape3D shape) {
 
 		Appearance app = shape.getAppearance();
@@ -459,9 +539,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		shape.setAppearance(app);
 
 	}
-	
-	public void selectMesh(MeshView triangleMeshView){
-		
+
+	/**
+	 * @param triangleMeshView
+	 *            The triangle
+	 */
+	public void selectMesh(MeshView triangleMeshView) {
+
 	}
 
 	public void meshSelect(MeshView triangleMeshView) {
@@ -499,5 +583,56 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		for (ElementsSelectedListener listener : ESListeners) {
 			listener.polygonDeselected(polygonDeselected);
 		}
+	}
+
+	/**
+	 * High light the meshView selected.
+	 * 
+	 * @param meshView
+	 *            The meshView to be selected
+	 */
+	public void hightLightMesh(MeshView meshView) {
+
+		// Select the meshView.
+		meshView.selectMesh();
+
+		// Get the index of the meshView in the list of the meshes displayed.
+		int meshViewIndex = fr.nantes1900.view.display3d.MeshShowable.meshList
+				.indexOf(meshView);
+
+		// Get the shape3D of the meshView to be selected.
+		Shape3D shapeSelect = fr.nantes1900.view.display3d.MeshShowable.meshShape3D
+				.get(meshViewIndex);
+		Appearance appSelect = shapeSelect.getAppearance();
+
+		// Change the material of the mesh to be seleted.
+		appSelect
+				.setMaterial(fr.nantes1900.view.display3d.MeshShowable.matSelected);
+		shapeSelect.setAppearance(appSelect);
+
+		// If the shape3D selected last time is not null.
+		if (Universe3DController.shape3DLastSelected != null) {
+
+			// If the shape3D selected last time is not this one.
+			if (Universe3DController.shape3DLastSelected != shapeSelect) {
+
+				// Change back the material of the mesh selected last time.
+				Appearance appUnselect = Universe3DController.shape3DLastSelected
+						.getAppearance();
+				appUnselect
+						.setMaterial(fr.nantes1900.view.display3d.MeshShowable.matUnSelected);
+				Universe3DController.shape3DLastSelected
+						.setAppearance(appUnselect);
+
+				// Unselect the meshView selected last time.
+				Universe3DController.triangleMeshLastSelected.unselectMesh();
+			}
+		}
+
+		// Set the shape3D last selected to be the shape3D picked.
+		Universe3DController.shape3DLastSelected = shapeSelect;
+
+		// Set the meshView last selected to be the meshView picked.
+		Universe3DController.triangleMeshLastSelected = meshView;
 	}
 }

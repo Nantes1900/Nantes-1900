@@ -1,7 +1,7 @@
 package fr.nantes1900.view.display3d;
 
 import java.awt.Color;
-import java.io.IOException;
+
 import java.util.ArrayList;
 
 import javax.media.j3d.Appearance;
@@ -15,19 +15,18 @@ import javax.vecmath.Color3f;
 
 import com.sun.j3d.utils.image.TextureLoader;
 
-import fr.nantes1900.utils.ParserSTL;
 
 public class MeshShowable {
 
 	/**
 	 * A list to save all the meshes to be displayed.
 	 */
-	private ArrayList<MeshView> meshList = new ArrayList<MeshView>();
+	public static ArrayList<MeshView> meshList = new ArrayList<MeshView>();
 
 	/**
 	 * A list to save all the shape3D of the meshes.
 	 */
-	private ArrayList<Shape3D> meshShape3D = new ArrayList<Shape3D>();
+	public static ArrayList<Shape3D> meshShape3D = new ArrayList<Shape3D>();
 	/**
 	 * A list to save all the appearances of shape3D.
 	 */
@@ -72,14 +71,14 @@ public class MeshShowable {
 	 * @return The list of the meshes to be displayed.
 	 */
 	public ArrayList<MeshView> getMeshList() {
-		return this.meshList;
+		return MeshShowable.meshList;
 	}
 
 	/**
 	 * @return The list of shape3D,each mesh has a shape3D.
 	 */
 	public ArrayList<Shape3D> getShape3D() {
-		return this.meshShape3D;
+		return MeshShowable.meshShape3D;
 	}
 
 	/**
@@ -89,16 +88,16 @@ public class MeshShowable {
 	public void addMeshView(MeshView meshView) {
 
 		//Add the meshView to the list.
-		this.meshList.add(meshView);
+		MeshShowable.meshList.add(meshView);
         //Create the shape3D.
 		Shape3D shape = new Shape3D();
 
 		shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
 		shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
         //Add the mesh to the shape3D.
-		shape.addGeometry(this.meshList.get(this.meshList.size() - 1));
+		shape.addGeometry(meshView);
 		
-		this.meshShape3D.add(shape);
+		MeshShowable.meshShape3D.add(shape);
 
 		//Create the appearance.
 		Appearance app = new Appearance();
