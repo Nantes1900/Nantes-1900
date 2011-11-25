@@ -3,8 +3,10 @@ package fr.nantes1900.models.islets.buildings;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
+import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
+import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep1;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep2;
@@ -14,6 +16,7 @@ import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep5;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep6;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep7;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep8;
+import fr.nantes1900.utils.MatrixMethod;
 
 /**
  * Abstracts a building islet : residential or industrial. This class contains
@@ -386,5 +389,94 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     public final void setProgression(final int progressionIn)
     {
         this.progression = progressionIn;
+    }
+
+    /**
+     * Launches the first treatment.
+     * @throws NullArgumentException
+     *             if the gravity normal has not been initiliazed
+     */
+    public void launchTreatment0() throws NullArgumentException
+    {
+        if (this.getGravityNormal() == null)
+        {
+            throw new NullArgumentException();
+        }
+        // FIXME : remove the setArguments : allow each step to access to its
+        // islet parent and get everything it wants.
+        this.getBiStep0().setArguments(this.getGravityNormal());
+        this.setBiStep1(this.getBiStep0().launchTreatment());
+        MatrixMethod.changeBase(this.getGroundNormal(), this.getBiStep0()
+                .getMatrix());
+    }
+
+    /**
+     * Launches the first treatment.
+     * @throws NullArgumentException
+     */
+    public void launchTreatment1() throws NullArgumentException
+    {
+        this.getBiStep1().setArguments(this.getGravityNormal());
+        this.setBiStep2(this.getBiStep1().launchTreatment());
+    }
+
+    /**
+     * Launches the second treatment.
+     */
+    public void launchTreatment2()
+    {
+        this.setBiStep3(this.getBiStep2().launchTreatment());
+    }
+
+    /**
+     * Launches the third treatment.
+     * @throws NullArgumentException
+     */
+    public void launchTreatment3() throws NullArgumentException
+    {
+        for (Building b : this.getBiStep3().getBuildings())
+        {
+            b.setArguments(this.getGroundNormal(),
+                    this.getGravityNormal(),
+                    this.getBiStep3().getGrounds(),
+                    this.getBiStep3().getNoise());
+        }
+        this.setBiStep4(this.getBiStep3().launchTreatment());
+    }
+
+    /**
+     * Launches the fourth treatment.
+     * @throws NullArgumentException
+     */
+    public void launchTreatment4() throws NullArgumentException
+    {
+        this.setBiStep5(this.getBiStep4().launchTreatment());
+    }
+
+    /**
+     * Launches the fifth treatment.
+     * @throws NullArgumentException
+     */
+    public void launchTreatment5() throws NullArgumentException
+    {
+        this.setBiStep6(this.getBiStep5().launchTreatment());
+    }
+
+    /**
+     * Launches the sixth treatment.
+     * @throws NullArgumentException
+     */
+    public void launchTreatment6() throws NullArgumentException
+    {
+        this.setBiStep7(this.getBiStep6().launchTreatment());
+    }
+
+    /**
+     * Launches the seventh treatment.
+     * @throws NullArgumentException
+     */
+    public void launchTreatment7() throws NullArgumentException
+    {
+        this.setBiStep8(this.getBiStep7().launchTreatment());
     }
 }

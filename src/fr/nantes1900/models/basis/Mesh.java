@@ -60,7 +60,7 @@ public class Mesh extends HashSet<Triangle>
     @Override
     public String toString()
     {
-        return "Mesh";
+        return "Mesh " + this.iD;
     }
 
     /**

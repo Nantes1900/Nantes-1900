@@ -7,6 +7,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.steps.BuildingStep6;
+import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
  * Implements a step of the treatment. This step is after the determination of
@@ -64,13 +65,14 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
      * #launchTreatment()
      */
     @Override
-    public final BuildingsIsletStep7 launchTreatment()
+    public final BuildingsIsletStep7
+            launchTreatment() throws NullArgumentException
     {
         for (Building b : this.buildings)
         {
-            BuildingStep6 buildingStep = (BuildingStep6) b.getbStep();
+            BuildingStep6 buildingStep = b.getbStep6();
             buildingStep.setArguments(this.grounds);
-            b.launchTreatment();
+            b.launchTreatment6();
         }
 
         return new BuildingsIsletStep7(this.buildings, this.grounds);
@@ -88,7 +90,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
         for (Building b : this.buildings)
         {
-            root.add(b.returnNode());
+            root.add(b.returnNode6());
         }
         root.add(new DefaultMutableTreeNode(this.grounds));
 

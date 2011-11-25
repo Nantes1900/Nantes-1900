@@ -24,6 +24,8 @@ import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 public class Surface
 {
 
+    private static int    iD_counter = 0;
+    private int           iD         = iD_counter++;
     /**
      * List of the neighbours of this surface.
      */
@@ -44,6 +46,11 @@ public class Surface
      */
     public Surface()
     {
+    }
+
+    public int getID()
+    {
+        return this.iD;
     }
 
     /**

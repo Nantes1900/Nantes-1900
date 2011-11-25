@@ -10,6 +10,7 @@ import java.awt.Insets;
 
 import javax.swing.JFrame;
 
+import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.PFrame;
 import fr.nantes1900.view.display3d.Universe3DView;
@@ -69,45 +70,26 @@ public class IsletSelectionView extends PFrame
         this.u3DView = buildingsIsletView;
 
         // adds the different views
-        this.getComponentsPanel().setLayout(new GridBagLayout());
-        this.getComponentsPanel().add(this.aView,
-                new GridBagConstraints(0,
-                        0,
-                        1,
-                        1,
-                        0.0,
-                        0.0,
+        this.pComponents.setLayout(new GridBagLayout());
+        this.pComponents.add(
+                this.aView,
+                new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
                         GridBagConstraints.CENTER,
                         GridBagConstraints.HORIZONTAL,
-                        new Insets(5, 10, 5, 10),
-                        0,
-                        0));
-        this.getComponentsPanel().add(this.gtView,
-                new GridBagConstraints(0,
-                        1,
-                        1,
-                        1,
-                        0.0,
-                        0.0,
-                        GridBagConstraints.CENTER,
-                        GridBagConstraints.BOTH,
-                        new Insets(5, 10, 5, 10),
-                        0,
-                        0));
-        this.getComponentsPanel().add(this.u3DView,
-                new GridBagConstraints(1,
-                        0,
-                        1,
-                        2,
-                        0.0,
-                        0.0,
-                        GridBagConstraints.CENTER,
-                        GridBagConstraints.BOTH,
-                        new Insets(5, 10, 5, 10),
-                        0,
-                        0));
-        this.setStatusBarText(FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY,
-                FileTools.MESSAGETYPE_STATUSBAR));
+                        new Insets(10, 10, 5, 10), 0, 0));
+        this.pComponents.add(
+                this.gtView,
+                new GridBagConstraints(0, 1, 1, 1, 0.0, 0.0,
+                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                        new Insets(10, 10, 5, 10), 0, 0));
+        this.pComponents.add(
+                this.u3DView,
+                new GridBagConstraints(1, 0, 1, 2, 0.0, 0.0,
+                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                        new Insets(10, 10, 5, 10), 0, 0));
+        this.setStatusBarText(FileTools
+                .readHelpMessage(TextsKeys.KEY_IS_OPENDIRECTORY,
+                        TextsKeys.MESSAGETYPE_STATUSBAR));
         pack();
     }
 }

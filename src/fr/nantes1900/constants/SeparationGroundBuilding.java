@@ -18,7 +18,7 @@ public final class SeparationGroundBuilding
      * error, the block is not taken as a ground. This error is in the scale
      * used in the files (if millimeteres are used, it's in millimeters, etc.).
      */
-    private static double       altitureError;
+    private static double       altitureError                    = ALTITUDE_ERROR_DEFAULT;
 
     /**
      * Default value of the coefficient.
@@ -29,7 +29,7 @@ public final class SeparationGroundBuilding
      * the maximum angle from the normal (gravity-oriented) to the ground that
      * can describe a ground triangle (in the first step). In degrees.
      */
-    private static double       angleGroundError;
+    private static double       angleGroundError                 = ANGLE_GROUND_ERROR_DEFAULT;
 
     /**
      * Default value of the coefficient.
@@ -41,16 +41,13 @@ public final class SeparationGroundBuilding
      * (gravity-oriented) to the ground that can describe a ground triangle. In
      * degrees.
      */
-    private static double       largeAngleGroundError;
+    private static double       largeAngleGroundError            = LARGE_ANGLE_GROUND_ERROR_DEFAULT;
 
     /**
      * Private constructor.
      */
     private SeparationGroundBuilding()
     {
-        altitureError = ALTITUDE_ERROR_DEFAULT;
-        largeAngleGroundError = LARGE_ANGLE_GROUND_ERROR_DEFAULT;
-        angleGroundError = ANGLE_GROUND_ERROR_DEFAULT;
     }
 
     /**

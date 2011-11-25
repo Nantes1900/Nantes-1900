@@ -11,6 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
+import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
 
@@ -51,14 +52,14 @@ public class ActionsView extends JPanel
     public ActionsView()
     {
         this.bOpen = new JButton("Ouvrir");
-        this.bLaunch = new JButton("Lancer");
+        this.bLaunch = new JButton(FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
         this.bLaunch.setEnabled(false);
         this.bHelp = new HelpButton(FileTools.readHelpMessage(
-                FileTools.KEY_IS_OPENDIRECTORY, FileTools.MESSAGETYPE_TOOLTIP),
-                FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY,
-                        FileTools.MESSAGETYPE_MESSAGE),
-                FileTools.readHelpMessage(FileTools.KEY_IS_OPENDIRECTORY,
-                        FileTools.MESSAGETYPE_TITLE));
+                TextsKeys.KEY_IS_OPENDIRECTORY, TextsKeys.MESSAGETYPE_TOOLTIP),
+                FileTools.readHelpMessage(TextsKeys.KEY_IS_OPENDIRECTORY,
+                        TextsKeys.MESSAGETYPE_MESSAGE),
+                FileTools.readHelpMessage(TextsKeys.KEY_IS_OPENDIRECTORY,
+                        TextsKeys.MESSAGETYPE_TITLE));
         this.cbGravityGround = new JCheckBox(
                 "Utiliser la normale orientée selon la gravité");
         this.cbGravityGround.setEnabled(false);

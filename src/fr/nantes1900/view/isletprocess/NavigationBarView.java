@@ -5,20 +5,24 @@ package fr.nantes1900.view.isletprocess;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+
+import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.utils.FileTools;
 
 /**
  * @author Camille
  */
 public class NavigationBarView extends JPanel
 {
-    protected JButton bAbort = new JButton("Abort");
-    protected JButton bLaunch = new JButton("Launch");
-    protected JButton bBack = new JButton("Back");
-    protected JLabel title = new JLabel("Etape 1 : Désintégration plasma de l'univers mutant");
+    protected JButton bAbort = new JButton(FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
+    protected JButton bLaunch = new JButton(FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
+    protected JButton bBack = new JButton(FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
+    protected JLabel title = new JLabel(FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
     protected JPanel pCentral = new JPanel();
     
     public NavigationBarView() {

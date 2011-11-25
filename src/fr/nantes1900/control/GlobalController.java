@@ -3,6 +3,7 @@
  */
 package fr.nantes1900.control;
 
+import java.awt.Cursor;
 import java.io.File;
 
 import fr.nantes1900.control.isletprocess.IsletProcessController;
@@ -43,7 +44,6 @@ public class GlobalController
     {
         // Launches the base change : the treatmen 0.
         biController.launchTreatment();
-        System.out.println("Traitement lancé sur l'îlot : " + isletFile.getPath());
 
         this.isletProcessController = new IsletProcessController(this,
                 isletFile,
