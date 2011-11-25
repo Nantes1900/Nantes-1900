@@ -6,10 +6,14 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
+import javax.media.j3d.Shape3D;
 
 import javax.vecmath.Vector3d;
 import javax.swing.event.EventListenerList;
+
+
 
 
 import com.sun.j3d.utils.picking.PickCanvas;
@@ -38,7 +42,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 	 */
 	private Universe3DView u3DView;
 
+	/**
+	 * The canvas used to pick.
+	 */
 	private PickCanvas pickCanvas;
+	/**
+	 * The controller to change the center of rotation.
+	 */
 	private NewMouseRotate mouseRotate;
 
 	private IsletSelectionController parentController;
@@ -48,13 +58,19 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 	// private ArrayList<MeshView> meshesViewSelected;
 	private ArrayList<TriangleView> trianglesViewSelected;
 
+	 private ArrayList<MeshView> triangleMesh=new ArrayList<MeshView>();
 	// private ArrayList<PolygonView> polygonsViewSelected;
 	private int xPressed;
 	private int yPressed;
 	
 	private List<Integer> trianglePicked=new ArrayList<Integer>();
-	private List<Integer> selectedIndex=new ArrayList<Integer>();
+	private ArrayList<Integer> selectedIndex=new ArrayList<Integer>();
+	
+	
 	private MeshView triangleMeshView;
+	private MeshView triangleMeshLastSelected;
+	
+	private Shape3D shape3DLastSelected;
 
 	/**
 	 * @param isletSelectionController
@@ -94,104 +110,186 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		int buttonDown = e.getButton();
+        int buttonDown = e.getButton();
 
-		if (buttonDown == MouseEvent.BUTTON1) {
+        if (buttonDown == MouseEvent.BUTTON1) {
 
-			// Bouton gauche enfonc
+            // Bouton gauche enfonc
 
-			 this.pickCanvas.setShapeLocation(e);
-	            PickResult result = this.pickCanvas.pickClosest();
-	            if (result == null) {
-	                System.out.println("Nothing picked");
-	            } else {
+            this.pickCanvas.setShapeLocation(e);
+            PickResult result = this.pickCanvas.pickClosest();
+            if (result == null) {
+                System.out.println("Nothing picked");
+            } else {
 
-	            	PickIntersection PI=result.getIntersection(0);
-	            	int []PointIndex=PI.getPrimitiveVertexIndices();
-	            	int TriangleIndex=PointIndex[0]/3;
-	            	MeshView triangleMeshView=(MeshView)PI.getGeometryArray();
-	                this.triangleMeshView=triangleMeshView;
+            	PickIntersection PI=result.getIntersection(0);
+            	
+            	int []PointIndex=PI.getPrimitiveVertexIndices();
+            	int TriangleIndex=PointIndex[0]/3;
+            	
+            	MeshView triangleMeshView=(MeshView)PI.getGeometryArray();
+            	this.triangleMeshView=triangleMeshView;
+            	
+            	if(this.triangleMeshView.getMeshSelectedOrNot()==false){
+            	  	//return the shape3D selected
+                	Shape3D shapePicked=(Shape3D)result.getNode(PickResult.SHAPE3D);
+                	this.selectShape3D(shapePicked);
+                	this.triangleMeshView.selectMesh();
+                	if(this.shape3DLastSelected!=null){
+                		if(this.shape3DLastSelected!=shapePicked){
+                			this.unselectShape3D(this.shape3DLastSelected);
+                			this.triangleMeshLastSelected.unselectMesh();
+                			
+                		}
+                		
+                	}
+                	this.shape3DLastSelected=shapePicked;
+                	this.triangleMeshLastSelected=this.triangleMeshView;
+            	}
+            	
+            	else{
+            		triangleMeshView.select(TriangleIndex);
+                	if(trianglePicked.contains(TriangleIndex)==false){
+                		//this.trianglePicked.add(TriangleIndex);
+                		this.trianglesViewSelected.add(this.triangleMeshView.getTriangleArray().get(TriangleIndex));
+                		///////////
+                		this.triangleMesh.add(triangleMeshView);
+                		////////////
+                		this.selectedIndex.add(this.trianglesViewSelected.size()-1);
+                	}          	
+                    this.mouseRotate.setCenter(triangleMeshView.getTriangleArray().get(TriangleIndex));
+            	}
+            	
+                
 
-//	            	triangleMeshView.selectOrUnselect(TriangleIndex); 
-	            	triangleMeshView.select(TriangleIndex);
-	            	if(trianglePicked.contains(TriangleIndex)==false){
-	            		this.trianglePicked.add(TriangleIndex);
-	            		this.selectedIndex.add(this.trianglePicked.size());
-	            		this.trianglesViewSelected.add(this.triangleMeshView.getTriangleArray().get(TriangleIndex));
-	            	}          	
-	                this.mouseRotate.setCenter(triangleMeshView.getTriangleArray().get(TriangleIndex));
-	                
+            }
+        }
+        else if (buttonDown == MouseEvent.BUTTON3) {
 
-	            }
-		} else if (buttonDown == MouseEvent.BUTTON3) {
+            // Bouton gauche enfonc
 
-			// Bouton droit enfonc
+            this.pickCanvas.setShapeLocation(e);
+            PickResult result = this.pickCanvas.pickClosest();
+            if (result == null) {
+                System.out.println("Nothing picked");
+            } else {
 
-			this.pickCanvas.setShapeLocation(e);
-			PickResult result = this.pickCanvas.pickClosest();
-			if (result == null) {
-				System.out.println("Nothing picked");
-			} else {
-				PickIntersection PI = result.getIntersection(0);
-				int[] PointIndex = PI.getPrimitiveVertexIndices();
-				int TriangleIndex = PointIndex[0] / 3;
-				
-				MeshView triangleMeshView = (MeshView) PI.getGeometryArray();
-				this.triangleMeshView=triangleMeshView;
-				
-				//triangleMeshView.selectOrUnselect(TriangleIndex);
-				triangleMeshView.select(TriangleIndex);
-				if(trianglePicked.contains(TriangleIndex)==false){
-            		this.trianglePicked.add(TriangleIndex);
-            		this.trianglesViewSelected.add(this.triangleMeshView.getTriangleArray().get(TriangleIndex));
-            		
-            	}  
-				
-				
-				List<Integer> triangleNewSelected = new ArrayList<Integer>();
-				
-				triangleNewSelected.add(TriangleIndex);
-				//triangleSelected.add(TriangleIndex);
-				this.trianglePicked.add(TriangleIndex);
-				this.trianglesViewSelected.add(this.triangleMeshView.getTriangleArray().get(TriangleIndex));
-				//commentaires
-				int turn = 30;
-				selectVoisin(TriangleIndex,triangleNewSelected,triangleMeshView,turn);
-                this.mouseRotate.setCenter(triangleMeshView.getTriangleArray().get(TriangleIndex));
-                this.selectedIndex.add(this.trianglePicked.size());
+            	PickIntersection PI=result.getIntersection(0);
+            	int []PointIndex=PI.getPrimitiveVertexIndices();
+            	int TriangleIndex=PointIndex[0]/3;
+            	MeshView triangleMeshView=(MeshView)PI.getGeometryArray();
+            	this.triangleMeshView=triangleMeshView;
+            	
+            	if(this.triangleMeshView.getMeshSelectedOrNot()==false){
+            	  	//return the shape3D selected
+                	Shape3D shapePicked=(Shape3D)result.getNode(PickResult.SHAPE3D);
+                	this.selectShape3D(shapePicked);
+                	this.triangleMeshView.selectMesh();
+                	if(this.shape3DLastSelected!=null){
+                		if(this.shape3DLastSelected!=shapePicked){
+                			this.unselectShape3D(this.shape3DLastSelected);
+                			this.triangleMeshLastSelected.unselectMesh();
+                			
+                		}
+                		
+                	}
+                	this.shape3DLastSelected=shapePicked;
+                	this.triangleMeshLastSelected=this.triangleMeshView;
+            	}
+            	else{
+            		triangleMeshView.select(TriangleIndex);
+                	if(this.trianglesViewSelected.contains(this.triangleMeshView.getTriangleArray().get(TriangleIndex))==false){
+                		this.trianglesViewSelected.add(this.triangleMeshView.getTriangleArray().get(TriangleIndex));
+                		/////////////////////
+                		this.triangleMesh.add(triangleMeshView);
+                		//////////////////////
+                	}       
+                	
+                	List<Integer>triangleNewSelected=new ArrayList<Integer>();
+                	
+                	triangleNewSelected.add(TriangleIndex);
+                	//this.trianglePicked.add(TriangleIndex);
+                	int turn=30;
+                	selectVoisin(TriangleIndex,triangleNewSelected,triangleMeshView,turn);
+                    this.mouseRotate.setCenter(triangleMeshView.getTriangleArray().get(TriangleIndex));
+                    this.selectedIndex.add(this.trianglesViewSelected.size()-1);
+            	}
+            	
+            	
+            	
+            	
 
-			}
-		}
-		
-		  else if (buttonDown == MouseEvent.BUTTON2){
-	        	int selectTimes=this.selectedIndex.size();
-	        	if(selectTimes>1){
-	        		int n1=this.selectedIndex.get(selectTimes-2);
-	    			int n2=this.selectedIndex.get(selectTimes-1);
-	    			for(int i=n1;i<n2;i++){
-	    				this.triangleMeshView.unselect(this.trianglePicked.get(i));
-	    			}
-	    			for(int i=n2-1;i>n1-1;i--){
-	    				this.trianglePicked.remove(i);	
-	    				this.trianglesViewSelected.remove(i);
-	    			}		
-	    			this.selectedIndex.remove(selectTimes-1);
-	        	}
-	        	else{
-	        		int n1=0;
-	        		int n2=this.selectedIndex.get(0);
-	        		for(int i=n1;i<n2;i++){
-	        			int picked=this.trianglePicked.get(i);
-	    				this.triangleMeshView.unselect(picked);
-	    			}
-	    			for(int i=n2-1;i>n1-1;i--){
-	    				this.trianglePicked.remove(i);		
-	    				this.trianglesViewSelected.remove(i);
-	    			}	
-	    			this.selectedIndex.remove(0);
-	        	}
-	        }
-	}
+            }
+        }
+        //click the wheel all the triangles selected will be canceled
+        else if (buttonDown == MouseEvent.BUTTON2){
+        	for(int i=0;i<this.trianglesViewSelected.size();i++){
+        		int index=this.trianglesViewSelected.get(i).getTriangle().getTriangleViewIndex();
+        		this.triangleMesh.get(i).unselect(index);
+        	}
+        	this.trianglesViewSelected.clear();
+        	this.selectedIndex.clear();
+        	this.triangleMesh.clear();
+//this is the method to cancled a zone of triangles, don't delete it 
+//        	 this.pickCanvas.setShapeLocation(e);
+//             PickResult result = this.pickCanvas.pickClosest();
+//             if (result == null) {
+//                 System.out.println("Nothing canceled");
+//             } else {
+//
+//             	PickIntersection PI=result.getIntersection(0);
+//             	int []PointIndex=PI.getPrimitiveVertexIndices();
+//             	int TriangleIndex=PointIndex[0]/3;
+//             	TriangleMeshView triangleMeshView=(TriangleMeshView)PI.getGeometryArray();
+//             	this.triangleMeshView=triangleMeshView;
+//
+//             	
+//             	if(this.trianglesViewSelected.contains(this.triangleMeshView.getTriangleArray().get(TriangleIndex))){
+//             		
+//             		int triangleIndex=this.trianglesViewSelected.indexOf(this.triangleMeshView.getTriangleArray().get(TriangleIndex));
+//             		int beginIndex=0;
+//             		int finishIndex=0;
+//             		int indexOfBeginIndex=0;
+//             		int indexOfFinishIndex=0;
+//             		for(int i=0;i<this.selectedIndex.size();i++){
+//             			if(i==0&&this.selectedIndex.get(i)>=triangleIndex){
+//             				beginIndex=-1;
+//             				finishIndex=this.selectedIndex.get(i);
+//             				break;
+//             			}
+//             			else{
+//             				if(this.selectedIndex.get(i)<triangleIndex&&this.selectedIndex.get(i+1)>=triangleIndex){
+//             					beginIndex=this.selectedIndex.get(i);
+//             					finishIndex=this.selectedIndex.get(i+1);
+//             					indexOfBeginIndex=i;
+//             					indexOfFinishIndex=i+1;
+//             					break;
+//             				}
+//             			}
+//             		}
+//             		
+//             		for(int i=finishIndex;i>beginIndex;i--){
+//             			TriangleView triangleSelected=this.trianglesViewSelected.get(i);
+//             			int index=triangleSelected.getTriangle().getTriangleViewIndex();
+//             			this.triangleMeshView.unselect(index);
+//             			this.trianglesViewSelected.remove(i);
+//             			
+//             		}
+//             		
+//             		this.selectedIndex.remove(indexOfFinishIndex);
+//             		for(int i=indexOfFinishIndex;i<this.selectedIndex.size();i++){
+//             			int index=this.selectedIndex.get(i);
+//             			this.selectedIndex.set(i, index-(finishIndex-beginIndex));
+//             			
+//             		}
+//             		
+//             	}          	
+//                 
+//
+//             }
+        }
+
+    }
 
 	// slectionner des triangles autour du triangle clique, turn est le tour de
 	// selection. le premier tour,
@@ -200,41 +298,43 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 	// pour chaque tour, on refait comme ca
 	// triangleSelected pour recuperer des triangles selectionnes
 	// triangleNewSelected sauvgarder des triangels selctionnes dans chaque tour
-public void selectVoisin(int TriangleIndex,List<Integer>triangleNewSelected,MeshView triangleMeshView,int turn){
-    	
-    	Vector3d normal=triangleMeshView.getTriangleArray().get(TriangleIndex).getTriangle().getNormal();
- 	   for(int i=0;i<turn;i++){
- 		   List<Integer>triangleCount=new ArrayList<Integer>();
- 		   for(int j:triangleNewSelected){
- 			   List<Triangle> triangleNeighbour=triangleMeshView.getTriangleArray().get(j).getTriangle().getNeighbours();
- 			  
- 			  for(int l=0;l<triangleNeighbour.size();l++){
+	 public void selectVoisin(int TriangleIndex,List<Integer>triangleNewSelected,MeshView triangleMeshView,int turn){
+	    	
+	    	Vector3d normal=triangleMeshView.getTriangleArray().get(TriangleIndex).getTriangle().getNormal();
+	 	   for(int i=0;i<turn;i++){
+	 		   List<Integer>triangleCount=new ArrayList<Integer>();
+	 		   for(int j:triangleNewSelected){
+	 			   List<Triangle> triangleNeighbour=triangleMeshView.getTriangleArray().get(j).getTriangle().getNeighbours();
+	 			  
+	 			  for(int l=0;l<triangleNeighbour.size();l++){
 
- 				 int triangleNeighbourIndex=triangleNeighbour.get(l).getTriangleViewIndex();
- 				 if(trianglePicked.contains(triangleNeighbourIndex)==false){
- 					  Boolean isParalle;
- 					  isParalle=triangleNeighbour.get(l).isParalleTo(normal, 0.5);
- 					 
- 					 if(isParalle){
- 						triangleMeshView.select(triangleNeighbourIndex);
- 	 	 				 trianglePicked.add(triangleNeighbourIndex);
- 	 	 				 this.trianglesViewSelected.add(this.triangleMeshView.getTriangleArray().get(triangleNeighbourIndex));
- 	 	 				 triangleCount.add(triangleNeighbourIndex);
- 					 }
- 					 
- 				 }
- 				
- 			  }
- 			  
- 		   }
- 		   triangleNewSelected.clear();
- 		   for(int m=0;m<triangleCount.size();m++){
- 			   triangleNewSelected.add(triangleCount.get(m));
- 		   }
- 			  
- 			  triangleCount.clear();
- 	   }
-    }
+	 				 int triangleNeighbourIndex=triangleNeighbour.get(l).getTriangleViewIndex();
+	 				 if(this.trianglesViewSelected.contains(this.triangleMeshView.getTriangleArray().get(triangleNeighbourIndex))==false){
+	 					  Boolean isParalle;
+	 					  isParalle=triangleNeighbour.get(l).isParalleTo(normal, 0.5);
+	 					 
+	 					 if(isParalle){
+	 						triangleMeshView.select(triangleNeighbourIndex);
+	 	 	 				 this.trianglesViewSelected.add(this.triangleMeshView.getTriangleArray().get(triangleNeighbourIndex));
+	 	 	 				 ////////////
+	 	 	 				 this.triangleMesh.add(this.triangleMeshView);
+	 	 	 				 /////////////////////////
+	 	 	 				 triangleCount.add(triangleNeighbourIndex);
+	 					 }
+	 					 
+	 				 }
+	 				
+	 			  }
+	 			  
+	 		   }
+	 		   triangleNewSelected.clear();
+	 		   for(int m=0;m<triangleCount.size();m++){
+	 			   triangleNewSelected.add(triangleCount.get(m));
+	 		   }
+	 			  
+	 			  triangleCount.clear();
+	 	   }
+	    }
 
 
 	@Override
@@ -358,6 +458,27 @@ public void selectVoisin(int TriangleIndex,List<Integer>triangleNewSelected,Mesh
     {
         listeners.remove(ElementsSelectedListener.class, listener);
     }
+    
+    public void unselectShape3D(Shape3D shape){
+    	
+    	Appearance app=shape.getAppearance();
+		app.setMaterial(fr.nantes1900.view.display3d.MeshList.matUnSelected);
+		shape.setAppearance(app);
+		
+    }
+
+public void selectShape3D(Shape3D shape){
+	
+	Appearance app=shape.getAppearance();
+	app.setMaterial(fr.nantes1900.view.display3d.MeshList.matSelected);
+	shape.setAppearance(app);
+	
+}
+
+public void meshSelect(MeshView triangleMeshView){
+	triangleMeshView.selectMesh();
+	
+}
 
 
 }

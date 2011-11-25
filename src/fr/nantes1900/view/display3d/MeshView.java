@@ -33,6 +33,11 @@ public class MeshView extends TriangleArray
      * The mesh of the things displayed.
      */
     private Mesh                    mesh;
+    
+    /**
+     * To indicate if the mesh is selected.
+     */
+    private boolean meshSelected;
 
     
     /**
@@ -211,4 +216,18 @@ public class MeshView extends TriangleArray
             this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
         }
     }
+    
+    public void selectMesh(){
+		this.meshSelected=true;
+
+	}
+	
+	public void unselectMesh(){
+		this.meshSelected=false;
+
+	}
+	
+	public boolean getMeshSelectedOrNot(){
+		return this.meshSelected;
+	}
 }

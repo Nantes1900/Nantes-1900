@@ -248,7 +248,7 @@ public class Universe3DView extends JPanel
 
         // Links the right button of the mouse with a translation transformation
         MouseTranslate mouseTranslate = new MouseTranslate();
-        mouseTranslate.setFactor(2);
+        mouseTranslate.setFactor(1.5);
         mouseTranslate.setTransformGroup(transformGroup);
         transformGroup.addChild(mouseTranslate);
         mouseTranslate.setSchedulingBounds(boundingSphere);
