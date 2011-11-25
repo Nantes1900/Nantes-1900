@@ -6,6 +6,7 @@ import javax.media.j3d.GeometryArray;
 import javax.media.j3d.TriangleArray;
 import javax.vecmath.Point2f;
 import javax.vecmath.Point3d;
+import javax.vecmath.TexCoord2f;
 import javax.vecmath.Vector3f;
 
 import fr.nantes1900.models.basis.Mesh;
@@ -93,10 +94,9 @@ public class MeshView extends TriangleArray {
 			this.setNormal(i + 1, convertNormal(triangleView.getTriangle()));
 			this.setNormal(i + 2, convertNormal(triangleView.getTriangle()));
 
-			// TODO : method setTextureCoordinate deprecated !
-			this.setTextureCoordinate(i, new Point2f(0.0f, 1.0f));
-			this.setTextureCoordinate(i + 1, new Point2f(0.0f, 0.0f));
-			this.setTextureCoordinate(i + 2, new Point2f(1.0f, 0.0f));
+			this.setTextureCoordinate(0, i, new TexCoord2f(0.0f, 1.0f));
+			this.setTextureCoordinate(0, i + 1, new TexCoord2f(0.0f, 0.0f));
+			this.setTextureCoordinate(0, i + 2, new TexCoord2f(1.0f, 0.0f));
 
 			i = i + 3;
 		}
@@ -128,16 +128,15 @@ public class MeshView extends TriangleArray {
 	 */
 	public final void changeColor(final int i) {
 		if (this.trianglesViewList.get(i).isSelected()) {
-			// TODO : method deprecated
-			this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
-			this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
-			this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+
+			this.setTextureCoordinate(0, i * 3, new TexCoord2f(0.0f, 1.0f));
+			this.setTextureCoordinate(0, i * 3 + 1, new TexCoord2f(1.0f, 1.0f));
+			this.setTextureCoordinate(0, i * 3 + 2, new TexCoord2f(1.0f, 0.0f));
 		} else {
 
-			// TODO : method deprecated
-			this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
-			this.setTextureCoordinate(i * 3 + 1, new Point2f(0.0f, 0.0f));
-			this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+			this.setTextureCoordinate(0, i * 3, new TexCoord2f(0.0f, 1.0f));
+			this.setTextureCoordinate(0, i * 3 + 1, new TexCoord2f(0.0f, 0.0f));
+			this.setTextureCoordinate(0, i * 3 + 2, new TexCoord2f(1.0f, 0.0f));
 		}
 
 	}
@@ -169,10 +168,10 @@ public class MeshView extends TriangleArray {
 	 */
 	public final void select(final int i) {
 		this.trianglesViewList.get(i).setSelected(true);
-		// TODO : method deprecated.
-		this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
-		this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
-		this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+
+		this.setTextureCoordinate(0, i * 3, new TexCoord2f(0.0f, 1.0f));
+		this.setTextureCoordinate(0, i * 3 + 1, new TexCoord2f(1.0f, 1.0f));
+		this.setTextureCoordinate(0, i * 3 + 2, new TexCoord2f(1.0f, 0.0f));
 	}
 
 	/**
@@ -183,9 +182,10 @@ public class MeshView extends TriangleArray {
 	 */
 	public void unselect(int i) {
 		this.trianglesViewList.get(i).setSelected(false);
-		this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
-		this.setTextureCoordinate(i * 3 + 1, new Point2f(0.0f, 0.0f));
-		this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+
+		this.setTextureCoordinate(0, i * 3, new TexCoord2f(0.0f, 1.0f));
+		this.setTextureCoordinate(0, i * 3 + 1, new TexCoord2f(0.0f, 0.0f));
+		this.setTextureCoordinate(0, i * 3 + 2, new TexCoord2f(1.0f, 0.0f));
 	}
 
 	/**
@@ -200,21 +200,18 @@ public class MeshView extends TriangleArray {
 		if (this.trianglesViewList.get(i).isSelected()) {
 			this.trianglesViewList.get(i).setSelected(false);
 
-			// TODO : method deprecated
-			// Change the coordinate of the texture.
-			this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
-			this.setTextureCoordinate(i * 3 + 1, new Point2f(0.0f, 0.0f));
-			this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+			this.setTextureCoordinate(0, i * 3, new TexCoord2f(0.0f, 1.0f));
+			this.setTextureCoordinate(0, i * 3 + 1, new TexCoord2f(0.0f, 0.0f));
+			this.setTextureCoordinate(0, i * 3 + 2, new TexCoord2f(1.0f, 0.0f));
 		}
 		// If the TriangleView is unselected,select it.
 		else {
 			this.trianglesViewList.get(i).setSelected(true);
 
-			// TODO : method deprecated
-			// Change the coordinate of the texture.
-			this.setTextureCoordinate(i * 3, new Point2f(0.0f, 1.0f));
-			this.setTextureCoordinate(i * 3 + 1, new Point2f(1.0f, 1.0f));
-			this.setTextureCoordinate(i * 3 + 2, new Point2f(1.0f, 0.0f));
+			this.setTextureCoordinate(0, i * 3, new TexCoord2f(0.0f, 1.0f));
+			this.setTextureCoordinate(0, i * 3 + 1, new TexCoord2f(1.0f, 1.0f));
+			this.setTextureCoordinate(0, i * 3 + 2, new TexCoord2f(1.0f, 0.0f));
+
 		}
 	}
 

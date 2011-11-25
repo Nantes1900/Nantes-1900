@@ -71,9 +71,7 @@ public class Universe3DView extends JPanel {
 	/**
 	 * The first transformGroup of the universe.
 	 */
-	// private TransformGroup transformGroup;
-
-	// BranchGroup sceneRoot;
+	
 	/**
 	 * Creates a new universe.
 	 * 
