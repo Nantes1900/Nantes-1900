@@ -21,11 +21,22 @@ import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
  * roofs.
  * @author Daniel Lefevre
  */
+/**
+ * @author Daniel
+ */
 public class Surface
 {
 
-    private static int    iD_counter = 0;
-    private int           iD         = iD_counter++;
+    /**
+     * ID counter.
+     */
+    private static int    counterID  = 0;
+
+    /**
+     * ID of the object.
+     */
+    private int           iD         = Surface.counterID++;
+
     /**
      * List of the neighbours of this surface.
      */
@@ -48,7 +59,11 @@ public class Surface
     {
     }
 
-    public int getID()
+    /**
+     * Getter.
+     * @return the ID of the object
+     */
+    public final int getID()
     {
         return this.iD;
     }
