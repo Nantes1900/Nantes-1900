@@ -28,7 +28,6 @@ import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
-import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.PolygonView;
@@ -458,28 +457,28 @@ public class BuildingsIsletController
             switch (this.islet.getProgression())
             {
                 case AbstractBuildingsIslet.ZERO_STEP:
-                    this.launchTreatment0();
+                    this.islet.launchTreatment0();
                 break;
                 case AbstractBuildingsIslet.FIRST_STEP:
-                    this.launchTreatment1();
+                    this.islet.launchTreatment1();
                 break;
                 case AbstractBuildingsIslet.SECOND_STEP:
-                    this.launchTreatment2();
+                    this.islet.launchTreatment2();
                 break;
                 case AbstractBuildingsIslet.THIRD_STEP:
-                    this.launchTreatment3();
+                    this.islet.launchTreatment3();
                 break;
                 case AbstractBuildingsIslet.FOURTH_STEP:
-                    this.launchTreatment4();
+                    this.islet.launchTreatment4();
                 break;
                 case AbstractBuildingsIslet.FIFTH_STEP:
-                    this.launchTreatment5();
+                    this.islet.launchTreatment5();
                 break;
                 case AbstractBuildingsIslet.SIXTH_STEP:
-                    this.launchTreatment6();
+                    this.islet.launchTreatment6();
                 break;
                 case AbstractBuildingsIslet.SEVENTH_STEP:
-                    this.launchTreatment7();
+                    this.islet.launchTreatment7();
                 break;
                 default:
                     throw new InvalidCaseException();
@@ -490,9 +489,11 @@ public class BuildingsIsletController
         } catch (InvalidCaseException e)
         {
             System.out.println("Invalid case exc.");
+            e.printStackTrace();
         } catch (NullArgumentException e)
         {
             System.out.println("Null argument exc.");
+            e.printStackTrace();
         }
     }
 
@@ -505,81 +506,6 @@ public class BuildingsIsletController
     {
         // FIXME
         System.out.println("LastTreatment");
-    }
-
-    /**
-     * Launches the first treatment.
-     * @throws NullArgumentException
-     */
-    private void launchTreatment0() throws NullArgumentException
-    {
-        if (this.islet.getGravityNormal() == null)
-        {
-            throw new NullArgumentException();
-        }
-        // FIXME : remove the setArguments : allow each step to access to its
-        // islet parent and get everything it wants.
-        this.islet.getBiStep0().setArguments(this.islet.getGravityNormal());
-        this.islet.setBiStep1(this.islet.getBiStep0().launchTreatment());
-        MatrixMethod.changeBase(this.islet.getGroundNormal(),
-                this.islet.getBiStep0().getMatrix());
-    }
-
-    /**
-     * Launches the first treatment.
-     */
-    private void launchTreatment1() throws NullArgumentException
-    {
-        this.islet.getBiStep1().setArguments(this.islet.getGravityNormal());
-        this.islet.setBiStep2(this.islet.getBiStep1().launchTreatment());
-    }
-
-    /**
-     * Launches the second treatment.
-     */
-    private void launchTreatment2()
-    {
-        this.islet.setBiStep3(this.islet.getBiStep2().launchTreatment());
-    }
-
-    /**
-     * Launches the third treatment.
-     */
-    private void launchTreatment3()
-    {
-        this.islet.setBiStep4(this.islet.getBiStep3().launchTreatment());
-    }
-
-    /**
-     * Launches the fourth treatment.
-     */
-    private void launchTreatment4()
-    {
-        this.islet.setBiStep5(this.islet.getBiStep4().launchTreatment());
-    }
-
-    /**
-     * Launches the fifth treatment.
-     */
-    private void launchTreatment5()
-    {
-        this.islet.setBiStep6(this.islet.getBiStep5().launchTreatment());
-    }
-
-    /**
-     * Launches the sixth treatment.
-     */
-    private void launchTreatment6()
-    {
-        this.islet.setBiStep7(this.islet.getBiStep6().launchTreatment());
-    }
-
-    /**
-     * Launches the seventh treatment.
-     */
-    private void launchTreatment7()
-    {
-        this.islet.setBiStep8(this.islet.getBiStep7().launchTreatment());
     }
 
     /**
@@ -604,6 +530,26 @@ public class BuildingsIsletController
         ParserSTL parser = new ParserSTL(fileName);
         Mesh mesh = parser.read();
         this.islet.setGravityNormal(mesh.averageNormal());
+    }
+
+    /**
+     * Returns the neighbours.
+     * @param s
+     * @return
+     */
+    public List<Surface> getCaracteristics6(Surface s)
+    {
+        return s.getNeighbours();
+    }
+
+    /**
+     * Returns the neighbours.
+     * @param s
+     * @return
+     */
+    public List<Surface> getCaracteristics7(Surface s)
+    {
+        return s.getNeighbours();
     }
 
     /**
@@ -737,15 +683,29 @@ public class BuildingsIsletController
      */
     public final void viewStep2()
     {
-        this.getU3DController()
-                .getUniverse3DView()
-                .addMesh(new MeshView(this.islet.getBiStep2()
-                        .getInitialBuildings()));
-        this.getU3DController()
-                .getUniverse3DView()
-                .addMesh(new MeshView(this.islet.getBiStep2()
-                        .getInitialGrounds()
-                        .getMesh()));
+        if (!this.islet.getBiStep2().getInitialBuildings().isEmpty())
+        {
+            this.getU3DController()
+                    .getUniverse3DView()
+                    .addMesh(new MeshView(this.islet.getBiStep2()
+                            .getInitialBuildings()));
+        } else
+        {
+            // TODO
+            System.out.println("Initial Buildings empty : error !");
+        }
+        if (!this.islet.getBiStep2().getInitialGrounds().getMesh().isEmpty())
+        {
+            this.getU3DController()
+                    .getUniverse3DView()
+                    .addMesh(new MeshView(this.islet.getBiStep2()
+                            .getInitialGrounds()
+                            .getMesh()));
+        } else
+        {
+            // TODO
+            System.out.println("Initial Grounds empty : error !");
+        }
     }
 
     /**
@@ -753,11 +713,18 @@ public class BuildingsIsletController
      */
     public final void viewStep3()
     {
-        this.getU3DController()
-                .getUniverse3DView()
-                .addMesh(new MeshView(this.islet.getBiStep3()
-                        .getGrounds()
-                        .getMesh()));
+        if (!this.islet.getBiStep2().getInitialGrounds().getMesh().isEmpty())
+        {
+            this.getU3DController()
+                    .getUniverse3DView()
+                    .addMesh(new MeshView(this.islet.getBiStep3()
+                            .getGrounds()
+                            .getMesh()));
+        } else
+        {
+            // TODO
+            System.out.println("Initial Grounds empty : error !");
+        }
 
         for (Building building : this.islet.getBiStep3().getBuildings())
         {
@@ -807,9 +774,15 @@ public class BuildingsIsletController
             }
         }
 
-        this.getU3DController()
-                .getUniverse3DView()
-                .addMesh(new MeshView(this.islet.getBiStep5().getNoise()));
+        if (!this.islet.getBiStep5().getNoise().isEmpty())
+        {
+            this.getU3DController()
+                    .getUniverse3DView()
+                    .addMesh(new MeshView(this.islet.getBiStep5().getNoise()));
+        } else
+        {
+            System.out.println("Noise empty : error !");
+        }
     }
 
     /**

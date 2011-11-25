@@ -8,6 +8,7 @@ import javax.vecmath.Vector3d;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.steps.BuildingStep7;
+import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
  * Implements a step of the treatment. This step is after the sort of the
@@ -72,13 +73,13 @@ public class BuildingsIsletStep7 extends AbstractBuildingsIsletStep
      * #launchTreatment()
      */
     @Override
-    public final BuildingsIsletStep8 launchTreatment()
+    public final BuildingsIsletStep8 launchTreatment() throws NullArgumentException
     {
         for (Building b : this.buildings)
         {
             BuildingStep7 buildingStep = b.getbStep7();
             buildingStep.setArguments(this.groundNormal);
-            b.launchTreatment();
+            b.launchTreatment7();
         }
 
         return new BuildingsIsletStep8(this.buildings, this.grounds);
@@ -96,7 +97,7 @@ public class BuildingsIsletStep7 extends AbstractBuildingsIsletStep
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
         for (Building b : this.buildings)
         {
-            root.add(b.returnNode());
+            root.add(b.returnNode7());
         }
         root.add(new DefaultMutableTreeNode(this.grounds));
 

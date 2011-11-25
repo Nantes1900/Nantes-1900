@@ -143,7 +143,8 @@ public class BuildingStep4 extends AbstractBuildingStep
     @Override
     public final BuildingStep5 launchTreatment() throws NullArgumentException
     {
-        if (this.groundNormal == null || this.grounds == null)
+        if (this.groundNormal == null || this.grounds == null
+                || this.noise == null)
         {
             throw new NullArgumentException();
         }
@@ -236,10 +237,12 @@ public class BuildingStep4 extends AbstractBuildingStep
      *            the grounds
      */
     public final void setArguments(final Vector3d groundNormalIn,
-            final Ground groundsIn)
+            final Ground groundsIn,
+            final Mesh noiseIn)
     {
         this.groundNormal = groundNormalIn;
         this.grounds = groundsIn;
+        this.noise = noiseIn;
     }
 
     /**

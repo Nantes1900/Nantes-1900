@@ -25,6 +25,6 @@ public final class Ground extends Surface
     @Override
     public String toString()
     {
-        return "Ground";
+        return "Ground " + this.getID();
     }
 }

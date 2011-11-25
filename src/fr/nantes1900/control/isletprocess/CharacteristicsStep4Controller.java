@@ -21,7 +21,7 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
  * @author Camille
  * @author Luc
  */
-public class CharacteristicsStep2Controller extends CharacteristicsController
+public class CharacteristicsStep4Controller extends CharacteristicsController
 {
     public ArrayList<Triangle> trianglesList;
     /**
@@ -29,7 +29,7 @@ public class CharacteristicsStep2Controller extends CharacteristicsController
      * @param parentController
      * @param triangleSelected 
      */
-    public CharacteristicsStep2Controller(IsletProcessController parentController, Triangle triangleSelected)
+    public CharacteristicsStep4Controller(IsletProcessController parentController, Triangle triangleSelected)
     {
         super(parentController);
         trianglesList = new ArrayList<Triangle>();
@@ -46,18 +46,18 @@ public class CharacteristicsStep2Controller extends CharacteristicsController
                 int actionType = -1;
                 switch (typeChosen)
                 {
-                    case Characteristics.TYPE_GROUND:
-                        actionType = ActionTypes.TURN_TO_GROUND;
+                    case Characteristics.TYPE_WALL:
+                        actionType = ActionTypes.TURN_TO_WALL;
                         break;
                         
-                    case Characteristics.TYPE_BUILDING:
-                        actionType = ActionTypes.TURN_TO_BUILDING;
+                    case Characteristics.TYPE_ROOF:
+                        actionType = ActionTypes.TURN_TO_ROOF;
                         break;
                 }
                 
                 if (actionType != -1)
                 {
-                    CharacteristicsStep2Controller.this.parentController.launchAction(2, actionType, Characteristics.SELECTION_TYPE_TRIANGLE);
+                    CharacteristicsStep4Controller.this.parentController.launchAction(2, actionType, Characteristics.SELECTION_TYPE_TRIANGLE);
                 } else
                 {
                     JOptionPane.showMessageDialog(cView, "Le type choisi est incorrrect", "Validation impossible", JOptionPane.ERROR_MESSAGE);
