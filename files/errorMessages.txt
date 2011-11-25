@@ -1,3 +1,4 @@
 ﻿
 ﻿#date
-ReturnNode=Erreur du chargement de l'arborescence du résultat
+ReturnNodeMessage=Erreur du chargement de l'arborescence du résultat
+
