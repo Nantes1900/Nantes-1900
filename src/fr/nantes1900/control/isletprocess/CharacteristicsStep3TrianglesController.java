@@ -45,31 +45,41 @@ public class CharacteristicsStep3TrianglesController extends
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                String typeChosen = ((CharacteristicsStep3TrianglesView) cView)
-                        .getElementSelected();
-
-                int actionType = -1;
-                switch (typeChosen)
-                {
-                    case Characteristics.TYPE_NOISE:
-                        actionType = ActionTypes.TURN_TO_NOISE;
-                    break;
-
-                    case Characteristics.TYPE_BUILDING:
-                        actionType = ActionTypes.TURN_TO_BUILDING;
-                    break;
-                }
-
-                if (actionType != -1)
+                if (((CharacteristicsStep3TrianglesView) cView)
+                        .isDeleteSelected())
                 {
                     CharacteristicsStep3TrianglesController.this.parentController
-                            .launchAction(3, actionType,
-                                    Characteristics.SELECTION_TYPE_ELEMENT);
+                    .launchAction(3, ActionTypes.REMOVE,
+                            Characteristics.SELECTION_TYPE_TRIANGLE);
                 } else
                 {
-                    JOptionPane.showMessageDialog(cView,
-                            "Le type choisi est incorrrect",
-                            "Validation impossible", JOptionPane.ERROR_MESSAGE);
+                    String typeChosen = ((CharacteristicsStep3TrianglesView) cView)
+                            .getElementSelected();
+                    
+                    int actionType = -1;
+                    switch (typeChosen)
+                    {
+                        case Characteristics.TYPE_NOISE:
+                            actionType = ActionTypes.TURN_TO_NOISE;
+                            break;
+                            
+                        case Characteristics.TYPE_BUILDING:
+                            actionType = ActionTypes.TURN_TO_BUILDING;
+                            break;
+                    }
+                    
+                    if (actionType != -1)
+                    {
+                        CharacteristicsStep3TrianglesController.this.parentController
+                        .launchAction(3, actionType,
+                                Characteristics.SELECTION_TYPE_TRIANGLE);
+                    } else
+                    {
+                        JOptionPane.showMessageDialog(cView,
+                                "Le type choisi est incorrrect",
+                                "Validation impossible",
+                                JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
 

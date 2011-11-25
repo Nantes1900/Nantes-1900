@@ -52,7 +52,7 @@ public class CharacteristicsStep5View extends CharacteristicsView
             }
             
         });
-        this.addCaracteristic(createSimpleCaracteristic(cbNoise, "Supprimer", new HelpButton()));
+        this.addCaracteristic(createSimpleCaracteristic(cbNoise, "Mettre dans le bruit", new HelpButton()));
         this.bValidate.setEnabled(true);
     }
 
