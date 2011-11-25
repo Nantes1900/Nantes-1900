@@ -92,7 +92,6 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
         for (Building b : this.buildings)
         {
             b.getbStep3().setArguments(this.gravityNormal);
-            // LOOK : maybe call launchTreatment3 : it will be more lisible.
             b.launchTreatment3();
         }
 
