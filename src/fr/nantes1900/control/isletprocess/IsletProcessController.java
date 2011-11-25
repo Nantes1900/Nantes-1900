@@ -14,6 +14,7 @@ import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
+import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
 import fr.nantes1900.view.isletprocess.IsletProcessView;
 
 /**
@@ -131,6 +132,22 @@ public class IsletProcessController implements ElementsSelectedListener
                     e.printStackTrace();
                 }
             break;
+            case 5:
+                try
+                {
+                    this.biController.action5(
+                            ((CharacteristicsStep5Controller) cController)
+                            .getSurfaces(), actionType);
+                } catch (InvalidCaseException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                } catch (UnCompletedParametersException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                break;
         }
     }
 
