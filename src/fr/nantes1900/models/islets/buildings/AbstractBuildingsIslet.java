@@ -434,14 +434,21 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      */
     public void launchTreatment3() throws NullArgumentException
     {
+        System.out.println("Beginning tr 3");
+        if (this.getGravityNormal() == null || this.getGroundNormal() == null
+                || this.getBiStep2().getNoise() == null)
+        {
+            throw new NullArgumentException();
+        }
         for (Building b : this.getBiStep3().getBuildings())
         {
             b.setArguments(this.getGroundNormal(),
                     this.getGravityNormal(),
-                    this.getBiStep3().getGrounds(),
-                    this.getBiStep3().getNoise());
+                    this.getBiStep2().getInitialGrounds(),
+                    this.getBiStep2().getNoise());
         }
         this.setBiStep4(this.getBiStep3().launchTreatment());
+        System.out.println("End tr 3");
     }
 
     /**
@@ -450,7 +457,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      */
     public void launchTreatment4() throws NullArgumentException
     {
+        System.out.println("Beginning tr 4");
         this.setBiStep5(this.getBiStep4().launchTreatment());
+        System.out.println("End tr 4");
     }
 
     /**
@@ -459,7 +468,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      */
     public void launchTreatment5() throws NullArgumentException
     {
+        System.out.println("Beginning tr 5");
         this.setBiStep6(this.getBiStep5().launchTreatment());
+        System.out.println("End tr 5");
     }
 
     /**

@@ -1,2 +1,3 @@
+﻿
 ﻿#date
 ReturnNode=Erreur du chargement de l'arborescence du résultat

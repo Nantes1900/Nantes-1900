@@ -174,6 +174,12 @@ public class BuildingsIsletController
         }
     }
 
+    /**
+     * Builds the step tree.
+     * @return a mutable tree node
+     * @throws InvalidCaseException
+     *             if an invalid case has been called
+     */
     public final DefaultMutableTreeNode
             returnNode() throws InvalidCaseException
     {

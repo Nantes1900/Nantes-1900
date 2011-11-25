@@ -1,5 +1,7 @@
+﻿
 ﻿#date
 LaunchButton=Lancer
 AbortButton=Arrêter
 BackButton=Retourner
 ProcessTitle1=Im Boden und dem Gebaüde aufteilen
+

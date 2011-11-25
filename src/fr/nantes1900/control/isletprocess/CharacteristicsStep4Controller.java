@@ -15,9 +15,8 @@ import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
 
 /**
- * Characteristics panel for the second step of process of an islet.
- * 
- * User can select one or more triangles and modifies the type they belong to : building or ground.
+ * Characteristics panel for the fourth step of process of an islet.
+ * TODO
  * @author Camille
  * @author Luc
  */
