@@ -12,6 +12,7 @@ import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
+import javax.media.j3d.Group;
 import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.Material;
 import javax.media.j3d.Shape3D;
@@ -64,7 +65,18 @@ public class Universe3DView extends JPanel
      * The universe.
      */
     private SimpleUniverse       simpleUniverse;
-
+    
+    /**
+     * A class to save the mesh.
+     */
+    private MeshShowable meshShowable;
+    
+    /**
+     * The first transformGroup of the universe.
+     */
+   // private TransformGroup transformGroup;
+    
+   // BranchGroup sceneRoot;
     /**
      * Creates a new universe.
      * @param u3DControllerIn
@@ -72,6 +84,17 @@ public class Universe3DView extends JPanel
      */
     public Universe3DView(final Universe3DController u3DControllerIn)
     {
+    	this.meshShowable=new MeshShowable();
+    	
+//    	sceneRoot = new BranchGroup();
+//    	
+//    	this.sceneRoot.setCapability(BranchGroup.ALLOW_BOUNDS_READ);
+//    	this.sceneRoot.setCapability(BranchGroup.ALLOW_BOUNDS_WRITE);
+//    	this.sceneRoot.setCapability(BranchGroup.ALLOW_DETACH);
+//    	this.sceneRoot.setCapability(BranchGroup.ALLOW_CHILDREN_READ);
+//    	this.sceneRoot.setCapability(BranchGroup.ALLOW_CHILDREN_WRITE);
+//    	this.sceneRoot.setCapability(BranchGroup.ALLOW_CHILDREN_EXTEND);
+    	
         this.u3DController = u3DControllerIn;
         this.setLayout(new BorderLayout());
 
@@ -84,6 +107,8 @@ public class Universe3DView extends JPanel
         // Size to show the panel while there is nothing to show
         this.setMinimumSize(new Dimension(600, 600));
         this.setPreferredSize(new Dimension(600, 600));
+        
+        //this.transformGroup = createTransformGroup();
     }
 
     /**
@@ -91,18 +116,48 @@ public class Universe3DView extends JPanel
      * @param meshView
      *            TODO.
      */
-    public final void addMesh(final MeshView meshView)
+//    public final void addMesh(final MeshView meshView)
+//    {
+//
+//    	
+//    	this.simpleUniverse.addBranchGraph(this.createSceneGraph(this.transformGroup));
+//    	
+//        
+//    	this.meshShowable.addMeshView(meshView);
+//    	ArrayList<Shape3D> shapeList=this.meshShowable.getShape3D();
+//    	int shapeListSize=shapeList.size();
+//    	Shape3D shape=this.meshShowable.getShape3D().get(shapeListSize-1);
+//    	
+//        BranchGroup shapeBranchGroup=new BranchGroup();
+//    	this.sceneRoot.addChild(shapeBranchGroup);
+//    	shapeBranchGroup.addChild(shape);
+//    	
+//    	
+//    	
+//        // moving the camera so that we can see the mesh properly
+//        translateCamera(meshView.getCentroid().getX(), meshView.getCentroid()
+//                .getY(), meshView.getCentroid().getZ() + 30);
+//        // changing the rotation center
+//        this.u3DController.getMouseRotate()
+//                .setCenter(new Point3d(meshView.getCentroid().getX(),
+//                        meshView.getCentroid().getY(),
+//                        meshView.getCentroid().getZ()));
+//    }
+    public final void addMesh(final ArrayList<MeshView> meshView)
     {
         TransformGroup transformGroup = createTransformGroup(meshView);
         this.simpleUniverse.addBranchGraph(this.createSceneGraph(transformGroup));
         // moving the camera so that we can see the mesh properly
-        translateCamera(meshView.getCentroid().getX(), meshView.getCentroid()
-                .getY(), meshView.getCentroid().getZ() + 30);
+//        translateCamera(meshView.getCentroid().getX(), meshView.getCentroid()
+//                .getY(), meshView.getCentroid().getZ() + 30);
+        
+        translateCamera(meshView.get(0).getCentroid().getX(), meshView.get(0).getCentroid()
+                .getY(), meshView.get(0).getCentroid().getZ() + 30);
         // changing the rotation center
         this.u3DController.getMouseRotate()
-                .setCenter(new Point3d(meshView.getCentroid().getX(),
-                        meshView.getCentroid().getY(),
-                        meshView.getCentroid().getZ()));
+                .setCenter(new Point3d(meshView.get(0).getCentroid().getX(),
+                        meshView.get(0).getCentroid().getY(),
+                        meshView.get(0).getCentroid().getZ()));
     }
 
     /**
@@ -137,6 +192,9 @@ public class Universe3DView extends JPanel
         BranchGroup objRoot = new BranchGroup();
         objRoot.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
         objRoot.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        
+        objRoot.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+        objRoot.setCapability(Group.ALLOW_CHILDREN_WRITE);
 
         this.u3DController.setPickCanvas(objRoot);
 
@@ -157,9 +215,9 @@ public class Universe3DView extends JPanel
 
         objRoot.addChild(ambLight);
         objRoot.addChild(headLight);
+        
         objRoot.addChild(transformGroup);
-        // ///////////////////
-
+        
         objRoot.compile();
         return objRoot;
     }
@@ -170,7 +228,75 @@ public class Universe3DView extends JPanel
      *            TODO.
      * @return TODO.
      */
-    private TransformGroup createTransformGroup(final MeshView meshView)
+//    private TransformGroup createTransformGroup()
+//    {
+//        BoundingSphere boundingSphere = new BoundingSphere(new Point3d(0.0,
+//                0.0,
+//                0.0), 100000);
+//
+//        TransformGroup transformGroup = new TransformGroup();
+//        transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+//        transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+//        
+//        transformGroup.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+//        transformGroup.setCapability(Group.ALLOW_CHILDREN_WRITE);
+//
+//        TransformGroup translationGroup1 = new TransformGroup();
+//        translationGroup1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+//        translationGroup1.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+//        
+//        translationGroup1.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+//        translationGroup1.setCapability(Group.ALLOW_CHILDREN_WRITE);
+//        
+//        transformGroup.addChild(translationGroup1);
+//
+//        TransformGroup rotationGroup = new TransformGroup();
+//        rotationGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+//        rotationGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+//        
+//        rotationGroup.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+//        rotationGroup.setCapability(Group.ALLOW_CHILDREN_WRITE);
+//        translationGroup1.addChild(rotationGroup);
+//
+//        TransformGroup translationGroup2 = new TransformGroup();
+//        translationGroup2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+//        translationGroup2.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+//        
+//        translationGroup2.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+//        translationGroup2.setCapability(Group.ALLOW_CHILDREN_WRITE);
+//        rotationGroup.addChild(translationGroup2);
+//
+//        
+//
+//
+//
+//        translationGroup2.addChild(this.sceneRoot);
+//
+//        // Links the left button of the mouse with a rotation transformation
+//        NewMouseRotate mouseRotate = new NewMouseRotate(translationGroup1,
+//                rotationGroup,
+//                translationGroup2);
+//        mouseRotate.setSchedulingBounds(boundingSphere);
+//        translationGroup2.addChild(mouseRotate);
+//        this.u3DController.setMouseRotate(mouseRotate);
+//
+//        // Links the middle button of the mouse with a zoom transformation
+//        MouseZoom mouseZoom = new MouseZoom();
+//        mouseZoom.setFactor(2);
+//        mouseZoom.setTransformGroup(transformGroup);
+//        transformGroup.addChild(mouseZoom);
+//        mouseZoom.setSchedulingBounds(boundingSphere);
+//
+//        // Links the right button of the mouse with a translation transformation
+//        MouseTranslate mouseTranslate = new MouseTranslate();
+//        mouseTranslate.setFactor(1.5);
+//        mouseTranslate.setTransformGroup(transformGroup);
+//        transformGroup.addChild(mouseTranslate);
+//        mouseTranslate.setSchedulingBounds(boundingSphere);
+//
+//        return transformGroup;
+//    }
+    private TransformGroup createTransformGroup(final ArrayList<MeshView> meshView)
     {
         BoundingSphere boundingSphere = new BoundingSphere(new Point3d(0.0,
                 0.0,
@@ -197,38 +323,47 @@ public class Universe3DView extends JPanel
 
         BranchGroup sceneRoot = new BranchGroup();
 
-        Shape3D shape = new Shape3D();
+//        Shape3D shape = new Shape3D();
+//
+//        shape.addGeometry(meshView);
+        this.meshShowable.getMeshList().clear();
+        this.meshShowable.getShape3D().clear();
+        for(MeshView mesh:meshView){
+        	this.meshShowable.addMeshView(mesh);
+        }
 
-        shape.addGeometry(meshView);
+//        // Appearence
+//        Material mat = new Material(new Color3f(0, 0, 0f), new Color3f(0,
+//                0.2f,
+//                0), new Color3f(Color.white), new Color3f(Color.white), 64);
+//        mat.setColorTarget(3);
+//
+//        Appearance app = new Appearance();
+//        app.setCapability(Appearance.ALLOW_MATERIAL_READ);
+//        app.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
+//        app.setMaterial(mat);
+//
+//        TextureLoader loader = new TextureLoader("texture.jpg", null);
+//        ImageComponent2D image = loader.getImage();
+//        Texture2D texture = new Texture2D(Texture2D.BASE_LEVEL,
+//                Texture2D.RGB,
+//                image.getWidth(),
+//                image.getHeight());
+//        texture.setImage(0, image);
+//        app.setTexture(texture);
+//        TextureAttributes texAtt = new TextureAttributes();
+//        texAtt.setTextureMode(TextureAttributes.MODULATE);
+//        app.setTextureAttributes(texAtt);
+//
+//        shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
+//        shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
 
-        // Appearence
-        Material mat = new Material(new Color3f(0, 0, 0f), new Color3f(0,
-                0.2f,
-                0), new Color3f(Color.white), new Color3f(Color.white), 64);
-        mat.setColorTarget(3);
-
-        Appearance app = new Appearance();
-        app.setCapability(Appearance.ALLOW_MATERIAL_READ);
-        app.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
-        app.setMaterial(mat);
-
-        TextureLoader loader = new TextureLoader("texture.jpg", null);
-        ImageComponent2D image = loader.getImage();
-        Texture2D texture = new Texture2D(Texture2D.BASE_LEVEL,
-                Texture2D.RGB,
-                image.getWidth(),
-                image.getHeight());
-        texture.setImage(0, image);
-        app.setTexture(texture);
-        TextureAttributes texAtt = new TextureAttributes();
-        texAtt.setTextureMode(TextureAttributes.MODULATE);
-        app.setTextureAttributes(texAtt);
-
-        shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
-        shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-
-        sceneRoot.addChild(shape);
-        shape.setAppearance(app);
+//        sceneRoot.addChild(shape);
+//        shape.setAppearance(app);
+        
+        for(Shape3D shape: this.meshShowable.getShape3D()){
+        	sceneRoot.addChild(shape);
+        }
 
         translationGroup2.addChild(sceneRoot);
 

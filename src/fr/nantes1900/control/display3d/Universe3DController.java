@@ -447,7 +447,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	public void unselectShape3D(Shape3D shape) {
 
 		Appearance app = shape.getAppearance();
-		app.setMaterial(fr.nantes1900.view.display3d.MeshList.matUnSelected);
+		app.setMaterial(fr.nantes1900.view.display3d.MeshShowable.matUnSelected);
 		shape.setAppearance(app);
 
 	}
@@ -455,9 +455,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	public void selectShape3D(Shape3D shape) {
 
 		Appearance app = shape.getAppearance();
-		app.setMaterial(fr.nantes1900.view.display3d.MeshList.matSelected);
+		app.setMaterial(fr.nantes1900.view.display3d.MeshShowable.matSelected);
 		shape.setAppearance(app);
 
+	}
+	
+	public void selectMesh(MeshView triangleMeshView){
+		
 	}
 
 	public void meshSelect(MeshView triangleMeshView) {
