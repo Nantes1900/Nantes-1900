@@ -127,4 +127,9 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
     {
         this.gravityNormal = gravityNormalIn;
     }
+    
+    @Override
+    public String toString(){
+        return super.toString()+"3";
+    }
 }
