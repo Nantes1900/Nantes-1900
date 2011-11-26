@@ -635,4 +635,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		// Set the meshView last selected to be the meshView picked.
 		Universe3DController.triangleMeshLastSelected = meshView;
 	}
+	
+	public void SelectMeshFromTree(MeshView mesh){
+	    //FIX ME
+	}
 }

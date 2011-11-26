@@ -28,4 +28,8 @@ public class IsletTreeView extends JPanel
         this.tree = new JTree(root);
         this.spTree.setViewportView(this.tree);
     }
+    
+    public JTree getTree(){
+        return this.tree;
+    }
 }
