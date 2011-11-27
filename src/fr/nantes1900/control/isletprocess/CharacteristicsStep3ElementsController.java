@@ -14,7 +14,6 @@ import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep3ElementsView;
-import fr.nantes1900.view.isletprocess.CharacteristicsStep3TrianglesView;
 
 /**
  * Characteristics panel for the second step of process of an islet. User can
@@ -44,8 +43,8 @@ public class CharacteristicsStep3ElementsController extends
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                String typeChosen = ((CharacteristicsStep3TrianglesView) cView)
-                        .getElementSelected();
+                String typeChosen = ((CharacteristicsStep3ElementsView) cView)
+                        .getTypeSelected();
 
                 int actionType = -1;
                 switch (typeChosen)
