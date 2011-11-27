@@ -10,8 +10,10 @@ import javax.swing.JOptionPane;
 
 import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.constants.Characteristics;
+import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep3ElementsView;
 
@@ -64,9 +66,14 @@ public class CharacteristicsStep3ElementsController extends
                             .getBiController().action3(element, actionType);
                 } catch (InvalidCaseException e)
                 {
-                    JOptionPane.showMessageDialog(cView,
-                            "Le type choisi est incorrrect",
-                            "Validation impossible", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(cView, FileTools
+                            .readErrorMessage(
+                                    TextsKeys.KEY_ERROR_INCORRECTTYPE,
+                                    TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                            .readErrorMessage(
+                                    TextsKeys.KEY_ERROR_INCORRECTTYPE,
+                                    TextsKeys.MESSAGETYPE_TITLE),
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });

@@ -1,5 +1,7 @@
 package fr.nantes1900.constants;
 
+import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
+
 public final class TextsKeys
 {
     /**
@@ -29,19 +31,38 @@ public final class TextsKeys
      */
     public static final String KEY_IS_GRAVITYNORMAL  = "ISGravityNormal";
     /**
-     * Key value corresponding to the select islet to launch process step.
+     * Key value corresponding to the selected islet to launch next process step.
      */
     public static final String KEY_IS_LAUNCHPROCESS  = "ISLaunchProcess";
 
     /**
-     * Key value corresponding to the select islet to launch process step.
+     * Key value corresponding to launch buttons text.
      */
     public static final String KEY_LAUNCHBUTTON  = "LaunchButton";
+
+    /**
+     * Key value corresponding to abort buttons text.
+     */
     public static final String KEY_ABORTBUTTON  = "AbortButton";
+    
+    /**
+     * Key value corresponding to back buttons text.
+     */
     public static final String KEY_BACKBUTTON  = "BackButton";
     public static final String KEY_PROCESSTITLE  = "ProcessTitle";
     public static final String KEY_RETURNNODE = "ReturnNode";
     public static final String KEY_ISLET = "IsletProcess";
+    
+    /**
+     * Error message for incorrect types selected in characteristics panels.
+     */
+    public static final String KEY_ERROR_INCORRECTTYPE = "CIncorrectType";
+    
+    /**
+     * Error message for incorrect action selected in characteristics panels.
+     */
+    public static final String KEY_ERROR_INCORRECTACTION = "CIncorrectAction";
+    
     public TextsKeys(){
     }
 }
