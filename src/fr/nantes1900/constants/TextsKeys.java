@@ -1,7 +1,5 @@
 package fr.nantes1900.constants;
 
-import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
-
 public final class TextsKeys
 {
     /**
@@ -62,6 +60,11 @@ public final class TextsKeys
      * Error message for incorrect action selected in characteristics panels.
      */
     public static final String KEY_ERROR_INCORRECTACTION = "CIncorrectAction";
+    
+    public static final String KEY_TYPETEXT = "CType";
+    public static final String KEY_DELETETEXT = "CDelete";
+    public static final String KEY_MERGETEXT = "CMerge";
+    public static final String KEY_PUTINNOISETEXT = "CPutInNoise";
     
     public TextsKeys(){
     }

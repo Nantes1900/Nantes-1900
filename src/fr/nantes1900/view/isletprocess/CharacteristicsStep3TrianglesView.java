@@ -8,6 +8,8 @@ import java.awt.event.ItemListener;
 
 import javax.swing.JCheckBox;
 
+import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
 
 
@@ -43,7 +45,7 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView
             }
             
         });
-        this.addCaracteristic(createSimpleCaracteristic(cbDelete, "Supprimer", new HelpButton()));
+        this.addCaracteristic(createSimpleCaracteristic(cbDelete, FileTools.readElementText(TextsKeys.KEY_DELETETEXT), new HelpButton()));
         
         this.bValidate.setEnabled(true);
     }
