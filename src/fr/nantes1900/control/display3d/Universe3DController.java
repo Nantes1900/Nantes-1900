@@ -10,20 +10,17 @@ import java.util.List;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Shape3D;
-
-import javax.vecmath.Vector3d;
 import javax.swing.event.EventListenerList;
+import javax.vecmath.Vector3d;
 
 import com.sun.j3d.utils.picking.PickCanvas;
 import com.sun.j3d.utils.picking.PickIntersection;
 import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.picking.PickTool;
 
-import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
-
 import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.TriangleView;
 import fr.nantes1900.view.display3d.Universe3DView;
@@ -47,8 +44,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	 * The controller to change the center of rotation.
 	 */
 	private NewMouseRotate mouseRotate;
-
-	private IsletSelectionController parentController;
 
 	private final EventListenerList listeners = new EventListenerList();
 
@@ -99,9 +94,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	/**
 	 * @param isletSelectionController
 	 */
-	public Universe3DController(
-			IsletSelectionController isletSelectionController) {
-		this.parentController = isletSelectionController;
+	public Universe3DController() {
 		this.u3DView = new Universe3DView(this);
 		this.trianglesViewSelected = new ArrayList<TriangleView>();
 	}
@@ -422,14 +415,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 
-	}
-
-	/**
-	 * TODO.
-	 */
-	public Universe3DController() {
-		this.u3DView = new Universe3DView(this);
-		this.trianglesViewSelected = new ArrayList<>();
 	}
 
 	/**
