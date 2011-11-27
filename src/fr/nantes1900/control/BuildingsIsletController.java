@@ -381,6 +381,11 @@ public class BuildingsIsletController {
 		return this.islet;
 	}
 
+	public MeshView FindMeshNode (Object hopeItIsAMesh){
+	    return new MeshView(new Mesh());
+	    //FIX ME
+	}
+	
 	/**
 	 * Getter.
 	 * 

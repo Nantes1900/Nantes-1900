@@ -106,4 +106,9 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
     {
         this.grounds = groundsIn;
     }
+    
+    @Override
+    public String toString(){
+        return super.toString()+"6";
+    }
 }

@@ -37,8 +37,8 @@ public class IsletProcessView extends PFrame
             ParametersView parametersView, Universe3DView universe3dView)
     {
         super();
-        this.setMinimumSize(new Dimension(800, 800));
-        this.setPreferredSize(new Dimension(1000, 1000));
+        this.setMinimumSize(new Dimension(960, 760));
+        this.setPreferredSize(new Dimension(1200, 900));
         this.setLocationRelativeTo(null);
 
         this.cView = caracteristicsView;
