@@ -63,7 +63,7 @@ public class CharacteristicsStep5Controller extends CharacteristicsController
                     }
                 } 
 
-                if (((CharacteristicsStep5View) cView).isRemoveSelected())
+                if (((CharacteristicsStep5View) cView).isNoiseSelected())
                 {
                     try
                     {

@@ -45,9 +45,11 @@ public class CharacteristicsStep5View extends CharacteristicsView
                 if (((JCheckBox) arg0.getSource()).isSelected())
                 {
                     cbMerge.setEnabled(false);
+                    bValidate.setEnabled(true);
                 } else
                 {
                     cbMerge.setEnabled(true);
+                    bValidate.setEnabled(false);
                 }
             }
             
@@ -61,7 +63,7 @@ public class CharacteristicsStep5View extends CharacteristicsView
         return this.cbMerge.isSelected();
     }
 
-    public boolean isRemoveSelected()
+    public boolean isNoiseSelected()
     {
         return this.cbNoise.isSelected();
     }
