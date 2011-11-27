@@ -21,7 +21,7 @@ public class MeshShowable {
 	/**
 	 * A list to save all the meshes to be displayed.
 	 */
-	public static ArrayList<MeshView> meshList = new ArrayList<MeshView>();
+	public static ArrayList<Object> meshList = new ArrayList<Object>();
 
 	/**
 	 * A list to save all the shape3D of the meshes.
@@ -70,7 +70,7 @@ public class MeshShowable {
 	/**
 	 * @return The list of the meshes to be displayed.
 	 */
-	public ArrayList<MeshView> getMeshList() {
+	public ArrayList<Object> getMeshList() {
 		return MeshShowable.meshList;
 	}
 
@@ -85,7 +85,7 @@ public class MeshShowable {
 	 * Add the meshView to the list of meshes, create a shape3D for the mesh.
 	 * @param meshView The MeshView to be displayed.
 	 */
-	public void addMeshView(MeshView meshView) {
+	public void addMeshView(Object meshView) {
 
 		//Add the meshView to the list.
 		MeshShowable.meshList.add(meshView);
@@ -95,7 +95,13 @@ public class MeshShowable {
 		shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
 		shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
         //Add the mesh to the shape3D.
-		shape.addGeometry(meshView);
+		if(meshView.getClass().getSimpleName().equals("MeshView")){
+			shape.addGeometry((MeshView)meshView);
+		}
+		else{
+			shape.addGeometry((PolygonView)meshView);
+		}
+		
 		
 		MeshShowable.meshShape3D.add(shape);
 
