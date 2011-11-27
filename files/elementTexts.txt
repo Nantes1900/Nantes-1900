@@ -12,3 +12,4 @@ ProcessTitle6=Trier les voisins de chaque mur ou toit
 ProcessTitle7=Déterminer le contour de chaque mur ou toit
 ProcessTitle8=Recoller les sols
 ProcessTitle9=Simplifier les sols
+IsletProcess=Ilot : étape 

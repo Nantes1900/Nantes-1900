@@ -1,3 +1,4 @@
+
 package fr.nantes1900.control.display3d;
 
 import java.awt.event.MouseEvent;
@@ -324,66 +325,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 			this.trianglesViewSelected.clear();
 			this.selectedIndex.clear();
 			this.triangleMesh.clear();
-			// this is the method to cancled a zone of triangles, don't delete
-			// it
-			// this.pickCanvas.setShapeLocation(e);
-			// PickResult result = this.pickCanvas.pickClosest();
-			// if (result == null) {
-			// System.out.println("Nothing canceled");
-			// } else {
-			//
-			// PickIntersection PI=result.getIntersection(0);
-			// int []PointIndex=PI.getPrimitiveVertexIndices();
-			// int TriangleIndex=PointIndex[0]/3;
-			// TriangleMeshView
-			// triangleMeshView=(TriangleMeshView)PI.getGeometryArray();
-			// this.triangleMeshView=triangleMeshView;
-			//
-			//
-			// if(this.trianglesViewSelected.contains(this.triangleMeshView.getTriangleArray().get(TriangleIndex))){
-			//
-			// int
-			// triangleIndex=this.trianglesViewSelected.indexOf(this.triangleMeshView.getTriangleArray().get(TriangleIndex));
-			// int beginIndex=0;
-			// int finishIndex=0;
-			// int indexOfBeginIndex=0;
-			// int indexOfFinishIndex=0;
-			// for(int i=0;i<this.selectedIndex.size();i++){
-			// if(i==0&&this.selectedIndex.get(i)>=triangleIndex){
-			// beginIndex=-1;
-			// finishIndex=this.selectedIndex.get(i);
-			// break;
-			// }
-			// else{
-			// if(this.selectedIndex.get(i)<triangleIndex&&this.selectedIndex.get(i+1)>=triangleIndex){
-			// beginIndex=this.selectedIndex.get(i);
-			// finishIndex=this.selectedIndex.get(i+1);
-			// indexOfBeginIndex=i;
-			// indexOfFinishIndex=i+1;
-			// break;
-			// }
-			// }
-			// }
-			//
-			// for(int i=finishIndex;i>beginIndex;i--){
-			// TriangleView triangleSelected=this.trianglesViewSelected.get(i);
-			// int index=triangleSelected.getTriangle().getTriangleViewIndex();
-			// this.triangleMeshView.unselect(index);
-			// this.trianglesViewSelected.remove(i);
-			//
-			// }
-			//
-			// this.selectedIndex.remove(indexOfFinishIndex);
-			// for(int i=indexOfFinishIndex;i<this.selectedIndex.size();i++){
-			// int index=this.selectedIndex.get(i);
-			// this.selectedIndex.set(i, index-(finishIndex-beginIndex));
-			//
-			// }
-			//
-			// }
-			//
-			//
-			// }
+			
 		}
 
 	}
@@ -585,58 +527,50 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		}
 	}
 
-	/**
-	 * High light the meshView selected.
-	 * 
-	 * @param meshView
-	 *            The meshView to be selected
-	 */
-	public void hightLightMesh(MeshView meshView) {
-
-		// Select the meshView.
-		meshView.selectMesh();
-
-		// Get the index of the meshView in the list of the meshes displayed.
-		int meshViewIndex = fr.nantes1900.view.display3d.MeshShowable.meshList
-				.indexOf(meshView);
-
-		// Get the shape3D of the meshView to be selected.
-		Shape3D shapeSelect = fr.nantes1900.view.display3d.MeshShowable.meshShape3D
-				.get(meshViewIndex);
-		Appearance appSelect = shapeSelect.getAppearance();
-
-		// Change the material of the mesh to be seleted.
-		appSelect
-				.setMaterial(fr.nantes1900.view.display3d.MeshShowable.matSelected);
-		shapeSelect.setAppearance(appSelect);
-
-		// If the shape3D selected last time is not null.
-		if (Universe3DController.shape3DLastSelected != null) {
-
-			// If the shape3D selected last time is not this one.
-			if (Universe3DController.shape3DLastSelected != shapeSelect) {
-
-				// Change back the material of the mesh selected last time.
-				Appearance appUnselect = Universe3DController.shape3DLastSelected
-						.getAppearance();
-				appUnselect
-						.setMaterial(fr.nantes1900.view.display3d.MeshShowable.matUnSelected);
-				Universe3DController.shape3DLastSelected
-						.setAppearance(appUnselect);
-
-				// Unselect the meshView selected last time.
-				Universe3DController.triangleMeshLastSelected.unselectMesh();
-			}
-		}
-
-		// Set the shape3D last selected to be the shape3D picked.
-		Universe3DController.shape3DLastSelected = shapeSelect;
-
-		// Set the meshView last selected to be the meshView picked.
-		Universe3DController.triangleMeshLastSelected = meshView;
-	}
+	
 	
 	public void SelectMeshFromTree(MeshView mesh){
-	    //FIX ME
+		// Select the meshView.
+				mesh.selectMesh();
+
+				// Get the index of the meshView in the list of the meshes displayed.
+				int meshViewIndex = fr.nantes1900.view.display3d.MeshShowable.meshList
+						.indexOf(mesh);
+
+				// Get the shape3D of the meshView to be selected.
+				Shape3D shapeSelect = fr.nantes1900.view.display3d.MeshShowable.meshShape3D
+						.get(meshViewIndex);
+				Appearance appSelect = shapeSelect.getAppearance();
+
+				// Change the material of the mesh to be seleted.
+				appSelect
+						.setMaterial(fr.nantes1900.view.display3d.MeshShowable.matSelected);
+				shapeSelect.setAppearance(appSelect);
+
+				// If the shape3D selected last time is not null.
+				if (Universe3DController.shape3DLastSelected != null) {
+
+					// If the shape3D selected last time is not this one.
+					if (Universe3DController.shape3DLastSelected != shapeSelect) {
+
+						// Change back the material of the mesh selected last time.
+						Appearance appUnselect = Universe3DController.shape3DLastSelected
+								.getAppearance();
+						appUnselect
+								.setMaterial(fr.nantes1900.view.display3d.MeshShowable.matUnSelected);
+						Universe3DController.shape3DLastSelected
+								.setAppearance(appUnselect);
+
+						// Unselect the meshView selected last time.
+						Universe3DController.triangleMeshLastSelected.unselectMesh();
+					}
+				}
+
+				// Set the shape3D last selected to be the shape3D picked.
+				Universe3DController.shape3DLastSelected = shapeSelect;
+
+				// Set the meshView last selected to be the meshView picked.
+				Universe3DController.triangleMeshLastSelected = mesh;
 	}
 }
+

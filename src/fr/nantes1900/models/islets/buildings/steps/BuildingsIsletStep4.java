@@ -118,4 +118,9 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
         this.groundNormal = groundNormalIn;
         this.noise = noiseIn;
     }
+    
+    @Override
+    public String toString(){
+        return super.toString()+"4";
+    }
 }
