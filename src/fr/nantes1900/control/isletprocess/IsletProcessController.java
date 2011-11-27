@@ -11,6 +11,7 @@ import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.listener.ElementsSelectedListener;
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
@@ -214,5 +215,19 @@ public class IsletProcessController implements ElementsSelectedListener
     {
         // TODO Auto-generated method stub
 
+    }
+
+    @Override
+    public void meshSelected(Mesh meshSelected)
+    {
+        // TODO Auto-generated method stub
+        
+    }
+
+    @Override
+    public void meshDeselected(Mesh meshSelected)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }
