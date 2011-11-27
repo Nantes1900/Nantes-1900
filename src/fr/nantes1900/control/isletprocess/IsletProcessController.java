@@ -6,8 +6,6 @@ package fr.nantes1900.control.isletprocess;
 import java.awt.Cursor;
 import java.io.File;
 
-import fr.nantes1900.constants.ActionTypes;
-import fr.nantes1900.constants.Characteristics;
 import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
@@ -15,8 +13,6 @@ import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
-import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
 import fr.nantes1900.view.isletprocess.IsletProcessView;
 
 /**
@@ -42,45 +38,51 @@ public class IsletProcessController implements ElementsSelectedListener
      * Controller of the current characteristic panel.
      */
     private CharacteristicsController cController;
-    
+
     /**
-     * Controller of the tree showing the architecture of data in the current step.
+     * Controller of the tree showing the architecture of data in the current
+     * step.
      */
     private IsletTreeController       itController;
-    
+
     /**
-     * Controller of the navigation bar which allows to abort the treatment of an islet and select a new one, launch a new process to go on a further step and so on.
+     * Controller of the navigation bar which allows to abort the treatment of
+     * an islet and select a new one, launch a new process to go on a further
+     * step and so on.
      */
     private NavigationBarController   nbController;
-    
+
     /**
-     * Controller of the parameter panel which allows to modify parameters for the next process.
+     * Controller of the parameter panel which allows to modify parameters for
+     * the next process.
      */
     private ParametersController      pController;
-    
+
     /**
      * Controller of the 3d View which displays meshes.
      */
     private Universe3DController      u3DController;
-    
+
     /**
-     * Controller of the building islet currently under process. This one makes the link with meshes data.
+     * Controller of the building islet currently under process. This one makes
+     * the link with meshes data.
      */
     private BuildingsIsletController  biController;
-    
+
     /**
      * Indicates the current step.
      */
     private int                       progression;
 
     /**
-     * Creates a new islet process controller to launch different processes on an islet.
+     * Creates a new islet process controller to launch different processes on
+     * an islet.
      * @param parentController
-     *          The parent controller which makes the link with other windows.
+     *            The parent controller which makes the link with other windows.
      * @param isletFile
-     *          File containing data of the selectedd islet.
+     *            File containing data of the selectedd islet.
      * @param biController
-     *          Controller to handle the islet data.
+     *            Controller to handle the islet data.
      */
     public IsletProcessController(GlobalController parentController,
             File isletFile, BuildingsIsletController biController)
@@ -106,8 +108,7 @@ public class IsletProcessController implements ElementsSelectedListener
 
     /**
      * Gets the building islet controller.
-     * @return
-     *      The current building islet controller
+     * @return The current building islet controller
      */
     public BuildingsIsletController getBiController()
     {

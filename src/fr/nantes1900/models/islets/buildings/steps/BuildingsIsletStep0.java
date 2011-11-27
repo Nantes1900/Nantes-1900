@@ -5,7 +5,6 @@ import javax.vecmath.Vector3d;
 
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
-import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
@@ -96,8 +95,8 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      * #launchTreatment()
      */
     @Override
-    public final BuildingsIsletStep1
-            launchTreatment() throws NullArgumentException
+    public final BuildingsIsletStep1 launchTreatment()
+            throws NullArgumentException
     {
         this.createChangeBaseMatrix();
         this.changeBase();
@@ -114,7 +113,8 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
     @Override
     public final DefaultMutableTreeNode returnNode()
     {
-        DefaultMutableTreeNode node = new DefaultMutableTreeNode(this.initialTotalMesh);
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(
+                this.initialTotalMesh);
         return node;
     }
 

@@ -19,88 +19,81 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep5View;
 
 /**
- * Characteristics panel for the fifth step of process of an islet.
- * TODO
+ * Characteristics panel for the fifth step of process of an islet. TODO
  * @author Camille
  * @author Luc
  */
 public class CharacteristicsStep5Controller extends CharacteristicsController
 {
     public ArrayList<Surface> surfacesList;
+
     /**
      * Constructor.
      * @param parentController
-     * @param triangleSelected 
+     * @param triangleSelected
      */
-    public CharacteristicsStep5Controller(IsletProcessController parentController, Surface surfaceSelected)
+    public CharacteristicsStep5Controller(
+            IsletProcessController parentController, Surface surfaceSelected)
     {
         super(parentController);
         surfacesList = new ArrayList<Surface>();
         surfacesList.add(surfaceSelected);
-        
+
         this.cView = new CharacteristicsStep2View();
-        this.cView.getValidateButton().addActionListener(new ActionListener(){
+        this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                              
+
                 if (((CharacteristicsStep5View) cView).isMergeSelected())
                 {
                     try
                     {
-                        CharacteristicsStep5Controller.this.parentController.getBiController().action5(surfacesList, ActionTypes.MERGE);
+                        CharacteristicsStep5Controller.this.parentController
+                                .getBiController().action5(surfacesList,
+                                        ActionTypes.MERGE);
                     } catch (InvalidCaseException e1)
                     {
                         JOptionPane.showMessageDialog(cView, FileTools
                                 .readErrorMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
-                                        TextsKeys.MESSAGETYPE_MESSAGE), FileTools
-                                .readErrorMessage(
+                                        TextsKeys.MESSAGETYPE_MESSAGE),
+                                FileTools.readErrorMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
                                         TextsKeys.MESSAGETYPE_TITLE),
                                 JOptionPane.ERROR_MESSAGE);
-                    } catch (UnCompletedParametersException e2)
-                    {
-                        // TODO : remove when implemented
-                        JOptionPane.showMessageDialog(cView,
-                                "Non implémenté encore",
-                                "Validation impossible", JOptionPane.ERROR_MESSAGE);
                     }
-                } 
+                }
 
                 if (((CharacteristicsStep5View) cView).isNoiseSelected())
                 {
                     try
                     {
-                        CharacteristicsStep5Controller.this.parentController.getBiController().action5(surfacesList, ActionTypes.TURN_TO_NOISE);
+                        CharacteristicsStep5Controller.this.parentController
+                                .getBiController().action5(surfacesList,
+                                        ActionTypes.TURN_TO_NOISE);
                     } catch (InvalidCaseException e1)
                     {
                         JOptionPane.showMessageDialog(cView, FileTools
                                 .readErrorMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
-                                        TextsKeys.MESSAGETYPE_MESSAGE), FileTools
-                                .readErrorMessage(
+                                        TextsKeys.MESSAGETYPE_MESSAGE),
+                                FileTools.readErrorMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
                                         TextsKeys.MESSAGETYPE_TITLE),
                                 JOptionPane.ERROR_MESSAGE);
-                    } catch (UnCompletedParametersException e2)
-                    {
-                        // TODO : remove when implemented
-                        JOptionPane.showMessageDialog(cView,
-                                "Erreur lors de l'exécution de l'action",
-                                "Validation impossible", JOptionPane.ERROR_MESSAGE);
                     }
-                } 
+                }
             }
         });
     }
-    
+
     public ArrayList<Surface> getSurfaces()
     {
         return this.surfacesList;
     }
-    
+
     public void addSurfaceSelected(Surface surfaceSelected)
     {
         this.surfacesList.add(surfaceSelected);
