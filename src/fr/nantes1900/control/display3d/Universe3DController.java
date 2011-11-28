@@ -49,7 +49,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
      */
     private NewMouseRotate           mouseRotate;
 
-    private IsletSelectionController parentController;
+    private ElementsSelectedListener parentController;
 
     private final EventListenerList  listeners            = new EventListenerList();
     /**
@@ -72,20 +72,20 @@ public class Universe3DController implements MouseListener, MouseMotionListener
      * @param isletSelectionController
      */
     public Universe3DController(
-            IsletSelectionController isletSelectionController)
+            ElementsSelectedListener parentControllerIn)
     {
-        this.setParentController(isletSelectionController);
+        this.parentController = parentControllerIn;
         this.u3DView = new Universe3DView(this);
     }
 
     public void addElementsSelectedListener(ElementsSelectedListener listener)
     {
-        listeners.add(ElementsSelectedListener.class, listener);
+        this.listeners.add(ElementsSelectedListener.class, listener);
     }
 
     private void firePolygonDeselected(Polygon polygonDeselected)
     {
-        ElementsSelectedListener[] ESListeners = listeners
+        ElementsSelectedListener[] ESListeners = this.listeners
                 .getListeners(ElementsSelectedListener.class);
         for (ElementsSelectedListener listener : ESListeners)
         {
@@ -95,7 +95,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
     private void firePolygonSelected(Polygon polygonSelected)
     {
-        ElementsSelectedListener[] ESListeners = listeners
+        ElementsSelectedListener[] ESListeners = this.listeners
                 .getListeners(ElementsSelectedListener.class);
         for (ElementsSelectedListener listener : ESListeners)
         {
@@ -105,7 +105,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
     private void fireTriangleDeselected(Triangle triangleDeselected)
     {
-        ElementsSelectedListener[] ESListeners = listeners
+        ElementsSelectedListener[] ESListeners = this.listeners
                 .getListeners(ElementsSelectedListener.class);
         for (ElementsSelectedListener listener : ESListeners)
         {
@@ -115,7 +115,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
     private void fireTriangleSelected(Triangle triangleSelected)
     {
-        ElementsSelectedListener[] ESListeners = listeners
+        ElementsSelectedListener[] ESListeners = this.listeners
                 .getListeners(ElementsSelectedListener.class);
         for (ElementsSelectedListener listener : ESListeners)
         {
@@ -125,7 +125,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
     public int getDisplayMode()
     {
-        return displayMode;
+        return this.displayMode;
     }
 
     /**
@@ -137,9 +137,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         return this.mouseRotate;
     }
 
-    public IsletSelectionController getParentController()
+    public ElementsSelectedListener getParentController()
     {
-        return parentController;
+        return this.parentController;
     }
 
     /**
@@ -196,7 +196,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     public void
             removeElementsSelectedListener(ElementsSelectedListener listener)
     {
-        listeners.remove(ElementsSelectedListener.class, listener);
+        this.listeners.remove(ElementsSelectedListener.class, listener);
     }
 
     /**
@@ -457,11 +457,11 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                         .contains(shapePicked) == true)
                 {
                     // If the triangle picked is not selected.
-                    if (MeshView.getTriangleArray().get(TriangleIndex)
+                    if (this.MeshView.getTriangleArray().get(TriangleIndex)
                             .isSelected() == false)
                     {
                         // Select the triangle picked.
-                        MeshView.select(TriangleIndex);
+                        this.MeshView.select(TriangleIndex);
                         // If the triangle picked in not in the list of
                         // triangles selected.
                         if (this.trianglesViewSelected
@@ -473,7 +473,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                             this.trianglesViewSelected.add(this.MeshView
                                     .getTriangleArray().get(TriangleIndex));
                             // Save the mesh of this triangle picked.
-                            this.triangleMesh.add(MeshView);
+                            this.triangleMesh.add(this.MeshView);
 
                         }
 
@@ -486,9 +486,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                         int turn = 30;
                         // Select the neighbours of the triangle picked.
                         selectVoisin(TriangleIndex, triangleNewSelected,
-                                MeshView, turn);
+                                this.MeshView, turn);
                         // Set the center of rotation.
-                        this.mouseRotate.setCenter(MeshView
+                        this.mouseRotate.setCenter(this.MeshView
                                 .getTriangleArray().get(TriangleIndex));
                         // Add the index of the last triangle selected in
                         // each time of getting neighbours.
