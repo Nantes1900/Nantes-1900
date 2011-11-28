@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
@@ -99,6 +100,11 @@ public class Universe3DView extends JPanel
                                                                        Color.blue),
                                                                64);
 
+    public static final int TRANSLATION_CAMERA_ZDIRECTION=30;
+    public static final int PANEL_HEIGHT=600;
+    public static final int PANEL_WIDTH=600;
+    public static final int LIGHT_BOUND_RADIUS=1000;
+    public static final int BOUNDING_RADIUS=1000;
     /**
      * Creates a new universe.
      * @param u3DControllerIn
@@ -117,10 +123,10 @@ public class Universe3DView extends JPanel
         this.simpleUniverse = new SimpleUniverse(c);
 
         // Size to show the panel while there is nothing to show
-        this.setMinimumSize(new Dimension(600, 600));
-        this.setPreferredSize(new Dimension(600, 600));
+        this.setMinimumSize(new Dimension(PANEL_HEIGHT, PANEL_WIDTH));
+        this.setPreferredSize(new Dimension(PANEL_HEIGHT, PANEL_WIDTH));
 
-        // this.transformGroup = createTransformGroup();
+       
     }
 
     /**
@@ -131,7 +137,9 @@ public class Universe3DView extends JPanel
 
     public final void addSurfaces(final List<Surface> surfaces)
     {
+
         if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
+
         {
             this.displayMeshes(surfaces);
         } else if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_POLYGON_MODE)
@@ -150,7 +158,9 @@ public class Universe3DView extends JPanel
         // Computes the centroid of the first surface.
         Point centroid;
         if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
+
         {
+
             centroid = surfaces.get(0).getMesh().getCentroid();
         } else
         {
@@ -161,10 +171,11 @@ public class Universe3DView extends JPanel
 
         // Translates the camera.
         this.translateCamera(centroid.getX(), centroid.getY(),
-                centroid.getZ() + 30);
+                centroid.getZ() + TRANSLATION_CAMERA_ZDIRECTION);
 
         // Changes the rotation center
         this.u3DController.getMouseRotate().setCenter(centroid);
+
     }
 
     /**
@@ -198,7 +209,7 @@ public class Universe3DView extends JPanel
         // //////////////// Lights
         // Light bound
         BoundingSphere lightBounds = new BoundingSphere(new Point3d(0.0, 0.0,
-                0.0), 100000.0);
+                0.0), LIGHT_BOUND_RADIUS);
         // Ambient light
         AmbientLight ambLight = new AmbientLight(true, new Color3f(1.0f, 1.0f,
                 1.0f));
@@ -228,7 +239,7 @@ public class Universe3DView extends JPanel
             final ArrayList<SurfaceView> surfaceView)
     {
         BoundingSphere boundingSphere = new BoundingSphere(new Point3d(0.0,
-                0.0, 0.0), 100000);
+                0.0, 0.0), BOUNDING_RADIUS);
 
         TransformGroup transformGroup = new TransformGroup();
         transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);

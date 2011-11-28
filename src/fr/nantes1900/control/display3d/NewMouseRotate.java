@@ -200,4 +200,5 @@ public class NewMouseRotate extends MouseRotate
     {
         this.center = new Point3d(point.getX(), point.getY(), point.getZ());
     }
+
 }
