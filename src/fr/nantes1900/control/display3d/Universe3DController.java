@@ -19,11 +19,11 @@ import com.sun.j3d.utils.picking.PickIntersection;
 import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.picking.PickTool;
 
-import fr.nantes1900.control.isletprocess.IsletProcessController;
 import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.PolygonView;
 import fr.nantes1900.view.display3d.Universe3DView;
@@ -63,7 +63,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
     private int                      displayMode;
 
-    private List<Triangle>           trianglesSelected    = new ArrayList<Triangle>();
+    private List<Triangle>           trianglesSelected    = new ArrayList<>();
+
+    private List<Surface>            surfacesSelected     = new ArrayList<>();
 
     /**
      * @param isletSelectionController
@@ -71,8 +73,58 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     public Universe3DController(
             IsletSelectionController isletSelectionController)
     {
-        this.parentController = isletSelectionController;
+        this.setParentController(isletSelectionController);
         this.u3DView = new Universe3DView(this);
+    }
+
+    public void addElementsSelectedListener(ElementsSelectedListener listener)
+    {
+        listeners.add(ElementsSelectedListener.class, listener);
+    }
+
+    private void firePolygonDeselected(Polygon polygonDeselected)
+    {
+        ElementsSelectedListener[] ESListeners = listeners
+                .getListeners(ElementsSelectedListener.class);
+        for (ElementsSelectedListener listener : ESListeners)
+        {
+            listener.polygonDeselected(polygonDeselected);
+        }
+    }
+
+    private void firePolygonSelected(Polygon polygonSelected)
+    {
+        ElementsSelectedListener[] ESListeners = listeners
+                .getListeners(ElementsSelectedListener.class);
+        for (ElementsSelectedListener listener : ESListeners)
+        {
+            listener.polygonSelected(polygonSelected);
+        }
+    }
+
+    private void fireTriangleDeselected(Triangle triangleDeselected)
+    {
+        ElementsSelectedListener[] ESListeners = listeners
+                .getListeners(ElementsSelectedListener.class);
+        for (ElementsSelectedListener listener : ESListeners)
+        {
+            listener.triangleSelected(triangleDeselected);
+        }
+    }
+
+    private void fireTriangleSelected(Triangle triangleSelected)
+    {
+        ElementsSelectedListener[] ESListeners = listeners
+                .getListeners(ElementsSelectedListener.class);
+        for (ElementsSelectedListener listener : ESListeners)
+        {
+            listener.triangleSelected(triangleSelected);
+        }
+    }
+
+    public int getDisplayMode()
+    {
+        return displayMode;
     }
 
     /**
@@ -82,6 +134,11 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     public NewMouseRotate getMouseRotate()
     {
         return this.mouseRotate;
+    }
+
+    public IsletSelectionController getParentController()
+    {
+        return parentController;
     }
 
     /**
@@ -102,458 +159,137 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     @Override
     public void mouseClicked(MouseEvent e)
     {
-        int buttonDown = e.getButton();
-
-        if (buttonDown == MouseEvent.BUTTON1)
+        if (e.getButton() == MouseEvent.BUTTON1)
         {
             // left mouse click
-            this.pickCanvas.setShapeLocation(e);
+            this.treatButton1(e);
+        } else if (e.getButton() == MouseEvent.BUTTON3)
+        {
+            // right mouse click
+            this.treatButton3(e);
+        } else if (e.getButton() == MouseEvent.BUTTON2)
+        {
+            // click the wheel all the triangles selected will be canceled
+            this.treatButton2();
+        } else
+        {
+            // Not used.
+        }
+    }
 
-            PickResult result = this.pickCanvas.pickClosest();
-            if (result != null)
-            {
-                PickIntersection pickIntersection = result.getIntersection(0);
+    @Override
+    public void mouseDragged(MouseEvent arg0)
+    {
+        // Not used.
+    }
 
-                GeometryArray meshView = pickIntersection.getGeometryArray();
+    @Override
+    public void mouseEntered(MouseEvent arg0)
+    {
+        // Not used.
+    }
 
-                // // Get the MeshView selected.
-                // this.MeshView = (MeshView) meshView;
-                // Get the shape3D picked.
-                Shape3D shapePicked = (Shape3D) result
-                        .getNode(PickResult.SHAPE3D);
-                // If shift is pressed down.
-                if (e.isShiftDown())
-                {
-                    // If the shape3D picked is in the list of the shape3Ds
-                    // selected,unselect this shape3D.
-                    if (shape3DSelected.contains(shapePicked))
-                    {
-                        // Unselect this shape3D.Change the material to
-                        // matUnSelect.
-                        this.unselectShape3D(shapePicked);
+    @Override
+    public void mouseExited(MouseEvent e)
+    {
+        // Not used.
+    }
 
-                        // If the mesh picked is mesh of triangles.
-                        if (meshView.getClass().getSimpleName()
-                                .equals("MeshView"))
-                        {
-                            // Change the select condition of this mesh picked
-                            // to
-                            // unselect.
-                            ((MeshView) meshView).unselectMesh();
-                        }
-                        // If the mesh picked is a polygon.
-                        else
-                        {
-                            ((PolygonView) meshView).unselect();
-                        }
+    @Override
+    public void mouseMoved(MouseEvent arg0)
+    {
+        // Not used.
+    }
 
-                        // Remove this shape3D from the list of the shape3Ds
-                        // selected.
-                        shape3DSelected.remove(shapePicked);
-                        // Remove this mesh from the list of the meshes
-                        // selected.
-                        meshSelected.remove(meshView);
-                    }
-                    // If the shape3D picked is not in the list of the shape3Ds
-                    // selected,select this shape3D.
-                    else
-                    {
-                        // Select this shape3D. Change the material to
-                        // matSelect.
-                        this.selectShape3D(shapePicked);
-                        // If the mesh picked is a mesh of triangles.
-                        if (meshView.getClass().getSimpleName()
-                                .equals("MeshView"))
-                        {
-                            // Change the select condition of this mesh picked
-                            // to
-                            // select.
-                            ((MeshView) meshView).selectMesh();
-                            // Set the center ofrotation.
-                            Point3d center = new Point3d(((MeshView) meshView)
-                                    .getCentroid().getX(),
-                                    ((MeshView) meshView).getCentroid().getY(),
-                                    ((MeshView) meshView).getCentroid().getZ());
-                            this.mouseRotate.setCenter(center);
-                        }
-                        // If the mesh picked is a polygon.
-                        else
-                        {
-                            ((PolygonView) meshView).select();
-                            // Set the center of rotation.
-                            Point3d center = new Point3d(
-                                    ((PolygonView) meshView).getCentroid()
-                                            .getX(), ((PolygonView) meshView)
-                                            .getCentroid().getY(),
-                                    ((PolygonView) meshView).getCentroid()
-                                            .getZ());
-                            this.mouseRotate.setCenter(center);
-                        }
+    @Override
+    public void mousePressed(MouseEvent e)
+    {
+        // Not used.
+    }
 
-                        // Add this shape3D to the list of the shape3Ds
-                        // selected.
-                        shape3DSelected.add(shapePicked);
-                        // Add this mesh to the list of the meshes selected.
-                        meshSelected.add(meshView);
+    @Override
+    public void mouseReleased(MouseEvent e)
+    {
+        // Not used.
+    }
 
-                    }
-                }
+    public void
+            removeElementsSelectedListener(ElementsSelectedListener listener)
+    {
+        listeners.remove(ElementsSelectedListener.class, listener);
+    }
 
-                // If the shift is not pressed down.
-                else
-                {
-                    // If the shape3D picked is in the list of the shape3Ds
-                    // selected.
-                    if (shape3DSelected.contains(shapePicked))
-                    {
-                        // If the shape3D picked is not the only one in the list
-                        // of the shape3Ds selected.
-                        if (shape3DSelected.size() > 1)
-                        {
-                            // Unselect all the shape3D in the list of the
-                            // shape3Ds selected.
-                            for (Shape3D shapeSelected : shape3DSelected)
-                            {
-                                this.unselectShape3D(shapeSelected);
-                            }
-                            // Unselect all the meshes of triangles in the list
-                            // of the meshes selected.
-                            for (Object meshViewSelected : meshSelected)
-                            {
-                                // If the mesh in the list is a mesh of
-                                // triangles.
-                                if (meshViewSelected.getClass().getSimpleName()
-                                        .equals("MeshView"))
-                                {
-                                    ((MeshView) meshViewSelected)
-                                            .unselectMesh();
-                                }
-                                // If the mesh in the list is a polygon.
-                                else
-                                {
-                                    ((PolygonView) meshViewSelected).unselect();
-                                }
+    /**
+     * @param MeshView
+     *            The triangle
+     */
+    public void selectMesh(MeshView MeshView)
+    {
 
-                            }
-                            // Clear the list of the shape3Ds selected and add
-                            // the shape3D picked to the list.
-                            shape3DSelected.clear();
-                            shape3DSelected.add(shapePicked);
+    }
 
-                            // Clear the list of the meshes selected and add the
-                            // mesh picked to the list.
-                            meshSelected.clear();
-                            meshSelected.add(meshView);
-
-                            // Select this shape3D.Change the material to
-                            // matSelect.
-                            this.selectShape3D(shapePicked);
-
-                            // If the mesh picked is a mesh of triangles,change
-                            // the
-                            // select condition of this mesh picked to
-                            // select.
-                            if (meshView.getClass().getSimpleName()
-                                    .equals("MeshView"))
-                            {
-                                ((MeshView) meshView).selectMesh();
-                                // Set the center of rotation.
-                                Point3d center = new Point3d(
-                                        ((MeshView) meshView).getCentroid()
-                                                .getX(), ((MeshView) meshView)
-                                                .getCentroid().getY(),
-                                        ((MeshView) meshView).getCentroid()
-                                                .getZ());
-                                this.mouseRotate.setCenter(center);
-                            }
-                            // If the mesh picked is a polygon,change the select
-                            // condition of this mesh picked to
-                            // select.
-                            else
-                            {
-                                ((PolygonView) meshView).select();
-                                // Set the center of rotation.
-                                Point3d center = new Point3d(
-                                        ((PolygonView) meshView).getCentroid()
-                                                .getX(),
-                                        ((PolygonView) meshView).getCentroid()
-                                                .getY(),
-                                        ((PolygonView) meshView).getCentroid()
-                                                .getZ());
-                                this.mouseRotate.setCenter(center);
-                            }
-                        }
-                        // If the shape3D picked is the only one in the list of
-                        // the shape3Ds selected.
-                        else
-                        {
-                            // Unselect this shape3D.Change the material to
-                            // matUnSelect.
-                            this.unselectShape3D(shapePicked);
-                            // Clear the list of the shape3Ds selected.
-                            shape3DSelected.clear();
-                            // Clear the list of the meshes selected.
-                            meshSelected.clear();
-                            // If the mesh picked is a mesh of triangles,change
-                            // the
-                            // select condition of this mesh picked to
-                            // unselect.
-                            if (meshView.getClass().getSimpleName()
-                                    .equals("MeshView"))
-                            {
-                                ((MeshView) meshView).unselectMesh();
-                            }
-                            // If the mesh picked is a polygon,change the select
-                            // condition of this mesh picked to
-                            // unselect.
-                            else
-                            {
-                                ((PolygonView) meshView).unselect();
-                            }
-                        }
-                    }
-                    // If the shape3D picked is not in the list of the shape3Ds
-                    // selected.
-                    else
-                    {
-                        // Unselect all the shape3D in the list of the shape3Ds
-                        // selected.
-                        for (Shape3D shapeSelected : shape3DSelected)
-                        {
-                            this.unselectShape3D(shapeSelected);
-                        }
-                        // Unselect all the meshes in the list of
-                        // the meshes selected.
-                        for (Object meshViewSelected : meshSelected)
-                        {
-                            if (meshViewSelected.getClass().getSimpleName()
-                                    .equals("MeshView"))
-                            {
-                                ((MeshView) meshViewSelected).unselectMesh();
-                            } else
-                            {
-                                ((PolygonView) meshViewSelected).unselect();
-                            }
-
-                        }
-                        // Clear the list of the shape3Ds selected and add the
-                        // shape3D picked to the list.
-                        shape3DSelected.clear();
-                        shape3DSelected.add(shapePicked);
-                        // Clear the list of the meshes selected and add the
-                        // mesh picked to the list.
-                        meshSelected.clear();
-                        meshSelected.add(meshView);
-                        // Select this shape3D.Change the material to matSelect.
-                        this.selectShape3D(shapePicked);
-                        // If the mesh picked is a mesh of triangles,change the
-                        // select condition of this mesh picked to
-                        // select.
-                        if (meshView.getClass().getSimpleName()
-                                .equals("MeshView"))
-                        {
-                            ((MeshView) meshView).selectMesh();
-                            // Set the center of rotation.
-                            Point3d center = new Point3d(((MeshView) meshView)
-                                    .getCentroid().getX(),
-                                    ((MeshView) meshView).getCentroid().getY(),
-                                    ((MeshView) meshView).getCentroid().getZ());
-                            this.mouseRotate.setCenter(center);
-                        }
-                        // If the mesh picked is a polygon,change the select
-                        // condition of this mesh picked to
-                        // select.
-                        else
-                        {
-                            ((PolygonView) meshView).select();
-                            // Set the center of rotation.
-                            Point3d center = new Point3d(
-                                    ((PolygonView) meshView).getCentroid()
-                                            .getX(), ((PolygonView) meshView)
-                                            .getCentroid().getY(),
-                                    ((PolygonView) meshView).getCentroid()
-                                            .getZ());
-                            this.mouseRotate.setCenter(center);
-                        }
-                    }
-                }
-
-            }
-
+    public void selectMeshFromTree(Object object)
+    {
+        // Selects the object if it is a surface.
+        if (object instanceof Surface)
+        {
+            ((Surface) object).select();
+        } else
+        {
+            System.out.println("Weird.");
+            // TODO : throw an exception.
         }
 
-        else if (buttonDown == MouseEvent.BUTTON3)
+        // Gets the index of the meshView in the list of the meshes displayed.
+        int meshViewIndex = meshList.indexOf(object);
+
+        // Gets the shape3D of the meshView to be selected.
+        Shape3D shapeSelect = meshShape3D.get(meshViewIndex);
+        Appearance appSelect = shapeSelect.getAppearance();
+
+        // Changes the material of the mesh to be seleted.
+        appSelect.setMaterial(matSelected);
+        shapeSelect.setAppearance(appSelect);
+
+        // If the shape3D selected last time is not null.
+        if (shape3DSelected != null)
         {
 
-            // Right mouse click
-
-            this.pickCanvas.setShapeLocation(e);
-            PickResult result = this.pickCanvas.pickClosest();
-
-            if (result != null)
+            // If the shape3D selected last time is not this one.
+            if (shape3DSelected.contains(shapeSelect))
             {
-                // Get the triangle picked.
-                PickIntersection pickIntersection = result.getIntersection(0);
-                // Get the index of three points of the triangle picked.
-                int[] PointIndex = pickIntersection.getPrimitiveVertexIndices();
-                // Get the index of the triangle picked in the list of triangles
-                // of the MeshView.
-                int TriangleIndex = PointIndex[0] / 3;
-                // Get the mesh picked.
-                GeometryArray meshView = pickIntersection.getGeometryArray();
-                // If the mesh picked is a mesh of triangles.
-                if (meshView.getClass().getSimpleName().equals("MeshView"))
+
+                // Change back the material of the mesh selected last time.
+                for (Shape3D shape : shape3DSelected)
                 {
-                    this.MeshView = (MeshView) meshView;
-                    // Get the shape3D picked.
-                    Shape3D shapePicked = (Shape3D) result
-                            .getNode(PickResult.SHAPE3D);
-                    // If the shape3D picked is in the list of the shape3Ds
-                    // selected.
-                    if (shape3DSelected.contains(shapePicked) == true)
+                    Appearance appUnselect = shape.getAppearance();
+                    appUnselect.setMaterial(matUnSelected);
+                    shape.setAppearance(appUnselect);
+                }
+
+                // Unselect the meshView selected last time.
+                for (Object meshObject : meshSelected)
+                {
+                    if (meshObject.getClass().getSimpleName()
+                            .equals("MeshView"))
                     {
-                        // If the triangle picked is not selected.
-                        if (MeshView.getTriangleArray().get(TriangleIndex)
-                                .isSelected() == false)
-                        {
-                            // Select the triangle picked.
-                            MeshView.select(TriangleIndex);
-                            // If the triangle picked in not in the list of
-                            // triangles selected.
-                            if (this.trianglesViewSelected
-                                    .contains(this.MeshView.getTriangleArray()
-                                            .get(TriangleIndex)) == false)
-                            {
-                                // Add the triangle picked to the list of
-                                // triangles selected.
-                                this.trianglesViewSelected.add(this.MeshView
-                                        .getTriangleArray().get(TriangleIndex));
-                                // Save the mesh of this triangle picked.
-                                this.triangleMesh.add(MeshView);
-
-                            }
-
-                            // A list used to save the index of triangles
-                            // selected in each turn of getting neighbours.
-                            List<Integer> triangleNewSelected = new ArrayList<Integer>();
-                            // Add the index of the triangle picked to the list.
-                            triangleNewSelected.add(TriangleIndex);
-                            // Times to search the neighbour.
-                            int turn = 30;
-                            // Select the neighbours of the triangle picked.
-                            selectVoisin(TriangleIndex, triangleNewSelected,
-                                    MeshView, turn);
-                            // Set the center of rotation.
-                            this.mouseRotate.setCenter(MeshView
-                                    .getTriangleArray().get(TriangleIndex));
-                            // Add the index of the last triangle selected in
-                            // each time of getting neighbours.
-                            this.selectedIndex.add(this.trianglesViewSelected
-                                    .size() - 1);
-                        }
-                        // If the triangle picked is selected.
-                        else
-                        {
-
-                            // If the triangle picked is in the list of
-                            // triangles selected.
-                            if (this.trianglesViewSelected
-                                    .contains(this.MeshView.getTriangleArray()
-                                            .get(TriangleIndex)))
-                            {
-                                // Get the index of the triangle picked in the
-                                // list of triangles selected.
-                                int triangleIndex = this.trianglesViewSelected
-                                        .indexOf(this.MeshView
-                                                .getTriangleArray().get(
-                                                        TriangleIndex));
-                                // The first index of the selection triangles
-                                // which the triangle selected belongs to.
-                                int firstIndex = 0;
-                                // The last index of the selection triangles
-                                // which the triagle selected belongs to.
-                                int lastIndex = 0;
-                                // The index of the last index in the list of
-                                // index of last index.
-                                int indexOfLastIndex = 0;
-
-                                // Find the triangle picked belongs to which
-                                // time of selection.
-                                for (int i = 0; i < this.selectedIndex.size(); i++)
-                                {
-                                    // If the triangle picked belongs to the
-                                    // first time of seleciton.
-                                    if (i == 0
-                                            && this.selectedIndex.get(i) >= triangleIndex)
-                                    {
-                                        firstIndex = -1;
-                                        lastIndex = this.selectedIndex.get(i);
-                                        break;
-                                    }
-                                    // If the triangle picked doesn't belong to
-                                    // the first time of seleciton.
-                                    else
-                                    {
-                                        if (this.selectedIndex.get(i) < triangleIndex
-                                                && this.selectedIndex
-                                                        .get(i + 1) >= triangleIndex)
-                                        {
-                                            firstIndex = this.selectedIndex
-                                                    .get(i);
-                                            lastIndex = this.selectedIndex
-                                                    .get(i + 1);
-
-                                            indexOfLastIndex = i + 1;
-                                            break;
-                                        }
-                                    }
-                                }
-
-                                // Unselect all the triangles selected in the
-                                // time of selection which the triangle picked
-                                // belongs to.
-                                for (int i = lastIndex; i > firstIndex; i--)
-                                {
-                                    TriangleView triangleSelected = this.trianglesViewSelected
-                                            .get(i);
-                                    int index = triangleSelected.getTriangle()
-                                            .getTriangleViewIndex();
-                                    this.MeshView.unselect(index);
-                                    this.trianglesViewSelected.remove(i);
-
-                                }
-
-                                // Refresh the list of last index of triangles
-                                // selected in each time of selection.
-                                this.selectedIndex.remove(indexOfLastIndex);
-                                for (int i = indexOfLastIndex; i < this.selectedIndex
-                                        .size(); i++)
-                                {
-                                    int index = this.selectedIndex.get(i);
-                                    this.selectedIndex.set(i, index
-                                            - (lastIndex - firstIndex));
-                                }
-                            }
-                        }
+                        ((MeshView) meshObject).unselectMesh();
+                    } else
+                    {
+                        ((PolygonView) meshObject).unselect();
                     }
                 }
+
             }
         }
 
-        // click the wheel all the triangles selected will be canceled
-        else if (buttonDown == MouseEvent.BUTTON2)
-        {
-            for (int i = 0; i < this.trianglesViewSelected.size(); i++)
-            {
-                int index = this.trianglesViewSelected.get(i).getTriangle()
-                        .getTriangleViewIndex();
-                this.triangleMesh.get(i).unselect(index);
-            }
-            this.trianglesViewSelected.clear();
-            this.selectedIndex.clear();
-            this.triangleMesh.clear();
-        }
+        // Set the shape3D last selected to be the shape3D picked.
+        shape3DSelected.clear();
+        shape3DSelected.add(shapeSelect);
 
+        // Set the meshView last selected to be the meshView picked.
+        meshSelected.clear();
+        meshSelected.add(object);
     }
 
     /**
@@ -570,7 +306,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     public void selectVoisin(int TriangleIndex,
             List<Integer> triangleNewSelected, MeshView MeshView, int turn)
     {
-
         Vector3d normal = MeshView.getTriangleArray().get(TriangleIndex)
                 .getTriangle().getNormal();
         for (int i = 0; i < turn; i++)
@@ -620,34 +355,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         }
     }
 
-    @Override
-    public void mouseDragged(MouseEvent arg0)
+    public void setDisplayMode(int displayMode)
     {
-        // Not used.
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent arg0)
-    {
-        // Not used.
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e)
-    {
-        // Empty.
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e)
-    {
-        // Not used.
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e)
-    {
-        // Not used.
+        this.displayMode = displayMode;
     }
 
     /**
@@ -656,6 +366,11 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     public final void setMouseRotate(final NewMouseRotate mouseRotate)
     {
         this.mouseRotate = mouseRotate;
+    }
+
+    public void setParentController(IsletSelectionController parentController)
+    {
+        this.parentController = parentController;
     }
 
     /**
@@ -672,15 +387,435 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
     }
 
-    public void addElementsSelectedListener(ElementsSelectedListener listener)
+    private void treatButton1(MouseEvent e)
     {
-        listeners.add(ElementsSelectedListener.class, listener);
+        this.pickCanvas.setShapeLocation(e);
+
+        PickResult result = this.pickCanvas.pickClosest();
+        if (result != null)
+        {
+            PickIntersection pickIntersection = result.getIntersection(0);
+
+            GeometryArray meshView = pickIntersection.getGeometryArray();
+
+            // // Get the MeshView selected.
+            // this.MeshView = (MeshView) meshView;
+            // Get the shape3D picked.
+            Shape3D shapePicked = (Shape3D) result.getNode(PickResult.SHAPE3D);
+            // If shift is pressed down.
+            if (e.isShiftDown())
+            {
+                // If the shape3D picked is in the list of the shape3Ds
+                // selected,unselect this shape3D.
+                if (shape3DSelected.contains(shapePicked))
+                {
+                    // Unselect this shape3D.Change the material to
+                    // matUnSelect.
+                    this.unselectShape3D(shapePicked);
+
+                    // If the mesh picked is mesh of triangles.
+                    if (meshView.getClass().getSimpleName().equals("MeshView"))
+                    {
+                        // Change the select condition of this mesh picked
+                        // to
+                        // unselect.
+                        ((MeshView) meshView).unselectMesh();
+                    }
+                    // If the mesh picked is a polygon.
+                    else
+                    {
+                        ((PolygonView) meshView).unselect();
+                    }
+
+                    // Remove this shape3D from the list of the shape3Ds
+                    // selected.
+                    shape3DSelected.remove(shapePicked);
+                    // Remove this mesh from the list of the meshes
+                    // selected.
+                    meshSelected.remove(meshView);
+                }
+                // If the shape3D picked is not in the list of the shape3Ds
+                // selected,select this shape3D.
+                else
+                {
+                    // Select this shape3D. Change the material to
+                    // matSelect.
+                    this.selectShape3D(shapePicked);
+                    // If the mesh picked is a mesh of triangles.
+                    if (meshView.getClass().getSimpleName().equals("MeshView"))
+                    {
+                        // Change the select condition of this mesh picked
+                        // to
+                        // select.
+                        ((MeshView) meshView).selectMesh();
+                        // Set the center ofrotation.
+                        Point3d center = new Point3d(((MeshView) meshView)
+                                .getCentroid().getX(), ((MeshView) meshView)
+                                .getCentroid().getY(), ((MeshView) meshView)
+                                .getCentroid().getZ());
+                        this.mouseRotate.setCenter(center);
+                    }
+                    // If the mesh picked is a polygon.
+                    else
+                    {
+                        ((PolygonView) meshView).select();
+                        // Set the center of rotation.
+                        Point3d center = new Point3d(((PolygonView) meshView)
+                                .getCentroid().getX(), ((PolygonView) meshView)
+                                .getCentroid().getY(), ((PolygonView) meshView)
+                                .getCentroid().getZ());
+                        this.mouseRotate.setCenter(center);
+                    }
+
+                    // Add this shape3D to the list of the shape3Ds
+                    // selected.
+                    shape3DSelected.add(shapePicked);
+                    // Add this mesh to the list of the meshes selected.
+                    meshSelected.add(meshView);
+
+                }
+            }
+
+            // If the shift is not pressed down.
+            else
+            {
+                // If the shape3D picked is in the list of the shape3Ds
+                // selected.
+                if (shape3DSelected.contains(shapePicked))
+                {
+                    // If the shape3D picked is not the only one in the list
+                    // of the shape3Ds selected.
+                    if (shape3DSelected.size() > 1)
+                    {
+                        // Unselect all the shape3D in the list of the
+                        // shape3Ds selected.
+                        for (Shape3D shapeSelected : shape3DSelected)
+                        {
+                            this.unselectShape3D(shapeSelected);
+                        }
+                        // Unselect all the meshes of triangles in the list
+                        // of the meshes selected.
+                        for (Object meshViewSelected : meshSelected)
+                        {
+                            // If the mesh in the list is a mesh of
+                            // triangles.
+                            if (meshViewSelected.getClass().getSimpleName()
+                                    .equals("MeshView"))
+                            {
+                                ((MeshView) meshViewSelected).unselectMesh();
+                            }
+                            // If the mesh in the list is a polygon.
+                            else
+                            {
+                                ((PolygonView) meshViewSelected).unselect();
+                            }
+
+                        }
+                        // Clear the list of the shape3Ds selected and add
+                        // the shape3D picked to the list.
+                        shape3DSelected.clear();
+                        shape3DSelected.add(shapePicked);
+
+                        // Clear the list of the meshes selected and add the
+                        // mesh picked to the list.
+                        meshSelected.clear();
+                        meshSelected.add(meshView);
+
+                        // Select this shape3D.Change the material to
+                        // matSelect.
+                        this.selectShape3D(shapePicked);
+
+                        // If the mesh picked is a mesh of triangles,change
+                        // the
+                        // select condition of this mesh picked to
+                        // select.
+                        if (meshView.getClass().getSimpleName()
+                                .equals("MeshView"))
+                        {
+                            ((MeshView) meshView).selectMesh();
+                            // Set the center of rotation.
+                            Point3d center = new Point3d(((MeshView) meshView)
+                                    .getCentroid().getX(),
+                                    ((MeshView) meshView).getCentroid().getY(),
+                                    ((MeshView) meshView).getCentroid().getZ());
+                            this.mouseRotate.setCenter(center);
+                        }
+                        // If the mesh picked is a polygon,change the select
+                        // condition of this mesh picked to
+                        // select.
+                        else
+                        {
+                            ((PolygonView) meshView).select();
+                            // Set the center of rotation.
+                            Point3d center = new Point3d(
+                                    ((PolygonView) meshView).getCentroid()
+                                            .getX(), ((PolygonView) meshView)
+                                            .getCentroid().getY(),
+                                    ((PolygonView) meshView).getCentroid()
+                                            .getZ());
+                            this.mouseRotate.setCenter(center);
+                        }
+                    }
+                    // If the shape3D picked is the only one in the list of
+                    // the shape3Ds selected.
+                    else
+                    {
+                        // Unselect this shape3D.Change the material to
+                        // matUnSelect.
+                        this.unselectShape3D(shapePicked);
+                        // Clear the list of the shape3Ds selected.
+                        shape3DSelected.clear();
+                        // Clear the list of the meshes selected.
+                        meshSelected.clear();
+                        // If the mesh picked is a mesh of triangles,change
+                        // the
+                        // select condition of this mesh picked to
+                        // unselect.
+                        if (meshView.getClass().getSimpleName()
+                                .equals("MeshView"))
+                        {
+                            ((MeshView) meshView).unselectMesh();
+                        }
+                        // If the mesh picked is a polygon,change the select
+                        // condition of this mesh picked to
+                        // unselect.
+                        else
+                        {
+                            ((PolygonView) meshView).unselect();
+                        }
+                    }
+                }
+                // If the shape3D picked is not in the list of the shape3Ds
+                // selected.
+                else
+                {
+                    // Unselect all the shape3D in the list of the shape3Ds
+                    // selected.
+                    for (Shape3D shapeSelected : shape3DSelected)
+                    {
+                        this.unselectShape3D(shapeSelected);
+                    }
+                    // Unselect all the meshes in the list of
+                    // the meshes selected.
+                    for (Object meshViewSelected : meshSelected)
+                    {
+                        if (meshViewSelected.getClass().getSimpleName()
+                                .equals("MeshView"))
+                        {
+                            ((MeshView) meshViewSelected).unselectMesh();
+                        } else
+                        {
+                            ((PolygonView) meshViewSelected).unselect();
+                        }
+
+                    }
+                    // Clear the list of the shape3Ds selected and add the
+                    // shape3D picked to the list.
+                    shape3DSelected.clear();
+                    shape3DSelected.add(shapePicked);
+                    // Clear the list of the meshes selected and add the
+                    // mesh picked to the list.
+                    meshSelected.clear();
+                    meshSelected.add(meshView);
+                    // Select this shape3D.Change the material to matSelect.
+                    this.selectShape3D(shapePicked);
+                    // If the mesh picked is a mesh of triangles,change the
+                    // select condition of this mesh picked to
+                    // select.
+                    if (meshView.getClass().getSimpleName().equals("MeshView"))
+                    {
+                        ((MeshView) meshView).selectMesh();
+                        // Set the center of rotation.
+                        Point3d center = new Point3d(((MeshView) meshView)
+                                .getCentroid().getX(), ((MeshView) meshView)
+                                .getCentroid().getY(), ((MeshView) meshView)
+                                .getCentroid().getZ());
+                        this.mouseRotate.setCenter(center);
+                    }
+                    // If the mesh picked is a polygon,change the select
+                    // condition of this mesh picked to
+                    // select.
+                    else
+                    {
+                        ((PolygonView) meshView).select();
+                        // Set the center of rotation.
+                        Point3d center = new Point3d(((PolygonView) meshView)
+                                .getCentroid().getX(), ((PolygonView) meshView)
+                                .getCentroid().getY(), ((PolygonView) meshView)
+                                .getCentroid().getZ());
+                        this.mouseRotate.setCenter(center);
+                    }
+                }
+            }
+
+        }
+
     }
 
-    public void
-            removeElementsSelectedListener(ElementsSelectedListener listener)
+    private void treatButton2()
     {
-        listeners.remove(ElementsSelectedListener.class, listener);
+        for (int i = 0; i < this.trianglesViewSelected.size(); i++)
+        {
+            int index = this.trianglesViewSelected.get(i).getTriangle()
+                    .getTriangleViewIndex();
+            this.triangleMesh.get(i).unselect(index);
+        }
+        this.trianglesViewSelected.clear();
+        this.selectedIndex.clear();
+        this.triangleMesh.clear();
+    }
+
+    private void treatButton3(MouseEvent e)
+    {
+
+        // Right mouse click
+
+        this.pickCanvas.setShapeLocation(e);
+        PickResult result = this.pickCanvas.pickClosest();
+
+        if (result != null)
+        {
+            // Get the triangle picked.
+            PickIntersection pickIntersection = result.getIntersection(0);
+            // Get the index of three points of the triangle picked.
+            int[] PointIndex = pickIntersection.getPrimitiveVertexIndices();
+            // Get the index of the triangle picked in the list of triangles
+            // of the MeshView.
+            int TriangleIndex = PointIndex[0] / 3;
+            // Get the mesh picked.
+            GeometryArray meshView = pickIntersection.getGeometryArray();
+            // If the mesh picked is a mesh of triangles.
+            if (meshView.getClass().getSimpleName().equals("MeshView"))
+            {
+                this.MeshView = (MeshView) meshView;
+                // Get the shape3D picked.
+                Shape3D shapePicked = (Shape3D) result
+                        .getNode(PickResult.SHAPE3D);
+                // If the shape3D picked is in the list of the shape3Ds
+                // selected.
+                if (shape3DSelected.contains(shapePicked) == true)
+                {
+                    // If the triangle picked is not selected.
+                    if (MeshView.getTriangleArray().get(TriangleIndex)
+                            .isSelected() == false)
+                    {
+                        // Select the triangle picked.
+                        MeshView.select(TriangleIndex);
+                        // If the triangle picked in not in the list of
+                        // triangles selected.
+                        if (this.trianglesViewSelected.contains(this.MeshView
+                                .getTriangleArray().get(TriangleIndex)) == false)
+                        {
+                            // Add the triangle picked to the list of
+                            // triangles selected.
+                            this.trianglesViewSelected.add(this.MeshView
+                                    .getTriangleArray().get(TriangleIndex));
+                            // Save the mesh of this triangle picked.
+                            this.triangleMesh.add(MeshView);
+
+                        }
+
+                        // A list used to save the index of triangles
+                        // selected in each turn of getting neighbours.
+                        List<Integer> triangleNewSelected = new ArrayList<Integer>();
+                        // Add the index of the triangle picked to the list.
+                        triangleNewSelected.add(TriangleIndex);
+                        // Times to search the neighbour.
+                        int turn = 30;
+                        // Select the neighbours of the triangle picked.
+                        selectVoisin(TriangleIndex, triangleNewSelected,
+                                MeshView, turn);
+                        // Set the center of rotation.
+                        this.mouseRotate.setCenter(MeshView.getTriangleArray()
+                                .get(TriangleIndex));
+                        // Add the index of the last triangle selected in
+                        // each time of getting neighbours.
+                        this.selectedIndex.add(this.trianglesViewSelected
+                                .size() - 1);
+                    }
+                    // If the triangle picked is selected.
+                    else
+                    {
+
+                        // If the triangle picked is in the list of
+                        // triangles selected.
+                        if (this.trianglesViewSelected.contains(this.MeshView
+                                .getTriangleArray().get(TriangleIndex)))
+                        {
+                            // Get the index of the triangle picked in the
+                            // list of triangles selected.
+                            int triangleIndex = this.trianglesViewSelected
+                                    .indexOf(this.MeshView.getTriangleArray()
+                                            .get(TriangleIndex));
+                            // The first index of the selection triangles
+                            // which the triangle selected belongs to.
+                            int firstIndex = 0;
+                            // The last index of the selection triangles
+                            // which the triagle selected belongs to.
+                            int lastIndex = 0;
+                            // The index of the last index in the list of
+                            // index of last index.
+                            int indexOfLastIndex = 0;
+
+                            // Find the triangle picked belongs to which
+                            // time of selection.
+                            for (int i = 0; i < this.selectedIndex.size(); i++)
+                            {
+                                // If the triangle picked belongs to the
+                                // first time of seleciton.
+                                if (i == 0
+                                        && this.selectedIndex.get(i) >= triangleIndex)
+                                {
+                                    firstIndex = -1;
+                                    lastIndex = this.selectedIndex.get(i);
+                                    break;
+                                }
+                                // If the triangle picked doesn't belong to
+                                // the first time of seleciton.
+                                else
+                                {
+                                    if (this.selectedIndex.get(i) < triangleIndex
+                                            && this.selectedIndex.get(i + 1) >= triangleIndex)
+                                    {
+                                        firstIndex = this.selectedIndex.get(i);
+                                        lastIndex = this.selectedIndex
+                                                .get(i + 1);
+
+                                        indexOfLastIndex = i + 1;
+                                        break;
+                                    }
+                                }
+                            }
+
+                            // Unselect all the triangles selected in the
+                            // time of selection which the triangle picked
+                            // belongs to.
+                            for (int i = lastIndex; i > firstIndex; i--)
+                            {
+                                TriangleView triangleSelected = this.trianglesViewSelected
+                                        .get(i);
+                                int index = triangleSelected.getTriangle()
+                                        .getTriangleViewIndex();
+                                this.MeshView.unselect(index);
+                                this.trianglesViewSelected.remove(i);
+
+                            }
+
+                            // Refresh the list of last index of triangles
+                            // selected in each time of selection.
+                            this.selectedIndex.remove(indexOfLastIndex);
+                            for (int i = indexOfLastIndex; i < this.selectedIndex
+                                    .size(); i++)
+                            {
+                                int index = this.selectedIndex.get(i);
+                                this.selectedIndex.set(i, index
+                                        - (lastIndex - firstIndex));
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     public void unselectShape3D(Shape3D shape)
@@ -690,147 +825,5 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         app.setMaterial(fr.nantes1900.view.display3d.MeshShowable.matUnSelected);
         shape.setAppearance(app);
 
-    }
-
-    /**
-     * Change the material of the Shape3D
-     * @param shape
-     *            The Shape3D of the mesh selected.
-     */
-    public void selectShape3D(Shape3D shape)
-    {
-
-        Appearance app = shape.getAppearance();
-        app.setMaterial(fr.nantes1900.view.display3d.MeshShowable.matSelected);
-        shape.setAppearance(app);
-
-    }
-
-    /**
-     * @param MeshView
-     *            The triangle
-     */
-    public void selectMesh(MeshView MeshView)
-    {
-
-    }
-
-    private void fireTriangleSelected(Triangle triangleSelected)
-    {
-        ElementsSelectedListener[] ESListeners = listeners
-                .getListeners(ElementsSelectedListener.class);
-        for (ElementsSelectedListener listener : ESListeners)
-        {
-            listener.triangleSelected(triangleSelected);
-        }
-    }
-
-    private void firePolygonSelected(Polygon polygonSelected)
-    {
-        ElementsSelectedListener[] ESListeners = listeners
-                .getListeners(ElementsSelectedListener.class);
-        for (ElementsSelectedListener listener : ESListeners)
-        {
-            listener.polygonSelected(polygonSelected);
-        }
-    }
-
-    private void fireTriangleDeselected(Triangle triangleDeselected)
-    {
-        ElementsSelectedListener[] ESListeners = listeners
-                .getListeners(ElementsSelectedListener.class);
-        for (ElementsSelectedListener listener : ESListeners)
-        {
-            listener.triangleSelected(triangleDeselected);
-        }
-    }
-
-    private void firePolygonDeselected(Polygon polygonDeselected)
-    {
-        ElementsSelectedListener[] ESListeners = listeners
-                .getListeners(ElementsSelectedListener.class);
-        for (ElementsSelectedListener listener : ESListeners)
-        {
-            listener.polygonDeselected(polygonDeselected);
-        }
-    }
-
-    public void selectMeshFromTree(Object mesh)
-    {
-        // Select the meshView.
-        if (mesh.getClass().getSimpleName().equals("MeshView"))
-        {
-            ((MeshView) mesh).selectMesh();
-        } else
-        {
-            ((PolygonView) mesh).select();
-        }
-
-        // Get the index of the meshView in the list of the meshes displayed.
-        int meshViewIndex = meshList.indexOf(mesh);
-
-        // Get the shape3D of the meshView to be selected.
-        Shape3D shapeSelect = meshShape3D.get(meshViewIndex);
-        Appearance appSelect = shapeSelect.getAppearance();
-
-        // Change the material of the mesh to be seleted.
-        appSelect.setMaterial(matSelected);
-        shapeSelect.setAppearance(appSelect);
-
-        // If the shape3D selected last time is not null.
-        if (shape3DSelected != null)
-        {
-
-            // If the shape3D selected last time is not this one.
-            if (shape3DSelected.contains(shapeSelect))
-            {
-
-                // Change back the material of the mesh selected last time.
-                for (Shape3D shape : Universe3DController.shape3DSelected)
-                {
-                    Appearance appUnselect = shape.getAppearance();
-                    appUnselect.setMaterial(matUnSelected);
-                    shape.setAppearance(appUnselect);
-                }
-
-                // Unselect the meshView selected last time.
-                for (Object meshObject : Universe3DController.meshSelected)
-                {
-                    if (meshObject.getClass().getSimpleName()
-                            .equals("MeshView"))
-                    {
-                        ((MeshView) meshObject).unselectMesh();
-                    } else
-                    {
-                        ((PolygonView) meshObject).unselect();
-                    }
-                }
-
-            }
-        }
-
-        // Set the shape3D last selected to be the shape3D picked.
-        shape3DSelected.clear();
-        shape3DSelected.add(shapeSelect);
-
-        // Set the meshView last selected to be the meshView picked.
-        meshSelected.clear();
-        meshSelected.add(mesh);
-    }
-
-    public int getDisplayMode()
-    {
-        return displayMode;
-    }
-
-    public void setDisplayMode(int displayMode)
-    {
-        this.displayMode = displayMode;
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent arg0)
-    {
-        // Not used.
     }
 }
