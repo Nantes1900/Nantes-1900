@@ -26,6 +26,7 @@ import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.PolygonView;
+import fr.nantes1900.view.display3d.SurfaceView;
 import fr.nantes1900.view.display3d.Universe3DView;
 
 // FIXME : Javadoc
@@ -36,10 +37,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 {
 
     /**
-     * The view of the 3D objets to show.
+     * The Universe3DView linked to this controller.
      */
     private Universe3DView           u3DView;
-
     /**
      * The canvas used to pick.
      */
@@ -365,16 +365,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 .addMouseMotionListener(this);
     }
 
-    public void unselectShape3D(Shape3D shape)
+    public void selectOrUnselectSurface(Surface surface)
     {
-
         Appearance app = shape.getAppearance();
         app.setMaterial(fr.nantes1900.view.display3d.MeshShowable.matUnSelected);
         shape.setAppearance(app);
 
     }
-
-    private ArrayList<Shape3D> SurfaceViewSelected = new ArrayList<>();
 
     private void treatLeftClick(MouseEvent e)
     {
@@ -384,20 +381,17 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         {
             PickIntersection pickIntersection = result.getIntersection(0);
             GeometryArray meshView = pickIntersection.getGeometryArray();
-
-            // Get the MeshView selected.
-            // this.MeshView = (MeshView) meshView;
-            // Get the shape3D picked.
-            Shape3D shapePicked = (Shape3D) result.getNode(PickResult.SHAPE3D);
+            SurfaceView surfacePicked = (SurfaceView) result.getNode(PickResult.SHAPE3D);
+            
             if (e.isShiftDown())
             {
                 // If the shape3D picked is in the list of the shape3Ds
                 // selected,unselect this shape3D.
-                if (Universe3DController.shape3DSelected.contains(shapePicked))
+                if (this.surfacesSelected.contains(surfacePicked))
                 {
                     // Unselect this shape3D.Change the material to
                     // matUnSelect.
-                    this.unselectShape3D(shapePicked);
+                    this.selectOrUnselectSurface(surfacePicked);
 
                     // If the mesh picked is mesh of triangles.
                     if (meshView.getClass().getSimpleName().equals("MeshView"))
@@ -415,7 +409,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
                     // Remove this shape3D from the list of the shape3Ds
                     // selected.
-                    Universe3DController.shape3DSelected.remove(shapePicked);
+                    Universe3DController.shape3DSelected.remove(surfacePicked);
                     // Remove this mesh from the list of the meshes
                     // selected.
                     Universe3DController.meshSelected.remove(meshView);
@@ -426,7 +420,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 {
                     // Select this shape3D. Change the material to
                     // matSelect.
-                    this.selectShape3D(shapePicked);
+                    this.selectShape3D(surfacePicked);
                     // If the mesh picked is a mesh of triangles.
                     if (meshView.getClass().getSimpleName().equals("MeshView"))
                     {
@@ -455,7 +449,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
                     // Add this shape3D to the list of the shape3Ds
                     // selected.
-                    Universe3DController.shape3DSelected.add(shapePicked);
+                    Universe3DController.shape3DSelected.add(surfacePicked);
                     // Add this mesh to the list of the meshes selected.
                     Universe3DController.meshSelected.add(meshView);
 
@@ -467,7 +461,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
             {
                 // If the shape3D picked is in the list of the shape3Ds
                 // selected.
-                if (Universe3DController.shape3DSelected.contains(shapePicked))
+                if (Universe3DController.shape3DSelected.contains(surfacePicked))
                 {
                     // If the shape3D picked is not the only one in the list
                     // of the shape3Ds selected.
@@ -477,7 +471,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                         // shape3Ds selected.
                         for (Shape3D shapeSelected : Universe3DController.shape3DSelected)
                         {
-                            this.unselectShape3D(shapeSelected);
+                            this.selectOrUnselectSurface(shapeSelected);
                         }
                         // Unselect all the meshes of triangles in the list
                         // of the meshes selected.
@@ -500,7 +494,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                         // Clear the list of the shape3Ds selected and add
                         // the shape3D picked to the list.
                         Universe3DController.shape3DSelected.clear();
-                        Universe3DController.shape3DSelected.add(shapePicked);
+                        Universe3DController.shape3DSelected.add(surfacePicked);
 
                         // Clear the list of the meshes selected and add the
                         // mesh picked to the list.
@@ -509,7 +503,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
                         // Select this shape3D.Change the material to
                         // matSelect.
-                        this.selectShape3D(shapePicked);
+                        this.selectShape3D(surfacePicked);
 
                         // If the mesh picked is a mesh of triangles,change
                         // the
@@ -548,7 +542,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                     {
                         // Unselect this shape3D.Change the material to
                         // matUnSelect.
-                        this.unselectShape3D(shapePicked);
+                        this.selectOrUnselectSurface(surfacePicked);
                         // Clear the list of the shape3Ds selected.
                         Universe3DController.shape3DSelected.clear();
                         // Clear the list of the meshes selected.
@@ -579,7 +573,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                     // selected.
                     for (Shape3D shapeSelected : Universe3DController.shape3DSelected)
                     {
-                        this.unselectShape3D(shapeSelected);
+                        this.selectOrUnselectSurface(shapeSelected);
                     }
                     // Unselect all the meshes in the list of
                     // the meshes selected.
@@ -598,13 +592,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                     // Clear the list of the shape3Ds selected and add the
                     // shape3D picked to the list.
                     Universe3DController.shape3DSelected.clear();
-                    Universe3DController.shape3DSelected.add(shapePicked);
+                    Universe3DController.shape3DSelected.add(surfacePicked);
                     // Clear the list of the meshes selected and add the
                     // mesh picked to the list.
                     Universe3DController.meshSelected.clear();
                     Universe3DController.meshSelected.add(meshView);
                     // Select this shape3D.Change the material to matSelect.
-                    this.selectShape3D(shapePicked);
+                    this.selectShape3D(surfacePicked);
                     // If the mesh picked is a mesh of triangles,change the
                     // select condition of this mesh picked to
                     // select.
