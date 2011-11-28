@@ -3,22 +3,22 @@ package fr.nantes1900.view.display3d;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.j3d.AmbientLight;
+import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Group;
-import javax.media.j3d.Shape3D;
+import javax.media.j3d.ImageComponent2D;
+import javax.media.j3d.Material;
+import javax.media.j3d.Texture2D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
-
 import javax.swing.JPanel;
-
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
@@ -26,11 +26,13 @@ import javax.vecmath.Vector3f;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
+import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
 import fr.nantes1900.control.display3d.NewMouseRotate;
 import fr.nantes1900.control.display3d.Universe3DController;
+import fr.nantes1900.models.extended.Surface;
 
 /**
  * TODO.
@@ -52,6 +54,11 @@ public class Universe3DView extends JPanel {
 	 * TODO.
 	 */
 	private List<PolygonView> polygonsList = new ArrayList<>();
+	
+    /**
+     * The list to save all the surfaceView.
+     */
+    private ArrayList<SurfaceView>    surfaceViewList     = new ArrayList<>();
 
 	/**
 	 * The Universe3DController attached.
@@ -68,9 +75,20 @@ public class Universe3DView extends JPanel {
 	 */
 	private MeshShowable meshShowable;
 
+	
 	/**
-	 * The first transformGroup of the universe.
-	 */
+     * The material of the mesh non-selected.
+     */
+    public static final Material matSelected = new Material(new Color3f(1.0f,
+            1.0f, 1.0f), new Color3f(1.0f, 1.0f, 1.0f),
+            new Color3f(Color.white), new Color3f(Color.white), 64);
+    
+    /**
+     * The material of the mesh selected.
+     */
+    public static final Material matUnSelected = new Material(new Color3f(0.2f,
+            0.0f, 0.2f), new Color3f(0.0f, 0.0f, 0.0f),
+            new Color3f(Color.blue), new Color3f(Color.blue), 64);
 
 	/**
 	 * Creates a new universe.
@@ -105,30 +123,50 @@ public class Universe3DView extends JPanel {
 	 *            TODO.
 	 */
 
-	public final void addMesh(final ArrayList<MeshView> meshView) {
-		TransformGroup transformGroup = createTransformGroup(meshView);
-		this.simpleUniverse.addBranchGraph(this
-				.createSceneGraph(transformGroup));
+	public final void addSurface(final ArrayList<Surface> surfaces) {
+	   if(this.u3DController.displayMode."mesh"){
+	       this.displayMeshes(surfaces);
+	   }
+	   else{
+	       this.displayPolygons(surfaces);
+	   }
 
-		translateCamera(meshView.get(0).getCentroid().getX(), meshView.get(0)
-				.getCentroid().getY(),
-				meshView.get(0).getCentroid().getZ() + 30);
-		// changing the rotation center
-		this.u3DController.getMouseRotate().setCenter(
-				new Point3d(meshView.get(0).getCentroid().getX(), meshView
-						.get(0).getCentroid().getY(), meshView.get(0)
-						.getCentroid().getZ()));
+        TransformGroup transformGroup = createTransformGroup(this.surfaceViewList);
+        this.simpleUniverse.addBranchGraph(this
+                .createSceneGraph(transformGroup));
+
+        if (this.u3DController.displayMode == "mesh")
+        {
+            translateCamera(surfaces.get(0).getMesh().xAverage(),
+                    surfaces.get(0).getMesh().yAverage(), surfaces.get(0)
+                            .getMesh().zAverage() + 30);
+            // changing the rotation center
+            this.u3DController.getMouseRotate().setCenter(
+                    new Point3d(surfaces.get(0).getMesh().xAverage(), surfaces
+                            .get(0).getMesh().yAverage(), surfaces.get(0)
+                            .getMesh().zAverage()));
+        }
+        else{
+            translateCamera(surfaces.get(0).getPolygone().xAverage(),
+                    surfaces.get(0).getPolygone().yAverage(), surfaces.get(0)
+                            .getPolygone().zAverage() + 30);
+            // changing the rotation center
+            this.u3DController.getMouseRotate().setCenter(
+                    new Point3d(surfaces.get(0).getPolygone().xAverage(), surfaces
+                            .get(0).getPolygone().yAverage(), surfaces.get(0)
+                            .getPolygone().zAverage()));
+        }
+		
+//		translateCamera(surfaces.get(0)..get(0).getCentroid().getX(), meshView.get(0)
+//				.getCentroid().getY(),
+//				meshView.get(0).getCentroid().getZ() + 30);
+//		// changing the rotation center
+//		this.u3DController.getMouseRotate().setCenter(
+//				new Point3d(meshView.get(0).getCentroid().getX(), meshView
+//						.get(0).getCentroid().getY(), meshView.get(0)
+//						.getCentroid().getZ()));
 	}
 
-	/**
-	 * Adds a mesh to the things displayed...
-	 * 
-	 * @param polygonView
-	 *            TODO.
-	 */
-	public void addPolygonView(final PolygonView polygonView) {
-		// TODO Auto-generated method stub
-	}
 
 	/**
 	 * Removes everything displayed !
@@ -188,7 +226,7 @@ public class Universe3DView extends JPanel {
 	 */
 
 	private TransformGroup createTransformGroup(
-			final ArrayList<MeshView> meshView) {
+			final ArrayList<SurfaceView> surfaceView) {
 		BoundingSphere boundingSphere = new BoundingSphere(new Point3d(0.0,
 				0.0, 0.0), 100000);
 
@@ -212,15 +250,34 @@ public class Universe3DView extends JPanel {
 		rotationGroup.addChild(translationGroup2);
 
 		BranchGroup sceneRoot = new BranchGroup();
+		
+		//Read the texture.
+		TextureLoader loader = new TextureLoader("texture.jpg",null);
+		ImageComponent2D image = loader.getImage();
+		Texture2D texture = new Texture2D(Texture2D.BASE_LEVEL, Texture2D.RGB,
+                image.getWidth(), image.getHeight());
+		texture.setImage(0, image);
 
-		this.meshShowable.getMeshList().clear();
-		this.meshShowable.getShape3D().clear();
-		for (MeshView mesh : meshView) {
-			this.meshShowable.addMeshView(mesh);
-		}
+		//Create the appearance.
+		Appearance app = new Appearance();
 
-		for (Shape3D shape : this.meshShowable.getShape3D()) {
-			sceneRoot.addChild(shape);
+        app.setCapability(Appearance.ALLOW_MATERIAL_READ);
+        app.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
+
+        
+		
+//		for (MeshView mesh : meshView) {
+//			SurfaceView surfaceView=new SurfaceView();
+//			surfaceView.setMeshView(mesh);
+//			surfaceView.setTexture(texture);
+//			surfaceView.setMaterial()
+//			this.surfaceView.add(surfaceView);
+//			
+//		}
+
+
+		for(SurfaceView surface: this.surfaceViewList){
+		    sceneRoot.addChild(surface);
 		}
 
 		translationGroup2.addChild(sceneRoot);
@@ -308,5 +365,23 @@ public class Universe3DView extends JPanel {
 		// Set the position of the camera.
 		cameraTranslation.setTranslation(new Vector3d(x, y, z));
 		cameraTransformGroup.setTransform(cameraTranslation);
+	}
+	
+	public void displayMeshes(ArrayList<Surface> surfacesList){
+	    for(Surface surface: surfacesList){
+	        SurfaceView surfaceView = new SurfaceView();
+	        MeshView meshView=new MeshView(surface.getMesh());
+	        surfaceView.setMeshView(meshView);	 
+	        this.surfaceViewList.add(surfaceView);
+	    }
+	}
+	
+	public void displayPolygons(ArrayList<Surface> surfacesList){
+	    for(Surface surface: surfacesList){
+	        SurfaceView surfaceView = new SurfaceView();
+	        PolygonView polygonView = new PolygonView(surface.getPolygone());
+	        surfaceView.setPolygonView(polygonView);
+	        this.surfaceViewList.add(surfaceView);
+	    }
 	}
 }
