@@ -3,14 +3,13 @@
  */
 package fr.nantes1900.view.isletprocess;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JTabbedPane;
+import javax.swing.JToolBar;
 
 import fr.nantes1900.view.components.PFrame;
 import fr.nantes1900.view.display3d.Universe3DView;
@@ -31,10 +30,11 @@ public class IsletProcessView extends PFrame
     private ParametersView     pView;
     private Universe3DView     u3DView;
     private JTabbedPane        tabs;
+    private JToolBar            toolbar;
 
     public IsletProcessView(CharacteristicsView caracteristicsView,
             IsletTreeView isletTreeView, NavigationBarView navigationBarView,
-            ParametersView parametersView, Universe3DView universe3dView)
+            ParametersView parametersView, Universe3DView universe3dView, JToolBar toolbarView)
     {
         super();
         this.setMinimumSize(new Dimension(960, 760));
@@ -46,6 +46,7 @@ public class IsletProcessView extends PFrame
         this.nbView = navigationBarView;
         this.pView = parametersView;
         this.u3DView = universe3dView;
+        this.toolbar = toolbarView;
         this.tabs = new JTabbedPane();
         this.tabs.addTab("Paramètres", pView);
         this.tabs.addTab("Arbre", itView);
@@ -69,8 +70,13 @@ public class IsletProcessView extends PFrame
                         GridBagConstraints.CENTER, GridBagConstraints.NONE,
                         new Insets(5, 5, 5, 10), 0, 0));
         this.pComponents.add(
+                toolbar,
+                new GridBagConstraints(1, 2, 1, 1, 0.60, 0.05,
+                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                        new Insets(5, 5, 10, 10), 0, 0));
+        this.pComponents.add(
                 cView,
-                new GridBagConstraints(1, 2, 1, 1, 0.60, 0.20,
+                new GridBagConstraints(1, 3, 1, 1, 0.60, 0.15,
                         GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                         new Insets(5, 5, 10, 10), 0, 0));
     }

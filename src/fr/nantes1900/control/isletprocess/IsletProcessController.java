@@ -33,6 +33,8 @@ public class IsletProcessController implements ElementsSelectedListener
      * The window containing all the needed panels to process an islet.
      */
     private IsletProcessView          ipView;
+    
+    private Functions3DToolbarController f3DController;
 
     /**
      * Controller of the current characteristic panel.
@@ -94,6 +96,7 @@ public class IsletProcessController implements ElementsSelectedListener
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
         this.pController = new ParametersController(this);
+        this.f3DController = new Functions3DToolbarController(this);
         this.u3DController = new Universe3DController();
         this.biController.setUniverse3DController(u3DController);
         this.biController.display();
@@ -101,7 +104,7 @@ public class IsletProcessController implements ElementsSelectedListener
         // creates the windiw with all needed panels
         this.ipView = new IsletProcessView(cController.getView(),
                 itController.getView(), nbController.getView(),
-                pController.getView(), u3DController.getUniverse3DView());
+                pController.getView(), u3DController.getUniverse3DView(), this.f3DController.getToolbar());
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
     }
