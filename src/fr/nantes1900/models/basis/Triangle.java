@@ -51,8 +51,12 @@ public class Triangle
      * @param normalNew
      *            the normal of the triangle
      */
-    public Triangle(final Point point0, final Point point1, final Point point2,
-            final Edge edge1, final Edge edge2, final Edge edge3,
+    public Triangle(final Point point0,
+            final Point point1,
+            final Point point2,
+            final Edge edge1,
+            final Edge edge2,
+            final Edge edge3,
             final Vector3d normalNew)
     {
 
@@ -339,12 +343,13 @@ public class Triangle
      * @return true if the first point of the triangle is located between those
      *         two planes, false otherwise.
      */
-    public final boolean isInPlanes(final Vector3d vect, final Point p,
+    public final boolean isInPlanes(final Vector3d vect,
+            final Point p,
             final double error)
     {
 
-        final Edge axisNormalGround = new Edge(new Point(0, 0, 0), new Point(
-                vect.x, vect.y, vect.z));
+        final Edge axisNormalGround = new Edge(new Point(0, 0, 0),
+                new Point(vect.x, vect.y, vect.z));
 
         final Point pAverage = axisNormalGround.project(p);
 
@@ -430,8 +435,11 @@ public class Triangle
     @Override
     public final String toString()
     {
-        return this.points[0].toString() + "\n" + this.points[1].toString()
-                + "\n" + this.points[2].toString() + "\n"
+        return this.points[0].toString() + "\n"
+                + this.points[1].toString()
+                + "\n"
+                + this.points[2].toString()
+                + "\n"
                 + this.normal.toString();
     }
 
@@ -441,8 +449,7 @@ public class Triangle
      */
     public final double xAverage()
     {
-        return (this.points[0].getX() + this.points[1].getX() + this.points[2]
-                .getX()) / Triangle.NB_VERTICES;
+        return (this.points[0].getX() + this.points[1].getX() + this.points[2].getX()) / Triangle.NB_VERTICES;
     }
 
     /**
@@ -451,8 +458,8 @@ public class Triangle
      */
     public final double xMax()
     {
-        return Math.max(this.points[0].getX(),
-                Math.max(this.points[1].getX(), this.points[2].getX()));
+        return Math.max(this.points[0].getX(), Math.max(this.points[1].getX(),
+                this.points[2].getX()));
     }
 
     /**
@@ -478,8 +485,8 @@ public class Triangle
      */
     public final double xMin()
     {
-        return Math.min(this.points[0].getX(),
-                Math.min(this.points[1].getX(), this.points[2].getX()));
+        return Math.min(this.points[0].getX(), Math.min(this.points[1].getX(),
+                this.points[2].getX()));
     }
 
     /**
@@ -505,8 +512,7 @@ public class Triangle
      */
     public final double yAverage()
     {
-        return (this.points[0].getY() + this.points[1].getY() + this.points[2]
-                .getY()) / Triangle.NB_VERTICES;
+        return (this.points[0].getY() + this.points[1].getY() + this.points[2].getY()) / Triangle.NB_VERTICES;
     }
 
     /**
@@ -515,8 +521,8 @@ public class Triangle
      */
     public final double yMax()
     {
-        return Math.max(this.points[0].getY(),
-                Math.max(this.points[1].getY(), this.points[2].getY()));
+        return Math.max(this.points[0].getY(), Math.max(this.points[1].getY(),
+                this.points[2].getY()));
     }
 
     /**
@@ -542,8 +548,8 @@ public class Triangle
      */
     public final double yMin()
     {
-        return Math.min(this.points[0].getY(),
-                Math.min(this.points[1].getY(), this.points[2].getY()));
+        return Math.min(this.points[0].getY(), Math.min(this.points[1].getY(),
+                this.points[2].getY()));
     }
 
     /**
@@ -580,8 +586,8 @@ public class Triangle
      */
     public final double zMax()
     {
-        return Math.max(this.points[0].getZ(),
-                Math.max(this.points[1].getZ(), this.points[2].getZ()));
+        return Math.max(this.points[0].getZ(), Math.max(this.points[1].getZ(),
+                this.points[2].getZ()));
     }
 
     /**
@@ -607,8 +613,8 @@ public class Triangle
      */
     public final double zMin()
     {
-        return Math.min(this.points[0].getZ(),
-                Math.min(this.points[1].getZ(), this.points[2].getZ()));
+        return Math.min(this.points[0].getZ(), Math.min(this.points[1].getZ(),
+                this.points[2].getZ()));
     }
 
     /**

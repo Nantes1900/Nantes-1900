@@ -369,7 +369,7 @@ public class BuildingsIsletController
      */
     public final void display()
     {
-        this.u3DController.getUniverse3DView().clearAllMeshes();
+        this.u3DController.getUniverse3DView().clearAll();
 
         try
         {
@@ -858,12 +858,12 @@ public class BuildingsIsletController
             for (Surface wall : buildingStep.getWalls())
             {
                 this.getU3DController().getUniverse3DView()
-                        .addPolygonView(new PolygonView(wall.getPolygone()));
+                        .addPolygonView(new PolygonView(wall.getPolygon()));
             }
             for (Surface roof : buildingStep.getRoofs())
             {
                 this.getU3DController().getUniverse3DView()
-                        .addPolygonView(new PolygonView(roof.getPolygone()));
+                        .addPolygonView(new PolygonView(roof.getPolygon()));
             }
         }
         // TODO : displays with other colors the surfaces not well computed.

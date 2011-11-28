@@ -10,23 +10,21 @@ import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.Shape3D;
-
+import javax.swing.event.EventListenerList;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
-import javax.swing.event.EventListenerList;
 
 import com.sun.j3d.utils.picking.PickCanvas;
 import com.sun.j3d.utils.picking.PickIntersection;
 import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.picking.PickTool;
 
+import fr.nantes1900.control.isletprocess.IsletProcessController;
 import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
-
 import fr.nantes1900.view.display3d.MeshView;
-import fr.nantes1900.view.display3d.TriangleView;
 import fr.nantes1900.view.display3d.PolygonView;
 import fr.nantes1900.view.display3d.Universe3DView;
 
@@ -44,61 +42,27 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	/**
 	 * The canvas used to pick.
 	 */
-	private PickCanvas pickCanvas;
-	/**
-	 * The controller to change the center of rotation.
-	 */
-	private NewMouseRotate mouseRotate;
+    private PickCanvas               pickCanvas;
+    /**
+     * The controller to change the center of rotation.
+     */
+    private NewMouseRotate           mouseRotate;
 
-	//
-	private IsletSelectionController parentController;
+    private IsletSelectionController parentController;
 
-	private final EventListenerList listeners = new EventListenerList();
+    private final EventListenerList  listeners            = new EventListenerList();
+    /**
+     * The MeshView selected each time.
+     */
+    private MeshView                 MeshView;
 
-	// private ArrayList<MeshView> meshesViewSelected;
-	/**
-	 * A list of all the triangles selected.
-	 */
-	private ArrayList<TriangleView> trianglesViewSelected;
+    public static final int          DISPLAY_MESH_MODE    = 1;
 
-	/**
-	 * A list of all the meshes selected.
-	 */
-	private ArrayList<MeshView> triangleMesh = new ArrayList<>();
-	// private ArrayList<PolygonView> polygonsViewSelected;
-	/**
-	 * The x coordinate of the mouse on the screen.
-	 */
-	private int xPressed;
-	/**
-	 * The y coordinate of the mouse on the screen.
-	 */
-	private int yPressed;
+    public static final int          DISPLAY_POLYGON_MODE = 2;
 
+    private int                      displayMode;
 
-	/**
-	 * 
-	 */
-	private List<Integer> trianglePicked = new ArrayList<Integer>();
-	/**
-	 * 
-	 */
-	private ArrayList<Integer> selectedIndex = new ArrayList<Integer>();
-
-	/**
-	 * The MeshView selected each time.
-	 */
-	private MeshView MeshView;
-
-	/**
-	 * The MeshView selected in the last time.
-	 */
-	public static ArrayList<Object> meshSelected = new ArrayList<Object>();
-
-	/**
-	 * The Shape3D selected in the last time.
-	 */
-	public static ArrayList<Shape3D> shape3DSelected = new ArrayList<Shape3D>();
+    private List<Triangle>           trianglesSelected    = new ArrayList<Triangle>();
 	
 	
 	

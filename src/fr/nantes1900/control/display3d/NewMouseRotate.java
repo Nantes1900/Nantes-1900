@@ -16,7 +16,7 @@ import javax.vecmath.Vector3d;
 import com.sun.j3d.utils.behaviors.mouse.MouseBehaviorCallback;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 
-import fr.nantes1900.view.display3d.TriangleView;
+import fr.nantes1900.models.basis.Point;
 
 // FIXME : Javadoc
 public class NewMouseRotate extends MouseRotate
@@ -34,8 +34,7 @@ public class NewMouseRotate extends MouseRotate
     private Transform3D           translation2 = new Transform3D();
     private Point3d               center;
 
-    public NewMouseRotate(TransformGroup TG1,
-            TransformGroup TG2,
+    public NewMouseRotate(TransformGroup TG1, TransformGroup TG2,
             TransformGroup TG3)
     {
         super();
@@ -50,12 +49,12 @@ public class NewMouseRotate extends MouseRotate
         int dx, dy;
 
         processMouseEvent(evt);
-        if (((this.buttonPress) && ((this.flags & MANUAL_WAKEUP) == 0)) || ((this.wakeUp) && ((this.flags & MANUAL_WAKEUP) != 0)))
+        if (((this.buttonPress) && ((this.flags & MANUAL_WAKEUP) == 0))
+                || ((this.wakeUp) && ((this.flags & MANUAL_WAKEUP) != 0)))
         {
             id = evt.getID();
             if ((id == MouseEvent.MOUSE_DRAGGED) && !evt.isMetaDown()
-                    && !evt.isAltDown()
-                    && !evt.isShiftDown())
+                    && !evt.isAltDown() && !evt.isShiftDown())
             {
                 this.x = evt.getX();
                 this.y = evt.getY();
@@ -90,8 +89,7 @@ public class NewMouseRotate extends MouseRotate
                     }
 
                     // Set old translation back
-                    Vector3d translation = new Vector3d(mat.m03,
-                            mat.m13,
+                    Vector3d translation = new Vector3d(mat.m03, mat.m13,
                             mat.m23);
                     this.currXform.setTranslation(translation);
 
@@ -102,8 +100,8 @@ public class NewMouseRotate extends MouseRotate
 
                     if (this.callback != null)
                     {
-                        this.callback.transformChanged(MouseBehaviorCallback.ROTATE,
-                                this.currXform);
+                        this.callback.transformChanged(
+                                MouseBehaviorCallback.ROTATE, this.currXform);
                     }
                 } else
                 {
@@ -154,8 +152,7 @@ public class NewMouseRotate extends MouseRotate
                     Vector3d vector1 = new Vector3d();
                     Vector3d vector2 = new Vector3d();
                     vector1.set(centerpoint.x, centerpoint.y, centerpoint.z);
-                    vector2.set(-this.center.getX(),
-                            -this.center.getY(),
+                    vector2.set(-this.center.getX(), -this.center.getY(),
                             -this.center.getZ());
 
                     this.translation1.setTranslation(vector1);
@@ -180,7 +177,8 @@ public class NewMouseRotate extends MouseRotate
                         }
                         evt = (MouseEvent) this.mouseq.remove(0);
                         // consolidate MOUSE_DRAG events
-                        while ((evt.getID() == MouseEvent.MOUSE_DRAGGED) && !this.mouseq.isEmpty()
+                        while ((evt.getID() == MouseEvent.MOUSE_DRAGGED)
+                                && !this.mouseq.isEmpty()
                                 && (((MouseEvent) this.mouseq.get(0)).getID() == MouseEvent.MOUSE_DRAGGED))
                         {
                             evt = (MouseEvent) this.mouseq.remove(0);
@@ -196,31 +194,10 @@ public class NewMouseRotate extends MouseRotate
 
     /**
      * TODO.
-     * @param centerIn
-     *            TODO
+     * @param new Point3d(centroid.getX(), centroid.getY() TODO
      */
-    public final void setCenter(final Point3d centerIn)
+    public final void setCenter(final Point point)
     {
-        this.center = centerIn;
-    }
-
-    /**
-     * TODO.
-     * @param triangle
-     *            TODO
-     */
-    public final void setCenter(final TriangleView triangle)
-    {
-        double x, y, z;
-        x = (triangle.getTriangle().getP1().getX() + triangle.getTriangle()
-                .getP2()
-                .getX() + triangle.getTriangle().getP3().getX()) / 3;
-        y = (triangle.getTriangle().getP1().getY() + triangle.getTriangle()
-                .getP2()
-                .getY() + triangle.getTriangle().getP3().getY()) / 3;
-        z = (triangle.getTriangle().getP1().getZ() + triangle.getTriangle()
-                .getP2()
-                .getZ() + triangle.getTriangle().getP3().getZ()) / 3;
-        setCenter(new Point3d(x, y, z));
+        this.center = new Point3d(point.getX(), point.getY(), point.getZ());
     }
 }

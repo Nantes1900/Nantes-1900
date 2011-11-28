@@ -3,22 +3,21 @@ package fr.nantes1900.view.display3d;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-
 import java.util.ArrayList;
-import java.util.List;
 
 import javax.media.j3d.AmbientLight;
+import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Group;
-import javax.media.j3d.Shape3D;
+import javax.media.j3d.ImageComponent2D;
+import javax.media.j3d.Material;
+import javax.media.j3d.Texture2D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
-
 import javax.swing.JPanel;
-
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
@@ -26,287 +25,318 @@ import javax.vecmath.Vector3f;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
+import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
 import fr.nantes1900.control.display3d.NewMouseRotate;
 import fr.nantes1900.control.display3d.Universe3DController;
+import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Polygon;
+import fr.nantes1900.models.extended.Surface;
 
 /**
  * TODO.
- * 
  * @author TODO.
  */
-public class Universe3DView extends JPanel {
+public class Universe3DView extends JPanel
+{
 
-	/**
-	 * Version ID.
-	 */
-	private static final long serialVersionUID = 1L;
+    /**
+     * Version ID.
+     */
+    private static final long      serialVersionUID    = 1L;
 
-	/**
-	 * TODO.
-	 */
-	private List<MeshView> meshesList = new ArrayList<>();
-	/**
-	 * TODO.
-	 */
-	private List<PolygonView> polygonsList = new ArrayList<>();
+    /**
+     * The list to save all the surfaceView.
+     */
+    private ArrayList<SurfaceView> surfaceViewList     = new ArrayList<>();
 
-	/**
-	 * The Universe3DController attached.
-	 */
-	private Universe3DController u3DController;
+    /**
+     * The Universe3DController attached.
+     */
+    private Universe3DController   u3DController;
 
-	/**
-	 * The universe.
-	 */
-	private SimpleUniverse simpleUniverse;
+    /**
+     * The universe.
+     */
+    private SimpleUniverse         simpleUniverse;
 
-	/**
-	 * A class to save the mesh.
-	 */
-	private MeshShowable meshShowable;
+    /**
+     * The material of the mesh non-selected.
+     */
+    public static final Material   MATERIAL_SELECTED   = new Material(
+                                                               new Color3f(
+                                                                       1.0f,
+                                                                       1.0f,
+                                                                       1.0f),
+                                                               new Color3f(
+                                                                       1.0f,
+                                                                       1.0f,
+                                                                       1.0f),
+                                                               new Color3f(
+                                                                       Color.white),
+                                                               new Color3f(
+                                                                       Color.white),
+                                                               64);
 
-	/**
-	 * The first transformGroup of the universe.
-	 */
+    /**
+     * The material of the mesh selected.
+     */
+    public static final Material   MATERIAL_UNSELECTED = new Material(
+                                                               new Color3f(
+                                                                       0.2f,
+                                                                       0.0f,
+                                                                       0.2f),
+                                                               new Color3f(
+                                                                       0.0f,
+                                                                       0.0f,
+                                                                       0.0f),
+                                                               new Color3f(
+                                                                       Color.blue),
+                                                               new Color3f(
+                                                                       Color.blue),
+                                                               64);
 
-	/**
-	 * Creates a new universe.
-	 * 
-	 * @param u3DControllerIn
-	 *            TODO.
-	 */
-	public Universe3DView(final Universe3DController u3DControllerIn) {
+    /**
+     * Creates a new universe.
+     * @param u3DControllerIn
+     *            TODO.
+     */
+    public Universe3DView(final Universe3DController u3DControllerIn)
+    {
 
-		this.meshShowable = new MeshShowable();
+        this.u3DController = u3DControllerIn;
+        this.setLayout(new BorderLayout());
 
-		this.u3DController = u3DControllerIn;
-		this.setLayout(new BorderLayout());
+        Canvas3D c = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
+        this.add(c, BorderLayout.CENTER);
 
-		Canvas3D c = new Canvas3D(SimpleUniverse.getPreferredConfiguration());
-		this.add(c, BorderLayout.CENTER);
+        // Setups the SimpleUniverse, attachss the Canvas3D
+        this.simpleUniverse = new SimpleUniverse(c);
 
-		// Setups the SimpleUniverse, attachss the Canvas3D
-		this.simpleUniverse = new SimpleUniverse(c);
+        // Size to show the panel while there is nothing to show
+        this.setMinimumSize(new Dimension(600, 600));
+        this.setPreferredSize(new Dimension(600, 600));
 
-		// Size to show the panel while there is nothing to show
-		this.setMinimumSize(new Dimension(600, 600));
-		this.setPreferredSize(new Dimension(600, 600));
+        // this.transformGroup = createTransformGroup();
+    }
 
-		// this.transformGroup = createTransformGroup();
-	}
+    /**
+     * Adds a mesh to the things displayed...
+     * @param meshView
+     *            TODO.
+     */
 
-	/**
-	 * Adds a mesh to the things displayed...
-	 * 
-	 * @param meshView
-	 *            TODO.
-	 */
+    public final void addSurface(final ArrayList<Surface> surfaces)
+    {
+        if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
+        {
+            this.displayMeshes(surfaces);
+        } else if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_POLYGON_MODE)
+        {
+            this.displayPolygons(surfaces);
+        } else
+        {
+            System.out.println("Problem");
+            // TODO : maybe throw an exception.
+        }
 
-	public final void addMesh(final ArrayList<MeshView> meshView) {
-		TransformGroup transformGroup = createTransformGroup(meshView);
-		this.simpleUniverse.addBranchGraph(this
-				.createSceneGraph(transformGroup));
+        TransformGroup transformGroup = createTransformGroup(this.surfaceViewList);
+        this.simpleUniverse.addBranchGraph(this
+                .createSceneGraph(transformGroup));
 
-		translateCamera(meshView.get(0).getCentroid().getX(), meshView.get(0)
-				.getCentroid().getY(),
-				meshView.get(0).getCentroid().getZ() + 30);
-		// changing the rotation center
-		this.u3DController.getMouseRotate().setCenter(
-				new Point3d(meshView.get(0).getCentroid().getX(), meshView
-						.get(0).getCentroid().getY(), meshView.get(0)
-						.getCentroid().getZ()));
-	}
+        // Computes the centroid of the first surface.
+        Point centroid;
+        if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
+        {
+            centroid = surfaces.get(0).getMesh().getCentroid();
+        } else
+        {
+            Polygon polygon = surfaces.get(0).getPolygon();
+            centroid = new Point(polygon.xAverage(), polygon.yAverage(),
+                    polygon.zAverage());
+        }
 
-	/**
-	 * Adds a mesh to the things displayed...
-	 * 
-	 * @param polygonView
-	 *            TODO.
-	 */
-	public void addPolygonView(final PolygonView polygonView) {
-		// TODO Auto-generated method stub
-	}
+        // Translates the camera.
+        this.translateCamera(centroid.getX(), centroid.getY(),
+                centroid.getZ() + 30);
 
-	/**
-	 * Removes everything displayed !
-	 */
-	public final void clearAllMeshes() {
-		Canvas3D c = this.simpleUniverse.getCanvas();
-		this.simpleUniverse.cleanup();
-		this.simpleUniverse = new SimpleUniverse(c);
-		c.getView().setBackClipDistance(1000);
-	}
+        // Changes the rotation center
+        this.u3DController.getMouseRotate().setCenter(centroid);
+    }
 
-	/**
-	 * TODO.
-	 * 
-	 * @param transformGroup
-	 *            TODO.
-	 * @return TODO.
-	 */
-	private BranchGroup createSceneGraph(final TransformGroup transformGroup) {
-		BranchGroup objRoot = new BranchGroup();
-		objRoot.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
-		objRoot.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+    /**
+     * Removes everything displayed !
+     */
+    public final void clearAll()
+    {
+        Canvas3D c = this.simpleUniverse.getCanvas();
+        this.simpleUniverse.cleanup();
+        this.simpleUniverse = new SimpleUniverse(c);
+        c.getView().setBackClipDistance(1000);
+    }
 
-		objRoot.setCapability(Group.ALLOW_CHILDREN_EXTEND);
-		objRoot.setCapability(Group.ALLOW_CHILDREN_WRITE);
+    /**
+     * TODO.
+     * @param transformGroup
+     *            TODO.
+     * @return TODO.
+     */
+    private BranchGroup createSceneGraph(final TransformGroup transformGroup)
+    {
+        BranchGroup objRoot = new BranchGroup();
+        objRoot.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+        objRoot.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
 
-		this.u3DController.setPickCanvas(objRoot);
+        objRoot.setCapability(Group.ALLOW_CHILDREN_EXTEND);
+        objRoot.setCapability(Group.ALLOW_CHILDREN_WRITE);
 
-		// //////////////// Lights
-		// Light bound
-		BoundingSphere lightBounds = new BoundingSphere(new Point3d(0.0, 0.0,
-				0.0), 100000.0);
-		// Ambient light
-		AmbientLight ambLight = new AmbientLight(true, new Color3f(1.0f, 1.0f,
-				1.0f));
-		ambLight.setInfluencingBounds(lightBounds);
-		// Directional light
-		DirectionalLight headLight = new DirectionalLight(new Color3f(
-				Color.white), new Vector3f(1.0f, -1.0f, -1.0f));
-		headLight.setInfluencingBounds(lightBounds);
+        this.u3DController.setPickCanvas(objRoot);
 
-		objRoot.addChild(ambLight);
-		objRoot.addChild(headLight);
+        // //////////////// Lights
+        // Light bound
+        BoundingSphere lightBounds = new BoundingSphere(new Point3d(0.0, 0.0,
+                0.0), 100000.0);
+        // Ambient light
+        AmbientLight ambLight = new AmbientLight(true, new Color3f(1.0f, 1.0f,
+                1.0f));
+        ambLight.setInfluencingBounds(lightBounds);
+        // Directional light
+        DirectionalLight headLight = new DirectionalLight(new Color3f(
+                Color.white), new Vector3f(1.0f, -1.0f, -1.0f));
+        headLight.setInfluencingBounds(lightBounds);
 
-		objRoot.addChild(transformGroup);
+        objRoot.addChild(ambLight);
+        objRoot.addChild(headLight);
 
-		objRoot.compile();
-		return objRoot;
-	}
+        objRoot.addChild(transformGroup);
 
-	/**
-	 * TODO.
-	 * 
-	 * @param meshView
-	 *            TODO.
-	 * @return TODO.
-	 */
+        objRoot.compile();
+        return objRoot;
+    }
 
-	private TransformGroup createTransformGroup(
-			final ArrayList<MeshView> meshView) {
-		BoundingSphere boundingSphere = new BoundingSphere(new Point3d(0.0,
-				0.0, 0.0), 100000);
+    /**
+     * TODO.
+     * @param meshView
+     *            TODO.
+     * @return TODO.
+     */
 
-		TransformGroup transformGroup = new TransformGroup();
-		transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-		transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+    private TransformGroup createTransformGroup(
+            final ArrayList<SurfaceView> surfaceView)
+    {
+        BoundingSphere boundingSphere = new BoundingSphere(new Point3d(0.0,
+                0.0, 0.0), 100000);
 
-		TransformGroup translationGroup1 = new TransformGroup();
-		translationGroup1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-		translationGroup1.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
-		transformGroup.addChild(translationGroup1);
+        TransformGroup transformGroup = new TransformGroup();
+        transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
 
-		TransformGroup rotationGroup = new TransformGroup();
-		rotationGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-		rotationGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
-		translationGroup1.addChild(rotationGroup);
+        TransformGroup translationGroup1 = new TransformGroup();
+        translationGroup1.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        translationGroup1.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+        transformGroup.addChild(translationGroup1);
 
-		TransformGroup translationGroup2 = new TransformGroup();
-		translationGroup2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
-		translationGroup2.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
-		rotationGroup.addChild(translationGroup2);
+        TransformGroup rotationGroup = new TransformGroup();
+        rotationGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        rotationGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+        translationGroup1.addChild(rotationGroup);
 
-		BranchGroup sceneRoot = new BranchGroup();
+        TransformGroup translationGroup2 = new TransformGroup();
+        translationGroup2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
+        translationGroup2.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
+        rotationGroup.addChild(translationGroup2);
 
-		this.meshShowable.getMeshList().clear();
-		this.meshShowable.getShape3D().clear();
-		for (MeshView mesh : meshView) {
-			this.meshShowable.addMeshView(mesh);
-		}
+        BranchGroup sceneRoot = new BranchGroup();
 
-		for (Shape3D shape : this.meshShowable.getShape3D()) {
-			sceneRoot.addChild(shape);
-		}
+        // Read the texture.
+        TextureLoader loader = new TextureLoader("texture.jpg", null);
+        ImageComponent2D image = loader.getImage();
+        Texture2D texture = new Texture2D(Texture2D.BASE_LEVEL, Texture2D.RGB,
+                image.getWidth(), image.getHeight());
+        texture.setImage(0, image);
 
-		translationGroup2.addChild(sceneRoot);
+        // Create the appearance.
+        Appearance app = new Appearance();
 
-		// Links the left button of the mouse with a rotation transformation
-		NewMouseRotate mouseRotate = new NewMouseRotate(translationGroup1,
-				rotationGroup, translationGroup2);
-		mouseRotate.setSchedulingBounds(boundingSphere);
-		translationGroup2.addChild(mouseRotate);
-		this.u3DController.setMouseRotate(mouseRotate);
+        app.setCapability(Appearance.ALLOW_MATERIAL_READ);
+        app.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
 
-		// Links the middle button of the mouse with a zoom transformation
-		MouseZoom mouseZoom = new MouseZoom();
-		mouseZoom.setFactor(2);
-		mouseZoom.setTransformGroup(transformGroup);
-		transformGroup.addChild(mouseZoom);
-		mouseZoom.setSchedulingBounds(boundingSphere);
+        for (SurfaceView surface : this.surfaceViewList)
+        {
+            sceneRoot.addChild(surface);
+        }
 
-		// Links the right button of the mouse with a translation transformation
-		MouseTranslate mouseTranslate = new MouseTranslate();
-		mouseTranslate.setFactor(1.5);
-		mouseTranslate.setTransformGroup(transformGroup);
-		transformGroup.addChild(mouseTranslate);
-		mouseTranslate.setSchedulingBounds(boundingSphere);
+        translationGroup2.addChild(sceneRoot);
 
-		return transformGroup;
-	}
+        // Links the left button of the mouse with a rotation transformation
+        NewMouseRotate mouseRotate = new NewMouseRotate(translationGroup1,
+                rotationGroup, translationGroup2);
+        mouseRotate.setSchedulingBounds(boundingSphere);
+        translationGroup2.addChild(mouseRotate);
+        this.u3DController.setMouseRotate(mouseRotate);
 
-	/**
-	 * Getter.
-	 * 
-	 * @return the list of meshes
-	 */
-	public final List<MeshView> getMeshesList() {
-		return this.meshesList;
-	}
+        // Links the middle button of the mouse with a zoom transformation
+        MouseZoom mouseZoom = new MouseZoom();
+        mouseZoom.setFactor(2);
+        mouseZoom.setTransformGroup(transformGroup);
+        transformGroup.addChild(mouseZoom);
+        mouseZoom.setSchedulingBounds(boundingSphere);
 
-	/**
-	 * Getter.
-	 * 
-	 * @return the list of polygons
-	 */
-	public final List<PolygonView> getPolygonsList() {
-		return this.polygonsList;
-	}
+        // Links the right button of the mouse with a translation transformation
+        MouseTranslate mouseTranslate = new MouseTranslate();
+        mouseTranslate.setFactor(1.5);
+        mouseTranslate.setTransformGroup(transformGroup);
+        transformGroup.addChild(mouseTranslate);
+        mouseTranslate.setSchedulingBounds(boundingSphere);
 
-	/**
-	 * Getter.
-	 * 
-	 * @return the simple universe
-	 */
-	public final SimpleUniverse getSimpleUniverse() {
-		return this.simpleUniverse;
-	}
+        return transformGroup;
+    }
 
-	/**
-	 * Setter.
-	 * 
-	 * @param simpleUniverseIn
-	 *            the new simple universe
-	 */
-	public final void setSimpleUniverse(final SimpleUniverse simpleUniverseIn) {
-		this.simpleUniverse = simpleUniverseIn;
-	}
+    /**
+     * Translate the position of the camera.
+     * @param x
+     *            The x coordinate of the camera.
+     * @param y
+     *            The y coordinate of the camera.
+     * @param z
+     *            The z coordinate of the camera.
+     */
+    private final void translateCamera(final double x, final double y,
+            final double z)
+    {
+        // Get the camera.
+        ViewingPlatform camera = this.simpleUniverse.getViewingPlatform();
+        TransformGroup cameraTransformGroup = camera.getMultiTransformGroup()
+                .getTransformGroup(0);
 
-	/**
-	 * Translate the position of the camera.
-	 * 
-	 * @param x
-	 *            The x coordinate of the camera.
-	 * @param y
-	 *            The y coordinate of the camera.
-	 * @param z
-	 *            The z coordinate of the camera.
-	 */
-	public final void translateCamera(final double x, final double y,
-			final double z) {
-		// Get the camera.
-		ViewingPlatform camera = this.simpleUniverse.getViewingPlatform();
-		TransformGroup cameraTransformGroup = camera.getMultiTransformGroup()
-				.getTransformGroup(0);
+        Transform3D cameraTranslation = new Transform3D();
+        cameraTransformGroup.getTransform(cameraTranslation);
+        // Set the position of the camera.
+        cameraTranslation.setTranslation(new Vector3d(x, y, z));
+        cameraTransformGroup.setTransform(cameraTranslation);
+    }
 
-		Transform3D cameraTranslation = new Transform3D();
-		cameraTransformGroup.getTransform(cameraTranslation);
-		// Set the position of the camera.
-		cameraTranslation.setTranslation(new Vector3d(x, y, z));
-		cameraTransformGroup.setTransform(cameraTranslation);
-	}
+    private void displayMeshes(ArrayList<Surface> surfacesList)
+    {
+        for (Surface surface : surfacesList)
+        {
+            SurfaceView surfaceView = new SurfaceView();
+            MeshView meshView = new MeshView(surface.getMesh());
+            surfaceView.setMeshView(meshView);
+            this.surfaceViewList.add(surfaceView);
+        }
+    }
+
+    private void displayPolygons(ArrayList<Surface> surfacesList)
+    {
+        for (Surface surface : surfacesList)
+        {
+            SurfaceView surfaceView = new SurfaceView();
+            PolygonView polygonView = new PolygonView(surface.getPolygon());
+            surfaceView.setPolygonView(polygonView);
+            this.surfaceViewList.add(surfaceView);
+        }
+    }
 }
