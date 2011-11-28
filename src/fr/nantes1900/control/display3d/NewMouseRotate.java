@@ -16,6 +16,8 @@ import javax.vecmath.Vector3d;
 import com.sun.j3d.utils.behaviors.mouse.MouseBehaviorCallback;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 
+import fr.nantes1900.models.basis.Point;
+
 // FIXME : Javadoc
 public class NewMouseRotate extends MouseRotate
 {
@@ -192,12 +194,11 @@ public class NewMouseRotate extends MouseRotate
 
     /**
      * TODO.
-     * @param centerIn
-     *            TODO
+     * @param new Point3d(centroid.getX(), centroid.getY() TODO
      */
-    public final void setCenter(final Point3d centerIn)
+    public final void setCenter(final Point point)
     {
-        this.center = centerIn;
+        this.center = new Point3d(point.getX(), point.getY(), point.getZ());
     }
 
 }

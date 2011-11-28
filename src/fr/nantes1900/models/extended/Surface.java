@@ -370,7 +370,7 @@ public class Surface
      * Getter.
      * @return the polygon contained in this
      */
-    public final Polygon getPolygone()
+    public final Polygon getPolygon()
     {
         return this.polygon;
     }

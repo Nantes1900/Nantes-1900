@@ -32,6 +32,8 @@ import com.sun.j3d.utils.universe.ViewingPlatform;
 
 import fr.nantes1900.control.display3d.NewMouseRotate;
 import fr.nantes1900.control.display3d.Universe3DController;
+import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.extended.Surface;
 
 /**
@@ -139,44 +141,46 @@ public class Universe3DView extends JPanel
 
         {
             this.displayMeshes(surfaces);
-        } else
+        } else if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_POLYGON_MODE)
         {
             this.displayPolygons(surfaces);
+        } else
+        {
+            System.out.println("Problem");
+            // TODO : maybe throw an exception.
         }
 
         TransformGroup transformGroup = createTransformGroup(this.surfaceViewList);
         this.simpleUniverse.addBranchGraph(this
                 .createSceneGraph(transformGroup));
 
+        // Computes the centroid of the first surface.
+        Point centroid;
         if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
 
         {
-            translateCamera(surfaces.get(0).getMesh().xAverage(),
-                    surfaces.get(0).getMesh().yAverage(), surfaces.get(0)
-                            .getMesh().zAverage() + TRANSLATION_CAMERA_ZDIRECTION);
-            // changing the rotation center
-            this.u3DController.getMouseRotate().setCenter(
-                    new Point3d(surfaces.get(0).getMesh().xAverage(), surfaces
-                            .get(0).getMesh().yAverage(), surfaces.get(0)
-                            .getMesh().zAverage()));
+
+            centroid = surfaces.get(0).getMesh().getCentroid();
         } else
         {
-            translateCamera(surfaces.get(0).getPolygone().xAverage(), surfaces
-                    .get(0).getPolygone().yAverage(), surfaces.get(0)
-                    .getPolygone().zAverage() + TRANSLATION_CAMERA_ZDIRECTION);
-            // changing the rotation center
-            this.u3DController.getMouseRotate().setCenter(
-                    new Point3d(surfaces.get(0).getPolygone().xAverage(),
-                            surfaces.get(0).getPolygone().yAverage(), surfaces
-                                    .get(0).getPolygone().zAverage()));
+            Polygon polygon = surfaces.get(0).getPolygon();
+            centroid = new Point(polygon.xAverage(), polygon.yAverage(),
+                    polygon.zAverage());
         }
+
+        // Translates the camera.
+        this.translateCamera(centroid.getX(), centroid.getY(),
+                centroid.getZ() + TRANSLATION_CAMERA_ZDIRECTION);
+
+        // Changes the rotation center
+        this.u3DController.getMouseRotate().setCenter(centroid);
 
     }
 
     /**
      * Removes everything displayed !
      */
-    public final void clearAllMeshes()
+    public final void clearAll()
     {
         Canvas3D c = this.simpleUniverse.getCanvas();
         this.simpleUniverse.cleanup();
@@ -270,15 +274,6 @@ public class Universe3DView extends JPanel
         app.setCapability(Appearance.ALLOW_MATERIAL_READ);
         app.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
 
-        // for (MeshView mesh : meshView) {
-        // SurfaceView surfaceView=new SurfaceView();
-        // surfaceView.setMeshView(mesh);
-        // surfaceView.setTexture(texture);
-        // surfaceView.setMaterial()
-        // this.surfaceView.add(surfaceView);
-        //
-        // }
-
         for (SurfaceView surface : this.surfaceViewList)
         {
             sceneRoot.addChild(surface);
@@ -311,25 +306,6 @@ public class Universe3DView extends JPanel
     }
 
     /**
-     * Getter.
-     * @return the simple universe
-     */
-    public final SimpleUniverse getSimpleUniverse()
-    {
-        return this.simpleUniverse;
-    }
-
-    /**
-     * Setter.
-     * @param simpleUniverseIn
-     *            the new simple universe
-     */
-    public final void setSimpleUniverse(final SimpleUniverse simpleUniverseIn)
-    {
-        this.simpleUniverse = simpleUniverseIn;
-    }
-
-    /**
      * Translate the position of the camera.
      * @param x
      *            The x coordinate of the camera.
@@ -338,7 +314,7 @@ public class Universe3DView extends JPanel
      * @param z
      *            The z coordinate of the camera.
      */
-    public final void translateCamera(final double x, final double y,
+    private final void translateCamera(final double x, final double y,
             final double z)
     {
         // Get the camera.
@@ -353,7 +329,7 @@ public class Universe3DView extends JPanel
         cameraTransformGroup.setTransform(cameraTranslation);
     }
 
-    public void displayMeshes(ArrayList<Surface> surfacesList)
+    private void displayMeshes(ArrayList<Surface> surfacesList)
     {
         for (Surface surface : surfacesList)
         {
@@ -364,12 +340,12 @@ public class Universe3DView extends JPanel
         }
     }
 
-    public void displayPolygons(ArrayList<Surface> surfacesList)
+    private void displayPolygons(ArrayList<Surface> surfacesList)
     {
         for (Surface surface : surfacesList)
         {
             SurfaceView surfaceView = new SurfaceView();
-            PolygonView polygonView = new PolygonView(surface.getPolygone());
+            PolygonView polygonView = new PolygonView(surface.getPolygon());
             surfaceView.setPolygonView(polygonView);
             this.surfaceViewList.add(surfaceView);
         }
