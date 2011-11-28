@@ -82,7 +82,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	private List<Integer> trianglePicked = new ArrayList<Integer>();
 	/**
 	 * 
-<<<<<<< HEAD
 	 */
 	private ArrayList<Integer> selectedIndex = new ArrayList<Integer>();
 
@@ -100,6 +99,14 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	 * The Shape3D selected in the last time.
 	 */
 	public static ArrayList<Shape3D> shape3DSelected = new ArrayList<Shape3D>();
+	
+	
+	
+	
+	
+	
+	
+	private ArrayList<Shape3D> SurfaceViewSelected = new ArrayList<>();
 
 	/**
 	 * @param isletSelectionController
@@ -138,242 +145,148 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		return this.u3DView;
 	}
 
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		int buttonDown = e.getButton();
+	private void treatLeftClick(MouseEvent e){
+		this.pickCanvas.setShapeLocation(e);
+		PickResult result = this.pickCanvas.pickClosest();
+		if (result != null) {
+			PickIntersection pickIntersection = result.getIntersection(0);
+			GeometryArray meshView = pickIntersection.getGeometryArray();
 
-		if (buttonDown == MouseEvent.BUTTON1) {
+			// Get the MeshView selected.
+			// this.MeshView = (MeshView) meshView;
+			// Get the shape3D picked.
+			Shape3D shapePicked = (Shape3D) result.getNode(PickResult.SHAPE3D);
+			if (e.isShiftDown()) {
+				// If the shape3D picked is in the list of the shape3Ds
+				// selected,unselect this shape3D.
+				if (Universe3DController.shape3DSelected
+						.contains(shapePicked)) {
+					// Unselect this shape3D.Change the material to
+					// matUnSelect.
+					this.unselectShape3D(shapePicked);
 
-			// left mouse click
-			this.pickCanvas.setShapeLocation(e);
-
-			PickResult result = this.pickCanvas.pickClosest();
-			if (result != null) {
-				PickIntersection pickIntersection = result.getIntersection(0);
-
-				GeometryArray meshView = pickIntersection.getGeometryArray();
-
-				// // Get the MeshView selected.
-				// this.MeshView = (MeshView) meshView;
-				// Get the shape3D picked.
-				Shape3D shapePicked = (Shape3D) result
-						.getNode(PickResult.SHAPE3D);
-				// If shift is pressed down.
-				if (e.isShiftDown()) {
-					// If the shape3D picked is in the list of the shape3Ds
-					// selected,unselect this shape3D.
-					if (Universe3DController.shape3DSelected
-							.contains(shapePicked)) {
-						// Unselect this shape3D.Change the material to
-						// matUnSelect.
-						this.unselectShape3D(shapePicked);
-
-						// If the mesh picked is mesh of triangles.
-						if (meshView.getClass().getSimpleName()
-								.equals("MeshView")) {
-							// Change the select condition of this mesh picked
-							// to
-							// unselect.
-							((MeshView) meshView).unselectMesh();
-						}
-						// If the mesh picked is a polygon.
-						else {
-							((PolygonView) meshView).unselect();
-						}
-
-						// Remove this shape3D from the list of the shape3Ds
-						// selected.
-						Universe3DController.shape3DSelected
-								.remove(shapePicked);
-						// Remove this mesh from the list of the meshes
-						// selected.
-						Universe3DController.meshSelected.remove(meshView);
+					// If the mesh picked is mesh of triangles.
+					if (meshView.getClass().getSimpleName()
+							.equals("MeshView")) {
+						// Change the select condition of this mesh picked
+						// to
+						// unselect.
+						((MeshView) meshView).unselectMesh();
 					}
-					// If the shape3D picked is not in the list of the shape3Ds
-					// selected,select this shape3D.
+					// If the mesh picked is a polygon.
 					else {
-						// Select this shape3D. Change the material to
-						// matSelect.
-						this.selectShape3D(shapePicked);
-						// If the mesh picked is a mesh of triangles.
-						if (meshView.getClass().getSimpleName()
-								.equals("MeshView")) {
-							// Change the select condition of this mesh picked
-							// to
-							// select.
-							((MeshView) meshView).selectMesh();
-							// Set the center ofrotation.
-							Point3d center = new Point3d(((MeshView) meshView)
-									.getCentroid().getX(),
-									((MeshView) meshView).getCentroid().getY(),
-									((MeshView) meshView).getCentroid().getZ());
-							this.mouseRotate.setCenter(center);
-						}
-						// If the mesh picked is a polygon.
-						else {
-							((PolygonView) meshView).select();
-							// Set the center of rotation.
-							Point3d center = new Point3d(
-									((PolygonView) meshView).getCentroid()
-											.getX(), ((PolygonView) meshView)
-											.getCentroid().getY(),
-									((PolygonView) meshView).getCentroid()
-											.getZ());
-							this.mouseRotate.setCenter(center);
-						}
-
-						// Add this shape3D to the list of the shape3Ds
-						// selected.
-						Universe3DController.shape3DSelected.add(shapePicked);
-						// Add this mesh to the list of the meshes selected.
-						Universe3DController.meshSelected.add(meshView);
-
+						((PolygonView) meshView).unselect();
 					}
+
+					// Remove this shape3D from the list of the shape3Ds
+					// selected.
+					Universe3DController.shape3DSelected
+							.remove(shapePicked);
+					// Remove this mesh from the list of the meshes
+					// selected.
+					Universe3DController.meshSelected.remove(meshView);
 				}
-
-				// If the shift is not pressed down.
+				// If the shape3D picked is not in the list of the shape3Ds
+				// selected,select this shape3D.
 				else {
-					// If the shape3D picked is in the list of the shape3Ds
-					// selected.
-					if (Universe3DController.shape3DSelected
-							.contains(shapePicked)) {
-						// If the shape3D picked is not the only one in the list
-						// of the shape3Ds selected.
-						if (Universe3DController.shape3DSelected.size() > 1) {
-							// Unselect all the shape3D in the list of the
-							// shape3Ds selected.
-							for (Shape3D shapeSelected : Universe3DController.shape3DSelected) {
-								this.unselectShape3D(shapeSelected);
-							}
-							// Unselect all the meshes of triangles in the list
-							// of the meshes selected.
-							for (Object meshViewSelected : Universe3DController.meshSelected) {
-								// If the mesh in the list is a mesh of
-								// triangles.
-								if (meshViewSelected.getClass().getSimpleName()
-										.equals("MeshView")) {
-									((MeshView) meshViewSelected)
-											.unselectMesh();
-								}
-								// If the mesh in the list is a polygon.
-								else {
-									((PolygonView) meshViewSelected).unselect();
-								}
-
-							}
-							// Clear the list of the shape3Ds selected and add
-							// the shape3D picked to the list.
-							Universe3DController.shape3DSelected.clear();
-							Universe3DController.shape3DSelected
-									.add(shapePicked);
-
-							// Clear the list of the meshes selected and add the
-							// mesh picked to the list.
-							Universe3DController.meshSelected.clear();
-							Universe3DController.meshSelected.add(meshView);
-
-							// Select this shape3D.Change the material to
-							// matSelect.
-							this.selectShape3D(shapePicked);
-
-							// If the mesh picked is a mesh of triangles,change
-							// the
-							// select condition of this mesh picked to
-							// select.
-							if (meshView.getClass().getSimpleName()
-									.equals("MeshView")) {
-								((MeshView) meshView).selectMesh();
-								// Set the center of rotation.
-								Point3d center = new Point3d(
-										((MeshView) meshView).getCentroid()
-												.getX(), ((MeshView) meshView)
-												.getCentroid().getY(),
-										((MeshView) meshView).getCentroid()
-												.getZ());
-								this.mouseRotate.setCenter(center);
-							}
-							// If the mesh picked is a polygon,change the select
-							// condition of this mesh picked to
-							// select.
-							else {
-								((PolygonView) meshView).select();
-								// Set the center of rotation.
-								Point3d center = new Point3d(
-										((PolygonView) meshView).getCentroid()
-												.getX(),
-										((PolygonView) meshView).getCentroid()
-												.getY(),
-										((PolygonView) meshView).getCentroid()
-												.getZ());
-								this.mouseRotate.setCenter(center);
-							}
-						}
-						// If the shape3D picked is the only one in the list of
-						// the shape3Ds selected.
-						else {
-							// Unselect this shape3D.Change the material to
-							// matUnSelect.
-							this.unselectShape3D(shapePicked);
-							// Clear the list of the shape3Ds selected.
-							Universe3DController.shape3DSelected.clear();
-							// Clear the list of the meshes selected.
-							Universe3DController.meshSelected.clear();
-							// If the mesh picked is a mesh of triangles,change
-							// the
-							// select condition of this mesh picked to
-							// unselect.
-							if (meshView.getClass().getSimpleName()
-									.equals("MeshView")) {
-								((MeshView) meshView).unselectMesh();
-							}
-							// If the mesh picked is a polygon,change the select
-							// condition of this mesh picked to
-							// unselect.
-							else {
-								((PolygonView) meshView).unselect();
-							}
-						}
+					// Select this shape3D. Change the material to
+					// matSelect.
+					this.selectShape3D(shapePicked);
+					// If the mesh picked is a mesh of triangles.
+					if (meshView.getClass().getSimpleName()
+							.equals("MeshView")) {
+						// Change the select condition of this mesh picked
+						// to
+						// select.
+						((MeshView) meshView).selectMesh();
+						// Set the center ofrotation.
+						Point3d center = new Point3d(((MeshView) meshView)
+								.getCentroid().getX(),
+								((MeshView) meshView).getCentroid().getY(),
+								((MeshView) meshView).getCentroid().getZ());
+						this.mouseRotate.setCenter(center);
 					}
-					// If the shape3D picked is not in the list of the shape3Ds
-					// selected.
+					// If the mesh picked is a polygon.
 					else {
-						// Unselect all the shape3D in the list of the shape3Ds
-						// selected.
+						((PolygonView) meshView).select();
+						// Set the center of rotation.
+						Point3d center = new Point3d(
+								((PolygonView) meshView).getCentroid()
+										.getX(), ((PolygonView) meshView)
+										.getCentroid().getY(),
+								((PolygonView) meshView).getCentroid()
+										.getZ());
+						this.mouseRotate.setCenter(center);
+					}
+
+					// Add this shape3D to the list of the shape3Ds
+					// selected.
+					Universe3DController.shape3DSelected.add(shapePicked);
+					// Add this mesh to the list of the meshes selected.
+					Universe3DController.meshSelected.add(meshView);
+
+				}
+			}
+
+			// If the shift is not pressed down.
+			else {
+				// If the shape3D picked is in the list of the shape3Ds
+				// selected.
+				if (Universe3DController.shape3DSelected
+						.contains(shapePicked)) {
+					// If the shape3D picked is not the only one in the list
+					// of the shape3Ds selected.
+					if (Universe3DController.shape3DSelected.size() > 1) {
+						// Unselect all the shape3D in the list of the
+						// shape3Ds selected.
 						for (Shape3D shapeSelected : Universe3DController.shape3DSelected) {
 							this.unselectShape3D(shapeSelected);
 						}
-						// Unselect all the meshes in the list of
-						// the meshes selected.
+						// Unselect all the meshes of triangles in the list
+						// of the meshes selected.
 						for (Object meshViewSelected : Universe3DController.meshSelected) {
+							// If the mesh in the list is a mesh of
+							// triangles.
 							if (meshViewSelected.getClass().getSimpleName()
 									.equals("MeshView")) {
-								((MeshView) meshViewSelected).unselectMesh();
-							} else {
+								((MeshView) meshViewSelected)
+										.unselectMesh();
+							}
+							// If the mesh in the list is a polygon.
+							else {
 								((PolygonView) meshViewSelected).unselect();
 							}
 
 						}
-						// Clear the list of the shape3Ds selected and add the
-						// shape3D picked to the list.
+						// Clear the list of the shape3Ds selected and add
+						// the shape3D picked to the list.
 						Universe3DController.shape3DSelected.clear();
-						Universe3DController.shape3DSelected.add(shapePicked);
+						Universe3DController.shape3DSelected
+								.add(shapePicked);
+
 						// Clear the list of the meshes selected and add the
 						// mesh picked to the list.
 						Universe3DController.meshSelected.clear();
 						Universe3DController.meshSelected.add(meshView);
-						// Select this shape3D.Change the material to matSelect.
+
+						// Select this shape3D.Change the material to
+						// matSelect.
 						this.selectShape3D(shapePicked);
-						// If the mesh picked is a mesh of triangles,change the
+
+						// If the mesh picked is a mesh of triangles,change
+						// the
 						// select condition of this mesh picked to
 						// select.
 						if (meshView.getClass().getSimpleName()
 								.equals("MeshView")) {
 							((MeshView) meshView).selectMesh();
 							// Set the center of rotation.
-							Point3d center = new Point3d(((MeshView) meshView)
-									.getCentroid().getX(),
-									((MeshView) meshView).getCentroid().getY(),
-									((MeshView) meshView).getCentroid().getZ());
+							Point3d center = new Point3d(
+									((MeshView) meshView).getCentroid()
+											.getX(), ((MeshView) meshView)
+											.getCentroid().getY(),
+									((MeshView) meshView).getCentroid()
+											.getZ());
 							this.mouseRotate.setCenter(center);
 						}
 						// If the mesh picked is a polygon,change the select
@@ -384,18 +297,116 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 							// Set the center of rotation.
 							Point3d center = new Point3d(
 									((PolygonView) meshView).getCentroid()
-											.getX(), ((PolygonView) meshView)
-											.getCentroid().getY(),
+											.getX(),
+									((PolygonView) meshView).getCentroid()
+											.getY(),
 									((PolygonView) meshView).getCentroid()
 											.getZ());
 							this.mouseRotate.setCenter(center);
 						}
 					}
+					// If the shape3D picked is the only one in the list of
+					// the shape3Ds selected.
+					else {
+						// Unselect this shape3D.Change the material to
+						// matUnSelect.
+						this.unselectShape3D(shapePicked);
+						// Clear the list of the shape3Ds selected.
+						Universe3DController.shape3DSelected.clear();
+						// Clear the list of the meshes selected.
+						Universe3DController.meshSelected.clear();
+						// If the mesh picked is a mesh of triangles,change
+						// the
+						// select condition of this mesh picked to
+						// unselect.
+						if (meshView.getClass().getSimpleName()
+								.equals("MeshView")) {
+							((MeshView) meshView).unselectMesh();
+						}
+						// If the mesh picked is a polygon,change the select
+						// condition of this mesh picked to
+						// unselect.
+						else {
+							((PolygonView) meshView).unselect();
+						}
+					}
 				}
+				// If the shape3D picked is not in the list of the shape3Ds
+				// selected.
+				else {
+					// Unselect all the shape3D in the list of the shape3Ds
+					// selected.
+					for (Shape3D shapeSelected : Universe3DController.shape3DSelected) {
+						this.unselectShape3D(shapeSelected);
+					}
+					// Unselect all the meshes in the list of
+					// the meshes selected.
+					for (Object meshViewSelected : Universe3DController.meshSelected) {
+						if (meshViewSelected.getClass().getSimpleName()
+								.equals("MeshView")) {
+							((MeshView) meshViewSelected).unselectMesh();
+						} else {
+							((PolygonView) meshViewSelected).unselect();
+						}
 
+					}
+					// Clear the list of the shape3Ds selected and add the
+					// shape3D picked to the list.
+					Universe3DController.shape3DSelected.clear();
+					Universe3DController.shape3DSelected.add(shapePicked);
+					// Clear the list of the meshes selected and add the
+					// mesh picked to the list.
+					Universe3DController.meshSelected.clear();
+					Universe3DController.meshSelected.add(meshView);
+					// Select this shape3D.Change the material to matSelect.
+					this.selectShape3D(shapePicked);
+					// If the mesh picked is a mesh of triangles,change the
+					// select condition of this mesh picked to
+					// select.
+					if (meshView.getClass().getSimpleName()
+							.equals("MeshView")) {
+						((MeshView) meshView).selectMesh();
+						// Set the center of rotation.
+						Point3d center = new Point3d(((MeshView) meshView)
+								.getCentroid().getX(),
+								((MeshView) meshView).getCentroid().getY(),
+								((MeshView) meshView).getCentroid().getZ());
+						this.mouseRotate.setCenter(center);
+					}
+					// If the mesh picked is a polygon,change the select
+					// condition of this mesh picked to
+					// select.
+					else {
+						((PolygonView) meshView).select();
+						// Set the center of rotation.
+						Point3d center = new Point3d(
+								((PolygonView) meshView).getCentroid()
+										.getX(), ((PolygonView) meshView)
+										.getCentroid().getY(),
+								((PolygonView) meshView).getCentroid()
+										.getZ());
+						this.mouseRotate.setCenter(center);
+					}
+				}
 			}
 
 		}
+
+				
+		
+	}
+	
+	
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		int buttonDown = e.getButton();
+
+		if (buttonDown == MouseEvent.BUTTON1) {
+			this.treatLeftClick(e);}
+			
+			
+			
 
 		else if (buttonDown == MouseEvent.BUTTON3) {
 
