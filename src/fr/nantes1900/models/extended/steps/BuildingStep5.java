@@ -27,7 +27,7 @@ public class BuildingStep5 extends AbstractBuildingStep
     /**
      * The mesh representing the noise.
      */
-    private Mesh       noise;
+    private Surface    noise;
 
     /**
      * The list of walls.
@@ -77,8 +77,7 @@ public class BuildingStep5 extends AbstractBuildingStep
             final Mesh fake = new Mesh(m.getMesh());
             wholeListFakes.add(fake);
         }
-        Algos.blockTreatPlanedNoise(wholeListFakes,
-                this.noise,
+        Algos.blockTreatPlanedNoise(wholeListFakes, this.noise.getMesh(),
                 SeparationWallsSeparationRoofs.getPlanesError());
 
         // First we clear the neighbours.
@@ -123,7 +122,7 @@ public class BuildingStep5 extends AbstractBuildingStep
      * Getter.
      * @return the noise
      */
-    public final Mesh getNoise()
+    public final Surface getNoise()
     {
         return this.noise;
     }
@@ -193,7 +192,8 @@ public class BuildingStep5 extends AbstractBuildingStep
      * @param groundIn
      *            the ground as surface used in treatments
      */
-    public final void setArguments(final Mesh noiseIn, final Ground groundIn)
+    public final void
+            setArguments(final Surface noiseIn, final Ground groundIn)
     {
         this.noise = noiseIn;
         this.ground = groundIn;

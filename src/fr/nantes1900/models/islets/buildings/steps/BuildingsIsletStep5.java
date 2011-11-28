@@ -7,6 +7,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
+import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.steps.BuildingStep5;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
@@ -30,13 +31,13 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
     /**
      * The noise used in the algorithms.
      */
-    private Mesh           noise;
+    private Surface        noise;
 
     /**
      * Getter.
      * @return the noise
      */
-    public final Mesh getNoise()
+    public final Surface getNoise()
     {
         return this.noise;
     }
@@ -80,7 +81,8 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      * #launchTreatment()
      */
     @Override
-    public final BuildingsIsletStep6 launchTreatment() throws NullArgumentException
+    public final BuildingsIsletStep6 launchTreatment()
+            throws NullArgumentException
     {
         for (Building b : this.buildings)
         {
@@ -118,14 +120,16 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      * @param groundsIn
      *            the grounds
      */
-    public final void setArguments(final Mesh noiseIn, final Ground groundsIn)
+    public final void
+            setArguments(final Surface noiseIn, final Ground groundsIn)
     {
         this.noise = noiseIn;
         this.grounds = groundsIn;
     }
-    
+
     @Override
-    public String toString(){
-        return super.toString()+"5";
+    public String toString()
+    {
+        return super.toString() + "5";
     }
 }

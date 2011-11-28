@@ -6,7 +6,6 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
@@ -47,12 +46,12 @@ public class Universe3DView extends JPanel
     /**
      * Version ID.
      */
-    private static final long      serialVersionUID    = 1L;
+    private static final long      serialVersionUID              = 1L;
 
     /**
      * The list to save all the surfaceView.
      */
-    private ArrayList<SurfaceView> surfaceViewList     = new ArrayList<>();
+    private ArrayList<SurfaceView> surfaceViewList               = new ArrayList<>();
 
     /**
      * The Universe3DController attached.
@@ -67,44 +66,45 @@ public class Universe3DView extends JPanel
     /**
      * The material of the mesh non-selected.
      */
-    public static final Material   MATERIAL_SELECTED   = new Material(
-                                                               new Color3f(
-                                                                       1.0f,
-                                                                       1.0f,
-                                                                       1.0f),
-                                                               new Color3f(
-                                                                       1.0f,
-                                                                       1.0f,
-                                                                       1.0f),
-                                                               new Color3f(
-                                                                       Color.white),
-                                                               new Color3f(
-                                                                       Color.white),
-                                                               64);
+    public static final Material   MATERIAL_SELECTED             = new Material(
+                                                                         new Color3f(
+                                                                                 1.0f,
+                                                                                 1.0f,
+                                                                                 1.0f),
+                                                                         new Color3f(
+                                                                                 1.0f,
+                                                                                 1.0f,
+                                                                                 1.0f),
+                                                                         new Color3f(
+                                                                                 Color.white),
+                                                                         new Color3f(
+                                                                                 Color.white),
+                                                                         64);
 
     /**
      * The material of the mesh selected.
      */
-    public static final Material   MATERIAL_UNSELECTED = new Material(
-                                                               new Color3f(
-                                                                       0.2f,
-                                                                       0.0f,
-                                                                       0.2f),
-                                                               new Color3f(
-                                                                       0.0f,
-                                                                       0.0f,
-                                                                       0.0f),
-                                                               new Color3f(
-                                                                       Color.blue),
-                                                               new Color3f(
-                                                                       Color.blue),
-                                                               64);
+    public static final Material   MATERIAL_UNSELECTED           = new Material(
+                                                                         new Color3f(
+                                                                                 0.2f,
+                                                                                 0.0f,
+                                                                                 0.2f),
+                                                                         new Color3f(
+                                                                                 0.0f,
+                                                                                 0.0f,
+                                                                                 0.0f),
+                                                                         new Color3f(
+                                                                                 Color.blue),
+                                                                         new Color3f(
+                                                                                 Color.blue),
+                                                                         64);
 
-    public static final int TRANSLATION_CAMERA_ZDIRECTION=30;
-    public static final int PANEL_HEIGHT=600;
-    public static final int PANEL_WIDTH=600;
-    public static final int LIGHT_BOUND_RADIUS=1000;
-    public static final int BOUNDING_RADIUS=1000;
+    public static final int        TRANSLATION_CAMERA_ZDIRECTION = 30;
+    public static final int        PANEL_HEIGHT                  = 600;
+    public static final int        PANEL_WIDTH                   = 600;
+    public static final int        LIGHT_BOUND_RADIUS            = 1000;
+    public static final int        BOUNDING_RADIUS               = 1000;
+
     /**
      * Creates a new universe.
      * @param u3DControllerIn
@@ -126,7 +126,6 @@ public class Universe3DView extends JPanel
         this.setMinimumSize(new Dimension(PANEL_HEIGHT, PANEL_WIDTH));
         this.setPreferredSize(new Dimension(PANEL_HEIGHT, PANEL_WIDTH));
 
-       
     }
 
     /**
@@ -137,9 +136,7 @@ public class Universe3DView extends JPanel
 
     public final void addSurfaces(final List<Surface> surfaces)
     {
-
         if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
-
         {
             this.displayMeshes(surfaces);
         } else if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_POLYGON_MODE)
@@ -170,12 +167,11 @@ public class Universe3DView extends JPanel
         }
 
         // Translates the camera.
-        this.translateCamera(centroid.getX(), centroid.getY(),
-                centroid.getZ() + TRANSLATION_CAMERA_ZDIRECTION);
+        this.translateCamera(centroid.getX(), centroid.getY(), centroid.getZ()
+                + TRANSLATION_CAMERA_ZDIRECTION);
 
         // Changes the rotation center
         this.u3DController.getMouseRotate().setCenter(centroid);
-
     }
 
     /**

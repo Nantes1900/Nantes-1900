@@ -86,7 +86,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      * Getter.
      * @return the initial total mesh
      */
-    public final Surface getInitialTotalMesh()
+    public final Surface getInitialTotalSurface()
     {
         return this.initialTotalMesh;
     }

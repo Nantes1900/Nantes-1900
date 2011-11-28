@@ -61,7 +61,7 @@ public class Building
     /**
      * The noise.
      */
-    private Mesh          noise;
+    private Surface       noise;
 
     /**
      * Constructor.
@@ -207,9 +207,8 @@ public class Building
      *            the noise
      */
     public final void setArguments(final Vector3d groundNormalIn,
-            final Vector3d gravityNormalIn,
-            final Ground groundsIn,
-            final Mesh noiseIn)
+            final Vector3d gravityNormalIn, final Ground groundsIn,
+            final Surface noiseIn)
     {
         this.groundNormal = groundNormalIn;
         this.gravityNormal = gravityNormalIn;
