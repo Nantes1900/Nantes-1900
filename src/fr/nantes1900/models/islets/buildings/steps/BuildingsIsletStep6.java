@@ -6,8 +6,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
-import fr.nantes1900.models.extended.steps.BuildingStep6;
-import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
  * Implements a step of the treatment. This step is after the determination of
@@ -65,17 +63,10 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
      * #launchTreatment()
      */
     @Override
-    public final BuildingsIsletStep7
-            launchTreatment() throws NullArgumentException
+    public final AbstractBuildingsIsletStep launchTreatment()
     {
-        for (Building b : this.buildings)
-        {
-            BuildingStep6 buildingStep = b.getbStep6();
-            buildingStep.setArguments(this.grounds);
-            b.launchTreatment6();
-        }
-
-        return new BuildingsIsletStep7(this.buildings, this.grounds);
+        // There is no more treatment for now.
+        return null;
     }
 
     /*
@@ -97,18 +88,9 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
         return root;
     }
 
-    /**
-     * Setter.
-     * @param groundsIn
-     *            the grounds
-     */
-    public final void setArguments(final Ground groundsIn)
-    {
-        this.grounds = groundsIn;
-    }
-    
     @Override
-    public String toString(){
-        return super.toString()+"6";
+    public String toString()
+    {
+        return super.toString() + "6";
     }
 }

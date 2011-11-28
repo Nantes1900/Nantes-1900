@@ -3,8 +3,8 @@ package fr.nantes1900.models.islets.buildings.steps;
 import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.vecmath.Vector3d;
 
-import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
@@ -32,15 +32,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      * The noise used in the algorithms.
      */
     private Surface        noise;
-
-    /**
-     * Getter.
-     * @return the noise
-     */
-    public final Surface getNoise()
-    {
-        return this.noise;
-    }
+    private Vector3d       groundNormal;
 
     /**
      * Constructor.
@@ -74,6 +66,15 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
         return this.grounds;
     }
 
+    /**
+     * Getter.
+     * @return the noise
+     */
+    public final Surface getNoise()
+    {
+        return this.noise;
+    }
+
     /*
      * (non-Javadoc)
      * @see
@@ -87,7 +88,8 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
         for (Building b : this.buildings)
         {
             BuildingStep5 buildingStep = b.getbStep5();
-            buildingStep.setArguments(this.noise, this.grounds);
+            buildingStep.setArguments(this.noise, this.grounds,
+                    this.groundNormal);
             b.launchTreatment5();
         }
 
@@ -115,16 +117,15 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
 
     /**
      * Setter.
-     * @param noiseIn
-     *            the noise
      * @param groundsIn
      *            the grounds
      */
-    public final void
-            setArguments(final Surface noiseIn, final Ground groundsIn)
+    public final void setArguments(final Surface noiseIn,
+            final Ground groundsIn, final Vector3d groundNormalIn)
     {
-        this.noise = noiseIn;
         this.grounds = groundsIn;
+        this.groundNormal = groundNormalIn;
+        this.noise = noiseIn;
     }
 
     @Override

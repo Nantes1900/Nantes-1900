@@ -8,8 +8,6 @@ import fr.nantes1900.models.extended.steps.BuildingStep3;
 import fr.nantes1900.models.extended.steps.BuildingStep4;
 import fr.nantes1900.models.extended.steps.BuildingStep5;
 import fr.nantes1900.models.extended.steps.BuildingStep6;
-import fr.nantes1900.models.extended.steps.BuildingStep7;
-import fr.nantes1900.models.extended.steps.BuildingStep8;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
@@ -36,14 +34,6 @@ public class Building
      * The sixth building step.
      */
     private BuildingStep6 bStep6;
-    /**
-     * The seventh building step.
-     */
-    private BuildingStep7 bStep7;
-    /**
-     * The eighth building step.
-     */
-    private BuildingStep8 bStep8;
 
     /**
      * The gravity normal.
@@ -110,24 +100,6 @@ public class Building
     }
 
     /**
-     * Getter.
-     * @return the seventh step
-     */
-    public final BuildingStep7 getbStep7()
-    {
-        return this.bStep7;
-    }
-
-    /**
-     * Getter.
-     * @return the eighth step
-     */
-    public final BuildingStep8 getbStep8()
-    {
-        return this.bStep8;
-    }
-
-    /**
      * TODO.
      * @throws NullArgumentException
      */
@@ -145,20 +117,8 @@ public class Building
 
     public final void launchTreatment5() throws NullArgumentException
     {
-        this.bStep5.setArguments(this.noise, this.grounds);
+        this.bStep5.setArguments(this.noise, this.grounds, this.groundNormal);
         this.bStep6 = this.bStep5.launchTreatment();
-    }
-
-    public final void launchTreatment6() throws NullArgumentException
-    {
-        this.bStep6.setArguments(this.grounds);
-        this.bStep7 = this.bStep6.launchTreatment();
-    }
-
-    public final void launchTreatment7() throws NullArgumentException
-    {
-        this.bStep7.setArguments(this.groundNormal);
-        this.bStep8 = this.bStep7.launchTreatment();
     }
 
     /**
@@ -183,16 +143,6 @@ public class Building
     public final DefaultMutableTreeNode returnNode6()
     {
         return this.bStep6.returnNode();
-    }
-
-    public final DefaultMutableTreeNode returnNode7()
-    {
-        return this.bStep7.returnNode();
-    }
-
-    public final DefaultMutableTreeNode returnNode8()
-    {
-        return this.bStep8.returnNode();
     }
 
     /**
