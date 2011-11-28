@@ -50,6 +50,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	 */
 	private NewMouseRotate mouseRotate;
 
+	//
 	private IsletSelectionController parentController;
 
 	private final EventListenerList listeners = new EventListenerList();
@@ -63,7 +64,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	/**
 	 * A list of all the meshes selected.
 	 */
-	private ArrayList<MeshView> triangleMesh = new ArrayList<MeshView>();
+	private ArrayList<MeshView> triangleMesh = new ArrayList<>();
 	// private ArrayList<PolygonView> polygonsViewSelected;
 	/**
 	 * The x coordinate of the mouse on the screen.
