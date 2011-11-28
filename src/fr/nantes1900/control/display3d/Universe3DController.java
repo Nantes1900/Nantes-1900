@@ -28,8 +28,6 @@ import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.display3d.PolygonView;
 import fr.nantes1900.view.display3d.SurfaceView;
 import fr.nantes1900.view.display3d.Universe3DView;
-
-// FIXME : Javadoc
 /**
  * TODO.
  */
@@ -414,7 +412,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         if (result != null)
         {
             PickIntersection pickIntersection = result.getIntersection(0);
-            GeometryArray meshView = pickIntersection.getGeometryArray();
             SurfaceView surfaceViewPicked = (SurfaceView) result.getNode(PickResult.SHAPE3D);
             
             if (e.isControlDown())
@@ -440,22 +437,74 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         {
             PickIntersection pickIntersection = result.getIntersection(0);
             // Get the meshView picked.
-            GeometryArray meshView = pickIntersection.getGeometryArray();
+            GeometryArray geometryArray = pickIntersection.getGeometryArray();
             // Get the index of the triangle picked 
-            int[] PointIndex = pickIntersection.getPrimitiveVertexIndices();
-            int TriangleIndex = PointIndex[0] / 3;
-
-            if (meshView instanceof MeshView)
-            {
-                this.MeshView = (MeshView) meshView;
-                // Get the shape3D picked.
-                Shape3D shapePicked = (Shape3D) result
-                        .getNode(PickResult.SHAPE3D);
-                // If the shape3D picked is in the list of the shape3Ds
-                // selected.
-                if (Universe3DController.shape3DSelected
-                        .contains(shapePicked) == true)
+            int[] pointIndex = pickIntersection.getPrimitiveVertexIndices();
+            int triangleIndex = pointIndex[0] / 3;
+            MeshView meshView = (MeshView) geometryArray;
+            
+           // If the triangle picked is not selected.
+            Triangle trianglePicked = meshView.getTriangleFromArrayPosition(triangleIndex);
+        	if (!this.trianglesSelected.contains(trianglePicked)){
+        		
+                // Select the triangle picked.
+                MeshView.select(TriangleIndex);
+                // If the triangle picked in not in the list of
+                // triangles selected.
+                if (this.trianglesViewSelected
+                        .contains(this.MeshView.getTriangleArray()
+                                .get(TriangleIndex)) == false)
                 {
+                    // Add the triangle picked to the list of
+                    // triangles selected.
+                    this.trianglesViewSelected.add(this.MeshView
+                            .getTriangleArray().get(TriangleIndex));
+                    // Save the mesh of this triangle picked.
+                    this.triangleMesh.add(MeshView);
+
+                }
+
+                // A list used to save the index of triangles
+                // selected in each turn of getting neighbours.
+                List<Integer> triangleNewSelected = new ArrayList<Integer>();
+                // Add the index of the triangle picked to the list.
+                triangleNewSelected.add(TriangleIndex);
+                // Times to search the neighbour.
+                int turn = 30;
+                // Select the neighbours of the triangle picked.
+                selectVoisin(TriangleIndex, triangleNewSelected,
+                        MeshView, turn);
+                // Set the center of rotation.
+                this.mouseRotate.setCenter(MeshView
+                        .getTriangleArray().get(TriangleIndex));
+                // Add the index of the last triangle selected in
+                // each time of getting neighbours.
+                this.selectedIndex.add(this.trianglesViewSelected
+                        .size() - 1);
+            }
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+        	
+            // If the triangle picked is selected.
+            else
+            {
+
+                // If the triangle picked is in the list of
+                // triangles selected.
+                if (this.trianglesViewSelected
+                        .contains(this.MeshView.getTriangleArray()
+                                .get(TriangleIndex)))
+                {
+<<<<<<< HEAD
                     // If the triangle picked is not selected.
                     if (this.MeshView.getTriangleArray().get(TriangleIndex)
                             .isSelected() == false)
@@ -504,82 +553,83 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                         if (this.trianglesViewSelected
                                 .contains(this.MeshView.getTriangleArray()
                                         .get(TriangleIndex)))
+=======
+                    // Get the index of the triangle picked in the
+                    // list of triangles selected.
+                    int triangleIndex = this.trianglesViewSelected
+                            .indexOf(this.MeshView
+                                    .getTriangleArray().get(
+                                            TriangleIndex));
+                    // The first index of the selection triangles
+                    // which the triangle selected belongs to.
+                    int firstIndex = 0;
+                    // The last index of the selection triangles
+                    // which the triagle selected belongs to.
+                    int lastIndex = 0;
+                    // The index of the last index in the list of
+                    // index of last index.
+                    int indexOfLastIndex = 0;
+
+                    // Find the triangle picked belongs to which
+                    // time of selection.
+                    for (int i = 0; i < this.selectedIndex.size(); i++)
+                    {
+                        // If the triangle picked belongs to the
+                        // first time of seleciton.
+                        if (i == 0
+                                && this.selectedIndex.get(i) >= triangleIndex)
                         {
-                            // Get the index of the triangle picked in the
-                            // list of triangles selected.
-                            int triangleIndex = this.trianglesViewSelected
-                                    .indexOf(this.MeshView
-                                            .getTriangleArray().get(
-                                                    TriangleIndex));
-                            // The first index of the selection triangles
-                            // which the triangle selected belongs to.
-                            int firstIndex = 0;
-                            // The last index of the selection triangles
-                            // which the triagle selected belongs to.
-                            int lastIndex = 0;
-                            // The index of the last index in the list of
-                            // index of last index.
-                            int indexOfLastIndex = 0;
-
-                            // Find the triangle picked belongs to which
-                            // time of selection.
-                            for (int i = 0; i < this.selectedIndex.size(); i++)
+                            firstIndex = -1;
+                            lastIndex = this.selectedIndex.get(i);
+                            break;
+                        }
+                        // If the triangle picked doesn't belong to
+                        // the first time of seleciton.
+                        else
+>>>>>>> f2f530e6b94f7ef7599738c240e06dd7f36d9072
+                        {
+                            if (this.selectedIndex.get(i) < triangleIndex
+                                    && this.selectedIndex
+                                            .get(i + 1) >= triangleIndex)
                             {
-                                // If the triangle picked belongs to the
-                                // first time of seleciton.
-                                if (i == 0
-                                        && this.selectedIndex.get(i) >= triangleIndex)
-                                {
-                                    firstIndex = -1;
-                                    lastIndex = this.selectedIndex.get(i);
-                                    break;
-                                }
-                                // If the triangle picked doesn't belong to
-                                // the first time of seleciton.
-                                else
-                                {
-                                    if (this.selectedIndex.get(i) < triangleIndex
-                                            && this.selectedIndex
-                                                    .get(i + 1) >= triangleIndex)
-                                    {
-                                        firstIndex = this.selectedIndex
-                                                .get(i);
-                                        lastIndex = this.selectedIndex
-                                                .get(i + 1);
-
-                                        indexOfLastIndex = i + 1;
-                                        break;
-                                    }
-                                }
-                            }
-
-                            // Unselect all the triangles selected in the
-                            // time of selection which the triangle picked
-                            // belongs to.
-                            for (int i = lastIndex; i > firstIndex; i--)
-                            {
-                                TriangleView triangleSelected = this.trianglesViewSelected
+                                firstIndex = this.selectedIndex
                                         .get(i);
-                                int index = triangleSelected.getTriangle()
-                                        .getTriangleViewIndex();
-                                this.MeshView.unselect(index);
-                                this.trianglesViewSelected.remove(i);
+                                lastIndex = this.selectedIndex
+                                        .get(i + 1);
 
-                            }
-
-                            // Refresh the list of last index of triangles
-                            // selected in each time of selection.
-                            this.selectedIndex.remove(indexOfLastIndex);
-                            for (int i = indexOfLastIndex; i < this.selectedIndex
-                                    .size(); i++)
-                            {
-                                int index = this.selectedIndex.get(i);
-                                this.selectedIndex.set(i, index
-                                        - (lastIndex - firstIndex));
+                                indexOfLastIndex = i + 1;
+                                break;
                             }
                         }
                     }
+
+                    // Unselect all the triangles selected in the
+                    // time of selection which the triangle picked
+                    // belongs to.
+                    for (int i = lastIndex; i > firstIndex; i--)
+                    {
+                        TriangleView triangleSelected = this.trianglesViewSelected
+                                .get(i);
+                        int index = triangleSelected.getTriangle()
+                                .getTriangleViewIndex();
+                        this.MeshView.unselect(index);
+                        this.trianglesViewSelected.remove(i);
+
+                    }
+
+                    // Refresh the list of last index of triangles
+                    // selected in each time of selection.
+                    this.selectedIndex.remove(indexOfLastIndex);
+                    for (int i = indexOfLastIndex; i < this.selectedIndex
+                            .size(); i++)
+                    {
+                        int index = this.selectedIndex.get(i);
+                        this.selectedIndex.set(i, index
+                                - (lastIndex - firstIndex));
+                    }
                 }
+            }
+            
             }
         }
     }
