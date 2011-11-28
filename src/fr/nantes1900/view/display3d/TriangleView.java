@@ -4,57 +4,57 @@ import fr.nantes1900.models.basis.Triangle;
 
 /**
  * TODO.
+ * 
  * @author Daniel
  */
-public class TriangleView
-{
+public class TriangleView {
 
-    /**
-     * TODO.
-     */
-    private Triangle triangle;
-    /**
-     * TODO.
-     */
-    // FIXME : remove this attribute.
-    private boolean  selected;
+	/**
+	 * The triangle tobe displayed.
+	 */
+	private Triangle triangle;
+	/**
+	 * TODO.
+	 */
+	// FIXME : remove this attribute.
+	private boolean selected;
 
-    /**
-     * TODO.
-     * @param triangleIn
-     *            TODO.
-     */
-    public TriangleView(final Triangle triangleIn)
-    {
-        this.triangle = triangleIn;
-    }
+	/**
+	 * TODO.
+	 * 
+	 * @param triangleIn
+	 *            TODO.
+	 */
+	public TriangleView(final Triangle triangleIn) {
+		this.triangle = triangleIn;
+	}
 
-    /**
-     * TODO.
-     * @return TODO.
-     */
-    public final Triangle getTriangle()
-    {
-        return this.triangle;
-    }
+	/**
+	 * Get the triangle.
+	 * 
+	 * @return this.triangle
+	 */
+	public final Triangle getTriangle() {
+		return this.triangle;
+	}
 
-    /**
-     * TODO.
-     * @return TODO.
-     */
-    public final boolean isSelected()
-    {
-        return this.selected;
-    }
+	/**
+	 * Check if the triangle is selected.
+	 * 
+	 * @return this.selected 
+	 */
+	public final boolean isSelected() {
+		return this.selected;
+	}
 
-    /**
-     * TODO.
-     * @param selectedIn
-     *            TODO.
-     */
-    public final void setSelected(final boolean selectedIn)
-    {
-        this.selected = selectedIn;
-    }
+	/**
+	 * Change the condition of seleciton of this triangle.
+	 * 
+	 * @param selectedIn The condition of selection of this triangle.
+	 *            
+	 */
+	public final void setSelected(final boolean selectedIn) {
+		this.selected = selectedIn;
+	}
 
 }

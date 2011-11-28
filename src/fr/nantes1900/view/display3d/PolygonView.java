@@ -8,19 +8,17 @@ import javax.media.j3d.TriangleFanArray;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3f;
 
-
-public class PolygonView extends TriangleFanArray
-{
+public class PolygonView extends TriangleFanArray {
 
 	private Polygon polygon;
 	private boolean selected;
 	private Point centroid;
-	
-    public PolygonView(final Polygon poly)
-    {
-    	super(poly.getPointList().size() * 2, GeometryArray.COORDINATES
+
+	public PolygonView(final Polygon poly) {
+		super(poly.getPointList().size() * 2, GeometryArray.COORDINATES
 				| GeometryArray.COLOR_3 | GeometryArray.NORMALS
-				| GeometryArray.TEXTURE_COORDINATE_2, new int[] { poly.getPointList().size() * 2 });
+				| GeometryArray.TEXTURE_COORDINATE_2, new int[] { poly
+				.getPointList().size() * 2 });
 
 		this.polygon = poly;
 		this.centroid = new Point(0, 0, 0);
@@ -38,10 +36,12 @@ public class PolygonView extends TriangleFanArray
 
 		Point3d[] vertex = new Point3d[poly.getPointList().size() * 2];
 		for (int i = 0; i < poly.getPointList().size(); i++) {
-			vertex[i] = new Point3d(poly.getPointList().get(i).getX(), poly.getPointList().get(i)
+			vertex[i] = new Point3d(poly.getPointList().get(i).getX(), poly
+					.getPointList().get(i).getY(), poly.getPointList().get(i)
+					.getZ());
+			vertex[poly.getPointList().size() * 2 - 1 - i] = new Point3d(poly
+					.getPointList().get(i).getX(), poly.getPointList().get(i)
 					.getY(), poly.getPointList().get(i).getZ());
-			vertex[poly.getPointList().size() * 2 - 1 - i] = new Point3d(poly.getPointList().get(i)
-					.getX(), poly.getPointList().get(i).getY(), poly.getPointList().get(i).getZ());
 		}
 		this.setCoordinates(0, vertex);
 
@@ -52,8 +52,9 @@ public class PolygonView extends TriangleFanArray
 		}
 
 		this.setNormals(0, normal);
-    }
-    public Polygon getPolygon() {
+	}
+
+	public Polygon getPolygon() {
 		return this.polygon;
 	}
 
@@ -80,17 +81,17 @@ public class PolygonView extends TriangleFanArray
 	}
 
 	public static Vector3f convertNormal(Polygon polygon) {
-		Vector3f nromalFloat = new Vector3f(
-				(float) polygon.getNormal().getX(), (float) polygon
-						.getNormal().getY(), (float) polygon.getNormal()
+		Vector3f nromalFloat = new Vector3f((float) polygon.getNormal().getX(),
+				(float) polygon.getNormal().getY(), (float) polygon.getNormal()
 						.getZ());
 		return nromalFloat;
 	}
 
 	public static Vector3f reverseConvertNormal(Polygon polygon) {
-		Vector3f nromalFloat = new Vector3f(-(float) polygon.getNormal()
-				.getX(), -(float) polygon.getNormal().getY(),
-				-(float) polygon.getNormal().getZ());
+		Vector3f nromalFloat = new Vector3f(
+				-(float) polygon.getNormal().getX(), -(float) polygon
+						.getNormal().getY(), -(float) polygon.getNormal()
+						.getZ());
 		return nromalFloat;
 	}
 

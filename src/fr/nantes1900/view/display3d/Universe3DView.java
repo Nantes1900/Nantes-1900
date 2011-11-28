@@ -71,7 +71,7 @@ public class Universe3DView extends JPanel {
 	/**
 	 * The first transformGroup of the universe.
 	 */
-	
+
 	/**
 	 * Creates a new universe.
 	 * 
@@ -298,14 +298,14 @@ public class Universe3DView extends JPanel {
 	 */
 	public final void translateCamera(final double x, final double y,
 			final double z) {
-		//Get the camera.
+		// Get the camera.
 		ViewingPlatform camera = this.simpleUniverse.getViewingPlatform();
 		TransformGroup cameraTransformGroup = camera.getMultiTransformGroup()
 				.getTransformGroup(0);
-		
+
 		Transform3D cameraTranslation = new Transform3D();
 		cameraTransformGroup.getTransform(cameraTranslation);
-		//Set the position of the camera.
+		// Set the position of the camera.
 		cameraTranslation.setTranslation(new Vector3d(x, y, z));
 		cameraTransformGroup.setTransform(cameraTranslation);
 	}

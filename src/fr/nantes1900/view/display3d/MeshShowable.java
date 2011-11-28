@@ -15,7 +15,6 @@ import javax.vecmath.Color3f;
 
 import com.sun.j3d.utils.image.TextureLoader;
 
-
 public class MeshShowable {
 
 	/**
@@ -36,7 +35,7 @@ public class MeshShowable {
 	 * The texutre of the mesh.
 	 */
 	private Texture2D texture;
-	
+
 	/**
 	 * The material of the mesh non-selected.
 	 */
@@ -47,8 +46,8 @@ public class MeshShowable {
 	/**
 	 * The material of the mesh selected.
 	 */
-	public static final Material matUnSelected = new Material(new Color3f(0.0f,
-			0.0f, 1.0f), new Color3f(0.0f, 0.0f, 1.0f),
+	public static final Material matUnSelected = new Material(new Color3f(0.2f,
+			0.0f, 0.2f), new Color3f(0.0f, 0.0f, 0.0f),
 			new Color3f(Color.blue), new Color3f(Color.blue), 64);
 
 	/**
@@ -57,6 +56,7 @@ public class MeshShowable {
 	public MeshShowable() {
 
 		// Read the texture.
+		
 		TextureLoader loader = new TextureLoader("texture.jpg", null);
 		ImageComponent2D image = loader.getImage();
 		this.texture = new Texture2D(Texture2D.BASE_LEVEL, Texture2D.RGB,
@@ -64,8 +64,6 @@ public class MeshShowable {
 		this.texture.setImage(0, image);
 
 	}
-
-
 
 	/**
 	 * @return The list of the meshes to be displayed.
@@ -83,29 +81,29 @@ public class MeshShowable {
 
 	/**
 	 * Add the meshView to the list of meshes, create a shape3D for the mesh.
-	 * @param meshView The MeshView to be displayed.
+	 * 
+	 * @param meshView
+	 *            The MeshView to be displayed.
 	 */
 	public void addMeshView(Object meshView) {
 
-		//Add the meshView to the list.
+		// Add the meshView to the list.
 		MeshShowable.meshList.add(meshView);
-        //Create the shape3D.
+		// Create the shape3D.
 		Shape3D shape = new Shape3D();
 
 		shape.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
 		shape.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-        //Add the mesh to the shape3D.
-		if(meshView.getClass().getSimpleName().equals("MeshView")){
-			shape.addGeometry((MeshView)meshView);
+		// Add the mesh to the shape3D.
+		if (meshView.getClass().getSimpleName().equals("MeshView")) {
+			shape.addGeometry((MeshView) meshView);
+		} else {
+			shape.addGeometry((PolygonView) meshView);
 		}
-		else{
-			shape.addGeometry((PolygonView)meshView);
-		}
-		
-		
+
 		MeshShowable.meshShape3D.add(shape);
 
-		//Create the appearance.
+		// Create the appearance.
 		Appearance app = new Appearance();
 
 		app.setCapability(Appearance.ALLOW_MATERIAL_READ);
@@ -113,15 +111,15 @@ public class MeshShowable {
 
 		app.setMaterial(MeshShowable.matUnSelected);
 
-		//Set the texture of the appearance.
+		// Set the texture of the appearance.
 		app.setTexture(this.texture);
-		
+
 		TextureAttributes texAtt = new TextureAttributes();
 		texAtt.setTextureMode(TextureAttributes.MODULATE);
 		app.setTextureAttributes(texAtt);
 
 		this.meshAppearance.add(app);
-		//Set the appearance of the Shape3D.
+		// Set the appearance of the Shape3D.
 		shape.setAppearance(app);
 	}
 
