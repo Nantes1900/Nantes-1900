@@ -29,12 +29,9 @@ public final class FileTools
     }
     
     /**
-     * Reads a help message from the file erroroMessage.txt with the key
-     * keyName+messageType.
+     * Reads a help message from the file elementTexts.txt with the key name.
      * @param keyName
-     *            Name of the error message.
-     * @param messageType
-     *            The type of message to get : error message or title.
+     *            Name of the element text.
      * @return The read message.
      */
     public static String readElementText(final String keyName)
@@ -43,7 +40,7 @@ public final class FileTools
     }
     
     /**
-     * Reads a help message from the file erroroMessage.txt with the key
+     * Reads a help message from the file errorMessages.txt with the key
      * keyName+messageType.
      * @param keyName
      *            Name of the error message.

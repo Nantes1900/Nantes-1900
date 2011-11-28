@@ -3,6 +3,8 @@ package fr.nantes1900.view.isletprocess;
 import javax.swing.JComboBox;
 
 import fr.nantes1900.constants.Characteristics;
+import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
 
 public class CharacteristicsStep2View extends CharacteristicsView
@@ -19,7 +21,7 @@ public class CharacteristicsStep2View extends CharacteristicsView
         String[] types = {"", Characteristics.TYPE_BUILDING, Characteristics.TYPE_GROUND};
         
         cbType = new JComboBox<String>(types);
-        this.addCaracteristic(createSimpleCaracteristic(cbType, "Type", new HelpButton()));
+        this.addCaracteristic(createSimpleCaracteristic(cbType, FileTools.readElementText(TextsKeys.KEY_TYPETEXT), new HelpButton()));
         this.bValidate.setEnabled(true);
     }
 

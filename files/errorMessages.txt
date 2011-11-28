@@ -1,4 +1,8 @@
 ﻿
 ﻿#date
 ReturnNodeMessage=Erreur du chargement de l'arborescence du résultat
+CIncorrectTypeMessage=Le type choisi est incorrrect.
+CIncorrectTypeTitle=Validation impossible
+CIncorrectActionMessage=L'action choisie est incorrrecte.
+CIncorrectActionTitle=Validation impossible
 

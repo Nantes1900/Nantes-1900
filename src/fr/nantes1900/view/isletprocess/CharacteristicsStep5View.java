@@ -5,6 +5,8 @@ import java.awt.event.ItemListener;
 
 import javax.swing.JCheckBox;
 
+import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
 
 public class CharacteristicsStep5View extends CharacteristicsView
@@ -35,7 +37,7 @@ public class CharacteristicsStep5View extends CharacteristicsView
             }
             
         });
-        this.addCaracteristic(createSimpleCaracteristic(cbMerge, "Fusionner", new HelpButton()));
+        this.addCaracteristic(createSimpleCaracteristic(cbMerge, FileTools.readElementText(TextsKeys.KEY_MERGETEXT), new HelpButton()));
         this.cbNoise = new JCheckBox();
         cbNoise.addItemListener(new ItemListener(){
             
@@ -45,14 +47,16 @@ public class CharacteristicsStep5View extends CharacteristicsView
                 if (((JCheckBox) arg0.getSource()).isSelected())
                 {
                     cbMerge.setEnabled(false);
+                    bValidate.setEnabled(true);
                 } else
                 {
                     cbMerge.setEnabled(true);
+                    bValidate.setEnabled(false);
                 }
             }
             
         });
-        this.addCaracteristic(createSimpleCaracteristic(cbNoise, "Mettre dans le bruit", new HelpButton()));
+        this.addCaracteristic(createSimpleCaracteristic(cbNoise, FileTools.readElementText(TextsKeys.KEY_PUTINNOISETEXT), new HelpButton()));
         this.bValidate.setEnabled(true);
     }
 
@@ -61,7 +65,7 @@ public class CharacteristicsStep5View extends CharacteristicsView
         return this.cbMerge.isSelected();
     }
 
-    public boolean isRemoveSelected()
+    public boolean isNoiseSelected()
     {
         return this.cbNoise.isSelected();
     }

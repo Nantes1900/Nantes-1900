@@ -7,8 +7,9 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 
+import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
 
 
@@ -22,16 +23,11 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView
      * default serial UID
      */
     private static final long serialVersionUID = 1L;
-    private JComboBox<String> cbType;
     private JCheckBox cbDelete;
     
     public CharacteristicsStep3TrianglesView()
     {
         super();
-        String[] types = {""};
-        
-        cbType = new JComboBox<String>(types);
-        this.addCaracteristic(createSimpleCaracteristic(cbType, "Appartient à", new HelpButton()));
         
         this.cbDelete = new JCheckBox();
         cbDelete.addItemListener(new ItemListener(){
@@ -41,15 +37,15 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView
             {
                 if (((JCheckBox) arg0.getSource()).isSelected())
                 {
-                    cbType.setEnabled(false);
+                    bValidate.setEnabled(true);
                 } else
                 {
-                    cbType.setEnabled(true);
+                    bValidate.setEnabled(false);
                 }
             }
             
         });
-        this.addCaracteristic(createSimpleCaracteristic(cbDelete, "Supprimer", new HelpButton()));
+        this.addCaracteristic(createSimpleCaracteristic(cbDelete, FileTools.readElementText(TextsKeys.KEY_DELETETEXT), new HelpButton()));
         
         this.bValidate.setEnabled(true);
     }
@@ -57,16 +53,5 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView
     public boolean isDeleteSelected()
     {
         return this.cbDelete.isSelected();
-    }
-
-    public String getElementSelected()
-    {
-        return (String) cbType.getSelectedItem();
-    }
-    
-
-    public void setElement(String string)
-    {
-        this.cbType.setSelectedItem(string);
     }
 }

@@ -1,5 +1,4 @@
-﻿
-﻿#date
+﻿﻿#date
 LaunchButton=Lancer
 AbortButton=Arrêter
 BackButton=Retourner
@@ -13,3 +12,7 @@ ProcessTitle7=Déterminer le contour de chaque mur ou toit
 ProcessTitle8=Recoller les sols
 ProcessTitle9=Simplifier les sols
 IsletProcess=Ilot : étape 
+CType=Type
+CDelete=Supprimer
+CMerge=Fusionner
+CPutInNoise=Mettre dans le bruit

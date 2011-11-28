@@ -10,70 +10,84 @@ import javax.swing.JOptionPane;
 
 import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.constants.Characteristics;
+import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep3ElementsView;
-import fr.nantes1900.view.isletprocess.CharacteristicsStep3TrianglesView;
 
 /**
- * Characteristics panel for the second step of process of an islet.
- * 
- * User can select one or more triangles and modifies the type they belong to : building or ground.
+ * Characteristics panel for the second step of process of an islet. User can
+ * select one or more triangles and modifies the type they belong to : building
+ * or ground.
  * @author Camille
  * @author Luc
  */
-public class CharacteristicsStep3ElementsController extends CharacteristicsController
+public class CharacteristicsStep3ElementsController extends
+        CharacteristicsController
 {
     public Mesh element;
+
     /**
      * Constructor.
      * @param parentController
-     * @param triangleSelected 
+     * @param triangleSelected
      */
-    public CharacteristicsStep3ElementsController(IsletProcessController parentController, Mesh elementSelected)
+    public CharacteristicsStep3ElementsController(
+            IsletProcessController parentController, Mesh elementSelected)
     {
         super(parentController);
-        element = elementSelected;        
+        element = elementSelected;
         this.cView = new CharacteristicsStep3ElementsView();
-        this.cView.getValidateButton().addActionListener(new ActionListener(){
+        this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                String typeChosen = ((CharacteristicsStep3TrianglesView) cView).getElementSelected();
-                
+                String typeChosen = ((CharacteristicsStep3ElementsView) cView)
+                        .getTypeSelected();
+
                 int actionType = -1;
                 switch (typeChosen)
                 {
                     case Characteristics.TYPE_NOISE:
                         actionType = ActionTypes.TURN_TO_NOISE;
-                        break;
-                        
+                    break;
+
                     case Characteristics.TYPE_BUILDING:
                         actionType = ActionTypes.TURN_TO_BUILDING;
-                        break;
+                    break;
                 }
-                
-                if (actionType != -1)
+
+                try
                 {
-                    CharacteristicsStep3ElementsController.this.parentController.launchAction(3, actionType, Characteristics.SELECTION_TYPE_ELEMENT);
-                } else
+                    CharacteristicsStep3ElementsController.this.parentController
+                            .getBiController().action3(element, actionType);
+                } catch (InvalidCaseException e)
                 {
-                    JOptionPane.showMessageDialog(cView, "Le type choisi est incorrrect", "Validation impossible", JOptionPane.ERROR_MESSAGE);
+                    JOptionPane.showMessageDialog(cView, FileTools
+                            .readErrorMessage(
+                                    TextsKeys.KEY_ERROR_INCORRECTTYPE,
+                                    TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                            .readErrorMessage(
+                                    TextsKeys.KEY_ERROR_INCORRECTTYPE,
+                                    TextsKeys.MESSAGETYPE_TITLE),
+                            JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
     }
-    
+
     public void setElementSelected(Mesh elementSelected)
     {
         this.element = elementSelected;
         ((CharacteristicsStep2View) this.cView).setType("");
     }
-    
+
     public Mesh getElement()
     {
         return this.element;
-                
+
     }
 }
