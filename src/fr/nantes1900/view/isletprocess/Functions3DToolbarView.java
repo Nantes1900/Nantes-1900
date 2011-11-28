@@ -3,24 +3,27 @@
  */
 package fr.nantes1900.view.isletprocess;
 
+import java.awt.Dimension;
+
+import javax.swing.JButton;
 import javax.swing.JToolBar;
 
 
 /**
  * @author Camille
  */
-public class Functions3DToolbarView
+public class Functions3DToolbarView extends JToolBar
 {
-    private JToolBar toolbar;
-    
+    /**
+     * Default generated serial UID.
+     */
+    private static final long serialVersionUID = 1L;
+
     public Functions3DToolbarView()
     {
-        this.toolbar = new JToolBar();
+        super(JToolBar.VERTICAL);
+        
+        add(new JButton("Test"));
+        setMinimumSize(new Dimension(30, 0));
     }
-
-    public JToolBar getToolbar()
-    {
-        return toolbar;
-    }
-
 }

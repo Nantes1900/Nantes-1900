@@ -98,13 +98,15 @@ public class IsletProcessController implements ElementsSelectedListener
         this.pController = new ParametersController(this);
         this.f3DController = new Functions3DToolbarController(this);
         this.u3DController = new Universe3DController();
+        this.u3DController.getUniverse3DView().setToolbar(f3DController.getToolbar());
         this.biController.setUniverse3DController(u3DController);
         this.biController.display();
 
         // creates the windiw with all needed panels
         this.ipView = new IsletProcessView(cController.getView(),
                 itController.getView(), nbController.getView(),
-                pController.getView(), u3DController.getUniverse3DView(), this.f3DController.getToolbar());
+                pController.getView(), u3DController.getUniverse3DView());
+
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
     }

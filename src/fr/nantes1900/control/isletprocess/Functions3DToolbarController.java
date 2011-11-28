@@ -23,6 +23,6 @@ public class Functions3DToolbarController
     
     public JToolBar getToolbar()
     {
-        return toolbarView.getToolbar();
+        return toolbarView;
     }
 }
