@@ -15,9 +15,11 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
+import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.utils.WriterSTL;
@@ -28,7 +30,7 @@ import fr.nantes1900.view.isletselection.IsletSelectionView;
  * TODO.
  * @author Camille Bouquet
  */
-public class IsletSelectionController
+public class IsletSelectionController implements ElementsSelectedListener
 {
 
     /**
@@ -83,7 +85,7 @@ public class IsletSelectionController
         this.gtController = new GlobalTreeController(this);
         this.aController = new ActionsController(this);
         // FIXME : you must create it with a parent.
-        this.u3DController = new Universe3DController();
+        this.u3DController = new Universe3DController(this);
         this.biController = new BuildingsIsletController(this,
                 this.u3DController);
 
@@ -272,5 +274,49 @@ public class IsletSelectionController
                     "ISLaunchProcess", TextsKeys.MESSAGETYPE_STATUSBAR));
             this.aController.setLaunchMode();
         }
+    }
+
+    // FIXME : is that useful ? Is it useful to implement
+    // ElementsSelectedListener ?
+    @Override
+    public void triangleSelected(Triangle triangleSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void polygonSelected(Polygon trianglesSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void meshSelected(Mesh meshSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void triangleDeselected(Triangle triangleSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void polygonDeselected(Polygon trianglesSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void meshDeselected(Mesh meshSelected)
+    {
+        // TODO Auto-generated method stub
+
     }
 }

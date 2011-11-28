@@ -77,33 +77,34 @@ public class IsletProcessController implements ElementsSelectedListener
     /**
      * Creates a new islet process controller to launch different processes on
      * an islet.
-     * @param parentController
+     * @param parentControllerIn
      *            The parent controller which makes the link with other windows.
      * @param isletFile
      *            File containing data of the selectedd islet.
-     * @param biController
+     * @param biControllerIn
      *            Controller to handle the islet data.
      */
-    public IsletProcessController(GlobalController parentController,
-            File isletFile, BuildingsIsletController biController)
+    public IsletProcessController(GlobalController parentControllerIn,
+            File isletFile, BuildingsIsletController biControllerIn)
     {
-        this.parentController = parentController;
+        this.parentController = parentControllerIn;
         this.progression = 1;
-        this.biController = biController;
+        this.biController = biControllerIn;
         this.cController = new CharacteristicsController(this);
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
         this.pController = new ParametersController(this);
         // FIXME : don't create a new U3DController, but change the parent of
         // the old one.
-        this.u3DController = new Universe3DController();
-        this.biController.setUniverse3DController(u3DController);
+        this.u3DController = new Universe3DController(this);
+        this.biController.setUniverse3DController(this.u3DController);
         this.biController.display();
 
         // creates the windiw with all needed panels
-        this.ipView = new IsletProcessView(cController.getView(),
-                itController.getView(), nbController.getView(),
-                pController.getView(), u3DController.getUniverse3DView());
+        this.ipView = new IsletProcessView(this.cController.getView(),
+                this.itController.getView(), this.nbController.getView(),
+                this.pController.getView(),
+                this.u3DController.getUniverse3DView());
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
     }
@@ -133,7 +134,7 @@ public class IsletProcessController implements ElementsSelectedListener
     @Override
     public void triangleSelected(Triangle triangleSelected)
     {
-        switch (progression)
+        switch (this.progression)
         {
             case 2:
                 // If the characteristic panel is of another type.
@@ -141,7 +142,8 @@ public class IsletProcessController implements ElementsSelectedListener
                 {
                     this.cController = new CharacteristicsStep2Controller(this,
                             triangleSelected);
-                    this.ipView.setCharacteristicsView(cController.getView());
+                    this.ipView.setCharacteristicsView(this.cController
+                            .getView());
                 } else
                 {
                     ((CharacteristicsStep2Controller) this.cController)
@@ -155,7 +157,8 @@ public class IsletProcessController implements ElementsSelectedListener
                 {
                     this.cController = new CharacteristicsStep3TrianglesController(
                             this, triangleSelected);
-                    this.ipView.setCharacteristicsView(cController.getView());
+                    this.ipView.setCharacteristicsView(this.cController
+                            .getView());
                 } else
                 {
                     ((CharacteristicsStep3TrianglesController) this.cController)
@@ -168,12 +171,16 @@ public class IsletProcessController implements ElementsSelectedListener
                 {
                     this.cController = new CharacteristicsStep4Controller(this,
                             triangleSelected);
-                    this.ipView.setCharacteristicsView(cController.getView());
+                    this.ipView.setCharacteristicsView(this.cController
+                            .getView());
                 } else
                 {
                     ((CharacteristicsStep4Controller) this.cController)
                             .addTriangleSelected(triangleSelected);
                 }
+            break;
+            default:
+            // TODO
             break;
         }
     }

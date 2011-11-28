@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.constants.Characteristics;
 import fr.nantes1900.constants.TextsKeys;
-import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
@@ -27,7 +27,7 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep3ElementsView;
 public class CharacteristicsStep3ElementsController extends
         CharacteristicsController
 {
-    public Mesh element;
+    public Surface element;
 
     /**
      * Constructor.
@@ -35,17 +35,17 @@ public class CharacteristicsStep3ElementsController extends
      * @param triangleSelected
      */
     public CharacteristicsStep3ElementsController(
-            IsletProcessController parentController, Mesh elementSelected)
+            IsletProcessController parentController, Surface elementSelected)
     {
         super(parentController);
-        element = elementSelected;
+        this.element = elementSelected;
         this.cView = new CharacteristicsStep3ElementsView();
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                String typeChosen = ((CharacteristicsStep3ElementsView) cView)
+                String typeChosen = ((CharacteristicsStep3ElementsView) CharacteristicsStep3ElementsController.this.cView)
                         .getTypeSelected();
 
                 int actionType = -1;
@@ -63,29 +63,33 @@ public class CharacteristicsStep3ElementsController extends
                 try
                 {
                     CharacteristicsStep3ElementsController.this.parentController
-                            .getBiController().action3(element, actionType);
+                            .getBiController()
+                            .action3(
+                                    CharacteristicsStep3ElementsController.this.element,
+                                    actionType);
                 } catch (InvalidCaseException e)
                 {
-                    JOptionPane.showMessageDialog(cView, FileTools
-                            .readErrorMessage(
+                    JOptionPane.showMessageDialog(
+                            CharacteristicsStep3ElementsController.this.cView,
+                            FileTools.readErrorMessage(
                                     TextsKeys.KEY_ERROR_INCORRECTTYPE,
                                     TextsKeys.MESSAGETYPE_MESSAGE), FileTools
-                            .readErrorMessage(
-                                    TextsKeys.KEY_ERROR_INCORRECTTYPE,
-                                    TextsKeys.MESSAGETYPE_TITLE),
+                                    .readErrorMessage(
+                                            TextsKeys.KEY_ERROR_INCORRECTTYPE,
+                                            TextsKeys.MESSAGETYPE_TITLE),
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
         });
     }
 
-    public void setElementSelected(Mesh elementSelected)
+    public void setElementSelected(Surface elementSelected)
     {
         this.element = elementSelected;
         ((CharacteristicsStep2View) this.cView).setType("");
     }
 
-    public Mesh getElement()
+    public Surface getElement()
     {
         return this.element;
 
