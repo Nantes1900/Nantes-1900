@@ -676,9 +676,16 @@ public class BuildingsIsletController
      */
     public final void viewStep0()
     {
+<<<<<<< HEAD
         ArrayList<Surface> surface0 = new ArrayList<>();
         surface0.add((new Surface(this.islet.getBiStep0().getInitialTotalMesh())));
         this.getU3DController().getUniverse3DView().addSurface(surface0);
+=======
+        List<Surface> surfacesList = new ArrayList<>();
+        surfacesList.add(this.islet.getBiStep0().getInitialTotalMesh());
+
+        this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
+>>>>>>> e2b475b1388eaa866c38c0a7138dc1b9b1fe4062
 
     }
 
@@ -687,10 +694,17 @@ public class BuildingsIsletController
      */
     public final void viewStep1()
     {
+<<<<<<< HEAD
         ArrayList<Surface> surface1 = new ArrayList<>();
         surface1.add((new Surface(this.islet.getBiStep1()
                 .getInitialTotalMeshAfterBaseChange())));
         this.getU3DController().getUniverse3DView().addSurface(surface1);
+=======
+        ArrayList<MeshView> mesh1 = new ArrayList<>();
+        mesh1.add((new MeshView(this.islet.getBiStep1()
+                .getInitialTotalSurfaceAfterBaseChange())));
+        this.getU3DController().getUniverse3DView().addMesh(mesh1);
+>>>>>>> e2b475b1388eaa866c38c0a7138dc1b9b1fe4062
 
     }
 
