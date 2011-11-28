@@ -21,6 +21,7 @@ import com.sun.j3d.utils.picking.PickTool;
 
 import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.listener.ElementsSelectedListener;
+import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Surface;
@@ -366,14 +367,29 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 .addMouseMotionListener(this);
     }
 
-    public void selectOrUnselectSurface(Surface surface)
+    
+    /**
+     * Change the appearance of the surfaceView parameter
+     * Select or unselect the corresponding surface
+     * @param surfaceView
+     *            The surfaceView containing the surface to select
+     */
+    public void selectOrUnselectSurface(SurfaceView surfaceView)
     {
-        Appearance app = shape.getAppearance();
-        app.setMaterial(fr.nantes1900.view.display3d.MeshShowable.matUnSelected);
-        shape.setAppearance(app);
-
+    	Surface surface = surfaceView.getSurface();
+    	//Non selected surface
+    	if (!this.surfacesSelected.contains(surface)){
+    		surfacesSelected.add(surface);
+    		surfaceView.setMaterial(fr.nantes1900.view.display3d.Universe3DView.MATERIAL_SELECTED);
+    	}
+    	//Selected surface
+    	else{
+    		surfacesSelected.remove(surface);
+    		surfaceView.setMaterial(fr.nantes1900.view.display3d.Universe3DView.MATERIAL_UNSELECTED);
+    	}
     }
 
+    
     private void treatLeftClick(MouseEvent e)
     {
         this.pickCanvas.setShapeLocation(e);
@@ -382,59 +398,23 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         {
             PickIntersection pickIntersection = result.getIntersection(0);
             GeometryArray meshView = pickIntersection.getGeometryArray();
-            SurfaceView surfacePicked = (SurfaceView) result.getNode(PickResult.SHAPE3D);
-            
+            SurfaceView surfaceViewPicked = (SurfaceView) result.getNode(PickResult.SHAPE3D);
+
             if (e.isShiftDown())
             {
-                // If the shape3D picked is in the list of the shape3Ds
-                // selected,unselect this shape3D.
-                if (this.surfacesSelected.contains(surfacePicked))
-                {
-                    // Unselect this shape3D.Change the material to
-                    // matUnSelect.
-                    this.selectOrUnselectSurface(surfacePicked);
+            	this.selectOrUnselectSurface(surfaceViewPicked);
 
-                    // If the mesh picked is mesh of triangles.
-                    if (meshView.getClass().getSimpleName().equals("MeshView"))
-                    {
-                        // Change the select condition of this mesh picked
-                        // to
-                        // unselect.
-                        ((MeshView) meshView).unselectMesh();
-                    }
-                    // If the mesh picked is a polygon.
-                    else
-                    {
-                        ((PolygonView) meshView).unselect();
-                    }
-
-                    // Remove this shape3D from the list of the shape3Ds
-                    // selected.
-                    Universe3DController.shape3DSelected.remove(surfacePicked);
-                    // Remove this mesh from the list of the meshes
-                    // selected.
-                    Universe3DController.meshSelected.remove(meshView);
-                }
-                // If the shape3D picked is not in the list of the shape3Ds
-                // selected,select this shape3D.
-                else
-                {
-                    // Select this shape3D. Change the material to
-                    // matSelect.
-                    this.selectShape3D(surfacePicked);
-                    // If the mesh picked is a mesh of triangles.
-                    if (meshView.getClass().getSimpleName().equals("MeshView"))
-                    {
-                        // Change the select condition of this mesh picked
-                        // to
-                        // select.
-                        ((MeshView) meshView).selectMesh();
-                        // Set the center ofrotation.
-                        Point3d center = new Point3d(((MeshView) meshView)
-                                .getCentroid().getX(), ((MeshView) meshView)
-                                .getCentroid().getY(), ((MeshView) meshView)
-                                .getCentroid().getZ());
-                        this.mouseRotate.setCenter(center);
+                // Set the center of rotation.
+            	//FIXME handle the case of mesh = null.
+            	
+                Point center = new Point(surfaceViewPicked.getMeshView()
+                        .getCentroid().getX(), surfaceViewPicked.getMeshView()
+                        .getCentroid().getY(), surfaceViewPicked.getMeshView()
+                        .getCentroid().getZ());
+                this.mouseRotate.setCenter(center);
+                
+                
+                
                     }
                     // If the mesh picked is a polygon.
                     else
