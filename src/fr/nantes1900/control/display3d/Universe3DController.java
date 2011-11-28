@@ -10,23 +10,21 @@ import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.Shape3D;
-
+import javax.swing.event.EventListenerList;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
-import javax.swing.event.EventListenerList;
 
 import com.sun.j3d.utils.picking.PickCanvas;
 import com.sun.j3d.utils.picking.PickIntersection;
 import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.picking.PickTool;
 
+import fr.nantes1900.control.isletprocess.IsletProcessController;
 import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
-
 import fr.nantes1900.view.display3d.MeshView;
-import fr.nantes1900.view.display3d.TriangleView;
 import fr.nantes1900.view.display3d.PolygonView;
 import fr.nantes1900.view.display3d.Universe3DView;
 
@@ -65,6 +63,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
     private int                      displayMode;
 
+    private List<Triangle>           trianglesSelected    = new ArrayList<Triangle>();
+
     /**
      * @param isletSelectionController
      */
@@ -91,12 +91,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
      */
     public List<Triangle> getTrianglesSelected()
     {
-        List<Triangle> trianglesList = new ArrayList<>();
-        for (TriangleView triangleView : this.trianglesViewSelected)
-        {
-            trianglesList.add(triangleView.getTriangle());
-        }
-        return trianglesList;
+        return this.trianglesSelected;
     }
 
     public Universe3DView getUniverse3DView()
@@ -111,7 +106,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
         if (buttonDown == MouseEvent.BUTTON1)
         {
-
             // left mouse click
             this.pickCanvas.setShapeLocation(e);
 
@@ -132,8 +126,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 {
                     // If the shape3D picked is in the list of the shape3Ds
                     // selected,unselect this shape3D.
-                    if (Universe3DController.shape3DSelected
-                            .contains(shapePicked))
+                    if (shape3DSelected.contains(shapePicked))
                     {
                         // Unselect this shape3D.Change the material to
                         // matUnSelect.
@@ -156,11 +149,10 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
                         // Remove this shape3D from the list of the shape3Ds
                         // selected.
-                        Universe3DController.shape3DSelected
-                                .remove(shapePicked);
+                        shape3DSelected.remove(shapePicked);
                         // Remove this mesh from the list of the meshes
                         // selected.
-                        Universe3DController.meshSelected.remove(meshView);
+                        meshSelected.remove(meshView);
                     }
                     // If the shape3D picked is not in the list of the shape3Ds
                     // selected,select this shape3D.
@@ -200,9 +192,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
                         // Add this shape3D to the list of the shape3Ds
                         // selected.
-                        Universe3DController.shape3DSelected.add(shapePicked);
+                        shape3DSelected.add(shapePicked);
                         // Add this mesh to the list of the meshes selected.
-                        Universe3DController.meshSelected.add(meshView);
+                        meshSelected.add(meshView);
 
                     }
                 }
@@ -212,22 +204,21 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 {
                     // If the shape3D picked is in the list of the shape3Ds
                     // selected.
-                    if (Universe3DController.shape3DSelected
-                            .contains(shapePicked))
+                    if (shape3DSelected.contains(shapePicked))
                     {
                         // If the shape3D picked is not the only one in the list
                         // of the shape3Ds selected.
-                        if (Universe3DController.shape3DSelected.size() > 1)
+                        if (shape3DSelected.size() > 1)
                         {
                             // Unselect all the shape3D in the list of the
                             // shape3Ds selected.
-                            for (Shape3D shapeSelected : Universe3DController.shape3DSelected)
+                            for (Shape3D shapeSelected : shape3DSelected)
                             {
                                 this.unselectShape3D(shapeSelected);
                             }
                             // Unselect all the meshes of triangles in the list
                             // of the meshes selected.
-                            for (Object meshViewSelected : Universe3DController.meshSelected)
+                            for (Object meshViewSelected : meshSelected)
                             {
                                 // If the mesh in the list is a mesh of
                                 // triangles.
@@ -246,14 +237,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                             }
                             // Clear the list of the shape3Ds selected and add
                             // the shape3D picked to the list.
-                            Universe3DController.shape3DSelected.clear();
-                            Universe3DController.shape3DSelected
-                                    .add(shapePicked);
+                            shape3DSelected.clear();
+                            shape3DSelected.add(shapePicked);
 
                             // Clear the list of the meshes selected and add the
                             // mesh picked to the list.
-                            Universe3DController.meshSelected.clear();
-                            Universe3DController.meshSelected.add(meshView);
+                            meshSelected.clear();
+                            meshSelected.add(meshView);
 
                             // Select this shape3D.Change the material to
                             // matSelect.
@@ -301,9 +291,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                             // matUnSelect.
                             this.unselectShape3D(shapePicked);
                             // Clear the list of the shape3Ds selected.
-                            Universe3DController.shape3DSelected.clear();
+                            shape3DSelected.clear();
                             // Clear the list of the meshes selected.
-                            Universe3DController.meshSelected.clear();
+                            meshSelected.clear();
                             // If the mesh picked is a mesh of triangles,change
                             // the
                             // select condition of this mesh picked to
@@ -328,13 +318,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                     {
                         // Unselect all the shape3D in the list of the shape3Ds
                         // selected.
-                        for (Shape3D shapeSelected : Universe3DController.shape3DSelected)
+                        for (Shape3D shapeSelected : shape3DSelected)
                         {
                             this.unselectShape3D(shapeSelected);
                         }
                         // Unselect all the meshes in the list of
                         // the meshes selected.
-                        for (Object meshViewSelected : Universe3DController.meshSelected)
+                        for (Object meshViewSelected : meshSelected)
                         {
                             if (meshViewSelected.getClass().getSimpleName()
                                     .equals("MeshView"))
@@ -348,12 +338,12 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                         }
                         // Clear the list of the shape3Ds selected and add the
                         // shape3D picked to the list.
-                        Universe3DController.shape3DSelected.clear();
-                        Universe3DController.shape3DSelected.add(shapePicked);
+                        shape3DSelected.clear();
+                        shape3DSelected.add(shapePicked);
                         // Clear the list of the meshes selected and add the
                         // mesh picked to the list.
-                        Universe3DController.meshSelected.clear();
-                        Universe3DController.meshSelected.add(meshView);
+                        meshSelected.clear();
+                        meshSelected.add(meshView);
                         // Select this shape3D.Change the material to matSelect.
                         this.selectShape3D(shapePicked);
                         // If the mesh picked is a mesh of triangles,change the
@@ -420,8 +410,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                             .getNode(PickResult.SHAPE3D);
                     // If the shape3D picked is in the list of the shape3Ds
                     // selected.
-                    if (Universe3DController.shape3DSelected
-                            .contains(shapePicked) == true)
+                    if (shape3DSelected.contains(shapePicked) == true)
                     {
                         // If the triangle picked is not selected.
                         if (MeshView.getTriangleArray().get(TriangleIndex)
@@ -567,202 +556,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
     }
 
-    // public void mouseClicked(MouseEvent e) {
-    //
-    // int buttonDown = e.getButton();
-    //
-    // if (buttonDown == MouseEvent.BUTTON1) {
-    //
-    // // Left click of the mouse.
-    //
-    // this.pickCanvas.setShapeLocation(e);
-    // PickResult result = this.pickCanvas.pickClosest();
-    // if (result == null) {
-    //
-    // } else {
-    //
-    // PickIntersection pickIntersection = result.getIntersection(0);
-    //
-    // int[] PointIndex = pickIntersection.getPrimitiveVertexIndices();
-    // int TriangleIndex = PointIndex[0] / 3;
-    //
-    // MeshView MeshView = (MeshView) pickIntersection
-    // .getGeometryArray();
-    // this.MeshView = MeshView;
-    //
-    // // If the mesh clicked is not selected, select the mesh, change
-    // // the color of the mesh.
-    // if (this.MeshView.getMeshSelectedOrNot() == false) {
-    // // return the shape3D selected
-    // Shape3D shapePicked = (Shape3D) result
-    // .getNode(PickResult.SHAPE3D);
-    // this.selectShape3D(shapePicked);
-    // this.MeshView.selectMesh();
-    // if (Universe3DController.shape3DSelected != null) {
-    // if (Universe3DController.shape3DSelected != shapePicked) {
-    // this.unselectShape3D(Universe3DController.shape3DSelected);
-    // Universe3DController.meshSelected
-    // .unselectMesh();
-    //
-    // }
-    //
-    // }
-    // Universe3DController.shape3DSelected = shapePicked;
-    // Universe3DController.meshSelected = this.MeshView;
-    // }
-    //
-    // // If the mesh is selected, select the triangle where the mouse
-    // // is.
-    // else {
-    // MeshView.select(TriangleIndex);
-    // if (trianglePicked.contains(TriangleIndex) == false) {
-    // // this.trianglePicked.add(TriangleIndex);
-    // this.trianglesViewSelected.add(this.MeshView
-    // .getTriangleArray().get(TriangleIndex));
-    // // /////////
-    // this.triangleMesh.add(MeshView);
-    // // //////////
-    // this.selectedIndex.add(this.trianglesViewSelected
-    // .size() - 1);
-    // }
-    // this.mouseRotate.setCenter(MeshView
-    // .getTriangleArray().get(TriangleIndex));
-    // }
-    //
-    // }
-    // } else if (buttonDown == MouseEvent.BUTTON3) {
-    //
-    // // Right click of the mouse.
-    //
-    // this.pickCanvas.setShapeLocation(e);
-    // PickResult result = this.pickCanvas.pickClosest();
-    // if (result == null) {
-    //
-    // } else {
-    //
-    // PickIntersection pickIntersection = result.getIntersection(0);
-    // int[] PointIndex = pickIntersection.getPrimitiveVertexIndices();
-    // int TriangleIndex = PointIndex[0] / 3;
-    // MeshView MeshView = (MeshView) pickIntersection
-    // .getGeometryArray();
-    // this.MeshView = MeshView;
-    //
-    // // If the mesh is not selected, select the mesh and change the
-    // // color.
-    // if (this.MeshView.getMeshSelectedOrNot() == false) {
-    // // return the shape3D selected
-    // Shape3D shapePicked = (Shape3D) result
-    // .getNode(PickResult.SHAPE3D);
-    // this.selectShape3D(shapePicked);
-    // this.MeshView.selectMesh();
-    // if (Universe3DController.shape3DSelected != null) {
-    // if (Universe3DController.shape3DSelected != shapePicked) {
-    // this.unselectShape3D(Universe3DController.shape3DSelected);
-    // Universe3DController.meshSelected
-    // .unselectMesh();
-    //
-    // }
-    //
-    // }
-    // Universe3DController.shape3DSelected = shapePicked;
-    // Universe3DController.meshSelected = this.MeshView;
-    // }
-    // // If the mesh is selcted, select the triangle where the mouse
-    // // is and its neighbours.
-    // else {
-    // if(MeshView.getTriangleArray().get(TriangleIndex).isSelected()==false){
-    // MeshView.select(TriangleIndex);
-    // if (this.trianglesViewSelected
-    // .contains(this.MeshView.getTriangleArray()
-    // .get(TriangleIndex)) == false) {
-    // this.trianglesViewSelected.add(this.MeshView
-    // .getTriangleArray().get(TriangleIndex));
-    //
-    // this.triangleMesh.add(MeshView);
-    //
-    // }
-    //
-    // List<Integer> triangleNewSelected = new ArrayList<Integer>();
-    //
-    // triangleNewSelected.add(TriangleIndex);
-    //
-    // int turn = 30;
-    // selectVoisin(TriangleIndex, triangleNewSelected,
-    // MeshView, turn);
-    // this.mouseRotate.setCenter(MeshView
-    // .getTriangleArray().get(TriangleIndex));
-    // this.selectedIndex
-    // .add(this.trianglesViewSelected.size() - 1);
-    // }
-    // else{
-    //
-    //
-    //
-    // if(this.trianglesViewSelected.contains(this.MeshView.getTriangleArray().get(TriangleIndex))){
-    //
-    // int
-    // triangleIndex=this.trianglesViewSelected.indexOf(this.MeshView.getTriangleArray().get(TriangleIndex));
-    // int beginIndex=0;
-    // int finishIndex=0;
-    // int indexOfBeginIndex=0;
-    // int indexOfFinishIndex=0;
-    // for(int i=0;i<this.selectedIndex.size();i++){
-    // if(i==0&&this.selectedIndex.get(i)>=triangleIndex){
-    // beginIndex=-1;
-    // finishIndex=this.selectedIndex.get(i);
-    // break;
-    // }
-    // else{
-    // if(this.selectedIndex.get(i)<triangleIndex&&this.selectedIndex.get(i+1)>=triangleIndex){
-    // beginIndex=this.selectedIndex.get(i);
-    // finishIndex=this.selectedIndex.get(i+1);
-    // indexOfBeginIndex=i;
-    // indexOfFinishIndex=i+1;
-    // break;
-    // }
-    // }
-    // }
-    //
-    // for(int i=finishIndex;i>beginIndex;i--){
-    // TriangleView triangleSelected=this.trianglesViewSelected.get(i);
-    // int index=triangleSelected.getTriangle().getTriangleViewIndex();
-    // this.MeshView.unselect(index);
-    // this.trianglesViewSelected.remove(i);
-    //
-    // }
-    //
-    // this.selectedIndex.remove(indexOfFinishIndex);
-    // for(int i=indexOfFinishIndex;i<this.selectedIndex.size();i++){
-    // int index=this.selectedIndex.get(i);
-    // this.selectedIndex.set(i, index-(finishIndex-beginIndex));
-    //
-    // }
-    //
-    // }
-    //
-    //
-    //
-    // }
-    // }
-    //
-    //
-    // }
-    // }
-    // // click the wheel all the triangles selected will be canceled
-    // else if (buttonDown == MouseEvent.BUTTON2) {
-    // for (int i = 0; i < this.trianglesViewSelected.size(); i++) {
-    // int index = this.trianglesViewSelected.get(i).getTriangle()
-    // .getTriangleViewIndex();
-    // this.triangleMesh.get(i).unselect(index);
-    // }
-    // this.trianglesViewSelected.clear();
-    // this.selectedIndex.clear();
-    // this.triangleMesh.clear();
-    //
-    // }
-    //
-    // }
-
     /**
      * Select the triangles around the triangle clicked.
      * @param TriangleIndex
@@ -830,13 +623,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     @Override
     public void mouseDragged(MouseEvent arg0)
     {
-        // Empty.
+        // Not used.
     }
 
     @Override
     public void mouseEntered(MouseEvent arg0)
     {
-        // Empty.
+        // Not used.
     }
 
     @Override
@@ -846,32 +639,15 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     }
 
     @Override
-    public void mouseMoved(MouseEvent e)
-    {
-        // Empty.
-    }
-
-    @Override
     public void mousePressed(MouseEvent e)
     {
-
-        this.xPressed = e.getX();
-        this.yPressed = e.getY();
+        // Not used.
     }
 
     @Override
     public void mouseReleased(MouseEvent e)
     {
-
-    }
-
-    /**
-     * TODO.
-     */
-    public Universe3DController()
-    {
-        this.u3DView = new Universe3DView(this);
-        this.trianglesViewSelected = new ArrayList<>();
+        // Not used.
     }
 
     /**
@@ -991,33 +767,29 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         }
 
         // Get the index of the meshView in the list of the meshes displayed.
-        int meshViewIndex = fr.nantes1900.view.display3d.MeshShowable.meshList
-                .indexOf(mesh);
+        int meshViewIndex = meshList.indexOf(mesh);
 
         // Get the shape3D of the meshView to be selected.
-        Shape3D shapeSelect = fr.nantes1900.view.display3d.MeshShowable.meshShape3D
-                .get(meshViewIndex);
+        Shape3D shapeSelect = meshShape3D.get(meshViewIndex);
         Appearance appSelect = shapeSelect.getAppearance();
 
         // Change the material of the mesh to be seleted.
-        appSelect
-                .setMaterial(fr.nantes1900.view.display3d.MeshShowable.matSelected);
+        appSelect.setMaterial(matSelected);
         shapeSelect.setAppearance(appSelect);
 
         // If the shape3D selected last time is not null.
-        if (Universe3DController.shape3DSelected != null)
+        if (shape3DSelected != null)
         {
 
             // If the shape3D selected last time is not this one.
-            if (Universe3DController.shape3DSelected.contains(shapeSelect))
+            if (shape3DSelected.contains(shapeSelect))
             {
 
                 // Change back the material of the mesh selected last time.
                 for (Shape3D shape : Universe3DController.shape3DSelected)
                 {
                     Appearance appUnselect = shape.getAppearance();
-                    appUnselect
-                            .setMaterial(fr.nantes1900.view.display3d.MeshShowable.matUnSelected);
+                    appUnselect.setMaterial(matUnSelected);
                     shape.setAppearance(appUnselect);
                 }
 
@@ -1038,12 +810,12 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         }
 
         // Set the shape3D last selected to be the shape3D picked.
-        Universe3DController.shape3DSelected.clear();
-        Universe3DController.shape3DSelected.add(shapeSelect);
+        shape3DSelected.clear();
+        shape3DSelected.add(shapeSelect);
 
         // Set the meshView last selected to be the meshView picked.
-        Universe3DController.meshSelected.clear();
-        Universe3DController.meshSelected.add(mesh);
+        meshSelected.clear();
+        meshSelected.add(mesh);
     }
 
     public int getDisplayMode()
@@ -1054,5 +826,11 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     public void setDisplayMode(int displayMode)
     {
         this.displayMode = displayMode;
+    }
+
+    @Override
+    public void mouseMoved(MouseEvent arg0)
+    {
+        // Not used.
     }
 }

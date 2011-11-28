@@ -94,6 +94,8 @@ public class IsletProcessController implements ElementsSelectedListener
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
         this.pController = new ParametersController(this);
+        // FIXME : don't create a new U3DController, but change the parent of
+        // the old one.
         this.u3DController = new Universe3DController();
         this.biController.setUniverse3DController(u3DController);
         this.biController.display();

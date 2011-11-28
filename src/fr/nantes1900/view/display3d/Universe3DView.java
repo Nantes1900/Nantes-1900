@@ -44,21 +44,12 @@ public class Universe3DView extends JPanel
     /**
      * Version ID.
      */
-    private static final long      serialVersionUID = 1L;
-
-    /**
-     * TODO.
-     */
-    private List<MeshView>         meshesList       = new ArrayList<>();
-    /**
-     * TODO.
-     */
-    private List<PolygonView>      polygonsList     = new ArrayList<>();
+    private static final long      serialVersionUID    = 1L;
 
     /**
      * The list to save all the surfaceView.
      */
-    private ArrayList<SurfaceView> surfaceViewList  = new ArrayList<>();
+    private ArrayList<SurfaceView> surfaceViewList     = new ArrayList<>();
 
     /**
      * The Universe3DController attached.
@@ -73,30 +64,38 @@ public class Universe3DView extends JPanel
     /**
      * The material of the mesh non-selected.
      */
-    public static final Material   matSelected      = new Material(
-                                                            new Color3f(1.0f,
-                                                                    1.0f, 1.0f),
-                                                            new Color3f(1.0f,
-                                                                    1.0f, 1.0f),
-                                                            new Color3f(
-                                                                    Color.white),
-                                                            new Color3f(
-                                                                    Color.white),
-                                                            64);
+    public static final Material   MATERIAL_SELECTED   = new Material(
+                                                               new Color3f(
+                                                                       1.0f,
+                                                                       1.0f,
+                                                                       1.0f),
+                                                               new Color3f(
+                                                                       1.0f,
+                                                                       1.0f,
+                                                                       1.0f),
+                                                               new Color3f(
+                                                                       Color.white),
+                                                               new Color3f(
+                                                                       Color.white),
+                                                               64);
 
     /**
      * The material of the mesh selected.
      */
-    public static final Material   matUnSelected    = new Material(
-                                                            new Color3f(0.2f,
-                                                                    0.0f, 0.2f),
-                                                            new Color3f(0.0f,
-                                                                    0.0f, 0.0f),
-                                                            new Color3f(
-                                                                    Color.blue),
-                                                            new Color3f(
-                                                                    Color.blue),
-                                                            64);
+    public static final Material   MATERIAL_UNSELECTED = new Material(
+                                                               new Color3f(
+                                                                       0.2f,
+                                                                       0.0f,
+                                                                       0.2f),
+                                                               new Color3f(
+                                                                       0.0f,
+                                                                       0.0f,
+                                                                       0.0f),
+                                                               new Color3f(
+                                                                       Color.blue),
+                                                               new Color3f(
+                                                                       Color.blue),
+                                                               64);
 
     /**
      * Creates a new universe.
@@ -300,24 +299,6 @@ public class Universe3DView extends JPanel
         mouseTranslate.setSchedulingBounds(boundingSphere);
 
         return transformGroup;
-    }
-
-    /**
-     * Getter.
-     * @return the list of meshes
-     */
-    public final List<MeshView> getMeshesList()
-    {
-        return this.meshesList;
-    }
-
-    /**
-     * Getter.
-     * @return the list of polygons
-     */
-    public final List<PolygonView> getPolygonsList()
-    {
-        return this.polygonsList;
     }
 
     /**
