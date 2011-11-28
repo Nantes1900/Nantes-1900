@@ -65,6 +65,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
 
     private List<Triangle>           trianglesSelected    = new ArrayList<>();
+    
+    private List<Integer>          	 trianglesSelectionIndexes    = new ArrayList<>();
 
     private List<Surface>            surfacesSelected     = new ArrayList<>();
 
@@ -448,55 +450,27 @@ public class Universe3DController implements MouseListener, MouseMotionListener
            // If the triangle picked is not selected.
             Triangle trianglePicked = meshView.getTriangleFromArrayPosition(triangleIndex);
         	if (!this.trianglesSelected.contains(trianglePicked)){
+        		//change the appearance of the picked triangle
+        		meshView.select(triangleIndex);
+        		//add it to the trianglesSelected list
+        		this.trianglesSelected.add(trianglePicked);
+
+        		// Times to search the neighbour.
+        		// FIXME use a button in the tool bar to set this number
+                int turn = 30;
         		
-                // Select the triangle picked.
-                MeshView.select(TriangleIndex);
-                // If the triangle picked in not in the list of
-                // triangles selected.
-                if (this.trianglesViewSelected
-                        .contains(this.MeshView.getTriangleArray()
-                                .get(TriangleIndex)) == false)
-                {
-                    // Add the triangle picked to the list of
-                    // triangles selected.
-                    this.trianglesViewSelected.add(this.MeshView
-                            .getTriangleArray().get(TriangleIndex));
-                    // Save the mesh of this triangle picked.
-                    this.triangleMesh.add(MeshView);
-
-                }
-
                 // A list used to save the index of triangles
                 // selected in each turn of getting neighbours.
-                List<Integer> triangleNewSelected = new ArrayList<Integer>();
+                List<Integer> triangleNewSelected = new ArrayList<>();
                 // Add the index of the triangle picked to the list.
-                triangleNewSelected.add(TriangleIndex);
-                // Times to search the neighbour.
-                int turn = 30;
+                triangleNewSelected.add(triangleIndex);     
                 // Select the neighbours of the triangle picked.
-                selectVoisin(TriangleIndex, triangleNewSelected,
-                        MeshView, turn);
+                selectVoisin(triangleIndex, triangleNewSelected, MeshView, turn);
                 // Set the center of rotation.
-                this.mouseRotate.setCenter(MeshView
-                        .getTriangleArray().get(TriangleIndex));
-                // Add the index of the last triangle selected in
-                // each time of getting neighbours.
-                this.selectedIndex.add(this.trianglesViewSelected
-                        .size() - 1);
+                this.mouseRotate.setCenter(trianglePicked.getP1());
+                // Index to know where a new selection begins
+                this.trianglesSelectionIndexes.add(this.trianglesSelected.size()-1);
             }
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-        	
-            // If the triangle picked is selected.
             else
             {
 
