@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Appearance;
@@ -128,7 +129,7 @@ public class Universe3DView extends JPanel
      *            TODO.
      */
 
-    public final void addSurface(final ArrayList<Surface> surfaces)
+    public final void addSurfaces(final List<Surface> surfaces)
     {
         if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
         {
@@ -318,7 +319,7 @@ public class Universe3DView extends JPanel
         cameraTransformGroup.setTransform(cameraTranslation);
     }
 
-    private void displayMeshes(ArrayList<Surface> surfacesList)
+    private void displayMeshes(List<Surface> surfacesList)
     {
         for (Surface surface : surfacesList)
         {
@@ -329,7 +330,7 @@ public class Universe3DView extends JPanel
         }
     }
 
-    private void displayPolygons(ArrayList<Surface> surfacesList)
+    private void displayPolygons(List<Surface> surfacesList)
     {
         for (Surface surface : surfacesList)
         {

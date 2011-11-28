@@ -9,6 +9,7 @@ import fr.nantes1900.constants.SeparationBuildings;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
+import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.utils.Algos;
 
 /**
@@ -22,37 +23,29 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
     /**
      * The mesh containing every buildings.
      */
-    private Mesh   initialBuildings;
+    private Surface initialBuildings;
     /**
      * The mesh containing every grounds.
      */
-    private Ground initialGrounds;
-
-    /**
-     * Getter.
-     * @return the noise
-     */
-    public final Mesh getNoise()
-    {
-        return this.noise;
-    }
+    private Ground  initialGrounds;
 
     /**
      * The mesh containing the noise during the treatments.
      */
-    private Mesh noise;
+    private Mesh    noise;
 
     /**
      * Constructor.
-     * @param buildings
+     * @param initialBuildingsIn
      *            the mesh containing all the buildings
-     * @param grounds
+     * @param groundsIn
      *            the mesh containing all the grounds
      */
-    public BuildingsIsletStep2(final Mesh buildings, final Ground grounds)
+    public BuildingsIsletStep2(final Surface initialBuildingsIn,
+            final Ground groundsIn)
     {
-        this.initialBuildings = buildings;
-        this.initialGrounds = grounds;
+        this.initialBuildings = initialBuildingsIn;
+        this.initialGrounds = groundsIn;
     }
 
     /**
@@ -65,7 +58,7 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
 
         List<Mesh> thingsList;
         // Extraction of the buildings.
-        thingsList = Algos.blockExtract(this.initialBuildings);
+        thingsList = Algos.blockExtract(this.initialBuildings.getMesh());
 
         // Steprithm : detection of buildings considering their size.
         for (final Mesh m : thingsList)
@@ -98,7 +91,7 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
      * Getter.
      * @return the set of every buildings
      */
-    public final Mesh getInitialBuildings()
+    public final Surface getInitialBuildings()
     {
         return this.initialBuildings;
     }
@@ -110,6 +103,15 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
     public final Ground getInitialGrounds()
     {
         return this.initialGrounds;
+    }
+
+    /**
+     * Getter.
+     * @return the noise
+     */
+    public final Mesh getNoise()
+    {
+        return this.noise;
     }
 
     @Override
@@ -138,17 +140,20 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
     public final DefaultMutableTreeNode returnNode()
     {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
-        DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(this.initialBuildings);
-        DefaultMutableTreeNode node2 = new DefaultMutableTreeNode(this.initialGrounds);
+        DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(
+                this.initialBuildings);
+        DefaultMutableTreeNode node2 = new DefaultMutableTreeNode(
+                this.initialGrounds);
 
         root.add(node1);
         root.add(node2);
 
         return root;
     }
-    
+
     @Override
-    public String toString(){
-        return super.toString()+"2";
+    public String toString()
+    {
+        return super.toString() + "2";
     }
 }

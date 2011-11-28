@@ -5,6 +5,7 @@ import javax.vecmath.Vector3d;
 
 import fr.nantes1900.constants.SeparationWallRoof;
 import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
@@ -19,7 +20,7 @@ public class BuildingStep3 extends AbstractBuildingStep
     /**
      * The initial total mesh representing the building.
      */
-    private Mesh     initialTotalMesh;
+    private Surface  initialTotalMesh;
 
     /**
      * The gravity normal.
@@ -33,14 +34,14 @@ public class BuildingStep3 extends AbstractBuildingStep
      */
     public BuildingStep3(final Mesh mesh)
     {
-        this.initialTotalMesh = mesh;
+        this.initialTotalMesh = new Surface(mesh);
     }
 
     /**
      * Getter.
      * @return the entire mesh
      */
-    public final Mesh getInitialTotalMesh()
+    public final Surface getInitialTotalMesh()
     {
         return this.initialTotalMesh;
     }
@@ -59,11 +60,14 @@ public class BuildingStep3 extends AbstractBuildingStep
             throw new NullArgumentException();
         }
         // Selects the triangles which are oriented normal to normalGround.
-        Mesh initialWall = this.initialTotalMesh.orientedNormalTo(this.gravityNormal,
-                SeparationWallRoof.getNormalToError());
+        Surface initialWall = new Surface(this.initialTotalMesh.getMesh()
+                .orientedNormalTo(this.gravityNormal,
+                        SeparationWallRoof.getNormalToError()));
 
-        Mesh initialRoof = new Mesh(this.initialTotalMesh);
-        initialRoof.remove(initialWall);
+        // Copies the mesh and removes all the walls.
+        Surface initialRoof = new Surface(new Mesh(
+                this.initialTotalMesh.getMesh()));
+        initialRoof.getMesh().remove(initialWall.getMesh());
 
         return new BuildingStep4(initialWall, initialRoof);
     }

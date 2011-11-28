@@ -4,7 +4,9 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
@@ -18,7 +20,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
     /**
      * The initial mesh before every treatment.
      */
-    private Mesh       initialTotalMesh;
+    private Surface    initialTotalMesh;
 
     /**
      * Change base matrix from the current base to a base which is ground-like
@@ -38,12 +40,12 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      */
     public BuildingsIsletStep0(final Mesh mesh)
     {
-        this.initialTotalMesh = mesh;
+        this.initialTotalMesh = new Surface(mesh);
     }
 
     /**
      * Changes the base of the mesh.
-     * @throws UnCompletedParametersException
+     * @throws NullArgumentException
      *             if the matrix or the mesh has not been initialized
      */
     public final void changeBase() throws NullArgumentException
@@ -52,7 +54,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
         {
             throw new NullArgumentException();
         }
-        this.initialTotalMesh.changeBase(this.matrix);
+        this.initialTotalMesh.getMesh().changeBase(this.matrix);
     }
 
     /**
@@ -66,6 +68,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
         {
             if (this.gravityNormal == null)
             {
+                // TODO : throw this somewhere else...
                 throw new NullArgumentException();
             }
             // Base change
@@ -83,7 +86,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      * Getter.
      * @return the initial total mesh
      */
-    public final Mesh getInitialTotalMesh()
+    public final Surface getInitialTotalMesh()
     {
         return this.initialTotalMesh;
     }

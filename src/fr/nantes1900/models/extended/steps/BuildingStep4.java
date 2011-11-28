@@ -28,11 +28,11 @@ public class BuildingStep4 extends AbstractBuildingStep
     /**
      * The mesh containg all the walls.
      */
-    private Mesh       initialWall;
+    private Surface    initialWall;
     /**
      * The mesh containing all the roofs.
      */
-    private Mesh       initialRoof;
+    private Surface    initialRoof;
     /**
      * The mesh containing the noise.
      */
@@ -63,7 +63,8 @@ public class BuildingStep4 extends AbstractBuildingStep
      * @param initialRoofIn
      *            the entire roofs
      */
-    public BuildingStep4(final Mesh initialWallIn, final Mesh initialRoofIn)
+    public BuildingStep4(final Surface initialWallIn,
+            final Surface initialRoofIn)
     {
         this.initialWall = initialWallIn;
         this.initialRoof = initialRoofIn;
@@ -75,7 +76,8 @@ public class BuildingStep4 extends AbstractBuildingStep
     public final void cutRoofs()
     {
         // Cut the mesh in parts, considering their orientation.
-        final List<Mesh> thingsList = Algos.blockOrientedExtract(this.initialRoof,
+        final List<Mesh> thingsList = Algos.blockOrientedExtract(
+                this.initialRoof.getMesh(),
                 SeparationWallsSeparationRoofs.getRoofAngleError());
 
         // Considering their size and their orientation, sort the blocks in
@@ -83,8 +85,8 @@ public class BuildingStep4 extends AbstractBuildingStep
         // it is not keeped.
         for (final Mesh e : thingsList)
         {
-            if ((e.size() >= SeparationWallsSeparationRoofs.getRoofSizeError()) && (e.averageNormal()
-                    .dot(this.groundNormal) > 0))
+            if ((e.size() >= SeparationWallsSeparationRoofs.getRoofSizeError())
+                    && (e.averageNormal().dot(this.groundNormal) > 0))
             {
                 this.roofs.add(new Roof(e));
             } else
@@ -100,7 +102,8 @@ public class BuildingStep4 extends AbstractBuildingStep
     public final void cutWalls()
     {
         // Cut the mesh in parts, considering their orientation.
-        final List<Mesh> thingsList = Algos.blockOrientedExtract(this.initialWall,
+        final List<Mesh> thingsList = Algos.blockOrientedExtract(
+                this.initialWall.getMesh(),
                 SeparationWallsSeparationRoofs.getWallAngleError());
 
         // Considering their size, sort the blocks in walls or noise.
@@ -120,7 +123,7 @@ public class BuildingStep4 extends AbstractBuildingStep
      * Getter.
      * @return the initial roof
      */
-    public final Mesh getInitialRoof()
+    public final Surface getInitialRoof()
     {
         return this.initialRoof;
     }
@@ -129,7 +132,7 @@ public class BuildingStep4 extends AbstractBuildingStep
      * Getter.
      * @return the initial wall
      */
-    public final Mesh getInitialWall()
+    public final Surface getInitialWall()
     {
         return this.initialWall;
     }
@@ -148,13 +151,15 @@ public class BuildingStep4 extends AbstractBuildingStep
         {
             throw new NullArgumentException();
         }
-        System.out.println("Beg cut walls");
+        System.out
+                .println("Beginning cut walls : it's very long. Please wait.");
         this.cutWalls();
-        System.out.println("Beg cut roofs");
+        System.out
+                .println("Beginning cut roofs : it's very long. Please wait.");
         this.cutRoofs();
-        System.out.println("Beg tr noise");
+        System.out.println("Beginning tr noise : it's very long. Please wait.");
         this.treatNoise();
-        System.out.println("Beg tr new neighb");
+        System.out.println("Beginning tr new neighb");
         this.treatNewNeighbours();
         System.out.println("End tr new neighb");
 
@@ -244,8 +249,7 @@ public class BuildingStep4 extends AbstractBuildingStep
      *            the noise
      */
     public final void setArguments(final Vector3d groundNormalIn,
-            final Ground groundsIn,
-            final Mesh noiseIn)
+            final Ground groundsIn, final Mesh noiseIn)
     {
         this.groundNormal = groundNormalIn;
         this.grounds = groundsIn;
@@ -320,13 +324,11 @@ public class BuildingStep4 extends AbstractBuildingStep
             roofsOut.add(r);
         }
         // Adds the oriented and neighbour noise to the walls.
-        Algos.blockTreatOrientedNoise(wallsOut,
-                this.noise,
+        Algos.blockTreatOrientedNoise(wallsOut, this.noise,
                 SeparationWallsSeparationRoofs.getLargeAngleError());
 
         // Adds the oriented and neighbour noise to the roofs.
-        Algos.blockTreatOrientedNoise(roofsOut,
-                this.noise,
+        Algos.blockTreatOrientedNoise(roofsOut, this.noise,
                 SeparationWallsSeparationRoofs.getLargeAngleError());
     }
 
