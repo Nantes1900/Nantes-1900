@@ -341,4 +341,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         this.biStep6 = this.getBiStep5().launchTreatment();
         System.out.println("End tr 5");
     }
+
+    public void setBiStep0(BuildingsIsletStep0 buildingsIsletStepIn)
+    {
+        this.biStep0 = buildingsIsletStepIn;
+    }
 }
