@@ -26,8 +26,7 @@ import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
 
 import fr.nantes1900.view.display3d.MeshView;
-import fr.nantes1900.view.display3d.TriangleView;
-import fr.nantes1900.view.display3d.PolygonView;
+
 import fr.nantes1900.view.display3d.Universe3DView;
 
 // FIXME : Javadoc

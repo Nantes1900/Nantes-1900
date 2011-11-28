@@ -16,7 +16,6 @@ import javax.vecmath.Vector3d;
 import com.sun.j3d.utils.behaviors.mouse.MouseBehaviorCallback;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 
-import fr.nantes1900.view.display3d.TriangleView;
 
 // FIXME : Javadoc
 public class NewMouseRotate extends MouseRotate
@@ -204,23 +203,5 @@ public class NewMouseRotate extends MouseRotate
         this.center = centerIn;
     }
 
-    /**
-     * TODO.
-     * @param triangle
-     *            TODO
-     */
-    public final void setCenter(final TriangleView triangle)
-    {
-        double x, y, z;
-        x = (triangle.getTriangle().getP1().getX() + triangle.getTriangle()
-                .getP2()
-                .getX() + triangle.getTriangle().getP3().getX()) / 3;
-        y = (triangle.getTriangle().getP1().getY() + triangle.getTriangle()
-                .getP2()
-                .getY() + triangle.getTriangle().getP3().getY()) / 3;
-        z = (triangle.getTriangle().getP1().getZ() + triangle.getTriangle()
-                .getP2()
-                .getZ() + triangle.getTriangle().getP3().getZ()) / 3;
-        setCenter(new Point3d(x, y, z));
-    }
+   
 }

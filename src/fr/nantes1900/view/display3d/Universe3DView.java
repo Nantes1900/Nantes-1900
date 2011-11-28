@@ -128,19 +128,21 @@ public class Universe3DView extends JPanel
      *            TODO.
      */
 
-    public final void addSurface(final ArrayList<Surface> surfaces) {
-	   if(this.u3DController.displayMode."mesh"){
-	       this.displayMeshes(surfaces);
-	   }
-	   else{
-	       this.displayPolygons(surfaces);
-	   }
+    public final void addSurface(final ArrayList<Surface> surfaces)
+    {
+        if (this.u3DController.displayMode == DISPLAY_MODE_MESH)
+        {
+            this.displayMeshes(surfaces);
+        } else
+        {
+            this.displayPolygons(surfaces);
+        }
 
         TransformGroup transformGroup = createTransformGroup(this.surfaceViewList);
         this.simpleUniverse.addBranchGraph(this
                 .createSceneGraph(transformGroup));
 
-        if (this.u3DController.displayMode == "mesh")
+        if (this.u3DController.displayMode == DISPLAY_MODE_POLYGON)
         {
             translateCamera(surfaces.get(0).getMesh().xAverage(),
                     surfaces.get(0).getMesh().yAverage(), surfaces.get(0)
@@ -150,27 +152,28 @@ public class Universe3DView extends JPanel
                     new Point3d(surfaces.get(0).getMesh().xAverage(), surfaces
                             .get(0).getMesh().yAverage(), surfaces.get(0)
                             .getMesh().zAverage()));
-        }
-        else{
-            translateCamera(surfaces.get(0).getPolygone().xAverage(),
-                    surfaces.get(0).getPolygone().yAverage(), surfaces.get(0)
-                            .getPolygone().zAverage() + 30);
+        } else
+        {
+            translateCamera(surfaces.get(0).getPolygone().xAverage(), surfaces
+                    .get(0).getPolygone().yAverage(), surfaces.get(0)
+                    .getPolygone().zAverage() + 30);
             // changing the rotation center
             this.u3DController.getMouseRotate().setCenter(
-                    new Point3d(surfaces.get(0).getPolygone().xAverage(), surfaces
-                            .get(0).getPolygone().yAverage(), surfaces.get(0)
-                            .getPolygone().zAverage()));
+                    new Point3d(surfaces.get(0).getPolygone().xAverage(),
+                            surfaces.get(0).getPolygone().yAverage(), surfaces
+                                    .get(0).getPolygone().zAverage()));
         }
-		
-//		translateCamera(surfaces.get(0)..get(0).getCentroid().getX(), meshView.get(0)
-//				.getCentroid().getY(),
-//				meshView.get(0).getCentroid().getZ() + 30);
-//		// changing the rotation center
-//		this.u3DController.getMouseRotate().setCenter(
-//				new Point3d(meshView.get(0).getCentroid().getX(), meshView
-//						.get(0).getCentroid().getY(), meshView.get(0)
-//						.getCentroid().getZ()));
-	}
+
+        // translateCamera(surfaces.get(0)..get(0).getCentroid().getX(),
+        // meshView.get(0)
+        // .getCentroid().getY(),
+        // meshView.get(0).getCentroid().getZ() + 30);
+        // // changing the rotation center
+        // this.u3DController.getMouseRotate().setCenter(
+        // new Point3d(meshView.get(0).getCentroid().getX(), meshView
+        // .get(0).getCentroid().getY(), meshView.get(0)
+        // .getCentroid().getZ()));
+    }
 
     /**
      * Removes everything displayed !
