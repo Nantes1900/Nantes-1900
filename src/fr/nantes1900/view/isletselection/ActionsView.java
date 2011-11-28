@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.view.isletselection;
 
 import java.awt.GridBagConstraints;
@@ -52,7 +49,8 @@ public class ActionsView extends JPanel
     public ActionsView()
     {
         this.bOpen = new JButton("Ouvrir");
-        this.bLaunch = new JButton(FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
+        this.bLaunch = new JButton(
+                FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
         this.bLaunch.setEnabled(false);
         this.bHelp = new HelpButton(FileTools.readHelpMessage(
                 TextsKeys.KEY_IS_OPENDIRECTORY, TextsKeys.MESSAGETYPE_TOOLTIP),
