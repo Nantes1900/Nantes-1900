@@ -125,7 +125,7 @@ public class Universe3DView extends JPanel
         this.setMinimumSize(new Dimension(PANEL_HEIGHT, PANEL_WIDTH));
         this.setPreferredSize(new Dimension(PANEL_HEIGHT, PANEL_WIDTH));
 
-        // this.transformGroup = createTransformGroup();
+       
     }
 
     /**
