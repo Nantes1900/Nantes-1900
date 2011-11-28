@@ -33,6 +33,7 @@ public class SurfaceView extends Shape3D
         this.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
 
         // Set the capability of appearance.
+
         this.appearance.setCapability(Appearance.ALLOW_MATERIAL_READ);
         this.appearance.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
 
@@ -49,6 +50,7 @@ public class SurfaceView extends Shape3D
      * @param meshView
      *            The mesh of triangles to be displayed.
      */
+
     public void setMeshView(MeshView meshView)
     {
         this.meshView = meshView;
@@ -59,6 +61,7 @@ public class SurfaceView extends Shape3D
      * Get the mesh of triangle in the surfaceView.
      * @return this.meshView
      */
+
     public MeshView getMeshView()
     {
         return this.meshView;
@@ -69,6 +72,7 @@ public class SurfaceView extends Shape3D
      * @param polygonView
      *            The polygon to be displayed.
      */
+
     public void setPolygonView(PolygonView polygonView)
     {
         this.polygonView = polygonView;
@@ -79,6 +83,7 @@ public class SurfaceView extends Shape3D
      * Get the polygon in the surfaceView.
      * @return this.polygonView
      */
+
     public PolygonView getPolygonView()
     {
         return this.polygonView;
@@ -89,6 +94,7 @@ public class SurfaceView extends Shape3D
      * @param material
      *            The material to be used.
      */
+
     public void setMaterial(Material material)
     {
         this.appearance.setMaterial(material);
@@ -100,6 +106,7 @@ public class SurfaceView extends Shape3D
      * @param texture
      *            The texture to be used.
      */
+
     public void setTexture(Texture texture)
     {
         this.appearance.setTexture(texture);

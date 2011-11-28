@@ -4,7 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.util.ArrayList;
-import java.util.List;
+
 
 import javax.media.j3d.AmbientLight;
 import javax.media.j3d.Appearance;
@@ -44,21 +44,12 @@ public class Universe3DView extends JPanel
     /**
      * Version ID.
      */
-    private static final long      serialVersionUID = 1L;
-
-    /**
-     * TODO.
-     */
-    private List<MeshView>         meshesList       = new ArrayList<>();
-    /**
-     * TODO.
-     */
-    private List<PolygonView>      polygonsList     = new ArrayList<>();
+    private static final long      serialVersionUID    = 1L;
 
     /**
      * The list to save all the surfaceView.
      */
-    private ArrayList<SurfaceView> surfaceViewList  = new ArrayList<>();
+    private ArrayList<SurfaceView> surfaceViewList     = new ArrayList<>();
 
     /**
      * The Universe3DController attached.
@@ -73,31 +64,44 @@ public class Universe3DView extends JPanel
     /**
      * The material of the mesh non-selected.
      */
-    public static final Material   matSelected      = new Material(
-                                                            new Color3f(1.0f,
-                                                                    1.0f, 1.0f),
-                                                            new Color3f(1.0f,
-                                                                    1.0f, 1.0f),
-                                                            new Color3f(
-                                                                    Color.white),
-                                                            new Color3f(
-                                                                    Color.white),
-                                                            64);
+    public static final Material   MATERIAL_SELECTED   = new Material(
+                                                               new Color3f(
+                                                                       1.0f,
+                                                                       1.0f,
+                                                                       1.0f),
+                                                               new Color3f(
+                                                                       1.0f,
+                                                                       1.0f,
+                                                                       1.0f),
+                                                               new Color3f(
+                                                                       Color.white),
+                                                               new Color3f(
+                                                                       Color.white),
+                                                               64);
 
     /**
      * The material of the mesh selected.
      */
-    public static final Material   matUnSelected    = new Material(
-                                                            new Color3f(0.2f,
-                                                                    0.0f, 0.2f),
-                                                            new Color3f(0.0f,
-                                                                    0.0f, 0.0f),
-                                                            new Color3f(
-                                                                    Color.blue),
-                                                            new Color3f(
-                                                                    Color.blue),
-                                                            64);
+    public static final Material   MATERIAL_UNSELECTED = new Material(
+                                                               new Color3f(
+                                                                       0.2f,
+                                                                       0.0f,
+                                                                       0.2f),
+                                                               new Color3f(
+                                                                       0.0f,
+                                                                       0.0f,
+                                                                       0.0f),
+                                                               new Color3f(
+                                                                       Color.blue),
+                                                               new Color3f(
+                                                                       Color.blue),
+                                                               64);
 
+    public static final int TRANSLATION_CAMERA_ZDIRECTION=30;
+    public static final int PANEL_HEIGHT=600;
+    public static final int PANEL_WIDTH=600;
+    public static final int LIGHT_BOUND_RADIUS=1000;
+    public static final int BOUNDING_RADIUS=1000;
     /**
      * Creates a new universe.
      * @param u3DControllerIn
@@ -116,8 +120,8 @@ public class Universe3DView extends JPanel
         this.simpleUniverse = new SimpleUniverse(c);
 
         // Size to show the panel while there is nothing to show
-        this.setMinimumSize(new Dimension(600, 600));
-        this.setPreferredSize(new Dimension(600, 600));
+        this.setMinimumSize(new Dimension(PANEL_HEIGHT, PANEL_WIDTH));
+        this.setPreferredSize(new Dimension(PANEL_HEIGHT, PANEL_WIDTH));
 
         // this.transformGroup = createTransformGroup();
     }
@@ -130,7 +134,9 @@ public class Universe3DView extends JPanel
 
     public final void addSurface(final ArrayList<Surface> surfaces)
     {
-        if (this.u3DController.displayMode == DISPLAY_MODE_MESH)
+
+        if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
+
         {
             this.displayMeshes(surfaces);
         } else
@@ -142,11 +148,12 @@ public class Universe3DView extends JPanel
         this.simpleUniverse.addBranchGraph(this
                 .createSceneGraph(transformGroup));
 
-        if (this.u3DController.displayMode == DISPLAY_MODE_POLYGON)
+        if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
+
         {
             translateCamera(surfaces.get(0).getMesh().xAverage(),
                     surfaces.get(0).getMesh().yAverage(), surfaces.get(0)
-                            .getMesh().zAverage() + 30);
+                            .getMesh().zAverage() + TRANSLATION_CAMERA_ZDIRECTION);
             // changing the rotation center
             this.u3DController.getMouseRotate().setCenter(
                     new Point3d(surfaces.get(0).getMesh().xAverage(), surfaces
@@ -156,7 +163,7 @@ public class Universe3DView extends JPanel
         {
             translateCamera(surfaces.get(0).getPolygone().xAverage(), surfaces
                     .get(0).getPolygone().yAverage(), surfaces.get(0)
-                    .getPolygone().zAverage() + 30);
+                    .getPolygone().zAverage() + TRANSLATION_CAMERA_ZDIRECTION);
             // changing the rotation center
             this.u3DController.getMouseRotate().setCenter(
                     new Point3d(surfaces.get(0).getPolygone().xAverage(),
@@ -164,15 +171,6 @@ public class Universe3DView extends JPanel
                                     .get(0).getPolygone().zAverage()));
         }
 
-        // translateCamera(surfaces.get(0)..get(0).getCentroid().getX(),
-        // meshView.get(0)
-        // .getCentroid().getY(),
-        // meshView.get(0).getCentroid().getZ() + 30);
-        // // changing the rotation center
-        // this.u3DController.getMouseRotate().setCenter(
-        // new Point3d(meshView.get(0).getCentroid().getX(), meshView
-        // .get(0).getCentroid().getY(), meshView.get(0)
-        // .getCentroid().getZ()));
     }
 
     /**
@@ -206,7 +204,7 @@ public class Universe3DView extends JPanel
         // //////////////// Lights
         // Light bound
         BoundingSphere lightBounds = new BoundingSphere(new Point3d(0.0, 0.0,
-                0.0), 100000.0);
+                0.0), LIGHT_BOUND_RADIUS);
         // Ambient light
         AmbientLight ambLight = new AmbientLight(true, new Color3f(1.0f, 1.0f,
                 1.0f));
@@ -236,7 +234,7 @@ public class Universe3DView extends JPanel
             final ArrayList<SurfaceView> surfaceView)
     {
         BoundingSphere boundingSphere = new BoundingSphere(new Point3d(0.0,
-                0.0, 0.0), 100000);
+                0.0, 0.0), BOUNDING_RADIUS);
 
         TransformGroup transformGroup = new TransformGroup();
         transformGroup.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -310,24 +308,6 @@ public class Universe3DView extends JPanel
         mouseTranslate.setSchedulingBounds(boundingSphere);
 
         return transformGroup;
-    }
-
-    /**
-     * Getter.
-     * @return the list of meshes
-     */
-    public final List<MeshView> getMeshesList()
-    {
-        return this.meshesList;
-    }
-
-    /**
-     * Getter.
-     * @return the list of polygons
-     */
-    public final List<PolygonView> getPolygonsList()
-    {
-        return this.polygonsList;
     }
 
     /**
