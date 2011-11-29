@@ -138,35 +138,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		return this.u3DView;
 	}
 
-	@Override
-	public void mouseDragged(MouseEvent arg0) {
-		// Not used.
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// Not used.
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// Not used.
-	}
-
-	@Override
-	public void mouseMoved(MouseEvent arg0) {
-		// Not used.
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// Not used.
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// Not used.
-	}
 
 	public void removeElementsSelectedListener(ElementsSelectedListener listener) {
 		this.listeners.remove(ElementsSelectedListener.class, listener);
@@ -266,7 +237,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 				}
 			}
 			trianglesNewSelected.clear();
-			for (Triangle tempTriangle: tempTrianglesList) {
+			for (Triangle tempTriangle : tempTrianglesList) {
 				trianglesNewSelected.add(tempTriangle);
 			}
 			tempTrianglesList.clear();
@@ -336,6 +307,12 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		this.mouseRotate.setCenter(center);
 	}
 
+	/**
+	 * Treat the different clicking actions (left or right)
+	 * 
+	 * @param MouseEvent
+	 *            The MouseEvent caught by the mouseListener when clicking
+	 */
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int buttonDown = e.getButton();
@@ -344,7 +321,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		} else if (buttonDown == MouseEvent.BUTTON3) {
 			this.treatRightClick(e);
 		}
-
 	}
 
 	/**
@@ -387,7 +363,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
 			Triangle trianglePicked = meshView
 					.getTriangleFromArrayPosition(indexSelected);
-			// If the triangle picked is not selected.
+
 			if (!this.trianglesSelected.contains(trianglePicked)) {
 
 				meshView.select(trianglePicked);
@@ -397,11 +373,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 				// FIXME use a button in the tool bar to set this number
 				int turn = 30;
 
-				// A list used to save the index of triangles
-				// selected in each turn of getting neighbours.
+				// Store the triangles newly selected
 				List<Triangle> trianglesNewSelected = new ArrayList<>();
 				trianglesNewSelected.add(trianglePicked);
-				// Select the neighbours of the triangle picked.
 				this.selectNeighbours(trianglesNewSelected, meshView, turn);
 
 				// Change the center of rotation.
@@ -459,6 +433,35 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 				}
 			}
 		}
+	}
+	
+	@Override
+	public void mouseDragged(MouseEvent arg0) {
+		// Not used.
+	}
 
+	@Override
+	public void mouseEntered(MouseEvent arg0) {
+		// Not used.
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// Not used.
+	}
+
+	@Override
+	public void mouseMoved(MouseEvent arg0) {
+		// Not used.
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// Not used.
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// Not used.
 	}
 }
