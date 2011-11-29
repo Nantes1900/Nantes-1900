@@ -61,8 +61,8 @@ public class Universe3DView extends JPanel {
 	public static final double TRANSLATION_CAMERA_ZDIRECTION = 30;
 	public static final int PANEL_HEIGHT = 600;
 	public static final int PANEL_WIDTH = 600;
-	public static final int LIGHT_BOUND_RADIUS = 1000;
-	public static final int BOUNDING_RADIUS = 1000;
+	public static final int LIGHT_BOUND_RADIUS = 100000;
+	public static final int BOUNDING_RADIUS = 100000;
 
 	/**
 	 * SimpleUniverse getter
@@ -72,10 +72,9 @@ public class Universe3DView extends JPanel {
 	}
 
 	/**
-	 * Creates a new universe.
+	 * Constructor of the U3DView.
 	 * 
 	 * @param u3DControllerIn
-	 *            TODO.
 	 */
 	public Universe3DView(final Universe3DController u3DControllerIn) {
 
@@ -165,8 +164,7 @@ public class Universe3DView extends JPanel {
 		BoundingSphere lightBounds = new BoundingSphere(new Point3d(0.0, 0.0,
 				0.0), LIGHT_BOUND_RADIUS);
 		// Ambient light
-		AmbientLight ambLight = new AmbientLight(true, new Color3f(1.0f, 1.0f,
-				1.0f));
+		AmbientLight ambLight = new AmbientLight(true, new Color3f(Color.white));
 		ambLight.setInfluencingBounds(lightBounds);
 		// Directional light
 		DirectionalLight headLight = new DirectionalLight(new Color3f(
