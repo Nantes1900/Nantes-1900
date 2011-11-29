@@ -132,6 +132,19 @@ public class IsletProcessController implements ElementsSelectedListener
         this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         this.nbController.getView().refreshStepTitle(this.progression);
     }
+    public void abortTreatment()
+    {
+        this.progression=1;
+        this.itController.refreshView();
+        this.nbController.getView().refreshStepTitle(this.progression);
+    }
+
+    public void getPreviousTreatment()
+    {
+        this.progression--;
+        this.itController.refreshView();
+        this.nbController.getView().refreshStepTitle(this.progression);
+    }
 
     @Override
     public void triangleSelected(Triangle triangleSelected)

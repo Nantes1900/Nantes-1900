@@ -44,7 +44,6 @@ public class NavigationBarController extends JToolBar
             public void actionPerformed(final ActionEvent arg0)
             {
                 NavigationBarController.this.getParentController()
-                        .getBiController()
                         .abortTreatment();
             }
         });
@@ -53,7 +52,6 @@ public class NavigationBarController extends JToolBar
             public void actionPerformed(final ActionEvent arg0)
             {
                 NavigationBarController.this.getParentController()
-                        .getBiController()
                         .getPreviousTreatment();
             }
         });

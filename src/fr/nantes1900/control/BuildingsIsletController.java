@@ -510,18 +510,6 @@ public class BuildingsIsletController
             e.printStackTrace();
         }
     }
-
-    public void abortTreatment()
-    {
-        // FIXME
-    }
-
-    public void getPreviousTreatment()
-    {
-        // FIXME
-        System.out.println("LastTreatment");
-    }
-
     /**
      * Sets the gravity normal in the islet attribute.
      */
