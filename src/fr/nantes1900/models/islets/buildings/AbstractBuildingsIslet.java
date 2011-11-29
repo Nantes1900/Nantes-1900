@@ -102,6 +102,11 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     {
     }
 
+    public void decProgression()
+    {
+        this.progression--;
+    }
+
     /**
      * Getter.
      * @return the zero step
@@ -204,6 +209,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         this.progression=0;
     }
     /**
+<<<<<<< HEAD
      * Return a node containing the tree depending of the progression of the
      * treatment.
      * @return the node
@@ -333,15 +339,5 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         System.out.println("Beginning tr 5");
         this.biStep6 = this.getBiStep5().launchTreatment();
         System.out.println("End tr 5");
-    }
-
-    public void setBiStep0(BuildingsIsletStep0 buildingsIsletStepIn)
-    {
-        this.biStep0 = buildingsIsletStepIn;
-    }
-
-    public void decProgression()
-    {
-        this.progression--;
     }
 }

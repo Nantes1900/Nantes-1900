@@ -26,6 +26,7 @@ public class NavigationBarController extends JToolBar
      * TODO.
      */
     private NavigationBarView      nbView;
+
     /**
      * The parent controller.
      */
@@ -47,6 +48,7 @@ public class NavigationBarController extends JToolBar
             {
                 NavigationBarController.this.getParentController()
                         .abortProcess();
+
             }
         });
         this.nbView.getBackButton().addActionListener(new ActionListener() {
