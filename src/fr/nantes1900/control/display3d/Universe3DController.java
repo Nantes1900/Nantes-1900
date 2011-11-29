@@ -1,4 +1,3 @@
-
 package fr.nantes1900.control.display3d;
 
 import java.awt.event.MouseEvent;
@@ -279,7 +278,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 {
                     // TODO : 0.5 : magic number !
                     if (!this.trianglesSelected.contains(triangleNeighbour)
-                            && triangleNeighbour.angularTolerance(normal, 0.5))
+                            && triangleNeighbour.angularTolerance(normal, 1))
                     {
                         meshView.select(triangleNeighbour);
                         this.trianglesSelected.add(triangleNeighbour);
@@ -355,10 +354,10 @@ public class Universe3DController implements MouseListener, MouseMotionListener
      *            TODO
      */
     public final void setPickCanvas(final BranchGroup branchGroup)
-    {        
-    	this.pickCanvas = new PickCanvas(this.u3DView.getSimpleUniverse()
+    {
+        this.pickCanvas = new PickCanvas(this.u3DView.getSimpleUniverse()
                 .getCanvas(), branchGroup);
-    	System.out.println("pickCanvas");
+        System.out.println("pickCanvas");
         this.pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
     }
 
@@ -442,6 +441,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 int lastIndex = 0;
                 int indexOfLastIndex = 0;
 
+                int triangleIndex = this.trianglesSelected
+                        .indexOf(trianglePicked);
+
                 // Finds the triangle picked belongs to which time of selection.
                 for (int i = 0; i < this.selectionIndexes.size(); i++)
                 {
@@ -457,8 +459,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                     // of selection.
                     else
                     {
-                        if (this.selectionIndexes.get(i) < indexSelected
-                                && this.selectionIndexes.get(i + 1) >= indexSelected)
+                        if (this.selectionIndexes.get(i) < triangleIndex
+                                && this.selectionIndexes.get(i + 1) >= triangleIndex)
                         {
                             firstIndex = this.selectionIndexes.get(i);
                             lastIndex = this.selectionIndexes.get(i + 1);
@@ -475,7 +477,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                     Triangle triangleSelected = this.trianglesSelected.get(i);
                     int index = meshView
                             .getArrayPositionFromTriangle(triangleSelected);
-                    meshView.select(index);
+                    meshView.unselect(index);
                     this.trianglesSelected.remove(triangleSelected);
 
                 }
@@ -493,4 +495,3 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         }
     }
 }
-
