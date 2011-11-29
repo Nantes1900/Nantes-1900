@@ -82,7 +82,6 @@ public class SurfaceView extends Shape3D {
 		this.appearance.setRenderingAttributes(rendering);
 
 		this.setMaterial(MATERIAL_UNSELECTED);
-		this.appearance.getMaterial().setColorTarget(Material.EMISSIVE);
 		this.setAppearance(this.appearance);
 	}
 

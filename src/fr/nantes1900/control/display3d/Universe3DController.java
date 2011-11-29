@@ -268,13 +268,11 @@ public class Universe3DController implements MouseListener, MouseMotionListener
      *            TODO
      */
     public final void setPickCanvas(final BranchGroup branchGroup)
-    {
-        this.pickCanvas = new PickCanvas(this.u3DView.getSimpleUniverse()
+    {        
+    	this.pickCanvas = new PickCanvas(this.u3DView.getSimpleUniverse()
                 .getCanvas(), branchGroup);
+    	System.out.println("pickCanvas");
         this.pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
-        this.u3DView.getSimpleUniverse().getCanvas().addMouseListener(this);
-        this.u3DView.getSimpleUniverse().getCanvas()
-                .addMouseMotionListener(this);
     }
 
     /**
