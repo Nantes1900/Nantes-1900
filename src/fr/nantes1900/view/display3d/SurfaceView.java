@@ -15,19 +15,19 @@ import fr.nantes1900.models.extended.Surface;
 public class SurfaceView extends Shape3D {
 
 	/**
-     * The material a surface selected.
-     */
+	 * The material a surface selected.
+	 */
 	public static final Material MATERIAL_SELECTED = new Material(new Color3f(
-			1.0f, 1.0f, 1.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(
-			Color.white), new Color3f(Color.white), 64);
-	
+			0.2f, 0f, 0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(
+			Color.blue), new Color3f(Color.blue), 64);
+
 	/**
 	 * The material a surface non-selected..
 	 */
 	public static final Material MATERIAL_UNSELECTED = new Material(
 			new Color3f(0.2f, 0f, 0f), new Color3f(0.0f, 0.0f, 0.0f),
-			new Color3f(Color.red), new Color3f(Color.red), 64);
-	
+			new Color3f(0.7f, 0f, 0f), new Color3f(0.7f, 0f, 0f), 64);
+
 	/**
 	 * The surface linked to this view.
 	 */
@@ -71,16 +71,16 @@ public class SurfaceView extends Shape3D {
 
 		this.appearance.setCapability(Appearance.ALLOW_MATERIAL_READ);
 		this.appearance.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
-		
+
 		TextureAttributes texAtt = new TextureAttributes();
 		texAtt.setTextureMode(TextureAttributes.MODULATE);
 		this.appearance.setTextureAttributes(texAtt);
-		
-		//Ignore vertex colors to allow diffuse colors.
+
+		// Ignore vertex colors to allow diffuse colors.
 		RenderingAttributes rendering = new RenderingAttributes();
 		rendering.setIgnoreVertexColors(true);
-		this.appearance.setRenderingAttributes(rendering); 
-		
+		this.appearance.setRenderingAttributes(rendering);
+
 		this.setMaterial(MATERIAL_UNSELECTED);
 		this.appearance.getMaterial().setColorTarget(Material.EMISSIVE);
 		this.setAppearance(this.appearance);
