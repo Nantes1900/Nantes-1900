@@ -336,7 +336,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
     /**
      * Treat the different clicking actions (left or right)
-     * @param MouseEvent
+     * @param e
      *            The MouseEvent caught by the mouseListener when clicking
      */
     @Override
