@@ -141,6 +141,7 @@ public class Universe3DView extends JPanel
         Canvas3D c = this.simpleUniverse.getCanvas();
         this.simpleUniverse.cleanup();
         this.simpleUniverse = new SimpleUniverse(c);
+        this.surfaceViewList.clear();
         // FIXME : magic number !
         c.getView().setBackClipDistance(1000);
     }
