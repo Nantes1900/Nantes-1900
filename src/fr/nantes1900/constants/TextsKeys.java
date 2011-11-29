@@ -36,6 +36,11 @@ public final class TextsKeys
     /**
      * Key value corresponding to launch buttons text.
      */
+    public static final String KEY_OPENBUTTON  = "OpenButton";
+
+    /**
+     * Key value corresponding to launch buttons text.
+     */
     public static final String KEY_LAUNCHBUTTON  = "LaunchButton";
 
     /**
@@ -65,6 +70,7 @@ public final class TextsKeys
     public static final String KEY_DELETETEXT = "CDelete";
     public static final String KEY_MERGETEXT = "CMerge";
     public static final String KEY_PUTINNOISETEXT = "CPutInNoise";
+    public static final String KEY_USEGRAVITYNORMALTEXT= "UseGravityNormal";
     
     public TextsKeys(){
     }

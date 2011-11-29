@@ -34,50 +34,47 @@ public class IsletProcessController implements ElementsSelectedListener
      */
     private IsletProcessView ipView;
 
-    public Universe3DController getU3DController()
-    {
-        return this.u3DController;
-    }
+    private Functions3DToolbarController f3DController;
 
     /**
      * Controller of the current characteristic panel.
      */
-    private CharacteristicsController cController;
+    private CharacteristicsController    cController;
 
     /**
      * Controller of the tree showing the architecture of data in the current
      * step.
      */
-    private IsletTreeController       itController;
+    private IsletTreeController          itController;
 
     /**
      * Controller of the navigation bar which allows to abort the treatment of
      * an islet and select a new one, launch a new process to go on a further
      * step and so on.
      */
-    private NavigationBarController   nbController;
+    private NavigationBarController      nbController;
 
     /**
      * Controller of the parameter panel which allows to modify parameters for
      * the next process.
      */
-    private ParametersController      pController;
+    private ParametersController         pController;
 
     /**
      * Controller of the 3d View which displays meshes.
      */
-    private Universe3DController      u3DController;
+    private Universe3DController         u3DController;
 
     /**
      * Controller of the building islet currently under process. This one makes
      * the link with meshes data.
      */
-    private BuildingsIsletController  biController;
+    private BuildingsIsletController     biController;
 
     /**
      * Indicates the current step.
      */
-    private int                       progression;
+    private int                          progression;
 
     /**
      * Creates a new islet process controller to launch different processes on
@@ -99,17 +96,27 @@ public class IsletProcessController implements ElementsSelectedListener
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
         this.pController = new ParametersController(this);
+        this.f3DController = new Functions3DToolbarController(this);
         this.u3DController = new Universe3DController(this);
-        this.biController.setUniverse3DController(this.u3DController);
+        this.u3DController.getUniverse3DView().setToolbar(
+                f3DController.getToolbar());
+        this.biController.setUniverse3DController(u3DController);
         this.biController.display();
 
         // creates the windiw with all needed panels
-        this.ipView = new IsletProcessView(this.cController.getView(),
-                this.itController.getView(), this.nbController.getView(),
-                this.pController.getView(),
-                this.u3DController.getUniverse3DView());
+        this.ipView = new IsletProcessView(cController.getView(),
+                itController.getView(), nbController.getView(),
+                pController.getView(), u3DController.getUniverse3DView());
+
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
+    }
+
+    public void abortTreatment()
+    {
+        this.progression = 1;
+        this.itController.refreshView();
+        this.nbController.getView().refreshStepTitle(this.progression);
     }
 
     /**
@@ -119,6 +126,18 @@ public class IsletProcessController implements ElementsSelectedListener
     public final BuildingsIsletController getBiController()
     {
         return this.biController;
+    }
+
+    public void getPreviousTreatment()
+    {
+        this.progression--;
+        this.itController.refreshView();
+        this.nbController.getView().refreshStepTitle(this.progression);
+    }
+
+    public Universe3DController getU3DController()
+    {
+        return this.u3DController;
     }
 
     /**
@@ -132,6 +151,41 @@ public class IsletProcessController implements ElementsSelectedListener
         this.itController.refreshView();
         this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         this.nbController.getView().refreshStepTitle(this.progression);
+    }
+
+    @Override
+    public void meshDeselected(Mesh meshSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void meshSelected(Mesh meshSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void polygonDeselected(Polygon trianglesSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void polygonSelected(Polygon trianglesSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void triangleDeselected(Triangle triangleSelected)
+    {
+        // TODO Auto-generated method stub
+
     }
 
     @Override
@@ -186,40 +240,5 @@ public class IsletProcessController implements ElementsSelectedListener
             // TODO
             break;
         }
-    }
-
-    @Override
-    public void polygonSelected(Polygon trianglesSelected)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void triangleDeselected(Triangle triangleSelected)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void polygonDeselected(Polygon trianglesSelected)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void meshSelected(Mesh meshSelected)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void meshDeselected(Mesh meshSelected)
-    {
-        // TODO Auto-generated method stub
-
     }
 }

@@ -494,6 +494,17 @@ public class BuildingsIsletController
         }
     }
 
+    public void abortProcess()
+    {
+        this.islet.setProgression(0);
+        // TODO : is it correct ? Check it.
+    }
+
+    public void getPreviousStep()
+    {
+        this.islet.decProgression();
+    }
+
     /**
      * Sets the gravity normal in the islet attribute.
      */

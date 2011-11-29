@@ -48,7 +48,8 @@ public class ActionsView extends JPanel
      */
     public ActionsView()
     {
-        this.bOpen = new JButton("Ouvrir");
+        this.bOpen = new JButton(
+                FileTools.readElementText(TextsKeys.KEY_OPENBUTTON));
         this.bLaunch = new JButton(
                 FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
         this.bLaunch.setEnabled(false);
@@ -59,7 +60,7 @@ public class ActionsView extends JPanel
                 FileTools.readHelpMessage(TextsKeys.KEY_IS_OPENDIRECTORY,
                         TextsKeys.MESSAGETYPE_TITLE));
         this.cbGravityGround = new JCheckBox(
-                "Utiliser la normale orientée selon la gravité");
+                FileTools.readElementText(TextsKeys.KEY_USEGRAVITYNORMALTEXT));
         this.cbGravityGround.setEnabled(false);
 
         this.setLayout(new GridBagLayout());

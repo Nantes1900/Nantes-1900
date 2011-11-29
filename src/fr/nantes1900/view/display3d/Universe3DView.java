@@ -15,6 +15,7 @@ import javax.media.j3d.Group;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.swing.JPanel;
+import javax.swing.JToolBar;
 import javax.vecmath.Color3f;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
@@ -37,7 +38,7 @@ import fr.nantes1900.models.extended.Surface;
  */
 public class Universe3DView extends JPanel
 {
-
+    private JToolBar               toolbar;
     /**
      * Version ID.
      */
@@ -302,5 +303,25 @@ public class Universe3DView extends JPanel
         // Set the position of the camera.
         cameraTranslation.setTranslation(new Vector3d(x, y, z));
         cameraTransformGroup.setTransform(cameraTranslation);
+    }
+
+    /**
+     * Sets the new toolbar to control the 3d universe.
+     * @param newToolbar
+     *            The new toolbar.
+     */
+    public void setToolbar(JToolBar newToolbar)
+    {
+        if (toolbar != null)
+        {
+            this.remove(toolbar);
+        }
+        this.toolbar = newToolbar;
+        this.add(newToolbar, BorderLayout.EAST);
+    }
+
+    public JToolBar getToolbar()
+    {
+        return this.toolbar;
     }
 }

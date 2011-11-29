@@ -55,7 +55,7 @@ public class IsletTreeController
                                             (Surface) node.getUserObject());
                         } else
                         {
-                            // TODO : throw execption if it is not a mesh.
+                            // TODO : throw exception if it is not a mesh.
                         }
                     }
                 });
