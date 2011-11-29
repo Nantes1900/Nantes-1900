@@ -41,7 +41,7 @@ public class IsletTreeController
                                 .getLastPathComponent();
                         Object hopeItIsAMesh = node.getUserObject();
                         MeshView mesh = IsletTreeController.this.parentController.getBiController().FindMeshNode(hopeItIsAMesh);
-                        IsletTreeController.this.parentController.getBiController().getU3DController().selectMeshFromTree(mesh);
+                       // IsletTreeController.this.parentController.getBiController().getU3DController().selectMeshFromTree(mesh);
                     }
                 });
     }

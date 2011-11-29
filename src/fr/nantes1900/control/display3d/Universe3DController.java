@@ -152,60 +152,60 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
 	}
 
-	public void selectMeshFromTree(Object object) {
-		// Selects the object if it is a surface.
-		if (object instanceof Surface) {
-			((Surface) object).select();
-		} else {
-			System.out.println("Weird.");
-			// TODO : throw an exception.
-		}
-
-		// Gets the index of the meshView in the list of the meshes displayed.
-		int meshViewIndex = meshList.indexOf(object);
-
-		// Gets the shape3D of the meshView to be selected.
-		Shape3D shapeSelect = meshShape3D.get(meshViewIndex);
-		Appearance appSelect = shapeSelect.getAppearance();
-
-		// Changes the material of the mesh to be seleted.
-		appSelect.setMaterial(matSelected);
-		shapeSelect.setAppearance(appSelect);
-
-		// If the shape3D selected last time is not null.
-		if (shape3DSelected != null) {
-
-			// If the shape3D selected last time is not this one.
-			if (shape3DSelected.contains(shapeSelect)) {
-
-				// Change back the material of the mesh selected last time.
-				for (Shape3D shape : shape3DSelected) {
-					Appearance appUnselect = shape.getAppearance();
-					appUnselect.setMaterial(matUnSelected);
-					shape.setAppearance(appUnselect);
-				}
-
-				// Unselect the meshView selected last time.
-				for (Object meshObject : meshSelected) {
-					if (meshObject.getClass().getSimpleName()
-							.equals("MeshView")) {
-						((MeshView) meshObject).unselectMesh();
-					} else {
-						((PolygonView) meshObject).unselect();
-					}
-				}
-
-			}
-		}
-
-		// Set the shape3D last selected to be the shape3D picked.
-		shape3DSelected.clear();
-		shape3DSelected.add(shapeSelect);
-
-		// Set the meshView last selected to be the meshView picked.
-		meshSelected.clear();
-		meshSelected.add(object);
-	}
+//	public void selectMeshFromTree(Object object) {
+//		// Selects the object if it is a surface.
+//		if (object instanceof Surface) {
+//			((Surface) object).select();
+//		} else {
+//			System.out.println("Weird.");
+//			// TODO : throw an exception.
+//		}
+//
+//		// Gets the index of the meshView in the list of the meshes displayed.
+//		int meshViewIndex = meshList.indexOf(object);
+//
+//		// Gets the shape3D of the meshView to be selected.
+//		Shape3D shapeSelect = meshShape3D.get(meshViewIndex);
+//		Appearance appSelect = shapeSelect.getAppearance();
+//
+//		// Changes the material of the mesh to be seleted.
+//		appSelect.setMaterial(matSelected);
+//		shapeSelect.setAppearance(appSelect);
+//
+//		// If the shape3D selected last time is not null.
+//		if (shape3DSelected != null) {
+//
+//			// If the shape3D selected last time is not this one.
+//			if (shape3DSelected.contains(shapeSelect)) {
+//
+//				// Change back the material of the mesh selected last time.
+//				for (Shape3D shape : shape3DSelected) {
+//					Appearance appUnselect = shape.getAppearance();
+//					appUnselect.setMaterial(matUnSelected);
+//					shape.setAppearance(appUnselect);
+//				}
+//
+//				// Unselect the meshView selected last time.
+//				for (Object meshObject : meshSelected) {
+//					if (meshObject.getClass().getSimpleName()
+//							.equals("MeshView")) {
+//						((MeshView) meshObject).unselectMesh();
+//					} else {
+//						((PolygonView) meshObject).unselect();
+//					}
+//				}
+//
+//			}
+//		}
+//
+//		// Set the shape3D last selected to be the shape3D picked.
+//		shape3DSelected.clear();
+//		shape3DSelected.add(shapeSelect);
+//
+//		// Set the meshView last selected to be the meshView picked.
+//		meshSelected.clear();
+//		meshSelected.add(object);
+//	}
 
 	/**
 	 * Select the triangles around the triangle clicked.

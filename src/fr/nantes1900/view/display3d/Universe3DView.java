@@ -231,14 +231,10 @@ public class Universe3DView extends JPanel {
 				image.getWidth(), image.getHeight());
 		texture.setImage(0, image);
 
-		// Create the appearance.
-		Appearance app = new Appearance();
-
-		app.setCapability(Appearance.ALLOW_MATERIAL_READ);
-		app.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
-
 		for (SurfaceView surface : this.surfaceViewList) {
 			sceneRoot.addChild(surface);
+			surface.setMaterial(SurfaceView.MATERIAL_UNSELECTED);
+			surface.setTexture(texture);
 		}
 
 		translationGroup2.addChild(sceneRoot);
