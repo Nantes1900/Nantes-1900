@@ -346,4 +346,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     {
         this.biStep0 = buildingsIsletStepIn;
     }
+
+    public void decProgression()
+    {
+        this.progression--;
+    }
 }
