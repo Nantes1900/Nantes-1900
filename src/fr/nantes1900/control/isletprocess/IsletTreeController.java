@@ -8,10 +8,9 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.constants.TextsKeys;
-import fr.nantes1900.control.isletselection.GlobalTreeController;
+import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
-import fr.nantes1900.view.display3d.MeshView;
 import fr.nantes1900.view.isletprocess.IsletTreeView;
 
 /**
@@ -31,37 +30,63 @@ public class IsletTreeController
         this.addTreeController();
     }
 
-    public void addTreeController(){
-        this.itView.getTree().addTreeSelectionListener(new TreeSelectionListener() {
+    public IsletProcessController getParentController()
+    {
+        return this.parentController;
+    }
+
+    public void addTreeController()
+    {
+        this.itView.getTree().addTreeSelectionListener(
+                new TreeSelectionListener() {
 
                     @Override
                     public void valueChanged(final TreeSelectionEvent e)
                     {
-                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath()
-                                .getLastPathComponent();
-                        Object hopeItIsAMesh = node.getUserObject();
-                        MeshView mesh = IsletTreeController.this.parentController.getBiController().FindMeshNode(hopeItIsAMesh);
-                       // IsletTreeController.this.parentController.getBiController().getU3DController().selectMeshFromTree(mesh);
+
+                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
+                                .getPath().getLastPathComponent();
+
+                        if (node.getUserObject() instanceof Surface)
+                        {
+                            IsletTreeController.this
+                                    .getParentController()
+                                    .getU3DController()
+                                    .selectMeshFromTree(
+                                            (Surface) node.getUserObject());
+                        } else
+                        {
+                            // TODO : throw exception if it is not a mesh.
+                        }
+
                     }
                 });
+        // FIXME : what if a object is deselected in the tree ? What if more
+        // than ONE object is selected ?
     }
-    
+
     public IsletTreeView getView()
     {
         return this.itView;
     }
-    public void refreshView(){
+
+    public void refreshView()
+    {
         this.buildTreeView();
         this.itView.repaint();
     }
-    private void buildTreeView(){
+
+    private void buildTreeView()
+    {
         try
         {
-            this.itView.buildTree(this.parentController.getBiController().returnNode());
+            this.itView.buildTree(this.parentController.getBiController()
+                    .returnNode());
         } catch (InvalidCaseException e)
         {
             // TODO Auto-generated catch block
-            System.out.println(FileTools.readErrorMessage(TextsKeys.KEY_RETURNNODE, TextsKeys.MESSAGETYPE_MESSAGE));
+            System.out.println(FileTools.readErrorMessage(
+                    TextsKeys.KEY_RETURNNODE, TextsKeys.MESSAGETYPE_MESSAGE));
         }
     }
 }

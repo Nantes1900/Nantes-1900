@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JToolBar;
 
+import fr.nantes1900.control.isletprocess.IsletProcessController.UnexistingStepException;
 import fr.nantes1900.view.isletprocess.NavigationBarView;
 
 /**
@@ -25,6 +26,7 @@ public class NavigationBarController extends JToolBar
      * TODO.
      */
     private NavigationBarView      nbView;
+
     /**
      * The parent controller.
      */
@@ -35,7 +37,8 @@ public class NavigationBarController extends JToolBar
      * @param parentControllerIn
      *            the parent controller
      */
-    public NavigationBarController(final IsletProcessController parentControllerIn)
+    public NavigationBarController(
+            final IsletProcessController parentControllerIn)
     {
         this.parentController = parentControllerIn;
         this.nbView = new NavigationBarView();
@@ -44,24 +47,38 @@ public class NavigationBarController extends JToolBar
             public void actionPerformed(final ActionEvent arg0)
             {
                 NavigationBarController.this.getParentController()
-                        .getBiController()
-                        .abortTreatment();
+                        .abortProcess();
+
             }
         });
         this.nbView.getBackButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent arg0)
             {
-                NavigationBarController.this.getParentController()
-                        .getBiController()
-                        .getPreviousTreatment();
+                try
+                {
+                    NavigationBarController.this.getParentController()
+                            .goToPreviousProcess();
+                } catch (UnexistingStepException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         });
         this.nbView.getLaunchButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent arg0)
             {
-                NavigationBarController.this.getParentController().launchProcess();
+                try
+                {
+                    NavigationBarController.this.getParentController()
+                            .launchProcess();
+                } catch (UnexistingStepException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         });
     }

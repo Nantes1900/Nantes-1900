@@ -28,7 +28,6 @@ import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.utils.ParserSTL;
-import fr.nantes1900.view.display3d.MeshView;
 
 /**
  * Implements the controller of a building islet. Used to visualize the islets,
@@ -125,12 +124,6 @@ public class BuildingsIsletController
             }
             this.islet.getBiStep3().getGrounds().getMesh()
                     .removeAll(trianglesSelected);
-        } else if (actionType == ActionTypes.TURN_TO_BUILDING)
-        {
-            this.islet.getBiStep3().getBuildings()
-                    .add(new Building(new Mesh(trianglesSelected)));
-            this.islet.getBiStep3().getNoise().getMesh()
-                    .removeAll(trianglesSelected);
         } else
         {
             throw new InvalidCaseException();
@@ -138,10 +131,10 @@ public class BuildingsIsletController
     }
 
     /**
-     * Changes the type of a mesh (in noise or in real building). To call only
-     * during the third step.
-     * @param mesh
-     *            the mesh
+     * Changes the type of a surface (in noise or in real building). To call
+     * only during the third step.
+     * @param surface
+     *            the surface
      * @param actionType
      *            the new type of the mesh
      * @throws InvalidCaseException
@@ -421,12 +414,6 @@ public class BuildingsIsletController
         return this.islet;
     }
 
-    public MeshView FindMeshNode(Object hopeItIsAMesh)
-    {
-        return new MeshView(new Mesh());
-        // FIX ME
-    }
-
     /**
      * Getter.
      * @return the controller of the islet selection
@@ -465,7 +452,7 @@ public class BuildingsIsletController
     /**
      * Launch the treatment, considering the progression.
      */
-    public final void launchTreatment()
+    public final void launchProcess()
     {
         try
         {
@@ -506,15 +493,14 @@ public class BuildingsIsletController
         }
     }
 
-    public void abortTreatment()
+    public void abortProcess()
     {
-        // FIXME
+        this.islet.resetProgression();
     }
 
-    public void getPreviousTreatment()
+    public void getPreviousStep()
     {
-        // FIXME
-        System.out.println("LastTreatment");
+        this.islet.decProgression();
     }
 
     /**
@@ -542,30 +528,11 @@ public class BuildingsIsletController
     }
 
     /**
-     * Returns the neighbours.
-     * @param s
-     * @return
-     */
-    public List<Surface> getCaracteristics6(Surface s)
-    {
-        return s.getNeighbours();
-    }
-
-    /**
-     * Returns the neighbours.
-     * @param s
-     * @return
-     */
-    public List<Surface> getCaracteristics7(Surface s)
-    {
-        return s.getNeighbours();
-    }
-
-    /**
-     * Returns the building containing the mesh. To call only in the third step.
-     * @param mesh
-     *            the mesh to check
-     * @return the building containing the mesh
+     * Returns the building containing the surface. To call only in the third
+     * step.
+     * @param surface
+     *            the surface to check
+     * @return the building containing the surface
      */
     public final Building returnBuildingContaining3(final Surface surface)
     {

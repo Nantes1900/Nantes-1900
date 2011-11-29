@@ -3,14 +3,13 @@
  */
 package fr.nantes1900.view.isletprocess;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.JTabbedPane;
+import javax.swing.JToolBar;
 
 import fr.nantes1900.view.components.PFrame;
 import fr.nantes1900.view.display3d.Universe3DView;

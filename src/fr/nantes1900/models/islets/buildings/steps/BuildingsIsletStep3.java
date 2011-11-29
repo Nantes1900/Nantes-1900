@@ -8,6 +8,7 @@ import javax.vecmath.Vector3d;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
@@ -133,6 +134,6 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
     @Override
     public String toString()
     {
-        return super.toString() + "3";
+        return super.toString() + AbstractBuildingsIslet.THIRD_STEP;
     }
 }

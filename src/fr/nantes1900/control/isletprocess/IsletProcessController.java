@@ -27,52 +27,49 @@ public class IsletProcessController implements ElementsSelectedListener
     /**
      * Parent controller of this one.
      */
-    private GlobalController          parentController;
+    private GlobalController             parentController;
 
     /**
      * The window containing all the needed panels to process an islet.
      */
-    private IsletProcessView          ipView;
+    private IsletProcessView             ipView;
+
+    private Functions3DToolbarController f3DController;
 
     /**
      * Controller of the current characteristic panel.
      */
-    private CharacteristicsController cController;
+    private CharacteristicsController    cController;
 
     /**
      * Controller of the tree showing the architecture of data in the current
      * step.
      */
-    private IsletTreeController       itController;
+    private IsletTreeController          itController;
 
     /**
      * Controller of the navigation bar which allows to abort the treatment of
      * an islet and select a new one, launch a new process to go on a further
      * step and so on.
      */
-    private NavigationBarController   nbController;
+    private NavigationBarController      nbController;
 
     /**
      * Controller of the parameter panel which allows to modify parameters for
      * the next process.
      */
-    private ParametersController      pController;
+    private ParametersController         pController;
 
     /**
      * Controller of the 3d View which displays meshes.
      */
-    private Universe3DController      u3DController;
+    private Universe3DController         u3DController;
 
     /**
      * Controller of the building islet currently under process. This one makes
      * the link with meshes data.
      */
-    private BuildingsIsletController  biController;
-
-    /**
-     * Indicates the current step.
-     */
-    private int                       progression;
+    private BuildingsIsletController     biController;
 
     /**
      * Creates a new islet process controller to launch different processes on
@@ -84,25 +81,27 @@ public class IsletProcessController implements ElementsSelectedListener
      * @param biControllerIn
      *            Controller to handle the islet data.
      */
-    public IsletProcessController(GlobalController parentControllerIn,
-            File isletFile, BuildingsIsletController biControllerIn)
+    public IsletProcessController(final GlobalController parentControllerIn,
+            final File isletFile, final BuildingsIsletController biControllerIn)
     {
         this.parentController = parentControllerIn;
-        this.progression = 1;
         this.biController = biControllerIn;
         this.cController = new CharacteristicsController(this);
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
         this.pController = new ParametersController(this);
+        this.f3DController = new Functions3DToolbarController(this);
         this.u3DController = new Universe3DController(this);
-        this.biController.setUniverse3DController(this.u3DController);
+        this.u3DController.getUniverse3DView().setToolbar(
+                f3DController.getToolbar());
+        this.biController.setUniverse3DController(u3DController);
         this.biController.display();
 
         // creates the windiw with all needed panels
-        this.ipView = new IsletProcessView(this.cController.getView(),
-                this.itController.getView(), this.nbController.getView(),
-                this.pController.getView(),
-                this.u3DController.getUniverse3DView());
+        this.ipView = new IsletProcessView(cController.getView(),
+                itController.getView(), nbController.getView(),
+                pController.getView(), u3DController.getUniverse3DView());
+
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
     }
@@ -111,28 +110,97 @@ public class IsletProcessController implements ElementsSelectedListener
      * Gets the building islet controller.
      * @return The current building islet controller
      */
-    public BuildingsIsletController getBiController()
+    public final BuildingsIsletController getBiController()
     {
         return this.biController;
+    }
+
+    public Universe3DController getU3DController()
+    {
+        return this.u3DController;
     }
 
     /**
      * Launches next process.
      */
-    public void launchProcess()
+    public final void launchProcess() throws UnexistingStepException
     {
-        this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        this.biController.launchTreatment();
-        this.progression++;
-        this.itController.refreshView();
-        this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        this.nbController.getView().refreshStepTitle(this.progression);
+        if (this.getProgression() >= 6)
+        {
+            throw new UnexistingStepException();
+        } else
+        {
+            this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+            this.biController.launchProcess();
+            this.itController.refreshView();
+            this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+            this.nbController.getView().refreshStepTitle(this.getProgression());
+        }
+    }
+
+    public void goToPreviousProcess() throws UnexistingStepException
+    {
+        if (this.getProgression() <= 1)
+        {
+            throw new UnexistingStepException();
+        } else
+        {
+            this.biController.getPreviousStep();
+            this.itController.refreshView();
+            this.nbController.getView().refreshStepTitle(this.getProgression());
+        }
+    }
+
+    public void abortProcess()
+    {
+        this.parentController.launchIsletSelection();
+        this.getBiController().abortProcess();
+    }
+
+    private int getProgression()
+    {
+        return this.getBiController().getIslet().getProgression();
     }
 
     @Override
-    public void triangleSelected(Triangle triangleSelected)
+    public void meshDeselected(Mesh meshSelected)
     {
-        switch (this.progression)
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void meshSelected(Mesh meshSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void polygonDeselected(Polygon trianglesSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void polygonSelected(Polygon trianglesSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void triangleDeselected(Triangle triangleSelected)
+    {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public final void triangleSelected(final Triangle triangleSelected)
+    {
+        switch (this.getProgression())
         {
             case 2:
                 // If the characteristic panel is of another type.
@@ -183,38 +251,15 @@ public class IsletProcessController implements ElementsSelectedListener
         }
     }
 
-    @Override
-    public void polygonSelected(Polygon trianglesSelected)
+    public class UnexistingStepException extends Exception
     {
-        // TODO Auto-generated method stub
+        /**
+         * Version ID.
+         */
+        private static final long serialVersionUID = 1L;
 
-    }
-
-    @Override
-    public void triangleDeselected(Triangle triangleSelected)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void polygonDeselected(Polygon trianglesSelected)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void meshSelected(Mesh meshSelected)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void meshDeselected(Mesh meshSelected)
-    {
-        // TODO Auto-generated method stub
-
+        public UnexistingStepException()
+        {
+        }
     }
 }

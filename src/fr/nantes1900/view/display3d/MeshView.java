@@ -91,8 +91,8 @@ public class MeshView extends TriangleArray
     }
 
     /**
-     * Get a Vector3f as the normal of the triangle in parameter
-     * (The normal stored in the triangle is a Vector3d)
+     * Get a Vector3f as the normal of the triangle in parameter (The normal
+     * stored in the triangle is a Vector3d)
      * @param triangle
      *            The triangle to get the normal from.
      * @return Vector3f
@@ -129,16 +129,15 @@ public class MeshView extends TriangleArray
         this.setTextureCoordinate(0, i * 3 + 1, new TexCoord2f(1.0f, 1.0f));
         this.setTextureCoordinate(0, i * 3 + 2, new TexCoord2f(1.0f, 0.0f));
     }
-    
+
     /**
-     * Select a triangle
+     * Selects a triangle.
      * @param triangle
      *            The Triangle to select
      */
-    public final void select(Triangle triangle)
+    public final void select(final Triangle triangle)
     {
-    	int triangleIndex = this.getArrayPositionFromTriangle(triangle);
-    	this.select(triangleIndex);
+        this.select(this.getArrayPositionFromTriangle(triangle));
     }
 
     /**

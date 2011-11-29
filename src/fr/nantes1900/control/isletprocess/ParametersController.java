@@ -16,7 +16,7 @@ public class ParametersController
 
     public ParametersController(IsletProcessController parentController)
     {
-        this.parentController = parentController;
+        this.setParent(parentController);
         this.pView = new ParametersView();
     }
 
@@ -25,4 +25,13 @@ public class ParametersController
         return pView;
     }
 
+    public IsletProcessController getParent()
+    {
+        return parentController;
+    }
+
+    public void setParent(IsletProcessController parentController)
+    {
+        this.parentController = parentController;
+    }
 }

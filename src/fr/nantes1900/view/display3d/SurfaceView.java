@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import javax.media.j3d.Appearance;
 import javax.media.j3d.Material;
+import javax.media.j3d.RenderingAttributes;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Texture;
 import javax.media.j3d.TextureAttributes;
@@ -16,17 +17,17 @@ public class SurfaceView extends Shape3D {
 	/**
 	 * The material a surface selected.
 	 */
-	public static final Material MATERIAL_UNSELECTED = new Material(
-			new Color3f(0.2f, 0.0f, 0.2f), new Color3f(0.0f, 0.0f, 0.0f),
-			new Color3f(Color.blue), new Color3f(Color.blue), 64);
-	
-	/**
-     * The material a surface non-selected.
-     */
 	public static final Material MATERIAL_SELECTED = new Material(new Color3f(
-			1.0f, 1.0f, 1.0f), new Color3f(1.0f, 1.0f, 1.0f), new Color3f(
-			Color.white), new Color3f(Color.white), 64);
-	
+			0.2f, 0f, 0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(
+			Color.blue), new Color3f(Color.blue), 64);
+
+	/**
+	 * The material a surface non-selected..
+	 */
+	public static final Material MATERIAL_UNSELECTED = new Material(
+			new Color3f(0.2f, 0f, 0f), new Color3f(0.0f, 0.0f, 0.0f),
+			new Color3f(0.7f, 0f, 0f), new Color3f(0.7f, 0f, 0f), 64);
+
 	/**
 	 * The surface linked to this view.
 	 */
@@ -64,11 +65,9 @@ public class SurfaceView extends Shape3D {
 	 */
 	public SurfaceView() {
 		super();
-		// Set the capability of SurfaceView.
+
 		this.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
 		this.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-
-		// Set the capability of appearance.
 
 		this.appearance.setCapability(Appearance.ALLOW_MATERIAL_READ);
 		this.appearance.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
@@ -77,8 +76,14 @@ public class SurfaceView extends Shape3D {
 		texAtt.setTextureMode(TextureAttributes.MODULATE);
 		this.appearance.setTextureAttributes(texAtt);
 
-		// Set the appearance of the surfaceView.
-		this.setAppearance(appearance);
+		// Ignore vertex colors to allow diffuse colors.
+		RenderingAttributes rendering = new RenderingAttributes();
+		rendering.setIgnoreVertexColors(true);
+		this.appearance.setRenderingAttributes(rendering);
+
+		this.setMaterial(MATERIAL_UNSELECTED);
+		this.appearance.getMaterial().setColorTarget(Material.EMISSIVE);
+		this.setAppearance(this.appearance);
 	}
 
 	/**
