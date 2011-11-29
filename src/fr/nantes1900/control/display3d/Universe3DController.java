@@ -336,10 +336,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener
      * @param e
      *            TODO.
      */
+    // TODO : commentaries !
     private void treatLeftClick(final MouseEvent e)
     {
         this.pickCanvas.setShapeLocation(e);
+
         PickResult result = this.pickCanvas.pickClosest();
+
         if (result != null)
         {
             SurfaceView surfaceViewPicked = (SurfaceView) result
@@ -352,7 +355,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener
             this.selectOrUnselectSurface(surfaceViewPicked);
             this.changeRotationCenter(surfaceViewPicked);
         }
-
     }
 
     /**
@@ -363,12 +365,16 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     private void treatRightClick(final MouseEvent e)
     {
         this.pickCanvas.setShapeLocation(e);
+
         PickResult result = this.pickCanvas.pickClosest();
+
         if (result != null)
         {
             PickIntersection pickIntersection = result.getIntersection(0);
-            // Get the meshView picked.
+
+            // Gets the meshView picked.
             GeometryArray geometryArray = pickIntersection.getGeometryArray();
+
             MeshView meshView = (MeshView) geometryArray;
             // Get the index of the triangle picked
             int[] pointIndex = pickIntersection.getPrimitiveVertexIndices();
@@ -380,7 +386,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
             if (!this.trianglesSelected.contains(trianglePicked))
             {
-
                 meshView.select(trianglePicked);
                 this.trianglesSelected.add(trianglePicked);
 

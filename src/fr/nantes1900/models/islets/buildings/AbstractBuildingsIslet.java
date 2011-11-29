@@ -351,9 +351,4 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     {
         this.progression--;
     }
-
-    public void decProgression()
-    {
-        this.progression--;
-    }
 }
