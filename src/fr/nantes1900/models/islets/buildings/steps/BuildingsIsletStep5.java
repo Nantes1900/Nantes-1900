@@ -9,6 +9,7 @@ import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.steps.BuildingStep5;
+import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
@@ -131,6 +132,6 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
     @Override
     public String toString()
     {
-        return super.toString() + "5";
+        return super.toString() + AbstractBuildingsIslet.FIFTH_STEP;
     }
 }

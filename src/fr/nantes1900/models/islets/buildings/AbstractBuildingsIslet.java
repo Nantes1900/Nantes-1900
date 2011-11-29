@@ -286,8 +286,13 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         System.out.println("End tr 5");
     }
 
+    public final void resetProgression()
+    {
+        this.progression = 0;
+    }
+
     /**
-     * Return a node containing the tree depending of the progression of the
+     * Returns a node containing the tree depending of the progression of the
      * treatment.
      * @return the node
      * @throws InvalidCaseException
@@ -317,9 +322,14 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         }
     }
 
-    public void setBiStep0(BuildingsIsletStep0 buildingsIsletStepIn)
+    /**
+     * Setter.
+     * @param biStep0
+     *            the new step 0
+     */
+    public final void setBiStep0(final BuildingsIsletStep0 biStep0)
     {
-        this.biStep0 = buildingsIsletStepIn;
+        this.biStep0 = biStep0;
     }
 
     /**
@@ -340,15 +350,5 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     public final void setGroundNormal(final Vector3d groundNormalIn)
     {
         this.groundNormal = groundNormalIn;
-    }
-
-    /**
-     * Setter.
-     * @param progressionIn
-     *            the progression
-     */
-    public final void setProgression(final int progressionIn)
-    {
-        this.progression = progressionIn;
     }
 }

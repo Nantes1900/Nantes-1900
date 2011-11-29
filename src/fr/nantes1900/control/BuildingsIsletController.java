@@ -28,7 +28,6 @@ import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.utils.ParserSTL;
-import fr.nantes1900.view.display3d.MeshView;
 
 /**
  * Implements the controller of a building islet. Used to visualize the islets,
@@ -453,7 +452,7 @@ public class BuildingsIsletController
     /**
      * Launch the treatment, considering the progression.
      */
-    public final void launchTreatment()
+    public final void launchProcess()
     {
         try
         {
@@ -496,8 +495,7 @@ public class BuildingsIsletController
 
     public void abortProcess()
     {
-        this.islet.setProgression(0);
-        // TODO : is it correct ? Check it.
+        this.islet.resetProgression();
     }
 
     public void getPreviousStep()
@@ -640,10 +638,12 @@ public class BuildingsIsletController
      */
     public final void viewStep0()
     {
+
         List<Surface> surfacesList = new ArrayList<>();
         surfacesList.add(this.islet.getBiStep0().getInitialTotalSurface());
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
+
 
     }
 
@@ -652,9 +652,11 @@ public class BuildingsIsletController
      */
     public final void viewStep1()
     {
+
         List<Surface> surfacesList = new ArrayList<>();
         surfacesList.add(this.islet.getBiStep1()
                 .getInitialTotalSurfaceAfterBaseChange());
+
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
     }
@@ -781,7 +783,9 @@ public class BuildingsIsletController
             }
         }
 
+
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
+
         // TODO : displays with other colors the surfaces not well computed.
     }
 
@@ -794,15 +798,5 @@ public class BuildingsIsletController
     {
         this.islet.setBiStep0(new BuildingsIsletStep0(AbstractIslet
                 .parseFile(fileName)));
-    }
-
-    public void abortTreatment()
-    {
-        this.islet.setProgression(0);
-    }
-
-    public void getPreviousTreatment()
-    {
-        this.islet.decProgression();
     }
 }

@@ -1,3 +1,4 @@
+
 package fr.nantes1900.view.display3d;
 
 import java.awt.BorderLayout;
@@ -12,6 +13,8 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Group;
+import javax.media.j3d.ImageComponent2D;
+import javax.media.j3d.Texture2D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.swing.JPanel;
@@ -23,6 +26,7 @@ import javax.vecmath.Vector3f;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
+import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
@@ -218,9 +222,18 @@ public class Universe3DView extends JPanel
 
         BranchGroup sceneRoot = new BranchGroup();
 
+     // Read the texture.
+        TextureLoader loader = new TextureLoader("texture.jpg", null);
+        ImageComponent2D image = loader.getImage();
+        Texture2D texture = new Texture2D(Texture2D.BASE_LEVEL, Texture2D.RGB,
+                image.getWidth(), image.getHeight());
+        texture.setImage(0, image);
+        
         for (SurfaceView surface : this.surfaceViewList)
         {
             sceneRoot.addChild(surface);
+            surface.setMaterial(SurfaceView.MATERIAL_UNSELECTED);
+            surface.setTexture(texture);
         }
         translationGroup2.addChild(sceneRoot);
 

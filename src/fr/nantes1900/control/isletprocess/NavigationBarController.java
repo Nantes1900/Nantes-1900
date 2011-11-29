@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JToolBar;
 
+import fr.nantes1900.control.isletprocess.IsletProcessController.UnexistingStepException;
 import fr.nantes1900.view.isletprocess.NavigationBarView;
 
 /**
@@ -46,23 +47,38 @@ public class NavigationBarController extends JToolBar
             public void actionPerformed(final ActionEvent arg0)
             {
                 NavigationBarController.this.getParentController()
-                        .getBiController().abortProcess();
+                        .abortProcess();
+
             }
         });
         this.nbView.getBackButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent arg0)
             {
-                NavigationBarController.this.getParentController()
-                        .getBiController().getPreviousStep();
+                try
+                {
+                    NavigationBarController.this.getParentController()
+                            .goToPreviousProcess();
+                } catch (UnexistingStepException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         });
         this.nbView.getLaunchButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent arg0)
             {
-                NavigationBarController.this.getParentController()
-                        .launchProcess();
+                try
+                {
+                    NavigationBarController.this.getParentController()
+                            .launchProcess();
+                } catch (UnexistingStepException e)
+                {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
             }
         });
     }

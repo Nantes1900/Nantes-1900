@@ -10,6 +10,7 @@ import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.utils.Algos;
 
 /**
@@ -20,6 +21,7 @@ import fr.nantes1900.utils.Algos;
 public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
 {
 
+    private static final String ABSTRACTBUILDINGISLET = null;
     /**
      * The mesh containing every buildings.
      */
@@ -154,6 +156,6 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
     @Override
     public String toString()
     {
-        return super.toString() + "2";
+        return super.toString() + AbstractBuildingsIslet.SECOND_STEP;
     }
 }
