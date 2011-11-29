@@ -3,8 +3,6 @@
  */
 package fr.nantes1900.control.isletprocess;
 
-import javax.swing.JFormattedTextField;
-
 import fr.nantes1900.view.isletprocess.ParametersView;
 
 /**
@@ -26,7 +24,7 @@ public class ParametersController
     {
         return pView;
     }
-    
+
     public IsletProcessController getParent()
     {
         return parentController;

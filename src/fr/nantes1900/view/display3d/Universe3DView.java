@@ -74,7 +74,6 @@ public class Universe3DView extends JPanel
 
     public Universe3DView(final Universe3DController u3DControllerIn)
     {
-
         this.u3DController = u3DControllerIn;
         this.setLayout(new BorderLayout());
 
@@ -134,13 +133,6 @@ public class Universe3DView extends JPanel
         this.u3DController.getMouseRotate().setCenter(centroid);
     }
 
-    {
-        Canvas3D c = this.simpleUniverse.getCanvas();
-        this.simpleUniverse.cleanup();
-        this.simpleUniverse = new SimpleUniverse(c);
-        c.getView().setBackClipDistance(1000);
-    }
-
     /**
      * Removes everything displayed !
      */
@@ -149,6 +141,7 @@ public class Universe3DView extends JPanel
         Canvas3D c = this.simpleUniverse.getCanvas();
         this.simpleUniverse.cleanup();
         this.simpleUniverse = new SimpleUniverse(c);
+        // FIXME : magic number !
         c.getView().setBackClipDistance(1000);
     }
 
@@ -192,7 +185,7 @@ public class Universe3DView extends JPanel
 
     /**
      * TODO.
-     * @param meshView
+     * @param surfaceView
      *            TODO.
      * @return TODO.
      */
@@ -246,6 +239,7 @@ public class Universe3DView extends JPanel
 
         // Links the right button of the mouse with a translation transformation
         MouseTranslate mouseTranslate = new MouseTranslate();
+        // FIXME : magic number !
         mouseTranslate.setFactor(1.5);
         mouseTranslate.setTransformGroup(transformGroup);
         transformGroup.addChild(mouseTranslate);

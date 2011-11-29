@@ -376,7 +376,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener
             GeometryArray geometryArray = pickIntersection.getGeometryArray();
 
             MeshView meshView = (MeshView) geometryArray;
-            // Get the index of the triangle picked
+
+            // Gets the index of the triangle picked
             int[] pointIndex = pickIntersection.getPrimitiveVertexIndices();
             // TODO : 3 : magic number !
             int indexSelected = pointIndex[0] / 3;
