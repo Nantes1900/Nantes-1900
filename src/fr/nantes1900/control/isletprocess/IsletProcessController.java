@@ -27,12 +27,17 @@ public class IsletProcessController implements ElementsSelectedListener
     /**
      * Parent controller of this one.
      */
-    private GlobalController          parentController;
+    private GlobalController parentController;
 
     /**
      * The window containing all the needed panels to process an islet.
      */
-    private IsletProcessView          ipView;
+    private IsletProcessView ipView;
+
+    public Universe3DController getU3DController()
+    {
+        return this.u3DController;
+    }
 
     /**
      * Controller of the current characteristic panel.
@@ -84,8 +89,8 @@ public class IsletProcessController implements ElementsSelectedListener
      * @param biControllerIn
      *            Controller to handle the islet data.
      */
-    public IsletProcessController(GlobalController parentControllerIn,
-            File isletFile, BuildingsIsletController biControllerIn)
+    public IsletProcessController(final GlobalController parentControllerIn,
+            final File isletFile, final BuildingsIsletController biControllerIn)
     {
         this.parentController = parentControllerIn;
         this.progression = 1;
@@ -111,7 +116,7 @@ public class IsletProcessController implements ElementsSelectedListener
      * Gets the building islet controller.
      * @return The current building islet controller
      */
-    public BuildingsIsletController getBiController()
+    public final BuildingsIsletController getBiController()
     {
         return this.biController;
     }
@@ -119,7 +124,7 @@ public class IsletProcessController implements ElementsSelectedListener
     /**
      * Launches next process.
      */
-    public void launchProcess()
+    public final void launchProcess()
     {
         this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         this.biController.launchTreatment();
@@ -130,7 +135,7 @@ public class IsletProcessController implements ElementsSelectedListener
     }
 
     @Override
-    public void triangleSelected(Triangle triangleSelected)
+    public final void triangleSelected(final Triangle triangleSelected)
     {
         switch (this.progression)
         {

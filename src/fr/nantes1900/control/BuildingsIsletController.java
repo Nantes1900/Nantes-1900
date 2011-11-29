@@ -125,12 +125,6 @@ public class BuildingsIsletController
             }
             this.islet.getBiStep3().getGrounds().getMesh()
                     .removeAll(trianglesSelected);
-        } else if (actionType == ActionTypes.TURN_TO_BUILDING)
-        {
-            this.islet.getBiStep3().getBuildings()
-                    .add(new Building(new Mesh(trianglesSelected)));
-            this.islet.getBiStep3().getNoise().getMesh()
-                    .removeAll(trianglesSelected);
         } else
         {
             throw new InvalidCaseException();
@@ -138,10 +132,10 @@ public class BuildingsIsletController
     }
 
     /**
-     * Changes the type of a mesh (in noise or in real building). To call only
-     * during the third step.
-     * @param mesh
-     *            the mesh
+     * Changes the type of a surface (in noise or in real building). To call
+     * only during the third step.
+     * @param surface
+     *            the surface
      * @param actionType
      *            the new type of the mesh
      * @throws InvalidCaseException
@@ -421,12 +415,6 @@ public class BuildingsIsletController
         return this.islet;
     }
 
-    public MeshView FindMeshNode(Object hopeItIsAMesh)
-    {
-        return new MeshView(new Mesh());
-        // FIX ME
-    }
-
     /**
      * Getter.
      * @return the controller of the islet selection
@@ -506,17 +494,6 @@ public class BuildingsIsletController
         }
     }
 
-    public void abortTreatment()
-    {
-        // FIXME
-    }
-
-    public void getPreviousTreatment()
-    {
-        // FIXME
-        System.out.println("LastTreatment");
-    }
-
     /**
      * Sets the gravity normal in the islet attribute.
      */
@@ -542,30 +519,11 @@ public class BuildingsIsletController
     }
 
     /**
-     * Returns the neighbours.
-     * @param s
-     * @return
-     */
-    public List<Surface> getCaracteristics6(Surface s)
-    {
-        return s.getNeighbours();
-    }
-
-    /**
-     * Returns the neighbours.
-     * @param s
-     * @return
-     */
-    public List<Surface> getCaracteristics7(Surface s)
-    {
-        return s.getNeighbours();
-    }
-
-    /**
-     * Returns the building containing the mesh. To call only in the third step.
-     * @param mesh
-     *            the mesh to check
-     * @return the building containing the mesh
+     * Returns the building containing the surface. To call only in the third
+     * step.
+     * @param surface
+     *            the surface to check
+     * @return the building containing the surface
      */
     public final Building returnBuildingContaining3(final Surface surface)
     {
