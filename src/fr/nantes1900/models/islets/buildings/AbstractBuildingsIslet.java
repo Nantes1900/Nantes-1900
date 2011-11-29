@@ -205,61 +205,6 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         this.progression++;
     }
 
-    public final void resetProgression(){
-        this.progression=0;
-    }
-    /**
-<<<<<<< HEAD
-     * Return a node containing the tree depending of the progression of the
-     * treatment.
-     * @return the node
-     * @throws InvalidCaseException
-     *             if the case in not valid (more than 8 or less than 0)
-     */
-    public final DefaultMutableTreeNode returnNode()
-            throws InvalidCaseException
-    {
-        switch (this.getProgression())
-        {
-            case AbstractBuildingsIslet.ZERO_STEP:
-                throw new InvalidCaseException();
-            case AbstractBuildingsIslet.FIRST_STEP:
-                return this.biStep1.returnNode();
-            case AbstractBuildingsIslet.SECOND_STEP:
-                return this.biStep2.returnNode();
-            case AbstractBuildingsIslet.THIRD_STEP:
-                return this.biStep3.returnNode();
-            case AbstractBuildingsIslet.FOURTH_STEP:
-                return this.biStep4.returnNode();
-            case AbstractBuildingsIslet.FIFTH_STEP:
-                return this.biStep5.returnNode();
-            case AbstractBuildingsIslet.SIXTH_STEP:
-                return this.biStep6.returnNode();
-            default:
-                return null;
-        }
-    }
-
-    /**
-     * Setter.
-     * @param gravityNormalIn
-     *            the new gravity normal
-     */
-    public final void setGravityNormal(final Vector3d gravityNormalIn)
-    {
-        this.gravityNormal = gravityNormalIn;
-    }
-
-    /**
-     * Setter.
-     * @param groundNormalIn
-     *            the normal to set as ground normal
-     */
-    public final void setGroundNormal(final Vector3d groundNormalIn)
-    {
-        this.groundNormal = groundNormalIn;
-    }
-
     /**
      * Launches the first treatment.
      * @throws NullArgumentException
@@ -339,5 +284,71 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         System.out.println("Beginning tr 5");
         this.biStep6 = this.getBiStep5().launchTreatment();
         System.out.println("End tr 5");
+    }
+
+    public final void resetProgression()
+    {
+        this.progression = 0;
+    }
+
+    /**
+     * Returns a node containing the tree depending of the progression of the
+     * treatment.
+     * @return the node
+     * @throws InvalidCaseException
+     *             if the case in not valid (more than 8 or less than 0)
+     */
+    public final DefaultMutableTreeNode returnNode()
+            throws InvalidCaseException
+    {
+        switch (this.getProgression())
+        {
+            case AbstractBuildingsIslet.ZERO_STEP:
+                throw new InvalidCaseException();
+            case AbstractBuildingsIslet.FIRST_STEP:
+                return this.biStep1.returnNode();
+            case AbstractBuildingsIslet.SECOND_STEP:
+                return this.biStep2.returnNode();
+            case AbstractBuildingsIslet.THIRD_STEP:
+                return this.biStep3.returnNode();
+            case AbstractBuildingsIslet.FOURTH_STEP:
+                return this.biStep4.returnNode();
+            case AbstractBuildingsIslet.FIFTH_STEP:
+                return this.biStep5.returnNode();
+            case AbstractBuildingsIslet.SIXTH_STEP:
+                return this.biStep6.returnNode();
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * Setter.
+     * @param biStep0
+     *            the new step 0
+     */
+    public final void setBiStep0(final BuildingsIsletStep0 biStep0)
+    {
+        this.biStep0 = biStep0;
+    }
+
+    /**
+     * Setter.
+     * @param gravityNormalIn
+     *            the new gravity normal
+     */
+    public final void setGravityNormal(final Vector3d gravityNormalIn)
+    {
+        this.gravityNormal = gravityNormalIn;
+    }
+
+    /**
+     * Setter.
+     * @param groundNormalIn
+     *            the normal to set as ground normal
+     */
+    public final void setGroundNormal(final Vector3d groundNormalIn)
+    {
+        this.groundNormal = groundNormalIn;
     }
 }
