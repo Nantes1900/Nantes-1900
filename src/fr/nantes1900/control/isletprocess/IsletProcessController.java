@@ -161,6 +161,10 @@ public class IsletProcessController implements ElementsSelectedListener
     {
         return this.getBiController().getIslet().getProgression();
     }
+    
+    public void loadParameters(){
+        this.pController.loadNewParameters();
+    }
 
     @Override
     public void meshDeselected(Mesh meshSelected)

@@ -48,7 +48,6 @@ public class NavigationBarController extends JToolBar
             {
                 NavigationBarController.this.getParentController()
                         .abortProcess();
-
             }
         });
         this.nbView.getBackButton().addActionListener(new ActionListener() {
@@ -72,6 +71,7 @@ public class NavigationBarController extends JToolBar
             {
                 try
                 {
+                    NavigationBarController.this.getParentController().loadParameters();
                     NavigationBarController.this.getParentController()
                             .launchProcess();
                 } catch (UnexistingStepException e)

@@ -16,7 +16,7 @@ public final class SeparationGroundBuilding
      * (considering the normal to the ground, and not the gravity) between a
      * block of triangles and the totality of the grounds is higher than this
      * error, the block is not taken as a ground. This error is in the scale
-     * used in the files (if millimeteres are used, it's in millimeters, etc.).
+     * used in the files (if millimeters are used, it's in millimeters, etc.).
      */
     private static double       altitureError                    = ALTITUDE_ERROR_DEFAULT;
 
