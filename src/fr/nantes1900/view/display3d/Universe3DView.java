@@ -71,6 +71,7 @@ public class Universe3DView extends JPanel
      * @param u3DControllerIn
      *            TODO.
      */
+
     public Universe3DView(final Universe3DController u3DControllerIn)
     {
 
@@ -133,6 +134,13 @@ public class Universe3DView extends JPanel
         this.u3DController.getMouseRotate().setCenter(centroid);
     }
 
+    {
+        Canvas3D c = this.simpleUniverse.getCanvas();
+        this.simpleUniverse.cleanup();
+        this.simpleUniverse = new SimpleUniverse(c);
+        c.getView().setBackClipDistance(1000);
+    }
+
     /**
      * Removes everything displayed !
      */
@@ -166,8 +174,7 @@ public class Universe3DView extends JPanel
         BoundingSphere lightBounds = new BoundingSphere(new Point3d(0.0, 0.0,
                 0.0), LIGHT_BOUND_RADIUS);
         // Ambient light
-        AmbientLight ambLight = new AmbientLight(true, new Color3f(1.0f, 1.0f,
-                1.0f));
+        AmbientLight ambLight = new AmbientLight(true, new Color3f(Color.white));
         ambLight.setInfluencingBounds(lightBounds);
         // Directional light
         DirectionalLight headLight = new DirectionalLight(new Color3f(
@@ -282,6 +289,26 @@ public class Universe3DView extends JPanel
         return surfaceViewList;
     }
 
+    public JToolBar getToolbar()
+    {
+        return this.toolbar;
+    }
+
+    /**
+     * Sets the new toolbar to control the 3d universe.
+     * @param newToolbar
+     *            The new toolbar.
+     */
+    public void setToolbar(JToolBar newToolbar)
+    {
+        if (toolbar != null)
+        {
+            this.remove(toolbar);
+        }
+        this.toolbar = newToolbar;
+        this.add(newToolbar, BorderLayout.EAST);
+    }
+
     /**
      * Translate the position of the camera.
      * @param x
@@ -303,25 +330,5 @@ public class Universe3DView extends JPanel
         // Set the position of the camera.
         cameraTranslation.setTranslation(new Vector3d(x, y, z));
         cameraTransformGroup.setTransform(cameraTranslation);
-    }
-
-    /**
-     * Sets the new toolbar to control the 3d universe.
-     * @param newToolbar
-     *            The new toolbar.
-     */
-    public void setToolbar(JToolBar newToolbar)
-    {
-        if (toolbar != null)
-        {
-            this.remove(toolbar);
-        }
-        this.toolbar = newToolbar;
-        this.add(newToolbar, BorderLayout.EAST);
-    }
-
-    public JToolBar getToolbar()
-    {
-        return this.toolbar;
     }
 }
