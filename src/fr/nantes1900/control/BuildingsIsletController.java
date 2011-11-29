@@ -784,4 +784,14 @@ public class BuildingsIsletController
         this.islet.setBiStep0(new BuildingsIsletStep0(AbstractIslet
                 .parseFile(fileName)));
     }
+
+    public void abortTreatment()
+    {
+        this.islet.setProgression(0);
+    }
+
+    public void getPreviousTreatment()
+    {
+        this.islet.decProgression();
+    }
 }

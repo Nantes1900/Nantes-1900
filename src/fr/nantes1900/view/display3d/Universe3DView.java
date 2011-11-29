@@ -33,7 +33,6 @@ import fr.nantes1900.models.extended.Surface;
 
 /**
  * TODO.
- * 
  * @author TODO.
  */
 public class Universe3DView extends JPanel {
@@ -70,6 +69,11 @@ public class Universe3DView extends JPanel {
 	public SimpleUniverse getSimpleUniverse() {
 		return simpleUniverse;
 	}
+	
+    public ArrayList<SurfaceView> getSurfaceViewList()
+    {
+        return surfaceViewList;
+    }
 
 	/**
 	 * Constructor of the U3DView.
@@ -243,6 +247,7 @@ public class Universe3DView extends JPanel {
 		return transformGroup;
 	}
 
+	
 	/**
 	 * Translate the position of the camera.
 	 * 
