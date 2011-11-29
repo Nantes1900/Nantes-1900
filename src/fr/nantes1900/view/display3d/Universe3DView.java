@@ -7,15 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.j3d.AmbientLight;
-import javax.media.j3d.Appearance;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Group;
-import javax.media.j3d.ImageComponent2D;
-import javax.media.j3d.Material;
-import javax.media.j3d.Texture2D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.swing.JPanel;
@@ -26,7 +22,6 @@ import javax.vecmath.Vector3f;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
-import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
@@ -122,10 +117,7 @@ public class Universe3DView extends JPanel {
 
 		// Computes the centroid of the first surface.
 		Point centroid;
-		if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
-
-		{
-
+		if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE) {
 			centroid = surfaces.get(0).getMesh().getCentroid();
 		} else {
 			Polygon polygon = surfaces.get(0).getPolygon();
@@ -199,7 +191,7 @@ public class Universe3DView extends JPanel {
 	 */
 
 	private TransformGroup createTransformGroup(
-			final ArrayList<SurfaceView> surfaceView) {
+			ArrayList<SurfaceView> surfaceView) {
 		BoundingSphere boundingSphere = new BoundingSphere(new Point3d(0.0,
 				0.0, 0.0), BOUNDING_RADIUS);
 
@@ -224,23 +216,9 @@ public class Universe3DView extends JPanel {
 
 		BranchGroup sceneRoot = new BranchGroup();
 
-		// Read the texture.
-		TextureLoader loader = new TextureLoader("texture.jpg", null);
-		ImageComponent2D image = loader.getImage();
-		Texture2D texture = new Texture2D(Texture2D.BASE_LEVEL, Texture2D.RGB,
-				image.getWidth(), image.getHeight());
-		texture.setImage(0, image);
-
-		// Create the appearance.
-		Appearance app = new Appearance();
-
-		app.setCapability(Appearance.ALLOW_MATERIAL_READ);
-		app.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
-
 		for (SurfaceView surface : this.surfaceViewList) {
 			sceneRoot.addChild(surface);
 		}
-
 		translationGroup2.addChild(sceneRoot);
 
 		// Links the left button of the mouse with a rotation transformation

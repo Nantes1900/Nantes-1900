@@ -64,11 +64,9 @@ public class SurfaceView extends Shape3D {
 	 */
 	public SurfaceView() {
 		super();
-		// Set the capability of SurfaceView.
+
 		this.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
 		this.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-
-		// Set the capability of appearance.
 
 		this.appearance.setCapability(Appearance.ALLOW_MATERIAL_READ);
 		this.appearance.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
@@ -76,6 +74,8 @@ public class SurfaceView extends Shape3D {
 		TextureAttributes texAtt = new TextureAttributes();
 		texAtt.setTextureMode(TextureAttributes.MODULATE);
 		this.appearance.setTextureAttributes(texAtt);
+		
+		this.setMaterial(MATERIAL_UNSELECTED);
 
 		// Set the appearance of the surfaceView.
 		this.setAppearance(appearance);
