@@ -35,7 +35,8 @@ public class NavigationBarController extends JToolBar
      * @param parentControllerIn
      *            the parent controller
      */
-    public NavigationBarController(final IsletProcessController parentControllerIn)
+    public NavigationBarController(
+            final IsletProcessController parentControllerIn)
     {
         this.parentController = parentControllerIn;
         this.nbView = new NavigationBarView();
@@ -44,12 +45,7 @@ public class NavigationBarController extends JToolBar
             public void actionPerformed(final ActionEvent arg0)
             {
                 NavigationBarController.this.getParentController()
-<<<<<<< HEAD
-                        .abortTreatment();
-=======
-                        .getBiController()
-                        .abortProcess();
->>>>>>> cf6df6c9c7af0957d190fc5faf38d508f07b4293
+                        .getBiController().abortProcess();
             }
         });
         this.nbView.getBackButton().addActionListener(new ActionListener() {
@@ -57,19 +53,15 @@ public class NavigationBarController extends JToolBar
             public void actionPerformed(final ActionEvent arg0)
             {
                 NavigationBarController.this.getParentController()
-<<<<<<< HEAD
-                        .getPreviousTreatment();
-=======
-                        .getBiController()
-                        .getPreviousStep();
->>>>>>> cf6df6c9c7af0957d190fc5faf38d508f07b4293
+                        .getBiController().getPreviousStep();
             }
         });
         this.nbView.getLaunchButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent arg0)
             {
-                NavigationBarController.this.getParentController().launchProcess();
+                NavigationBarController.this.getParentController()
+                        .launchProcess();
             }
         });
     }
