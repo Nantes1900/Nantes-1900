@@ -69,6 +69,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	public Universe3DController(ElementsSelectedListener parentControllerIn) {
 		this.parentController = parentControllerIn;
 		this.u3DView = new Universe3DView(this);
+		this.displayMode = DISPLAY_MESH_MODE;
 	}
 
 	public void addElementsSelectedListener(ElementsSelectedListener listener) {
