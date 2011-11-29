@@ -58,8 +58,9 @@ public class MeshView extends TriangleArray
         // Create the triangles to be displayed.
         for (Triangle triangle : this.mesh)
         {
-            this.selectTableTriangle.put(triangle, i);
-            this.selectTableIndex.put(i, triangle);
+            this.selectTableTriangle.put(triangle, i/3);
+            this.selectTableIndex.put(i/3, triangle);
+            
 
             this.setCoordinate(i, new Point3d(triangle.getP1().getX(), triangle
                     .getP1().getY(), triangle.getP1().getZ()));

@@ -12,6 +12,9 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Group;
+import javax.media.j3d.ImageComponent2D;
+import javax.media.j3d.Texture;
+import javax.media.j3d.Texture2D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.swing.JPanel;
@@ -23,6 +26,7 @@ import javax.vecmath.Vector3f;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
+import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
@@ -38,16 +42,19 @@ import fr.nantes1900.models.extended.Surface;
  */
 public class Universe3DView extends JPanel
 {
+    /**
+     * TODO.
+     */
     private JToolBar               toolbar;
     /**
      * Version ID.
      */
-    private static final long      serialVersionUID              = 1L;
+    private static final long      serialVersionUID               = 1L;
 
     /**
      * The list to save all the surfaceView.
      */
-    private ArrayList<SurfaceView> surfaceViewList               = new ArrayList<>();
+    private ArrayList<SurfaceView> surfaceViewList                = new ArrayList<>();
 
     /**
      * The Universe3DController attached.
@@ -59,12 +66,27 @@ public class Universe3DView extends JPanel
      */
     private SimpleUniverse         simpleUniverse;
 
-    public static final double     TRANSLATION_CAMERA_ZDIRECTION = 30;
+    /**
+     * TODO.
+     */
+    public static final double     TRANSLATION_CAMERA_Z_DIRECTION = 30;
 
-    public static final int        PANEL_HEIGHT                  = 600;
-    public static final int        PANEL_WIDTH                   = 600;
-    public static final int        LIGHT_BOUND_RADIUS            = 1000;
-    public static final int        BOUNDING_RADIUS               = 1000;
+    /**
+     * TODO.
+     */
+    public static final int        PANEL_HEIGHT                   = 600;
+    /**
+     * TODO.
+     */
+    public static final int        PANEL_WIDTH                    = 600;
+    /**
+     * TODO.
+     */
+    public static final int        LIGHT_BOUND_RADIUS             = 1000;
+    /**
+     * TODO.
+     */
+    public static final int        BOUNDING_RADIUS                = 1000;
 
     /**
      * Creates a new universe.
@@ -82,6 +104,9 @@ public class Universe3DView extends JPanel
 
         // Setups the SimpleUniverse, attachss the Canvas3D
         this.simpleUniverse = new SimpleUniverse(c);
+        this.getSimpleUniverse().getCanvas().addMouseListener(u3DControllerIn);
+        this.getSimpleUniverse().getCanvas()
+                .addMouseMotionListener(u3DControllerIn);
 
         // Size to show the panel while there is nothing to show
         this.setMinimumSize(new Dimension(PANEL_HEIGHT, PANEL_WIDTH));
@@ -127,7 +152,7 @@ public class Universe3DView extends JPanel
 
         // Translates the camera.
         this.translateCamera(centroid.getX(), centroid.getY(), centroid.getZ()
-                + TRANSLATION_CAMERA_ZDIRECTION);
+                + TRANSLATION_CAMERA_Z_DIRECTION);
 
         // Changes the rotation center
         this.u3DController.getMouseRotate().setCenter(centroid);
@@ -141,6 +166,7 @@ public class Universe3DView extends JPanel
         Canvas3D c = this.simpleUniverse.getCanvas();
         this.simpleUniverse.cleanup();
         this.simpleUniverse = new SimpleUniverse(c);
+        this.surfaceViewList.clear();
         // FIXME : magic number !
         c.getView().setBackClipDistance(1000);
     }
@@ -191,7 +217,7 @@ public class Universe3DView extends JPanel
      */
 
     private TransformGroup createTransformGroup(
-            ArrayList<SurfaceView> surfaceView)
+            final ArrayList<SurfaceView> surfaceView)
     {
         BoundingSphere boundingSphere = new BoundingSphere(new Point3d(0.0,
                 0.0, 0.0), BOUNDING_RADIUS);
@@ -217,9 +243,18 @@ public class Universe3DView extends JPanel
 
         BranchGroup sceneRoot = new BranchGroup();
 
+        // Read the texture.
+        TextureLoader loader = new TextureLoader("texture.jpg", null);
+        ImageComponent2D image = loader.getImage();
+        Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGB,
+                image.getWidth(), image.getHeight());
+        texture.setImage(0, image);
+
         for (SurfaceView surface : this.surfaceViewList)
         {
             sceneRoot.addChild(surface);
+            surface.setMaterial(SurfaceView.MATERIAL_UNSELECTED);
+            surface.setTexture(texture);
         }
         translationGroup2.addChild(sceneRoot);
 
@@ -248,7 +283,12 @@ public class Universe3DView extends JPanel
         return transformGroup;
     }
 
-    private void displayMeshes(List<Surface> surfacesList)
+    /**
+     * TODO.
+     * @param surfacesList
+     *            TODO
+     */
+    private void displayMeshes(final List<Surface> surfacesList)
     {
         for (Surface surface : surfacesList)
         {
@@ -259,7 +299,12 @@ public class Universe3DView extends JPanel
         }
     }
 
-    private void displayPolygons(List<Surface> surfacesList)
+    /**
+     * TODO.
+     * @param surfacesList
+     *            TODO
+     */
+    private void displayPolygons(final List<Surface> surfacesList)
     {
         for (Surface surface : surfacesList)
         {
@@ -271,19 +316,28 @@ public class Universe3DView extends JPanel
     }
 
     /**
-     * SimpleUniverse getter
+     * Getter.
+     * @return the simple universe
      */
-    public SimpleUniverse getSimpleUniverse()
+    public final SimpleUniverse getSimpleUniverse()
     {
-        return simpleUniverse;
+        return this.simpleUniverse;
     }
 
-    public ArrayList<SurfaceView> getSurfaceViewList()
+    /**
+     * Getter.
+     * @return the list of the SurfaceViews
+     */
+    public final ArrayList<SurfaceView> getSurfaceViewList()
     {
-        return surfaceViewList;
+        return this.surfaceViewList;
     }
 
-    public JToolBar getToolbar()
+    /**
+     * Getter.
+     * @return the Toolbar
+     */
+    public final JToolBar getToolbar()
     {
         return this.toolbar;
     }
@@ -293,11 +347,11 @@ public class Universe3DView extends JPanel
      * @param newToolbar
      *            The new toolbar.
      */
-    public void setToolbar(JToolBar newToolbar)
+    public final void setToolbar(final JToolBar newToolbar)
     {
-        if (toolbar != null)
+        if (this.toolbar != null)
         {
-            this.remove(toolbar);
+            this.remove(this.toolbar);
         }
         this.toolbar = newToolbar;
         this.add(newToolbar, BorderLayout.EAST);
@@ -312,7 +366,8 @@ public class Universe3DView extends JPanel
      * @param z
      *            The z coordinate of the camera.
      */
-    private void translateCamera(double x, double y, double z)
+    private void
+            translateCamera(final double x, final double y, final double z)
     {
         // Get the camera.
         ViewingPlatform camera = this.simpleUniverse.getViewingPlatform();

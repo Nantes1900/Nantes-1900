@@ -638,10 +638,12 @@ public class BuildingsIsletController
      */
     public final void viewStep0()
     {
+
         List<Surface> surfacesList = new ArrayList<>();
         surfacesList.add(this.islet.getBiStep0().getInitialTotalSurface());
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
+
 
     }
 
@@ -650,9 +652,11 @@ public class BuildingsIsletController
      */
     public final void viewStep1()
     {
+
         List<Surface> surfacesList = new ArrayList<>();
         surfacesList.add(this.islet.getBiStep1()
                 .getInitialTotalSurfaceAfterBaseChange());
+
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
     }
@@ -779,7 +783,9 @@ public class BuildingsIsletController
             }
         }
 
+
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
+
         // TODO : displays with other colors the surfaces not well computed.
     }
 

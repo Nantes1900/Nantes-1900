@@ -43,6 +43,7 @@ public class IsletTreeController
                     @Override
                     public void valueChanged(final TreeSelectionEvent e)
                     {
+
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
                                 .getPath().getLastPathComponent();
 
@@ -57,6 +58,7 @@ public class IsletTreeController
                         {
                             // TODO : throw exception if it is not a mesh.
                         }
+
                     }
                 });
         // FIXME : what if a object is deselected in the tree ? What if more
