@@ -29,7 +29,6 @@ import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersExc
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.utils.ParserSTL;
 import fr.nantes1900.view.display3d.MeshView;
-import fr.nantes1900.view.display3d.PolygonView;
 
 /**
  * Implements the controller of a building islet. Used to visualize the islets,
