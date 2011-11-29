@@ -92,11 +92,17 @@ public class IsletProcessController implements ElementsSelectedListener
         this.parentController = parentController;
         this.progression = 1;
         this.biController = biController;
+        // TODO sets the empty characteristics panel at the beginning
         this.cController = new CharacteristicsStep6Controller(this, null);
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
         this.pController = new ParametersController(this);
         this.f3DController = new Functions3DToolbarController(this);
+        f3DController.getToolbar().showDeselectMeshesButton(true);
+        f3DController.getToolbar().showDeselectMeshesButton(true);
+        f3DController.getToolbar().showLockButton(true);
+        f3DController.getToolbar().showDeselectTrianglesButton(true);
+        f3DController.getToolbar().showTypeDisplayButton(true);
         this.u3DController = new Universe3DController();
         this.u3DController.getUniverse3DView().setToolbar(f3DController.getToolbar());
         this.biController.setUniverse3DController(u3DController);
@@ -227,5 +233,18 @@ public class IsletProcessController implements ElementsSelectedListener
     {
         // TODO Auto-generated method stub
 
+    }
+
+    public void lock(boolean lock)
+    {
+        if (progression == 6 && lock)
+        {
+            ((CharacteristicsStep6Controller) cController).setEnabled(true);
+        } else
+        {
+            ((CharacteristicsStep6Controller) cController).setEnabled(false);
+        }
+        
+        // TODO lock and unlock in the universe 3d and maybe the tree too.
     }
 }

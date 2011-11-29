@@ -30,6 +30,7 @@ public class CharacteristicsStep6View extends CharacteristicsView
     private DefaultListModel<String> dlm = new DefaultListModel<String>();
     private JButton upButton;
     private JButton downButton;
+    private HelpButton helpButton;
     
     public CharacteristicsStep6View()
     {
@@ -76,7 +77,7 @@ public class CharacteristicsStep6View extends CharacteristicsView
                 if (lNeighbours.getSelectedIndex() == 0)
                 {
                     upButton.setEnabled(false);
-                } else
+                } else if (! upButton.isEnabled())
                 {
                     upButton.setEnabled(true);
                 }
@@ -84,7 +85,7 @@ public class CharacteristicsStep6View extends CharacteristicsView
                 if (lNeighbours.getSelectedIndex() == dlm.getSize() - 1)
                 {
                     downButton.setEnabled(false);
-                } else
+                }  else if (! downButton.isEnabled())
                 {
                     downButton.setEnabled(true);
                 }
@@ -116,11 +117,21 @@ public class CharacteristicsStep6View extends CharacteristicsView
                 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                 GridBagConstraints.NONE, new Insets(0, 10, 0, 10), 0, 0));
         
+        helpButton = new HelpButton();
         
-        this.addCaracteristic(createSimpleCaracteristic(sortPanel, FileTools.readElementText(TextsKeys.KEY_SORTOUTNEIGHBOURS), new HelpButton()));
+        this.addCaracteristic(createSimpleCaracteristic(sortPanel, FileTools.readElementText(TextsKeys.KEY_SORTOUTNEIGHBOURS), helpButton));
         this.bValidate.setEnabled(true);
 //        lNeighbours = new JList<Surface>();
 //        this.addCaracteristic(createSimpleCaracteristic(lNeighbours, FileTools.readElementText(TextsKeys.KEY_SORTOUTNEIGHBOURS), new HelpButton()));
 //        this.bValidate.setEnabled(true);
+    }
+
+    public void setModificationsEnabled(boolean enable)
+    {
+        lNeighbours.setEnabled(enable);
+        upButton.setEnabled(enable);
+        downButton.setEnabled(enable);
+        bValidate.setEnabled(enable);
+        helpButton.setEnabled(enable);
     }
 }

@@ -72,6 +72,14 @@ public final class TextsKeys
     public static final String KEY_PUTINNOISETEXT = "CPutInNoise";
     public static final String KEY_SORTOUTNEIGHBOURS = "CSortOutNeighbours";
     public static final String KEY_USEGRAVITYNORMALTEXT= "UseGravityNormal";
+
+    public static final String KEY_ROTATIONCENTER = "RotationCenter";
+    public static final String KEY_DISPLAYMESHES = "DisplayMeshes";
+    public static final String KEY_DISPLAYPOLYGONS = "DisplayPolygons";
+    public static final String KEY_LOCKMESH = "LockMesh";
+    public static final String KEY_UNLOCKMESH = "UnlockMesh";
+    public static final String KEY_DESELECTTRIANGLES = "DeselectTriangles";
+    public static final String KEY_DESELECTMESHES = "DeselectMeshes";
     
     public TextsKeys(){
     }

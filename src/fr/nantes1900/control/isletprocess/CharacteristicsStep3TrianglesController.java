@@ -37,10 +37,10 @@ public class CharacteristicsStep3TrianglesController extends
             IsletProcessController parentController, Triangle triangleSelected)
     {
         super(parentController);
+        this.cView = new CharacteristicsStep2View();
         trianglesList = new ArrayList<Triangle>();
         trianglesList.add(triangleSelected);
 
-        this.cView = new CharacteristicsStep2View();
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
@@ -71,8 +71,6 @@ public class CharacteristicsStep3TrianglesController extends
 
     public void addTriangleSelected(Triangle triangleSelected)
     {
-        this.trianglesList.add(triangleSelected);
-        ((CharacteristicsStep2View) this.cView).setType("");
     }
 
     public ArrayList<Triangle> getTriangles()

@@ -17,8 +17,10 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep6View;
  */
 public class CharacteristicsStep6Controller extends CharacteristicsController
 {
-    public ArrayList<Surface> surfacesList;
-    public Surface surfaceLocked;
+    private ArrayList<Surface> surfacesList;
+    private Surface surfaceLocked;
+    private boolean isEnabled;
+//    private CharacteristicsStep6View cView;
 
     /**
      * Constructor.
@@ -31,8 +33,10 @@ public class CharacteristicsStep6Controller extends CharacteristicsController
         super(parentController);
         surfacesList = new ArrayList<Surface>();
         this.surfaceLocked = surfaceLocked;
-
         this.cView = new CharacteristicsStep6View();
+        isEnabled = true;
+        setEnabled(false);
+
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
@@ -51,5 +55,19 @@ public class CharacteristicsStep6Controller extends CharacteristicsController
     public void addSurfaceSelected(Surface surfaceSelected)
     {
         this.surfacesList.add(surfaceSelected);
+    }
+
+    public void setEnabled(boolean enabled)
+    {
+        if (!this.isEnabled && enabled)
+        {
+            this.isEnabled = true;
+            ((CharacteristicsStep6View) cView).setModificationsEnabled(true);
+        } else if (this.isEnabled && !enabled)
+        {
+            this.isEnabled = false;
+            cView.setToolTipText("Test");
+            ((CharacteristicsStep6View) cView).setModificationsEnabled(false);
+        }
     }
 }
