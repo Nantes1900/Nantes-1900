@@ -45,7 +45,7 @@ public class NavigationBarController extends JToolBar
             {
                 NavigationBarController.this.getParentController()
                         .getBiController()
-                        .abortTreatment();
+                        .abortProcess();
             }
         });
         this.nbView.getBackButton().addActionListener(new ActionListener() {
@@ -54,7 +54,7 @@ public class NavigationBarController extends JToolBar
             {
                 NavigationBarController.this.getParentController()
                         .getBiController()
-                        .getPreviousTreatment();
+                        .getPreviousStep();
             }
         });
         this.nbView.getLaunchButton().addActionListener(new ActionListener() {

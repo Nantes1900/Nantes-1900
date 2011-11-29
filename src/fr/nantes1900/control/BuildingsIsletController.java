@@ -420,10 +420,10 @@ public class BuildingsIsletController
         return this.islet;
     }
 
-    public MeshView FindMeshNode(Object hopeItIsAMesh)
+    public MeshView findMeshNode(Object hopeItIsAMesh)
     {
         return new MeshView(new Mesh());
-        // FIX ME
+        // FIXME
     }
 
     /**
@@ -511,15 +511,15 @@ public class BuildingsIsletController
         }
     }
 
-    public void abortTreatment()
+    public void abortProcess()
     {
-        // FIXME
+        this.islet.setProgression(0);
+        // TODO : is it correct ? Check it.
     }
 
-    public void getPreviousTreatment()
+    public void getPreviousStep()
     {
-        // FIXME
-        System.out.println("LastTreatment");
+        this.islet.decProgression();
     }
 
     /**

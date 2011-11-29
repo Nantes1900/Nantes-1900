@@ -40,7 +40,7 @@ public class IsletTreeController
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath()
                                 .getLastPathComponent();
                         Object hopeItIsAMesh = node.getUserObject();
-                        MeshView mesh = IsletTreeController.this.parentController.getBiController().FindMeshNode(hopeItIsAMesh);
+                        MeshView mesh = IsletTreeController.this.parentController.getBiController().findMeshNode(hopeItIsAMesh);
                         IsletTreeController.this.parentController.getBiController().getU3DController().SelectMeshFromTree(mesh);
                     }
                 });
