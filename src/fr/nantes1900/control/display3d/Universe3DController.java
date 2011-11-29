@@ -7,10 +7,7 @@ import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.media.j3d.Appearance;
 import javax.media.j3d.BranchGroup;
-import javax.media.j3d.GeometryArray;
-import javax.media.j3d.Shape3D;
 import javax.swing.event.EventListenerList;
 import javax.vecmath.Vector3d;
 
@@ -26,7 +23,6 @@ import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.view.display3d.MeshView;
-import fr.nantes1900.view.display3d.PolygonView;
 import fr.nantes1900.view.display3d.SurfaceView;
 import fr.nantes1900.view.display3d.Universe3DView;
 
@@ -78,6 +74,30 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     public void addElementsSelectedListener(ElementsSelectedListener listener)
     {
         this.listeners.add(ElementsSelectedListener.class, listener);
+    }
+
+    /**
+     * Changes the rotation center when clicking on a surface.
+     * @param surfaceView
+     *            The surfaceView becomming the rotation center
+     */
+    public final void changeRotationCenter(final SurfaceView surfaceView)
+    {
+        // FIXME handle the case of mesh = null.
+        Point center = new Point(
+                surfaceView.getMeshView().getCentroid().getX(), surfaceView
+                        .getMeshView().getCentroid().getY(), surfaceView
+                        .getMeshView().getCentroid().getZ());
+        this.mouseRotate.setCenter(center);
+    }
+
+    public final void deselectMeshFromTree(Surface surface)
+    {
+        SurfaceView surfaceView = this.getSurfaceViewFromSurface(surface);
+
+        // Changes the material of the surface seleted.
+        surfaceView.getAppearance()
+                .setMaterial(SurfaceView.MATERIAL_UNSELECTED);
     }
 
     private void firePolygonDeselected(Polygon polygonDeselected)
@@ -139,6 +159,18 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         return this.parentController;
     }
 
+    public final SurfaceView getSurfaceViewFromSurface(final Surface surface)
+    {
+        for (SurfaceView sView : this.u3DView.getSurfaceViewList())
+        {
+            if (sView.getSurface() == surface)
+            {
+                return sView;
+            }
+        }
+        return null;
+    }
+
     /**
      * Returns the list of Triangle associated with the trianglesView contained
      * in trianglesViewSelected.
@@ -154,22 +186,64 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         return this.u3DView;
     }
 
+    /**
+     * Treats the different clicking actions (left or right).
+     * @param e
+     *            The MouseEvent caught by the mouseListener when clicking
+     */
+    @Override
+    public final void mouseClicked(final MouseEvent e)
+    {
+        int buttonDown = e.getButton();
+        if (buttonDown == MouseEvent.BUTTON1)
+        {
+            this.treatLeftClick(e);
+        } else if (buttonDown == MouseEvent.BUTTON3)
+        {
+            this.treatRightClick(e);
+        }
+    }
+
+    @Override
+    public void mouseDragged(final MouseEvent arg0)
+    {
+        // Not used.
+    }
+
+    @Override
+    public void mouseEntered(final MouseEvent e)
+    {
+        // Not used.
+    }
+
+    @Override
+    public void mouseExited(final MouseEvent e)
+    {
+        // Not used.
+    }
+
+    @Override
+    public void mouseMoved(final MouseEvent e)
+    {
+        // Not used.
+    }
+
+    @Override
+    public void mousePressed(final MouseEvent e)
+    {
+        // Not used.
+    }
+
+    @Override
+    public void mouseReleased(final MouseEvent e)
+    {
+        // Not used.
+    }
+
     public void
             removeElementsSelectedListener(ElementsSelectedListener listener)
     {
         this.listeners.remove(ElementsSelectedListener.class, listener);
-    }
-
-    public final SurfaceView getSurfaceViewFromSurface(final Surface surface)
-    {
-        for (SurfaceView sView : this.u3DView.getSurfaceViewList())
-        {
-            if (sView.getSurface() == surface)
-            {
-                return sView;
-            }
-        }
-        return null;
     }
 
     public final void selectMeshFromTree(Surface surface)
@@ -178,15 +252,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
         // Changes the material of the surface seleted.
         surfaceView.getAppearance().setMaterial(SurfaceView.MATERIAL_SELECTED);
-    }
-
-    public final void deselectMeshFromTree(Surface surface)
-    {
-        SurfaceView surfaceView = this.getSurfaceViewFromSurface(surface);
-
-        // Changes the material of the surface seleted.
-        surfaceView.getAppearance()
-                .setMaterial(SurfaceView.MATERIAL_UNSELECTED);
     }
 
     /**
@@ -228,6 +293,28 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 trianglesNewSelected.add(tempTriangle);
             }
             tempTrianglesList.clear();
+        }
+    }
+
+    /**
+     * Changse the appearance of the surfaceView parameter : select or unselect
+     * the corresponding surface.
+     * @param surfaceView
+     *            The surfaceView containing the surface to select
+     */
+    public final void selectOrUnselectSurface(final SurfaceView surfaceView)
+    {
+        Surface surface = surfaceView.getSurface();
+        // surface not selected when clicked
+        if (!this.surfacesSelected.contains(surface))
+        {
+            this.surfacesSelected.add(surface);
+            surfaceView.setMaterial(SurfaceView.MATERIAL_SELECTED);
+        } else
+        {
+            // surface already selected when clicked
+            this.surfacesSelected.remove(surface);
+            surfaceView.setMaterial(SurfaceView.MATERIAL_UNSELECTED);
         }
     }
 
@@ -276,61 +363,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     }
 
     /**
-     * Changse the appearance of the surfaceView parameter : select or unselect
-     * the corresponding surface.
-     * @param surfaceView
-     *            The surfaceView containing the surface to select
-     */
-    public final void selectOrUnselectSurface(final SurfaceView surfaceView)
-    {
-        Surface surface = surfaceView.getSurface();
-        // surface not selected when clicked
-        if (!this.surfacesSelected.contains(surface))
-        {
-            this.surfacesSelected.add(surface);
-            surfaceView.setMaterial(SurfaceView.MATERIAL_SELECTED);
-        } else
-        {
-            // surface already selected when clicked
-            this.surfacesSelected.remove(surface);
-            surfaceView.setMaterial(SurfaceView.MATERIAL_UNSELECTED);
-        }
-    }
-
-    /**
-     * Changes the rotation center when clicking on a surface.
-     * @param surfaceView
-     *            The surfaceView becomming the rotation center
-     */
-    public final void changeRotationCenter(final SurfaceView surfaceView)
-    {
-        // FIXME handle the case of mesh = null.
-        Point center = new Point(
-                surfaceView.getMeshView().getCentroid().getX(), surfaceView
-                        .getMeshView().getCentroid().getY(), surfaceView
-                        .getMeshView().getCentroid().getZ());
-        this.mouseRotate.setCenter(center);
-    }
-
-    /**
-     * Treats the different clicking actions (left or right).
-     * @param e
-     *            The MouseEvent caught by the mouseListener when clicking
-     */
-    @Override
-    public final void mouseClicked(final MouseEvent e)
-    {
-        int buttonDown = e.getButton();
-        if (buttonDown == MouseEvent.BUTTON1)
-        {
-            this.treatLeftClick(e);
-        } else if (buttonDown == MouseEvent.BUTTON3)
-        {
-            this.treatRightClick(e);
-        }
-    }
-
-    /**
      * Treats a left click action : handling of a surface selection.
      * @param e
      *            TODO.
@@ -372,9 +404,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
             PickIntersection pickIntersection = result.getIntersection(0);
 
             // Gets the meshView picked.
-            GeometryArray geometryArray = pickIntersection.getGeometryArray();
-
-            MeshView meshView = (MeshView) geometryArray;
+            MeshView meshView = (MeshView) pickIntersection.getGeometryArray();
 
             // Gets the index of the triangle picked
             int[] pointIndex = pickIntersection.getPrimitiveVertexIndices();
@@ -389,34 +419,34 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 meshView.select(trianglePicked);
                 this.trianglesSelected.add(trianglePicked);
 
-                // Times to search the neighbour.
-                // FIXME use a button in the tool bar to set this number
-                // FIXME : magic number !
+                // Time to search the neighbour.
+                // FIXME : create a button in the tool bar to set this number
+                // FIXME : magic number ! Put this as a PUBLIC STATIC FINAL INT.
                 int turn = 30;
 
-                // Store the triangles newly selected
+                // Stores the triangles newly selected.
                 List<Triangle> trianglesNewSelected = new ArrayList<>();
                 trianglesNewSelected.add(trianglePicked);
                 this.selectNeighbours(trianglesNewSelected, meshView, turn);
 
-                // Change the center of rotation.
+                // Changes the center of rotation.
                 this.mouseRotate.setCenter(trianglePicked.getP1());
-                // Index to know where a new selection begins
-                this.selectionIndexes.add(this.trianglesSelected.size() - 1);
 
+                // Index to know where a new selection begins.
+                this.selectionIndexes.add(this.trianglesSelected.size() - 1);
             } else
             {
-                // Get the index of the triangle picked in the list of triangles
-                // selected.
+                // Gets the index of the triangle picked in the list of
+                // triangles selected.
                 int firstIndex = 0;
                 int lastIndex = 0;
                 int indexOfLastIndex = 0;
 
-                // Find the triangle picked belongs to which time of selection.
+                // Finds the triangle picked belongs to which time of selection.
                 for (int i = 0; i < this.selectionIndexes.size(); i++)
                 {
                     // If the triangle picked belongs to the first time of
-                    // seleciton.
+                    // selection.
                     if (i == 0 && this.selectionIndexes.get(i) >= indexSelected)
                     {
                         firstIndex = -1;
@@ -424,7 +454,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                         break;
                     }
                     // If the triangle picked doesn't belong to the first time
-                    // of seleciton.
+                    // of selection.
                     else
                     {
                         if (this.selectionIndexes.get(i) < indexSelected
@@ -438,7 +468,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                     }
                 }
 
-                // Unselect all the triangles selected in the time of selection
+                // Unselects all the triangles selected in the time of selection
                 // which the triangle picked belongs to.
                 for (int i = lastIndex; i > firstIndex; i--)
                 {
@@ -450,7 +480,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
                 }
 
-                // Refresh the list of last index of triangles
+                // Refreshes the list of last index of triangles
                 // selected in each time of selection.
                 this.selectionIndexes.remove(indexOfLastIndex);
                 for (int i = indexOfLastIndex; i < this.selectionIndexes.size(); i++)
@@ -461,42 +491,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 }
             }
         }
-    }
-
-    @Override
-    public void mouseDragged(MouseEvent arg0)
-    {
-        // Not used.
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent arg0)
-    {
-        // Not used.
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e)
-    {
-        // Not used.
-    }
-
-    @Override
-    public void mouseMoved(MouseEvent arg0)
-    {
-        // Not used.
-    }
-
-    @Override
-    public void mousePressed(MouseEvent e)
-    {
-        // Not used.
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e)
-    {
-        // Not used.
     }
 }
 
