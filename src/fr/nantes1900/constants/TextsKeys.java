@@ -70,6 +70,7 @@ public final class TextsKeys
     public static final String KEY_DELETETEXT = "CDelete";
     public static final String KEY_MERGETEXT = "CMerge";
     public static final String KEY_PUTINNOISETEXT = "CPutInNoise";
+    public static final String KEY_SORTOUTNEIGHBOURS = "CSortOutNeighbours";
     public static final String KEY_USEGRAVITYNORMALTEXT= "UseGravityNormal";
     
     public TextsKeys(){

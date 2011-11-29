@@ -92,7 +92,7 @@ public class IsletProcessController implements ElementsSelectedListener
         this.parentController = parentController;
         this.progression = 1;
         this.biController = biController;
-        this.cController = new CharacteristicsController(this);
+        this.cController = new CharacteristicsStep6Controller(this, null);
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
         this.pController = new ParametersController(this);

@@ -4,6 +4,7 @@
 package fr.nantes1900.view.isletprocess;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -37,6 +38,8 @@ public class CharacteristicsView extends JPanel
         bValidate = new JButton("Valider");
         // Disable the validate button for this empty characteristic panel
         bValidate.setEnabled(false);
+        
+        this.setMinimumSize(new Dimension(100, 100));
         
         pContent = new JPanel();
         FlowLayout contentLayout = new FlowLayout();

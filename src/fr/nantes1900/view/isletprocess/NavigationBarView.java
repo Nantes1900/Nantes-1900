@@ -4,6 +4,7 @@
 package fr.nantes1900.view.isletprocess;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.util.Properties;
 
@@ -33,6 +34,7 @@ public class NavigationBarView extends JPanel
         this.add(bAbort, BorderLayout.WEST);
         this.add(pCentral, BorderLayout.CENTER); 
         this.add(bBack, BorderLayout.EAST);
+        this.setMinimumSize(new Dimension(100, 50));
     }
     
     public JButton getAbortButton(){return this.bAbort;}

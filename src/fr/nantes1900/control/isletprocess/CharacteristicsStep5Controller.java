@@ -13,9 +13,7 @@ import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
-import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
 import fr.nantes1900.utils.FileTools;
-import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep5View;
 
 /**
@@ -39,7 +37,7 @@ public class CharacteristicsStep5Controller extends CharacteristicsController
         surfacesList = new ArrayList<Surface>();
         surfacesList.add(surfaceSelected);
 
-        this.cView = new CharacteristicsStep2View();
+        this.cView = new CharacteristicsStep5View();
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override

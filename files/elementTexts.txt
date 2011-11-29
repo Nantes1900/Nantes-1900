@@ -17,4 +17,5 @@ CType=Type
 CDelete=Supprimer
 CMerge=Fusionner
 CPutInNoise=Mettre dans le bruit
+CSortOutNeighbours=Trier les voisins
 UseGravityNormal=Utiliser la normale orientée selon la gravité
