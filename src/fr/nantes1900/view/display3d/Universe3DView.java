@@ -66,39 +66,7 @@ public class Universe3DView extends JPanel
 	/**
      * The material of the mesh non-selected.
      */
-    public static final Material   MATERIAL_SELECTED             = new Material(
-                                                                         new Color3f(
-                                                                                 1.0f,
-                                                                                 1.0f,
-                                                                                 1.0f),
-                                                                         new Color3f(
-                                                                                 1.0f,
-                                                                                 1.0f,
-                                                                                 1.0f),
-                                                                         new Color3f(
-                                                                                 Color.white),
-                                                                         new Color3f(
-                                                                                 Color.white),
-                                                                         64);
-
-    /**
-     * The material of the mesh selected.
-     */
-    public static final Material   MATERIAL_UNSELECTED           = new Material(
-                                                                         new Color3f(
-                                                                                 0.2f,
-                                                                                 0.0f,
-                                                                                 0.2f),
-                                                                         new Color3f(
-                                                                                 0.0f,
-                                                                                 0.0f,
-                                                                                 0.0f),
-                                                                         new Color3f(
-                                                                                 Color.blue),
-                                                                         new Color3f(
-                                                                                 Color.blue),
-                                                                         64);
-
+    
     public static final int        TRANSLATION_CAMERA_ZDIRECTION = 30;
     public static final int        PANEL_HEIGHT                  = 600;
     public static final int        PANEL_WIDTH                   = 600;

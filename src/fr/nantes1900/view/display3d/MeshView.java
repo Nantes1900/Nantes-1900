@@ -91,10 +91,11 @@ public class MeshView extends TriangleArray
     }
 
     /**
-     * TODO.
-     * @param i
-     *            TODO.
-     * @return TODO.
+     * Get a Vector3f as the normal of the triangle in parameter
+     * (The normal stored in the triangle is a Vector3d)
+     * @param triangle
+     *            The triangle to get the normal from.
+     * @return Vector3f
      */
     public static Vector3f convertNormal(final Triangle triangle)
     {
@@ -116,17 +117,28 @@ public class MeshView extends TriangleArray
     }
 
     /**
-     * Select the TriangleView whose index is i.
+     * Select a triangle knowing its index in the TriangleArray.
      * @param i
-     *            The index of TriangleView to be selected in the MeshView.
+     *            The index of the triangle to select in the TriangleArray
      */
-    public final void select(final int i)
+    public final void select(int i)
     {
         // FIXME : add the triangle in the Universe3DController triangle
         // selection.
         this.setTextureCoordinate(0, i * 3, new TexCoord2f(0.0f, 1.0f));
         this.setTextureCoordinate(0, i * 3 + 1, new TexCoord2f(1.0f, 1.0f));
         this.setTextureCoordinate(0, i * 3 + 2, new TexCoord2f(1.0f, 0.0f));
+    }
+    
+    /**
+     * Select a triangle
+     * @param triangle
+     *            The Triangle to select
+     */
+    public final void select(Triangle triangle)
+    {
+    	int triangleIndex = this.getArrayPositionFromTriangle(triangle);
+    	this.select(triangleIndex);
     }
 
     /**

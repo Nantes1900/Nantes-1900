@@ -50,10 +50,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	private ElementsSelectedListener parentController;
 
 	private final EventListenerList listeners = new EventListenerList();
-	/**
-	 * The MeshView selected each time.
-	 */
-	private MeshView MeshView;
 
 	public static final int DISPLAY_MESH_MODE = 1;
 
@@ -63,7 +59,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
 	private List<Triangle> trianglesSelected = new ArrayList<>();
 
-	private List<Integer> trianglesSelectionIndexes = new ArrayList<>();
+	private List<Integer> selectionIndexes = new ArrayList<>();
 
 	private List<Surface> surfacesSelected = new ArrayList<>();
 
@@ -244,56 +240,36 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	 * 
 	 * @param triangleIndex
 	 *            The index of the triangle clicked in the list of TriangleView.
-	 * @param triangleNewSelected
+	 * @param trianglesNewSelected
 	 *            The indexs of the triagles selected in each turn.
-	 * @param MeshView
+	 * @param meshView
 	 *            The MeshView selected.
 	 * @param turn
 	 *            The time of the recurrence to find the neighbour.
 	 */
-	public void selectVoisin(int triangleIndex,
-			List<Integer> triangleNewSelected, MeshView MeshView, int turn) {
-		
-		Vector3d normal = MeshView.getTriangleFromArrayPosition(triangleIndex).getNormal();
+	public void selectNeighbours(List<Triangle> trianglesNewSelected,
+			MeshView meshView, int turn) {
+
+		Vector3d normal = trianglesNewSelected.get(0).getNormal();
+
 		for (int i = 0; i < turn; i++) {
-			List<Integer> triangleCount = new ArrayList<Integer>();
-			for (int j : triangleNewSelected) {
-				
-				List<Triangle> triangleNeighbour = MeshView.getTriangleArray()
-						.get(j).getTriangle().getNeighbours();
-				
-				for (int l = 0; l < triangleNeighbour.size(); l++) {
-
-					int triangleNeighbourIndex = triangleNeighbour.get(l)
-							.getTriangleViewIndex();
-					if (this.trianglesViewSelected.contains(this.MeshView
-							.getTriangleArray().get(triangleNeighbourIndex)) == false) {
-						Boolean isParalle;
-						isParalle = triangleNeighbour.get(l).isParalleTo(
-								normal, 0.5);
-
-						if (isParalle) {
-							MeshView.select(triangleNeighbourIndex);
-							this.trianglesViewSelected.add(this.MeshView
-									.getTriangleArray().get(
-											triangleNeighbourIndex));
-
-							this.triangleMesh.add(this.MeshView);
-
-							triangleCount.add(triangleNeighbourIndex);
-						}
-
+			List<Triangle> tempTrianglesList = new ArrayList<>();
+			for (Triangle triangle : trianglesNewSelected) {
+				List<Triangle> triangleNeighbours = triangle.getNeighbours();
+				for (Triangle triangleNeighbour : triangleNeighbours) {
+					if (!this.trianglesSelected.contains(triangleNeighbour)
+							&& triangleNeighbour.angularTolerance(normal, 0.5)) {
+						meshView.select(triangleNeighbour);
+						this.trianglesSelected.add(triangleNeighbour);
+						tempTrianglesList.add(triangleNeighbour);
 					}
-
 				}
-
 			}
-			triangleNewSelected.clear();
-			for (int m = 0; m < triangleCount.size(); m++) {
-				triangleNewSelected.add(triangleCount.get(m));
+			trianglesNewSelected.clear();
+			for (Triangle tempTriangle: tempTrianglesList) {
+				trianglesNewSelected.add(tempTriangle);
 			}
-
-			triangleCount.clear();
+			tempTrianglesList.clear();
 		}
 	}
 
@@ -333,17 +309,15 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	 */
 	public void selectOrUnselectSurface(SurfaceView surfaceView) {
 		Surface surface = surfaceView.getSurface();
-		// Non selected surface
+		// surface not selected when clicked
 		if (!this.surfacesSelected.contains(surface)) {
 			this.surfacesSelected.add(surface);
-			surfaceView
-					.setMaterial(fr.nantes1900.view.display3d.Universe3DView.MATERIAL_SELECTED);
+			surfaceView.setMaterial(SurfaceView.MATERIAL_SELECTED);
 		}
-		// Selected surface
+		// surface already selected when clicked
 		else {
 			this.surfacesSelected.remove(surface);
-			surfaceView
-					.setMaterial(fr.nantes1900.view.display3d.Universe3DView.MATERIAL_UNSELECTED);
+			surfaceView.setMaterial(SurfaceView.MATERIAL_UNSELECTED);
 		}
 	}
 
@@ -362,7 +336,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		this.mouseRotate.setCenter(center);
 	}
 
-	
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		int buttonDown = e.getButton();
@@ -373,7 +346,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		}
 
 	}
-	
+
 	/**
 	 * Treatment of a left click action Handling of a surface selection
 	 * 
@@ -407,18 +380,17 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 			PickIntersection pickIntersection = result.getIntersection(0);
 			// Get the meshView picked.
 			GeometryArray geometryArray = pickIntersection.getGeometryArray();
+			MeshView meshView = (MeshView) geometryArray;
 			// Get the index of the triangle picked
 			int[] pointIndex = pickIntersection.getPrimitiveVertexIndices();
 			int indexSelected = pointIndex[0] / 3;
-			MeshView meshView = (MeshView) geometryArray;
 
 			Triangle trianglePicked = meshView
 					.getTriangleFromArrayPosition(indexSelected);
 			// If the triangle picked is not selected.
 			if (!this.trianglesSelected.contains(trianglePicked)) {
-				// change the appearance of the picked triangle
-				meshView.select(indexSelected);
-				// add it to the trianglesSelected list
+
+				meshView.select(trianglePicked);
 				this.trianglesSelected.add(trianglePicked);
 
 				// Times to search the neighbour.
@@ -427,16 +399,15 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
 				// A list used to save the index of triangles
 				// selected in each turn of getting neighbours.
-				List<Integer> triangleNewSelected = new ArrayList<>();
-				// Add the index of the triangle picked to the list.
-				triangleNewSelected.add(indexSelected);
+				List<Triangle> trianglesNewSelected = new ArrayList<>();
+				trianglesNewSelected.add(trianglePicked);
 				// Select the neighbours of the triangle picked.
-				selectVoisin(indexSelected, triangleNewSelected, MeshView, turn);
-				// Set the center of rotation.
+				this.selectNeighbours(trianglesNewSelected, meshView, turn);
+
+				// Change the center of rotation.
 				this.mouseRotate.setCenter(trianglePicked.getP1());
 				// Index to know where a new selection begins
-				this.trianglesSelectionIndexes.add(this.trianglesSelected
-						.size() - 1);
+				this.selectionIndexes.add(this.trianglesSelected.size() - 1);
 
 			} else {
 				// Get the index of the triangle picked in the list of triangles
@@ -446,23 +417,21 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 				int indexOfLastIndex = 0;
 
 				// Find the triangle picked belongs to which time of selection.
-				for (int i = 0; i < this.trianglesSelectionIndexes.size(); i++) {
+				for (int i = 0; i < this.selectionIndexes.size(); i++) {
 					// If the triangle picked belongs to the first time of
 					// seleciton.
-					if (i == 0
-							&& this.trianglesSelectionIndexes.get(i) >= indexSelected) {
+					if (i == 0 && this.selectionIndexes.get(i) >= indexSelected) {
 						firstIndex = -1;
-						lastIndex = this.trianglesSelectionIndexes.get(i);
+						lastIndex = this.selectionIndexes.get(i);
 						break;
 					}
 					// If the triangle picked doesn't belong to the first time
 					// of seleciton.
 					else {
-						if (this.trianglesSelectionIndexes.get(i) < indexSelected
-								&& this.trianglesSelectionIndexes.get(i + 1) >= indexSelected) {
-							firstIndex = this.trianglesSelectionIndexes.get(i);
-							lastIndex = this.trianglesSelectionIndexes
-									.get(i + 1);
+						if (this.selectionIndexes.get(i) < indexSelected
+								&& this.selectionIndexes.get(i + 1) >= indexSelected) {
+							firstIndex = this.selectionIndexes.get(i);
+							lastIndex = this.selectionIndexes.get(i + 1);
 							indexOfLastIndex = i + 1;
 							break;
 						}
@@ -482,15 +451,14 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
 				// Refresh the list of last index of triangles
 				// selected in each time of selection.
-				this.trianglesSelectionIndexes.remove(indexOfLastIndex);
-				for (int i = indexOfLastIndex; i < this.trianglesSelectionIndexes
-						.size(); i++) {
-					int index = this.trianglesSelectionIndexes.get(i);
-					this.trianglesSelectionIndexes.set(i, index - (lastIndex - firstIndex));
+				this.selectionIndexes.remove(indexOfLastIndex);
+				for (int i = indexOfLastIndex; i < this.selectionIndexes.size(); i++) {
+					int index = this.selectionIndexes.get(i);
+					this.selectionIndexes.set(i, index
+							- (lastIndex - firstIndex));
 				}
 			}
 		}
 
 	}
 }
-
