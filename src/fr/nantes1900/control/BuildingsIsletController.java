@@ -420,10 +420,10 @@ public class BuildingsIsletController
         return this.islet;
     }
 
-    public MeshView FindMeshNode(Object hopeItIsAMesh)
+    public MeshView findMeshNode(Object hopeItIsAMesh)
     {
         return new MeshView(new Mesh());
-        // FIX ME
+        // FIXME
     }
 
     /**
@@ -509,6 +509,17 @@ public class BuildingsIsletController
             System.out.println("Null argument exc.");
             e.printStackTrace();
         }
+    }
+
+    public void abortProcess()
+    {
+        this.islet.setProgression(0);
+        // TODO : is it correct ? Check it.
+    }
+
+    public void getPreviousStep()
+    {
+        this.islet.decProgression();
     }
     /**
      * Sets the gravity normal in the islet attribute.

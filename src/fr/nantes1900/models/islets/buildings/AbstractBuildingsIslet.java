@@ -243,8 +243,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * @throws InvalidCaseException
      *             if the case in not valid (more than 8 or less than 0)
      */
-    public final DefaultMutableTreeNode
-            returnNode() throws InvalidCaseException
+    public final DefaultMutableTreeNode returnNode()
+            throws InvalidCaseException
     {
         switch (this.getProgression())
         {
@@ -442,10 +442,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         }
         for (Building b : this.getBiStep3().getBuildings())
         {
-            b.setArguments(this.getGroundNormal(),
-                    this.getGravityNormal(),
-                    this.getBiStep2().getInitialGrounds(),
-                    this.getBiStep2().getNoise());
+            b.setArguments(this.getGroundNormal(), this.getGravityNormal(),
+                    this.getBiStep2().getInitialGrounds(), this.getBiStep2()
+                            .getNoise());
         }
         this.setBiStep4(this.getBiStep3().launchTreatment());
         System.out.println("End tr 3");
@@ -489,5 +488,10 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     public void launchTreatment7() throws NullArgumentException
     {
         this.setBiStep8(this.getBiStep7().launchTreatment());
+    }
+
+    public void decProgression()
+    {
+        this.progression--;
     }
 }
