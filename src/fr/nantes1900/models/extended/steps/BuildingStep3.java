@@ -41,7 +41,7 @@ public class BuildingStep3 extends AbstractBuildingStep
      * Getter.
      * @return the entire mesh
      */
-    public final Surface getInitialTotalMesh()
+    public final Surface getInitialTotalSurface()
     {
         return this.initialTotalMesh;
     }

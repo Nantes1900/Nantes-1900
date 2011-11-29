@@ -20,8 +20,6 @@ import fr.nantes1900.models.extended.steps.BuildingStep3;
 import fr.nantes1900.models.extended.steps.BuildingStep4;
 import fr.nantes1900.models.extended.steps.BuildingStep5;
 import fr.nantes1900.models.extended.steps.BuildingStep6;
-import fr.nantes1900.models.extended.steps.BuildingStep7;
-import fr.nantes1900.models.extended.steps.BuildingStep8;
 import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.ResidentialIslet;
@@ -90,12 +88,12 @@ public class BuildingsIsletController
             // The user wants these triangles to turn building.
             this.islet.getBiStep2().getInitialGrounds().getMesh()
                     .removeAll(trianglesSelected);
-            this.islet.getBiStep2().getInitialBuildings()
+            this.islet.getBiStep2().getInitialBuildings().getMesh()
                     .addAll(trianglesSelected);
         } else if (type == ActionTypes.TURN_TO_GROUND)
         {
             // The user wants these triangles to turn ground.
-            this.islet.getBiStep2().getInitialBuildings()
+            this.islet.getBiStep2().getInitialBuildings().getMesh()
                     .removeAll(trianglesSelected);
             this.islet.getBiStep2().getInitialGrounds().getMesh()
                     .addAll(trianglesSelected);
@@ -123,7 +121,8 @@ public class BuildingsIsletController
             for (Building building : this.islet.getBiStep3().getBuildings())
             {
                 BuildingStep3 buildingStep = building.getbStep3();
-                buildingStep.getInitialTotalMesh().removeAll(trianglesSelected);
+                buildingStep.getInitialTotalSurface().getMesh()
+                        .removeAll(trianglesSelected);
             }
             this.islet.getBiStep3().getGrounds().getMesh()
                     .removeAll(trianglesSelected);
@@ -131,7 +130,8 @@ public class BuildingsIsletController
         {
             this.islet.getBiStep3().getBuildings()
                     .add(new Building(new Mesh(trianglesSelected)));
-            this.islet.getBiStep3().getNoise().removeAll(trianglesSelected);
+            this.islet.getBiStep3().getNoise().getMesh()
+                    .removeAll(trianglesSelected);
         } else
         {
             throw new InvalidCaseException();
@@ -148,18 +148,21 @@ public class BuildingsIsletController
      * @throws InvalidCaseException
      *             if the type of action is not possible in this method
      */
-    public final void action3(final Mesh mesh, final int actionType)
+    public final void action3(final Surface surface, final int actionType)
             throws InvalidCaseException
     {
         if (actionType == ActionTypes.TURN_TO_NOISE)
         {
             this.islet.getBiStep3().getBuildings()
-                    .remove(this.returnBuildingContaining3(mesh));
-            this.islet.getBiStep3().getNoise().addAll(mesh);
+                    .remove(this.returnBuildingContaining3(surface));
+            this.islet.getBiStep3().getNoise().getMesh()
+                    .addAll(surface.getMesh());
         } else if (actionType == ActionTypes.TURN_TO_BUILDING)
         {
-            this.islet.getBiStep3().getBuildings().add(new Building(mesh));
-            this.islet.getBiStep3().getNoise().removeAll(mesh);
+            this.islet.getBiStep3().getBuildings()
+                    .add(new Building(surface.getMesh()));
+            this.islet.getBiStep3().getNoise().getMesh()
+                    .removeAll(surface.getMesh());
         } else
         {
             throw new InvalidCaseException();
@@ -197,12 +200,16 @@ public class BuildingsIsletController
 
         if (actionType == ActionTypes.TURN_TO_WALL)
         {
-            buildingStep.getInitialWall().addAll(trianglesSelected);
-            buildingStep.getInitialRoof().remove(trianglesSelected);
+            buildingStep.getInitialWallSurface().getMesh()
+                    .addAll(trianglesSelected);
+            buildingStep.getInitialRoofSurface().getMesh()
+                    .remove(trianglesSelected);
         } else if (actionType == ActionTypes.TURN_TO_ROOF)
         {
-            buildingStep.getInitialRoof().addAll(trianglesSelected);
-            buildingStep.getInitialWall().remove(trianglesSelected);
+            buildingStep.getInitialRoofSurface().getMesh()
+                    .addAll(trianglesSelected);
+            buildingStep.getInitialWallSurface().getMesh()
+                    .remove(trianglesSelected);
         } else
         {
             throw new InvalidCaseException();
@@ -222,9 +229,10 @@ public class BuildingsIsletController
         for (Building building : this.islet.getBiStep4().getBuildings())
         {
             BuildingStep4 buildingStep = building.getbStep4();
-            if (buildingStep.getInitialWall().containsAll(trianglesSelected)
-                    || buildingStep.getInitialRoof().containsAll(
-                            trianglesSelected))
+            if (buildingStep.getInitialWallSurface().getMesh()
+                    .containsAll(trianglesSelected)
+                    || buildingStep.getInitialRoofSurface().getMesh()
+                            .containsAll(trianglesSelected))
             {
                 return building;
             }
@@ -280,7 +288,7 @@ public class BuildingsIsletController
                 buildingStep.getRoofs().removeAll(surfacesSelected);
                 for (Surface s : surfacesSelected)
                 {
-                    buildingStep.getNoise().addAll(s.getMesh());
+                    buildingStep.getNoise().getMesh().addAll(s.getMesh());
                 }
             } else
             {
@@ -369,7 +377,7 @@ public class BuildingsIsletController
      */
     public final void display()
     {
-        this.u3DController.getUniverse3DView().clearAllMeshes();
+        this.u3DController.getUniverse3DView().clearAll();
 
         try
         {
@@ -395,12 +403,6 @@ public class BuildingsIsletController
                 break;
                 case AbstractBuildingsIslet.SIXTH_STEP:
                     this.viewStep6();
-                break;
-                case AbstractBuildingsIslet.SEVENTH_STEP:
-                    this.viewStep7();
-                break;
-                case AbstractBuildingsIslet.EIGHTH_STEP:
-                    this.viewStep8();
                 break;
                 default:
                     throw new InvalidCaseException();
@@ -488,12 +490,6 @@ public class BuildingsIsletController
                 case AbstractBuildingsIslet.FIFTH_STEP:
                     this.islet.launchTreatment5();
                 break;
-                case AbstractBuildingsIslet.SIXTH_STEP:
-                    this.islet.launchTreatment6();
-                break;
-                case AbstractBuildingsIslet.SEVENTH_STEP:
-                    this.islet.launchTreatment7();
-                break;
                 default:
                     throw new InvalidCaseException();
             }
@@ -572,12 +568,12 @@ public class BuildingsIsletController
      *            the mesh to check
      * @return the building containing the mesh
      */
-    public final Building returnBuildingContaining3(final Mesh mesh)
+    public final Building returnBuildingContaining3(final Surface surface)
     {
         for (Building building : this.islet.getBiStep3().getBuildings())
         {
             BuildingStep3 buildingStep = building.getbStep3();
-            if (buildingStep.getInitialTotalMesh() == mesh)
+            if (buildingStep.getInitialTotalSurface() == surface)
             {
                 return null;
             }
@@ -676,9 +672,12 @@ public class BuildingsIsletController
      */
     public final void viewStep0()
     {
-        ArrayList<MeshView> mesh0 = new ArrayList<MeshView>();
-        mesh0.add((new MeshView(this.islet.getBiStep0().getInitialTotalMesh())));
-        this.getU3DController().getUniverse3DView().addMesh(mesh0);
+
+        List<Surface> surfacesList = new ArrayList<>();
+        surfacesList.add(this.islet.getBiStep0().getInitialTotalSurface());
+
+        this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
+
 
     }
 
@@ -687,11 +686,13 @@ public class BuildingsIsletController
      */
     public final void viewStep1()
     {
-        ArrayList<MeshView> mesh1 = new ArrayList<MeshView>();
-        mesh1.add((new MeshView(this.islet.getBiStep1()
-                .getInitialTotalMeshAfterBaseChange())));
-        this.getU3DController().getUniverse3DView().addMesh(mesh1);
 
+        List<Surface> surfacesList = new ArrayList<>();
+        surfacesList.add(this.islet.getBiStep1()
+                .getInitialTotalSurfaceAfterBaseChange());
+
+
+        this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
     }
 
     /**
@@ -699,13 +700,11 @@ public class BuildingsIsletController
      */
     public final void viewStep2()
     {
-        ArrayList<MeshView> mesh2 = new ArrayList<MeshView>();
+        List<Surface> surfacesList = new ArrayList<>();
 
-        if (!this.islet.getBiStep2().getInitialBuildings().isEmpty())
+        if (!this.islet.getBiStep2().getInitialBuildings().getMesh().isEmpty())
         {
-            mesh2.add(new MeshView(this.islet.getBiStep2()
-                    .getInitialBuildings()));
-
+            surfacesList.add(this.islet.getBiStep2().getInitialBuildings());
         } else
         {
             // TODO
@@ -713,16 +712,14 @@ public class BuildingsIsletController
         }
         if (!this.islet.getBiStep2().getInitialGrounds().getMesh().isEmpty())
         {
-            mesh2.add(new MeshView(this.islet.getBiStep2().getInitialGrounds()
-                    .getMesh()));
-
+            surfacesList.add(this.islet.getBiStep2().getInitialGrounds());
         } else
         {
             // TODO
             System.out.println("Initial Grounds empty : error !");
         }
 
-        this.getU3DController().getUniverse3DView().addMesh(mesh2);
+        this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
     }
 
     /**
@@ -730,12 +727,11 @@ public class BuildingsIsletController
      */
     public final void viewStep3()
     {
-        ArrayList<MeshView> mesh3 = new ArrayList<MeshView>();
+        List<Surface> surfacesList = new ArrayList<>();
+
         if (!this.islet.getBiStep2().getInitialGrounds().getMesh().isEmpty())
         {
-            mesh3.add(new MeshView(this.islet.getBiStep3().getGrounds()
-                    .getMesh()));
-
+            surfacesList.add(this.islet.getBiStep2().getInitialGrounds());
         } else
         {
             // TODO
@@ -744,13 +740,10 @@ public class BuildingsIsletController
 
         for (Building building : this.islet.getBiStep3().getBuildings())
         {
-
-            BuildingStep3 buildingStep = building.getbStep3();
-            mesh3.add(new MeshView(buildingStep.getInitialTotalMesh()));
-
+            surfacesList.add(building.getbStep3().getInitialTotalSurface());
         }
 
-        this.getU3DController().getUniverse3DView().addMesh(mesh3);
+        this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
     }
 
     /**
@@ -758,14 +751,15 @@ public class BuildingsIsletController
      */
     public final void viewStep4()
     {
-        ArrayList<MeshView> mesh4 = new ArrayList<MeshView>();
+        List<Surface> surfacesList = new ArrayList<>();
+
         for (Building building : this.islet.getBiStep4().getBuildings())
         {
-            BuildingStep4 buildingStep = building.getbStep4();
-            mesh4.add(new MeshView(buildingStep.getInitialWall()));
-            mesh4.add(new MeshView(buildingStep.getInitialRoof()));
-            this.getU3DController().getUniverse3DView().addMesh(mesh4);
+            surfacesList.add(building.getbStep4().getInitialWallSurface());
+            surfacesList.add(building.getbStep4().getInitialRoofSurface());
         }
+
+        this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
     }
 
     /**
@@ -773,32 +767,32 @@ public class BuildingsIsletController
      */
     public final void viewStep5()
     {
-        ArrayList<MeshView> mesh5 = new ArrayList<MeshView>();
+        List<Surface> surfacesList = new ArrayList<>();
+
         for (Building building : this.islet.getBiStep5().getBuildings())
         {
             BuildingStep5 buildingStep = building.getbStep5();
+
             for (Surface wall : buildingStep.getWalls())
             {
-                mesh5.add(new MeshView(wall.getMesh()));
-
+                surfacesList.add(wall);
             }
             for (Surface roof : buildingStep.getRoofs())
             {
-                mesh5.add(new MeshView(roof.getMesh()));
-
+                surfacesList.add(roof);
             }
         }
 
-        if (!this.islet.getBiStep5().getNoise().isEmpty())
+        if (!this.islet.getBiStep5().getNoise().getMesh().isEmpty())
         {
-            mesh5.add(new MeshView(this.islet.getBiStep5().getNoise()));
+            surfacesList.add(this.islet.getBiStep5().getNoise());
 
         } else
         {
             System.out.println("Noise empty : error !");
         }
 
-        this.getU3DController().getUniverse3DView().addMesh(mesh5);
+        this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
     }
 
     /**
@@ -806,66 +800,26 @@ public class BuildingsIsletController
      */
     public final void viewStep6()
     {
-        ArrayList<MeshView> mesh6 = new ArrayList<MeshView>();
+        List<Surface> surfacesList = new ArrayList<>();
+
         for (Building building : this.islet.getBiStep6().getBuildings())
         {
             BuildingStep6 buildingStep = building.getbStep6();
             for (Surface wall : buildingStep.getWalls())
             {
-                mesh6.add(new MeshView(wall.getMesh()));
+                surfacesList.add(wall);
 
             }
             for (Surface roof : buildingStep.getRoofs())
             {
-                mesh6.add(new MeshView(roof.getMesh()));
+                surfacesList.add(roof);
 
             }
         }
-        this.getU3DController().getUniverse3DView().addMesh(mesh6);
-    }
 
-    /**
-     * Displays the seventh step.
-     */
-    public final void viewStep7()
-    {
-        ArrayList<MeshView> mesh7 = new ArrayList<MeshView>();
-        for (Building building : this.islet.getBiStep7().getBuildings())
-        {
-            BuildingStep7 buildingStep = building.getbStep7();
-            for (Surface wall : buildingStep.getWalls())
-            {
-                mesh7.add(new MeshView(wall.getMesh()));
 
-            }
-            for (Surface roof : buildingStep.getRoofs())
-            {
-                mesh7.add(new MeshView(roof.getMesh()));
+        this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
 
-            }
-        }
-        this.getU3DController().getUniverse3DView().addMesh(mesh7);
-    }
-
-    /**
-     * Displays the eighth step.
-     */
-    public final void viewStep8()
-    {
-        for (Building building : this.islet.getBiStep8().getBuildings())
-        {
-            BuildingStep8 buildingStep = building.getbStep8();
-            for (Surface wall : buildingStep.getWalls())
-            {
-                this.getU3DController().getUniverse3DView()
-                        .addPolygonView(new PolygonView(wall.getPolygone()));
-            }
-            for (Surface roof : buildingStep.getRoofs())
-            {
-                this.getU3DController().getUniverse3DView()
-                        .addPolygonView(new PolygonView(roof.getPolygone()));
-            }
-        }
         // TODO : displays with other colors the surfaces not well computed.
     }
 

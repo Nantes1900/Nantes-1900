@@ -6,9 +6,15 @@ import javax.media.j3d.Shape3D;
 import javax.media.j3d.Texture;
 import javax.media.j3d.TextureAttributes;
 
+import fr.nantes1900.models.extended.Surface;
+
 public class SurfaceView extends Shape3D
 {
 
+    /**
+     * The surface linked to this view.
+     */
+    private Surface    surface;
     /**
      * The mesh to be displayed.
      */
@@ -21,6 +27,20 @@ public class SurfaceView extends Shape3D
      * The appearance of the surface.
      */
     private Appearance  appearance = new Appearance();
+    
+    /**
+	 * @return the surface
+	 */
+	public Surface getSurface() {
+		return surface;
+	}
+
+	/**
+	 * @param surface the surface to set
+	 */
+	public void setSurface(Surface surface) {
+		this.surface = surface;
+	}
 
     /**
      * Constructor of the surfaceView.
@@ -45,7 +65,7 @@ public class SurfaceView extends Shape3D
         this.setAppearance(appearance);
     }
 
-    /**
+	/**
      * Set the mesh of triangles in the surfaceView.
      * @param meshView
      *            The mesh of triangles to be displayed.
@@ -111,5 +131,6 @@ public class SurfaceView extends Shape3D
     {
         this.appearance.setTexture(texture);
     }
+
 
 }

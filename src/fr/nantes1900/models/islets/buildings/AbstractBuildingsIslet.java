@@ -14,8 +14,6 @@ import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep3;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep4;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep5;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep6;
-import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep7;
-import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep8;
 import fr.nantes1900.utils.MatrixMethod;
 
 /**
@@ -53,55 +51,39 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * The sixth building islet step.
      */
     private BuildingsIsletStep6 biStep6;
-    /**
-     * The seventh building islet step.
-     */
-    private BuildingsIsletStep7 biStep7;
-    /**
-     * The eighth building islet step.
-     */
-    private BuildingsIsletStep8 biStep8;
 
     /**
      * The number of the step 0.
      */
-    public static final int     ZERO_STEP    = 0;
+    public static final int     ZERO_STEP   = 0;
     /**
      * The number of the step 1.
      */
-    public static final int     FIRST_STEP   = 1;
+    public static final int     FIRST_STEP  = 1;
     /**
      * The number of the step 2.
      */
-    public static final int     SECOND_STEP  = 2;
+    public static final int     SECOND_STEP = 2;
     /**
      * The number of the step 3.
      */
-    public static final int     THIRD_STEP   = 3;
+    public static final int     THIRD_STEP  = 3;
     /**
      * The number of the step 4.
      */
-    public static final int     FOURTH_STEP  = 4;
+    public static final int     FOURTH_STEP = 4;
     /**
      * The number of the step 5.
      */
-    public static final int     FIFTH_STEP   = 5;
+    public static final int     FIFTH_STEP  = 5;
     /**
      * The number of the step 6.
      */
-    public static final int     SIXTH_STEP   = 6;
-    /**
-     * The number of the step 7.
-     */
-    public static final int     SEVENTH_STEP = 7;
-    /**
-     * The number of the step 8.
-     */
-    public static final int     EIGHTH_STEP  = 8;
+    public static final int     SIXTH_STEP  = 6;
     /**
      * The number of the current step.
      */
-    private int                 progression  = 0;
+    private int                 progression = 0;
 
     /**
      * The normal to the ground. Used to extract the grounds.
@@ -185,24 +167,6 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
 
     /**
      * Getter.
-     * @return the seventh step
-     */
-    public final BuildingsIsletStep7 getBiStep7()
-    {
-        return this.biStep7;
-    }
-
-    /**
-     * Getter.
-     * @return the eighth step
-     */
-    public final BuildingsIsletStep8 getBiStep8()
-    {
-        return this.biStep8;
-    }
-
-    /**
-     * Getter.
      * @return the gravity normal
      */
     public final Vector3d getGravityNormal()
@@ -243,8 +207,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * @throws InvalidCaseException
      *             if the case in not valid (more than 8 or less than 0)
      */
-    public final DefaultMutableTreeNode
-            returnNode() throws InvalidCaseException
+    public final DefaultMutableTreeNode returnNode()
+            throws InvalidCaseException
     {
         switch (this.getProgression())
         {
@@ -262,103 +226,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
                 return this.biStep5.returnNode();
             case AbstractBuildingsIslet.SIXTH_STEP:
                 return this.biStep6.returnNode();
-            case AbstractBuildingsIslet.SEVENTH_STEP:
-                return this.biStep7.returnNode();
-            case AbstractBuildingsIslet.EIGHTH_STEP:
-                return this.biStep8.returnNode();
             default:
                 return null;
         }
-    }
-
-    /**
-     * Setter.
-     * @param biStepIn
-     *            the zero step
-     */
-    public final void setBiStep0(final BuildingsIsletStep0 biStepIn)
-    {
-        this.biStep0 = biStepIn;
-    }
-
-    /**
-     * Setter.
-     * @param biStep1In
-     *            the first step
-     */
-    public final void setBiStep1(final BuildingsIsletStep1 biStep1In)
-    {
-        this.biStep1 = biStep1In;
-    }
-
-    /**
-     * Setter.
-     * @param biStep2In
-     *            the second step
-     */
-    public final void setBiStep2(final BuildingsIsletStep2 biStep2In)
-    {
-        this.biStep2 = biStep2In;
-    }
-
-    /**
-     * Setter.
-     * @param biStep3In
-     *            the third step
-     */
-    public final void setBiStep3(final BuildingsIsletStep3 biStep3In)
-    {
-        this.biStep3 = biStep3In;
-    }
-
-    /**
-     * Setter.
-     * @param biStep4In
-     *            the fourth step
-     */
-    public final void setBiStep4(final BuildingsIsletStep4 biStep4In)
-    {
-        this.biStep4 = biStep4In;
-    }
-
-    /**
-     * Setter.
-     * @param biStep5In
-     *            the fifth step
-     */
-    public final void setBiStep5(final BuildingsIsletStep5 biStep5In)
-    {
-        this.biStep5 = biStep5In;
-    }
-
-    /**
-     * Setter.
-     * @param biStep6In
-     *            the sixth step
-     */
-    public final void setBiStep6(final BuildingsIsletStep6 biStep6In)
-    {
-        this.biStep6 = biStep6In;
-    }
-
-    /**
-     * Setter.
-     * @param biStep7In
-     *            the seventh step
-     */
-    public final void setBiStep7(final BuildingsIsletStep7 biStep7In)
-    {
-        this.biStep7 = biStep7In;
-    }
-
-    /**
-     * Setter.
-     * @param biStep8In
-     *            the eighth step
-     */
-    public final void setBiStep8(final BuildingsIsletStep8 biStep8In)
-    {
-        this.biStep8 = biStep8In;
     }
 
     /**
@@ -405,7 +275,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         // FIXME : remove the setArguments : allow each step to access to its
         // islet parent and get everything it wants.
         this.getBiStep0().setArguments(this.getGravityNormal());
-        this.setBiStep1(this.getBiStep0().launchTreatment());
+        this.biStep1 = this.getBiStep0().launchTreatment();
         MatrixMethod.changeBase(this.getGroundNormal(), this.getBiStep0()
                 .getMatrix());
     }
@@ -417,7 +287,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     public void launchTreatment1() throws NullArgumentException
     {
         this.getBiStep1().setArguments(this.getGravityNormal());
-        this.setBiStep2(this.getBiStep1().launchTreatment());
+        this.biStep2 = this.getBiStep1().launchTreatment();
     }
 
     /**
@@ -425,7 +295,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      */
     public void launchTreatment2()
     {
-        this.setBiStep3(this.getBiStep2().launchTreatment());
+        this.biStep3 = this.getBiStep2().launchTreatment();
     }
 
     /**
@@ -442,12 +312,11 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         }
         for (Building b : this.getBiStep3().getBuildings())
         {
-            b.setArguments(this.getGroundNormal(),
-                    this.getGravityNormal(),
-                    this.getBiStep2().getInitialGrounds(),
-                    this.getBiStep2().getNoise());
+            b.setArguments(this.getGroundNormal(), this.getGravityNormal(),
+                    this.getBiStep2().getInitialGrounds(), this.getBiStep2()
+                            .getNoise());
         }
-        this.setBiStep4(this.getBiStep3().launchTreatment());
+        this.biStep4 = this.getBiStep3().launchTreatment();
         System.out.println("End tr 3");
     }
 
@@ -458,7 +327,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     public void launchTreatment4() throws NullArgumentException
     {
         System.out.println("Beginning tr 4");
-        this.setBiStep5(this.getBiStep4().launchTreatment());
+        this.biStep5 = this.getBiStep4().launchTreatment();
         System.out.println("End tr 4");
     }
 
@@ -469,25 +338,12 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     public void launchTreatment5() throws NullArgumentException
     {
         System.out.println("Beginning tr 5");
-        this.setBiStep6(this.getBiStep5().launchTreatment());
+        this.biStep6 = this.getBiStep5().launchTreatment();
         System.out.println("End tr 5");
     }
 
-    /**
-     * Launches the sixth treatment.
-     * @throws NullArgumentException
-     */
-    public void launchTreatment6() throws NullArgumentException
+    public void setBiStep0(BuildingsIsletStep0 buildingsIsletStepIn)
     {
-        this.setBiStep7(this.getBiStep6().launchTreatment());
-    }
-
-    /**
-     * Launches the seventh treatment.
-     * @throws NullArgumentException
-     */
-    public void launchTreatment7() throws NullArgumentException
-    {
-        this.setBiStep8(this.getBiStep7().launchTreatment());
+        this.biStep0 = buildingsIsletStepIn;
     }
 }

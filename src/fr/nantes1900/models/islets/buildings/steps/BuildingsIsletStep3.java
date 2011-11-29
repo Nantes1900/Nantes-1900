@@ -5,9 +5,9 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
+import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
@@ -36,7 +36,7 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
     /**
      * The noise used in algorithms.
      */
-    private Mesh           noise;
+    private Surface        noise;
 
     /**
      * Constructor.
@@ -74,7 +74,7 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
      * Getter.
      * @return the noise
      */
-    public final Mesh getNoise()
+    public final Surface getNoise()
     {
         return this.noise;
     }
@@ -86,8 +86,8 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
      * #launchTreatment()
      */
     @Override
-    public final BuildingsIsletStep4
-            launchTreatment() throws NullArgumentException
+    public final BuildingsIsletStep4 launchTreatment()
+            throws NullArgumentException
     {
         for (Building b : this.buildings)
         {
@@ -123,13 +123,16 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
      * @param gravityNormalIn
      *            the gravity normal used in treatments
      */
-    public final void setArguments(final Vector3d gravityNormalIn)
+    public final void setArguments(final Vector3d gravityNormalIn,
+            final Surface noiseIn)
     {
         this.gravityNormal = gravityNormalIn;
+        this.noise = noiseIn;
     }
-    
+
     @Override
-    public String toString(){
-        return super.toString()+"3";
+    public String toString()
+    {
+        return super.toString() + "3";
     }
 }

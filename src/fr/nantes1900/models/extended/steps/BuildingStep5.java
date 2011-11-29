@@ -1,17 +1,23 @@
 package fr.nantes1900.models.extended.steps;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.vecmath.Vector3d;
 
 import fr.nantes1900.constants.SeparationWallsSeparationRoofs;
 import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.Wall;
+import fr.nantes1900.models.extended.Surface.ImpossibleNeighboursOrderException;
+import fr.nantes1900.models.extended.Surface.InvalidSurfaceException;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.utils.Algos;
 
@@ -25,24 +31,32 @@ public class BuildingStep5 extends AbstractBuildingStep
 {
 
     /**
+     * Number minimal of neighbours to be considered as a real surface.
+     */
+    private static final int NUMBER_MIN_OF_NEIGHBOURS = 3;
+    /**
      * The mesh representing the noise.
      */
-    private Mesh       noise;
+    private Surface          noise;
 
+    /**
+     * The normal to the ground.
+     */
+    private Vector3d         groundNormal;
     /**
      * The list of walls.
      */
-    private List<Wall> walls = new ArrayList<>();
+    private List<Wall>       walls                    = new ArrayList<>();
 
     /**
      * The list of roofs.
      */
-    private List<Roof> roofs = new ArrayList<>();
+    private List<Roof>       roofs                    = new ArrayList<>();
 
     /**
      * The grounds.
      */
-    private Ground     ground;
+    private Ground           ground;
 
     /**
      * Constructor.
@@ -55,6 +69,38 @@ public class BuildingStep5 extends AbstractBuildingStep
     {
         this.walls = wallsIn;
         this.roofs = roofsIn;
+    }
+
+    /**
+     * Computes the contour of the surface, using the sorted neighbours.
+     */
+    public final void determinateContours()
+    {
+        // Creates the map where the points and edges will be put : if one
+        // point is created a second time, it will be given the same
+        // reference as the other one having the same values.
+        final Map<Point, Point> pointMap = new HashMap<>();
+
+        // Adds all the surfaces
+        final List<Surface> wholeList = new ArrayList<>();
+        wholeList.addAll(this.walls);
+        wholeList.addAll(this.roofs);
+
+        for (final Surface surface : wholeList)
+        {
+            try
+            {
+                // When the neighbours are sorted, finds the intersection of
+                // them to find the edges of this surface.
+                final Polygon p = surface.findEdges(this.walls, pointMap,
+                        this.groundNormal);
+
+                surface.setPolygone(p);
+            } catch (final InvalidSurfaceException e)
+            {
+                // If there is a problem, we cannot continue the treatment.
+            }
+        }
     }
 
     /**
@@ -77,8 +123,7 @@ public class BuildingStep5 extends AbstractBuildingStep
             final Mesh fake = new Mesh(m.getMesh());
             wholeListFakes.add(fake);
         }
-        Algos.blockTreatPlanedNoise(wholeListFakes,
-                this.noise,
+        Algos.blockTreatPlanedNoise(wholeListFakes, this.noise.getMesh(),
                 SeparationWallsSeparationRoofs.getPlanesError());
 
         // First we clear the neighbours.
@@ -123,7 +168,7 @@ public class BuildingStep5 extends AbstractBuildingStep
      * Getter.
      * @return the noise
      */
-    public final Mesh getNoise()
+    public final Surface getNoise()
     {
         return this.noise;
     }
@@ -149,12 +194,21 @@ public class BuildingStep5 extends AbstractBuildingStep
     @Override
     public final BuildingStep6 launchTreatment() throws NullArgumentException
     {
-        if (this.ground == null || this.noise == null)
+        if (this.ground == null || this.noise == null
+                || this.groundNormal == null)
         {
             throw new NullArgumentException();
         }
+
         this.determinateNeighbours();
 
+        this.sortSurfaces();
+
+        this.orderNeighbours();
+
+        this.determinateContours();
+
+        // Copies the walls and roofs to work on different versions.
         List<Wall> wallsCopy = new ArrayList<>();
         for (Wall w : this.walls)
         {
@@ -166,6 +220,34 @@ public class BuildingStep5 extends AbstractBuildingStep
             roofsCopy.add(new Roof(r));
         }
         return new BuildingStep6(wallsCopy, roofsCopy);
+
+    }
+
+    /**
+     * Orders the neighbours by calling the method orderNeighbours from the
+     * class Surface.
+     */
+    public final void orderNeighbours()
+    {
+        // Adds all the surfaces
+        final List<Surface> wholeList = new ArrayList<>();
+        wholeList.addAll(this.walls);
+        wholeList.addAll(this.roofs);
+
+        for (final Surface surface : wholeList)
+        {
+            try
+            {
+                // Orders its neighbours in order to treat them.
+                // If the neighbours of one surface are not 2 per 2 neighbours
+                // each other, then it tries to correct it.
+                surface.orderNeighbours(wholeList, this.ground);
+
+            } catch (final ImpossibleNeighboursOrderException e)
+            {
+                // If there is a problem, the treatment cannot continue.
+            }
+        }
     }
 
     @Override
@@ -193,9 +275,43 @@ public class BuildingStep5 extends AbstractBuildingStep
      * @param groundIn
      *            the ground as surface used in treatments
      */
-    public final void setArguments(final Mesh noiseIn, final Ground groundIn)
+    public final void setArguments(final Surface noiseIn,
+            final Ground groundIn, final Vector3d groundNormalIn)
     {
         this.noise = noiseIn;
         this.ground = groundIn;
+        this.groundNormal = groundNormalIn;
+    }
+
+    /**
+     * Removes every surfaces which have less than or equal 2 neighbours : it is
+     * considered they are not really real surfaces.
+     */
+    private void sortSurfaces()
+    {
+        for (int i = 0; i < this.walls.size(); i++)
+        {
+            final Surface s = this.walls.get(i);
+            if (s.getNeighbours().size() < NUMBER_MIN_OF_NEIGHBOURS)
+            {
+                this.walls.remove(s);
+                for (final Surface neighbour : s.getNeighbours())
+                {
+                    neighbour.getNeighbours().remove(s);
+                }
+            }
+        }
+        for (int i = 0; i < this.roofs.size(); i++)
+        {
+            final Surface s = this.roofs.get(i);
+            if (s.getNeighbours().size() < NUMBER_MIN_OF_NEIGHBOURS)
+            {
+                this.roofs.remove(s);
+                for (final Surface neighbour : s.getNeighbours())
+                {
+                    neighbour.getNeighbours().remove(s);
+                }
+            }
+        }
     }
 }
