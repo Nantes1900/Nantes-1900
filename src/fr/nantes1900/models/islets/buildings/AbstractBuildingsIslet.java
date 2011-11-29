@@ -200,6 +200,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         this.progression++;
     }
 
+    public final void resetProgression(){
+        this.progression=0;
+    }
     /**
      * Return a node containing the tree depending of the progression of the
      * treatment.
@@ -249,16 +252,6 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     public final void setGroundNormal(final Vector3d groundNormalIn)
     {
         this.groundNormal = groundNormalIn;
-    }
-
-    /**
-     * Setter.
-     * @param progressionIn
-     *            the progression
-     */
-    public final void setProgression(final int progressionIn)
-    {
-        this.progression = progressionIn;
     }
 
     /**
@@ -345,11 +338,6 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     public void setBiStep0(BuildingsIsletStep0 buildingsIsletStepIn)
     {
         this.biStep0 = buildingsIsletStepIn;
-    }
-
-    public void decProgression()
-    {
-        this.progression--;
     }
 
     public void decProgression()

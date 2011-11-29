@@ -32,6 +32,10 @@ public class GlobalController
         this.isletSelectionController = new IsletSelectionController(this);
     }
 
+    public final void launchIsletSelection(){
+        this.isletSelectionController = new IsletSelectionController(this);
+    }
+    
     /**
      * Launches the process of an islet and opens the new window.
      * @param isletFile
@@ -43,7 +47,7 @@ public class GlobalController
             final BuildingsIsletController biController)
     {
         // Launches the base change : the treatmen 0.
-        biController.launchTreatment();
+        biController.launchProcess();
 
         this.isletProcessController = new IsletProcessController(this,
                 isletFile,
