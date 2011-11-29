@@ -63,7 +63,7 @@ public class Universe3DView extends JPanel
      */
     private SimpleUniverse         simpleUniverse;
 
-    /**
+	/**
      * The material of the mesh non-selected.
      */
     public static final Material   MATERIAL_SELECTED             = new Material(
@@ -105,6 +105,13 @@ public class Universe3DView extends JPanel
     public static final int        LIGHT_BOUND_RADIUS            = 1000;
     public static final int        BOUNDING_RADIUS               = 1000;
 
+    /**
+     * SimpleUniverse getter
+     */
+    public SimpleUniverse getSimpleUniverse() {
+		return simpleUniverse;
+	}
+    
     /**
      * Creates a new universe.
      * @param u3DControllerIn
