@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.media.j3d.BranchGroup;
 import javax.swing.event.EventListenerList;
-import javax.vecmath.Vector3d;
 
 import com.sun.j3d.utils.picking.PickCanvas;
 import com.sun.j3d.utils.picking.PickIntersection;
@@ -278,12 +277,11 @@ public class Universe3DController implements MouseListener, MouseMotionListener
      * @param surface
      *            TODO
      */
-    public final void selectMeshFromTree(final Surface surface)
+    public final void selectSurfaceFromTree(final Surface surface)
     {
         SurfaceView surfaceView = this.getSurfaceViewFromSurface(surface);
 
-        // Changes the material of the surface seleted.
-        surfaceView.getAppearance().setMaterial(SurfaceView.MATERIAL_SELECTED);
+        this.selectOrUnselectSurface(surfaceView);
     }
 
     /**
@@ -439,6 +437,19 @@ public class Universe3DController implements MouseListener, MouseMotionListener
 
                 this.trianglesSelected.removeAll(neighbours);
             }
+        }
+    }
+
+    public void deselectEverySurfaces()
+    {
+        // Copies the list to avoid ConcurrentModificationException of the list
+        // surfacesSelected.
+        List<Surface> surfaces = new ArrayList<>(this.surfacesSelected);
+
+        for (Surface surface : surfaces)
+        {
+            this.selectOrUnselectSurface(this
+                    .getSurfaceViewFromSurface(surface));
         }
     }
 }

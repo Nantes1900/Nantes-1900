@@ -87,7 +87,6 @@ public class IsletProcessController implements ElementsSelectedListener
         this.parentController = parentControllerIn;
         this.biController = biControllerIn;
         this.cController = new CharacteristicsController(this);
-        // TODO sets the empty characteristics panel at the beginning
         this.cController = new CharacteristicsStep6Controller(this, null);
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
@@ -118,6 +117,9 @@ public class IsletProcessController implements ElementsSelectedListener
     {
         this.ipView.dispose();
         this.ipView.setVisible(false);
+
+        // TODO : if it is not a really big object, don't do this : it's kinda
+        // dirty.
         this.ipView = null;
     }
 
