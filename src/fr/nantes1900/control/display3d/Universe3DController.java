@@ -130,7 +130,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 .getListeners(ElementsSelectedListener.class);
         for (ElementsSelectedListener listener : ESListeners)
         {
-            listener.triangleSelected(triangleDeselected);
+            listener.triangleDeselected(triangleDeselected);
         }
     }
 
@@ -141,6 +141,26 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         for (ElementsSelectedListener listener : ESListeners)
         {
             listener.triangleSelected(triangleSelected);
+        }
+    }
+
+    private void fireSurfaceDeselected(Surface surfaceDeselected)
+    {
+        ElementsSelectedListener[] ESListeners = this.listeners
+                .getListeners(ElementsSelectedListener.class);
+        for (ElementsSelectedListener listener : ESListeners)
+        {
+            listener.surfaceDeselected(surfaceDeselected);
+        }
+    }
+
+    private void fireSurfaceSelected(Surface triangleSelected)
+    {
+        ElementsSelectedListener[] ESListeners = this.listeners
+                .getListeners(ElementsSelectedListener.class);
+        for (ElementsSelectedListener listener : ESListeners)
+        {
+            listener.surfaceSelected(triangleSelected);
         }
     }
 
@@ -302,11 +322,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         {
             this.surfacesSelected.add(surface);
             surfaceView.setMaterial(SurfaceView.MATERIAL_SELECTED);
+            fireSurfaceSelected(surface);
         } else
         {
             // surface already selected when clicked
             this.surfacesSelected.remove(surface);
             surfaceView.setMaterial(SurfaceView.MATERIAL_UNSELECTED);
+            fireSurfaceDeselected(surface);
         }
     }
 
@@ -423,6 +445,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 for (Triangle t : neighbours)
                 {
                     meshView.select(t);
+                    fireTriangleSelected(t);
                 }
 
                 this.trianglesSelected.addAll(neighbours);
@@ -435,6 +458,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener
                 for (Triangle t : neighbours)
                 {
                     meshView.unselect(t);
+                    fireTriangleDeselected(t);
                 }
 
                 this.trianglesSelected.removeAll(neighbours);

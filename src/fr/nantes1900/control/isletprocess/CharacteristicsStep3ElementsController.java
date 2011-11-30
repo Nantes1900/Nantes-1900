@@ -5,6 +5,7 @@ package fr.nantes1900.control.isletprocess;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -27,7 +28,7 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep3ElementsView;
 public class CharacteristicsStep3ElementsController extends
         CharacteristicsController
 {
-    public Surface element;
+    private ArrayList<Surface> surfacesList;
 
     /**
      * Constructor.
@@ -38,8 +39,11 @@ public class CharacteristicsStep3ElementsController extends
             IsletProcessController parentController, Surface elementSelected)
     {
         super(parentController);
-        this.element = elementSelected;
+        this.surfacesList = new ArrayList<Surface>();
+        this.surfacesList.add(elementSelected);
+
         this.cView = new CharacteristicsStep3ElementsView();
+        ((CharacteristicsStep3ElementsView) this.cView).setType("");
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
@@ -59,39 +63,35 @@ public class CharacteristicsStep3ElementsController extends
                         actionType = ActionTypes.TURN_TO_BUILDING;
                     break;
                 }
-
-                try
+                for (Surface surface : surfacesList)
                 {
-                    CharacteristicsStep3ElementsController.this.parentController
-                            .getBiController()
-                            .action3(
-                                    CharacteristicsStep3ElementsController.this.element,
-                                    actionType);
-                } catch (InvalidCaseException e)
-                {
-                    JOptionPane.showMessageDialog(
-                            CharacteristicsStep3ElementsController.this.cView,
-                            FileTools.readErrorMessage(
-                                    TextsKeys.KEY_ERROR_INCORRECTTYPE,
-                                    TextsKeys.MESSAGETYPE_MESSAGE), FileTools
-                                    .readErrorMessage(
-                                            TextsKeys.KEY_ERROR_INCORRECTTYPE,
-                                            TextsKeys.MESSAGETYPE_TITLE),
-                            JOptionPane.ERROR_MESSAGE);
+                    try
+                    {
+                        CharacteristicsStep3ElementsController.this.parentController
+                                .getBiController().action3(surface, actionType);
+                    } catch (InvalidCaseException e)
+                    {
+                        JOptionPane
+                                .showMessageDialog(
+                                        CharacteristicsStep3ElementsController.this.cView,
+                                        FileTools
+                                                .readErrorMessage(
+                                                        TextsKeys.KEY_ERROR_INCORRECTTYPE,
+                                                        TextsKeys.MESSAGETYPE_MESSAGE),
+                                        FileTools
+                                                .readErrorMessage(
+                                                        TextsKeys.KEY_ERROR_INCORRECTTYPE,
+                                                        TextsKeys.MESSAGETYPE_TITLE),
+                                        JOptionPane.ERROR_MESSAGE);
+                    }
                 }
             }
         });
     }
 
-    public void setElementSelected(Surface elementSelected)
+    public void addSurfaceSelected(Surface surfaceSelected)
     {
-        this.element = elementSelected;
+        surfacesList.add(surfaceSelected);
         ((CharacteristicsStep2View) this.cView).setType("");
-    }
-
-    public Surface getElement()
-    {
-        return this.element;
-
     }
 }

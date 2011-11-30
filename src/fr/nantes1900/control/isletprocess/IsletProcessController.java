@@ -13,6 +13,7 @@ import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.view.isletprocess.IsletProcessView;
 
 /**
@@ -179,20 +180,6 @@ public class IsletProcessController implements ElementsSelectedListener
     }
 
     @Override
-    public void meshDeselected(Mesh meshSelected)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void meshSelected(Mesh meshSelected)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void polygonDeselected(Polygon trianglesSelected)
     {
         // TODO Auto-generated method stub
@@ -261,9 +248,6 @@ public class IsletProcessController implements ElementsSelectedListener
                             .addTriangleSelected(triangleSelected);
                 }
             break;
-            default:
-            // TODO
-            break;
         }
     }
 
@@ -292,5 +276,63 @@ public class IsletProcessController implements ElementsSelectedListener
         }
 
         // TODO lock and unlock in the universe 3d and maybe the tree too.
+    }
+
+    @Override
+    public void surfaceSelected(Surface surfaceSelected)
+    {
+        switch (this.getProgression())
+        {
+            case 3:
+                // If the characteristic panel is of another type.
+                if (!(this.cController instanceof CharacteristicsStep3ElementsController))
+                {
+                    this.cController = new CharacteristicsStep3ElementsController(this,
+                            surfaceSelected);
+                    this.ipView.setCharacteristicsView(this.cController
+                            .getView());
+                } else
+                {
+                    ((CharacteristicsStep3ElementsController) this.cController)
+                            .addSurfaceSelected(surfaceSelected);
+                }
+            break;
+            case 5:
+                // TODO check the selection mode when it will be created
+                // If the characteristic panel is of another type.
+                if (!(this.cController instanceof CharacteristicsStep5Controller))
+                {
+                    this.cController = new CharacteristicsStep5Controller(
+                            this, surfaceSelected);
+                    this.ipView.setCharacteristicsView(this.cController
+                            .getView());
+                } else
+                {
+                    ((CharacteristicsStep5Controller) this.cController)
+                            .addSurfaceSelected(surfaceSelected);
+                }
+            break;
+            case 6:
+                // If the characteristic panel is of another type.
+                if (!(this.cController instanceof CharacteristicsStep6Controller))
+                {
+                    this.cController = new CharacteristicsStep6Controller(this,
+                            surfaceSelected);
+                    this.ipView.setCharacteristicsView(this.cController
+                            .getView());
+                } else
+                {
+                    ((CharacteristicsStep6Controller) this.cController)
+                            .addSurfaceSelected(surfaceSelected);
+                }
+            break;
+        }
+    }
+
+    @Override
+    public void surfaceDeselected(Surface surfaceSelected)
+    {
+        // TODO Auto-generated method stub
+        
     }
 }
