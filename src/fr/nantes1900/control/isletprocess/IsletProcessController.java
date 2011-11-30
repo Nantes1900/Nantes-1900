@@ -88,7 +88,6 @@ public class IsletProcessController implements ElementsSelectedListener
         this.parentController = parentControllerIn;
         this.biController = biControllerIn;
         this.cController = new CharacteristicsController(this);
-        // TODO sets the empty characteristics panel at the beginning
         this.cController = new CharacteristicsStep6Controller(this, null);
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
@@ -119,6 +118,9 @@ public class IsletProcessController implements ElementsSelectedListener
     {
         this.ipView.dispose();
         this.ipView.setVisible(false);
+
+        // TODO : if it is not a really big object, don't do this : it's kinda
+        // dirty.
         this.ipView = null;
     }
 
@@ -177,20 +179,6 @@ public class IsletProcessController implements ElementsSelectedListener
     public void loadParameters()
     {
         this.pController.loadNewParameters();
-    }
-
-    @Override
-    public void polygonDeselected(Polygon trianglesSelected)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void polygonSelected(Polygon trianglesSelected)
-    {
-        // TODO Auto-generated method stub
-
     }
 
     @Override
@@ -287,8 +275,8 @@ public class IsletProcessController implements ElementsSelectedListener
                 // If the characteristic panel is of another type.
                 if (!(this.cController instanceof CharacteristicsStep3ElementsController))
                 {
-                    this.cController = new CharacteristicsStep3ElementsController(this,
-                            surfaceSelected);
+                    this.cController = new CharacteristicsStep3ElementsController(
+                            this, surfaceSelected);
                     this.ipView.setCharacteristicsView(this.cController
                             .getView());
                 } else
@@ -302,8 +290,8 @@ public class IsletProcessController implements ElementsSelectedListener
                 // If the characteristic panel is of another type.
                 if (!(this.cController instanceof CharacteristicsStep5Controller))
                 {
-                    this.cController = new CharacteristicsStep5Controller(
-                            this, surfaceSelected);
+                    this.cController = new CharacteristicsStep5Controller(this,
+                            surfaceSelected);
                     this.ipView.setCharacteristicsView(this.cController
                             .getView());
                 } else
@@ -333,6 +321,6 @@ public class IsletProcessController implements ElementsSelectedListener
     public void surfaceDeselected(Surface surfaceSelected)
     {
         // TODO Auto-generated method stub
-        
+
     }
 }

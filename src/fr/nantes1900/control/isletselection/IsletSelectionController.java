@@ -19,8 +19,8 @@ import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.utils.WriterSTL;
 import fr.nantes1900.view.isletselection.GlobalTreeView.FileNode;
@@ -285,20 +285,6 @@ public class IsletSelectionController implements ElementsSelectedListener
     }
 
     @Override
-    public void polygonSelected(Polygon trianglesSelected)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void meshSelected(Mesh meshSelected)
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
     public void triangleDeselected(Triangle triangleSelected)
     {
         // TODO Auto-generated method stub
@@ -306,14 +292,14 @@ public class IsletSelectionController implements ElementsSelectedListener
     }
 
     @Override
-    public void polygonDeselected(Polygon trianglesSelected)
+    public void surfaceSelected(Surface surfaceSelected)
     {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void meshDeselected(Mesh meshSelected)
+    public void surfaceDeselected(Surface surfaceSelected)
     {
         // TODO Auto-generated method stub
 
