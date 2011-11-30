@@ -66,10 +66,14 @@ public class SurfaceView extends Shape3D
 
     /**
      * Constructor of the surfaceView.
+     * @param surfaceIn
+     *            the surface to build from
      */
-    public SurfaceView()
+    public SurfaceView(final Surface surfaceIn)
     {
         super();
+
+        this.surface = surfaceIn;
 
         this.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
         this.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
@@ -81,7 +85,7 @@ public class SurfaceView extends Shape3D
         texAtt.setTextureMode(TextureAttributes.MODULATE);
         this.appearance.setTextureAttributes(texAtt);
 
-        // Ignore vertex colors to allow diffuse colors.
+        // Ignores vertex colors to allow diffuse colors.
         RenderingAttributes rendering = new RenderingAttributes();
         rendering.setIgnoreVertexColors(true);
         this.appearance.setRenderingAttributes(rendering);

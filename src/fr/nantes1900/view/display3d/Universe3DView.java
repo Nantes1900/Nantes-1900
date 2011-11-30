@@ -111,7 +111,6 @@ public class Universe3DView extends JPanel
         // Size to show the panel while there is nothing to show
         this.setMinimumSize(new Dimension(PANEL_HEIGHT, PANEL_WIDTH));
         this.setPreferredSize(new Dimension(PANEL_HEIGHT, PANEL_WIDTH));
-
     }
 
     /**
@@ -292,7 +291,7 @@ public class Universe3DView extends JPanel
     {
         for (Surface surface : surfacesList)
         {
-            SurfaceView surfaceView = new SurfaceView();
+            SurfaceView surfaceView = new SurfaceView(surface);
             MeshView meshView = new MeshView(surface.getMesh());
             surfaceView.setMeshView(meshView);
             this.surfaceViewList.add(surfaceView);
@@ -308,7 +307,7 @@ public class Universe3DView extends JPanel
     {
         for (Surface surface : surfacesList)
         {
-            SurfaceView surfaceView = new SurfaceView();
+            SurfaceView surfaceView = new SurfaceView(surface);
             PolygonView polygonView = new PolygonView(surface.getPolygon());
             surfaceView.setPolygonView(polygonView);
             this.surfaceViewList.add(surfaceView);

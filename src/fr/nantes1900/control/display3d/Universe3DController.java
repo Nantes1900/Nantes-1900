@@ -17,6 +17,7 @@ import com.sun.j3d.utils.picking.PickTool;
 
 import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.listener.ElementsSelectedListener;
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
@@ -27,6 +28,9 @@ import fr.nantes1900.view.display3d.Universe3DView;
 
 /**
  * TODO.
+ */
+/**
+ * @author Daniel
  */
 public class Universe3DController implements MouseListener, MouseMotionListener
 {
@@ -44,6 +48,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener
      */
     private NewMouseRotate           mouseRotate;
 
+    /**
+     * The parent controller.
+     */
     private ElementsSelectedListener parentController;
 
     private final EventListenerList  listeners            = new EventListenerList();
@@ -55,8 +62,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     private int                      displayMode;
 
     private List<Triangle>           trianglesSelected    = new ArrayList<>();
-
-    private List<Integer>            selectionIndexes     = new ArrayList<>();
 
     private List<Surface>            surfacesSelected     = new ArrayList<>();
 
@@ -139,7 +144,11 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         }
     }
 
-    public int getDisplayMode()
+    /**
+     * Getter.
+     * @return the display mode
+     */
+    public final int getDisplayMode()
     {
         return this.displayMode;
     }
@@ -148,16 +157,26 @@ public class Universe3DController implements MouseListener, MouseMotionListener
      * Getter.
      * @return the mouse rotate class
      */
-    public NewMouseRotate getMouseRotate()
+    public final NewMouseRotate getMouseRotate()
     {
         return this.mouseRotate;
     }
 
-    public ElementsSelectedListener getParentController()
+    /**
+     * Getter.
+     * @return the parent controller
+     */
+    public final ElementsSelectedListener getParentController()
     {
         return this.parentController;
     }
 
+    /**
+     * Returns the SurfaceView associated to the surface.
+     * @param surface
+     *            the surface to search
+     * @return the surfaceView associated
+     */
     public final SurfaceView getSurfaceViewFromSurface(final Surface surface)
     {
         for (SurfaceView sView : this.u3DView.getSurfaceViewList())
@@ -175,12 +194,16 @@ public class Universe3DController implements MouseListener, MouseMotionListener
      * in trianglesViewSelected.
      * @return the list of selected triangles
      */
-    public List<Triangle> getTrianglesSelected()
+    public final List<Triangle> getTrianglesSelected()
     {
         return this.trianglesSelected;
     }
 
-    public Universe3DView getUniverse3DView()
+    /**
+     * Getter.
+     * @return the universe 3D view
+     */
+    public final Universe3DView getUniverse3DView()
     {
         return this.u3DView;
     }
@@ -239,13 +262,23 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         // Not used.
     }
 
-    public void
-            removeElementsSelectedListener(ElementsSelectedListener listener)
+    /**
+     * TODO .
+     * @param listener
+     *            TODO
+     */
+    public final void removeElementsSelectedListener(
+            final ElementsSelectedListener listener)
     {
         this.listeners.remove(ElementsSelectedListener.class, listener);
     }
 
-    public final void selectMeshFromTree(Surface surface)
+    /**
+     * TODO .
+     * @param surface
+     *            TODO
+     */
+    public final void selectMeshFromTree(final Surface surface)
     {
         SurfaceView surfaceView = this.getSurfaceViewFromSurface(surface);
 
@@ -254,53 +287,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     }
 
     /**
-     * Select the triangles around the triangle clicked.
-     * @param trianglesNewSelected
-     *            TODO
-     * @param meshView
-     *            TODO
-     * @param turn
-     *            The time of the recurrence to find the neighbour.
-     */
-    public final void selectNeighbours(
-            final List<Triangle> trianglesNewSelected, final MeshView meshView,
-            final int turn)
-    {
-        Vector3d normal = trianglesNewSelected.get(0).getNormal();
-
-        for (int i = 0; i < turn; i++)
-        {
-            List<Triangle> tempTrianglesList = new ArrayList<>();
-            for (Triangle triangle : trianglesNewSelected)
-            {
-                List<Triangle> triangleNeighbours = triangle.getNeighbours();
-                for (Triangle triangleNeighbour : triangleNeighbours)
-                {
-                    // TODO : 0.5 : magic number !
-                    if (!this.trianglesSelected.contains(triangleNeighbour)
-                            && triangleNeighbour.angularTolerance(normal, 1))
-                    {
-                        meshView.select(triangleNeighbour);
-                        this.trianglesSelected.add(triangleNeighbour);
-                        tempTrianglesList.add(triangleNeighbour);
-                    }
-                }
-            }
-            trianglesNewSelected.clear();
-            for (Triangle tempTriangle : tempTrianglesList)
-            {
-                trianglesNewSelected.add(tempTriangle);
-            }
-            tempTrianglesList.clear();
-        }
-    }
-
-    /**
      * Changse the appearance of the surfaceView parameter : select or unselect
      * the corresponding surface.
      * @param surfaceView
      *            The surfaceView containing the surface to select
      */
+    // TODO : maybe put the content of this method in the treatButton method if
+    // it is not used other way.
     public final void selectOrUnselectSurface(final SurfaceView surfaceView)
     {
         Surface surface = surfaceView.getSurface();
@@ -405,92 +398,46 @@ public class Universe3DController implements MouseListener, MouseMotionListener
             // Gets the meshView picked.
             MeshView meshView = (MeshView) pickIntersection.getGeometryArray();
 
-            // Gets the index of the triangle picked
+            // Gets the index of the triangle picked.
             int[] pointIndex = pickIntersection.getPrimitiveVertexIndices();
             // TODO : 3 : magic number !
-            int indexSelected = pointIndex[0] / 3;
-
             Triangle trianglePicked = meshView
-                    .getTriangleFromArrayPosition(indexSelected);
+                    .getTriangleFromArrayPosition(pointIndex[0] / 3);
 
+            // FIXME : create a button in the tool bar to set this number
+            // FIXME : magic number ! Put this as a PUBLIC STATIC FINAL INT.
+            int turn = 30;
+
+            // Computes the neighbours of the triangle.
+            Mesh oriented = meshView.getMesh().orientedAs(
+                    trianglePicked.getNormal(), 1);
+
+            Mesh neighbours = new Mesh();
+
+            trianglePicked.returnNeighbours(neighbours, oriented);
+
+            // If this triangle is not already selected.
             if (!this.trianglesSelected.contains(trianglePicked))
             {
-                meshView.select(trianglePicked);
-                this.trianglesSelected.add(trianglePicked);
+                // Selects these triangles.
+                for (Triangle t : neighbours)
+                {
+                    meshView.select(t);
+                }
 
-                // Time to search the neighbour.
-                // FIXME : create a button in the tool bar to set this number
-                // FIXME : magic number ! Put this as a PUBLIC STATIC FINAL INT.
-                int turn = 30;
-
-                // Stores the triangles newly selected.
-                List<Triangle> trianglesNewSelected = new ArrayList<>();
-                trianglesNewSelected.add(trianglePicked);
-                this.selectNeighbours(trianglesNewSelected, meshView, turn);
+                this.trianglesSelected.addAll(neighbours);
 
                 // Changes the center of rotation.
                 this.mouseRotate.setCenter(trianglePicked.getP1());
-
-                // Index to know where a new selection begins.
-                this.selectionIndexes.add(this.trianglesSelected.size() - 1);
             } else
             {
-                // Gets the index of the triangle picked in the list of
-                // triangles selected.
-                int firstIndex = 0;
-                int lastIndex = 0;
-                int indexOfLastIndex = 0;
-
-                int triangleIndex = this.trianglesSelected
-                        .indexOf(trianglePicked);
-
-                // Finds the triangle picked belongs to which time of selection.
-                for (int i = 0; i < this.selectionIndexes.size(); i++)
+                // Selects these triangles.
+                for (Triangle t : neighbours)
                 {
-                    // If the triangle picked belongs to the first time of
-                    // selection.
-                    if (i == 0 && this.selectionIndexes.get(i) >= indexSelected)
-                    {
-                        firstIndex = -1;
-                        lastIndex = this.selectionIndexes.get(i);
-                        break;
-                    }
-                    // If the triangle picked doesn't belong to the first time
-                    // of selection.
-                    else
-                    {
-                        if (this.selectionIndexes.get(i) < triangleIndex
-                                && this.selectionIndexes.get(i + 1) >= triangleIndex)
-                        {
-                            firstIndex = this.selectionIndexes.get(i);
-                            lastIndex = this.selectionIndexes.get(i + 1);
-                            indexOfLastIndex = i + 1;
-                            break;
-                        }
-                    }
+                    meshView.unselect(t);
                 }
 
-                // Unselects all the triangles selected in the time of selection
-                // which the triangle picked belongs to.
-                for (int i = lastIndex; i > firstIndex; i--)
-                {
-                    Triangle triangleSelected = this.trianglesSelected.get(i);
-                    int index = meshView
-                            .getArrayPositionFromTriangle(triangleSelected);
-                    meshView.unselect(index);
-                    this.trianglesSelected.remove(triangleSelected);
-
-                }
-
-                // Refreshes the list of last index of triangles
-                // selected in each time of selection.
-                this.selectionIndexes.remove(indexOfLastIndex);
-                for (int i = indexOfLastIndex; i < this.selectionIndexes.size(); i++)
-                {
-                    int index = this.selectionIndexes.get(i);
-                    this.selectionIndexes.set(i, index
-                            - (lastIndex - firstIndex));
-                }
+                this.trianglesSelected.removeAll(neighbours);
             }
         }
     }

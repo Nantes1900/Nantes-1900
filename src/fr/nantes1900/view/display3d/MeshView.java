@@ -30,17 +30,26 @@ public class MeshView extends TriangleArray
      */
     private Mesh                         mesh;
 
+    /**
+     * Hash table linking the triangles with their indexes.
+     */
     private Hashtable<Triangle, Integer> selectTableTriangle = new Hashtable<>();
 
+    /**
+     * Hash table linking the indexes of the triangles with the references of
+     * these triangles.
+     */
     private Hashtable<Integer, Triangle> selectTableIndex    = new Hashtable<>();
 
     /**
-     * The method of constructor of the class MeshView
+     * Constructor of the class MeshView.
      * @param m
      *            The mesh of the things displayed.
      */
     public MeshView(final Mesh m)
     {
+        // TODO : magic number. Maybe create a static final attribute for the
+        // number 3...
         super(m.size() * 3, GeometryArray.COORDINATES | GeometryArray.COLOR_3
                 | GeometryArray.NORMALS | GeometryArray.TEXTURE_COORDINATE_2);
 
@@ -58,9 +67,9 @@ public class MeshView extends TriangleArray
         // Create the triangles to be displayed.
         for (Triangle triangle : this.mesh)
         {
-            this.selectTableTriangle.put(triangle, i/3);
-            this.selectTableIndex.put(i/3, triangle);
-            
+            // TODO : magic number : same remark.
+            this.selectTableTriangle.put(triangle, i / 3);
+            this.selectTableIndex.put(i / 3, triangle);
 
             this.setCoordinate(i, new Point3d(triangle.getP1().getX(), triangle
                     .getP1().getY(), triangle.getP1().getZ()));
@@ -81,22 +90,11 @@ public class MeshView extends TriangleArray
         }
     }
 
-    public Triangle getTriangleFromArrayPosition(int position)
-    {
-        return this.selectTableIndex.get(position);
-    }
-
-    public Integer getArrayPositionFromTriangle(Triangle triangle)
-    {
-        return this.selectTableTriangle.get(triangle);
-    }
-
     /**
-     * Get a Vector3f as the normal of the triangle in parameter (The normal
-     * stored in the triangle is a Vector3d)
+     * Converts the normal of the triangle (Vector3d) in a Vector3f.
      * @param triangle
      *            The triangle to get the normal from.
-     * @return Vector3f
+     * @return the normal as a Vector3d
      */
     public static Vector3f convertNormal(final Triangle triangle)
     {
@@ -109,6 +107,17 @@ public class MeshView extends TriangleArray
     }
 
     /**
+     * Gets the index in the TriangleArray of the triangle given.
+     * @param triangle
+     *            the triangle we want to have index of
+     * @return the index of this Triangle in the TriangleArray
+     */
+    public final Integer getArrayPositionFromTriangle(final Triangle triangle)
+    {
+        return this.selectTableTriangle.get(triangle);
+    }
+
+    /**
      * Getter.
      * @return the centroid point
      */
@@ -118,14 +127,35 @@ public class MeshView extends TriangleArray
     }
 
     /**
+     * Getter.
+     * @return the reference to the mesh contained
+     */
+    public final Mesh getMesh()
+    {
+        return this.mesh;
+    }
+
+    /**
+     * Gets the Triangle specified in the TriangleArray at a position given.
+     * @param position
+     *            the index of the triangle we want to have the reference of
+     * @return the Triangle associated
+     */
+    public final Triangle getTriangleFromArrayPosition(final int position)
+    {
+        return this.selectTableIndex.get(position);
+    }
+
+    /**
      * Select a triangle knowing its index in the TriangleArray.
      * @param i
      *            The index of the triangle to select in the TriangleArray
      */
-    public final void select(int i)
+    public final void select(final int i)
     {
         // FIXME : add the triangle in the Universe3DController triangle
         // selection.
+        // TODO : magic number !
         this.setTextureCoordinate(0, i * 3, new TexCoord2f(0.0f, 1.0f));
         this.setTextureCoordinate(0, i * 3 + 1, new TexCoord2f(1.0f, 1.0f));
         this.setTextureCoordinate(0, i * 3 + 2, new TexCoord2f(1.0f, 0.0f));
@@ -146,12 +176,18 @@ public class MeshView extends TriangleArray
      * @param i
      *            The index of the triangle which to be unselected. TODO.
      */
-    public void unselect(int i)
+    public final void unselect(final int i)
     {
         // FIXME : remove the triangle from the Universe3DController triangle
         // selection.
+        // TODO : magic number !
         this.setTextureCoordinate(0, i * 3, new TexCoord2f(0.0f, 1.0f));
         this.setTextureCoordinate(0, i * 3 + 1, new TexCoord2f(0.0f, 0.0f));
         this.setTextureCoordinate(0, i * 3 + 2, new TexCoord2f(1.0f, 0.0f));
+    }
+
+    public void unselect(Triangle triangle)
+    {
+        this.unselect(this.getArrayPositionFromTriangle(triangle));
     }
 }
