@@ -6,6 +6,9 @@ package fr.nantes1900.view.isletprocess;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -32,25 +35,41 @@ public class ParametersView extends JPanel
     protected JLabel property3;
     protected ValueProperty value3;
     private final Dimension valueDimension = new Dimension(50, 30);
-    private final Dimension labelDimension = new Dimension(70, 30);
+    private final Dimension labelDimension = new Dimension(130, 30);
     
     public ParametersView(){
-        this.setLayout(new FlowLayout(FlowLayout.CENTER));
         this.property1 = new JLabel("AltitureError");
         this.property1.setPreferredSize(this.labelDimension);
-        this.add(property1);
         this.value1 = new ValueProperty(SeparationGroundBuilding.getAltitureError());
-        this.add(value1);
         this.property2 = new JLabel("AngleGroundError");
         this.property2.setPreferredSize(this.labelDimension);
-        this.add(property2);
-        this.value2 = new ValueProperty(SeparationGroundBuilding.getAngleGroundError());
-        this.add(value2);
+        this.value2 = new ValueProperty(SeparationGroundBuilding.getAngleGroundError());   
         this.property3 = new JLabel("LargeAngleGroundError");
-        this.property3.setPreferredSize(this.labelDimension);
-        this.add(property3);
+        this.property3.setPreferredSize(this.labelDimension); 
         this.value3 = new ValueProperty(SeparationGroundBuilding.getLargeAngleGroundError());
-        this.add(value3);
+        this.displayParameters(1);
+    }
+    
+    private void displayParameters(int i){
+        this.setLayout(new GridBagLayout());
+        this.add(property1, new GridBagConstraints(0,0,1,1,10.0,10.0,GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL,
+                new Insets(8,8,8,8),0,0));
+        this.add(value1, new GridBagConstraints(1,0,1,1,10.0,10.0,GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL,
+                new Insets(20,20,20,20),0,0));
+        this.add(property2, new GridBagConstraints(0,1,1,1,10.0,10.0,GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL,
+                new Insets(20,20,20,20),0,0));
+        this.add(value2, new GridBagConstraints(1,1,1,1,10.0,10.0,GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL,
+                new Insets(20,20,20,20),0,0));
+        this.add(property3, new GridBagConstraints(0,2,1,1,10.0,10.0,GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL,
+                new Insets(20,20,20,20),0,0));
+        this.add(value3, new GridBagConstraints(1,2,1,1,10.0,10.0,GridBagConstraints.CENTER,
+                GridBagConstraints.HORIZONTAL,
+                new Insets(20,20,20,20),0,0));
     }
     
     @SuppressWarnings("serial")

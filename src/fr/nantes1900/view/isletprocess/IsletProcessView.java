@@ -48,7 +48,6 @@ public class IsletProcessView extends PFrame
         this.tabs = new JTabbedPane();
         this.tabs.addTab("Paramètres", pView);
         this.tabs.addTab("Arbre", itView);
-        
         this.pComponents.setLayout(new GridBagLayout());
         
         this.pComponents.add(

@@ -105,6 +105,12 @@ public class IsletProcessController implements ElementsSelectedListener
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
     }
+    
+    public final void throwInTheBin(){
+        this.ipView.dispose();
+        this.ipView.setVisible(false);
+        this.ipView = null;
+    }
 
     /**
      * Gets the building islet controller.
