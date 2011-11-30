@@ -20,8 +20,6 @@ import fr.nantes1900.utils.Algos;
  */
 public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
 {
-
-    private static final String ABSTRACTBUILDINGISLET = null;
     /**
      * The mesh containing every buildings.
      */
@@ -138,6 +136,12 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
         return new Ground(Algos.blockTreatNoise(list, this.noise.getMesh()));
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #returnNode()
+     */
     @Override
     public final DefaultMutableTreeNode returnNode()
     {
@@ -153,8 +157,14 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
         return root;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #toString()
+     */
     @Override
-    public String toString()
+    public final String toString()
     {
         return super.toString() + AbstractBuildingsIslet.SECOND_STEP;
     }

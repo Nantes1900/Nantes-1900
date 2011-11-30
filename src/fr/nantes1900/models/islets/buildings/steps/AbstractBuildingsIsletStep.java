@@ -21,17 +21,22 @@ public abstract class AbstractBuildingsIsletStep
      *             when an argument needed in the treatment have not been
      *             initialized
      */
-    public abstract AbstractBuildingsIsletStep
-            launchTreatment() throws NullArgumentException;
+    public abstract AbstractBuildingsIsletStep launchTreatment()
+            throws NullArgumentException;
 
     /**
      * Builds a tree node for the JTree.
      * @return a default mutable tree node
      */
     public abstract DefaultMutableTreeNode returnNode();
-    
+
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
     @Override
-    public String toString(){
+    public String toString()
+    {
         return FileTools.readElementText(TextsKeys.KEY_ISLET);
     }
 }

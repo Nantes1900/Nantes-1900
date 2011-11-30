@@ -123,6 +123,8 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
      * Setter.
      * @param gravityNormalIn
      *            the gravity normal used in treatments
+     * @param noiseIn
+     *            TODO
      */
     public final void setArguments(final Vector3d gravityNormalIn,
             final Surface noiseIn)
@@ -131,8 +133,14 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
         this.noise = noiseIn;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #toString()
+     */
     @Override
-    public String toString()
+    public final String toString()
     {
         return super.toString() + AbstractBuildingsIslet.THIRD_STEP;
     }
