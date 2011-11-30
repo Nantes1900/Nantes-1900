@@ -102,7 +102,10 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     {
     }
 
-    public void decProgression()
+    /**
+     * Decrementer.
+     */
+    public final void decProgression()
     {
         this.progression--;
     }
@@ -210,7 +213,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * @throws NullArgumentException
      *             if the gravity normal has not been initiliazed
      */
-    public void launchTreatment0() throws NullArgumentException
+    public final void launchTreatment0() throws NullArgumentException
     {
         if (this.getGravityNormal() == null)
         {
@@ -227,8 +230,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * Launches the first treatment.
      * @throws NullArgumentException
+     *             TODO
      */
-    public void launchTreatment1() throws NullArgumentException
+    public final void launchTreatment1() throws NullArgumentException
     {
         this.getBiStep1().setArguments(this.getGravityNormal());
         this.biStep2 = this.getBiStep1().launchTreatment();
@@ -237,7 +241,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * Launches the second treatment.
      */
-    public void launchTreatment2()
+    public final void launchTreatment2()
     {
         this.biStep3 = this.getBiStep2().launchTreatment();
     }
@@ -245,8 +249,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * Launches the third treatment.
      * @throws NullArgumentException
+     *             TODO
      */
-    public void launchTreatment3() throws NullArgumentException
+    public final void launchTreatment3() throws NullArgumentException
     {
         System.out.println("Beginning tr 3");
         if (this.getGravityNormal() == null || this.getGroundNormal() == null
@@ -267,8 +272,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * Launches the fourth treatment.
      * @throws NullArgumentException
+     *             TODO
      */
-    public void launchTreatment4() throws NullArgumentException
+    public final void launchTreatment4() throws NullArgumentException
     {
         System.out.println("Beginning tr 4");
         this.biStep5 = this.getBiStep4().launchTreatment();
@@ -278,14 +284,18 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * Launches the fifth treatment.
      * @throws NullArgumentException
+     *             TODO
      */
-    public void launchTreatment5() throws NullArgumentException
+    public final void launchTreatment5() throws NullArgumentException
     {
         System.out.println("Beginning tr 5");
         this.biStep6 = this.getBiStep5().launchTreatment();
         System.out.println("End tr 5");
     }
 
+    /**
+     * Sets the progression to 0.
+     */
     public final void resetProgression()
     {
         this.progression = 0;
@@ -324,12 +334,12 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
 
     /**
      * Setter.
-     * @param biStep0
+     * @param biStep0In
      *            the new step 0
      */
-    public final void setBiStep0(final BuildingsIsletStep0 biStep0)
+    public final void setBiStep0(final BuildingsIsletStep0 biStep0In)
     {
-        this.biStep0 = biStep0;
+        this.biStep0 = biStep0In;
     }
 
     /**

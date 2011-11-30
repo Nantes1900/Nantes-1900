@@ -6,7 +6,6 @@ import javax.vecmath.Vector3d;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
-import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
@@ -61,6 +60,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      * Creates a change base matrix with the normal to the ground. See the
      * MatrixMethod class for more informations.
      * @throws NullArgumentException
+     *             TODO.
      */
     public final void createChangeBaseMatrix() throws NullArgumentException
     {
@@ -131,9 +131,12 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
         this.gravityNormal = gravityNormalIn;
     }
 
-    public double[][] getMatrix()
+    /**
+     * Getter.
+     * @return the matrix
+     */
+    public final double[][] getMatrix()
     {
         return this.matrix;
     }
-
 }

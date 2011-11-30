@@ -17,7 +17,6 @@ import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
  */
 public class Building
 {
-
     /**
      * The third building step.
      */
@@ -100,8 +99,9 @@ public class Building
     }
 
     /**
-     * TODO.
+     * TODO .
      * @throws NullArgumentException
+     *             TODO
      */
     public final void launchTreatment3() throws NullArgumentException
     {
@@ -109,12 +109,22 @@ public class Building
         this.bStep4 = this.bStep3.launchTreatment();
     }
 
+    /**
+     * TODO .
+     * @throws NullArgumentException
+     *             TODO
+     */
     public final void launchTreatment4() throws NullArgumentException
     {
         this.bStep4.setArguments(this.groundNormal, this.grounds, this.noise);
         this.bStep5 = this.bStep4.launchTreatment();
     }
 
+    /**
+     * TODO .
+     * @throws NullArgumentException
+     *             TODO
+     */
     public final void launchTreatment5() throws NullArgumentException
     {
         this.bStep5.setArguments(this.noise, this.grounds, this.groundNormal);
@@ -130,16 +140,28 @@ public class Building
         return this.bStep3.returnNode();
     }
 
+    /**
+     * TODO .
+     * @return TODO
+     */
     public final DefaultMutableTreeNode returnNode4()
     {
         return this.bStep4.returnNode();
     }
 
+    /**
+     * TODO .
+     * @return TODO
+     */
     public final DefaultMutableTreeNode returnNode5()
     {
         return this.bStep5.returnNode();
     }
 
+    /**
+     * TODO .
+     * @return TODO
+     */
     public final DefaultMutableTreeNode returnNode6()
     {
         return this.bStep6.returnNode();

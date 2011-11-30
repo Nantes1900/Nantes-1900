@@ -29,7 +29,6 @@ import fr.nantes1900.utils.Algos;
  */
 public class BuildingStep5 extends AbstractBuildingStep
 {
-
     /**
      * Number minimal of neighbours to be considered as a real surface.
      */
@@ -274,6 +273,8 @@ public class BuildingStep5 extends AbstractBuildingStep
      *            the noise
      * @param groundIn
      *            the ground as surface used in treatments
+     * @param groundNormalIn
+     *            the normal to the ground
      */
     public final void setArguments(final Surface noiseIn,
             final Ground groundIn, final Vector3d groundNormalIn)

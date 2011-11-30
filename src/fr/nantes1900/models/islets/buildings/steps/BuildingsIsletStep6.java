@@ -89,8 +89,14 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
         return root;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #toString()
+     */
     @Override
-    public String toString()
+    public final String toString()
     {
         return super.toString() + AbstractBuildingsIslet.SIXTH_STEP;
     }

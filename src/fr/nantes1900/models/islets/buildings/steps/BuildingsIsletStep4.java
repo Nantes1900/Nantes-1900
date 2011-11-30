@@ -34,6 +34,9 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
      */
     private Vector3d       groundNormal;
 
+    /**
+     * The Surface containing the noise.
+     */
     private Surface        noise;
 
     /**
@@ -129,7 +132,7 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
      * #toString()
      */
     @Override
-    public String toString()
+    public final String toString()
     {
         return super.toString() + AbstractBuildingsIslet.FOURTH_STEP;
     }
