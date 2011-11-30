@@ -4,6 +4,7 @@
 package fr.nantes1900.view.isletprocess;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -38,6 +39,8 @@ public class CharacteristicsView extends JPanel
         // Disable the validate button for this empty characteristic panel
         bValidate.setEnabled(false);
         
+        this.setMinimumSize(new Dimension(100, 100));
+        
         pContent = new JPanel();
         FlowLayout contentLayout = new FlowLayout();
         contentLayout.setAlignment(FlowLayout.LEFT);
@@ -56,13 +59,13 @@ public class CharacteristicsView extends JPanel
         caracteristicPanel.setLayout(new GridBagLayout());
         caracteristicPanel.add(new JLabel(title), new GridBagConstraints(0, 0,
                 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
-                GridBagConstraints.HORIZONTAL, new Insets(5, 10, 5, 10), 0, 0));
+                GridBagConstraints.HORIZONTAL, new Insets(0, 10, 5, 10), 0, 0));
         caracteristicPanel.add(caracteristic, new GridBagConstraints(1, 0, 1,
                 1, 0.0, 0.0, GridBagConstraints.CENTER,
-                GridBagConstraints.HORIZONTAL, new Insets(5, 10, 5, 10), 0, 0));
+                GridBagConstraints.BOTH, new Insets(0, 10, 5, 10), 0, 0));
         caracteristicPanel.add(helpButton, new GridBagConstraints(2, 0, 1, 1,
                 0.0, 0.0, GridBagConstraints.CENTER,
-                GridBagConstraints.HORIZONTAL, new Insets(5, 10, 5, 10), 0, 0));
+                GridBagConstraints.HORIZONTAL, new Insets(0, 10, 5, 10), 0, 0));
 
         return caracteristicPanel;
     }

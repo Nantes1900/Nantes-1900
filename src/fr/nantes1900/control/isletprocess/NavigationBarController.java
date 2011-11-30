@@ -71,7 +71,8 @@ public class NavigationBarController extends JToolBar
             {
                 try
                 {
-                    NavigationBarController.this.getParentController().loadParameters();
+                    NavigationBarController.this.getParentController()
+                            .loadParameters();
                     NavigationBarController.this.getParentController()
                             .launchProcess();
                 } catch (UnexistingStepException e)

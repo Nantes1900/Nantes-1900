@@ -87,26 +87,35 @@ public class IsletProcessController implements ElementsSelectedListener
         this.parentController = parentControllerIn;
         this.biController = biControllerIn;
         this.cController = new CharacteristicsController(this);
+        // TODO sets the empty characteristics panel at the beginning
+        this.cController = new CharacteristicsStep6Controller(this, null);
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
         this.pController = new ParametersController(this);
         this.f3DController = new Functions3DToolbarController(this);
         this.u3DController = new Universe3DController(this);
         this.u3DController.getUniverse3DView().setToolbar(
-                f3DController.getToolbar());
-        this.biController.setUniverse3DController(u3DController);
+                this.f3DController.getToolbar());
+        this.f3DController.getToolbar().showDeselectMeshesButton(true);
+        this.f3DController.getToolbar().showDeselectMeshesButton(true);
+        this.f3DController.getToolbar().showLockButton(true);
+        this.f3DController.getToolbar().showDeselectTrianglesButton(true);
+        this.f3DController.getToolbar().showTypeDisplayButton(true);
+        this.biController.setUniverse3DController(this.u3DController);
         this.biController.display();
 
         // creates the windiw with all needed panels
-        this.ipView = new IsletProcessView(cController.getView(),
-                itController.getView(), nbController.getView(),
-                pController.getView(), u3DController.getUniverse3DView());
+        this.ipView = new IsletProcessView(this.cController.getView(),
+                this.itController.getView(), this.nbController.getView(),
+                this.pController.getView(),
+                this.u3DController.getUniverse3DView());
 
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
     }
-    
-    public final void throwInTheBin(){
+
+    public final void throwInTheBin()
+    {
         this.ipView.dispose();
         this.ipView.setVisible(false);
         this.ipView = null;
@@ -134,14 +143,12 @@ public class IsletProcessController implements ElementsSelectedListener
         if (this.getProgression() >= 6)
         {
             throw new UnexistingStepException();
-        } else
-        {
-            this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-            this.biController.launchProcess();
-            this.itController.refreshView();
-            this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-            this.nbController.getView().refreshStepTitle(this.getProgression());
         }
+        this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
+        this.biController.launchProcess();
+        this.itController.refreshView();
+        this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+        this.nbController.getView().refreshStepTitle(this.getProgression());
     }
 
     public void goToPreviousProcess() throws UnexistingStepException
@@ -149,12 +156,10 @@ public class IsletProcessController implements ElementsSelectedListener
         if (this.getProgression() <= 1)
         {
             throw new UnexistingStepException();
-        } else
-        {
-            this.biController.getPreviousStep();
-            this.itController.refreshView();
-            this.nbController.getView().refreshStepTitle(this.getProgression());
         }
+        this.biController.getPreviousStep();
+        this.itController.refreshView();
+        this.nbController.getView().refreshStepTitle(this.getProgression());
     }
 
     public void abortProcess()
@@ -167,8 +172,9 @@ public class IsletProcessController implements ElementsSelectedListener
     {
         return this.getBiController().getIslet().getProgression();
     }
-    
-    public void loadParameters(){
+
+    public void loadParameters()
+    {
         this.pController.loadNewParameters();
     }
 
@@ -271,5 +277,20 @@ public class IsletProcessController implements ElementsSelectedListener
         public UnexistingStepException()
         {
         }
+    }
+
+    public void lock(boolean lock)
+    {
+        if (this.biController.getIslet().getProgression() == 6 && lock)
+        {
+            ((CharacteristicsStep6Controller) this.cController)
+                    .setEnabled(true);
+        } else
+        {
+            ((CharacteristicsStep6Controller) this.cController)
+                    .setEnabled(false);
+        }
+
+        // TODO lock and unlock in the universe 3d and maybe the tree too.
     }
 }
