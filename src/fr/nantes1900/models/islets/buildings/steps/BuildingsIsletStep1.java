@@ -6,8 +6,8 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
+import fr.nantes1900.constants.SeparationBuildings;
 import fr.nantes1900.constants.SeparationGroundBuilding;
-import fr.nantes1900.constants.SeparationGrounds;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
@@ -109,7 +109,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
         groundsList = new ArrayList<>();
         for (final Mesh m : thingsList)
         {
-            if (m.size() > SeparationGrounds.getBlockGroundsSizeError())
+            if (m.size() > SeparationGroundBuilding.getBlockGroundsSizeError())
             {
                 groundsList.add(m);
             }

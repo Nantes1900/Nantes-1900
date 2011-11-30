@@ -6,11 +6,22 @@ package fr.nantes1900.constants;
  */
 public final class SeparationGroundBuilding
 {
+    /**
+     * The default value of the coefficient.
+     */
+    private static final double BLOCK_GROUNDS_SIZE_ERROR_DEFAULT = 50;
+
+    /**
+     * Coefficient used after the extraction of the grounds, to determine if a
+     * ground has enough triangles to be considered as a real one.
+     */
+    private static double       blockGroundsSizeError            = BLOCK_GROUNDS_SIZE_ERROR_DEFAULT;
 
     /**
      * Default value of the coefficient.
      */
     private static final double ALTITUDE_ERROR_DEFAULT           = 0.2;
+
     /**
      * Error factor for the altitude check. If the difference of altitude
      * (considering the normal to the ground, and not the gravity) between a
@@ -35,7 +46,6 @@ public final class SeparationGroundBuilding
      * Default value of the coefficient.
      */
     private static final double LARGE_ANGLE_GROUND_ERROR_DEFAULT = 60;
-
     /**
      * Angle factor considered as the maximum angle from the normal
      * (gravity-oriented) to the ground that can describe a ground triangle. In
@@ -70,6 +80,15 @@ public final class SeparationGroundBuilding
 
     /**
      * Getter.
+     * @return the block ground size error
+     */
+    public static double getBlockGroundsSizeError()
+    {
+        return blockGroundsSizeError;
+    }
+
+    /**
+     * Getter.
      * @return the large angle ground error
      */
     public static double getLargeAngleGroundError()
@@ -99,11 +118,22 @@ public final class SeparationGroundBuilding
 
     /**
      * Setter.
+     * @param blockGroundsSizeErrorIn
+     *            the new block ground size error
+     */
+    public static void setBlockGroundsSizeError(
+            final double blockGroundsSizeErrorIn)
+    {
+        SeparationGroundBuilding.blockGroundsSizeError = blockGroundsSizeErrorIn;
+    }
+
+    /**
+     * Setter.
      * @param largeAngleGroundErrorIn
      *            the new large angle ground error
      */
-    public static void
-            setLargeAngleGroundError(final double largeAngleGroundErrorIn)
+    public static void setLargeAngleGroundError(
+            final double largeAngleGroundErrorIn)
     {
         SeparationGroundBuilding.largeAngleGroundError = largeAngleGroundErrorIn;
     }

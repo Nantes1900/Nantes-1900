@@ -43,4 +43,5 @@ public final class SeparationBuildings
     {
         SeparationBuildings.blockBuildingSize = blockBuildingSizeIn;
     }
+
 }
