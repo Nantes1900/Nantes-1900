@@ -493,12 +493,18 @@ public class BuildingsIsletController
         }
     }
 
-    public void abortProcess()
+    /**
+     * Resets the process to come back to the step 0.
+     */
+    public final void abortProcess()
     {
         this.islet.resetProgression();
     }
 
-    public void getPreviousStep()
+    /**
+     * Returns to the previous step.
+     */
+    public final void getPreviousStep()
     {
         this.islet.decProgression();
     }
@@ -644,7 +650,6 @@ public class BuildingsIsletController
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
 
-
     }
 
     /**
@@ -656,7 +661,6 @@ public class BuildingsIsletController
         List<Surface> surfacesList = new ArrayList<>();
         surfacesList.add(this.islet.getBiStep1()
                 .getInitialTotalSurfaceAfterBaseChange());
-
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
     }
@@ -782,7 +786,6 @@ public class BuildingsIsletController
 
             }
         }
-
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
 

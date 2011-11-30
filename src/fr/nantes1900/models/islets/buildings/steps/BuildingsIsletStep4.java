@@ -5,7 +5,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
@@ -113,14 +112,22 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
      * Setter.
      * @param groundNormalIn
      *            the normal to the ground.
+     * @param noiseIn
+     *            TODO
      */
     public final void setArguments(final Vector3d groundNormalIn,
-            Surface noiseIn)
+            final Surface noiseIn)
     {
         this.groundNormal = groundNormalIn;
         this.noise = noiseIn;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #toString()
+     */
     @Override
     public String toString()
     {

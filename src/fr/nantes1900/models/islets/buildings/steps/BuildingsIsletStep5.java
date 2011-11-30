@@ -33,6 +33,10 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      * The noise used in the algorithms.
      */
     private Surface        noise;
+
+    /**
+     * The normal to the ground.
+     */
     private Vector3d       groundNormal;
 
     /**
@@ -120,6 +124,10 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      * Setter.
      * @param groundsIn
      *            the grounds
+     * @param noiseIn
+     *            the noise
+     * @param groundNormalIn
+     *            the normal to the ground
      */
     public final void setArguments(final Surface noiseIn,
             final Ground groundsIn, final Vector3d groundNormalIn)
@@ -129,8 +137,14 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
         this.noise = noiseIn;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #toString()
+     */
     @Override
-    public String toString()
+    public final String toString()
     {
         return super.toString() + AbstractBuildingsIslet.FIFTH_STEP;
     }
