@@ -277,12 +277,11 @@ public class Universe3DController implements MouseListener, MouseMotionListener
      * @param surface
      *            TODO
      */
-    public final void selectSurfaceFromTree(final Surface surface)
+    public final void selectOrUnselectSurfaceFromTree(final Surface surface)
     {
         SurfaceView surfaceView = this.getSurfaceViewFromSurface(surface);
 
-        // Changes the material of the surface seleted.
-        surfaceView.getAppearance().setMaterial(SurfaceView.MATERIAL_SELECTED);
+        this.selectOrUnselectSurface(surfaceView);
     }
 
     /**

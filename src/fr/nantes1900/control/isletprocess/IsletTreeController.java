@@ -52,9 +52,6 @@ public class IsletTreeController
                     @Override
                     public void valueChanged(final TreeSelectionEvent e)
                     {
-                        IsletTreeController.this.getParentController()
-                                .getU3DController().deselectEverySurfaces();
-
                         TreePath[] pathsSelected = e.getPaths();
                         List<DefaultMutableTreeNode> nodesSelected = new ArrayList<>();
 
@@ -71,7 +68,7 @@ public class IsletTreeController
                                 IsletTreeController.this
                                         .getParentController()
                                         .getU3DController()
-                                        .selectSurfaceFromTree(
+                                        .selectOrUnselectSurfaceFromTree(
                                                 (Surface) node.getUserObject());
                             } else
                             {
