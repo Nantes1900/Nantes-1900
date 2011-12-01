@@ -18,7 +18,12 @@ import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 
 import fr.nantes1900.models.basis.Point;
 
-// FIXME : Javadoc
+
+/**
+ * NewMouseRotate is a class extended of the class MouseRotate. It is used to
+ * make a rotation of the object by using the mouse.
+ * @author TODO
+ */
 public class NewMouseRotate extends MouseRotate
 {
 

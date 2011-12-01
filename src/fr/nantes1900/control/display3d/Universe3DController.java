@@ -105,14 +105,18 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	 * @param surfaceView
 	 *            The surfaceView becomming the rotation center
 	 */
-	public final void changeRotationCenter(final SurfaceView surfaceView) {
-		// FIXME handle the case of mesh = null.
-		Point center = new Point(
-				surfaceView.getMeshView().getCentroid().getX(), surfaceView
-						.getMeshView().getCentroid().getY(), surfaceView
-						.getMeshView().getCentroid().getZ());
-		this.mouseRotate.setCenter(center);
-	}
+    public final void changeRotationCenter(final SurfaceView surfaceView)
+    {
+       
+        if (surfaceView.getMeshView() != null)
+        {
+            Point center = new Point(surfaceView.getMeshView().getCentroid()
+                    .getX(), surfaceView.getMeshView().getCentroid().getY(),
+                    surfaceView.getMeshView().getCentroid().getZ());
+            this.mouseRotate.setCenter(center);
+        }
+
+    }
 
 	private void fireTriangleDeselected(Triangle triangleDeselected) {
 		ElementsSelectedListener[] ESListeners = this.listeners

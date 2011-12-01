@@ -3,12 +3,16 @@ package fr.nantes1900.view.display3d;
 import java.awt.Color;
 
 import javax.media.j3d.Appearance;
+import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.Material;
 import javax.media.j3d.RenderingAttributes;
 import javax.media.j3d.Shape3D;
 import javax.media.j3d.Texture;
+import javax.media.j3d.Texture2D;
 import javax.media.j3d.TextureAttributes;
 import javax.vecmath.Color3f;
+
+import com.sun.j3d.utils.image.TextureLoader;
 
 import fr.nantes1900.models.extended.Surface;
 
@@ -70,7 +74,17 @@ public class SurfaceView extends Shape3D {
 
 		this.appearance.setCapability(Appearance.ALLOW_MATERIAL_READ);
 		this.appearance.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
-
+		
+		//Read the texture.
+		TextureLoader loader = new TextureLoader("texture.jpg", null);
+        ImageComponent2D image = loader.getImage();
+        Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGB,
+                image.getWidth(), image.getHeight());
+        texture.setImage(0, image);
+        
+        //Set the texture.
+        this.appearance.setTexture(texture);
+		
 		TextureAttributes texAtt = new TextureAttributes();
 		texAtt.setTextureMode(TextureAttributes.MODULATE);
 		this.appearance.setTextureAttributes(texAtt);
@@ -81,8 +95,7 @@ public class SurfaceView extends Shape3D {
 		this.appearance.setRenderingAttributes(rendering);
 
 		this.setMaterial(MATERIAL_UNSELECTED);
-		this.setAppearance(this.appearance);
-	}
+		this.setAppearance(this.appearance);	}
 
 	/**
 	 * Gets the mesh of triangle in the surfaceView.
@@ -159,15 +172,6 @@ public class SurfaceView extends Shape3D {
 		this.surface = surfaceIn;
 	}
 
-	/**
-	 * Sets the texture of the surfaceMesh.
-	 * 
-	 * @param texture
-	 *            The texture to be used.
-	 */
-
-	public final void setTexture(final Texture texture) {
-		this.appearance.setTexture(texture);
-	}
+	
 
 }

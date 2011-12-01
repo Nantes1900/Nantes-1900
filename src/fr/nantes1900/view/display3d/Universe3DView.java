@@ -244,21 +244,11 @@ public class Universe3DView extends JPanel {
 
 		BranchGroup sceneRoot = new BranchGroup();
 
-		// Read the texture.
-		// TODO magic string texture.jpg
-		TextureLoader loader = new TextureLoader("texture.jpg", null);
-		ImageComponent2D image = loader.getImage();
-		Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGB,
-				image.getWidth(), image.getHeight());
-		texture.setImage(0, image);
-
-		// TODO put this texture settings in the surfaceView class
-		for (SurfaceView surface : this.surfaceViewList) {
-			sceneRoot.addChild(surface);
-			surface.setMaterial(SurfaceView.MATERIAL_UNSELECTED);
-			surface.setTexture(texture);
-		}
-		translationGroup2.addChild(sceneRoot);
+        for (SurfaceView surface : this.surfaceViewList)
+        {
+            sceneRoot.addChild(surface);
+        }
+        translationGroup2.addChild(sceneRoot);
 
 		// Links the left button of the mouse with a rotation transformation
 		NewMouseRotate mouseRotate = new NewMouseRotate(translationGroup1,
