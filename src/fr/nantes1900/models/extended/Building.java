@@ -99,9 +99,10 @@ public class Building
     }
 
     /**
-     * TODO .
+     * Launches the third treatment.
      * @throws NullArgumentException
-     *             TODO
+     *             if some arguments needed in the treatment have not been
+     *             initialized
      */
     public final void launchTreatment3() throws NullArgumentException
     {
@@ -110,9 +111,10 @@ public class Building
     }
 
     /**
-     * TODO .
+     * Launches the fourth treatment.
      * @throws NullArgumentException
-     *             TODO
+     *             if some arguments needed in the treatment have not been
+     *             initialized
      */
     public final void launchTreatment4() throws NullArgumentException
     {
@@ -121,9 +123,10 @@ public class Building
     }
 
     /**
-     * TODO .
+     * Launches the fifth treatment.
      * @throws NullArgumentException
-     *             TODO
+     *             if some arguments needed in the treatment have not been
+     *             initialized
      */
     public final void launchTreatment5() throws NullArgumentException
     {
@@ -132,7 +135,7 @@ public class Building
     }
 
     /**
-     * TODO.
+     * Creates a tree node for the third step.
      * @return the mutable tree node
      */
     public final DefaultMutableTreeNode returnNode3()
@@ -141,8 +144,8 @@ public class Building
     }
 
     /**
-     * TODO .
-     * @return TODO
+     * Creates a tree node for the fourth step.
+     * @return the mutable tree node
      */
     public final DefaultMutableTreeNode returnNode4()
     {
@@ -150,8 +153,8 @@ public class Building
     }
 
     /**
-     * TODO .
-     * @return TODO
+     * Creates a tree node for the fifth step.
+     * @return the mutable tree node
      */
     public final DefaultMutableTreeNode returnNode5()
     {
@@ -159,8 +162,8 @@ public class Building
     }
 
     /**
-     * TODO .
-     * @return TODO
+     * Creates a tree node for the sixth step.
+     * @return the mutable tree node
      */
     public final DefaultMutableTreeNode returnNode6()
     {

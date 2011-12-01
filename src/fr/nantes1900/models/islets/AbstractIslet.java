@@ -17,20 +17,13 @@ public abstract class AbstractIslet
      * @param fileName
      *            the name of the file
      * @return the mesh parsed
+     * @throws IOException
+     *             if the file is badly formed, not found or unreadable !
      */
     public static final Mesh parseFile(final String fileName)
+            throws IOException
     {
-        try
-        {
-            final ParserSTL parser = new ParserSTL(fileName);
-            return parser.read();
-
-        } catch (final IOException e)
-        {
-            // LOOK : maybe put this somewhere else.
-            System.out.println("Error : the file is badly formed, not found or unreadable !");
-            System.exit(1);
-            return null;
-        }
+        final ParserSTL parser = new ParserSTL(fileName);
+        return parser.read();
     }
 }

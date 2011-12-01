@@ -1,10 +1,11 @@
 package fr.nantes1900.models.islets.buildings.exceptions;
 
 /**
- * Implements an exception if parameters have not been completed.
- * @author Daniel
+ * Implements an exception if a method actionN has found some incoherence during
+ * its execution.
+ * @author Daniel Lefevre
  */
-public final class UnCompletedParametersException extends Exception
+public final class NotCoherentActionException extends Exception
 {
 
     /**
@@ -15,7 +16,7 @@ public final class UnCompletedParametersException extends Exception
     /**
      * Private constructor.
      */
-    public UnCompletedParametersException()
+    public NotCoherentActionException()
     {
     }
 }

@@ -100,7 +100,7 @@ public final class Algos
      *            the list of meshes to complete with noise
      * @param noise
      *            the whole noise
-     * @return TODO.
+     * @return the sum of every meshes
      */
     public static Mesh blockTreatNoise(final List<Mesh> list, final Mesh noise)
     {
@@ -137,10 +137,8 @@ public final class Algos
      * @param largeAngleNormalErrorFactor
      *            the error on the orientation
      */
-    // TODO : I changed this, but there is maybe debug or test to make...
     public static void blockTreatOrientedNoise(final List<Surface> surfaceList,
-            final Mesh noise,
-            final double largeAngleNormalErrorFactor)
+            final Mesh noise, final double largeAngleNormalErrorFactor)
     {
 
         final List<Surface> list = new ArrayList<>();
@@ -174,8 +172,7 @@ public final class Algos
      *            the distance between the two planes
      */
     public static void blockTreatPlanedNoise(final List<Mesh> list,
-            final Mesh noise,
-            final double errorPlanes)
+            final Mesh noise, final double errorPlanes)
     {
 
         final List<Mesh> m = new ArrayList<>();
@@ -184,8 +181,7 @@ public final class Algos
         {
             final Mesh meshAndNoise = new Mesh(e);
             meshAndNoise.addAll(noise.inPlanes(e.averageNormal(),
-                    e.getCentroid(),
-                    errorPlanes));
+                    e.getCentroid(), errorPlanes));
             final Mesh mes = new Mesh();
             e.getOne().returnNeighbours(mes, meshAndNoise);
             m.add(mes);

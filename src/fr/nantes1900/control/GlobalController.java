@@ -3,7 +3,6 @@
  */
 package fr.nantes1900.control;
 
-import java.awt.Cursor;
 import java.io.File;
 
 import fr.nantes1900.control.isletprocess.IsletProcessController;
@@ -32,12 +31,16 @@ public class GlobalController
         this.isletSelectionController = new IsletSelectionController(this);
     }
 
-    public final void launchIsletSelection(){
-      this.isletSelectionController = new IsletSelectionController(this);
-      this.isletProcessController.throwInTheBin();
-      
+    /**
+     * TODO.
+     */
+    public final void launchIsletSelection()
+    {
+        this.isletSelectionController = new IsletSelectionController(this);
+        this.isletProcessController.throwInTheBin();
+
     }
-    
+
     /**
      * Launches the process of an islet and opens the new window.
      * @param isletFile
@@ -52,8 +55,7 @@ public class GlobalController
         biController.launchProcess();
 
         this.isletProcessController = new IsletProcessController(this,
-                isletFile,
-                biController);
+                isletFile, biController);
         this.isletSelectionController.getWindow().setVisible(false);
     }
 }

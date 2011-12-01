@@ -165,7 +165,14 @@ public class IsletSelectionController implements ElementsSelectedListener
 
         if (fileNode.isFile())
         {
-            this.biController.readFile(fileNode.getEntireName());
+            try
+            {
+                this.biController.readFile(fileNode.getEntireName());
+            } catch (IOException e)
+            {
+                // FIXME : make a pop-up :)
+                e.printStackTrace();
+            }
             this.selectedFile = fileNode;
             this.biController.display();
         }
