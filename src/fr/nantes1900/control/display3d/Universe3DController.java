@@ -93,15 +93,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener
         this.mouseRotate.setCenter(center);
     }
 
-    public final void deselectMeshFromTree(Surface surface)
-    {
-        SurfaceView surfaceView = this.getSurfaceViewFromSurface(surface);
-
-        // Changes the material of the surface seleted.
-        surfaceView.getAppearance()
-                .setMaterial(SurfaceView.MATERIAL_UNSELECTED);
-    }
-
     private void fireTriangleDeselected(Triangle triangleDeselected)
     {
         ElementsSelectedListener[] ESListeners = this.listeners
@@ -349,7 +340,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener
     {
         this.pickCanvas = new PickCanvas(this.u3DView.getSimpleUniverse()
                 .getCanvas(), branchGroup);
-        System.out.println("pickCanvas");
         this.pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
     }
 
@@ -408,8 +398,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener
             int turn = 30;
 
             // Computes the neighbours of the triangle.
+            // FIXME : magic number.
             Mesh oriented = meshView.getMesh().orientedAs(
-                    trianglePicked.getNormal(), 1);
+                    trianglePicked.getNormal(), 10);
 
             Mesh neighbours = new Mesh();
 
@@ -454,5 +445,11 @@ public class Universe3DController implements MouseListener, MouseMotionListener
             this.selectOrUnselectSurface(this
                     .getSurfaceViewFromSurface(surface));
         }
+    }
+
+    public void clearAll()
+    {
+        this.surfacesSelected.clear();
+        this.u3DView.clearAll();
     }
 }

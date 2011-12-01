@@ -3,9 +3,6 @@
  */
 package fr.nantes1900.control.isletprocess;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;

@@ -114,6 +114,7 @@ public class IsletProcessController implements ElementsSelectedListener
         this.u3DController.addElementsSelectedListener(this);
     }
 
+    // FIXME : Luc, please find some correct names.
     public final void throwInTheBin()
     {
         this.ipView.dispose();
@@ -318,9 +319,14 @@ public class IsletProcessController implements ElementsSelectedListener
     }
 
     @Override
-    public void surfaceDeselected(Surface surfaceSelected)
+    public void surfaceDeselected(final Surface surfaceSelected)
     {
         // TODO Auto-generated method stub
 
+    }
+
+    public void refreshView()
+    {
+        this.biController.display();
     }
 }
