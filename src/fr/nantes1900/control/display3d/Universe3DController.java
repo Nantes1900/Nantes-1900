@@ -25,434 +25,407 @@ import fr.nantes1900.view.display3d.SurfaceView;
 import fr.nantes1900.view.display3d.Universe3DView;
 
 /**
- * TODO.
+ * The Universe3DController generates the Universe3DView and contains the pickCanvas.
+ * It implements MouseListener, MouseMotionListener to handle users clicks on the 3D view.
  */
 /**
- * @author Daniel
+ * @author Daniel, Siju, Nicolas
  */
-public class Universe3DController implements MouseListener, MouseMotionListener
-{
+public class Universe3DController implements MouseListener, MouseMotionListener {
 
-    /**
-     * The Universe3DView linked to this controller.
-     */
-    private Universe3DView           u3DView;
-    /**
-     * The canvas used to pick.
-     */
-    private PickCanvas               pickCanvas;
-    /**
-     * The controller to change the center of rotation.
-     */
-    private NewMouseRotate           mouseRotate;
+	/**
+	 * The Universe3DView linked to this controller.
+	 */
+	private Universe3DView u3DView;
+	/**
+	 * The canvas used to pick.
+	 */
+	private PickCanvas pickCanvas;
+	/**
+	 * The class overwriting MouseRotate to change the roation center.
+	 */
+	private NewMouseRotate mouseRotate;
+	/**
+	 * The parent controller.
+	 */
+	private ElementsSelectedListener parentController;
 
-    /**
-     * The parent controller.
-     */
-    private ElementsSelectedListener parentController;
+	private final EventListenerList listeners = new EventListenerList();
 
-    private final EventListenerList  listeners            = new EventListenerList();
+	public static final int DISPLAY_MESH_MODE = 1;
 
-    public static final int          DISPLAY_MESH_MODE    = 1;
+	public static final int DISPLAY_POLYGON_MODE = 2;
+	/**
+	 * The attribute to know if the U3DView has to display the mesh or the
+	 * polygon (a surface is compounded of a mesh and a polygon).
+	 */
+	private int displayMode;
+	/**
+	 * The list of the triangles currently selected.
+	 */
+	private List<Triangle> trianglesSelected = new ArrayList<>();
+	/**
+	 * The list of the surfaces currently selected.
+	 */
+	private List<Surface> surfacesSelected = new ArrayList<>();
 
-    public static final int          DISPLAY_POLYGON_MODE = 2;
+	/**
+	 * Generates the U3DView and set the display mode to mesh.
+	 * 
+	 * @param isletSelectionController
+	 */
+	public Universe3DController(ElementsSelectedListener parentControllerIn) {
+		this.parentController = parentControllerIn;
+		this.u3DView = new Universe3DView(this);
+		this.displayMode = DISPLAY_MESH_MODE;
+	}
 
-    private int                      displayMode;
+	public void addElementsSelectedListener(ElementsSelectedListener listener) {
+		this.listeners.add(ElementsSelectedListener.class, listener);
+	}
 
-    private List<Triangle>           trianglesSelected    = new ArrayList<>();
+	/**
+	 * Changes the rotation center when clicking on a surface.
+	 * 
+	 * @param surfaceView
+	 *            The surfaceView becomming the rotation center
+	 */
+	public final void changeRotationCenter(final SurfaceView surfaceView) {
+		// FIXME handle the case of mesh = null.
+		Point center = new Point(
+				surfaceView.getMeshView().getCentroid().getX(), surfaceView
+						.getMeshView().getCentroid().getY(), surfaceView
+						.getMeshView().getCentroid().getZ());
+		this.mouseRotate.setCenter(center);
+	}
 
-    private List<Surface>            surfacesSelected     = new ArrayList<>();
+	private void fireTriangleDeselected(Triangle triangleDeselected) {
+		ElementsSelectedListener[] ESListeners = this.listeners
+				.getListeners(ElementsSelectedListener.class);
+		for (ElementsSelectedListener listener : ESListeners) {
+			listener.triangleDeselected(triangleDeselected);
+		}
+	}
 
-    /**
-     * @param isletSelectionController
-     */
-    public Universe3DController(ElementsSelectedListener parentControllerIn)
-    {
-        this.parentController = parentControllerIn;
-        this.u3DView = new Universe3DView(this);
-        this.displayMode = DISPLAY_MESH_MODE;
-    }
+	private void fireTriangleSelected(Triangle triangleSelected) {
+		ElementsSelectedListener[] ESListeners = this.listeners
+				.getListeners(ElementsSelectedListener.class);
+		for (ElementsSelectedListener listener : ESListeners) {
+			listener.triangleSelected(triangleSelected);
+		}
+	}
 
-    public void addElementsSelectedListener(ElementsSelectedListener listener)
-    {
-        this.listeners.add(ElementsSelectedListener.class, listener);
-    }
+	private void fireSurfaceDeselected(Surface surfaceDeselected) {
+		ElementsSelectedListener[] ESListeners = this.listeners
+				.getListeners(ElementsSelectedListener.class);
+		for (ElementsSelectedListener listener : ESListeners) {
+			listener.surfaceDeselected(surfaceDeselected);
+		}
+	}
 
-    /**
-     * Changes the rotation center when clicking on a surface.
-     * @param surfaceView
-     *            The surfaceView becomming the rotation center
-     */
-    public final void changeRotationCenter(final SurfaceView surfaceView)
-    {
-        // FIXME handle the case of mesh = null.
-        Point center = new Point(
-                surfaceView.getMeshView().getCentroid().getX(), surfaceView
-                        .getMeshView().getCentroid().getY(), surfaceView
-                        .getMeshView().getCentroid().getZ());
-        this.mouseRotate.setCenter(center);
-    }
+	private void fireSurfaceSelected(Surface triangleSelected) {
+		ElementsSelectedListener[] ESListeners = this.listeners
+				.getListeners(ElementsSelectedListener.class);
+		for (ElementsSelectedListener listener : ESListeners) {
+			listener.surfaceSelected(triangleSelected);
+		}
+	}
 
-    public final void deselectMeshFromTree(Surface surface)
-    {
-        SurfaceView surfaceView = this.getSurfaceViewFromSurface(surface);
+	/**
+	 * Getter.
+	 * 
+	 * @return the display mode
+	 */
+	public final int getDisplayMode() {
+		return this.displayMode;
+	}
 
-        // Changes the material of the surface seleted.
-        surfaceView.getAppearance()
-                .setMaterial(SurfaceView.MATERIAL_UNSELECTED);
-    }
+	/**
+	 * Getter.
+	 * 
+	 * @return the mouse rotate class
+	 */
+	public final NewMouseRotate getMouseRotate() {
+		return this.mouseRotate;
+	}
 
-    private void fireTriangleDeselected(Triangle triangleDeselected)
-    {
-        ElementsSelectedListener[] ESListeners = this.listeners
-                .getListeners(ElementsSelectedListener.class);
-        for (ElementsSelectedListener listener : ESListeners)
-        {
-            listener.triangleDeselected(triangleDeselected);
-        }
-    }
+	/**
+	 * Getter.
+	 * 
+	 * @return the parent controller
+	 */
+	public final ElementsSelectedListener getParentController() {
+		return this.parentController;
+	}
 
-    private void fireTriangleSelected(Triangle triangleSelected)
-    {
-        ElementsSelectedListener[] ESListeners = this.listeners
-                .getListeners(ElementsSelectedListener.class);
-        for (ElementsSelectedListener listener : ESListeners)
-        {
-            listener.triangleSelected(triangleSelected);
-        }
-    }
+	/**
+	 * Returns the SurfaceView associated to the surface.
+	 * 
+	 * @param surface
+	 *            the surface to search
+	 * @return the surfaceView associated
+	 */
+	public final SurfaceView getSurfaceViewFromSurface(final Surface surface) {
+		for (SurfaceView sView : this.u3DView.getSurfaceViewList()) {
+			if (sView.getSurface() == surface) {
+				return sView;
+			}
+		}
+		return null;
+	}
 
-    private void fireSurfaceDeselected(Surface surfaceDeselected)
-    {
-        ElementsSelectedListener[] ESListeners = this.listeners
-                .getListeners(ElementsSelectedListener.class);
-        for (ElementsSelectedListener listener : ESListeners)
-        {
-            listener.surfaceDeselected(surfaceDeselected);
-        }
-    }
+	/**
+	 * Returns the list of Triangle associated with the trianglesView contained
+	 * in trianglesViewSelected.
+	 * 
+	 * @return the list of selected triangles
+	 */
+	public final List<Triangle> getTrianglesSelected() {
+		return this.trianglesSelected;
+	}
 
-    private void fireSurfaceSelected(Surface triangleSelected)
-    {
-        ElementsSelectedListener[] ESListeners = this.listeners
-                .getListeners(ElementsSelectedListener.class);
-        for (ElementsSelectedListener listener : ESListeners)
-        {
-            listener.surfaceSelected(triangleSelected);
-        }
-    }
+	/**
+	 * Getter.
+	 * 
+	 * @return the universe 3D view
+	 */
+	public final Universe3DView getUniverse3DView() {
+		return this.u3DView;
+	}
 
-    /**
-     * Getter.
-     * @return the display mode
-     */
-    public final int getDisplayMode()
-    {
-        return this.displayMode;
-    }
+	/**
+	 * Treats the different clicking actions (left or right).
+	 * 
+	 * @param e
+	 *            The MouseEvent caught by the mouseListener when clicking
+	 */
+	@Override
+	public final void mouseClicked(final MouseEvent e) {
+		int buttonDown = e.getButton();
+		if (buttonDown == MouseEvent.BUTTON1) {
+			this.treatLeftClick(e);
+		} else if (buttonDown == MouseEvent.BUTTON3) {
+			this.treatRightClick(e);
+		}
+	}
 
-    /**
-     * Getter.
-     * @return the mouse rotate class
-     */
-    public final NewMouseRotate getMouseRotate()
-    {
-        return this.mouseRotate;
-    }
+	@Override
+	public void mouseDragged(final MouseEvent arg0) {
+		// Not used.
+	}
 
-    /**
-     * Getter.
-     * @return the parent controller
-     */
-    public final ElementsSelectedListener getParentController()
-    {
-        return this.parentController;
-    }
+	@Override
+	public void mouseEntered(final MouseEvent e) {
+		// Not used.
+	}
 
-    /**
-     * Returns the SurfaceView associated to the surface.
-     * @param surface
-     *            the surface to search
-     * @return the surfaceView associated
-     */
-    public final SurfaceView getSurfaceViewFromSurface(final Surface surface)
-    {
-        for (SurfaceView sView : this.u3DView.getSurfaceViewList())
-        {
-            if (sView.getSurface() == surface)
-            {
-                return sView;
-            }
-        }
-        return null;
-    }
+	@Override
+	public void mouseExited(final MouseEvent e) {
+		// Not used.
+	}
 
-    /**
-     * Returns the list of Triangle associated with the trianglesView contained
-     * in trianglesViewSelected.
-     * @return the list of selected triangles
-     */
-    public final List<Triangle> getTrianglesSelected()
-    {
-        return this.trianglesSelected;
-    }
+	@Override
+	public void mouseMoved(final MouseEvent e) {
+		// Not used.
+	}
 
-    /**
-     * Getter.
-     * @return the universe 3D view
-     */
-    public final Universe3DView getUniverse3DView()
-    {
-        return this.u3DView;
-    }
+	@Override
+	public void mousePressed(final MouseEvent e) {
+		// Not used.
+	}
 
-    /**
-     * Treats the different clicking actions (left or right).
-     * @param e
-     *            The MouseEvent caught by the mouseListener when clicking
-     */
-    @Override
-    public final void mouseClicked(final MouseEvent e)
-    {
-        int buttonDown = e.getButton();
-        if (buttonDown == MouseEvent.BUTTON1)
-        {
-            this.treatLeftClick(e);
-        } else if (buttonDown == MouseEvent.BUTTON3)
-        {
-            this.treatRightClick(e);
-        }
-    }
+	@Override
+	public void mouseReleased(final MouseEvent e) {
+		// Not used.
+	}
 
-    @Override
-    public void mouseDragged(final MouseEvent arg0)
-    {
-        // Not used.
-    }
+	/**
+	 * TODO .
+	 * 
+	 * @param listener
+	 *            TODO
+	 */
+	public final void removeElementsSelectedListener(
+			final ElementsSelectedListener listener) {
+		this.listeners.remove(ElementsSelectedListener.class, listener);
+	}
 
-    @Override
-    public void mouseEntered(final MouseEvent e)
-    {
-        // Not used.
-    }
+	/**
+	 * TODO .
+	 * 
+	 * @param surface
+	 *            TODO
+	 */
+	public final void selectOrUnselectSurfaceFromTree(final Surface surface) {
+		SurfaceView surfaceView = this.getSurfaceViewFromSurface(surface);
 
-    @Override
-    public void mouseExited(final MouseEvent e)
-    {
-        // Not used.
-    }
+		this.selectOrUnselectSurface(surfaceView);
+	}
 
-    @Override
-    public void mouseMoved(final MouseEvent e)
-    {
-        // Not used.
-    }
+	/**
+	 * Change the appearance of the surfaceView parameter : select or unselect
+	 * the corresponding surface.
+	 * 
+	 * @param surfaceView
+	 *            The surfaceView containing the surface to select
+	 */
+	// TODO : maybe put the content of this method in the treatButton method if
+	// it is not used other way.
+	public final void selectOrUnselectSurface(final SurfaceView surfaceView) {
+		Surface surface = surfaceView.getSurface();
+		// surface not selected when clicked
+		if (!this.surfacesSelected.contains(surface)) {
+			this.surfacesSelected.add(surface);
+			surfaceView.setMaterial(SurfaceView.MATERIAL_SELECTED);
+			fireSurfaceSelected(surface);
+		} else {
+			// surface already selected when clicked
+			this.surfacesSelected.remove(surface);
+			surfaceView.setMaterial(SurfaceView.MATERIAL_UNSELECTED);
+			fireSurfaceDeselected(surface);
+		}
+	}
 
-    @Override
-    public void mousePressed(final MouseEvent e)
-    {
-        // Not used.
-    }
+	/**
+	 * Setter.
+	 * 
+	 * @param displayModeIn
+	 *            TODO
+	 */
+	public final void setDisplayMode(final int displayModeIn) {
+		this.displayMode = displayModeIn;
+	}
 
-    @Override
-    public void mouseReleased(final MouseEvent e)
-    {
-        // Not used.
-    }
+	/**
+	 * Setter.
+	 * 
+	 * @param mouseRotateIn
+	 *            TODO
+	 */
+	public final void setMouseRotate(final NewMouseRotate mouseRotateIn) {
+		this.mouseRotate = mouseRotateIn;
+	}
 
-    /**
-     * TODO .
-     * @param listener
-     *            TODO
-     */
-    public final void removeElementsSelectedListener(
-            final ElementsSelectedListener listener)
-    {
-        this.listeners.remove(ElementsSelectedListener.class, listener);
-    }
+	/**
+	 * Setter.
+	 * 
+	 * @param parentControllerIn
+	 *            TODO
+	 */
+	public final void setParentController(
+			final IsletSelectionController parentControllerIn) {
+		this.parentController = parentControllerIn;
+	}
 
-    /**
-     * TODO .
-     * @param surface
-     *            TODO
-     */
-    public final void selectOrUnselectSurfaceFromTree(final Surface surface)
-    {
-        SurfaceView surfaceView = this.getSurfaceViewFromSurface(surface);
+	/**
+	 * Generate a pickCanves linked to the branchGroup in the U3DView
+	 * 
+	 * @param branchGroup
+	 *            TODO
+	 */
+	public final void setPickCanvas(final BranchGroup branchGroup) {
+		this.pickCanvas = new PickCanvas(this.u3DView.getSimpleUniverse()
+				.getCanvas(), branchGroup);
+		this.pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
+	}
 
-        this.selectOrUnselectSurface(surfaceView);
-    }
+	/**
+	 * Treats a left click action : handling of a surface selection.
+	 * 
+	 * @param e
+	 *            The mouse event get from the MouseListener.
+	 */
+	// TODO : commentaries !
+	private void treatLeftClick(final MouseEvent e) {
+		this.pickCanvas.setShapeLocation(e);
 
-    /**
-     * Changse the appearance of the surfaceView parameter : select or unselect
-     * the corresponding surface.
-     * @param surfaceView
-     *            The surfaceView containing the surface to select
-     */
-    // TODO : maybe put the content of this method in the treatButton method if
-    // it is not used other way.
-    public final void selectOrUnselectSurface(final SurfaceView surfaceView)
-    {
-        Surface surface = surfaceView.getSurface();
-        // surface not selected when clicked
-        if (!this.surfacesSelected.contains(surface))
-        {
-            this.surfacesSelected.add(surface);
-            surfaceView.setMaterial(SurfaceView.MATERIAL_SELECTED);
-            fireSurfaceSelected(surface);
-        } else
-        {
-            // surface already selected when clicked
-            this.surfacesSelected.remove(surface);
-            surfaceView.setMaterial(SurfaceView.MATERIAL_UNSELECTED);
-            fireSurfaceDeselected(surface);
-        }
-    }
+		PickResult result = this.pickCanvas.pickClosest();
 
-    /**
-     * Setter.
-     * @param displayModeIn
-     *            TODO
-     */
-    public final void setDisplayMode(final int displayModeIn)
-    {
-        this.displayMode = displayModeIn;
-    }
+		if (result != null) {
+			SurfaceView surfaceViewPicked = (SurfaceView) result
+					.getNode(PickResult.SHAPE3D);
 
-    /**
-     * Setter.
-     * @param mouseRotateIn
-     *            TODO
-     */
-    public final void setMouseRotate(final NewMouseRotate mouseRotateIn)
-    {
-        this.mouseRotate = mouseRotateIn;
-    }
+			if (e.isControlDown()) {
+				this.surfacesSelected.clear();
+			}
+			this.selectOrUnselectSurface(surfaceViewPicked);
+			this.changeRotationCenter(surfaceViewPicked);
+		}
+	}
 
-    /**
-     * Setter.
-     * @param parentControllerIn
-     *            TODO
-     */
-    public final void setParentController(
-            final IsletSelectionController parentControllerIn)
-    {
-        this.parentController = parentControllerIn;
-    }
+	/**
+	 * Treats a right click action : handling of triangles selection.
+	 * 
+	 * @param e
+	 *            The mouse event get from the MouseListener.
+	 */
+	private void treatRightClick(final MouseEvent e) {
+		this.pickCanvas.setShapeLocation(e);
 
-    /**
-     * TODO.
-     * @param branchGroup
-     *            TODO
-     */
-    public final void setPickCanvas(final BranchGroup branchGroup)
-    {
-        this.pickCanvas = new PickCanvas(this.u3DView.getSimpleUniverse()
-                .getCanvas(), branchGroup);
-        System.out.println("pickCanvas");
-        this.pickCanvas.setMode(PickTool.GEOMETRY_INTERSECT_INFO);
-    }
+		PickResult result = this.pickCanvas.pickClosest();
 
-    /**
-     * Treats a left click action : handling of a surface selection.
-     * @param e
-     *            TODO.
-     */
-    // TODO : commentaries !
-    private void treatLeftClick(final MouseEvent e)
-    {
-        this.pickCanvas.setShapeLocation(e);
+		if (result != null) {
+			PickIntersection pickIntersection = result.getIntersection(0);
 
-        PickResult result = this.pickCanvas.pickClosest();
+			// Gets the meshView picked.
+			MeshView meshView = (MeshView) pickIntersection.getGeometryArray();
 
-        if (result != null)
-        {
-            SurfaceView surfaceViewPicked = (SurfaceView) result
-                    .getNode(PickResult.SHAPE3D);
+			// Gets the index of the triangle picked.
+			int[] pointIndex = pickIntersection.getPrimitiveVertexIndices();
+			// TODO : 3 : magic number !
+			Triangle trianglePicked = meshView
+					.getTriangleFromArrayPosition(pointIndex[0] / 3);
 
-            if (e.isControlDown())
-            {
-                this.surfacesSelected.clear();
-            }
-            this.selectOrUnselectSurface(surfaceViewPicked);
-            this.changeRotationCenter(surfaceViewPicked);
-        }
-    }
+			// FIXME : create a button in the tool bar to set this number
+			// FIXME : magic number ! Put this as a PUBLIC STATIC FINAL INT.
+			int turn = 30;
 
-    /**
-     * Treats a right click action : handling of triangles selection.
-     * @param e
-     *            TODO
-     */
-    private void treatRightClick(final MouseEvent e)
-    {
-        this.pickCanvas.setShapeLocation(e);
+			// Computes the neighbours of the triangle.
+			// FIXME : magic number.
+			Mesh oriented = meshView.getMesh().orientedAs(
+					trianglePicked.getNormal(), 10);
 
-        PickResult result = this.pickCanvas.pickClosest();
+			Mesh neighbours = new Mesh();
 
-        if (result != null)
-        {
-            PickIntersection pickIntersection = result.getIntersection(0);
+			trianglePicked.returnNeighbours(neighbours, oriented);
 
-            // Gets the meshView picked.
-            MeshView meshView = (MeshView) pickIntersection.getGeometryArray();
+			// If this triangle is not already selected.
+			if (!this.trianglesSelected.contains(trianglePicked)) {
+				// Selects these triangles.
+				for (Triangle t : neighbours) {
+					meshView.select(t);
+					fireTriangleSelected(t);
+				}
 
-            // Gets the index of the triangle picked.
-            int[] pointIndex = pickIntersection.getPrimitiveVertexIndices();
-            // TODO : 3 : magic number !
-            Triangle trianglePicked = meshView
-                    .getTriangleFromArrayPosition(pointIndex[0] / 3);
+				this.trianglesSelected.addAll(neighbours);
 
-            // FIXME : create a button in the tool bar to set this number
-            // FIXME : magic number ! Put this as a PUBLIC STATIC FINAL INT.
-            int turn = 30;
+				// Changes the center of rotation.
+				this.mouseRotate.setCenter(trianglePicked.getP1());
+			} else {
+				// Selects these triangles.
+				for (Triangle t : neighbours) {
+					meshView.unselect(t);
+					fireTriangleDeselected(t);
+				}
 
-            // Computes the neighbours of the triangle.
-            Mesh oriented = meshView.getMesh().orientedAs(
-                    trianglePicked.getNormal(), 1);
+				this.trianglesSelected.removeAll(neighbours);
+			}
+		}
+	}
 
-            Mesh neighbours = new Mesh();
+	public void deselectEverySurfaces() {
+		// Copies the list to avoid ConcurrentModificationException of the list
+		// surfacesSelected.
+		List<Surface> surfaces = new ArrayList<>(this.surfacesSelected);
 
-            trianglePicked.returnNeighbours(neighbours, oriented);
+		for (Surface surface : surfaces) {
+			this.selectOrUnselectSurface(this
+					.getSurfaceViewFromSurface(surface));
+		}
+	}
 
-            // If this triangle is not already selected.
-            if (!this.trianglesSelected.contains(trianglePicked))
-            {
-                // Selects these triangles.
-                for (Triangle t : neighbours)
-                {
-                    meshView.select(t);
-                    fireTriangleSelected(t);
-                }
-
-                this.trianglesSelected.addAll(neighbours);
-
-                // Changes the center of rotation.
-                this.mouseRotate.setCenter(trianglePicked.getP1());
-            } else
-            {
-                // Selects these triangles.
-                for (Triangle t : neighbours)
-                {
-                    meshView.unselect(t);
-                    fireTriangleDeselected(t);
-                }
-
-                this.trianglesSelected.removeAll(neighbours);
-            }
-        }
-    }
-
-    public void deselectEverySurfaces()
-    {
-        // Copies the list to avoid ConcurrentModificationException of the list
-        // surfacesSelected.
-        List<Surface> surfaces = new ArrayList<>(this.surfacesSelected);
-
-        for (Surface surface : surfaces)
-        {
-            this.selectOrUnselectSurface(this
-                    .getSurfaceViewFromSurface(surface));
-        }
-    }
+	public void clearAll() {
+		this.surfacesSelected.clear();
+		this.u3DView.clearAll();
+	}
 }
