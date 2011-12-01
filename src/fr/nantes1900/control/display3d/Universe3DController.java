@@ -18,7 +18,6 @@ import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.view.display3d.MeshView;

@@ -9,7 +9,6 @@ import java.util.List;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
-import javax.swing.tree.TreePath;
 
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.extended.Surface;
@@ -52,17 +51,13 @@ public class IsletTreeController
                     @Override
                     public void valueChanged(final TreeSelectionEvent e)
                     {
-                        TreePath[] pathsSelected = e.getPaths();
-                        List<DefaultMutableTreeNode> nodesSelected = new ArrayList<>();
+                        IsletTreeController.this.getParentController()
+                                .getU3DController().deselectEverySurfaces();
 
-                        for (TreePath path : pathsSelected)
+                        for (Object o : e.getPath().getPath())
                         {
-                            nodesSelected.add((DefaultMutableTreeNode) path
-                                    .getLastPathComponent());
-                        }
+                            DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
 
-                        for (DefaultMutableTreeNode node : nodesSelected)
-                        {
                             if (node.getUserObject() instanceof Surface)
                             {
                                 IsletTreeController.this
