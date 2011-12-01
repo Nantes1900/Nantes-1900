@@ -10,7 +10,9 @@ import javax.swing.JButton;
 import javax.swing.JToolBar;
 
 import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.utils.FileTools;
+import fr.nantes1900.view.display3d.Universe3DView;
 import fr.nantes1900.view.isletprocess.Functions3DToolbarView;
 
 /**
@@ -72,13 +74,14 @@ public class Functions3DToolbarController
                     source.setName(ACTION_POLYGONS);
                     source.setText("#");
                     source.setToolTipText(FileTools.readElementText(TextsKeys.KEY_DISPLAYPOLYGONS));
+                    Functions3DToolbarController.this.parentController.setDisplayMode(Universe3DController.DISPLAY_MESH_MODE);
                 } else if (source.getName().equals(ACTION_POLYGONS))
                 {
                     source.setName(ACTION_MESHES);
                     source.setText("$");
                     source.setToolTipText(FileTools.readElementText(TextsKeys.KEY_DISPLAYMESHES));
+                    Functions3DToolbarController.this.parentController.setDisplayMode(Universe3DController.DISPLAY_POLYGON_MODE);
                 }
-                // TODO call 3D universe controller to show meshes or polygons
             }
         });
 

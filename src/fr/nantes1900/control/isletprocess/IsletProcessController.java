@@ -184,8 +184,21 @@ public class IsletProcessController implements ElementsSelectedListener
     @Override
     public void triangleDeselected(Triangle triangleSelected)
     {
-        // TODO Auto-generated method stub
+        int step = this.getProgression();
+        boolean empty = false;
+        if ((step == 3
+                && f3DController.getSelectionMode().equals(
+                        Functions3DToolbarController.ACTION_TRIANGLES)
+                || step == 2 || step == 4))
+        {
+            empty = ((AbstractCharacteristicsTrianglesController) cController)
+                    .removeTriangleSelected(triangleSelected);
+        }
 
+        if (empty)
+        {
+            setDefaultCharacterisitcsPanel();
+        }
     }
 
     @Override
@@ -322,17 +335,21 @@ public class IsletProcessController implements ElementsSelectedListener
     {
         int step = this.getProgression();
         boolean empty = false;
-        if ((step == 3 && f3DController.getSelectionMode().equals(Functions3DToolbarController.ACTION_MESHES) || step == 5 || step == 6))
+        if ((step == 3
+                && f3DController.getSelectionMode().equals(
+                        Functions3DToolbarController.ACTION_MESHES)
+                || step == 5 || step == 6))
         {
-            empty = ((AbstractCharacteristicsSurfacesController) cController).removeSurfaceSelected(surfaceSelected);
+            empty = ((AbstractCharacteristicsSurfacesController) cController)
+                    .removeSurfaceSelected(surfaceSelected);
         }
-        
+
         if (empty)
         {
             setDefaultCharacterisitcsPanel();
         }
     }
-    
+
     private void setDefaultCharacterisitcsPanel()
     {
         this.cController = new CharacteristicsController(this);
@@ -347,5 +364,11 @@ public class IsletProcessController implements ElementsSelectedListener
     public void refreshView()
     {
         this.biController.display();
+    }
+
+    public void setDisplayMode(int displayMode)
+    {
+        u3DController.setDisplayMode(displayMode);
+        setDefaultCharacterisitcsPanel();
     }
 }
