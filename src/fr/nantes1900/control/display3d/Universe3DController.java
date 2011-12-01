@@ -158,6 +158,27 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	/**
 	 * Getter.
 	 * 
+	 * @return the selection mode
+	 */
+	public final int getSelectionMode() {
+		return this.selectionMode;
+	}
+
+	/**
+	 * Change the selection mode.
+	 * 
+	 */
+	public final void changeSelectionMode() {
+		if (this.selectionMode == SELECTION_TRIANGLE_MODE) {
+			this.selectionMode = SELECTION_SURFACE_MODE;
+		} else if (this.selectionMode == SELECTION_SURFACE_MODE) {
+			this.selectionMode = SELECTION_TRIANGLE_MODE;
+		}
+	}
+
+	/**
+	 * Getter.
+	 * 
 	 * @return the mouse rotate class
 	 */
 	public final NewMouseRotate getMouseRotate() {
@@ -289,8 +310,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	 * @param surfaceView
 	 *            The surfaceView containing the surface to select
 	 */
-	// TODO : maybe put the content of this method in the treatButton method if
-	// it is not used other way.
 	public final void selectOrUnselectSurface(final SurfaceView surfaceView) {
 		Surface surface = surfaceView.getSurface();
 		// surface not selected when clicked
@@ -350,25 +369,35 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	}
 
 	/**
-	 * Treats a left click action : handling of a surface selection.
+	 * Treats the surface selection.
 	 * 
-	 * @param e
+	 * @param MouseEvent
 	 *            The mouse event get from the MouseListener.
 	 * @param PickResult
 	 *            the PickResult get from the MouseListener.
 	 */
-	// TODO : commentaries !
 	private void treatSurfaceSelection(final MouseEvent e,
 			final PickResult result) {
 
 		SurfaceView surfaceViewPicked = (SurfaceView) result
 				.getNode(PickResult.SHAPE3D);
+		Surface surfacePicked = surfaceViewPicked.getSurface();
 
 		if (e.isControlDown()) {
-			this.surfacesSelected.clear();
+			// Control down
+			// -> Add or remove the surface to the surfacesSelected list.
+			this.selectOrUnselectSurface(surfaceViewPicked);
+		} else {
+			// Control up
+			// -> Unselect all the selected surfaces except the picked one.
+			if (this.surfacesSelected.contains(surfacePicked)
+					&& this.surfacesSelected.size() == 1) {
+				this.selectOrUnselectSurface(surfaceViewPicked);
+			} else {
+				this.deselectEverySurfaces();
+				this.selectOrUnselectSurface(surfaceViewPicked);
+			}
 		}
-		this.selectOrUnselectSurface(surfaceViewPicked);
-		this.changeRotationCenter(surfaceViewPicked);
 	}
 
 	/**
@@ -498,9 +527,10 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		this.trianglesSelected.addAll(meshToSelect);
 		this.meshesSelected.add(meshToSelect);
 	}
-	
-	public void selectTriangles(MeshView meshViewPicked, List<Mesh> meshesToSelect) {
-		for (Mesh m : meshesToSelect){
+
+	public void selectTriangles(MeshView meshViewPicked,
+			List<Mesh> meshesToSelect) {
+		for (Mesh m : meshesToSelect) {
 			this.selectTriangles(meshViewPicked, m);
 		}
 	}
@@ -514,12 +544,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		this.meshesSelected.remove(meshToUnselect);
 	}
 
-	public void unSelectTriangles(MeshView meshViewPicked, List<Mesh> meshesToSelect) {
-		for (Mesh m : meshesToSelect){
+	public void unSelectTriangles(MeshView meshViewPicked,
+			List<Mesh> meshesToSelect) {
+		for (Mesh m : meshesToSelect) {
 			this.unSelectTriangles(meshViewPicked, m);
 		}
 	}
-	
+
 	public void clearAll() {
 		this.surfacesSelected.clear();
 		this.u3DView.clearAll();
