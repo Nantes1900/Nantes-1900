@@ -8,6 +8,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.constants.ActionTypes;
+import fr.nantes1900.constants.Characteristics;
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.models.basis.Mesh;
@@ -66,6 +67,154 @@ public class BuildingsIsletController
         // LOOK : maybe it would be good to choose between industrial islet and
         // residential islet.
         this.islet = new ResidentialIslet();
+    }
+
+    public String getCharacteristics2(Triangle triangle)
+            throws InvalidCaseException
+    {
+        if (this.islet.getBiStep2().getInitialBuildings().getMesh()
+                .contains(triangle))
+        {
+            return Characteristics.TYPE_BUILDING;
+        } else if (this.islet.getBiStep2().getInitialBuildings().getMesh()
+                .contains(triangle))
+        {
+            return Characteristics.TYPE_GROUND;
+        } else
+        {
+            throw new InvalidCaseException();
+        }
+    }
+
+    public String getCharacteristics3(Surface surface)
+            throws InvalidCaseException
+    {
+        if (this.islet.getBiStep3().getGrounds() == surface)
+        {
+            return Characteristics.TYPE_GROUND;
+        }
+
+        if (this.islet.getBiStep3().getNoise() == surface)
+        {
+            return Characteristics.TYPE_NOISE;
+        }
+
+        for (Building b : this.islet.getBiStep3().getBuildings())
+        {
+            if (b.getbStep3().getInitialTotalSurface() == surface)
+            {
+                return Characteristics.TYPE_BUILDING;
+            }
+        }
+
+        throw new InvalidCaseException();
+    }
+
+    public String getCharacteristics3(Triangle triangle)
+            throws InvalidCaseException
+    {
+        if (this.islet.getBiStep3().getGrounds().getMesh().contains(triangle))
+        {
+            return Characteristics.TYPE_GROUND;
+        }
+
+        if (this.islet.getBiStep3().getNoise().getMesh().contains(triangle))
+        {
+            return Characteristics.TYPE_NOISE;
+        }
+
+        for (Building b : this.islet.getBiStep3().getBuildings())
+        {
+            if (b.getbStep3().getInitialTotalSurface().getMesh()
+                    .contains(triangle))
+            {
+                return Characteristics.TYPE_BUILDING;
+            }
+        }
+
+        throw new InvalidCaseException();
+    }
+
+    public String getCharacteristics4(Triangle triangle)
+            throws InvalidCaseException
+    {
+        if (this.islet.getBiStep4().getGrounds().getMesh().contains(triangle))
+        {
+            return Characteristics.TYPE_GROUND;
+        }
+
+        for (Building b : this.islet.getBiStep4().getBuildings())
+        {
+            if (b.getbStep4().getInitialWallSurface().getMesh()
+                    .contains(triangle))
+            {
+                return Characteristics.TYPE_WALL;
+            } else if (b.getbStep4().getInitialRoofSurface().getMesh()
+                    .contains(triangle))
+            {
+                return Characteristics.TYPE_ROOF;
+            }
+        }
+
+        throw new InvalidCaseException();
+    }
+
+    public String getCharacteristics5(Surface surface)
+            throws InvalidCaseException
+    {
+        if (this.islet.getBiStep5().getGrounds() == surface)
+        {
+            return Characteristics.TYPE_GROUND;
+        }
+
+        for (Building b : this.islet.getBiStep5().getBuildings())
+        {
+            for (Wall w : b.getbStep5().getWalls())
+            {
+                if (w == surface)
+                {
+                    return Characteristics.TYPE_WALL;
+                }
+            }
+            for (Roof r : b.getbStep5().getRoofs())
+            {
+                if (r == surface)
+                {
+                    return Characteristics.TYPE_ROOF;
+                }
+            }
+        }
+
+        throw new InvalidCaseException();
+    }
+
+    public String getCharacteristics6(Surface surface)
+            throws InvalidCaseException
+    {
+        if (this.islet.getBiStep6().getGrounds() == surface)
+        {
+            return Characteristics.TYPE_GROUND;
+        }
+
+        for (Building b : this.islet.getBiStep6().getBuildings())
+        {
+            for (Wall w : b.getbStep6().getWalls())
+            {
+                if (w == surface)
+                {
+                    return Characteristics.TYPE_WALL;
+                }
+            }
+            for (Roof r : b.getbStep6().getRoofs())
+            {
+                if (r == surface)
+                {
+                    return Characteristics.TYPE_ROOF;
+                }
+            }
+        }
+
+        throw new InvalidCaseException();
     }
 
     /**
