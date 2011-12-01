@@ -76,6 +76,8 @@ public final class TextsKeys
     public static final String KEY_ROTATIONCENTER = "RotationCenter";
     public static final String KEY_DISPLAYMESHES = "DisplayMeshes";
     public static final String KEY_DISPLAYPOLYGONS = "DisplayPolygons";
+    public static final String KEY_SELECTMESHES = "SelectMeshes";
+    public static final String KEY_SELECTTRIANGLES = "SelectTriangles";
     public static final String KEY_LOCKMESH = "LockMesh";
     public static final String KEY_UNLOCKMESH = "UnlockMesh";
     public static final String KEY_DESELECTTRIANGLES = "DeselectTriangles";

@@ -86,7 +86,6 @@ public class IsletProcessController implements ElementsSelectedListener
         this.parentController = parentControllerIn;
         this.biController = biControllerIn;
         this.cController = new CharacteristicsController(this);
-        this.cController = new CharacteristicsStep6Controller(this, null);
         this.itController = new IsletTreeController(this);
         this.nbController = new NavigationBarController(this);
         this.pController = new ParametersController(this);
@@ -145,6 +144,7 @@ public class IsletProcessController implements ElementsSelectedListener
         {
             throw new UnexistingStepException();
         }
+        setDefaultCharacterisitcsPanel();
         this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         this.biController.launchProcess();
         this.itController.refreshView();
@@ -161,6 +161,7 @@ public class IsletProcessController implements ElementsSelectedListener
         this.biController.getPreviousStep();
         this.itController.refreshView();
         this.nbController.getView().refreshStepTitle(this.getProgression());
+        setDefaultCharacterisitcsPanel();
     }
 
     public void abortProcess()
@@ -318,7 +319,27 @@ public class IsletProcessController implements ElementsSelectedListener
     @Override
     public void surfaceDeselected(Surface surfaceSelected)
     {
-        // TODO Auto-generated method stub
+        int step = this.getProgression();
+        boolean empty = false;
+        if ((step == 3 && f3DController.getSelectionMode().equals(Functions3DToolbarController.ACTION_MESHES) || step == 5 || step == 6))
+        {
+            empty = ((AbstractCharacteristicsSurfacesController) cController).removeSurfaceSelected(surfaceSelected);
+        }
+        
+        if (empty)
+        {
+            setDefaultCharacterisitcsPanel();
+        }
+    }
+    
+    private void setDefaultCharacterisitcsPanel()
+    {
+        this.cController = new CharacteristicsController(this);
+        this.ipView.setCharacteristicsView(this.cController.getView());
+    }
 
+    public void deselectAllSurfaces()
+    {
+        u3DController.deselectEverySurfaces();
     }
 }

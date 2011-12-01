@@ -22,7 +22,7 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
  * @author Camille
  * @author Luc
  */
-public class CharacteristicsStep4Controller extends CharacteristicsController
+public class CharacteristicsStep4Controller extends AbstractCharacteristicsTrianglesController
 {
     private ArrayList<Triangle> trianglesList;
 
@@ -34,9 +34,7 @@ public class CharacteristicsStep4Controller extends CharacteristicsController
     public CharacteristicsStep4Controller(
             IsletProcessController parentController, Triangle triangleSelected)
     {
-        super(parentController);
-        trianglesList = new ArrayList<Triangle>();
-        trianglesList.add(triangleSelected);
+        super(parentController, triangleSelected);
 
         this.cView = new CharacteristicsStep2View();
         this.cView.getValidateButton().addActionListener(new ActionListener() {
@@ -89,5 +87,12 @@ public class CharacteristicsStep4Controller extends CharacteristicsController
     {
         this.trianglesList.add(triangleSelected);
         ((CharacteristicsStep2View) this.cView).setType("");
+    }
+
+    @Override
+    public void modifyViewCharacteristics()
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

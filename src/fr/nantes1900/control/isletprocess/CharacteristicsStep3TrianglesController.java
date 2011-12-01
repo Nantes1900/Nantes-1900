@@ -24,7 +24,7 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep3TrianglesView;
  * @author Luc Jallerat
  */
 public class CharacteristicsStep3TrianglesController extends
-        CharacteristicsController
+AbstractCharacteristicsTrianglesController
 {
     private ArrayList<Triangle> trianglesList;
 
@@ -36,10 +36,8 @@ public class CharacteristicsStep3TrianglesController extends
     public CharacteristicsStep3TrianglesController(
             IsletProcessController parentController, Triangle triangleSelected)
     {
-        super(parentController);
+        super(parentController, triangleSelected);
         this.cView = new CharacteristicsStep2View();
-        trianglesList = new ArrayList<Triangle>();
-        trianglesList.add(triangleSelected);
 
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
@@ -76,5 +74,12 @@ public class CharacteristicsStep3TrianglesController extends
     public ArrayList<Triangle> getTriangles()
     {
         return this.trianglesList;
+    }
+
+    @Override
+    public void modifyViewCharacteristics()
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

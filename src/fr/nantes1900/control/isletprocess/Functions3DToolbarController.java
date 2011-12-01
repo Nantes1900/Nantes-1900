@@ -21,6 +21,10 @@ public class Functions3DToolbarController
     private IsletProcessController parentController;
     private Functions3DToolbarView toolbarView;
     
+    public static final String ACTION_TRIANGLES = "triangles";
+    public static final String ACTION_POLYGONS = "polygons";
+    public static final String ACTION_MESHES = "meshes";
+    
     public Functions3DToolbarController(IsletProcessController parentController)
     {
         this.toolbarView = new Functions3DToolbarView();
@@ -63,16 +67,37 @@ public class Functions3DToolbarController
             public void actionPerformed(ActionEvent arg0)
             {
                 JButton source = ((JButton) arg0.getSource());
-                if (source.getName().equals("meshes"))
+                if (source.getName().equals(ACTION_MESHES))
                 {
-                    source.setName("triangles");
+                    source.setName(ACTION_POLYGONS);
                     source.setText("#");
                     source.setToolTipText(FileTools.readElementText(TextsKeys.KEY_DISPLAYPOLYGONS));
-                } else if (source.getName().equals("triangles"))
+                } else if (source.getName().equals(ACTION_POLYGONS))
                 {
-                    source.setName("meshes");
+                    source.setName(ACTION_MESHES);
                     source.setText("$");
                     source.setToolTipText(FileTools.readElementText(TextsKeys.KEY_DISPLAYMESHES));
+                }
+                // TODO call 3D universe controller to show meshes or polygons
+            }
+        });
+
+        toolbarView.getSelectionModeButton().addActionListener(new ActionListener(){
+            
+            @Override
+            public void actionPerformed(ActionEvent arg0)
+            {
+                JButton source = ((JButton) arg0.getSource());
+                if (source.getName().equals(ACTION_MESHES))
+                {
+                    source.setName(ACTION_TRIANGLES);
+                    source.setText("t");
+                    source.setToolTipText(FileTools.readElementText(TextsKeys.KEY_SELECTTRIANGLES));
+                } else if (source.getName().equals(ACTION_TRIANGLES))
+                {
+                    source.setName(ACTION_MESHES);
+                    source.setText("m");
+                    source.setToolTipText(FileTools.readElementText(TextsKeys.KEY_SELECTMESHES));
                 }
                 // TODO call 3D universe controller to show meshes or polygons
             }
@@ -83,7 +108,7 @@ public class Functions3DToolbarController
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                // TODO call 3D universe controller to deselect all selected meshes
+                Functions3DToolbarController.this.parentController.deselectAllSurfaces();
             }
         });
 
@@ -100,5 +125,10 @@ public class Functions3DToolbarController
     public Functions3DToolbarView getToolbar()
     {
         return toolbarView;
+    }
+    
+    public String getSelectionMode()
+    {
+        return toolbarView.getSelectionModeButton().getName();
     }
 }

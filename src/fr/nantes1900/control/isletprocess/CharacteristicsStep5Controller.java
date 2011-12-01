@@ -21,7 +21,7 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep5View;
  * @author Camille
  * @author Luc
  */
-public class CharacteristicsStep5Controller extends CharacteristicsController
+public class CharacteristicsStep5Controller extends AbstractCharacteristicsSurfacesController
 {
     private ArrayList<Surface> surfacesList;
 
@@ -33,9 +33,7 @@ public class CharacteristicsStep5Controller extends CharacteristicsController
     public CharacteristicsStep5Controller(
             IsletProcessController parentController, Surface surfaceSelected)
     {
-        super(parentController);
-        surfacesList = new ArrayList<Surface>();
-        surfacesList.add(surfaceSelected);
+        super(parentController, surfaceSelected);
 
         this.cView = new CharacteristicsStep5View();
         this.cView.getValidateButton().addActionListener(new ActionListener() {
@@ -95,5 +93,12 @@ public class CharacteristicsStep5Controller extends CharacteristicsController
     public void addSurfaceSelected(Surface surfaceSelected)
     {
         this.surfacesList.add(surfaceSelected);
+    }
+
+    @Override
+    public void modifyViewCharacteristics()
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

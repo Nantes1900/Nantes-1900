@@ -26,7 +26,7 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep3ElementsView;
  * @author Luc
  */
 public class CharacteristicsStep3ElementsController extends
-        CharacteristicsController
+        AbstractCharacteristicsSurfacesController
 {
     private ArrayList<Surface> surfacesList;
 
@@ -38,9 +38,7 @@ public class CharacteristicsStep3ElementsController extends
     public CharacteristicsStep3ElementsController(
             IsletProcessController parentController, Surface elementSelected)
     {
-        super(parentController);
-        this.surfacesList = new ArrayList<Surface>();
-        this.surfacesList.add(elementSelected);
+        super(parentController, elementSelected);
 
         this.cView = new CharacteristicsStep3ElementsView();
         ((CharacteristicsStep3ElementsView) this.cView).setType("");
@@ -92,6 +90,20 @@ public class CharacteristicsStep3ElementsController extends
     public void addSurfaceSelected(Surface surfaceSelected)
     {
         surfacesList.add(surfaceSelected);
-        ((CharacteristicsStep2View) this.cView).setType("");
+        ((CharacteristicsStep3ElementsView) this.cView).setType("");
+    }
+
+    public boolean removeSurfaceSelected(Surface surfaceSelected)
+    {
+        surfacesList.remove(surfaceSelected);
+
+        return surfacesList.isEmpty();
+    }
+
+    @Override
+    public void modifyViewCharacteristics()
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

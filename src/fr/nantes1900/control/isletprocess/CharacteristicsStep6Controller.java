@@ -15,12 +15,11 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep6View;
  * @author Camille
  * @author Luc
  */
-public class CharacteristicsStep6Controller extends CharacteristicsController
+public class CharacteristicsStep6Controller extends AbstractCharacteristicsSurfacesController
 {
     private ArrayList<Surface> surfacesList;
     private Surface surfaceLocked;
     private boolean isEnabled;
-//    private CharacteristicsStep6View cView;
 
     /**
      * Constructor.
@@ -30,8 +29,8 @@ public class CharacteristicsStep6Controller extends CharacteristicsController
     public CharacteristicsStep6Controller(
             IsletProcessController parentController, Surface surfaceLocked)
     {
-        super(parentController);
-        surfacesList = new ArrayList<Surface>();
+        super(parentController, surfaceLocked);
+        
         this.surfaceLocked = surfaceLocked;
         this.cView = new CharacteristicsStep6View();
         isEnabled = true;
@@ -52,11 +51,6 @@ public class CharacteristicsStep6Controller extends CharacteristicsController
         return this.surfacesList;
     }
 
-    public void addSurfaceSelected(Surface surfaceSelected)
-    {
-        this.surfacesList.add(surfaceSelected);
-    }
-
     public void setEnabled(boolean enabled)
     {
         if (!this.isEnabled && enabled)
@@ -69,5 +63,12 @@ public class CharacteristicsStep6Controller extends CharacteristicsController
             cView.setToolTipText("Test");
             ((CharacteristicsStep6View) cView).setModificationsEnabled(false);
         }
+    }
+
+    @Override
+    public void modifyViewCharacteristics()
+    {
+        // TODO Auto-generated method stub
+        
     }
 }

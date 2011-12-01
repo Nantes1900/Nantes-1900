@@ -26,3 +26,5 @@ LockMesh=Verouiller le maillage
 UnlockMesh=Déverouiller le maillage
 DeselectTriangles=Déselectionner tous les triangles
 DeselectMeshes=Déselectionner tous les maillages
+SelectTriangles=Passer en mode de sélection : triangles
+SelectMeshes=Passer en mode de sélection : surfaces

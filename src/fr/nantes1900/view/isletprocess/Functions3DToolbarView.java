@@ -7,10 +7,12 @@ import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.AbstractButton;
 import javax.swing.JButton;
 import javax.swing.JToolBar;
 
 import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.control.isletprocess.Functions3DToolbarController;
 import fr.nantes1900.utils.FileTools;
 
 
@@ -24,6 +26,7 @@ public class Functions3DToolbarView extends JToolBar
     private JButton bDisplayType;
     private JButton bDeselectTriangles;
     private JButton bDeselectMeshes;
+    private JButton bSelectionMode;
     /**
      * Default generated serial UID.
      */
@@ -39,7 +42,7 @@ public class Functions3DToolbarView extends JToolBar
         
         bDisplayType = new JButton("$");
         bDisplayType.setToolTipText(FileTools.readElementText(TextsKeys.KEY_DISPLAYMESHES));
-        bDisplayType.setName("meshes");
+        bDisplayType.setName(Functions3DToolbarController.ACTION_MESHES);
         bLockButton= new JButton("p");
         bLockButton.setToolTipText(FileTools.readElementText(TextsKeys.KEY_LOCKMESH));
         bLockButton.setName("lock");
@@ -47,6 +50,9 @@ public class Functions3DToolbarView extends JToolBar
         bDeselectMeshes.setToolTipText(FileTools.readElementText(TextsKeys.KEY_DESELECTMESHES));
         bDeselectTriangles = new JButton("ct");
         bDeselectTriangles.setToolTipText(FileTools.readElementText(TextsKeys.KEY_DESELECTTRIANGLES));
+        bSelectionMode = new JButton("t");
+        bSelectionMode.setToolTipText(FileTools.readElementText(TextsKeys.KEY_SELECTTRIANGLES));
+        bLockButton.setName(Functions3DToolbarController.ACTION_TRIANGLES);
         
         this.add(bRotationCenter);
         setMinimumSize(new Dimension(30, 0));
@@ -75,6 +81,11 @@ public class Functions3DToolbarView extends JToolBar
     public JButton getDeselectTrianglesButton()
     {
         return this.bDeselectTriangles;
+    }
+    
+    public JButton getSelectionModeButton()
+    {
+        return this.bSelectionMode;
     }
     
     public void showLockButton(boolean show)
@@ -118,6 +129,18 @@ public class Functions3DToolbarView extends JToolBar
         } else
         {
             this.remove(bDeselectTriangles);
+        }
+    }
+
+    
+    public void showSelectionModeButton(boolean show)
+    {
+        if (show)
+        {
+            this.add(bSelectionMode);
+        } else
+        {
+            this.remove(bSelectionMode);
         }
     }
 }
