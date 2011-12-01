@@ -62,7 +62,6 @@ public class IsletSelectionView extends PFrame
         this.setMinimumSize(new Dimension(600, 600));
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setLocationRelativeTo(null);
 
         // gets the view to add
         this.aView = actionsView;

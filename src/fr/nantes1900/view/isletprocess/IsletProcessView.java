@@ -38,8 +38,8 @@ public class IsletProcessView extends PFrame
         super();
         this.setMinimumSize(new Dimension(960, 760));
         this.setPreferredSize(new Dimension(1200, 900));
-        this.setLocationRelativeTo(null);
-
+        this.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        
         this.cView = caracteristicsView;
         this.itView = isletTreeView;
         this.nbView = navigationBarView;
