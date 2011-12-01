@@ -69,4 +69,15 @@ public class CharacteristicsStep5View extends CharacteristicsView
     {
         return this.cbNoise.isSelected();
     }
+    
+    public void setMergeEnable(boolean mergeEnable)
+    {
+        this.cbMerge.setEnabled(mergeEnable);
+    }
+
+    public void deselectAll()
+    {
+        cbMerge.setSelected(false);
+        cbNoise.setSelected(false);
+    }
 }

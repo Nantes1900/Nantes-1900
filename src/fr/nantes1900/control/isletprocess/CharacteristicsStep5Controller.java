@@ -98,7 +98,13 @@ public class CharacteristicsStep5Controller extends AbstractCharacteristicsSurfa
     @Override
     public void modifyViewCharacteristics()
     {
-        // TODO Auto-generated method stub
-        
+        ((CharacteristicsStep5View) cView).deselectAll();
+        if (surfacesList.size() > 1)
+        {
+            ((CharacteristicsStep5View) cView).setMergeEnable(true);
+        } else
+        {
+            ((CharacteristicsStep5View) cView).setMergeEnable(false);
+        }
     }
 }

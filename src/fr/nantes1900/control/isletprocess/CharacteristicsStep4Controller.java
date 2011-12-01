@@ -92,7 +92,19 @@ public class CharacteristicsStep4Controller extends AbstractCharacteristicsTrian
     @Override
     public void modifyViewCharacteristics()
     {
-        // TODO Auto-generated method stub
-        
+        if (trianglesList.size() == 1)
+        {
+            try
+            {
+                ((CharacteristicsStep2View) this.cView).setType(parentController.getBiController().getCharacteristics4(trianglesList.get(0)));
+            } catch (InvalidCaseException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } else
+        {
+            ((CharacteristicsStep2View) this.cView).setType("");
+        }
     }
 }

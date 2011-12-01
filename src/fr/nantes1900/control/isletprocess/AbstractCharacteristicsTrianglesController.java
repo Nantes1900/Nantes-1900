@@ -19,8 +19,11 @@ public abstract class AbstractCharacteristicsTrianglesController extends
 
     public void addTriangleSelected(Triangle triangleSelected)
     {
-        this.trianglesList.add(triangleSelected);
-        modifyViewCharacteristics();
+        if (trianglesList.contains(triangleSelected))
+        {
+            this.trianglesList.add(triangleSelected);
+            modifyViewCharacteristics();
+        }
     }
     
     public abstract void modifyViewCharacteristics();

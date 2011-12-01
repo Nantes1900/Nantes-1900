@@ -24,7 +24,7 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep3TrianglesView;
  * @author Luc Jallerat
  */
 public class CharacteristicsStep3TrianglesController extends
-AbstractCharacteristicsTrianglesController
+        AbstractCharacteristicsTrianglesController
 {
     private ArrayList<Triangle> trianglesList;
 
@@ -49,14 +49,16 @@ AbstractCharacteristicsTrianglesController
                 {
                     try
                     {
-                        CharacteristicsStep3TrianglesController.this.parentController.getBiController().action3(trianglesList, ActionTypes.REMOVE);
+                        CharacteristicsStep3TrianglesController.this.parentController
+                                .getBiController().action3(trianglesList,
+                                        ActionTypes.REMOVE);
                     } catch (InvalidCaseException e)
                     {
                         JOptionPane.showMessageDialog(cView, FileTools
                                 .readErrorMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
-                                        TextsKeys.MESSAGETYPE_MESSAGE), FileTools
-                                .readErrorMessage(
+                                        TextsKeys.MESSAGETYPE_MESSAGE),
+                                FileTools.readErrorMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
                                         TextsKeys.MESSAGETYPE_TITLE),
                                 JOptionPane.ERROR_MESSAGE);
@@ -79,7 +81,6 @@ AbstractCharacteristicsTrianglesController
     @Override
     public void modifyViewCharacteristics()
     {
-        // TODO Auto-generated method stub
-        
+        // Nothing special to do
     }
 }

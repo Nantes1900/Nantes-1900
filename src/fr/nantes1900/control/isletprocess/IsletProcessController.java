@@ -5,6 +5,7 @@ package fr.nantes1900.control.isletprocess;
 
 import java.awt.Cursor;
 import java.io.File;
+import java.util.ArrayList;
 
 import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
@@ -204,52 +205,40 @@ public class IsletProcessController implements ElementsSelectedListener
     @Override
     public final void triangleSelected(final Triangle triangleSelected)
     {
-        switch (this.getProgression())
+        int step = this.getProgression();
+
+        // step 2 in triangles selection mode or in step 2 or 4.
+        if ((step == 3
+                && f3DController.getSelectionMode().equals(
+                        Functions3DToolbarController.ACTION_TRIANGLES)
+                || step == 5 || step == 6))
         {
-            case 2:
-                // If the characteristic panel is of another type.
-                if (!(this.cController instanceof CharacteristicsStep2Controller))
+            if ((this.cController instanceof CharacteristicsController))
+            {
+                switch (this.getProgression())
                 {
-                    this.cController = new CharacteristicsStep2Controller(this,
-                            triangleSelected);
-                    this.ipView.setCharacteristicsView(this.cController
-                            .getView());
-                } else
-                {
-                    ((CharacteristicsStep2Controller) this.cController)
-                            .addTriangleSelected(triangleSelected);
+                    case 2:
+                        this.cController = new CharacteristicsStep2Controller(
+                                this, triangleSelected);
+                    break;
+                    case 3:
+                        this.cController = new CharacteristicsStep3TrianglesController(
+                                this, triangleSelected);
+                    break;
+                    case 4:
+                        this.cController = new CharacteristicsStep4Controller(
+                                this, triangleSelected);
+                    break;
+
                 }
-            break;
-            case 3:
-                // TODO check the selection mode when it will be created
-                // If the characteristic panel is of another type.
-                if (!(this.cController instanceof CharacteristicsStep3TrianglesController))
-                {
-                    this.cController = new CharacteristicsStep3TrianglesController(
-                            this, triangleSelected);
-                    this.ipView.setCharacteristicsView(this.cController
-                            .getView());
-                } else
-                {
-                    ((CharacteristicsStep3TrianglesController) this.cController)
-                            .addTriangleSelected(triangleSelected);
-                }
-            break;
-            case 4:
-                // If the characteristic panel is of another type.
-                if (!(this.cController instanceof CharacteristicsStep4Controller))
-                {
-                    this.cController = new CharacteristicsStep4Controller(this,
-                            triangleSelected);
-                    this.ipView.setCharacteristicsView(this.cController
-                            .getView());
-                } else
-                {
-                    ((CharacteristicsStep4Controller) this.cController)
-                            .addTriangleSelected(triangleSelected);
-                }
-            break;
+                this.ipView.setCharacteristicsView(this.cController.getView());
+            } else
+            {
+                ((AbstractCharacteristicsTrianglesController) this.cController)
+                        .addTriangleSelected(triangleSelected);
+            }
         }
+
     }
 
     public class UnexistingStepException extends Exception
@@ -282,51 +271,40 @@ public class IsletProcessController implements ElementsSelectedListener
     @Override
     public void surfaceSelected(Surface surfaceSelected)
     {
-        switch (this.getProgression())
+        int step = this.getProgression();
+
+        // step 3 in meshes selection mode or in step 5 or 6.
+        if ((step == 3
+                && f3DController.getSelectionMode().equals(
+                        Functions3DToolbarController.ACTION_MESHES)
+                || step == 5 || step == 6))
         {
-            case 3:
-                // If the characteristic panel is of another type.
-                if (!(this.cController instanceof CharacteristicsStep3ElementsController))
+            if ((this.cController instanceof CharacteristicsController))
+            {
+                switch (this.getProgression())
                 {
-                    this.cController = new CharacteristicsStep3ElementsController(
-                            this, surfaceSelected);
-                    this.ipView.setCharacteristicsView(this.cController
-                            .getView());
-                } else
-                {
-                    ((CharacteristicsStep3ElementsController) this.cController)
-                            .addSurfaceSelected(surfaceSelected);
+                    case 3:
+                        this.cController = new CharacteristicsStep3ElementsController(
+                                this, surfaceSelected);
+                    break;
+                    case 5:
+                        this.cController = new CharacteristicsStep5Controller(
+                                this, surfaceSelected);
+                    break;
+                    case 6:
+                        this.cController = new CharacteristicsStep6Controller(
+                                this, surfaceSelected,
+                                (ArrayList<Surface>) surfaceSelected
+                                        .getNeighbours());
+                    break;
+
                 }
-            break;
-            case 5:
-                // TODO check the selection mode when it will be created
-                // If the characteristic panel is of another type.
-                if (!(this.cController instanceof CharacteristicsStep5Controller))
-                {
-                    this.cController = new CharacteristicsStep5Controller(this,
-                            surfaceSelected);
-                    this.ipView.setCharacteristicsView(this.cController
-                            .getView());
-                } else
-                {
-                    ((CharacteristicsStep5Controller) this.cController)
-                            .addSurfaceSelected(surfaceSelected);
-                }
-            break;
-            case 6:
-                // If the characteristic panel is of another type.
-                if (!(this.cController instanceof CharacteristicsStep6Controller))
-                {
-                    this.cController = new CharacteristicsStep6Controller(this,
-                            surfaceSelected);
-                    this.ipView.setCharacteristicsView(this.cController
-                            .getView());
-                } else
-                {
-                    ((CharacteristicsStep6Controller) this.cController)
-                            .addSurfaceSelected(surfaceSelected);
-                }
-            break;
+                this.ipView.setCharacteristicsView(this.cController.getView());
+            } else
+            {
+                ((AbstractCharacteristicsSurfacesController) this.cController)
+                        .addSurfaceSelected(surfaceSelected);
+            }
         }
     }
 

@@ -103,7 +103,19 @@ public class CharacteristicsStep3ElementsController extends
     @Override
     public void modifyViewCharacteristics()
     {
-        // TODO Auto-generated method stub
-        
+        if (surfacesList.size() == 1)
+        {
+            try
+            {
+                ((CharacteristicsStep3ElementsView) this.cView).setType(parentController.getBiController().getCharacteristics3(surfacesList.get(0)));
+            } catch (InvalidCaseException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        } else
+        {
+            ((CharacteristicsStep3ElementsView) this.cView).setType("");
+        }
     }
 }

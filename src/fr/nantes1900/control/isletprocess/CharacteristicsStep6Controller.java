@@ -27,12 +27,13 @@ public class CharacteristicsStep6Controller extends AbstractCharacteristicsSurfa
      * @param triangleSelected
      */
     public CharacteristicsStep6Controller(
-            IsletProcessController parentController, Surface surfaceLocked)
+            IsletProcessController parentController, Surface surfaceLocked, ArrayList<Surface> neighbours)
     {
-        super(parentController, surfaceLocked);
+        super(parentController);
         
         this.surfaceLocked = surfaceLocked;
-        this.cView = new CharacteristicsStep6View();
+        this.surfacesList = neighbours;
+        this.cView = new CharacteristicsStep6View(neighbours);
         isEnabled = true;
         setEnabled(false);
 
@@ -68,7 +69,6 @@ public class CharacteristicsStep6Controller extends AbstractCharacteristicsSurfa
     @Override
     public void modifyViewCharacteristics()
     {
-        // TODO Auto-generated method stub
-        
+        ((CharacteristicsStep6View) cView).setList(surfacesList);
     }
 }

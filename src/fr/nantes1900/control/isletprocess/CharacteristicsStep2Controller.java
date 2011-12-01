@@ -85,7 +85,14 @@ public class CharacteristicsStep2Controller extends AbstractCharacteristicsTrian
     {
         if (trianglesList.size() == 1)
         {
-//            ((CharacteristicsStep2View) this.cView).setType(trianglesList.get(0));
+            try
+            {
+                ((CharacteristicsStep2View) this.cView).setType(parentController.getBiController().getCharacteristics2(trianglesList.get(0)));
+            } catch (InvalidCaseException e)
+            {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         } else
         {
             ((CharacteristicsStep2View) this.cView).setType("");
