@@ -51,19 +51,33 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	private ElementsSelectedListener parentController;
 
 	private final EventListenerList listeners = new EventListenerList();
-
-	public static final int DISPLAY_MESH_MODE = 1;
-
-	public static final int DISPLAY_POLYGON_MODE = 2;
 	/**
 	 * The attribute to know if the U3DView has to display the mesh or the
 	 * polygon (a surface is compounded of a mesh and a polygon).
 	 */
 	private int displayMode;
+	public static final int DISPLAY_MESH_MODE = 1;
+	public static final int DISPLAY_POLYGON_MODE = 2;
+	/**
+	 * The attribute to know about the selection mode: triangles or surfaces.
+	 */
+	private int selectionMode;
+	public static final int SELECTION_TRIANGLE_MODE = 1;
+	public static final int SELECTION_SURFACE_MODE = 2;
+	/**
+	 * A constant defining the orientation tolerance (in degrees) when getting
+	 * all the triangles oriented as a triangle input.
+	 */
+	public static final int ORIENTATION_TOLERANCE = 10;
 	/**
 	 * The list of the triangles currently selected.
 	 */
 	private List<Triangle> trianglesSelected = new ArrayList<>();
+	/**
+	 * The list of the meshes selected. This list is used when deselecting a set
+	 * of triangles.
+	 */
+	private List<Mesh> meshesSelected = new ArrayList<>();
 	/**
 	 * The list of the surfaces currently selected.
 	 */
@@ -78,6 +92,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		this.parentController = parentControllerIn;
 		this.u3DView = new Universe3DView(this);
 		this.displayMode = DISPLAY_MESH_MODE;
+		this.selectionMode = SELECTION_TRIANGLE_MODE;
 	}
 
 	public void addElementsSelectedListener(ElementsSelectedListener listener) {
@@ -202,10 +217,15 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	@Override
 	public final void mouseClicked(final MouseEvent e) {
 		int buttonDown = e.getButton();
-		if (buttonDown == MouseEvent.BUTTON1) {
-			this.treatLeftClick(e);
-		} else if (buttonDown == MouseEvent.BUTTON3) {
-			this.treatRightClick(e);
+		this.pickCanvas.setShapeLocation(e);
+		PickResult result = this.pickCanvas.pickClosest();
+
+		if (buttonDown == MouseEvent.BUTTON1 && result != null) {
+			if (this.selectionMode == SELECTION_TRIANGLE_MODE) {
+				this.treatTriangleSelection(e, result);
+			} else if (this.selectionMode == SELECTION_SURFACE_MODE) {
+				this.treatSurfaceSelection(e, result);
+			}
 		}
 	}
 
@@ -334,83 +354,120 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 	 * 
 	 * @param e
 	 *            The mouse event get from the MouseListener.
+	 * @param PickResult
+	 *            the PickResult get from the MouseListener.
 	 */
 	// TODO : commentaries !
-	private void treatLeftClick(final MouseEvent e) {
-		this.pickCanvas.setShapeLocation(e);
+	private void treatSurfaceSelection(final MouseEvent e,
+			final PickResult result) {
 
-		PickResult result = this.pickCanvas.pickClosest();
+		SurfaceView surfaceViewPicked = (SurfaceView) result
+				.getNode(PickResult.SHAPE3D);
 
-		if (result != null) {
-			SurfaceView surfaceViewPicked = (SurfaceView) result
-					.getNode(PickResult.SHAPE3D);
-
-			if (e.isControlDown()) {
-				this.surfacesSelected.clear();
-			}
-			this.selectOrUnselectSurface(surfaceViewPicked);
-			this.changeRotationCenter(surfaceViewPicked);
+		if (e.isControlDown()) {
+			this.surfacesSelected.clear();
 		}
+		this.selectOrUnselectSurface(surfaceViewPicked);
+		this.changeRotationCenter(surfaceViewPicked);
 	}
 
 	/**
-	 * Treats a right click action : handling of triangles selection.
+	 * Treats the triangle selection when the user clicks on the mesh and if the
+	 * selection mode is set to triangle.
 	 * 
-	 * @param e
+	 * @param MouseEvent
 	 *            The mouse event get from the MouseListener.
+	 * @param PickResult
+	 *            the PickResult get from the MouseListener.
 	 */
-	private void treatRightClick(final MouseEvent e) {
-		this.pickCanvas.setShapeLocation(e);
+	private void treatTriangleSelection(final MouseEvent e,
+			final PickResult result) {
 
-		PickResult result = this.pickCanvas.pickClosest();
+		PickIntersection pickIntersection = result.getIntersection(0);
 
-		if (result != null) {
-			PickIntersection pickIntersection = result.getIntersection(0);
+		// Gets the meshView picked.
+		MeshView meshView = (MeshView) pickIntersection.getGeometryArray();
+		// Gets the the triangle picked.
+		int[] pointIndex = pickIntersection.getPrimitiveVertexIndices();
+		Triangle trianglePicked = meshView
+				.getTriangleFromArrayPosition(pointIndex[0] / 3);
 
-			// Gets the meshView picked.
-			MeshView meshView = (MeshView) pickIntersection.getGeometryArray();
+		// Computes the neighbours of the triangle picked.
+		Mesh oriented = meshView.getMesh().orientedAs(
+				trianglePicked.getNormal(), ORIENTATION_TOLERANCE);
+		Mesh neighbours = new Mesh();
+		trianglePicked.returnNeighbours(neighbours, oriented);
 
-			// Gets the index of the triangle picked.
-			int[] pointIndex = pickIntersection.getPrimitiveVertexIndices();
-			// TODO : 3 : magic number !
-			Triangle trianglePicked = meshView
-					.getTriangleFromArrayPosition(pointIndex[0] / 3);
+		if (e.isControlDown()) {
+			if (this.trianglesSelected.contains(trianglePicked)) {
+				// Control down and triangle picked selected before click
+				// -> Unselect the area picked
 
-			// FIXME : create a button in the tool bar to set this number
-			// FIXME : magic number ! Put this as a PUBLIC STATIC FINAL INT.
-			int turn = 30;
-
-			// Computes the neighbours of the triangle.
-			// FIXME : magic number.
-			Mesh oriented = meshView.getMesh().orientedAs(
-					trianglePicked.getNormal(), 10);
-
-			Mesh neighbours = new Mesh();
-
-			trianglePicked.returnNeighbours(neighbours, oriented);
-
-			// If this triangle is not already selected.
-			if (!this.trianglesSelected.contains(trianglePicked)) {
-				// Selects these triangles.
-				for (Triangle t : neighbours) {
-					meshView.select(t);
-					fireTriangleSelected(t);
-				}
-
-				this.trianglesSelected.addAll(neighbours);
-
-				// Changes the center of rotation.
-				this.mouseRotate.setCenter(trianglePicked.getP1());
+				Mesh meshToRemove = getMeshSelected(trianglePicked);
+				this.unSelectTriangles(meshView, meshToRemove);
 			} else {
-				// Selects these triangles.
-				for (Triangle t : neighbours) {
-					meshView.unselect(t);
-					fireTriangleDeselected(t);
-				}
+				// Control down and triangle picked not selected before click
+				// -> select the area picked
 
-				this.trianglesSelected.removeAll(neighbours);
+				this.selectTriangles(meshView, neighbours);
+			}
+		} else if (!e.isControlDown()) {
+			if (this.trianglesSelected.contains(trianglePicked)) {
+				// Control up and triangle picked selected before click
+				// -> unselect the other areas
+
+				if (this.meshesSelected.size() == 1) {
+					this.unSelectTriangles(meshView, this.meshesSelected.get(0));
+				} else {
+					List<Mesh> meshesToRemove = getComplementaryMeshesSelected(trianglePicked);
+					this.unSelectTriangles(meshView, meshesToRemove);
+				}
+			} else {
+				// Control up and triangle picked not selected before click
+				// -> unselect the other areas and select the area picked
+
+				List<Mesh> meshesToRemove = getComplementaryMeshesSelected(trianglePicked);
+				this.unSelectTriangles(meshView, meshesToRemove);
+				this.selectTriangles(meshView, neighbours);
+			}
+
+		}
+
+	}
+
+	/**
+	 * Get the mesh from meshesSelected list containing the input triangle.
+	 * 
+	 * @param triangle
+	 *            The triangle to check.
+	 * @return Mesh The mesh containing the triangle.
+	 */
+	public Mesh getMeshSelected(Triangle triangle) {
+		Mesh mesh = null;
+		for (Mesh m : this.meshesSelected) {
+			if (m.contains(triangle)) {
+				mesh = m;
 			}
 		}
+		return mesh;
+	}
+
+	/**
+	 * Get the meshes from meshesSelected list not containing the input
+	 * triangle.
+	 * 
+	 * @param triangle
+	 *            The triangle to check.
+	 * @return List<Mesh> The meshes not containing the triangle.
+	 */
+	public List<Mesh> getComplementaryMeshesSelected(Triangle triangle) {
+		List<Mesh> meshes = new ArrayList<>();
+		for (Mesh m : this.meshesSelected) {
+			if (!m.contains(triangle)) {
+				meshes.add(m);
+			}
+		}
+		return meshes;
 	}
 
 	public void deselectEverySurfaces() {
@@ -424,6 +481,45 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 		}
 	}
 
+	/**
+	 * Selects a set of triangles
+	 * 
+	 * @param MeshView
+	 *            The meshiew giving the possibility to modify the triangles
+	 *            appearance (change the texture).
+	 * @param Mesh
+	 *            The mesh containing the list of triangle to picked.
+	 */
+	public void selectTriangles(MeshView meshViewPicked, Mesh meshToSelect) {
+		for (Triangle t : meshToSelect) {
+			meshViewPicked.select(t);
+			fireTriangleSelected(t);
+		}
+		this.trianglesSelected.addAll(meshToSelect);
+		this.meshesSelected.add(meshToSelect);
+	}
+	
+	public void selectTriangles(MeshView meshViewPicked, List<Mesh> meshesToSelect) {
+		for (Mesh m : meshesToSelect){
+			this.selectTriangles(meshViewPicked, m);
+		}
+	}
+
+	public void unSelectTriangles(MeshView meshViewPicked, Mesh meshToUnselect) {
+		for (Triangle t : meshToUnselect) {
+			meshViewPicked.unSelect(t);
+			fireTriangleDeselected(t);
+		}
+		this.trianglesSelected.removeAll(meshToUnselect);
+		this.meshesSelected.remove(meshToUnselect);
+	}
+
+	public void unSelectTriangles(MeshView meshViewPicked, List<Mesh> meshesToSelect) {
+		for (Mesh m : meshesToSelect){
+			this.unSelectTriangles(meshViewPicked, m);
+		}
+	}
+	
 	public void clearAll() {
 		this.surfacesSelected.clear();
 		this.u3DView.clearAll();

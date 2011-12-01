@@ -78,16 +78,16 @@ public class Universe3DView extends JPanel {
 	/**
 	 * Constant defining the range where the lights have an effect.
 	 */
-	public static final int LIGHT_BOUND_RADIUS = 1000;
+	public static final int LIGHT_BOUND_RADIUS = 100000;
 	/**
 	 * Constant defining the range where the transformations (rotation,
 	 * translation, zoom) have an effect.
 	 */
-	public static final int BOUNDING_RADIUS = 1000;
+	public static final int BOUNDING_RADIUS = 100000;
 	/**
 	 * Constant defining the range where objects displayed are visible.
 	 */
-	public static final int BACKCLIP_DISTANCE = 1000;
+	public static final int BACKCLIP_DISTANCE = 100000;
 	/**
 	 * Constant defining the sensitivity of the zoom transformation
 	 */

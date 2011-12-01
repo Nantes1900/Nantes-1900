@@ -176,7 +176,7 @@ public class MeshView extends TriangleArray
      * @param i
      *            The index of the triangle which to be unselected. TODO.
      */
-    public final void unselect(final int i)
+    public final void unSelect(final int i)
     {
         // FIXME : remove the triangle from the Universe3DController triangle
         // selection.
@@ -186,8 +186,8 @@ public class MeshView extends TriangleArray
         this.setTextureCoordinate(0, i * 3 + 2, new TexCoord2f(1.0f, 0.0f));
     }
 
-    public void unselect(Triangle triangle)
+    public void unSelect(Triangle triangle)
     {
-        this.unselect(this.getArrayPositionFromTriangle(triangle));
+        this.unSelect(this.getArrayPositionFromTriangle(triangle));
     }
 }
