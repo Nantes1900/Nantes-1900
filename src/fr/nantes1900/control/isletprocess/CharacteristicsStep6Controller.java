@@ -17,7 +17,6 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep6View;
  */
 public class CharacteristicsStep6Controller extends AbstractCharacteristicsSurfacesController
 {
-    private ArrayList<Surface> surfacesList;
     private Surface surfaceLocked;
     private boolean isEnabled;
 

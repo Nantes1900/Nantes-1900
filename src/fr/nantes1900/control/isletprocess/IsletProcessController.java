@@ -22,54 +22,53 @@ import fr.nantes1900.view.isletprocess.IsletProcessView;
  * @author Camille Bouquet
  * @author Luc Jallerat
  */
-public class IsletProcessController implements ElementsSelectedListener
-{
+public class IsletProcessController implements ElementsSelectedListener {
     /**
      * Parent controller of this one.
      */
-    private GlobalController             parentController;
+    private GlobalController parentController;
 
     /**
      * The window containing all the needed panels to process an islet.
      */
-    private IsletProcessView             ipView;
+    private IsletProcessView ipView;
 
     private Functions3DToolbarController f3DController;
 
     /**
      * Controller of the current characteristic panel.
      */
-    private CharacteristicsController    cController;
+    private CharacteristicsController cController;
 
     /**
      * Controller of the tree showing the architecture of data in the current
      * step.
      */
-    private IsletTreeController          itController;
+    private IsletTreeController itController;
 
     /**
      * Controller of the navigation bar which allows to abort the treatment of
      * an islet and select a new one, launch a new process to go on a further
      * step and so on.
      */
-    private NavigationBarController      nbController;
+    private NavigationBarController nbController;
 
     /**
      * Controller of the parameter panel which allows to modify parameters for
      * the next process.
      */
-    private ParametersController         pController;
+    private ParametersController pController;
 
     /**
      * Controller of the 3d View which displays meshes.
      */
-    private Universe3DController         u3DController;
+    private Universe3DController u3DController;
 
     /**
      * Controller of the building islet currently under process. This one makes
      * the link with meshes data.
      */
-    private BuildingsIsletController     biController;
+    private BuildingsIsletController biController;
 
     /**
      * Creates a new islet process controller to launch different processes on
@@ -82,8 +81,7 @@ public class IsletProcessController implements ElementsSelectedListener
      *            Controller to handle the islet data.
      */
     public IsletProcessController(final GlobalController parentControllerIn,
-            final File isletFile, final BuildingsIsletController biControllerIn)
-    {
+            final File isletFile, final BuildingsIsletController biControllerIn) {
         this.parentController = parentControllerIn;
         this.biController = biControllerIn;
         this.cController = new CharacteristicsController(this);
@@ -94,11 +92,12 @@ public class IsletProcessController implements ElementsSelectedListener
         this.u3DController = new Universe3DController(this);
         this.u3DController.getUniverse3DView().setToolbar(
                 this.f3DController.getToolbar());
-        this.f3DController.getToolbar().showDeselectMeshesButton(true);
-        this.f3DController.getToolbar().showDeselectMeshesButton(true);
+
         this.f3DController.getToolbar().showLockButton(true);
-        this.f3DController.getToolbar().showDeselectTrianglesButton(true);
         this.f3DController.getToolbar().showTypeDisplayButton(true);
+        this.f3DController
+                .setSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
+
         this.biController.setUniverse3DController(this.u3DController);
         this.biController.display();
 
@@ -113,8 +112,7 @@ public class IsletProcessController implements ElementsSelectedListener
     }
 
     // FIXME : Luc, please find some correct names.
-    public final void throwInTheBin()
-    {
+    public final void throwInTheBin() {
         this.ipView.dispose();
         this.ipView.setVisible(false);
 
@@ -127,21 +125,18 @@ public class IsletProcessController implements ElementsSelectedListener
      * Gets the building islet controller.
      * @return The current building islet controller
      */
-    public final BuildingsIsletController getBiController()
-    {
+    public final BuildingsIsletController getBiController() {
         return this.biController;
     }
 
-    public Universe3DController getU3DController()
-    {
+    public Universe3DController getU3DController() {
         return this.u3DController;
     }
 
     /**
      * Launches next process.
      */
-    public final void launchProcess() throws UnexistingStepException
-    {
+    public final void launchProcess() throws UnexistingStepException {
         if (this.getProgression() >= 6)
         {
             throw new UnexistingStepException();
@@ -152,10 +147,11 @@ public class IsletProcessController implements ElementsSelectedListener
         this.itController.refreshView();
         this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         this.nbController.getView().refreshStepTitle(this.getProgression());
+        setToolbarButtons();
+        this.pController.displayProcessingParameters(this.getProgression());
     }
 
-    public void goToPreviousProcess() throws UnexistingStepException
-    {
+    public void goToPreviousProcess() throws UnexistingStepException {
         if (this.getProgression() <= 1)
         {
             throw new UnexistingStepException();
@@ -164,33 +160,38 @@ public class IsletProcessController implements ElementsSelectedListener
         this.itController.refreshView();
         this.nbController.getView().refreshStepTitle(this.getProgression());
         setDefaultCharacterisitcsPanel();
+        setToolbarButtons();
+        this.pController.displayProcessingParameters(this.getProgression());
     }
 
-    public void abortProcess()
-    {
+    private void setToolbarButtons() {
+        switch (getProgression())
+        {
+            case 2:
+        }
+    }
+
+    public void abortProcess() {
         this.parentController.launchIsletSelection();
         this.getBiController().abortProcess();
     }
 
-    private int getProgression()
-    {
+    private int getProgression() {
         return this.getBiController().getIslet().getProgression();
     }
 
-    public void loadParameters()
-    {
+    public void loadParameters() {
         this.pController.loadNewParameters();
     }
 
     @Override
-    public void triangleDeselected(Triangle triangleSelected)
-    {
+    public void triangleDeselected(Triangle triangleSelected) {
         int step = this.getProgression();
         boolean empty = false;
-        if ((step == 3
-                && f3DController.getSelectionMode().equals(
-                        Functions3DToolbarController.ACTION_TRIANGLES)
-                || step == 2 || step == 4))
+        if (!this.cController.getClass()
+                .equals(CharacteristicsController.class)
+                && ((step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_TRIANGLE_MODE)
+                        || step == 2 || step == 4))
         {
             empty = ((AbstractCharacteristicsTrianglesController) cController)
                     .removeTriangleSelected(triangleSelected);
@@ -203,17 +204,15 @@ public class IsletProcessController implements ElementsSelectedListener
     }
 
     @Override
-    public final void triangleSelected(final Triangle triangleSelected)
-    {
+    public final void triangleSelected(final Triangle triangleSelected) {
         int step = this.getProgression();
 
         // step 2 in triangles selection mode or in step 2 or 4.
-        if ((step == 3
-                && f3DController.getSelectionMode().equals(
-                        Functions3DToolbarController.ACTION_TRIANGLES)
-                || step == 5 || step == 6))
+        if ((step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_TRIANGLE_MODE)
+                || step == 2 || step == 4)
         {
-            if ((this.cController instanceof CharacteristicsController))
+            if (this.cController.getClass().equals(
+                    CharacteristicsController.class))
             {
                 switch (this.getProgression())
                 {
@@ -241,45 +240,42 @@ public class IsletProcessController implements ElementsSelectedListener
 
     }
 
-    public class UnexistingStepException extends Exception
-    {
+    public class UnexistingStepException extends Exception {
         /**
          * Version ID.
          */
         private static final long serialVersionUID = 1L;
 
-        public UnexistingStepException()
-        {
+        public UnexistingStepException() {
         }
     }
 
-    public void lock(boolean lock)
-    {
+    public void lock(boolean lock) {
         if (this.biController.getIslet().getProgression() == 6 && lock)
         {
-            ((CharacteristicsStep6Controller) this.cController)
-                    .setEnabled(true);
-        } else
-        {
-            ((CharacteristicsStep6Controller) this.cController)
-                    .setEnabled(false);
+            if (lock)
+            {
+                ((CharacteristicsStep6Controller) this.cController)
+                        .setEnabled(true);
+            } else
+            {
+                ((CharacteristicsStep6Controller) this.cController)
+                        .setEnabled(false);
+            }
         }
-
         // TODO lock and unlock in the universe 3d and maybe the tree too.
     }
 
     @Override
-    public void surfaceSelected(Surface surfaceSelected)
-    {
+    public void surfaceSelected(Surface surfaceSelected) {
         int step = this.getProgression();
 
         // step 3 in meshes selection mode or in step 5 or 6.
-        if ((step == 3
-                && f3DController.getSelectionMode().equals(
-                        Functions3DToolbarController.ACTION_MESHES)
-                || step == 5 || step == 6))
+        if ((step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
+                || step == 5 || step == 6)
         {
-            if ((this.cController instanceof CharacteristicsController))
+            if (this.cController.getClass().equals(
+                    CharacteristicsController.class))
             {
                 switch (this.getProgression())
                 {
@@ -309,14 +305,13 @@ public class IsletProcessController implements ElementsSelectedListener
     }
 
     @Override
-    public void surfaceDeselected(final Surface surfaceSelected)
-    {
+    public void surfaceDeselected(final Surface surfaceSelected) {
         int step = this.getProgression();
         boolean empty = false;
-        if ((step == 3
-                && f3DController.getSelectionMode().equals(
-                        Functions3DToolbarController.ACTION_MESHES)
-                || step == 5 || step == 6))
+        if (!this.cController.getClass()
+                .equals(CharacteristicsController.class)
+                && ((step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
+                        || step == 5 || step == 6))
         {
             empty = ((AbstractCharacteristicsSurfacesController) cController)
                     .removeSurfaceSelected(surfaceSelected);
@@ -328,24 +323,20 @@ public class IsletProcessController implements ElementsSelectedListener
         }
     }
 
-    private void setDefaultCharacterisitcsPanel()
-    {
+    private void setDefaultCharacterisitcsPanel() {
         this.cController = new CharacteristicsController(this);
         this.ipView.setCharacteristicsView(this.cController.getView());
     }
 
-    public void deselectAllSurfaces()
-    {
+    public void deselectAllSurfaces() {
         u3DController.deselectEverySurfaces();
     }
 
-    public void refreshView()
-    {
+    public void refreshView() {
         this.biController.display();
     }
 
-    public void setDisplayMode(int displayMode)
-    {
+    public void setDisplayMode(int displayMode) {
         u3DController.setDisplayMode(displayMode);
         setDefaultCharacterisitcsPanel();
     }

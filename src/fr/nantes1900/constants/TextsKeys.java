@@ -78,10 +78,10 @@ public final class TextsKeys
     public static final String KEY_DISPLAYPOLYGONS = "DisplayPolygons";
     public static final String KEY_SELECTMESHES = "SelectMeshes";
     public static final String KEY_SELECTTRIANGLES = "SelectTriangles";
+    public static final String KEY_SELECTTRIANGLESLABEL = "SelectTrianglesLabel";
+    public static final String KEY_SELECTMESHESLABEL = "SelectMeshesLabel";
     public static final String KEY_LOCKMESH = "LockMesh";
     public static final String KEY_UNLOCKMESH = "UnlockMesh";
-    public static final String KEY_DESELECTTRIANGLES = "DeselectTriangles";
-    public static final String KEY_DESELECTMESHES = "DeselectMeshes";
     
     public TextsKeys(){
     }

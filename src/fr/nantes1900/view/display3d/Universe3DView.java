@@ -67,11 +67,11 @@ public class Universe3DView extends JPanel
     /**
      * Constant defining the 3DView panel height.
      */
-    public static final int        PANEL_HEIGHT                   = 600;
+    public static final int        PANEL_HEIGHT                   = 450;
     /**
      * Constant defining the 3DView panel width.
      */
-    public static final int        PANEL_WIDTH                    = 600;
+    public static final int        PANEL_WIDTH                    = 800;
     /**
      * Constant defining the range where the lights have an effect.
      */
@@ -114,8 +114,8 @@ public class Universe3DView extends JPanel
                 .addMouseMotionListener(u3DControllerIn);
 
         // Size to show the panel while there is nothing to show
-        this.setMinimumSize(new Dimension(PANEL_HEIGHT, PANEL_WIDTH));
-        this.setPreferredSize(new Dimension(PANEL_HEIGHT, PANEL_WIDTH));
+        this.setMinimumSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
+        this.setPreferredSize(new Dimension(PANEL_WIDTH, PANEL_HEIGHT));
     }
 
     /**
@@ -353,7 +353,7 @@ public class Universe3DView extends JPanel
             this.remove(this.toolbar);
         }
         this.toolbar = newToolbar;
-        this.add(newToolbar, BorderLayout.EAST);
+        this.add(newToolbar, BorderLayout.SOUTH);
     }
 
     /**

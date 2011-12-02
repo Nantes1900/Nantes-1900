@@ -22,6 +22,7 @@ public class Functions3DToolbarController
 {
     private IsletProcessController parentController;
     private Functions3DToolbarView toolbarView;
+    private int selectionMode;
     
     public static final String ACTION_TRIANGLES = "triangles";
     public static final String ACTION_POLYGONS = "polygons";
@@ -31,6 +32,7 @@ public class Functions3DToolbarController
     {
         this.toolbarView = new Functions3DToolbarView();
         this.parentController = parentController;
+        selectionMode = Universe3DController.SELECTION_TRIANGLE_MODE;
         
         toolbarView.getRotationCenterButton().addActionListener(new ActionListener(){
 
@@ -85,42 +87,21 @@ public class Functions3DToolbarController
             }
         });
 
-        toolbarView.getSelectionModeButton().addActionListener(new ActionListener(){
+        toolbarView.getSelectionModeTrianglesButton().addActionListener(new ActionListener(){
             
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                JButton source = ((JButton) arg0.getSource());
-                if (source.getName().equals(ACTION_MESHES))
-                {
-                    source.setName(ACTION_TRIANGLES);
-                    source.setText("t");
-                    source.setToolTipText(FileTools.readElementText(TextsKeys.KEY_SELECTTRIANGLES));
-                } else if (source.getName().equals(ACTION_TRIANGLES))
-                {
-                    source.setName(ACTION_MESHES);
-                    source.setText("m");
-                    source.setToolTipText(FileTools.readElementText(TextsKeys.KEY_SELECTMESHES));
-                }
                 // TODO call 3D universe controller to show meshes or polygons
             }
         });
-        
-        toolbarView.getDeselectMeshesButton().addActionListener(new ActionListener(){
-            
-            @Override
-            public void actionPerformed(ActionEvent arg0)
-            {
-                Functions3DToolbarController.this.parentController.deselectAllSurfaces();
-            }
-        });
 
-        toolbarView.getDeselectTrianglesButton().addActionListener(new ActionListener(){
+        toolbarView.getSelectionModeMeshesButton().addActionListener(new ActionListener(){
             
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                // TODO call 3D universe controller to deselect all selected triangles
+                // TODO call 3D universe controller to show meshes or polygons
             }
         });
     }
@@ -130,8 +111,24 @@ public class Functions3DToolbarController
         return toolbarView;
     }
     
-    public String getSelectionMode()
+    public int getSelectionMode()
     {
-        return toolbarView.getSelectionModeButton().getName();
+        return selectionMode;
+    }
+
+    public void setSelectionMode(int selectionMode)
+    {
+        this.selectionMode = selectionMode;
+        if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE)
+        {
+            toolbarView.getSelectionModeTrianglesButton().setSelected(true);
+            toolbarView.getSelectionModeMeshesButton().setSelected(false);
+            toolbarView.setSelectionModeText(FileTools.readElementText(TextsKeys.KEY_SELECTTRIANGLESLABEL));
+        } else
+        {
+            toolbarView.getSelectionModeTrianglesButton().setSelected(true);
+            toolbarView.getSelectionModeMeshesButton().setSelected(false);
+            toolbarView.setSelectionModeText(FileTools.readElementText(TextsKeys.KEY_SELECTMESHESLABEL));
+        }
     }
 }
