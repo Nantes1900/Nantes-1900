@@ -177,15 +177,6 @@ public class IsletProcessController implements ElementsSelectedListener {
     }
 
     public void lock(boolean lock) {
-        if (this.biController.getIslet().getProgression() == 6 && lock) {
-            if (lock) {
-                ((CharacteristicsStep6Controller) this.cController)
-                        .setEnabled(true);
-            } else {
-                ((CharacteristicsStep6Controller) this.cController)
-                        .setEnabled(false);
-            }
-        }
         // TODO lock and unlock in the universe 3d and maybe the tree too.
     }
 

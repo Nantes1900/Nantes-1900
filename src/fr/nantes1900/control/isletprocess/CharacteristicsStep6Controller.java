@@ -7,7 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.JButton;
+
+import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep6View;
 
 /**
@@ -18,8 +22,8 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep6View;
 public class CharacteristicsStep6Controller extends
         AbstractCharacteristicsSurfacesController {
 
-    private Surface surfaceLocked;
-    private boolean isEnabled;
+    private boolean surfaceLocked = false;
+    private Surface surfaceToCheck;
 
     /**
      * Constructor.
@@ -27,15 +31,39 @@ public class CharacteristicsStep6Controller extends
      * @param triangleSelected
      */
     public CharacteristicsStep6Controller(
-            IsletProcessController parentController, Surface surfaceLocked,
+            IsletProcessController parentController, Surface newSurface,
             ArrayList<Surface> neighbours) {
         super(parentController);
 
-        this.surfaceLocked = surfaceLocked;
+        this.surfaceToCheck = newSurface;
         this.surfacesList = neighbours;
         this.cView = new CharacteristicsStep6View(neighbours);
-        this.isEnabled = true;
-        setEnabled(false);
+        this.surfaceLocked = false;
+        ((CharacteristicsStep6View) this.cView)
+                .setModificationsEnabled(this.surfaceLocked);
+        ((CharacteristicsStep6View) this.cView).getLockButton()
+                .addActionListener(new ActionListener() {
+
+                    @Override
+                    public void actionPerformed(ActionEvent arg0) {
+                        CharacteristicsStep6Controller.this.surfaceLocked = !CharacteristicsStep6Controller.this.surfaceLocked;
+                        JButton source = ((JButton) arg0.getSource());
+                        if (CharacteristicsStep6Controller.this.surfaceLocked)
+                        {
+                            source.setText("Unlock");
+                            source.setToolTipText(FileTools
+                                    .readElementText(TextsKeys.KEY_LOCKMESH));
+                        } else
+                        {
+                            source.setText("Lock");
+                            source.setToolTipText(FileTools
+                                    .readElementText(TextsKeys.KEY_UNLOCKMESH));
+                        }
+                        ((CharacteristicsStep6View) CharacteristicsStep6Controller.this.cView)
+                                .setModificationsEnabled(CharacteristicsStep6Controller.this.surfaceLocked);
+                    }
+
+                });
 
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
@@ -53,18 +81,5 @@ public class CharacteristicsStep6Controller extends
     @Override
     public void modifyViewCharacteristics() {
         ((CharacteristicsStep6View) this.cView).setList(this.surfacesList);
-    }
-
-    public void setEnabled(boolean enabled) {
-        if (!this.isEnabled && enabled) {
-            this.isEnabled = true;
-            ((CharacteristicsStep6View) this.cView)
-                    .setModificationsEnabled(true);
-        } else if (this.isEnabled && !enabled) {
-            this.isEnabled = false;
-            this.cView.setToolTipText("Test");
-            ((CharacteristicsStep6View) this.cView)
-                    .setModificationsEnabled(false);
-        }
     }
 }

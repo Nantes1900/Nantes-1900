@@ -105,4 +105,9 @@ public class CharacteristicsView extends JPanel {
     public final JButton getValidateButton() {
         return this.bValidate;
     }
+    
+    protected JPanel getPanelContent()
+    {
+        return this.pContent;
+    }
 }

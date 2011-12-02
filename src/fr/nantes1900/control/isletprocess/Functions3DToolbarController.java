@@ -37,29 +37,6 @@ public class Functions3DToolbarController {
                     }
                 });
 
-        // toolbarView.getLockButton().addActionListener(new ActionListener() {
-        //
-        // @Override
-        // public void actionPerformed(ActionEvent arg0) {
-        // JButton source = ((JButton) arg0.getSource());
-        // if (source.getName().equals("lock")) {
-        // Functions3DToolbarController.this.parentController
-        // .lock(true);
-        // source.setName("unlock");
-        // source.setText("/p");
-        // source.setToolTipText(FileTools
-        // .readElementText(TextsKeys.KEY_UNLOCKMESH));
-        // } else if (source.getName().equals("unlock")) {
-        // Functions3DToolbarController.this.parentController
-        // .lock(false);
-        // source.setName("lock");
-        // source.setText("p");
-        // source.setToolTipText(FileTools
-        // .readElementText(TextsKeys.KEY_LOCKMESH));
-        // }
-        // }
-        // });
-
         toolbarView.getDisplayTypeMeshesButton().addActionListener(
                 new ActionListener() {
 
