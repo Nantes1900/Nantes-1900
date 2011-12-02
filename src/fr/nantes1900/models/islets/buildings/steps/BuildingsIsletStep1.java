@@ -16,7 +16,7 @@ import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.utils.Algos;
 
 /**
- * Implements a step of the treatment. This step is after the base change and
+ * Implements a step of the process. This step is after the base change and
  * before the separation between grounds and buildings.
  * @author Daniel Lefèvre
  */
@@ -148,10 +148,10 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
      * (non-Javadoc)
      * @see
      * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
-     * #launchTreatment()
+     * #launchProcess()
      */
     @Override
-    public final BuildingsIsletStep2 launchTreatment()
+    public final BuildingsIsletStep2 launchProcess()
             throws NullArgumentException
     {
         if (this.groundNormal == null)

@@ -14,7 +14,7 @@ import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.utils.Algos;
 
 /**
- * Implements a step of the treatment. This step is after the separation between
+ * Implements a step of the process. This step is after the separation between
  * grounds and buildings and before the separation between buildings.
  * @author Daniel Lefèvre
  */
@@ -30,7 +30,7 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
     private Ground  initialGrounds;
 
     /**
-     * The mesh containing the noise during the treatments.
+     * The mesh containing the noise during the processs.
      */
     private Surface noise;
 
@@ -115,13 +115,13 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
     }
 
     @Override
-    public final BuildingsIsletStep3 launchTreatment()
+    public final BuildingsIsletStep3 launchProcess()
     {
         this.noise = new Surface();
 
         List<Building> buildings = this.buildingsExtraction();
 
-        this.initialGrounds = this.noiseTreatment();
+        this.initialGrounds = this.noiseProcess();
 
         return new BuildingsIsletStep3(buildings, this.initialGrounds);
     }
@@ -130,7 +130,7 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep
      * Treats the noise by calling the method Algos.blockTreatNoise.
      * @return the ground of this islet
      */
-    private Ground noiseTreatment()
+    private Ground noiseProcess()
     {
         List<Mesh> list = Algos.blockExtract(this.initialGrounds.getMesh());
         return new Ground(Algos.blockTreatNoise(list, this.noise.getMesh()));

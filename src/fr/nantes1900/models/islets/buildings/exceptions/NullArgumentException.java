@@ -1,7 +1,7 @@
 package fr.nantes1900.models.islets.buildings.exceptions;
 
 /**
- * Implements an exception used when an treatment is launched while some
+ * Implements an exception used when an process is launched while some
  * arguments have not been initialized.
  * @author Daniel Lefèvre
  */

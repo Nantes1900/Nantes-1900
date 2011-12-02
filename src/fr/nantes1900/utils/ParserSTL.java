@@ -254,7 +254,7 @@ public class ParserSTL
             {
 
                 // If the processLineA have finished to read an entire triangle,
-                // it proceeds to the treatment.
+                // it proceeds to the process.
                 if (ParserSTL.processLineA(scanner.nextLine(), currentVector,
                         currentPoints))
                 {

@@ -13,7 +13,7 @@ import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
- * Implements a step of the treatment. This step is after the separation between
+ * Implements a step of the process. This step is after the separation between
  * walls and roofs and before the separation between walls and the separation
  * between roofs.
  * @author Daniel Lefèvre
@@ -30,7 +30,7 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
      */
     private Ground         grounds;
     /**
-     * The normal to the ground used in treatments.
+     * The normal to the ground used in processs.
      */
     private Vector3d       groundNormal;
 
@@ -75,10 +75,10 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
      * (non-Javadoc)
      * @see
      * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
-     * #launchTreatment()
+     * #launchProcess()
      */
     @Override
-    public final BuildingsIsletStep5 launchTreatment()
+    public final BuildingsIsletStep5 launchProcess()
             throws NullArgumentException
     {
         for (Building b : this.buildings)
@@ -86,7 +86,7 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
             BuildingStep4 buildingStep = b.getbStep4();
             buildingStep.setArguments(this.groundNormal, this.grounds,
                     this.noise);
-            b.launchTreatment4();
+            b.launchProcess4();
         }
 
         return new BuildingsIsletStep5(this.buildings, this.grounds);

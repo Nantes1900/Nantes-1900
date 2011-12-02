@@ -49,11 +49,11 @@ public class BuildingStep3 extends AbstractBuildingStep
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchTreatment
+     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchProcess
      * ()
      */
     @Override
-    public final BuildingStep4 launchTreatment() throws NullArgumentException
+    public final BuildingStep4 launchProcess() throws NullArgumentException
     {
         if (this.gravityNormal == null)
         {

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.control.isletselection;
 
 import java.awt.event.ActionEvent;
@@ -14,11 +11,11 @@ import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletselection.ActionsView;
 
 /**
- * @author Camille
+* TODO .
+ * @author Camille Bouquet
  */
 public class ActionsController
 {
-
     /**
      * The panel containing buttons to launch the different actions.
      */
@@ -145,7 +142,7 @@ public class ActionsController
 
     /**
      * Listener of the launch button. The performed action depends on the mode :
-     * save the gravity normal or launch an islet treatment.
+     * save the gravity normal or launch an islet process.
      * @author Camille
      */
     public class LaunchActionListener implements ActionListener

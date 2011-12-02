@@ -9,7 +9,7 @@ import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 
 /**
- * Implements a step of the treatment. This step is after the determination of
+ * Implements a step of the process. This step is after the determination of
  * the neighbours and before the sort of the neighbours.
  * @author Daniel Lefèvre
  */
@@ -61,12 +61,12 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
      * (non-Javadoc)
      * @see
      * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
-     * #launchTreatment()
+     * #launchProcess()
      */
     @Override
-    public final AbstractBuildingsIsletStep launchTreatment()
+    public final AbstractBuildingsIsletStep launchProcess()
     {
-        // There is no more treatment for now.
+        // There is no more process for now.
         return null;
     }
 

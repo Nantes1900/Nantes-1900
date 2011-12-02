@@ -188,7 +188,7 @@ public class IsletSelectionController implements ElementsSelectedListener {
     }
 
     /**
-     * Launches the treatment of the selected file which is an islet file. The
+     * Launches the process of the selected file which is an islet file. The
      * verification that the selected file is an islet file is made at the
      * selection in the tree.
      * @return true - the process of the selected islet has been correctly

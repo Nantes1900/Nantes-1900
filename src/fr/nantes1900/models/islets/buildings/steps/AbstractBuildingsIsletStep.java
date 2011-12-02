@@ -7,21 +7,20 @@ import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.utils.FileTools;
 
 /**
- * Abstract the steps of the islet treatment. Each step must be able to launch
- * the next treatment and to return a TreeNode for the JTree.
+ * Abstract the steps of the islet process. Each step must be able to launch
+ * the next process and to return a TreeNode for the JTree.
  * @author Daniel Lefèvre
  */
-public abstract class AbstractBuildingsIsletStep
-{
+public abstract class AbstractBuildingsIsletStep {
 
     /**
-     * Launches the treatment.
+     * Launches the process.
      * @return the next step
      * @throws NullArgumentException
-     *             when an argument needed in the treatment have not been
+     *             when an argument needed in the process have not been
      *             initialized
      */
-    public abstract AbstractBuildingsIsletStep launchTreatment()
+    public abstract AbstractBuildingsIsletStep launchProcess()
             throws NullArgumentException;
 
     /**
@@ -35,8 +34,7 @@ public abstract class AbstractBuildingsIsletStep
      * @see java.lang.Object#toString()
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return FileTools.readElementText(TextsKeys.KEY_ISLET);
     }
 }

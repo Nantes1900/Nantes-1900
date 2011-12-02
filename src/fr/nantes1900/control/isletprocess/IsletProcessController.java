@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.control.isletprocess;
 
 import java.awt.Cursor;
@@ -19,8 +16,7 @@ import fr.nantes1900.view.isletprocess.IsletProcessView;
  * Controller of the process of an islet. This controller makes the link between
  * each elements in the window and also with the model which contains mesh
  * datas.
- * @author Camille Bouquet
- * @author Luc Jallerat
+ * @author Camille Bouquet, Luc Jallerat
  */
 public class IsletProcessController implements ElementsSelectedListener {
     /**
@@ -47,7 +43,7 @@ public class IsletProcessController implements ElementsSelectedListener {
     private IsletTreeController itController;
 
     /**
-     * Controller of the navigation bar which allows to abort the treatment of
+     * Controller of the navigation bar which allows to abort the process of
      * an islet and select a new one, launch a new process to go on a further
      * step and so on.
      */

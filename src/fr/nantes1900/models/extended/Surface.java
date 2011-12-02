@@ -21,18 +21,16 @@ import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
  * roofs.
  * @author Daniel Lefevre
  */
-public class Surface
-{
-
+public class Surface {
     /**
      * ID counter.
      */
-    private static int    counterID  = 0;
+    private static int counterID = 0;
 
     /**
      * ID of the object.
      */
-    private int           iD         = Surface.counterID++;
+    private int iD = Surface.counterID++;
 
     /**
      * List of the neighbours of this surface.
@@ -42,12 +40,12 @@ public class Surface
     /**
      * The polygon representing this surface (after simplification).
      */
-    private Polygon       polygon    = new Polygon();
+    private Polygon polygon;
 
     /**
      * The mesh representing this surface (before simplification).
      */
-    private Mesh          mesh       = new Mesh();
+    private Mesh mesh;
 
     /**
      * Empty constructor.
@@ -60,8 +58,7 @@ public class Surface
      * Getter.
      * @return the ID of the object
      */
-    public final int getID()
-    {
+    public final int getID() {
         return this.iD;
     }
 
@@ -104,8 +101,7 @@ public class Surface
      * @param m
      *            the mesh as neighbour to add
      */
-    public final void addNeighbour(final Surface m)
-    {
+    public final void addNeighbour(final Surface m) {
         if (!this.neighbours.contains(m))
         {
             this.neighbours.add(m);
@@ -121,8 +117,7 @@ public class Surface
      * @see java.lang.Object#toString()
      */
     @Override
-    public String toString()
-    {
+    public String toString() {
         return "Surface " + this.iD;
     }
 
@@ -150,8 +145,7 @@ public class Surface
     private Edge createEdge(final Surface s1, final Surface s2,
             final Surface s3, final Map<Point, Point> pointMap,
             final List<Wall> wallList, final Vector3d normalGround)
-            throws InvalidSurfaceException
-    {
+            throws InvalidSurfaceException {
         final List<Surface> surfaces = new ArrayList<>();
         surfaces.add(s1);
         surfaces.add(s2);
@@ -260,8 +254,7 @@ public class Surface
      */
     public final Polygon findEdges(final List<Wall> wallList,
             final Map<Point, Point> pointMap, final Vector3d normalGround)
-            throws InvalidSurfaceException
-    {
+            throws InvalidSurfaceException {
 
         final Polygon edges = new Polygon();
 
@@ -301,8 +294,7 @@ public class Surface
      *         this, not belonging to the list neighboursOrdered
      */
     private Surface findPossibleNeighbour(final Surface current,
-            final List<Surface> neighboursOrdered)
-    {
+            final List<Surface> neighboursOrdered) {
         Surface possible = null;
         double distanceMin = Double.POSITIVE_INFINITY;
 
@@ -331,8 +323,7 @@ public class Surface
      *            the other surface
      * @return a list containing the elements shared by the two lists
      */
-    private List<Surface> getCommonNeighbours(final Surface surface)
-    {
+    private List<Surface> getCommonNeighbours(final Surface surface) {
         final List<Surface> ret = new ArrayList<>();
         for (final Surface s : this.getNeighbours())
         {
@@ -348,8 +339,7 @@ public class Surface
      * Getter.
      * @return the lesh contained in this
      */
-    public final Mesh getMesh()
-    {
+    public final Mesh getMesh() {
         return this.mesh;
     }
 
@@ -357,8 +347,7 @@ public class Surface
      * Getter.
      * @return the neighbours of this surface
      */
-    public final List<Surface> getNeighbours()
-    {
+    public final List<Surface> getNeighbours() {
         return this.neighbours;
     }
 
@@ -366,8 +355,7 @@ public class Surface
      * Getter.
      * @return the polygon contained in this
      */
-    public final Polygon getPolygon()
-    {
+    public final Polygon getPolygon() {
         return this.polygon;
     }
 
@@ -390,8 +378,7 @@ public class Surface
      *             as said in the description
      */
     public final void orderNeighbours(final List<Surface> wholeList,
-            final Surface grounds) throws ImpossibleNeighboursOrderException
-    {
+            final Surface grounds) throws ImpossibleNeighboursOrderException {
 
         final List<Surface> neighboursOrdered = new ArrayList<>();
 
@@ -480,8 +467,7 @@ public class Surface
      *            the list which must contain the neighbours
      */
     public final void returnNeighbours(final List<Surface> ret,
-            final List<Surface> contain)
-    {
+            final List<Surface> contain) {
 
         // Add this to the ret list.
         ret.add(this);
@@ -502,8 +488,7 @@ public class Surface
      * Returns a node containing this surface.
      * @return the node
      */
-    public final DefaultMutableTreeNode returnNode()
-    {
+    public final DefaultMutableTreeNode returnNode() {
         return new DefaultMutableTreeNode(this);
     }
 
@@ -514,8 +499,7 @@ public class Surface
      *            the normal to the ground
      * @return the mesh with only one triangle
      */
-    public final Surface returnVerticalPlane(final Vector3d normalGround)
-    {
+    public final Surface returnVerticalPlane(final Vector3d normalGround) {
 
         final Vector3d averageNormal = this.getMesh().averageNormal();
 
@@ -546,8 +530,7 @@ public class Surface
      * @param meshIn
      *            the new mesh
      */
-    public final void setMesh(final Mesh meshIn)
-    {
+    public final void setMesh(final Mesh meshIn) {
         this.mesh = meshIn;
     }
 
@@ -556,8 +539,7 @@ public class Surface
      * @param polygoneIn
      *            the new polygon
      */
-    public final void setPolygone(final Polygon polygoneIn)
-    {
+    public final void setPolygone(final Polygon polygoneIn) {
         this.polygon = polygoneIn;
     }
 
@@ -567,8 +549,7 @@ public class Surface
      * @author Daniel Lefevre
      */
     public static final class ImpossibleNeighboursOrderException extends
-            Exception
-    {
+            Exception {
 
         /**
          * Version attribute.
@@ -588,8 +569,7 @@ public class Surface
      * vectorized.
      * @author Daniel Lefevre
      */
-    public static final class InvalidSurfaceException extends Exception
-    {
+    public static final class InvalidSurfaceException extends Exception {
 
         /**
          * Version attribute.
@@ -608,8 +588,7 @@ public class Surface
      * Implements an exception used in algorithms when planes are parallel.
      * @author Daniel Lefevre
      */
-    public static final class ParallelPlanesException extends Exception
-    {
+    public static final class ParallelPlanesException extends Exception {
 
         /**
          * Version attribute.

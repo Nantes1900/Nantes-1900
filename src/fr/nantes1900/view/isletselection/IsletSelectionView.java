@@ -42,7 +42,7 @@ public class IsletSelectionView extends PFrame
     private Universe3DView    u3DView;
 
     /**
-     * Creates a new frame to select an islet and launch the treatment.
+     * Creates a new frame to select an islet and launch the process.
      * @param actionsView
      *            The panel containing the buttons to perform the different
      *            actions.

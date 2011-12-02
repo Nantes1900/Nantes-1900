@@ -66,13 +66,13 @@ public class BuildingStep6 extends AbstractBuildingStep
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchTreatment
+     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchProcess
      * ()
      */
     @Override
-    public final AbstractBuildingStep launchTreatment()
+    public final AbstractBuildingStep launchProcess()
     {
-        // No more treatments for now : this method do nothing.
+        // No more processs for now : this method do nothing.
         return null;
     }
 

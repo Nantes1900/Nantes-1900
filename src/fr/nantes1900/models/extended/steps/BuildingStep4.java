@@ -140,11 +140,11 @@ public class BuildingStep4 extends AbstractBuildingStep
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchTreatment
+     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchProcess
      * ()
      */
     @Override
-    public final BuildingStep5 launchTreatment() throws NullArgumentException
+    public final BuildingStep5 launchProcess() throws NullArgumentException
     {
         if (this.groundNormal == null || this.grounds == null
                 || this.noise == null)

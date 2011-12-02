@@ -97,7 +97,7 @@ public class BuildingStep5 extends AbstractBuildingStep
                 surface.setPolygone(p);
             } catch (final InvalidSurfaceException e)
             {
-                // If there is a problem, we cannot continue the treatment.
+                // If there is a problem, we cannot continue the process.
             }
         }
     }
@@ -191,7 +191,7 @@ public class BuildingStep5 extends AbstractBuildingStep
     }
 
     @Override
-    public final BuildingStep6 launchTreatment() throws NullArgumentException
+    public final BuildingStep6 launchProcess() throws NullArgumentException
     {
         if (this.ground == null || this.noise == null
                 || this.groundNormal == null)
@@ -244,7 +244,7 @@ public class BuildingStep5 extends AbstractBuildingStep
 
             } catch (final ImpossibleNeighboursOrderException e)
             {
-                // If there is a problem, the treatment cannot continue.
+                // If there is a problem, the process cannot continue.
             }
         }
     }
@@ -272,7 +272,7 @@ public class BuildingStep5 extends AbstractBuildingStep
      * @param noiseIn
      *            the noise
      * @param groundIn
-     *            the ground as surface used in treatments
+     *            the ground as surface used in processs
      * @param groundNormalIn
      *            the normal to the ground
      */

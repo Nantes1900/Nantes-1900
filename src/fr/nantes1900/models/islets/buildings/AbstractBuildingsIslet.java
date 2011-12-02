@@ -18,7 +18,7 @@ import fr.nantes1900.utils.MatrixMethod;
 
 /**
  * Abstracts a building islet : residential or industrial. This class contains
- * all the methods to apply the treatments on the meshes.
+ * all the methods to apply the processs on the meshes.
  * @author Daniel Lefèvre
  */
 public abstract class AbstractBuildingsIslet extends AbstractIslet
@@ -193,7 +193,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
 
     /**
      * Getter.
-     * @return the progression of the treatment
+     * @return the progression of the process
      */
     public final int getProgression()
     {
@@ -209,11 +209,11 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     }
 
     /**
-     * Launches the first treatment.
+     * Launches the first process.
      * @throws NullArgumentException
      *             if the gravity normal has not been initiliazed
      */
-    public final void launchTreatment0() throws NullArgumentException
+    public final void launchProcess0() throws NullArgumentException
     {
         if (this.getGravityNormal() == null)
         {
@@ -221,38 +221,38 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         }
 
         this.getBiStep0().setArguments(this.getGravityNormal());
-        this.biStep1 = this.getBiStep0().launchTreatment();
+        this.biStep1 = this.getBiStep0().launchProcess();
         MatrixMethod.changeBase(this.getGroundNormal(), this.getBiStep0()
                 .getMatrix());
     }
 
     /**
-     * Launches the first treatment.
+     * Launches the first process.
      * @throws NullArgumentException
-     *             if an argument needed for the treatment has not been
+     *             if an argument needed for the process has not been
      *             initialized
      */
-    public final void launchTreatment1() throws NullArgumentException
+    public final void launchProcess1() throws NullArgumentException
     {
         this.getBiStep1().setArguments(this.getGravityNormal());
-        this.biStep2 = this.getBiStep1().launchTreatment();
+        this.biStep2 = this.getBiStep1().launchProcess();
     }
 
     /**
-     * Launches the second treatment.
+     * Launches the second process.
      */
-    public final void launchTreatment2()
+    public final void launchProcess2()
     {
-        this.biStep3 = this.getBiStep2().launchTreatment();
+        this.biStep3 = this.getBiStep2().launchProcess();
     }
 
     /**
-     * Launches the third treatment.
+     * Launches the third process.
      * @throws NullArgumentException
-     *             if an argument needed for the treatment has not been
+     *             if an argument needed for the process has not been
      *             initialized
      */
-    public final void launchTreatment3() throws NullArgumentException
+    public final void launchProcess3() throws NullArgumentException
     {
         if (this.getGravityNormal() == null || this.getGroundNormal() == null
                 || this.getBiStep2().getNoise() == null)
@@ -265,29 +265,29 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
                     this.getBiStep2().getInitialGrounds(), this.getBiStep2()
                             .getNoise());
         }
-        this.biStep4 = this.getBiStep3().launchTreatment();
+        this.biStep4 = this.getBiStep3().launchProcess();
     }
 
     /**
-     * Launches the fourth treatment.
+     * Launches the fourth process.
      * @throws NullArgumentException
-     *             if an argument needed for the treatment has not been
+     *             if an argument needed for the process has not been
      *             initialized
      */
-    public final void launchTreatment4() throws NullArgumentException
+    public final void launchProcess4() throws NullArgumentException
     {
-        this.biStep5 = this.getBiStep4().launchTreatment();
+        this.biStep5 = this.getBiStep4().launchProcess();
     }
 
     /**
-     * Launches the fifth treatment.
+     * Launches the fifth process.
      * @throws NullArgumentException
-     *             if an argument needed for the treatment has not been
+     *             if an argument needed for the process has not been
      *             initialized
      */
-    public final void launchTreatment5() throws NullArgumentException
+    public final void launchProcess5() throws NullArgumentException
     {
-        this.biStep6 = this.getBiStep5().launchTreatment();
+        this.biStep6 = this.getBiStep5().launchProcess();
     }
 
     /**
@@ -300,7 +300,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
 
     /**
      * Returns a node containing the tree depending of the progression of the
-     * treatment.
+     * process.
      * @return the node
      * @throws InvalidCaseException
      *             if the case in not valid (more than 8 or less than 0)

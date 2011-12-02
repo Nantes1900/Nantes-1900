@@ -10,14 +10,14 @@ import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 /**
- * Implements a step of the treatment. This step is after the parsing and before
+ * Implements a step of the process. This step is after the parsing and before
  * the base change.
  * @author Daniel Lefèvre
  */
 public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
 {
     /**
-     * The initial mesh before every treatment.
+     * The initial mesh before every process.
      */
     private Surface    initialTotalMesh;
 
@@ -60,7 +60,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      * Creates a change base matrix with the normal to the ground. See the
      * MatrixMethod class for more informations.
      * @throws NullArgumentException
-     *             if an argument needed for the treatment has not been
+     *             if an argument needed for the process has not been
      *             initialized
      */
     public final void createChangeBaseMatrix() throws NullArgumentException
@@ -91,10 +91,10 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      * (non-Javadoc)
      * @see
      * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
-     * #launchTreatment()
+     * #launchProcess()
      */
     @Override
-    public final BuildingsIsletStep1 launchTreatment()
+    public final BuildingsIsletStep1 launchProcess()
             throws NullArgumentException
     {
         if (this.gravityNormal == null)

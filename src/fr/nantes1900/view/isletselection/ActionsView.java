@@ -90,7 +90,7 @@ public class ActionsView extends JPanel
     }
 
     /**
-     * Returns the launch islet treatment button.
+     * Returns the launch islet process button.
      * @return The launch button.
      */
     public final JButton getLaunchButton()

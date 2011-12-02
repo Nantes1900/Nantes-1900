@@ -32,7 +32,7 @@ import fr.nantes1900.utils.ParserSTL;
 
 /**
  * Implements the controller of a building islet. Used to visualize the islets,
- * to launch the treatments.
+ * to launch the processs.
  * @author Daniel
  */
 public class BuildingsIsletController
@@ -636,7 +636,7 @@ public class BuildingsIsletController
     }
 
     /**
-     * Launch the treatment, considering the progression.
+     * Launch the process, considering the progression.
      */
     public final void launchProcess()
     {
@@ -645,22 +645,22 @@ public class BuildingsIsletController
             switch (this.islet.getProgression())
             {
                 case AbstractBuildingsIslet.ZERO_STEP:
-                    this.islet.launchTreatment0();
+                    this.islet.launchProcess0();
                 break;
                 case AbstractBuildingsIslet.FIRST_STEP:
-                    this.islet.launchTreatment1();
+                    this.islet.launchProcess1();
                 break;
                 case AbstractBuildingsIslet.SECOND_STEP:
-                    this.islet.launchTreatment2();
+                    this.islet.launchProcess2();
                 break;
                 case AbstractBuildingsIslet.THIRD_STEP:
-                    this.islet.launchTreatment3();
+                    this.islet.launchProcess3();
                 break;
                 case AbstractBuildingsIslet.FOURTH_STEP:
-                    this.islet.launchTreatment4();
+                    this.islet.launchProcess4();
                 break;
                 case AbstractBuildingsIslet.FIFTH_STEP:
-                    this.islet.launchTreatment5();
+                    this.islet.launchProcess5();
                 break;
                 default:
                     throw new InvalidCaseException();

@@ -12,7 +12,7 @@ import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
  * Implements a building as containing 6 steps representing the state of the
- * building during the treatments 3 to 8.
+ * building during the processs 3 to 8.
  * @author Daniel Lefevre
  */
 public class Building
@@ -99,39 +99,39 @@ public class Building
     }
 
     /**
-     * Launches the third treatment.
+     * Launches the third process.
      * @throws NullArgumentException
-     *             if some arguments needed in the treatment have not been
+     *             if some arguments needed in the process have not been
      *             initialized
      */
-    public final void launchTreatment3() throws NullArgumentException
+    public final void launchProcess3() throws NullArgumentException
     {
         this.bStep3.setArguments(this.gravityNormal);
-        this.bStep4 = this.bStep3.launchTreatment();
+        this.bStep4 = this.bStep3.launchProcess();
     }
 
     /**
-     * Launches the fourth treatment.
+     * Launches the fourth process.
      * @throws NullArgumentException
-     *             if some arguments needed in the treatment have not been
+     *             if some arguments needed in the process have not been
      *             initialized
      */
-    public final void launchTreatment4() throws NullArgumentException
+    public final void launchProcess4() throws NullArgumentException
     {
         this.bStep4.setArguments(this.groundNormal, this.grounds, this.noise);
-        this.bStep5 = this.bStep4.launchTreatment();
+        this.bStep5 = this.bStep4.launchProcess();
     }
 
     /**
-     * Launches the fifth treatment.
+     * Launches the fifth process.
      * @throws NullArgumentException
-     *             if some arguments needed in the treatment have not been
+     *             if some arguments needed in the process have not been
      *             initialized
      */
-    public final void launchTreatment5() throws NullArgumentException
+    public final void launchProcess5() throws NullArgumentException
     {
         this.bStep5.setArguments(this.noise, this.grounds, this.groundNormal);
-        this.bStep6 = this.bStep5.launchTreatment();
+        this.bStep6 = this.bStep5.launchProcess();
     }
 
     /**
