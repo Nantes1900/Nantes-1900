@@ -340,4 +340,16 @@ public class IsletProcessController implements ElementsSelectedListener {
         u3DController.setDisplayMode(displayMode);
         setDefaultCharacterisitcsPanel();
     }
+
+    public void changeSelectionMode(int selectionMode) {
+        if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE)
+        {
+            u3DController
+                    .changeSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
+        } else if (selectionMode == Universe3DController.SELECTION_SURFACE_MODE)
+        {
+            u3DController
+                    .changeSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
+        }
+    }
 }
