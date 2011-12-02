@@ -26,7 +26,7 @@ import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.ResidentialIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
-import fr.nantes1900.models.islets.buildings.exceptions.UnCompletedParametersException;
+import fr.nantes1900.models.islets.buildings.exceptions.NotCoherentActionException;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.utils.ParserSTL;
 
@@ -69,7 +69,17 @@ public class BuildingsIsletController
         this.islet = new ResidentialIslet();
     }
 
-    public String getCharacteristics2(Triangle triangle)
+    /**
+     * Returns the type of the surface containing the triangle. Used only during
+     * the second step.
+     * @param triangle
+     *            the triangle to check type of
+     * @return the type as a static final String from the class Characteristic :
+     *         it can be TYPE_BUILDING or TYPE_GROUND.
+     * @throws InvalidCaseException
+     *             if the triangle doesn't belong to any of these types
+     */
+    public final String getCharacteristics2(final Triangle triangle)
             throws InvalidCaseException
     {
         if (this.islet.getBiStep2().getInitialBuildings().getMesh()
@@ -86,7 +96,16 @@ public class BuildingsIsletController
         }
     }
 
-    public String getCharacteristics3(Surface surface)
+    /**
+     * Returns the type of a surface. Used only during the third step.
+     * @param surface
+     *            the surface to check type of
+     * @return the type as a static final String from the class Characteristic :
+     *         it can be TYPE_BUILDING, TYPE_NOISE or TYPE_GROUND.
+     * @throws InvalidCaseException
+     *             if the surface doesn't belong to any of these types
+     */
+    public final String getCharacteristics3(final Surface surface)
             throws InvalidCaseException
     {
         if (this.islet.getBiStep3().getGrounds() == surface)
@@ -110,7 +129,17 @@ public class BuildingsIsletController
         throw new InvalidCaseException();
     }
 
-    public String getCharacteristics3(Triangle triangle)
+    /**
+     * Returns the type of the surface containing the triangle. Used only during
+     * the third step.
+     * @param triangle
+     *            the triangle to check type of
+     * @return the type as a static final String from the class Characteristic :
+     *         it can be TYPE_BUILDING, TYPE_NOISE or TYPE_GROUND.
+     * @throws InvalidCaseException
+     *             if the triangle doesn't belong to any of these types
+     */
+    public final String getCharacteristics3(final Triangle triangle)
             throws InvalidCaseException
     {
         if (this.islet.getBiStep3().getGrounds().getMesh().contains(triangle))
@@ -135,7 +164,17 @@ public class BuildingsIsletController
         throw new InvalidCaseException();
     }
 
-    public String getCharacteristics4(Triangle triangle)
+    /**
+     * Returns the type of the surface containing the triangle. Used only during
+     * the fourth step.
+     * @param triangle
+     *            the triangle to check type of
+     * @return the type as a static final String from the class Characteristic :
+     *         it can be TYPE_GROUND, TYPE_WALL or TYPE_ROOF.
+     * @throws InvalidCaseException
+     *             if the triangle doesn't belong to any of these types
+     */
+    public final String getCharacteristics4(final Triangle triangle)
             throws InvalidCaseException
     {
         if (this.islet.getBiStep4().getGrounds().getMesh().contains(triangle))
@@ -159,7 +198,16 @@ public class BuildingsIsletController
         throw new InvalidCaseException();
     }
 
-    public String getCharacteristics5(Surface surface)
+    /**
+     * Returns the type of a surface. Used only during the fifth step.
+     * @param surface
+     *            the surface to check type of
+     * @return the type as a static final String from the class Characteristic :
+     *         it can be TYPE_GROUND, TYPE_WALL or TYPE_ROOF.
+     * @throws InvalidCaseException
+     *             if the surface doesn't belong to any of these types
+     */
+    public final String getCharacteristics5(final Surface surface)
             throws InvalidCaseException
     {
         if (this.islet.getBiStep5().getGrounds() == surface)
@@ -188,7 +236,16 @@ public class BuildingsIsletController
         throw new InvalidCaseException();
     }
 
-    public String getCharacteristics6(Surface surface)
+    /**
+     * Returns the type of a surface. Used only during the sixth step.
+     * @param surface
+     *            the surface to check type of
+     * @return the type as a static final String from the class Characteristic :
+     *         it can be TYPE_GROUND, TYPE_WALL or TYPE_ROOF.
+     * @throws InvalidCaseException
+     *             if the surface doesn't belong to any of these types
+     */
+    public final String getCharacteristics6(final Surface surface)
             throws InvalidCaseException
     {
         if (this.islet.getBiStep6().getGrounds() == surface)
@@ -413,7 +470,7 @@ public class BuildingsIsletController
     }
 
     /**
-     * Changes the type of the list of surfaces. To call onyl during the fifth
+     * Changes the type of the list of surfaces. To call only during the fifth
      * step.
      * @param surfacesSelected
      *            the list of surfaces
@@ -466,7 +523,7 @@ public class BuildingsIsletController
             {
                 throw new InvalidCaseException();
             }
-        } catch (UnCompletedParametersException e)
+        } catch (NotCoherentActionException e)
         {
             // TODO Implement the case when this exception is throwed.
             e.printStackTrace();
@@ -634,8 +691,10 @@ public class BuildingsIsletController
      * Parses the file and builds the first step of the BuildingIslet.
      * @param fileName
      *            the name of the file
+     * @throws IOException
+     *             if the file is badly formed, not found or unreadable !
      */
-    public final void readFile(final String fileName)
+    public final void readFile(final String fileName) throws IOException
     {
         this.islet.setBiStep0(new BuildingsIsletStep0(AbstractIslet
                 .parseFile(fileName)));
@@ -719,12 +778,12 @@ public class BuildingsIsletController
      * @param surfacesSelected
      *            the list of surfaces
      * @return the building containing <strong>all</strong> these surfaces
-     * @throws UnCompletedParametersException
+     * @throws NotCoherentActionException
      *             if no building contains all of these surfaces
      */
     private Building searchForBuildingContaining5(
             final List<Surface> surfacesSelected)
-            throws UnCompletedParametersException
+            throws NotCoherentActionException
     {
         for (Building building : this.islet.getBiStep5().getBuildings())
         {
@@ -735,7 +794,7 @@ public class BuildingsIsletController
                 return building;
             }
         }
-        throw new UnCompletedParametersException();
+        throw new NotCoherentActionException();
     }
 
     /**
@@ -838,7 +897,7 @@ public class BuildingsIsletController
         } else
         {
             // TODO
-            System.out.println("Initial Buildings empty : error !");
+            System.out.println("Warning : initial buildings empty !");
         }
         if (!this.islet.getBiStep2().getInitialGrounds().getMesh().isEmpty())
         {
@@ -846,7 +905,7 @@ public class BuildingsIsletController
         } else
         {
             // TODO
-            System.out.println("Initial Grounds empty : error !");
+            System.out.println("Warning : initial grounds empty !");
         }
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
@@ -865,7 +924,7 @@ public class BuildingsIsletController
         } else
         {
             // TODO
-            System.out.println("Initial Grounds empty : error !");
+            System.out.println("Warning : initial grounds empty !");
         }
 
         for (Building building : this.islet.getBiStep3().getBuildings())
@@ -948,7 +1007,5 @@ public class BuildingsIsletController
         }
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
-
-        // TODO : displays with other colors the surfaces not well computed.
     }
 }

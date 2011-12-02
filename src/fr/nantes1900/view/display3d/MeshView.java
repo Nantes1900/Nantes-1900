@@ -33,18 +33,18 @@ public class MeshView extends TriangleArray
     /**
      * Hash table linking the triangles with their indexes.
      */
-    private Hashtable<Triangle, Integer> selectTableTriangle = new Hashtable<>();
+    private Hashtable<Triangle, Integer> selectTableTriangle   = new Hashtable<>();
 
     /**
      * Hash table linking the indexes of the triangles with the references of
      * these triangles.
      */
-    private Hashtable<Integer, Triangle> selectTableIndex    = new Hashtable<>();
-    
+    private Hashtable<Integer, Triangle> selectTableIndex      = new Hashtable<>();
+
     /**
      * The number of the points of triangle.
      */
-    public static final int TRIANGLE_POINTS_COUNT=3;
+    public static final int              TRIANGLE_POINTS_COUNT = 3;
 
     /**
      * Constructor of the class MeshView.
@@ -53,9 +53,10 @@ public class MeshView extends TriangleArray
      */
     public MeshView(final Mesh m)
     {
-       
-        super(m.size() * TRIANGLE_POINTS_COUNT, GeometryArray.COORDINATES | GeometryArray.COLOR_3
-                | GeometryArray.NORMALS | GeometryArray.TEXTURE_COORDINATE_2);
+
+        super(m.size() * TRIANGLE_POINTS_COUNT, GeometryArray.COORDINATES
+                | GeometryArray.COLOR_3 | GeometryArray.NORMALS
+                | GeometryArray.TEXTURE_COORDINATE_2);
 
         this.mesh = m;
 
@@ -71,7 +72,6 @@ public class MeshView extends TriangleArray
         // Create the triangles to be displayed.
         for (Triangle triangle : this.mesh)
         {
-           
             this.selectTableTriangle.put(triangle, i / TRIANGLE_POINTS_COUNT);
             this.selectTableIndex.put(i / TRIANGLE_POINTS_COUNT, triangle);
 
@@ -90,7 +90,7 @@ public class MeshView extends TriangleArray
             this.setTextureCoordinate(0, i + 1, new TexCoord2f(0.0f, 0.0f));
             this.setTextureCoordinate(0, i + 2, new TexCoord2f(1.0f, 0.0f));
 
-            i = i + TRIANGLE_POINTS_COUNT;
+            i += TRIANGLE_POINTS_COUNT;
         }
     }
 
@@ -159,10 +159,13 @@ public class MeshView extends TriangleArray
     {
         // FIXME : add the triangle in the Universe3DController triangle
         // selection.
-        
-        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT, new TexCoord2f(0.0f, 1.0f));
-        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT + 1, new TexCoord2f(1.0f, 1.0f));
-        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT + 2, new TexCoord2f(1.0f, 0.0f));
+
+        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT, new TexCoord2f(
+                0.0f, 1.0f));
+        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT + 1,
+                new TexCoord2f(1.0f, 1.0f));
+        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT + 2,
+                new TexCoord2f(1.0f, 0.0f));
     }
 
     /**
@@ -178,16 +181,19 @@ public class MeshView extends TriangleArray
     /**
      * Unselect a triangle knowing its index in the TriangleArray.
      * @param i
-     *            The index of the triangle which to be unselected. 
+     *            The index of the triangle which to be unselected.
      */
     public final void unSelect(final int i)
     {
         // FIXME : remove the triangle from the Universe3DController triangle
         // selection.
-       
-        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT, new TexCoord2f(0.0f, 1.0f));
-        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT + 1, new TexCoord2f(0.0f, 0.0f));
-        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT + 2, new TexCoord2f(1.0f, 0.0f));
+
+        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT, new TexCoord2f(
+                0.0f, 1.0f));
+        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT + 1,
+                new TexCoord2f(0.0f, 0.0f));
+        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT + 2,
+                new TexCoord2f(1.0f, 0.0f));
     }
 
     public void unSelect(Triangle triangle)

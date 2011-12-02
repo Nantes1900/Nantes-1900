@@ -25,34 +25,55 @@ import fr.nantes1900.view.components.HelpButton;
 public class CharacteristicsView extends JPanel
 {
     /**
-     * 
+     * Version ID.
      */
     private static final long serialVersionUID = 1L;
-    protected JButton bValidate;
-    protected JPanel  pContent;
+    /**
+     * TODO .
+     */
+    protected JButton         bValidate;
+    /**
+     * TODO .
+     */
+    protected JPanel          pContent;
 
+    /**
+     * TODO .
+     */
     public CharacteristicsView()
     {
         this.setBorder(new TitledBorder(BorderFactory
                 .createRaisedSoftBevelBorder(), "Caractéristiques"));
-        bValidate = new JButton("Valider");
-        // Disable the validate button for this empty characteristic panel
-        bValidate.setEnabled(false);
-        
+        this.bValidate = new JButton("Valider");
+
+        // Disables the validate button for this empty characteristic panel
+        this.bValidate.setEnabled(false);
+
         this.setMinimumSize(new Dimension(100, 100));
-        
-        pContent = new JPanel();
+
+        this.pContent = new JPanel();
         FlowLayout contentLayout = new FlowLayout();
         contentLayout.setAlignment(FlowLayout.LEFT);
-        pContent.setLayout(contentLayout);
+        this.pContent.setLayout(contentLayout);
 
         this.setLayout(new BorderLayout());
-        this.add(bValidate, BorderLayout.EAST);
-        this.add(pContent, BorderLayout.CENTER);
+        this.add(this.bValidate, BorderLayout.EAST);
+        this.add(this.pContent, BorderLayout.CENTER);
     }
 
-    protected JPanel createSimpleCaracteristic(JComponent caracteristic,
-            String title, HelpButton helpButton)
+    /**
+     * TODO .
+     * @param caracteristic
+     *            TODO .
+     * @param title
+     *            TODO .
+     * @param helpButton
+     *            TODO .
+     * @return TODO .
+     */
+    protected static JPanel createSimpleCaracteristic(
+            final JComponent caracteristic, final String title,
+            final HelpButton helpButton)
     {
         JPanel caracteristicPanel = new JPanel();
 
@@ -70,12 +91,21 @@ public class CharacteristicsView extends JPanel
         return caracteristicPanel;
     }
 
-    protected void addCaracteristic(JPanel caracteristicPanel)
+    /**
+     * TODO .
+     * @param caracteristicPanel
+     *            TODO .
+     */
+    protected final void addCaracteristic(final JPanel caracteristicPanel)
     {
         this.pContent.add(caracteristicPanel);
     }
 
-    public JButton getValidateButton()
+    /**
+     * TODO .
+     * @return TODO .
+     */
+    public final JButton getValidateButton()
     {
         return this.bValidate;
     }

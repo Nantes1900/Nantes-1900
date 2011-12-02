@@ -12,7 +12,13 @@ public final class MatrixMethod
     /**
      * The dimension of the matrix used in the methods. Here, it's always 3.
      */
-    public static final int MATRIX_DIMENSION = 3;
+    public static final int    MATRIX_DIMENSION = 3;
+
+    /**
+     * Error coefficient to determine if a matrix determinant is too close to 0
+     * or not.
+     */
+    public static final double ERROR            = 0.01;
 
     /**
      * Private constructor.
@@ -56,7 +62,7 @@ public final class MatrixMethod
      */
     public static void changeBase(final Vector3d vect, final double[][] matrix)
     {
-        final double[] coord = {vect.x, vect.y, vect.z,};
+        final double[] coord = {vect.x, vect.y, vect.z, };
         vect.set(MatrixMethod.changeBase(coord, matrix));
     }
 
@@ -71,8 +77,8 @@ public final class MatrixMethod
      *             if the baseVector is oriented as (0, 0, -1), because the
      *             matrix would be singular
      */
-    public static double[][]
-            createOrthoBase(final Vector3d baseVector) throws SingularMatrixException
+    public static double[][] createOrthoBase(final Vector3d baseVector)
+            throws SingularMatrixException
     {
 
         final Vector3d b = new Vector3d(baseVector);
@@ -94,7 +100,7 @@ public final class MatrixMethod
         matrix1[2][1] = b.y;
 
         // If this condition is found, then we change the matrix.
-        if (b.z > -1.01 && b.z < -0.99)
+        if (b.z > -1 - MatrixMethod.ERROR && b.z < -1 + MatrixMethod.ERROR)
         {
 
             throw new SingularMatrixException();
@@ -125,8 +131,8 @@ public final class MatrixMethod
      *             if the matrix is singular
      */
     public static double[][] createOrthoBase(final Vector3d vect1,
-            final Vector3d vect2,
-            final Vector3d vect3) throws SingularMatrixException
+            final Vector3d vect2, final Vector3d vect3)
+            throws SingularMatrixException
     {
 
         final Vector3d b = new Vector3d(vect1);
@@ -167,23 +173,8 @@ public final class MatrixMethod
         final double f = matrix[1][2];
         final double i = matrix[2][2];
 
-        return a * e
-                * i
-                + b
-                * f
-                * g
-                + c
-                * d
-                * h
-                - c
-                * e
-                * g
-                - f
-                * h
-                * a
-                - i
-                * b
-                * d;
+        return a * e * i + b * f * g + c * d * h - c * e * g - f * h * a - i
+                * b * d;
     }
 
     /**
@@ -194,12 +185,13 @@ public final class MatrixMethod
      * @throws SingularMatrixException
      *             if the matrix is singular.
      */
-    public static double[][]
-            getInversMatrix(final double[][] matrix) throws SingularMatrixException
+    public static double[][] getInversMatrix(final double[][] matrix)
+            throws SingularMatrixException
     {
         final double[][] matrix1 = new double[MatrixMethod.MATRIX_DIMENSION][MatrixMethod.MATRIX_DIMENSION];
 
-        if (MatrixMethod.determinant(matrix) < SingularMatrixException.ERROR_PRECISION && MatrixMethod.determinant(matrix) > -SingularMatrixException.ERROR_PRECISION)
+        if (MatrixMethod.determinant(matrix) < SingularMatrixException.ERROR_PRECISION
+                && MatrixMethod.determinant(matrix) > -SingularMatrixException.ERROR_PRECISION)
         {
             throw new SingularMatrixException();
         }

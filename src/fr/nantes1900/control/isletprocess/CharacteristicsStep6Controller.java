@@ -34,7 +34,7 @@ public class CharacteristicsStep6Controller extends AbstractCharacteristicsSurfa
         this.surfaceLocked = surfaceLocked;
         this.surfacesList = neighbours;
         this.cView = new CharacteristicsStep6View(neighbours);
-        isEnabled = true;
+        this.isEnabled = true;
         setEnabled(false);
 
         this.cView.getValidateButton().addActionListener(new ActionListener() {
@@ -57,18 +57,18 @@ public class CharacteristicsStep6Controller extends AbstractCharacteristicsSurfa
         if (!this.isEnabled && enabled)
         {
             this.isEnabled = true;
-            ((CharacteristicsStep6View) cView).setModificationsEnabled(true);
+            ((CharacteristicsStep6View) this.cView).setModificationsEnabled(true);
         } else if (this.isEnabled && !enabled)
         {
             this.isEnabled = false;
-            cView.setToolTipText("Test");
-            ((CharacteristicsStep6View) cView).setModificationsEnabled(false);
+            this.cView.setToolTipText("Test");
+            ((CharacteristicsStep6View) this.cView).setModificationsEnabled(false);
         }
     }
 
     @Override
     public void modifyViewCharacteristics()
     {
-        ((CharacteristicsStep6View) cView).setList(surfacesList);
+        ((CharacteristicsStep6View) this.cView).setList(this.surfacesList);
     }
 }

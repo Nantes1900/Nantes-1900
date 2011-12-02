@@ -116,7 +116,7 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep
      * @param groundNormalIn
      *            the normal to the ground.
      * @param noiseIn
-     *            TODO
+     *            the noise
      */
     public final void setArguments(final Vector3d groundNormalIn,
             final Surface noiseIn)

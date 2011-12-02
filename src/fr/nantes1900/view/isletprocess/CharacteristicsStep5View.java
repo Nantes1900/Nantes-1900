@@ -9,75 +9,119 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
 
+/**
+ * TODO .
+ * @author Camille Bouquet
+ */
 public class CharacteristicsStep5View extends CharacteristicsView
 {
     /**
-     * default serial UID
+     * Default serial UID.
      */
     private static final long serialVersionUID = 1L;
-    private JCheckBox cbMerge;
-    private JCheckBox cbNoise;
-    
+    /**
+     * TODO .
+     */
+    private JCheckBox         cbMerge;
+    /**
+     * TODO .
+     */
+    private JCheckBox         cbNoise;
+
+    /**
+     * TODO .
+     */
     public CharacteristicsStep5View()
     {
         super();
         this.cbMerge = new JCheckBox();
-        cbMerge.addItemListener(new ItemListener(){
+        this.cbMerge.addItemListener(new ItemListener() {
 
             @Override
-            public void itemStateChanged(ItemEvent arg0)
+            public void itemStateChanged(final ItemEvent arg0)
             {
                 if (((JCheckBox) arg0.getSource()).isSelected())
                 {
-                    cbNoise.setEnabled(false);
+                    CharacteristicsStep5View.this.getCBMerge()
+                            .setEnabled(false);
                 } else
                 {
-                    cbNoise.setEnabled(true);
+                    CharacteristicsStep5View.this.getCBMerge().setEnabled(true);
                 }
             }
-            
+
         });
-        this.addCaracteristic(createSimpleCaracteristic(cbMerge, FileTools.readElementText(TextsKeys.KEY_MERGETEXT), new HelpButton()));
+        this.addCaracteristic(createSimpleCaracteristic(this.cbMerge,
+                FileTools.readElementText(TextsKeys.KEY_MERGETEXT),
+                new HelpButton()));
         this.cbNoise = new JCheckBox();
-        cbNoise.addItemListener(new ItemListener(){
-            
+        this.cbNoise.addItemListener(new ItemListener() {
+
             @Override
-            public void itemStateChanged(ItemEvent arg0)
+            public void itemStateChanged(final ItemEvent arg0)
             {
                 if (((JCheckBox) arg0.getSource()).isSelected())
                 {
-                    cbMerge.setEnabled(false);
-                    bValidate.setEnabled(true);
+                    CharacteristicsStep5View.this.getCBMerge()
+                            .setEnabled(false);
+                    CharacteristicsStep5View.this.bValidate.setEnabled(true);
                 } else
                 {
-                    cbMerge.setEnabled(true);
-                    bValidate.setEnabled(false);
+                    CharacteristicsStep5View.this.getCBMerge().setEnabled(true);
+                    CharacteristicsStep5View.this.bValidate.setEnabled(false);
                 }
             }
-            
+
         });
-        this.addCaracteristic(createSimpleCaracteristic(cbNoise, FileTools.readElementText(TextsKeys.KEY_PUTINNOISETEXT), new HelpButton()));
+        this.addCaracteristic(createSimpleCaracteristic(this.cbNoise,
+                FileTools.readElementText(TextsKeys.KEY_PUTINNOISETEXT),
+                new HelpButton()));
         this.bValidate.setEnabled(true);
     }
 
-    public boolean isMergeSelected()
+    /**
+     * Getter.
+     * @return TODO .
+     */
+    public final JCheckBox getCBMerge()
+    {
+        return this.cbMerge;
+    }
+
+    /**
+     * TODO .
+     * @return TODO .
+     */
+    public final boolean isMergeSelected()
     {
         return this.cbMerge.isSelected();
     }
 
-    public boolean isNoiseSelected()
+    /**
+     * TODO .
+     * @return TODO .
+     */
+    public final boolean isNoiseSelected()
     {
         return this.cbNoise.isSelected();
     }
-    
-    public void setMergeEnable(boolean mergeEnable)
+
+    /**
+     * TODO .
+     * @param mergeEnable
+     *            TODO .
+     */
+    public final void setMergeEnable(final boolean mergeEnable)
     {
         this.cbMerge.setEnabled(mergeEnable);
     }
 
-    public void deselectAll()
+    /**
+     * TODO .
+     */
+    public final void deselectAll()
     {
-        cbMerge.setSelected(false);
-        cbNoise.setSelected(false);
+        this.cbMerge.setSelected(false);
+        this.cbNoise.setSelected(false);
     }
 }

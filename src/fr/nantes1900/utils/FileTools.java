@@ -18,16 +18,26 @@ import java.util.Properties;
  */
 public final class FileTools
 {
-    private static final String ELEMENT_TEXTS_FILE = "files/elementTexts.txt";
+    /**
+     * TODO.
+     */
+    private static final String ELEMENT_TEXTS_FILE  = "files/elementTexts.txt";
+    /**
+     * TODO.
+     */
     private static final String ERROR_MESSAGES_FILE = "files/errorMessages.txt";
-    private static final String HELP_MESSAGES_FILE = "files/helpMessages.txt";
+    /**
+     * TODO.
+     */
+    private static final String HELP_MESSAGES_FILE  = "files/helpMessages.txt";
+
     /**
      * Private constructor.
      */
     private FileTools()
     {
     }
-    
+
     /**
      * Reads a help message from the file elementTexts.txt with the key name.
      * @param keyName
@@ -38,7 +48,7 @@ public final class FileTools
     {
         return readProperty(new File(ELEMENT_TEXTS_FILE), keyName);
     }
-    
+
     /**
      * Reads a help message from the file errorMessages.txt with the key
      * keyName+messageType.
@@ -51,7 +61,8 @@ public final class FileTools
     public static String readErrorMessage(final String keyName,
             final String messageType)
     {
-        return readProperty(new File(ERROR_MESSAGES_FILE), keyName + messageType);
+        return readProperty(new File(ERROR_MESSAGES_FILE), keyName
+                + messageType);
     }
 
     /**
@@ -96,7 +107,8 @@ public final class FileTools
             System.err.println("File wasn't found:" + e.getMessage());
         } catch (IOException e)
         {
-            System.err.println("IO exception when loading properties: " + e.getMessage());
+            System.err.println("IO exception when loading properties: "
+                    + e.getMessage());
         }
 
         return prop;
@@ -136,21 +148,24 @@ public final class FileTools
         DataOutputStream dos;
         try
         {
-            dos = new DataOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
+            dos = new DataOutputStream(new BufferedOutputStream(
+                    new FileOutputStream(file)));
             try
             {
                 prop.store(dos, null); // 2nd parameter allows to store comments
             } catch (IOException e)
             {
                 saveOk = false;
-                System.err.println("IO exception during storage process: " + e.getMessage());
+                System.err.println("IO exception during storage process: "
+                        + e.getMessage());
             }
             try
             {
                 dos.close();
             } catch (IOException e)
             {
-                System.err.println("IO exeption while closing the stream: " + e.getMessage());
+                System.err.println("IO exeption while closing the stream: "
+                        + e.getMessage());
             }
         } catch (FileNotFoundException e1)
         {

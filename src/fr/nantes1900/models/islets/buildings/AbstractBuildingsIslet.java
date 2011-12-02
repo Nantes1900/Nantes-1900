@@ -219,8 +219,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
         {
             throw new NullArgumentException();
         }
-        // FIXME : remove the setArguments : allow each step to access to its
-        // islet parent and get everything it wants.
+
         this.getBiStep0().setArguments(this.getGravityNormal());
         this.biStep1 = this.getBiStep0().launchTreatment();
         MatrixMethod.changeBase(this.getGroundNormal(), this.getBiStep0()
@@ -230,7 +229,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * Launches the first treatment.
      * @throws NullArgumentException
-     *             TODO
+     *             if an argument needed for the treatment has not been
+     *             initialized
      */
     public final void launchTreatment1() throws NullArgumentException
     {
@@ -249,11 +249,11 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * Launches the third treatment.
      * @throws NullArgumentException
-     *             TODO
+     *             if an argument needed for the treatment has not been
+     *             initialized
      */
     public final void launchTreatment3() throws NullArgumentException
     {
-        System.out.println("Beginning tr 3");
         if (this.getGravityNormal() == null || this.getGroundNormal() == null
                 || this.getBiStep2().getNoise() == null)
         {
@@ -266,31 +266,28 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
                             .getNoise());
         }
         this.biStep4 = this.getBiStep3().launchTreatment();
-        System.out.println("End tr 3");
     }
 
     /**
      * Launches the fourth treatment.
      * @throws NullArgumentException
-     *             TODO
+     *             if an argument needed for the treatment has not been
+     *             initialized
      */
     public final void launchTreatment4() throws NullArgumentException
     {
-        System.out.println("Beginning tr 4");
         this.biStep5 = this.getBiStep4().launchTreatment();
-        System.out.println("End tr 4");
     }
 
     /**
      * Launches the fifth treatment.
      * @throws NullArgumentException
-     *             TODO
+     *             if an argument needed for the treatment has not been
+     *             initialized
      */
     public final void launchTreatment5() throws NullArgumentException
     {
-        System.out.println("Beginning tr 5");
         this.biStep6 = this.getBiStep5().launchTreatment();
-        System.out.println("End tr 5");
     }
 
     /**

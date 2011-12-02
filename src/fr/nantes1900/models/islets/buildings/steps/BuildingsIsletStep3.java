@@ -124,7 +124,7 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
      * @param gravityNormalIn
      *            the gravity normal used in treatments
      * @param noiseIn
-     *            TODO
+     *            the noise
      */
     public final void setArguments(final Vector3d gravityNormalIn,
             final Surface noiseIn)

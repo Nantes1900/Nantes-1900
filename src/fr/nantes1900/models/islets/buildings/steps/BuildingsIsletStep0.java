@@ -60,17 +60,13 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      * Creates a change base matrix with the normal to the ground. See the
      * MatrixMethod class for more informations.
      * @throws NullArgumentException
-     *             TODO.
+     *             if an argument needed for the treatment has not been
+     *             initialized
      */
     public final void createChangeBaseMatrix() throws NullArgumentException
     {
         try
         {
-            if (this.gravityNormal == null)
-            {
-                // TODO : throw this somewhere else...
-                throw new NullArgumentException();
-            }
             // Base change
             this.matrix = MatrixMethod.createOrthoBase(this.gravityNormal);
             MatrixMethod.changeBase(this.gravityNormal, this.matrix);
@@ -101,6 +97,10 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
     public final BuildingsIsletStep1 launchTreatment()
             throws NullArgumentException
     {
+        if (this.gravityNormal == null)
+        {
+            throw new NullArgumentException();
+        }
         this.createChangeBaseMatrix();
         this.changeBase();
 

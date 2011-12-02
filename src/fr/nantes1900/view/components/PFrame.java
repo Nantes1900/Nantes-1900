@@ -23,19 +23,20 @@ public class PFrame extends JFrame
 {
 
     /**
-     * 
+     * Version ID.
      */
     private static final long serialVersionUID = 1L;
+
     /**
      * The status bar placed at the bottom which displays information for the
      * user.
      */
-    protected JPanel            statusBar;
+    protected JPanel          statusBar;
 
     /**
      * Panel containing the other components.
      */
-    protected JPanel            pComponents;
+    protected JPanel          pComponents;
 
     /**
      * Creates a new frame with an empty status bar.

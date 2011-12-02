@@ -11,34 +11,51 @@ import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
 
 /**
+ * TODO .
  * @author Camille
- *
  */
 public class CharacteristicsStep3ElementsView extends CharacteristicsView
 {
     /**
-     * default serial UID
+     * Default serial UID.
      */
     private static final long serialVersionUID = 1L;
+    /**
+     * TODO .
+     */
     private JComboBox<String> cbType;
-    
+
+    /**
+     * TODO .
+     */
     public CharacteristicsStep3ElementsView()
     {
         super();
-        String[] types = {"", Characteristics.TYPE_BUILDING, Characteristics.TYPE_NOISE};
-        
-        cbType = new JComboBox<String>(types);
-        this.addCaracteristic(createSimpleCaracteristic(cbType, FileTools.readElementText(TextsKeys.KEY_TYPETEXT), new HelpButton()));
+        String[] types = {"", Characteristics.TYPE_BUILDING,
+                Characteristics.TYPE_NOISE};
+
+        this.cbType = new JComboBox<>(types);
+        this.addCaracteristic(createSimpleCaracteristic(this.cbType,
+                FileTools.readElementText(TextsKeys.KEY_TYPETEXT),
+                new HelpButton()));
         this.bValidate.setEnabled(true);
     }
 
-    public String getTypeSelected()
+    /**
+     * Getter.
+     * @return TODO .
+     */
+    public final String getTypeSelected()
     {
-        return (String) cbType.getSelectedItem();
+        return (String) this.cbType.getSelectedItem();
     }
-    
 
-    public void setType(String string)
+    /**
+     * Getter.
+     * @param string
+     *            TODO .
+     */
+    public final void setType(final String string)
     {
         this.cbType.setSelectedItem(string);
     }
