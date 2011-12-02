@@ -12,9 +12,6 @@ import javax.media.j3d.BranchGroup;
 import javax.media.j3d.Canvas3D;
 import javax.media.j3d.DirectionalLight;
 import javax.media.j3d.Group;
-import javax.media.j3d.ImageComponent2D;
-import javax.media.j3d.Texture;
-import javax.media.j3d.Texture2D;
 import javax.media.j3d.Transform3D;
 import javax.media.j3d.TransformGroup;
 import javax.swing.JPanel;
@@ -26,7 +23,6 @@ import javax.vecmath.Vector3f;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
-import com.sun.j3d.utils.image.TextureLoader;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
@@ -96,6 +92,8 @@ public class Universe3DView extends JPanel {
 	 * Constant defining the sensitivity of the zoom transformation
 	 */
 	public static final double TRANSLATION_FACTOR = 1.5;
+	
+
 
 	/**
 	 * Creates a new universe. Sets the Canvas3D and the panel size.
@@ -263,7 +261,7 @@ public class Universe3DView extends JPanel {
 		mouseZoom.setTransformGroup(transformGroup);
 		transformGroup.addChild(mouseZoom);
 		mouseZoom.setSchedulingBounds(boundingSphere);
-
+		
 		// Links the right button of the mouse with a translation transformation
 		MouseTranslate mouseTranslate = new MouseTranslate();
 		mouseTranslate.setFactor(TRANSLATION_FACTOR);
@@ -371,4 +369,6 @@ public class Universe3DView extends JPanel {
 		cameraTranslation.setTranslation(new Vector3d(x, y, z));
 		cameraTransformGroup.setTransform(cameraTranslation);
 	}
+	
+
 }
