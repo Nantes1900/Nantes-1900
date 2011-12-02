@@ -28,8 +28,6 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep3ElementsView;
 public class CharacteristicsStep3ElementsController extends
         AbstractCharacteristicsSurfacesController
 {
-    private ArrayList<Surface> surfacesList;
-
     /**
      * Constructor.
      * @param parentController

@@ -199,7 +199,7 @@ public class IsletProcessController implements ElementsSelectedListener
     {
         int step = this.getProgression();
         boolean empty = false;
-        if (!(cController instanceof CharacteristicsController) && (step == 3
+        if (!this.cController.getClass().equals(CharacteristicsController.class) && (step == 3
                 && f3DController.getSelectionMode().equals(
                         Functions3DToolbarController.ACTION_TRIANGLES)
                 || step == 2 || step == 4))
@@ -223,9 +223,9 @@ public class IsletProcessController implements ElementsSelectedListener
         if ((step == 3
                 && f3DController.getSelectionMode().equals(
                         Functions3DToolbarController.ACTION_TRIANGLES)
-                || step == 5 || step == 6))
+                || step == 2 || step == 4))
         {
-            if ((this.cController instanceof CharacteristicsController))
+            if (this.cController.getClass().equals(CharacteristicsController.class))
             {
                 switch (this.getProgression())
                 {
@@ -291,7 +291,7 @@ public class IsletProcessController implements ElementsSelectedListener
                         Functions3DToolbarController.ACTION_MESHES)
                 || step == 5 || step == 6))
         {
-            if ((this.cController instanceof CharacteristicsController))
+            if (this.cController.getClass().equals(CharacteristicsController.class))
             {
                 switch (this.getProgression())
                 {
@@ -325,7 +325,7 @@ public class IsletProcessController implements ElementsSelectedListener
     {
         int step = this.getProgression();
         boolean empty = false;
-        if ((step == 3
+        if (!this.cController.getClass().equals(CharacteristicsController.class) && (step == 3
                 && f3DController.getSelectionMode().equals(
                         Functions3DToolbarController.ACTION_MESHES)
                 || step == 5 || step == 6))
