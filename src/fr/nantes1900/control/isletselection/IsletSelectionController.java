@@ -1,6 +1,3 @@
-/**
- * TODO by Camille and Luc : missing package-info.java file.
- */
 package fr.nantes1900.control.isletselection;
 
 import java.awt.Cursor;
@@ -30,24 +27,22 @@ import fr.nantes1900.view.isletselection.IsletSelectionView;
  * TODO.
  * @author Camille Bouquet
  */
-public class IsletSelectionController implements ElementsSelectedListener
-{
-
+public class IsletSelectionController implements ElementsSelectedListener {
     /**
      * The controller of the panel containing buttons to perform the different
      * actions.
      */
-    private ActionsController        aController;
+    private ActionsController aController;
 
     /**
      * The controller of the tree used to select an islet.
      */
-    private GlobalTreeController     gtController;
+    private GlobalTreeController gtController;
 
     /**
      * The controller of the 3D view which shows a selected islet.
      */
-    private Universe3DController     u3DController;
+    private Universe3DController u3DController;
 
     /**
      * The controller of the selected islet.
@@ -57,22 +52,22 @@ public class IsletSelectionController implements ElementsSelectedListener
     /**
      * View allowing to select an islet and launch a process.
      */
-    private IsletSelectionView       isView;
+    private IsletSelectionView isView;
 
     /**
      * The opened directory corresponding.
      */
-    private File                     openedDirectory;
+    private File openedDirectory;
 
     /**
      * The selected file in the tree.
      */
-    private File                     selectedFile;
+    private File selectedFile;
 
     /**
      * The parent controller which handles this one.
      */
-    private GlobalController         parentController;
+    private GlobalController parentController;
 
     /**
      * Creates a new controller to handle the islet selection window.
@@ -105,8 +100,7 @@ public class IsletSelectionController implements ElementsSelectedListener
     // If an error happens (no file or triangles not selected, then throw an
     // exception : it has been created for that case !
 
-    public final boolean computeGravityNormal()
-    {
+    public final boolean computeGravityNormal() {
         boolean normalSaved = false;
         if (this.selectedFile != null
                 && !this.u3DController.getTrianglesSelected().isEmpty())
@@ -146,8 +140,7 @@ public class IsletSelectionController implements ElementsSelectedListener
     /**
      * Computes the ground normal.
      */
-    public final void computeGroundNormal()
-    {
+    public final void computeGroundNormal() {
         this.biController.setGroundNormal(this.biController
                 .computeNormalWithTrianglesSelected());
     }
@@ -157,8 +150,7 @@ public class IsletSelectionController implements ElementsSelectedListener
      * @param node
      *            The node of the tree corresponding to the file to display.
      */
-    public final void displayFile(final DefaultMutableTreeNode node)
-    {
+    public final void displayFile(final DefaultMutableTreeNode node) {
         this.isView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         // Reads the file object of the Tree
         FileNode fileNode = (FileNode) node.getUserObject();
@@ -183,8 +175,7 @@ public class IsletSelectionController implements ElementsSelectedListener
      * Returns the building islet controller.
      * @return The building islet controller.
      */
-    public final BuildingsIsletController getBiController()
-    {
+    public final BuildingsIsletController getBiController() {
         return this.biController;
     }
 
@@ -192,8 +183,7 @@ public class IsletSelectionController implements ElementsSelectedListener
      * TODO.
      * @return TODO
      */
-    public final JFrame getWindow()
-    {
+    public final JFrame getWindow() {
         return this.isView;
     }
 
@@ -205,8 +195,7 @@ public class IsletSelectionController implements ElementsSelectedListener
      *         launched\n false - the process wasn't launch, because no islet or
      *         ground normal are selected.
      */
-    public final boolean launchIsletProcess()
-    {
+    public final boolean launchIsletProcess() {
         boolean processLaunched = false;
 
         if ((!this.u3DController.getTrianglesSelected().isEmpty() || this.aController
@@ -245,8 +234,7 @@ public class IsletSelectionController implements ElementsSelectedListener
      * @param newDirectory
      *            The new directory.
      */
-    public final void updateMockupDirectory(final File newDirectory)
-    {
+    public final void updateMockupDirectory(final File newDirectory) {
         this.openedDirectory = newDirectory;
         this.gtController.updateDirectory(this.openedDirectory);
 
@@ -285,29 +273,25 @@ public class IsletSelectionController implements ElementsSelectedListener
     // FIXME : is that useful ? Is it useful to implement
     // ElementsSelectedListener ?
     @Override
-    public void triangleSelected(Triangle triangleSelected)
-    {
+    public void triangleSelected(Triangle triangleSelected) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void triangleDeselected(Triangle triangleSelected)
-    {
+    public void triangleDeselected(Triangle triangleSelected) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void surfaceSelected(Surface surfaceSelected)
-    {
+    public void surfaceSelected(Surface surfaceSelected) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void surfaceDeselected(Surface surfaceSelected)
-    {
+    public void surfaceDeselected(Surface surfaceSelected) {
         // TODO Auto-generated method stub
 
     }
