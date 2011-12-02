@@ -29,47 +29,33 @@ public class SurfaceView extends Shape3D
     /**
      * The material of a surface selected.
      */
-    public static final Material MATERIAL_SELECTED   = new Material(
-                                                             new Color3f(0.2f,
-                                                                     0f, 0f),
-                                                             new Color3f(0.0f,
-                                                                     0.0f, 0.0f),
-                                                             new Color3f(
-                                                                     Color.blue),
-                                                             new Color3f(
-                                                                     Color.blue),
-                                                             64);
+    public static final Material MATERIAL_SELECTED = new Material(new Color3f(
+            0.2f, 0f, 0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(
+            Color.blue), new Color3f(Color.blue), 64);
 
     /**
      * The material of a surface non-selected.
      */
     public static final Material MATERIAL_UNSELECTED = new Material(
-                                                             new Color3f(0.2f,
-                                                                     0f, 0f),
-                                                             new Color3f(0.0f,
-                                                                     0.0f, 0.0f),
-                                                             new Color3f(0.7f,
-                                                                     0f, 0f),
-                                                             new Color3f(0.7f,
-                                                                     0f, 0f),
-                                                             64);
+            new Color3f(0.2f, 0f, 0f), new Color3f(0.0f, 0.0f, 0.0f),
+            new Color3f(0.7f, 0f, 0f), new Color3f(0.7f, 0f, 0f), 64);
 
     /**
      * The surface linked to this view.
      */
-    private Surface              surface;
+    private Surface surface;
     /**
      * The mesh to be displayed.
      */
-    private MeshView             meshView;
+    private MeshView meshView;
     /**
      * The polygon to be displayed.
      */
-    private PolygonView          polygonView;
+    private PolygonView polygonView;
     /**
      * The appearance of the surface.
      */
-    private Appearance           appearance          = new Appearance();
+    private Appearance appearance = new Appearance();
 
     /**
      * Constructor of the surfaceView.
