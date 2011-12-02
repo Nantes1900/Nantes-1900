@@ -92,7 +92,7 @@ public class Functions3DToolbarController
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                // TODO call 3D universe controller to show meshes or polygons
+                setSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
             }
         });
 
@@ -101,7 +101,7 @@ public class Functions3DToolbarController
             @Override
             public void actionPerformed(ActionEvent arg0)
             {
-                // TODO call 3D universe controller to show meshes or polygons
+                setSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
             }
         });
     }
@@ -124,11 +124,13 @@ public class Functions3DToolbarController
             toolbarView.getSelectionModeTrianglesButton().setSelected(true);
             toolbarView.getSelectionModeMeshesButton().setSelected(false);
             toolbarView.setSelectionModeText(FileTools.readElementText(TextsKeys.KEY_SELECTTRIANGLESLABEL));
+            Functions3DToolbarController.this.parentController.getU3DController().changeSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
         } else
         {
             toolbarView.getSelectionModeTrianglesButton().setSelected(true);
             toolbarView.getSelectionModeMeshesButton().setSelected(false);
             toolbarView.setSelectionModeText(FileTools.readElementText(TextsKeys.KEY_SELECTMESHESLABEL));
+            Functions3DToolbarController.this.parentController.getU3DController().changeSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
         }
     }
 }
