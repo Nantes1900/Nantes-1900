@@ -24,8 +24,6 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
  */
 public class CharacteristicsStep4Controller extends AbstractCharacteristicsTrianglesController
 {
-    private ArrayList<Triangle> trianglesList;
-
     /**
      * Constructor.
      * @param parentController
