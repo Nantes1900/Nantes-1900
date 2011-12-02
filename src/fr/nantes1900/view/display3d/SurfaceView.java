@@ -30,9 +30,8 @@ public class SurfaceView extends Shape3D {
      */
     public static final Material MATERIAL_SELECTED = new Material(new Color3f(
 
-            0.2f, 0.2f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(.2f,
-            0.2f, 0.0f), new Color3f(.2f, 0.2f, 0.0f), 64);
-
+    0.2f, 0.2f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(.2f, 0.2f,
+            0.0f), new Color3f(.2f, 0.2f, 0.0f), 64);
 
     /**
      * The material of a surface non-selected.
@@ -56,7 +55,6 @@ public class SurfaceView extends Shape3D {
             0f, 0.2f, 0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0f, 0.2f,
             0f), new Color3f(0f, 0.2f, 0f), 64);
 
-
     /**
      * The surface linked to this view.
      */
@@ -79,7 +77,8 @@ public class SurfaceView extends Shape3D {
      * @param surfaceIn
      *            the surface to build from
      */
-    public SurfaceView(final Surface surfaceIn) {
+    public SurfaceView(final Surface surfaceIn)
+    {
         super();
 
         this.surface = surfaceIn;
