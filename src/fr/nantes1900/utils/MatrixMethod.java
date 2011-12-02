@@ -6,25 +6,23 @@ import javax.vecmath.Vector3d;
  * Contains a set of methods to create and change bases.
  * @author Eric Berthe, Valentin Roger, Daniel Lefevre
  */
-public final class MatrixMethod
-{
+public final class MatrixMethod {
 
     /**
      * The dimension of the matrix used in the methods. Here, it's always 3.
      */
-    public static final int    MATRIX_DIMENSION = 3;
+    public static final int MATRIX_DIMENSION = 3;
 
     /**
      * Error coefficient to determine if a matrix determinant is too close to 0
      * or not.
      */
-    public static final double ERROR            = 0.01;
+    public static final double ERROR = 0.01;
 
     /**
      * Private constructor.
      */
-    private MatrixMethod()
-    {
+    private MatrixMethod() {
     }
 
     /**
@@ -36,16 +34,13 @@ public final class MatrixMethod
      * @return the new coordinates
      */
     public static double[] changeBase(final double[] coord,
-            final double[][] matrix)
-    {
+            final double[][] matrix) {
         final int n = coord.length;
         final double[] sol = new double[n];
 
-        for (int i = 0; i < n; i = i + 1)
-        {
+        for (int i = 0; i < n; i = i + 1) {
             sol[i] = 0;
-            for (int j = 0; j < n; j = j + 1)
-            {
+            for (int j = 0; j < n; j = j + 1) {
                 sol[i] += matrix[i][j] * coord[j];
             }
         }
@@ -60,9 +55,9 @@ public final class MatrixMethod
      * @param matrix
      *            the base change matrix
      */
-    public static void changeBase(final Vector3d vect, final double[][] matrix)
-    {
-        final double[] coord = {vect.x, vect.y, vect.z, };
+    public static void changeBase(final Vector3d vect, final double[][] matrix) {
+        final double[] coord = { vect.x, vect.y, vect.z,
+        };
         vect.set(MatrixMethod.changeBase(coord, matrix));
     }
 
@@ -78,15 +73,13 @@ public final class MatrixMethod
      *             matrix would be singular
      */
     public static double[][] createOrthoBase(final Vector3d baseVector)
-            throws SingularMatrixException
-    {
+            throws SingularMatrixException {
 
         final Vector3d b = new Vector3d(baseVector);
         b.normalize();
 
         if (new Double(b.x).isNaN() || new Double(b.y).isNaN()
-                || new Double(b.z).isNaN())
-        {
+                || new Double(b.z).isNaN()) {
             throw new SingularMatrixException();
         }
 
@@ -100,8 +93,7 @@ public final class MatrixMethod
         matrix1[2][1] = b.y;
 
         // If this condition is found, then we change the matrix.
-        if (b.z > -1 - MatrixMethod.ERROR && b.z < -1 + MatrixMethod.ERROR)
-        {
+        if (b.z > -1 - MatrixMethod.ERROR && b.z < -1 + MatrixMethod.ERROR) {
 
             throw new SingularMatrixException();
 
@@ -132,8 +124,7 @@ public final class MatrixMethod
      */
     public static double[][] createOrthoBase(final Vector3d vect1,
             final Vector3d vect2, final Vector3d vect3)
-            throws SingularMatrixException
-    {
+            throws SingularMatrixException {
 
         final Vector3d b = new Vector3d(vect1);
         final Vector3d c = new Vector3d(vect2);
@@ -161,8 +152,7 @@ public final class MatrixMethod
      *            the matrix to compute
      * @return the determinant
      */
-    public static double determinant(final double[][] matrix)
-    {
+    public static double determinant(final double[][] matrix) {
         final double a = matrix[0][0];
         final double d = matrix[1][0];
         final double g = matrix[2][0];
@@ -186,13 +176,11 @@ public final class MatrixMethod
      *             if the matrix is singular.
      */
     public static double[][] getInversMatrix(final double[][] matrix)
-            throws SingularMatrixException
-    {
+            throws SingularMatrixException {
         final double[][] matrix1 = new double[MatrixMethod.MATRIX_DIMENSION][MatrixMethod.MATRIX_DIMENSION];
 
         if (MatrixMethod.determinant(matrix) < SingularMatrixException.ERROR_PRECISION
-                && MatrixMethod.determinant(matrix) > -SingularMatrixException.ERROR_PRECISION)
-        {
+                && MatrixMethod.determinant(matrix) > -SingularMatrixException.ERROR_PRECISION) {
             throw new SingularMatrixException();
         }
 
@@ -223,25 +211,23 @@ public final class MatrixMethod
      * Implements an exception to signal a singular matrix.
      * @author Daniel Lefevre
      */
-    public static final class SingularMatrixException extends Exception
-    {
+    public static final class SingularMatrixException extends Exception {
 
         /**
          * Version attribute.
          */
-        private static final long  serialVersionUID = 1L;
+        private static final long serialVersionUID = 1L;
 
         /**
          * Precision (as a double) to check if a matrix determinant is equal to
          * zero.
          */
-        public static final double ERROR_PRECISION  = 0.05;
+        public static final double ERROR_PRECISION = 0.05;
 
         /**
          * Private constructor.
          */
-        public SingularMatrixException()
-        {
+        public SingularMatrixException() {
         }
     }
 }

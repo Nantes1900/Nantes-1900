@@ -9,12 +9,11 @@ import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 
 /**
- * Implements a step of the process. This step is after the determination of
- * the neighbours and before the sort of the neighbours.
+ * Implements a step of the process. This step is after the determination of the
+ * neighbours and before the sort of the neighbours.
  * @author Daniel Lefèvre
  */
-public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
-{
+public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
 
     /**
      * The list of buildings.
@@ -23,7 +22,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
     /**
      * The grounds.
      */
-    private Ground         grounds;
+    private Ground grounds;
 
     /**
      * Constructor.
@@ -33,8 +32,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
      *            te grounds
      */
     public BuildingsIsletStep6(final List<Building> buildingsIn,
-            final Ground groundsIn)
-    {
+            final Ground groundsIn) {
         this.buildings = buildingsIn;
         this.grounds = groundsIn;
     }
@@ -43,8 +41,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
      * Getter.
      * @return the list of buildings
      */
-    public final List<Building> getBuildings()
-    {
+    public final List<Building> getBuildings() {
         return this.buildings;
     }
 
@@ -52,8 +49,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
      * Getter.
      * @return the grounds
      */
-    public final Ground getGrounds()
-    {
+    public final Ground getGrounds() {
         return this.grounds;
     }
 
@@ -64,8 +60,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
      * #launchProcess()
      */
     @Override
-    public final AbstractBuildingsIsletStep launchProcess()
-    {
+    public final AbstractBuildingsIsletStep launchProcess() {
         // There is no more process for now.
         return null;
     }
@@ -77,11 +72,9 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode()
-    {
+    public final DefaultMutableTreeNode returnNode() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
-        for (Building b : this.buildings)
-        {
+        for (Building b : this.buildings) {
             root.add(b.returnNode6());
         }
         root.add(new DefaultMutableTreeNode(this.grounds));
@@ -96,8 +89,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep
      * #toString()
      */
     @Override
-    public final String toString()
-    {
+    public final String toString() {
         return super.toString() + AbstractBuildingsIslet.SIXTH_STEP;
     }
 }

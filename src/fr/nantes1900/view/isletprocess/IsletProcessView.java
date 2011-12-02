@@ -79,7 +79,8 @@ public class IsletProcessView extends PFrame {
         this.pView = parametersView;
         this.u3DView = universe3dView;
         this.jspParameters = new JScrollPane(pView);
-        jspParameters.setMinimumSize(new Dimension(pView.getPreferredWidth(), 0));
+        jspParameters
+                .setMinimumSize(new Dimension(pView.getPreferredWidth(), 0));
         this.tabs = new JTabbedPane();
         this.tabs.addTab("Paramètres", this.jspParameters);
         this.tabs.addTab("Arbre", this.itView);

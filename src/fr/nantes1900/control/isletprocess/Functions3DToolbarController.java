@@ -17,6 +17,7 @@ import fr.nantes1900.view.isletprocess.Functions3DToolbarView;
  * @author Camille
  */
 public class Functions3DToolbarController {
+
     private IsletProcessController parentController;
     private Functions3DToolbarView toolbarView;
     private int selectionMode;
@@ -45,16 +46,14 @@ public class Functions3DToolbarController {
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 JButton source = ((JButton) arg0.getSource());
-                if (source.getName().equals("lock"))
-                {
+                if (source.getName().equals("lock")) {
                     Functions3DToolbarController.this.parentController
                             .lock(true);
                     source.setName("unlock");
                     source.setText("/p");
                     source.setToolTipText(FileTools
                             .readElementText(TextsKeys.KEY_UNLOCKMESH));
-                } else if (source.getName().equals("unlock"))
-                {
+                } else if (source.getName().equals("unlock")) {
                     Functions3DToolbarController.this.parentController
                             .lock(false);
                     source.setName("lock");
@@ -71,16 +70,14 @@ public class Functions3DToolbarController {
                     @Override
                     public void actionPerformed(ActionEvent arg0) {
                         JButton source = ((JButton) arg0.getSource());
-                        if (source.getName().equals(ACTION_MESHES))
-                        {
+                        if (source.getName().equals(ACTION_MESHES)) {
                             source.setName(ACTION_POLYGONS);
                             source.setText("#");
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_DISPLAYPOLYGONS));
                             Functions3DToolbarController.this.parentController
                                     .setDisplayMode(Universe3DController.DISPLAY_MESH_MODE);
-                        } else if (source.getName().equals(ACTION_POLYGONS))
-                        {
+                        } else if (source.getName().equals(ACTION_POLYGONS)) {
                             source.setName(ACTION_MESHES);
                             source.setText("$");
                             source.setToolTipText(FileTools
@@ -110,26 +107,24 @@ public class Functions3DToolbarController {
                 });
     }
 
-    public Functions3DToolbarView getToolbar() {
-        return toolbarView;
-    }
-
     public int getSelectionMode() {
         return selectionMode;
     }
 
+    public Functions3DToolbarView getToolbar() {
+        return toolbarView;
+    }
+
     public void setSelectionMode(int selectionMode) {
         this.selectionMode = selectionMode;
-        if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE)
-        {
+        if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE) {
             toolbarView.getSelectionModeTrianglesButton().setEnabled(false);
             toolbarView.getSelectionModeMeshesButton().setEnabled(true);
             toolbarView.setSelectionModeText(FileTools
                     .readElementText(TextsKeys.KEY_SELECTTRIANGLESLABEL));
             Functions3DToolbarController.this.parentController
                     .changeSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
-        } else if (selectionMode == Universe3DController.SELECTION_SURFACE_MODE)
-        {
+        } else if (selectionMode == Universe3DController.SELECTION_SURFACE_MODE) {
             toolbarView.getSelectionModeMeshesButton().setEnabled(false);
             toolbarView.getSelectionModeTrianglesButton().setEnabled(true);
             toolbarView.setSelectionModeText(FileTools

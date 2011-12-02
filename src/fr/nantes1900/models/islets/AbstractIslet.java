@@ -9,8 +9,7 @@ import fr.nantes1900.utils.ParserSTL;
  * Implements an islet.
  * @author Daniel
  */
-public abstract class AbstractIslet
-{
+public abstract class AbstractIslet {
 
     /**
      * Parses a STL file. Uses the ParserSTL class.
@@ -21,8 +20,7 @@ public abstract class AbstractIslet
      *             if the file is badly formed, not found or unreadable !
      */
     public static final Mesh parseFile(final String fileName)
-            throws IOException
-    {
+            throws IOException {
         final ParserSTL parser = new ParserSTL(fileName);
         return parser.read();
     }

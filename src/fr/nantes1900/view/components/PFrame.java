@@ -19,8 +19,7 @@ import javax.swing.JPanel;
 /**
  * @author Daniel
  */
-public class PFrame extends JFrame
-{
+public class PFrame extends JFrame {
 
     /**
      * Version ID.
@@ -31,18 +30,17 @@ public class PFrame extends JFrame
      * The status bar placed at the bottom which displays information for the
      * user.
      */
-    protected JPanel          statusBar;
+    protected JPanel statusBar;
 
     /**
      * Panel containing the other components.
      */
-    protected JPanel          pComponents;
+    protected JPanel pComponents;
 
     /**
      * Creates a new frame with an empty status bar.
      */
-    public PFrame()
-    {
+    public PFrame() {
         super();
         this.statusBar = new JPanel();
         this.statusBar.setBorder(BorderFactory.createLoweredBevelBorder());
@@ -60,8 +58,7 @@ public class PFrame extends JFrame
      * Returns the main container of this panel.
      * @return the components panel.
      */
-    public final JPanel getComponentsPanel()
-    {
+    public final JPanel getComponentsPanel() {
         return this.pComponents;
     }
 
@@ -70,8 +67,7 @@ public class PFrame extends JFrame
      * @param text
      *            The text to display in the status bar.
      */
-    public final void setStatusBarText(final String text)
-    {
+    public final void setStatusBarText(final String text) {
         this.statusBar.removeAll();
         this.statusBar.add(new JLabel(text));
         this.validate();

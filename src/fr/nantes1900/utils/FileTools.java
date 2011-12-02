@@ -16,12 +16,12 @@ import java.util.Properties;
  * The class FileTools contains method to easily handle files with properties.
  * @author Camille Bouquet
  */
-public final class FileTools
-{
+public final class FileTools {
+
     /**
      * TODO.
      */
-    private static final String ELEMENT_TEXTS_FILE  = "files/elementTexts.txt";
+    private static final String ELEMENT_TEXTS_FILE = "files/elementTexts.txt";
     /**
      * TODO.
      */
@@ -29,13 +29,12 @@ public final class FileTools
     /**
      * TODO.
      */
-    private static final String HELP_MESSAGES_FILE  = "files/helpMessages.txt";
+    private static final String HELP_MESSAGES_FILE = "files/helpMessages.txt";
 
     /**
      * Private constructor.
      */
-    private FileTools()
-    {
+    private FileTools() {
     }
 
     /**
@@ -44,8 +43,7 @@ public final class FileTools
      *            Name of the element text.
      * @return The read message.
      */
-    public static String readElementText(final String keyName)
-    {
+    public static String readElementText(final String keyName) {
         return readProperty(new File(ELEMENT_TEXTS_FILE), keyName);
     }
 
@@ -59,8 +57,7 @@ public final class FileTools
      * @return The read message.
      */
     public static String readErrorMessage(final String keyName,
-            final String messageType)
-    {
+            final String messageType) {
         return readProperty(new File(ERROR_MESSAGES_FILE), keyName
                 + messageType);
     }
@@ -77,8 +74,7 @@ public final class FileTools
      * @return The read message.
      */
     public static String readHelpMessage(final String keyName,
-            final String messageType)
-    {
+            final String messageType) {
         return readProperty(new File(HELP_MESSAGES_FILE), keyName + messageType);
     }
 
@@ -89,24 +85,20 @@ public final class FileTools
      *            The file to read data from.
      * @return read properties.
      */
-    public static Properties readProperties(final File file)
-    {
+    public static Properties readProperties(final File file) {
         FileReader fr;
         Properties prop = new Properties();
 
-        try
-        {
+        try {
             fr = new FileReader(file);
 
             prop.load(fr);
 
             fr.close();
 
-        } catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             System.err.println("File wasn't found:" + e.getMessage());
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             System.err.println("IO exception when loading properties: "
                     + e.getMessage());
         }
@@ -123,8 +115,7 @@ public final class FileTools
      * @return The property to read as a String. If the property wasn't found,
      *         the string is empty.
      */
-    public static String readProperty(final File file, final String key)
-    {
+    public static String readProperty(final File file, final String key) {
         Properties prop = readProperties(file);
         String readProperty = prop.getProperty(key, "");
 
@@ -142,33 +133,26 @@ public final class FileTools
      *         occurred during the saving process.
      */
     public static boolean
-            saveProperties(final File file, final Properties prop)
-    {
+            saveProperties(final File file, final Properties prop) {
         boolean saveOk = true;
         DataOutputStream dos;
-        try
-        {
+        try {
             dos = new DataOutputStream(new BufferedOutputStream(
                     new FileOutputStream(file)));
-            try
-            {
+            try {
                 prop.store(dos, null); // 2nd parameter allows to store comments
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 saveOk = false;
                 System.err.println("IO exception during storage process: "
                         + e.getMessage());
             }
-            try
-            {
+            try {
                 dos.close();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 System.err.println("IO exeption while closing the stream: "
                         + e.getMessage());
             }
-        } catch (FileNotFoundException e1)
-        {
+        } catch (FileNotFoundException e1) {
             saveOk = false;
             System.err.println("File wasn't found: " + e1.getMessage());
         }

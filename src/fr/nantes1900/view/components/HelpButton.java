@@ -17,49 +17,48 @@ import javax.swing.JOptionPane;
  * a JOptionPane.
  * @author Camille
  */
-public class HelpButton extends JButton implements MouseListener
-{
+public class HelpButton extends JButton implements MouseListener {
 
     /**
      * The current color of the text.
      */
-    private Color             textColorCurrent;
+    private Color textColorCurrent;
 
     /**
      * The normal wanted color for the text.
      */
-    private Color             textColor        = Color.BLUE;
+    private Color textColor = Color.BLUE;
 
     /**
      * The current value for the background.
      */
-    private Color             backgroundColorCurrent;
+    private Color backgroundColorCurrent;
 
     /**
      * The normal wanted color for the background.
      */
     // TODO : magic number !
-    private Color             backgroundColor  = new Color(240, 240, 240);
+    private Color backgroundColor = new Color(240, 240, 240);
 
     /**
      * Indicates if the mouse is on the button area.
      */
-    private boolean           in               = false;
+    private boolean in = false;
 
     /**
      * Indicates if the left button of the mouse is pressed.
      */
-    private boolean           pressed          = false;
+    private boolean pressed = false;
 
     /**
      * Message to display in the pop-up.
      */
-    private String            helpMessage;
+    private String helpMessage;
 
     /**
      * Title of the pop-up.
      */
-    private String            title;
+    private String title;
 
     /**
      * 
@@ -69,8 +68,7 @@ public class HelpButton extends JButton implements MouseListener
     /**
      * Empty constructor.
      */
-    public HelpButton()
-    {
+    public HelpButton() {
         this("");
     }
 
@@ -80,8 +78,7 @@ public class HelpButton extends JButton implements MouseListener
      * @param tooltip
      *            The tooltip to associate with this button.
      */
-    public HelpButton(final String tooltip)
-    {
+    public HelpButton(final String tooltip) {
         this(tooltip, "");
     }
 
@@ -92,8 +89,7 @@ public class HelpButton extends JButton implements MouseListener
      * @param helpMessageIn
      *            Message to show in a pop-up when the button is clicked.
      */
-    public HelpButton(final String tooltip, final String helpMessageIn)
-    {
+    public HelpButton(final String tooltip, final String helpMessageIn) {
         this(tooltip, helpMessageIn, "");
     }
 
@@ -108,8 +104,7 @@ public class HelpButton extends JButton implements MouseListener
      *            The title of the pop-up.
      */
     public HelpButton(final String tooltip, final String helpMessageIn,
-            final String titleIn)
-    {
+            final String titleIn) {
         this.textColorCurrent = this.textColor;
         this.backgroundColorCurrent = this.backgroundColor;
         this.setMinimumSize(new Dimension(20, 20));
@@ -132,8 +127,7 @@ public class HelpButton extends JButton implements MouseListener
      *            Amont to darken the color of.
      * @return The darkened color.
      */
-    private static Color darken(final Color color, final int amount)
-    {
+    private static Color darken(final Color color, final int amount) {
         int red = (color.getRed() - amount < 0) ? 0 : color.getRed() - amount;
         int green = (color.getGreen() - amount < 0) ? 0 : color.getGreen()
                 - amount;
@@ -151,8 +145,7 @@ public class HelpButton extends JButton implements MouseListener
      *            Amont to lighten the color of.
      * @return The lightened color.
      */
-    private static Color lighten(final Color color, final int amount)
-    {
+    private static Color lighten(final Color color, final int amount) {
         // TODO : magic number !
         int red = (color.getRed() + amount > 255) ? 255 : color.getRed()
                 + amount;
@@ -165,14 +158,12 @@ public class HelpButton extends JButton implements MouseListener
     }
 
     @Override
-    public void mouseClicked(final MouseEvent arg0)
-    {
+    public void mouseClicked(final MouseEvent arg0) {
         // TODO : commentary
     }
 
     @Override
-    public final void mouseEntered(final MouseEvent arg0)
-    {
+    public final void mouseEntered(final MouseEvent arg0) {
         this.in = true;
         this.textColorCurrent = lighten(this.textColor, 50);
         this.backgroundColorCurrent = lighten(this.backgroundColor, 25);
@@ -181,11 +172,9 @@ public class HelpButton extends JButton implements MouseListener
     }
 
     @Override
-    public final void mouseExited(final MouseEvent arg0)
-    {
+    public final void mouseExited(final MouseEvent arg0) {
         this.in = false;
-        if (!this.pressed)
-        {
+        if (!this.pressed) {
             this.textColorCurrent = this.textColor;
             this.backgroundColorCurrent = this.backgroundColor;
             revalidate();
@@ -194,10 +183,8 @@ public class HelpButton extends JButton implements MouseListener
     }
 
     @Override
-    public final void mousePressed(final MouseEvent arg0)
-    {
-        if (arg0.getButton() == MouseEvent.BUTTON1)
-        {
+    public final void mousePressed(final MouseEvent arg0) {
+        if (arg0.getButton() == MouseEvent.BUTTON1) {
             this.pressed = true;
             this.textColorCurrent = darken(this.textColor, 100);
             this.backgroundColorCurrent = this.backgroundColor;
@@ -207,26 +194,21 @@ public class HelpButton extends JButton implements MouseListener
     }
 
     @Override
-    public final void mouseReleased(final MouseEvent arg0)
-    {
-        if (arg0.getButton() == MouseEvent.BUTTON1)
-        {
+    public final void mouseReleased(final MouseEvent arg0) {
+        if (arg0.getButton() == MouseEvent.BUTTON1) {
             this.pressed = false;
 
-            if (this.in)
-            {
+            if (this.in) {
                 this.textColorCurrent = lighten(this.textColor, 50);
                 this.backgroundColorCurrent = lighten(this.backgroundColor, 25);
-            } else
-            {
+            } else {
                 this.textColorCurrent = this.textColor;
                 this.backgroundColorCurrent = this.backgroundColor;
             }
             revalidate();
             repaint();
 
-            if (!this.helpMessage.isEmpty())
-            {
+            if (!this.helpMessage.isEmpty()) {
                 // TODO : title masque un attribut.
                 String title = (this.title.isEmpty()) ? "Informations complémentaires"
                         : this.title;
@@ -237,8 +219,7 @@ public class HelpButton extends JButton implements MouseListener
     }
 
     @Override
-    public final void paintComponent(final Graphics g)
-    {
+    public final void paintComponent(final Graphics g) {
         Graphics2D g2d = (Graphics2D) g;
         g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
                 RenderingHints.VALUE_ANTIALIAS_ON);
@@ -276,8 +257,7 @@ public class HelpButton extends JButton implements MouseListener
      * @param message
      *            The new help message.
      */
-    public final void setHelpMessage(final String message)
-    {
+    public final void setHelpMessage(final String message) {
         this.setHelpMessage(message, "");
     }
 
@@ -289,8 +269,7 @@ public class HelpButton extends JButton implements MouseListener
      *            The new title.
      */
     public final void
-            setHelpMessage(final String message, final String titleIn)
-    {
+            setHelpMessage(final String message, final String titleIn) {
         this.helpMessage = message;
         this.title = titleIn;
     }
@@ -300,8 +279,7 @@ public class HelpButton extends JButton implements MouseListener
      * @param tooltip
      *            The new text for the tooltip.
      */
-    public final void setTooltip(final String tooltip)
-    {
+    public final void setTooltip(final String tooltip) {
         this.setToolTipText(tooltip);
     }
 }

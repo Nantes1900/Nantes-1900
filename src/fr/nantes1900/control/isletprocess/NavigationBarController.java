@@ -15,17 +15,17 @@ import fr.nantes1900.view.isletprocess.NavigationBarView;
  * TODO.
  * @author Camille Bouquet, Luc Jallerat
  */
-public class NavigationBarController extends JToolBar
-{
+public class NavigationBarController extends JToolBar {
+
     /**
      * Version ID.
      */
-    private static final long      serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * TODO.
      */
-    private NavigationBarView      nbView;
+    private NavigationBarView nbView;
 
     /**
      * The parent controller.
@@ -38,45 +38,40 @@ public class NavigationBarController extends JToolBar
      *            the parent controller
      */
     public NavigationBarController(
-            final IsletProcessController parentControllerIn)
-    {
+            final IsletProcessController parentControllerIn) {
         this.parentController = parentControllerIn;
         this.nbView = new NavigationBarView();
         this.nbView.getAbortButton().addActionListener(new ActionListener() {
+
             @Override
-            public void actionPerformed(final ActionEvent arg0)
-            {
+            public void actionPerformed(final ActionEvent arg0) {
                 NavigationBarController.this.getParentController()
                         .abortProcess();
             }
         });
         this.nbView.getBackButton().addActionListener(new ActionListener() {
+
             @Override
-            public void actionPerformed(final ActionEvent arg0)
-            {
-                try
-                {
+            public void actionPerformed(final ActionEvent arg0) {
+                try {
                     NavigationBarController.this.getParentController()
                             .goToPreviousProcess();
-                } catch (UnexistingStepException e)
-                {
+                } catch (UnexistingStepException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
         });
         this.nbView.getLaunchButton().addActionListener(new ActionListener() {
+
             @Override
-            public void actionPerformed(final ActionEvent arg0)
-            {
-                try
-                {
+            public void actionPerformed(final ActionEvent arg0) {
+                try {
                     NavigationBarController.this.getParentController()
                             .loadParameters();
                     NavigationBarController.this.getParentController()
                             .launchProcess();
-                } catch (UnexistingStepException e)
-                {
+                } catch (UnexistingStepException e) {
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
@@ -86,20 +81,18 @@ public class NavigationBarController extends JToolBar
 
     /**
      * Getter.
-     * @return the navigation bar view associated
+     * @return the parent controller
      */
-    public final NavigationBarView getView()
-    {
-        return this.nbView;
+    public final IsletProcessController getParentController() {
+        return this.parentController;
     }
 
     /**
      * Getter.
-     * @return the parent controller
+     * @return the navigation bar view associated
      */
-    public final IsletProcessController getParentController()
-    {
-        return this.parentController;
+    public final NavigationBarView getView() {
+        return this.nbView;
     }
 
 }

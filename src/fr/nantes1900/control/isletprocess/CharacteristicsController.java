@@ -9,19 +9,17 @@ import fr.nantes1900.view.isletprocess.CharacteristicsView;
  * @author Camille
  */
 // FIXME : Javadoc
-public class CharacteristicsController
-{
-    protected IsletProcessController parentController;
-    protected CharacteristicsView     cView;
+public class CharacteristicsController {
 
-    public CharacteristicsController(IsletProcessController parentController)
-    {
+    protected IsletProcessController parentController;
+    protected CharacteristicsView cView;
+
+    public CharacteristicsController(IsletProcessController parentController) {
         this.parentController = parentController;
         cView = new CharacteristicsView();
     }
 
-    public CharacteristicsView getView()
-    {
+    public CharacteristicsView getView() {
         return cView;
     }
 }

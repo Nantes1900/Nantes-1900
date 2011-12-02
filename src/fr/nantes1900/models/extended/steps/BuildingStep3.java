@@ -14,13 +14,12 @@ import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
  * roofs.
  * @author Daniel Lefèvre
  */
-public class BuildingStep3 extends AbstractBuildingStep
-{
+public class BuildingStep3 extends AbstractBuildingStep {
 
     /**
      * The initial total mesh representing the building.
      */
-    private Surface  initialTotalMesh;
+    private Surface initialTotalMesh;
 
     /**
      * The gravity normal.
@@ -32,8 +31,7 @@ public class BuildingStep3 extends AbstractBuildingStep
      * @param mesh
      *            the mesh representing the entire building.
      */
-    public BuildingStep3(final Mesh mesh)
-    {
+    public BuildingStep3(final Mesh mesh) {
         this.initialTotalMesh = new Surface(mesh);
     }
 
@@ -41,22 +39,18 @@ public class BuildingStep3 extends AbstractBuildingStep
      * Getter.
      * @return the entire mesh
      */
-    public final Surface getInitialTotalSurface()
-    {
+    public final Surface getInitialTotalSurface() {
         return this.initialTotalMesh;
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchProcess
-     * ()
+     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchProcess ()
      */
     @Override
-    public final BuildingStep4 launchProcess() throws NullArgumentException
-    {
-        if (this.gravityNormal == null)
-        {
+    public final BuildingStep4 launchProcess() throws NullArgumentException {
+        if (this.gravityNormal == null) {
             throw new NullArgumentException();
         }
         // Selects the triangles which are oriented normal to normalGround.
@@ -78,8 +72,7 @@ public class BuildingStep3 extends AbstractBuildingStep
      * fr.nantes1900.models.extended.steps.AbstractBuildingStep#returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode()
-    {
+    public final DefaultMutableTreeNode returnNode() {
         return new DefaultMutableTreeNode(this.initialTotalMesh);
     }
 
@@ -88,8 +81,7 @@ public class BuildingStep3 extends AbstractBuildingStep
      * @param gravityNormalIn
      *            the gravity normal
      */
-    public final void setArguments(final Vector3d gravityNormalIn)
-    {
+    public final void setArguments(final Vector3d gravityNormalIn) {
         this.gravityNormal = gravityNormalIn;
     }
 }

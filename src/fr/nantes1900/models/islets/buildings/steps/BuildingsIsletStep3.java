@@ -14,7 +14,6 @@ import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 /**
  * Implements a step of the process. This step is after the separation between
  * buildings and before the separation between walls and roofs.
- * 
  * @author Daniel Lefèvre
  */
 public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
@@ -41,21 +40,19 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
 
     /**
      * Constructor.
-     * 
      * @param buildingsIn
      *            the list of buildings
      * @param groundsIn
      *            the ground
      */
     public BuildingsIsletStep3(final List<Building> buildingsIn,
-        final Ground groundsIn) {
+            final Ground groundsIn) {
         this.buildings = buildingsIn;
         this.grounds = groundsIn;
     }
 
     /**
      * Getter.
-     * 
      * @return the list of buildings
      */
     public final List<Building> getBuildings() {
@@ -64,7 +61,6 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
 
     /**
      * Getter.
-     * 
      * @return the grounds
      */
     public final Ground getGrounds() {
@@ -73,7 +69,6 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
 
     /**
      * Getter.
-     * 
      * @return the noise
      */
     public final Surface getNoise() {
@@ -88,7 +83,7 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
      */
     @Override
     public final BuildingsIsletStep4 launchProcess()
-        throws NullArgumentException {
+            throws NullArgumentException {
         for (Building b : this.buildings) {
             b.getbStep3().setArguments(this.gravityNormal);
             b.launchProcess3();
@@ -117,14 +112,13 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
 
     /**
      * Setter.
-     * 
      * @param gravityNormalIn
      *            the gravity normal used in processs
      * @param noiseIn
      *            the noise
      */
     public final void setArguments(final Vector3d gravityNormalIn,
-        final Surface noiseIn) {
+            final Surface noiseIn) {
         this.gravityNormal = gravityNormalIn;
         this.noise = noiseIn;
     }

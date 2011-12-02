@@ -5,8 +5,8 @@ package fr.nantes1900.models.islets.buildings.exceptions;
  * wrong case.
  * @author Daniel Lefèvre
  */
-public class InvalidCaseException extends Exception
-{
+public class InvalidCaseException extends Exception {
+
     /**
      * Version ID.
      */
@@ -15,7 +15,6 @@ public class InvalidCaseException extends Exception
     /**
      * Constructor.
      */
-    public InvalidCaseException()
-    {
+    public InvalidCaseException() {
     }
 }

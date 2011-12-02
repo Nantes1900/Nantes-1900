@@ -12,8 +12,8 @@ import javax.vecmath.Vector3d;
  * as a normal.
  * @author Daniel Lefevre, Eric Berthe, Valentin Roger, Elsa Arroud-Vignod
  */
-public class Triangle
-{
+public class Triangle {
+
     /**
      * Number of vertices of a triangle.
      */
@@ -22,17 +22,17 @@ public class Triangle
     /**
      * Array of three points of the triangle.
      */
-    private final Point[]    points      = new Point[NB_VERTICES];
+    private final Point[] points = new Point[NB_VERTICES];
 
     /**
      * Normal of the triangle.
      */
-    private final Vector3d   normal      = new Vector3d();
+    private final Vector3d normal = new Vector3d();
 
     /**
      * Array of three edges of the triangle.
      */
-    private final Edge[]     edges       = new Edge[NB_VERTICES];
+    private final Edge[] edges = new Edge[NB_VERTICES];
 
     /**
      * Constructor of the triangle.
@@ -53,8 +53,7 @@ public class Triangle
      */
     public Triangle(final Point point0, final Point point1, final Point point2,
             final Edge edge1, final Edge edge2, final Edge edge3,
-            final Vector3d normalNew)
-    {
+            final Vector3d normalNew) {
 
         this.points[0] = point0;
         this.points[1] = point1;
@@ -75,8 +74,7 @@ public class Triangle
      * @param triangle
      *            the triangle to copy
      */
-    public Triangle(final Triangle triangle)
-    {
+    public Triangle(final Triangle triangle) {
         this.points[0] = new Point(triangle.points[0]);
         this.points[1] = new Point(triangle.points[1]);
         this.points[2] = new Point(triangle.points[2]);
@@ -99,8 +97,7 @@ public class Triangle
      * @return true if they have the same orientation, false otherwise
      */
     public final boolean angularTolerance(final Triangle face,
-            final double error)
-    {
+            final double error) {
         return this.angularTolerance(face.normal, error);
     }
 
@@ -115,8 +112,7 @@ public class Triangle
      *         false otherwise
      */
     public final boolean angularTolerance(final Vector3d vector,
-            final double error)
-    {
+            final double error) {
         return this.normal.angle(vector) * Edge.CONVERSION_PI_DEGREES < error;
     }
 
@@ -127,8 +123,7 @@ public class Triangle
      * @return true if the edge e is one of the edges of this triangle, false
      *         otherwise.
      */
-    public final boolean contains(final Edge e)
-    {
+    public final boolean contains(final Edge e) {
         return this.getEdges().contains(e);
     }
 
@@ -139,12 +134,9 @@ public class Triangle
      *            the point to check
      * @return true is one point is equal with p
      */
-    public final boolean contains(final Point point)
-    {
-        for (final Point point2 : this.points)
-        {
-            if (point.equals(point2))
-            {
+    public final boolean contains(final Point point) {
+        for (final Point point2 : this.points) {
+            if (point.equals(point2)) {
                 return true;
             }
         }
@@ -156,18 +148,14 @@ public class Triangle
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public final boolean equals(final Object obj)
-    {
-        if (this == obj)
-        {
+    public final boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (obj == null)
-        {
+        if (obj == null) {
             return false;
         }
-        if (this.getClass() != obj.getClass())
-        {
+        if (this.getClass() != obj.getClass()) {
             return false;
         }
         final Triangle other = (Triangle) obj;
@@ -180,8 +168,7 @@ public class Triangle
      * Getter.
      * @return the first edge
      */
-    public final Edge getE1()
-    {
+    public final Edge getE1() {
         return this.edges[0];
     }
 
@@ -189,8 +176,7 @@ public class Triangle
      * Getter.
      * @return the second edge
      */
-    public final Edge getE2()
-    {
+    public final Edge getE2() {
         return this.edges[1];
     }
 
@@ -198,8 +184,7 @@ public class Triangle
      * Getter.
      * @return the third edge
      */
-    public final Edge getE3()
-    {
+    public final Edge getE3() {
         return this.edges[2];
     }
 
@@ -207,8 +192,7 @@ public class Triangle
      * Getter.
      * @return a collection containing the three edges
      */
-    public final Collection<Edge> getEdges()
-    {
+    public final Collection<Edge> getEdges() {
         return Arrays.asList(this.edges);
     }
 
@@ -217,16 +201,13 @@ public class Triangle
      * other triangles which share those edges.
      * @return a list of the neighbours triangles
      */
-    public final List<Triangle> getNeighbours()
-    {
+    public final List<Triangle> getNeighbours() {
         final List<Triangle> list = new ArrayList<>();
         Triangle other;
 
-        for (final Edge e : this.edges)
-        {
+        for (final Edge e : this.edges) {
             other = e.returnOther(this);
-            if (other != null)
-            {
+            if (other != null) {
                 list.add(other);
             }
         }
@@ -238,8 +219,7 @@ public class Triangle
      * Getter.
      * @return the normal
      */
-    public final Vector3d getNormal()
-    {
+    public final Vector3d getNormal() {
         return this.normal;
     }
 
@@ -248,12 +228,10 @@ public class Triangle
      * neighbours if they share one edge.
      * @return the number of neighbours
      */
-    public final int getNumNeighbours()
-    {
+    public final int getNumNeighbours() {
 
         int number = 0;
-        for (final Edge e : this.edges)
-        {
+        for (final Edge e : this.edges) {
             number += e.getNumberTriangles() - 1;
         }
 
@@ -264,8 +242,7 @@ public class Triangle
      * Getter.
      * @return the first point
      */
-    public final Point getP1()
-    {
+    public final Point getP1() {
         return this.points[0];
     }
 
@@ -273,8 +250,7 @@ public class Triangle
      * Getter.
      * @return the second point
      */
-    public final Point getP2()
-    {
+    public final Point getP2() {
         return this.points[1];
     }
 
@@ -282,8 +258,7 @@ public class Triangle
      * Getter.
      * @return the third point
      */
-    public final Point getP3()
-    {
+    public final Point getP3() {
         return this.points[2];
     }
 
@@ -291,8 +266,7 @@ public class Triangle
      * Getter.
      * @return a collection containing the three points
      */
-    public final Collection<Point> getPoints()
-    {
+    public final Collection<Point> getPoints() {
         return Arrays.asList(this.points);
     }
 
@@ -301,13 +275,10 @@ public class Triangle
      * @return a collection of the coordinates of the points
      */
     @SuppressWarnings("boxing")
-    public final List<Double> getPointsAsCoordinates()
-    {
+    public final List<Double> getPointsAsCoordinates() {
         final List<Double> list = new ArrayList<>();
-        for (final Point p : this.points)
-        {
-            for (final double d : p.getPointAsCoordinates())
-            {
+        for (final Point p : this.points) {
+            for (final double d : p.getPointAsCoordinates()) {
                 list.add(d);
             }
         }
@@ -319,8 +290,7 @@ public class Triangle
      * @see java.lang.Object#hashCode()
      */
     @Override
-    public final int hashCode()
-    {
+    public final int hashCode() {
         return this.points[0].hashCode() + this.points[1].hashCode()
                 + this.points[2].hashCode();
     }
@@ -340,8 +310,7 @@ public class Triangle
      *         two planes, false otherwise.
      */
     public final boolean isInPlanes(final Vector3d vect, final Point p,
-            final double error)
-    {
+            final double error) {
 
         final Edge axisNormalGround = new Edge(new Point(0, 0, 0), new Point(
                 vect.x, vect.y, vect.z));
@@ -359,15 +328,12 @@ public class Triangle
      *            the triangle to check
      * @return true if they share an edge, false otherwise.
      */
-    public final boolean isNeighboor(final Triangle triangle)
-    {
+    public final boolean isNeighboor(final Triangle triangle) {
 
         Triangle other;
-        for (final Edge e : this.edges)
-        {
+        for (final Edge e : this.edges) {
             other = e.returnOther(this);
-            if (other == triangle)
-            {
+            if (other == triangle) {
                 return true;
             }
         }
@@ -386,8 +352,7 @@ public class Triangle
      * @return true if this triangle is normal to norm with an error, false
      *         otherwise.
      */
-    public final boolean isNormalTo(final Vector3d norm, final double error)
-    {
+    public final boolean isNormalTo(final Vector3d norm, final double error) {
         return this.normal.dot(norm) < error && this.normal.dot(norm) > -error;
     }
 
@@ -400,8 +365,7 @@ public class Triangle
      * @param container
      *            the mesh which must contain all the triangles
      */
-    public final void returnNeighbours(final Mesh ret, final Mesh container)
-    {
+    public final void returnNeighbours(final Mesh ret, final Mesh container) {
 
         // Add this triangle.
         ret.add(this);
@@ -409,13 +373,11 @@ public class Triangle
         Triangle other;
 
         // For each neighbour, ...
-        for (final Edge e : this.edges)
-        {
+        for (final Edge e : this.edges) {
             other = e.returnOther(this);
             // ... Which is not yet in ret, and which belongs to container ...
             if (other != null && container.contains(other)
-                    && !ret.contains(other))
-            {
+                    && !ret.contains(other)) {
 
                 // ... Calls this method on this neighbour.
                 other.returnNeighbours(ret, container);
@@ -428,8 +390,7 @@ public class Triangle
      * @see java.lang.Object#toString()
      */
     @Override
-    public final String toString()
-    {
+    public final String toString() {
         return this.points[0].toString() + "\n" + this.points[1].toString()
                 + "\n" + this.points[2].toString() + "\n"
                 + this.normal.toString();
@@ -439,8 +400,7 @@ public class Triangle
      * Calculates the average x-coordinate of the three points.
      * @return the average x-coordinate of the three points
      */
-    public final double xAverage()
-    {
+    public final double xAverage() {
         return (this.points[0].getX() + this.points[1].getX() + this.points[2]
                 .getX()) / Triangle.NB_VERTICES;
     }
@@ -449,8 +409,7 @@ public class Triangle
      * Calculates the x-maximum of the three points.
      * @return the x-maximum of the three points
      */
-    public final double xMax()
-    {
+    public final double xMax() {
         return Math.max(this.points[0].getX(),
                 Math.max(this.points[1].getX(), this.points[2].getX()));
     }
@@ -459,13 +418,10 @@ public class Triangle
      * Calculates the point at the x-maximum of the three points.
      * @return the point at the x-maximum of the three points.
      */
-    public final Point xMaxPoint()
-    {
+    public final Point xMaxPoint() {
         final double xMax = this.xMax();
-        for (final Point p : this.points)
-        {
-            if (p.getX() == xMax)
-            {
+        for (final Point p : this.points) {
+            if (p.getX() == xMax) {
                 return p;
             }
         }
@@ -476,8 +432,7 @@ public class Triangle
      * Calculates the x-minimum of the three points.
      * @return the x-minimum of the three points
      */
-    public final double xMin()
-    {
+    public final double xMin() {
         return Math.min(this.points[0].getX(),
                 Math.min(this.points[1].getX(), this.points[2].getX()));
     }
@@ -486,13 +441,10 @@ public class Triangle
      * Calculates the point at the x-minimum of the three points.
      * @return the point at the x-minimum of the three points.
      */
-    public final Point xMinPoint()
-    {
+    public final Point xMinPoint() {
         final double xMin = this.xMin();
-        for (final Point p : this.points)
-        {
-            if (p.getX() == xMin)
-            {
+        for (final Point p : this.points) {
+            if (p.getX() == xMin) {
                 return p;
             }
         }
@@ -503,8 +455,7 @@ public class Triangle
      * Calculates the average y-coordinate of the three points.
      * @return the average y-coordinate of the three points
      */
-    public final double yAverage()
-    {
+    public final double yAverage() {
         return (this.points[0].getY() + this.points[1].getY() + this.points[2]
                 .getY()) / Triangle.NB_VERTICES;
     }
@@ -513,8 +464,7 @@ public class Triangle
      * Calculates the y-maximum of the three points.
      * @return the y-maximum of the three points
      */
-    public final double yMax()
-    {
+    public final double yMax() {
         return Math.max(this.points[0].getY(),
                 Math.max(this.points[1].getY(), this.points[2].getY()));
     }
@@ -523,13 +473,10 @@ public class Triangle
      * Calculates the point at the y-maximum of the three points.
      * @return the point at the y-maximum of the three points.
      */
-    public final Point yMaxPoint()
-    {
+    public final Point yMaxPoint() {
         final double yMax = this.yMax();
-        for (final Point p : this.points)
-        {
-            if (p.getY() == yMax)
-            {
+        for (final Point p : this.points) {
+            if (p.getY() == yMax) {
                 return p;
             }
         }
@@ -540,8 +487,7 @@ public class Triangle
      * Calculates the y-minimum of the three points.
      * @return the y-minimum of the three points
      */
-    public final double yMin()
-    {
+    public final double yMin() {
         return Math.min(this.points[0].getY(),
                 Math.min(this.points[1].getY(), this.points[2].getY()));
     }
@@ -550,13 +496,10 @@ public class Triangle
      * Calculates the point at the y-minimum of the three points.
      * @return the point at the y-minimum of the three points.
      */
-    public final Point yMinPoint()
-    {
+    public final Point yMinPoint() {
         final double yMin = this.yMin();
-        for (final Point p : this.points)
-        {
-            if (p.getY() == yMin)
-            {
+        for (final Point p : this.points) {
+            if (p.getY() == yMin) {
                 return p;
             }
         }
@@ -567,8 +510,7 @@ public class Triangle
      * Calculates the average z-coordinate of the three points.
      * @return the average z-coordinate of the three points
      */
-    public final double zAverage()
-    {
+    public final double zAverage() {
         final double zAverage = this.points[0].getZ() + this.points[1].getZ()
                 + this.points[2].getZ();
         return zAverage / Triangle.NB_VERTICES;
@@ -578,8 +520,7 @@ public class Triangle
      * Calculates the z-maximum of the three points.
      * @return the z-maximum of the three points
      */
-    public final double zMax()
-    {
+    public final double zMax() {
         return Math.max(this.points[0].getZ(),
                 Math.max(this.points[1].getZ(), this.points[2].getZ()));
     }
@@ -588,13 +529,10 @@ public class Triangle
      * Calculates the point at the z-maximum of the three points.
      * @return the point at the z-maximum of the three points.
      */
-    public final Point zMaxPoint()
-    {
+    public final Point zMaxPoint() {
         final double zMax = this.zMax();
-        for (final Point p : this.points)
-        {
-            if (p.getZ() == zMax)
-            {
+        for (final Point p : this.points) {
+            if (p.getZ() == zMax) {
                 return p;
             }
         }
@@ -605,8 +543,7 @@ public class Triangle
      * Calculates the z-minimum of the three points.
      * @return the z-minimum of the three points
      */
-    public final double zMin()
-    {
+    public final double zMin() {
         return Math.min(this.points[0].getZ(),
                 Math.min(this.points[1].getZ(), this.points[2].getZ()));
     }
@@ -615,13 +552,10 @@ public class Triangle
      * Calculates the point at the z-minimum of the three points.
      * @return the point at the z-minimum of the three points.
      */
-    public final Point zMinPoint()
-    {
+    public final Point zMinPoint() {
         final double zMin = this.zMin();
-        for (final Point p : this.points)
-        {
-            if (p.getZ() == zMin)
-            {
+        for (final Point p : this.points) {
+            if (p.getZ() == zMin) {
                 return p;
             }
         }

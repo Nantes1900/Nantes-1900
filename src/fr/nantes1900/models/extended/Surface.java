@@ -22,6 +22,7 @@ import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
  * @author Daniel Lefevre
  */
 public class Surface {
+
     /**
      * ID counter.
      */
@@ -50,17 +51,8 @@ public class Surface {
     /**
      * Empty constructor.
      */
-    public Surface()
-    {
+    public Surface() {
         this.mesh = new Mesh();
-    }
-
-    /**
-     * Getter.
-     * @return the ID of the object
-     */
-    public final int getID() {
-        return this.iD;
     }
 
     /**
@@ -68,8 +60,7 @@ public class Surface {
      * @param m
      *            the mesh to build the surface
      */
-    public Surface(final Mesh m)
-    {
+    public Surface(final Mesh m) {
         this.setMesh(m);
     }
 
@@ -78,8 +69,7 @@ public class Surface {
      * @param p
      *            the polygon to build the surface
      */
-    public Surface(final Polygon p)
-    {
+    public Surface(final Polygon p) {
         this.setPolygone(p);
     }
 
@@ -88,8 +78,7 @@ public class Surface {
      * @param surface
      *            the surface to copy.
      */
-    public Surface(final Surface surface)
-    {
+    public Surface(final Surface surface) {
         this.mesh = surface.mesh;
         this.neighbours = surface.neighbours;
         this.polygon = surface.polygon;
@@ -103,23 +92,12 @@ public class Surface {
      *            the mesh as neighbour to add
      */
     public final void addNeighbour(final Surface m) {
-        if (!this.neighbours.contains(m))
-        {
+        if (!this.neighbours.contains(m)) {
             this.neighbours.add(m);
         }
-        if (!m.neighbours.contains(this))
-        {
+        if (!m.neighbours.contains(this)) {
             m.neighbours.add(this);
         }
-    }
-
-    /*
-     * (non-Javadoc)
-     * @see java.lang.Object#toString()
-     */
-    @Override
-    public String toString() {
-        return "Surface " + this.iD;
     }
 
     /**
@@ -153,8 +131,7 @@ public class Surface {
         surfaces.add(s3);
         surfaces.add(this);
 
-        try
-        {
+        try {
             // If there is two neighbours which have the same orientation, then
             // throw an exception.
             if (this.getMesh().isOrientedAs(s1.getMesh(),
@@ -162,38 +139,31 @@ public class Surface {
                     || this.getMesh().isOrientedAs(s2.getMesh(),
                             SimplificationSurfaces.getIsOrientedFactor())
                     || this.getMesh().isOrientedAs(s3.getMesh(),
-                            SimplificationSurfaces.getIsOrientedFactor()))
-            {
+                            SimplificationSurfaces.getIsOrientedFactor())) {
                 throw new ParallelPlanesException();
             }
             if (s1.getMesh().isOrientedAs(s2.getMesh(),
                     SimplificationSurfaces.getIsOrientedFactor())
                     || s2.getMesh().isOrientedAs(s3.getMesh(),
-                            SimplificationSurfaces.getIsOrientedFactor()))
-            {
+                            SimplificationSurfaces.getIsOrientedFactor())) {
                 throw new ParallelPlanesException();
             }
 
             // If one of the surfaces is a wall, rectifies its normal to be
             // vertical, and after finds the edges.
             final List<Surface> list = new ArrayList<>();
-            for (final Surface s : surfaces)
-            {
-                if (s != this)
-                {
-                    if (wallList.contains(s))
-                    {
+            for (final Surface s : surfaces) {
+                if (s != this) {
+                    if (wallList.contains(s)) {
                         list.add(s.returnVerticalPlane(normalGround));
-                    } else
-                    {
+                    } else {
                         list.add(s);
                     }
                 }
             }
 
             Surface surface = this;
-            if (wallList.contains(this))
-            {
+            if (wallList.contains(this)) {
                 surface = this.returnVerticalPlane(normalGround);
             }
 
@@ -206,21 +176,17 @@ public class Surface {
             // Searches in the map to find if another point with the same value
             // doesn't already exist.
             Point pTemp = pointMap.get(p1);
-            if (pTemp == null)
-            {
+            if (pTemp == null) {
                 pointMap.put(p1, p1);
-            } else
-            {
+            } else {
                 p1 = pTemp;
             }
 
             // Idem.
             pTemp = pointMap.get(p2);
-            if (pTemp == null)
-            {
+            if (pTemp == null) {
                 pointMap.put(p2, p2);
-            } else
-            {
+            } else {
                 p2 = pTemp;
             }
 
@@ -228,11 +194,9 @@ public class Surface {
 
             return e;
 
-        } catch (final SingularMatrixException e)
-        {
+        } catch (final SingularMatrixException e) {
             throw new InvalidSurfaceException();
-        } catch (final ParallelPlanesException e)
-        {
+        } catch (final ParallelPlanesException e) {
             throw new InvalidSurfaceException();
         }
     }
@@ -261,8 +225,7 @@ public class Surface {
 
         // The neighbours are sorted, then it's easy to make the edges and
         // points.
-        for (int i = 0; i < this.getNeighbours().size() - 2; ++i)
-        {
+        for (int i = 0; i < this.getNeighbours().size() - 2; ++i) {
 
             edges.add(this.createEdge(this.getNeighbours().get(i), this
                     .getNeighbours().get(i + 1), this.getNeighbours()
@@ -301,13 +264,10 @@ public class Surface {
 
         // From all the neighbours which are not still ordered, select the
         // closest one.
-        for (final Surface s : this.getNeighbours())
-        {
+        for (final Surface s : this.getNeighbours()) {
             if (!neighboursOrdered.contains(s)
-                    && !current.getNeighbours().contains(s))
-            {
-                if (current.getMesh().minimalDistance(s.getMesh()) < distanceMin)
-                {
+                    && !current.getNeighbours().contains(s)) {
+                if (current.getMesh().minimalDistance(s.getMesh()) < distanceMin) {
                     possible = s;
                     distanceMin = current.getMesh()
                             .minimalDistance(s.getMesh());
@@ -326,14 +286,20 @@ public class Surface {
      */
     private List<Surface> getCommonNeighbours(final Surface surface) {
         final List<Surface> ret = new ArrayList<>();
-        for (final Surface s : this.getNeighbours())
-        {
-            if (surface.getNeighbours().contains(s))
-            {
+        for (final Surface s : this.getNeighbours()) {
+            if (surface.getNeighbours().contains(s)) {
                 ret.add(s);
             }
         }
         return ret;
+    }
+
+    /**
+     * Getter.
+     * @return the ID of the object
+     */
+    public final int getID() {
+        return this.iD;
     }
 
     /**
@@ -390,15 +356,12 @@ public class Surface {
         // begin
         // where we want.
         Surface current = null;
-        try
-        {
+        try {
             current = this.getNeighbours().get(0);
-            if (this.getNeighbours().contains(grounds))
-            {
+            if (this.getNeighbours().contains(grounds)) {
                 current = this.getCommonNeighbours(grounds).get(0);
             }
-        } catch (final IndexOutOfBoundsException e)
-        {
+        } catch (final IndexOutOfBoundsException e) {
             throw new ImpossibleNeighboursOrderException();
         }
 
@@ -407,15 +370,13 @@ public class Surface {
         List<Surface> commonNeighbours = this.getCommonNeighbours(current);
         int counter = 0;
 
-        while (counter < neighboursNumber - 1)
-        {
+        while (counter < neighboursNumber - 1) {
 
             // Adds the current surface to the ordered list.
             neighboursOrdered.add(current);
 
             // Resolving problems : not enough common neighbours or too much...
-            if (commonNeighbours.size() < 2)
-            {
+            if (commonNeighbours.size() < 2) {
 
                 // If there is not enough, it probably means that two surfaces
                 // are effectively neighbours, but don't touch each other.
@@ -429,12 +390,10 @@ public class Surface {
             // The ground often causes that kind of problem, that's why we begin
             // by treating the ground first (see at the beginning of the
             // method).
-            for (final Surface s : neighboursOrdered)
-            {
+            for (final Surface s : neighboursOrdered) {
                 commonNeighbours.remove(s);
             }
-            if (commonNeighbours.isEmpty())
-            {
+            if (commonNeighbours.isEmpty()) {
                 throw new ImpossibleNeighboursOrderException();
             }
 
@@ -450,8 +409,7 @@ public class Surface {
 
         // If the last one is not neighbour to the first one, there is a
         // problem.
-        if (!current.getNeighbours().contains(neighboursOrdered.get(0)))
-        {
+        if (!current.getNeighbours().contains(neighboursOrdered.get(0))) {
             throw new ImpossibleNeighboursOrderException();
         }
 
@@ -476,10 +434,8 @@ public class Surface {
         // If this is not contained by ret and if this is contained in
         // contain,
         // then call this method.
-        for (final Surface m : this.getNeighbours())
-        {
-            if (!ret.contains(m) && contain.contains(m))
-            {
+        for (final Surface m : this.getNeighbours()) {
+            if (!ret.contains(m) && contain.contains(m)) {
                 m.returnNeighbours(ret, contain);
             }
         }
@@ -544,6 +500,15 @@ public class Surface {
         this.polygon = polygoneIn;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.lang.Object#toString()
+     */
+    @Override
+    public String toString() {
+        return "Surface " + this.iD;
+    }
+
     /**
      * Implements an exception used in algorithms when the neighbours cannot be
      * ordered.
@@ -560,8 +525,7 @@ public class Surface {
         /**
          * Private constructor.
          */
-        public ImpossibleNeighboursOrderException()
-        {
+        public ImpossibleNeighboursOrderException() {
         }
     }
 
@@ -580,8 +544,7 @@ public class Surface {
         /**
          * Private constructor.
          */
-        public InvalidSurfaceException()
-        {
+        public InvalidSurfaceException() {
         }
     }
 
@@ -599,8 +562,7 @@ public class Surface {
         /**
          * Private constructor.
          */
-        public ParallelPlanesException()
-        {
+        public ParallelPlanesException() {
         }
     }
 }

@@ -37,70 +37,69 @@ import fr.nantes1900.models.extended.Surface;
  * @author Siju Wu & Nicolas Bouillon.
  */
 
-public class Universe3DView extends JPanel
-{
+public class Universe3DView extends JPanel {
+
     /**
      * The toolbar to interact with the 3DView.
      */
-    private JToolBar               toolbar;
+    private JToolBar toolbar;
     /**
      * Version ID.
      */
-    private static final long      serialVersionUID               = 1L;
+    private static final long serialVersionUID = 1L;
     /**
      * The list to save all the surfaceView.
      */
-    private ArrayList<SurfaceView> surfaceViewList                = new ArrayList<>();
+    private ArrayList<SurfaceView> surfaceViewList = new ArrayList<>();
     /**
      * The Universe3DController attached.
      */
-    private Universe3DController   u3DController;
+    private Universe3DController u3DController;
     /**
      * The universe.
      */
-    private SimpleUniverse         simpleUniverse;
+    private SimpleUniverse simpleUniverse;
     /**
      * Constant defining the drawing back of the camera when initializing the
      * 3DView.
      */
-    public static final double     TRANSLATION_CAMERA_Z_DIRECTION = 30;
+    public static final double TRANSLATION_CAMERA_Z_DIRECTION = 30;
     /**
      * Constant defining the 3DView panel height.
      */
-    public static final int        PANEL_HEIGHT                   = 450;
+    public static final int PANEL_HEIGHT = 450;
     /**
      * Constant defining the 3DView panel width.
      */
-    public static final int        PANEL_WIDTH                    = 800;
+    public static final int PANEL_WIDTH = 800;
     /**
      * Constant defining the range where the lights have an effect.
      */
-    public static final int        LIGHT_BOUND_RADIUS             = 100000;
+    public static final int LIGHT_BOUND_RADIUS = 100000;
     /**
      * Constant defining the range where the transformations (rotation,
      * translation, zoom) have an effect.
      */
-    public static final int        BOUNDING_RADIUS                = 100000;
+    public static final int BOUNDING_RADIUS = 100000;
     /**
      * Constant defining the range where objects displayed are visible.
      */
-    public static final int        BACKCLIP_DISTANCE              = 100000;
+    public static final int BACKCLIP_DISTANCE = 100000;
     /**
      * Constant defining the sensitivity of the zoom transformation.
      */
-    public static final double     ZOOM_FACTOR                    = 2;
+    public static final double ZOOM_FACTOR = 2;
     /**
      * Constant defining the sensitivity of the zoom transformation.
      */
-    public static final double     TRANSLATION_FACTOR             = 1.5;
+    public static final double TRANSLATION_FACTOR = 1.5;
 
     /**
      * Creates a new universe. Sets the Canvas3D and the panel size.
      * @param u3DControllerIn
      *            the controller that generates this view.
      */
-    public Universe3DView(final Universe3DController u3DControllerIn)
-    {
+    public Universe3DView(final Universe3DController u3DControllerIn) {
         this.u3DController = u3DControllerIn;
         this.setLayout(new BorderLayout());
 
@@ -124,16 +123,12 @@ public class Universe3DView extends JPanel
      *            the list of surfaces to add
      */
 
-    public final void addSurfaces(final List<Surface> surfaces)
-    {
-        if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
-        {
+    public final void addSurfaces(final List<Surface> surfaces) {
+        if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE) {
             this.displayMeshes(surfaces);
-        } else if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_POLYGON_MODE)
-        {
+        } else if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_POLYGON_MODE) {
             this.displayPolygons(surfaces);
-        } else
-        {
+        } else {
             System.out.println("Problem");
             // TODO : maybe throw an exception.
         }
@@ -144,11 +139,9 @@ public class Universe3DView extends JPanel
 
         // Computes the centroid of the first surface.
         Point centroid;
-        if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
-        {
+        if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE) {
             centroid = surfaces.get(0).getMesh().getCentroid();
-        } else
-        {
+        } else {
             Polygon polygon = surfaces.get(0).getPolygon();
             centroid = new Point(polygon.xAverage(), polygon.yAverage(),
                     polygon.zAverage());
@@ -165,8 +158,7 @@ public class Universe3DView extends JPanel
     /**
      * Removes everything displayed.
      */
-    public final void clearAll()
-    {
+    public final void clearAll() {
         Canvas3D c = this.simpleUniverse.getCanvas();
         this.simpleUniverse.cleanup();
         this.simpleUniverse = new SimpleUniverse(c);
@@ -180,8 +172,7 @@ public class Universe3DView extends JPanel
      *            The transformGroup attached to the universe.
      * @return The generated branchGroup.
      */
-    private BranchGroup createSceneGraph(final TransformGroup transformGroup)
-    {
+    private BranchGroup createSceneGraph(final TransformGroup transformGroup) {
         BranchGroup objRoot = new BranchGroup();
         objRoot.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
         objRoot.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
@@ -221,8 +212,7 @@ public class Universe3DView extends JPanel
      */
 
     private TransformGroup createTransformGroup(
-            final ArrayList<SurfaceView> surfaceView)
-    {
+            final ArrayList<SurfaceView> surfaceView) {
         BoundingSphere boundingSphere = new BoundingSphere(new Point3d(0.0,
                 0.0, 0.0), BOUNDING_RADIUS);
 
@@ -247,9 +237,7 @@ public class Universe3DView extends JPanel
 
         BranchGroup sceneRoot = new BranchGroup();
 
-
-        for (SurfaceView surface : this.surfaceViewList)
-        {
+        for (SurfaceView surface : this.surfaceViewList) {
             sceneRoot.addChild(surface);
         }
         translationGroup2.addChild(sceneRoot);
@@ -285,10 +273,8 @@ public class Universe3DView extends JPanel
      * @param surfacesList
      *            The list of surfaces containing the meshes to display.
      */
-    private void displayMeshes(final List<Surface> surfacesList)
-    {
-        for (Surface surface : surfacesList)
-        {
+    private void displayMeshes(final List<Surface> surfacesList) {
+        for (Surface surface : surfacesList) {
             SurfaceView surfaceView = new SurfaceView(surface);
             MeshView meshView = new MeshView(surface.getMesh());
             surfaceView.setMeshView(meshView);
@@ -303,10 +289,8 @@ public class Universe3DView extends JPanel
      * @param surfacesList
      *            The list of surfaces containing the meshes to display.
      */
-    private void displayPolygons(final List<Surface> surfacesList)
-    {
-        for (Surface surface : surfacesList)
-        {
+    private void displayPolygons(final List<Surface> surfacesList) {
+        for (Surface surface : surfacesList) {
             SurfaceView surfaceView = new SurfaceView(surface);
             PolygonView polygonView = new PolygonView(surface.getPolygon());
             surfaceView.setPolygonView(polygonView);
@@ -318,8 +302,7 @@ public class Universe3DView extends JPanel
      * Getter.
      * @return the simple universe
      */
-    public final SimpleUniverse getSimpleUniverse()
-    {
+    public final SimpleUniverse getSimpleUniverse() {
         return this.simpleUniverse;
     }
 
@@ -327,8 +310,7 @@ public class Universe3DView extends JPanel
      * Getter.
      * @return the list of the SurfaceViews
      */
-    public final ArrayList<SurfaceView> getSurfaceViewList()
-    {
+    public final ArrayList<SurfaceView> getSurfaceViewList() {
         return this.surfaceViewList;
     }
 
@@ -336,8 +318,7 @@ public class Universe3DView extends JPanel
      * Getter.
      * @return the Toolbar
      */
-    public final JToolBar getToolbar()
-    {
+    public final JToolBar getToolbar() {
         return this.toolbar;
     }
 
@@ -346,10 +327,8 @@ public class Universe3DView extends JPanel
      * @param newToolbar
      *            The new toolbar.
      */
-    public final void setToolbar(final JToolBar newToolbar)
-    {
-        if (this.toolbar != null)
-        {
+    public final void setToolbar(final JToolBar newToolbar) {
+        if (this.toolbar != null) {
             this.remove(this.toolbar);
         }
         this.toolbar = newToolbar;
@@ -366,8 +345,7 @@ public class Universe3DView extends JPanel
      *            The z coordinate of the camera.
      */
     private void
-            translateCamera(final double x, final double y, final double z)
-    {
+            translateCamera(final double x, final double y, final double z) {
         // Gets the camera.
         ViewingPlatform camera = this.simpleUniverse.getViewingPlatform();
         TransformGroup cameraTransformGroup = camera.getMultiTransformGroup()

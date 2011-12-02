@@ -6,22 +6,19 @@ import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
  * Abstract class describing each building step. Each of these steps must be
- * able to launche the next process and to return a tree node of their
- * content.
+ * able to launche the next process and to return a tree node of their content.
  * @author Daniel
  */
-public abstract class AbstractBuildingStep
-{
+public abstract class AbstractBuildingStep {
 
     /**
      * Launches the next process.
      * @return the next step
      * @throws NullArgumentException
-     *             if an argument needed in the process has not been
-     *             initialized
+     *             if an argument needed in the process has not been initialized
      */
-    public abstract AbstractBuildingStep
-            launchProcess() throws NullArgumentException;
+    public abstract AbstractBuildingStep launchProcess()
+            throws NullArgumentException;
 
     /**
      * Creates a tree node.

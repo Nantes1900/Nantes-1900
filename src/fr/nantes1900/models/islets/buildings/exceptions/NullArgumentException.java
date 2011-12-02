@@ -1,12 +1,12 @@
 package fr.nantes1900.models.islets.buildings.exceptions;
 
 /**
- * Implements an exception used when an process is launched while some
- * arguments have not been initialized.
+ * Implements an exception used when an process is launched while some arguments
+ * have not been initialized.
  * @author Daniel Lefèvre
  */
-public class NullArgumentException extends Exception
-{
+public class NullArgumentException extends Exception {
+
     /**
      * Version ID.
      */
@@ -15,7 +15,6 @@ public class NullArgumentException extends Exception
     /**
      * Consctructor.
      */
-    public NullArgumentException()
-    {
+    public NullArgumentException() {
     }
 }

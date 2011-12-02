@@ -15,8 +15,8 @@ import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
  * building during the processs 3 to 8.
  * @author Daniel Lefevre
  */
-public class Building
-{
+public class Building {
+
     /**
      * The third building step.
      */
@@ -37,28 +37,27 @@ public class Building
     /**
      * The gravity normal.
      */
-    private Vector3d      gravityNormal;
+    private Vector3d gravityNormal;
 
     /**
      * The ground.
      */
-    private Ground        grounds;
+    private Ground grounds;
     /**
      * The normal to the ground.
      */
-    private Vector3d      groundNormal;
+    private Vector3d groundNormal;
     /**
      * The noise.
      */
-    private Surface       noise;
+    private Surface noise;
 
     /**
      * Constructor.
      * @param mesh
      *            the mesh representing the building
      */
-    public Building(final Mesh mesh)
-    {
+    public Building(final Mesh mesh) {
         this.bStep3 = new BuildingStep3(mesh);
     }
 
@@ -66,8 +65,7 @@ public class Building
      * Getter.
      * @return the third step
      */
-    public final BuildingStep3 getbStep3()
-    {
+    public final BuildingStep3 getbStep3() {
         return this.bStep3;
     }
 
@@ -75,8 +73,7 @@ public class Building
      * Getter.
      * @return the fourth step
      */
-    public final BuildingStep4 getbStep4()
-    {
+    public final BuildingStep4 getbStep4() {
         return this.bStep4;
     }
 
@@ -84,8 +81,7 @@ public class Building
      * Getter.
      * @return the fifth step
      */
-    public final BuildingStep5 getbStep5()
-    {
+    public final BuildingStep5 getbStep5() {
         return this.bStep5;
     }
 
@@ -93,8 +89,7 @@ public class Building
      * Getter.
      * @return the sixth step
      */
-    public final BuildingStep6 getbStep6()
-    {
+    public final BuildingStep6 getbStep6() {
         return this.bStep6;
     }
 
@@ -104,8 +99,7 @@ public class Building
      *             if some arguments needed in the process have not been
      *             initialized
      */
-    public final void launchProcess3() throws NullArgumentException
-    {
+    public final void launchProcess3() throws NullArgumentException {
         this.bStep3.setArguments(this.gravityNormal);
         this.bStep4 = this.bStep3.launchProcess();
     }
@@ -116,8 +110,7 @@ public class Building
      *             if some arguments needed in the process have not been
      *             initialized
      */
-    public final void launchProcess4() throws NullArgumentException
-    {
+    public final void launchProcess4() throws NullArgumentException {
         this.bStep4.setArguments(this.groundNormal, this.grounds, this.noise);
         this.bStep5 = this.bStep4.launchProcess();
     }
@@ -128,8 +121,7 @@ public class Building
      *             if some arguments needed in the process have not been
      *             initialized
      */
-    public final void launchProcess5() throws NullArgumentException
-    {
+    public final void launchProcess5() throws NullArgumentException {
         this.bStep5.setArguments(this.noise, this.grounds, this.groundNormal);
         this.bStep6 = this.bStep5.launchProcess();
     }
@@ -138,8 +130,7 @@ public class Building
      * Creates a tree node for the third step.
      * @return the mutable tree node
      */
-    public final DefaultMutableTreeNode returnNode3()
-    {
+    public final DefaultMutableTreeNode returnNode3() {
         return this.bStep3.returnNode();
     }
 
@@ -147,8 +138,7 @@ public class Building
      * Creates a tree node for the fourth step.
      * @return the mutable tree node
      */
-    public final DefaultMutableTreeNode returnNode4()
-    {
+    public final DefaultMutableTreeNode returnNode4() {
         return this.bStep4.returnNode();
     }
 
@@ -156,8 +146,7 @@ public class Building
      * Creates a tree node for the fifth step.
      * @return the mutable tree node
      */
-    public final DefaultMutableTreeNode returnNode5()
-    {
+    public final DefaultMutableTreeNode returnNode5() {
         return this.bStep5.returnNode();
     }
 
@@ -165,8 +154,7 @@ public class Building
      * Creates a tree node for the sixth step.
      * @return the mutable tree node
      */
-    public final DefaultMutableTreeNode returnNode6()
-    {
+    public final DefaultMutableTreeNode returnNode6() {
         return this.bStep6.returnNode();
     }
 
@@ -183,8 +171,7 @@ public class Building
      */
     public final void setArguments(final Vector3d groundNormalIn,
             final Vector3d gravityNormalIn, final Ground groundsIn,
-            final Surface noiseIn)
-    {
+            final Surface noiseIn) {
         this.groundNormal = groundNormalIn;
         this.gravityNormal = gravityNormalIn;
         this.grounds = groundsIn;

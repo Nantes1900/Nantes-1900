@@ -22,8 +22,8 @@ import fr.nantes1900.view.components.HelpButton;
 /**
  * @author Camille
  */
-public class CharacteristicsView extends JPanel
-{
+public class CharacteristicsView extends JPanel {
+
     /**
      * Version ID.
      */
@@ -31,17 +31,16 @@ public class CharacteristicsView extends JPanel
     /**
      * TODO .
      */
-    protected JButton         bValidate;
+    protected JButton bValidate;
     /**
      * TODO .
      */
-    protected JPanel          pContent;
+    protected JPanel pContent;
 
     /**
      * TODO .
      */
-    public CharacteristicsView()
-    {
+    public CharacteristicsView() {
         this.setBorder(new TitledBorder(BorderFactory
                 .createRaisedSoftBevelBorder(), "Caractéristiques"));
         this.bValidate = new JButton("Valider");
@@ -73,8 +72,7 @@ public class CharacteristicsView extends JPanel
      */
     protected static JPanel createSimpleCaracteristic(
             final JComponent caracteristic, final String title,
-            final HelpButton helpButton)
-    {
+            final HelpButton helpButton) {
         JPanel caracteristicPanel = new JPanel();
 
         caracteristicPanel.setLayout(new GridBagLayout());
@@ -96,8 +94,7 @@ public class CharacteristicsView extends JPanel
      * @param caracteristicPanel
      *            TODO .
      */
-    protected final void addCaracteristic(final JPanel caracteristicPanel)
-    {
+    protected final void addCaracteristic(final JPanel caracteristicPanel) {
         this.pContent.add(caracteristicPanel);
     }
 
@@ -105,8 +102,7 @@ public class CharacteristicsView extends JPanel
      * TODO .
      * @return TODO .
      */
-    public final JButton getValidateButton()
-    {
+    public final JButton getValidateButton() {
         return this.bValidate;
     }
 }

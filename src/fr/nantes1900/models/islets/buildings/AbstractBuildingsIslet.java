@@ -21,8 +21,8 @@ import fr.nantes1900.utils.MatrixMethod;
  * all the methods to apply the processs on the meshes.
  * @author Daniel Lefèvre
  */
-public abstract class AbstractBuildingsIslet extends AbstractIslet
-{
+public abstract class AbstractBuildingsIslet extends AbstractIslet {
+
     /**
      * The zero building islet step.
      */
@@ -55,58 +55,56 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * The number of the step 0.
      */
-    public static final int     ZERO_STEP   = 0;
+    public static final int ZERO_STEP = 0;
     /**
      * The number of the step 1.
      */
-    public static final int     FIRST_STEP  = 1;
+    public static final int FIRST_STEP = 1;
     /**
      * The number of the step 2.
      */
-    public static final int     SECOND_STEP = 2;
+    public static final int SECOND_STEP = 2;
     /**
      * The number of the step 3.
      */
-    public static final int     THIRD_STEP  = 3;
+    public static final int THIRD_STEP = 3;
     /**
      * The number of the step 4.
      */
-    public static final int     FOURTH_STEP = 4;
+    public static final int FOURTH_STEP = 4;
     /**
      * The number of the step 5.
      */
-    public static final int     FIFTH_STEP  = 5;
+    public static final int FIFTH_STEP = 5;
     /**
      * The number of the step 6.
      */
-    public static final int     SIXTH_STEP  = 6;
+    public static final int SIXTH_STEP = 6;
     /**
      * The number of the current step.
      */
-    private int                 progression = 0;
+    private int progression = 0;
 
     /**
      * The normal to the ground. Used to extract the grounds.
      */
-    private Vector3d            groundNormal;
+    private Vector3d groundNormal;
 
     /**
      * The normal to the gravity.
      */
-    private Vector3d            gravityNormal;
+    private Vector3d gravityNormal;
 
     /**
      * Constructor. Stocks the mesh in the initialTotalMesh variable.
      */
-    public AbstractBuildingsIslet()
-    {
+    public AbstractBuildingsIslet() {
     }
 
     /**
      * Decrementer.
      */
-    public final void decProgression()
-    {
+    public final void decProgression() {
         this.progression--;
     }
 
@@ -114,8 +112,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * Getter.
      * @return the zero step
      */
-    public final BuildingsIsletStep0 getBiStep0()
-    {
+    public final BuildingsIsletStep0 getBiStep0() {
         return this.biStep0;
     }
 
@@ -123,8 +120,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * Getter.
      * @return the first step
      */
-    public final BuildingsIsletStep1 getBiStep1()
-    {
+    public final BuildingsIsletStep1 getBiStep1() {
         return this.biStep1;
     }
 
@@ -132,8 +128,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * Getter.
      * @return the second step
      */
-    public final BuildingsIsletStep2 getBiStep2()
-    {
+    public final BuildingsIsletStep2 getBiStep2() {
         return this.biStep2;
     }
 
@@ -141,8 +136,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * Getter.
      * @return the third step
      */
-    public final BuildingsIsletStep3 getBiStep3()
-    {
+    public final BuildingsIsletStep3 getBiStep3() {
         return this.biStep3;
     }
 
@@ -150,8 +144,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * Getter.
      * @return the fourth step
      */
-    public final BuildingsIsletStep4 getBiStep4()
-    {
+    public final BuildingsIsletStep4 getBiStep4() {
         return this.biStep4;
     }
 
@@ -159,8 +152,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * Getter.
      * @return the fifth step
      */
-    public final BuildingsIsletStep5 getBiStep5()
-    {
+    public final BuildingsIsletStep5 getBiStep5() {
         return this.biStep5;
     }
 
@@ -168,8 +160,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * Getter.
      * @return the sixth step
      */
-    public final BuildingsIsletStep6 getBiStep6()
-    {
+    public final BuildingsIsletStep6 getBiStep6() {
         return this.biStep6;
     }
 
@@ -177,8 +168,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * Getter.
      * @return the gravity normal
      */
-    public final Vector3d getGravityNormal()
-    {
+    public final Vector3d getGravityNormal() {
         return this.gravityNormal;
     }
 
@@ -186,8 +176,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * Getter.
      * @return the normal to the ground
      */
-    public final Vector3d getGroundNormal()
-    {
+    public final Vector3d getGroundNormal() {
         return this.groundNormal;
     }
 
@@ -195,16 +184,14 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * Getter.
      * @return the progression of the process
      */
-    public final int getProgression()
-    {
+    public final int getProgression() {
         return this.progression;
     }
 
     /**
      * Incrementer. Used to increment the progression of the treamtent.
      */
-    public final void incProgression()
-    {
+    public final void incProgression() {
         this.progression++;
     }
 
@@ -213,10 +200,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * @throws NullArgumentException
      *             if the gravity normal has not been initiliazed
      */
-    public final void launchProcess0() throws NullArgumentException
-    {
-        if (this.getGravityNormal() == null)
-        {
+    public final void launchProcess0() throws NullArgumentException {
+        if (this.getGravityNormal() == null) {
             throw new NullArgumentException();
         }
 
@@ -232,8 +217,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      *             if an argument needed for the process has not been
      *             initialized
      */
-    public final void launchProcess1() throws NullArgumentException
-    {
+    public final void launchProcess1() throws NullArgumentException {
         this.getBiStep1().setArguments(this.getGravityNormal());
         this.biStep2 = this.getBiStep1().launchProcess();
     }
@@ -241,8 +225,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
     /**
      * Launches the second process.
      */
-    public final void launchProcess2()
-    {
+    public final void launchProcess2() {
         this.biStep3 = this.getBiStep2().launchProcess();
     }
 
@@ -252,15 +235,12 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      *             if an argument needed for the process has not been
      *             initialized
      */
-    public final void launchProcess3() throws NullArgumentException
-    {
+    public final void launchProcess3() throws NullArgumentException {
         if (this.getGravityNormal() == null || this.getGroundNormal() == null
-                || this.getBiStep2().getNoise() == null)
-        {
+                || this.getBiStep2().getNoise() == null) {
             throw new NullArgumentException();
         }
-        for (Building b : this.getBiStep3().getBuildings())
-        {
+        for (Building b : this.getBiStep3().getBuildings()) {
             b.setArguments(this.getGroundNormal(), this.getGravityNormal(),
                     this.getBiStep2().getInitialGrounds(), this.getBiStep2()
                             .getNoise());
@@ -274,8 +254,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      *             if an argument needed for the process has not been
      *             initialized
      */
-    public final void launchProcess4() throws NullArgumentException
-    {
+    public final void launchProcess4() throws NullArgumentException {
         this.biStep5 = this.getBiStep4().launchProcess();
     }
 
@@ -285,16 +264,14 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      *             if an argument needed for the process has not been
      *             initialized
      */
-    public final void launchProcess5() throws NullArgumentException
-    {
+    public final void launchProcess5() throws NullArgumentException {
         this.biStep6 = this.getBiStep5().launchProcess();
     }
 
     /**
      * Sets the progression to 0.
      */
-    public final void resetProgression()
-    {
+    public final void resetProgression() {
         this.progression = 0;
     }
 
@@ -306,26 +283,24 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      *             if the case in not valid (more than 8 or less than 0)
      */
     public final DefaultMutableTreeNode returnNode()
-            throws InvalidCaseException
-    {
-        switch (this.getProgression())
-        {
-            case AbstractBuildingsIslet.ZERO_STEP:
-                throw new InvalidCaseException();
-            case AbstractBuildingsIslet.FIRST_STEP:
-                return this.biStep1.returnNode();
-            case AbstractBuildingsIslet.SECOND_STEP:
-                return this.biStep2.returnNode();
-            case AbstractBuildingsIslet.THIRD_STEP:
-                return this.biStep3.returnNode();
-            case AbstractBuildingsIslet.FOURTH_STEP:
-                return this.biStep4.returnNode();
-            case AbstractBuildingsIslet.FIFTH_STEP:
-                return this.biStep5.returnNode();
-            case AbstractBuildingsIslet.SIXTH_STEP:
-                return this.biStep6.returnNode();
-            default:
-                return null;
+            throws InvalidCaseException {
+        switch (this.getProgression()) {
+        case AbstractBuildingsIslet.ZERO_STEP:
+            throw new InvalidCaseException();
+        case AbstractBuildingsIslet.FIRST_STEP:
+            return this.biStep1.returnNode();
+        case AbstractBuildingsIslet.SECOND_STEP:
+            return this.biStep2.returnNode();
+        case AbstractBuildingsIslet.THIRD_STEP:
+            return this.biStep3.returnNode();
+        case AbstractBuildingsIslet.FOURTH_STEP:
+            return this.biStep4.returnNode();
+        case AbstractBuildingsIslet.FIFTH_STEP:
+            return this.biStep5.returnNode();
+        case AbstractBuildingsIslet.SIXTH_STEP:
+            return this.biStep6.returnNode();
+        default:
+            return null;
         }
     }
 
@@ -334,8 +309,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * @param biStep0In
      *            the new step 0
      */
-    public final void setBiStep0(final BuildingsIsletStep0 biStep0In)
-    {
+    public final void setBiStep0(final BuildingsIsletStep0 biStep0In) {
         this.biStep0 = biStep0In;
     }
 
@@ -344,8 +318,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * @param gravityNormalIn
      *            the new gravity normal
      */
-    public final void setGravityNormal(final Vector3d gravityNormalIn)
-    {
+    public final void setGravityNormal(final Vector3d gravityNormalIn) {
         this.gravityNormal = gravityNormalIn;
     }
 
@@ -354,8 +327,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet
      * @param groundNormalIn
      *            the normal to set as ground normal
      */
-    public final void setGroundNormal(final Vector3d groundNormalIn)
-    {
+    public final void setGroundNormal(final Vector3d groundNormalIn) {
         this.groundNormal = groundNormalIn;
     }
 }

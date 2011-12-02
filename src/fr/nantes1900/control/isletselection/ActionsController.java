@@ -11,15 +11,15 @@ import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletselection.ActionsView;
 
 /**
-* TODO .
+ * TODO .
  * @author Camille Bouquet
  */
-public class ActionsController
-{
+public class ActionsController {
+
     /**
      * The panel containing buttons to launch the different actions.
      */
-    private ActionsView              aView;
+    private ActionsView aView;
 
     /**
      * The parent controller to give feedback to.
@@ -29,7 +29,7 @@ public class ActionsController
     /**
      * Action listener of the launch button.
      */
-    private LaunchActionListener     laListener;
+    private LaunchActionListener laListener;
 
     /**
      * Creates a new controller to handle the panel containing buttons to launch
@@ -38,15 +38,13 @@ public class ActionsController
      *            TODO.
      */
     public ActionsController(
-            final IsletSelectionController isletSelectionController)
-    {
+            final IsletSelectionController isletSelectionController) {
         this.parentController = isletSelectionController;
         this.aView = new ActionsView();
         this.aView.getOpenButton().addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(final ActionEvent arg0)
-            {
+            public void actionPerformed(final ActionEvent arg0) {
                 JFileChooser fileChooser = new JFileChooser();
                 fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
                 fileChooser.setAcceptAllFileFilterUsed(false);
@@ -54,11 +52,9 @@ public class ActionsController
                 fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
 
                 if (fileChooser.showOpenDialog(ActionsController.this
-                        .getActionsView()) == JFileChooser.APPROVE_OPTION)
-                {
+                        .getActionsView()) == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
-                    if (file.isDirectory())
-                    {
+                    if (file.isDirectory()) {
                         ActionsController.this.getParentController()
                                 .updateMockupDirectory(file);
                     }
@@ -75,8 +71,7 @@ public class ActionsController
      * Returns the actions view associated with this controller.
      * @return The actions view.
      */
-    public final ActionsView getActionsView()
-    {
+    public final ActionsView getActionsView() {
         return this.aView;
     }
 
@@ -84,16 +79,14 @@ public class ActionsController
      * TODO.
      * @return TODO.
      */
-    public final IsletSelectionController getParentController()
-    {
+    public final IsletSelectionController getParentController() {
         return this.parentController;
     }
 
     /**
      * TODO.
      */
-    public final void setComputeNormalMode()
-    {
+    public final void setComputeNormalMode() {
         this.laListener.setComputeNormalMode(true);
         this.getActionsView()
                 .getHelpButton()
@@ -117,8 +110,7 @@ public class ActionsController
     /**
      * TODO.
      */
-    public final void setLaunchMode()
-    {
+    public final void setLaunchMode() {
         this.laListener.setComputeNormalMode(false);
         this.aView.getGravityCheckBox().setEnabled(true);
         this.getActionsView()
@@ -145,8 +137,7 @@ public class ActionsController
      * save the gravity normal or launch an islet process.
      * @author Camille
      */
-    public class LaunchActionListener implements ActionListener
-    {
+    public class LaunchActionListener implements ActionListener {
 
         /**
          * Indicates if the mode is to save the gravity normal or not.
@@ -158,25 +149,20 @@ public class ActionsController
          * @param computeNormalIn
          *            The current mode.
          */
-        public LaunchActionListener(final boolean computeNormalIn)
-        {
+        public LaunchActionListener(final boolean computeNormalIn) {
             this.computeNormal = computeNormalIn;
         }
 
         @Override
-        public final void actionPerformed(final ActionEvent arg0)
-        {
+        public final void actionPerformed(final ActionEvent arg0) {
             // If no gravity normal have been chosen
-            if (this.computeNormal)
-            {
+            if (this.computeNormal) {
                 boolean normalSaved = ActionsController.this
                         .getParentController().computeGravityNormal();
-                if (normalSaved)
-                {
+                if (normalSaved) {
                     ActionsController.this.setLaunchMode();
                 }
-            } else
-            {
+            } else {
                 // If every normals have been choosen
                 ActionsController.this.getParentController()
                         .launchIsletProcess();
@@ -188,8 +174,7 @@ public class ActionsController
          * @param computeNormalIn
          *            TODO.
          */
-        public final void setComputeNormalMode(final boolean computeNormalIn)
-        {
+        public final void setComputeNormalMode(final boolean computeNormalIn) {
             this.computeNormal = computeNormalIn;
         }
     }

@@ -14,8 +14,8 @@ import fr.nantes1900.view.components.HelpButton;
  * TODO .
  * @author Camille
  */
-public class CharacteristicsStep3ElementsView extends CharacteristicsView
-{
+public class CharacteristicsStep3ElementsView extends CharacteristicsView {
+
     /**
      * Default serial UID.
      */
@@ -28,11 +28,11 @@ public class CharacteristicsStep3ElementsView extends CharacteristicsView
     /**
      * TODO .
      */
-    public CharacteristicsStep3ElementsView()
-    {
+    public CharacteristicsStep3ElementsView() {
         super();
-        String[] types = {"", Characteristics.TYPE_BUILDING,
-                Characteristics.TYPE_NOISE};
+        String[] types = { "", Characteristics.TYPE_BUILDING,
+                Characteristics.TYPE_NOISE
+        };
 
         this.cbType = new JComboBox<>(types);
         this.addCaracteristic(createSimpleCaracteristic(this.cbType,
@@ -45,8 +45,7 @@ public class CharacteristicsStep3ElementsView extends CharacteristicsView
      * Getter.
      * @return TODO .
      */
-    public final String getTypeSelected()
-    {
+    public final String getTypeSelected() {
         return (String) this.cbType.getSelectedItem();
     }
 
@@ -55,8 +54,7 @@ public class CharacteristicsStep3ElementsView extends CharacteristicsView
      * @param string
      *            TODO .
      */
-    public final void setType(final String string)
-    {
+    public final void setType(final String string) {
         this.cbType.setSelectedItem(string);
     }
 }

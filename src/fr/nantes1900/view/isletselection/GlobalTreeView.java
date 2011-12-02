@@ -14,8 +14,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 /**
  * @author Camille Bouquet, Luc Jallerat
  */
-public class GlobalTreeView extends JPanel
-{
+public class GlobalTreeView extends JPanel {
 
     /**
      * Version ID.
@@ -25,18 +24,17 @@ public class GlobalTreeView extends JPanel
     /**
      * TODO.
      */
-    private JTree             tree;
+    private JTree tree;
 
     /**
      * TODO.
      */
-    private JScrollPane       spTree;
+    private JScrollPane spTree;
 
     /**
      * Empty constructor.
      */
-    public GlobalTreeView()
-    {
+    public GlobalTreeView() {
         this.setLayout(new BorderLayout());
         this.spTree = new JScrollPane();
         this.add(this.spTree, BorderLayout.CENTER);
@@ -47,10 +45,10 @@ public class GlobalTreeView extends JPanel
      * @param newDirectory
      *            TODO.
      */
-    public final void displayDirectory(final File newDirectory)
-    {
+    public final void displayDirectory(final File newDirectory) {
         FileNode newDirectoryNode = new FileNode(newDirectory);
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode(newDirectoryNode);
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(
+                newDirectoryNode);
         this.fillMyTree(root, newDirectoryNode);
 
         this.tree = new JTree(root);
@@ -65,22 +63,18 @@ public class GlobalTreeView extends JPanel
      *            TODO.
      */
     public final void fillMyTree(final DefaultMutableTreeNode root,
-            final FileNode newDirectoryNode)
-    {
+            final FileNode newDirectoryNode) {
         File[] childrenFiles = newDirectoryNode.listFiles();
-        if (childrenFiles.length > 0)
-        {
-            for (File file : childrenFiles)
-            {
+        if (childrenFiles.length > 0) {
+            for (File file : childrenFiles) {
                 FileNode currentNode = new FileNode(file);
-                DefaultMutableTreeNode child = new DefaultMutableTreeNode(currentNode);
+                DefaultMutableTreeNode child = new DefaultMutableTreeNode(
+                        currentNode);
 
-                if (file.isDirectory())
-                {
+                if (file.isDirectory()) {
                     root.add(child);
                     this.fillMyTree(child, currentNode);
-                } else if (currentNode.toString().endsWith("stl"))
-                {
+                } else if (currentNode.toString().endsWith("stl")) {
                     root.add(child);
                 }
             }
@@ -91,8 +85,7 @@ public class GlobalTreeView extends JPanel
      * TODO.
      * @return TODO.
      */
-    public final JTree getTree()
-    {
+    public final JTree getTree() {
         return this.tree;
     }
 
@@ -100,8 +93,7 @@ public class GlobalTreeView extends JPanel
      * TODO.
      * @author TODO.
      */
-    public class FileNode extends File
-    {
+    public class FileNode extends File {
 
         /**
          * TODO.
@@ -113,8 +105,7 @@ public class GlobalTreeView extends JPanel
          * @param file
          *            TODO.
          */
-        public FileNode(final File file)
-        {
+        public FileNode(final File file) {
             super(file.getAbsolutePath());
         }
 
@@ -122,14 +113,12 @@ public class GlobalTreeView extends JPanel
          * TODO.
          * @return TODO.
          */
-        public final String getEntireName()
-        {
+        public final String getEntireName() {
             return super.toString();
         }
 
         @Override
-        public final String toString()
-        {
+        public final String toString() {
             return super.getName();
         }
     }

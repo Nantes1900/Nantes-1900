@@ -1,7 +1,5 @@
 package fr.nantes1900.view.display3d;
 
-import java.awt.Color;
-
 import javax.media.j3d.Appearance;
 import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.Material;
@@ -25,6 +23,7 @@ import fr.nantes1900.models.extended.Surface;
  * @author Siju Wu, Nicolas Bouillon
  */
 public class SurfaceView extends Shape3D {
+
     /**
      * The material of a surface selected.
      */
@@ -77,8 +76,7 @@ public class SurfaceView extends Shape3D {
      * @param surfaceIn
      *            the surface to build from
      */
-    public SurfaceView(final Surface surfaceIn)
-    {
+    public SurfaceView(final Surface surfaceIn) {
         super();
 
         this.surface = surfaceIn;
@@ -108,11 +106,9 @@ public class SurfaceView extends Shape3D {
         rendering.setIgnoreVertexColors(true);
         this.appearance.setRenderingAttributes(rendering);
 
-        if (this.surface.getPolygon() == null)
-        {
+        if (this.surface.getPolygon() == null) {
             this.setMaterial(MATERIAL_NON_POLYGON);
-        } else
-        {
+        } else {
             this.setMaterial(MATERIAL_POLYGON);
         }
 

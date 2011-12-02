@@ -20,13 +20,12 @@ import fr.nantes1900.utils.Algos;
  * before the separation between grounds and buildings.
  * @author Daniel Lefèvre
  */
-public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
-{
+public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
 
     /**
      * The initial total mesh after the base change.
      */
-    private Surface  initialTotalMeshAfterBaseChange;
+    private Surface initialTotalMeshAfterBaseChange;
     /**
      * The normal to the ground.
      */
@@ -37,8 +36,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
      * @param initialTotalMesh
      *            the mesh after the base change representing the total islet
      */
-    public BuildingsIsletStep1(final Surface initialTotalMesh)
-    {
+    public BuildingsIsletStep1(final Surface initialTotalMesh) {
         this.initialTotalMeshAfterBaseChange = initialTotalMesh;
     }
 
@@ -46,8 +44,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
      * Getter.
      * @return the mesh
      */
-    public final Surface getInitialTotalSurfaceAfterBaseChange()
-    {
+    public final Surface getInitialTotalSurfaceAfterBaseChange() {
         return this.initialTotalMeshAfterBaseChange;
     }
 
@@ -55,8 +52,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
      * Extracts the grounds, using the groundExtract method.
      * @return the ground extracted
      */
-    private Ground groundExtraction()
-    {
+    private Ground groundExtraction() {
         // Searches for ground-oriented triangles with an error.
         Mesh meshOriented = this.initialTotalMeshAfterBaseChange.getMesh()
                 .orientedAs(this.groundNormal,
@@ -68,8 +64,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
         thingsList = Algos.blockExtract(meshOriented);
 
         Mesh wholeGround = new Mesh();
-        for (final Mesh f : thingsList)
-        {
+        for (final Mesh f : thingsList) {
             wholeGround.addAll(f);
         }
 
@@ -89,14 +84,12 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
         // After this, for each block, consider the distance (on the
         // axisNormalGround) as an altitude distance. If it is greater than
         // the error, then it's not considered as ground.
-        for (final Mesh m : thingsList)
-        {
+        for (final Mesh m : thingsList) {
             final Point projectedPoint = axisNormalGround.project(m
                     .getCentroid());
             if (projectedPoint.getZ() < pAverage.getZ()
                     || projectedPoint.distance(pAverage) < highDiff
-                            * SeparationGroundBuilding.getAltitureError())
-            {
+                            * SeparationGroundBuilding.getAltitureError()) {
                 groundsList.add(m);
             }
         }
@@ -106,10 +99,8 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
         // etc...
         thingsList = new ArrayList<>(groundsList);
         groundsList = new ArrayList<>();
-        for (final Mesh m : thingsList)
-        {
-            if (m.size() > SeparationGroundBuilding.getBlockGroundsSizeError())
-            {
+        for (final Mesh m : thingsList) {
+            if (m.size() > SeparationGroundBuilding.getBlockGroundsSizeError()) {
                 groundsList.add(m);
             }
         }
@@ -124,8 +115,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
         // If the new grounds are neighbours from the old ones, they are
         // added to the real grounds.
         thingsList = new ArrayList<>();
-        for (final Mesh m : groundsList)
-        {
+        for (final Mesh m : groundsList) {
             final Mesh temp = new Mesh(m);
             temp.addAll(meshOriented);
             final Mesh ret = new Mesh();
@@ -136,8 +126,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
         groundsList = thingsList;
 
         wholeGround = new Mesh();
-        for (final Mesh f : groundsList)
-        {
+        for (final Mesh f : groundsList) {
             wholeGround.addAll(f);
         }
 
@@ -152,10 +141,8 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
      */
     @Override
     public final BuildingsIsletStep2 launchProcess()
-            throws NullArgumentException
-    {
-        if (this.groundNormal == null)
-        {
+            throws NullArgumentException {
+        if (this.groundNormal == null) {
             throw new NullArgumentException();
         }
         Ground initialGround = this.groundExtraction();
@@ -166,8 +153,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
     }
 
     @Override
-    public final DefaultMutableTreeNode returnNode()
-    {
+    public final DefaultMutableTreeNode returnNode() {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(
                 this.initialTotalMeshAfterBaseChange);
         return node;
@@ -178,8 +164,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep
      * @param groundNormalIn
      *            the normal to the ground
      */
-    public final void setArguments(final Vector3d groundNormalIn)
-    {
+    public final void setArguments(final Vector3d groundNormalIn) {
         this.groundNormal = groundNormalIn;
     }
 }

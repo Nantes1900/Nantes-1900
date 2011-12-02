@@ -1,32 +1,32 @@
 package fr.nantes1900.view.display3d;
 
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Polygon;
-
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.TriangleFanArray;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3f;
+
+import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Polygon;
 
 /**
  * PolygonView is a class extended of the class TriangleFanArray. It's used to
  * display the surface simplified as a polygon.
  * @author Nicolas Bouillon Siju Wu
  */
-public class PolygonView extends TriangleFanArray
-{
+public class PolygonView extends TriangleFanArray {
+
     /**
      * The polygon of the thing displayed.
      */
-    private Polygon         polygon;
+    private Polygon polygon;
     /**
      * Indicate if the polygon is selected. TODO
      */
-    private boolean         selected;
+    private boolean selected;
     /**
      * The center of the polygon.
      */
-    private Point           centroid;
+    private Point centroid;
 
     /**
      * FIXME : problem : the number of faces is different for each polygons.
@@ -38,20 +38,19 @@ public class PolygonView extends TriangleFanArray
      * @param poly
      *            The polygon of the thing displayed.
      */
-    public PolygonView(final Polygon poly)
-    {
+    public PolygonView(final Polygon poly) {
         // FIXME : instead of POLYOGN_FACES_COUNT, put poly.getNumEdges() or I
         // don't know why to count the number of faces.
         super(poly.getPointList().size() * POLYGON_FACES_COUNT,
                 GeometryArray.COORDINATES | GeometryArray.COLOR_3
                         | GeometryArray.NORMALS
-                        | GeometryArray.TEXTURE_COORDINATE_2, new int[] {poly
-                        .getPointList().size() * POLYGON_FACES_COUNT});
+                        | GeometryArray.TEXTURE_COORDINATE_2, new int[] { poly
+                        .getPointList().size() * POLYGON_FACES_COUNT
+                });
 
         this.polygon = poly;
         this.centroid = new Point(0, 0, 0);
-        for (Point point : poly.getPointList())
-        {
+        for (Point point : poly.getPointList()) {
             this.centroid.setX(this.centroid.getX() + point.getX());
             this.centroid.setY(this.centroid.getY() + point.getY());
             this.centroid.setZ(this.centroid.getZ() + point.getZ());
@@ -66,8 +65,7 @@ public class PolygonView extends TriangleFanArray
 
         Point3d[] vertex = new Point3d[poly.getPointList().size()
                 * POLYGON_FACES_COUNT];
-        for (int i = 0; i < poly.getPointList().size(); i++)
-        {
+        for (int i = 0; i < poly.getPointList().size(); i++) {
             vertex[i] = new Point3d(poly.getPointList().get(i).getX(), poly
                     .getPointList().get(i).getY(), poly.getPointList().get(i)
                     .getZ());
@@ -79,8 +77,7 @@ public class PolygonView extends TriangleFanArray
 
         Vector3f[] normal = new Vector3f[poly.getPointList().size()
                 * POLYGON_FACES_COUNT];
-        for (int i = 0; i < poly.getPointList().size(); i++)
-        {
+        for (int i = 0; i < poly.getPointList().size(); i++) {
             normal[i] = convertNormal(this.polygon);
             normal[poly.getPointList().size() * POLYGON_FACES_COUNT - 1 - i] = reverseConvertNormal(this.polygon);
         }
@@ -89,59 +86,12 @@ public class PolygonView extends TriangleFanArray
     }
 
     /**
-     * Get the polygon displayed.
-     * @return polygon the polygon displayed.
-     */
-    public final Polygon getPolygon()
-    {
-        return this.polygon;
-    }
-
-    /**
-     * Set the polygon to be displayed.
-     * @param polygonIn
-     *            the polygon to set.
-     */
-    public final void setPolygon(final Polygon polygonIn)
-    {
-        this.polygon = polygonIn;
-    }
-
-    /**
-     * To know if the polygon is selected.
-     * @return selected the condition of selection.
-     */
-    public final boolean isSelected()
-    {
-        return this.selected;
-    }
-
-    /**
-     * Select the polygon.
-     */
-    public final void select()
-    {
-        this.selected = true;
-
-    }
-
-    /**
-     * Unselect the polygon.
-     */
-    public final void unselect()
-    {
-        this.selected = false;
-
-    }
-
-    /**
      * Converts the normal of the polygon (Vector3d) in a Vector3f.
      * @param polygon
      *            the polygon to get the normal from.
      * @return the normal as a Vector3d
      */
-    public static Vector3f convertNormal(final Polygon polygon)
-    {
+    public static Vector3f convertNormal(final Polygon polygon) {
         Vector3f normalFloat = new Vector3f((float) polygon.getNormal().getX(),
                 (float) polygon.getNormal().getY(), (float) polygon.getNormal()
                         .getZ());
@@ -155,8 +105,7 @@ public class PolygonView extends TriangleFanArray
      *            the polygon to get the normal from.
      * @return the reverse of the normal as a Vector3d
      */
-    public static Vector3f reverseConvertNormal(final Polygon polygon)
-    {
+    public static Vector3f reverseConvertNormal(final Polygon polygon) {
         Vector3f normalFloat = new Vector3f(
                 -(float) polygon.getNormal().getX(), -(float) polygon
                         .getNormal().getY(), -(float) polygon.getNormal()
@@ -168,9 +117,49 @@ public class PolygonView extends TriangleFanArray
      * TODO.
      * @return centroid The center of the polygon.
      */
-    public final Point getCentroid()
-    {
+    public final Point getCentroid() {
         return this.centroid;
+    }
+
+    /**
+     * Get the polygon displayed.
+     * @return polygon the polygon displayed.
+     */
+    public final Polygon getPolygon() {
+        return this.polygon;
+    }
+
+    /**
+     * To know if the polygon is selected.
+     * @return selected the condition of selection.
+     */
+    public final boolean isSelected() {
+        return this.selected;
+    }
+
+    /**
+     * Select the polygon.
+     */
+    public final void select() {
+        this.selected = true;
+
+    }
+
+    /**
+     * Set the polygon to be displayed.
+     * @param polygonIn
+     *            the polygon to set.
+     */
+    public final void setPolygon(final Polygon polygonIn) {
+        this.polygon = polygonIn;
+    }
+
+    /**
+     * Unselect the polygon.
+     */
+    public final void unselect() {
+        this.selected = false;
+
     }
 
 }

@@ -15,8 +15,7 @@ import fr.nantes1900.view.components.HelpButton;
 /**
  * @author Camille
  */
-public class ActionsView extends JPanel
-{
+public class ActionsView extends JPanel {
 
     /**
      * Version ID.
@@ -26,28 +25,27 @@ public class ActionsView extends JPanel
     /**
      * Button used to open a mockup part.
      */
-    private JButton           bOpen;
+    private JButton bOpen;
 
     /**
      * Button used to launch the process of an islet.
      */
-    private JButton           bLaunch;
+    private JButton bLaunch;
 
     /**
      * Button used to display some help.
      */
-    private HelpButton        bHelp;
+    private HelpButton bHelp;
 
     /**
      * Checkbox to select gravity normal as ground normal.
      */
-    private JCheckBox         cbGravityGround;
+    private JCheckBox cbGravityGround;
 
     /**
      * Creates a new panel containing the open and launch buttons.
      */
-    public ActionsView()
-    {
+    public ActionsView() {
         this.bOpen = new JButton(
                 FileTools.readElementText(TextsKeys.KEY_OPENBUTTON));
         this.bLaunch = new JButton(
@@ -81,11 +79,18 @@ public class ActionsView extends JPanel
     }
 
     /**
+     * Returns the use gravity normal as ground normal check box.
+     * @return The use gravity normal as ground normal check box.
+     */
+    public final JCheckBox getGravityCheckBox() {
+        return this.cbGravityGround;
+    }
+
+    /**
      * Returns the help button.
      * @return The help button.
      */
-    public final HelpButton getHelpButton()
-    {
+    public final HelpButton getHelpButton() {
         return this.bHelp;
     }
 
@@ -93,8 +98,7 @@ public class ActionsView extends JPanel
      * Returns the launch islet process button.
      * @return The launch button.
      */
-    public final JButton getLaunchButton()
-    {
+    public final JButton getLaunchButton() {
         return this.bLaunch;
     }
 
@@ -102,26 +106,15 @@ public class ActionsView extends JPanel
      * Returns the open folder button.
      * @return The open button.
      */
-    public final JButton getOpenButton()
-    {
+    public final JButton getOpenButton() {
         return this.bOpen;
-    }
-
-    /**
-     * Returns the use gravity normal as ground normal check box.
-     * @return The use gravity normal as ground normal check box.
-     */
-    public final JCheckBox getGravityCheckBox()
-    {
-        return this.cbGravityGround;
     }
 
     /**
      * TODO.
      * @return TODO.
      */
-    public final boolean isGravityGroundCheckBoxSelected()
-    {
+    public final boolean isGravityGroundCheckBoxSelected() {
         return this.cbGravityGround.isSelected();
     }
 }

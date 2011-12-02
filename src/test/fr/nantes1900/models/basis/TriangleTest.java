@@ -19,21 +19,20 @@ import fr.nantes1900.models.basis.Triangle;
  * A set of tests for the class Triangle.
  * @author Daniel Lefevre
  */
-public class TriangleTest extends TestCase
-{
+public class TriangleTest extends TestCase {
 
     /**
      * Test attribute.
      */
-    private final Point    p1   = new Point(1, 0, -1);
+    private final Point p1 = new Point(1, 0, -1);
     /**
      * Test attribute.
      */
-    private final Point    p2   = new Point(0, 1, 0);
+    private final Point p2 = new Point(0, 1, 0);
     /**
      * Test attribute.
      */
-    private final Point    p3   = new Point(-1, 2, 1);
+    private final Point p3 = new Point(-1, 2, 1);
     /**
      * Test attribute.
      */
@@ -41,15 +40,15 @@ public class TriangleTest extends TestCase
     /**
      * Test attribute.
      */
-    private final Edge     e1   = new Edge(this.p1, this.p2);
+    private final Edge e1 = new Edge(this.p1, this.p2);
     /**
      * Test attribute.
      */
-    private final Edge     e2   = new Edge(this.p2, this.p3);
+    private final Edge e2 = new Edge(this.p2, this.p3);
     /**
      * Test attribute.
      */
-    private final Edge     e3   = new Edge(this.p3, this.p1);
+    private final Edge e3 = new Edge(this.p3, this.p1);
     /**
      * Test attribute.
      */
@@ -58,22 +57,15 @@ public class TriangleTest extends TestCase
     /**
      * Constructor.
      */
-    public TriangleTest()
-    {
-        this.t = new Triangle(this.p1,
-                this.p2,
-                this.p3,
-                this.e1,
-                this.e2,
-                this.e3,
-                this.vect);
+    public TriangleTest() {
+        this.t = new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2,
+                this.e3, this.vect);
     }
 
     /**
      * Test method for {@link nantes1900.models.basis.Triangle#getPoints()}.
      */
-    public final static void testIsInPlanes()
-    {
+    public final static void testIsInPlanes() {
         final Point p11 = new Point(0, 0, 0);
         final Point p21 = new Point(0, 1, 0);
         final Point p31 = new Point(1, 0, 0);
@@ -116,16 +108,10 @@ public class TriangleTest extends TestCase
      * @throws MoreThanTwoTrianglesPerEdgeException
      */
     @Test
-    public final void testAngularTolerance()
-    {
+    public final void testAngularTolerance() {
         final Vector3d vector = new Vector3d(0, 1, 0);
-        final Triangle tBis = new Triangle(this.p1,
-                this.p2,
-                this.p3,
-                this.e1,
-                this.e2,
-                this.e3,
-                vector);
+        final Triangle tBis = new Triangle(this.p1, this.p2, this.p3, this.e1,
+                this.e2, this.e3, vector);
 
         Assert.assertFalse(this.t.angularTolerance(vector, 60));
         Assert.assertFalse(this.t.angularTolerance(tBis, 60));
@@ -140,8 +126,7 @@ public class TriangleTest extends TestCase
      * .
      */
     @Test
-    public final void testContainsEdge()
-    {
+    public final void testContainsEdge() {
         Assert.assertTrue(this.t.contains(this.e1));
         Assert.assertTrue(this.t.contains(this.e2));
         Assert.assertTrue(this.t.contains(this.e3));
@@ -153,8 +138,7 @@ public class TriangleTest extends TestCase
      * .
      */
     @Test
-    public final void testContainsPoint()
-    {
+    public final void testContainsPoint() {
         Assert.assertTrue(this.t.contains(this.p1));
         Assert.assertTrue(this.t.contains(this.p2));
         Assert.assertTrue(this.t.contains(this.p3));
@@ -165,15 +149,9 @@ public class TriangleTest extends TestCase
      * {@link nantes1900.models.basis.Triangle#equals(java.lang.Object)}.
      */
     @Test
-    public final void testEqualsObject()
-    {
-        final Triangle tBis = new Triangle(this.p1,
-                this.p2,
-                this.p3,
-                this.e1,
-                this.e2,
-                this.e3,
-                this.vect);
+    public final void testEqualsObject() {
+        final Triangle tBis = new Triangle(this.p1, this.p2, this.p3, this.e1,
+                this.e2, this.e3, this.vect);
         Assert.assertTrue(this.t.equals(tBis));
         Assert.assertTrue(tBis.equals(this.t));
     }
@@ -182,8 +160,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#getNeighbours()}.
      */
     @Test
-    public final void testGetNeighbours()
-    {
+    public final void testGetNeighbours() {
         final Point p4 = new Point(3, 4, 5);
         final Point p5 = new Point(-3, -4, -5);
         final Point p6 = new Point(-3.5, -1.2, 5.9);
@@ -194,26 +171,11 @@ public class TriangleTest extends TestCase
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
 
-        final Triangle t2 = new Triangle(this.p1,
-                this.p2,
-                p4,
-                this.e1,
-                e4,
-                e5,
+        final Triangle t2 = new Triangle(this.p1, this.p2, p4, this.e1, e4, e5,
                 this.vect);
-        final Triangle t3 = new Triangle(this.p1,
-                this.p3,
-                p5,
-                this.e3,
-                e6,
-                e7,
+        final Triangle t3 = new Triangle(this.p1, this.p3, p5, this.e3, e6, e7,
                 this.vect);
-        final Triangle t4 = new Triangle(this.p2,
-                this.p3,
-                p6,
-                this.e2,
-                e8,
-                e9,
+        final Triangle t4 = new Triangle(this.p2, this.p3, p6, this.e2, e8, e9,
                 this.vect);
 
         final List<Triangle> l = this.t.getNeighbours();
@@ -230,8 +192,7 @@ public class TriangleTest extends TestCase
      */
     @SuppressWarnings("unused")
     @Test
-    public final void testGetNumNeighbours()
-    {
+    public final void testGetNumNeighbours() {
         final Point p4 = new Point(3, 4, 5);
         final Point p5 = new Point(-3, -4, -5);
         final Point p6 = new Point(-3.5, -1.2, 5.9);
@@ -253,8 +214,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#getPoints()}.
      */
     @Test
-    public final void testGetPoints()
-    {
+    public final void testGetPoints() {
         final List<Point> pointList = new ArrayList<Point>(this.t.getPoints());
         Assert.assertTrue(pointList.get(0) == this.p1);
         Assert.assertTrue(pointList.get(1) == this.p2);
@@ -266,8 +226,7 @@ public class TriangleTest extends TestCase
      * {@link nantes1900.models.basis.Triangle#isNeighboor(nantes1900.models.basis.Triangle)}
      * .
      */
-    public final void testIsNeighboor()
-    {
+    public final void testIsNeighboor() {
 
         final Point p4 = new Point(3, 4, 5);
         final Point p5 = new Point(-3, -4, -5);
@@ -278,26 +237,11 @@ public class TriangleTest extends TestCase
         final Edge e7 = new Edge(this.p2, p5);
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
-        final Triangle t2 = new Triangle(this.p1,
-                this.p2,
-                p4,
-                this.e1,
-                e4,
-                e5,
+        final Triangle t2 = new Triangle(this.p1, this.p2, p4, this.e1, e4, e5,
                 this.vect);
-        final Triangle t3 = new Triangle(this.p1,
-                this.p3,
-                p5,
-                this.e3,
-                e6,
-                e7,
+        final Triangle t3 = new Triangle(this.p1, this.p3, p5, this.e3, e6, e7,
                 this.vect);
-        final Triangle t4 = new Triangle(this.p2,
-                this.p3,
-                p6,
-                this.e2,
-                e8,
-                e9,
+        final Triangle t4 = new Triangle(this.p2, this.p3, p6, this.e2, e8, e9,
                 this.vect);
 
         Assert.assertFalse(this.t.isNeighboor(this.t));
@@ -312,8 +256,7 @@ public class TriangleTest extends TestCase
      * .
      */
     @Test
-    public final void testIsNormalTo()
-    {
+    public final void testIsNormalTo() {
         final Vector3d vector = new Vector3d(0, 1, 0);
         final Vector3d vector2 = new Vector3d(0, 0, 1);
 
@@ -329,8 +272,7 @@ public class TriangleTest extends TestCase
      *             if an edge is bad formed
      */
     @Test
-    public final void testReturnNeighbours()
-    {
+    public final void testReturnNeighbours() {
         final Point p4 = new Point(3, 4, 5);
         final Point p5 = new Point(-3, -4, -5);
         final Point p6 = new Point(-3.5, -1.2, 5.9);
@@ -341,33 +283,13 @@ public class TriangleTest extends TestCase
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
         final Edge e10 = new Edge(p5, p6);
-        final Triangle t2 = new Triangle(this.p1,
-                this.p2,
-                p4,
-                this.e1,
-                e4,
-                e5,
+        final Triangle t2 = new Triangle(this.p1, this.p2, p4, this.e1, e4, e5,
                 this.vect);
-        final Triangle t3 = new Triangle(this.p1,
-                this.p3,
-                p5,
-                this.e3,
-                e6,
-                e7,
+        final Triangle t3 = new Triangle(this.p1, this.p3, p5, this.e3, e6, e7,
                 this.vect);
-        final Triangle t4 = new Triangle(this.p2,
-                this.p3,
-                p6,
-                this.e2,
-                e8,
-                e9,
+        final Triangle t4 = new Triangle(this.p2, this.p3, p6, this.e2, e8, e9,
                 this.vect);
-        final Triangle t5 = new Triangle(this.p1,
-                p5,
-                p6,
-                e6,
-                e8,
-                e10,
+        final Triangle t5 = new Triangle(this.p1, p5, p6, e6, e8, e10,
                 this.vect);
 
         final Mesh contain = new Mesh();
@@ -378,18 +300,11 @@ public class TriangleTest extends TestCase
         contain.add(t5);
 
         final Triangle t6 = new Triangle(new Point(0.05, 0.05, 0.05),
-                new Point(0.05, 0.05, 0.05),
-                new Point(0.05, 0.05, 0.05),
-                new Edge(new Point(0.05, 0.05, 0.05), new Point(0.05,
-                        0.05,
-                        0.05)),
-                new Edge(new Point(0.05, 0.05, 0.05), new Point(0.05,
-                        0.05,
-                        0.05)),
-                new Edge(new Point(0.05, 0.05, 0.05), new Point(0.05,
-                        0.05,
-                        0.05)),
-                this.vect);
+                new Point(0.05, 0.05, 0.05), new Point(0.05, 0.05, 0.05),
+                new Edge(new Point(0.05, 0.05, 0.05), new Point(0.05, 0.05,
+                        0.05)), new Edge(new Point(0.05, 0.05, 0.05),
+                        new Point(0.05, 0.05, 0.05)), new Edge(new Point(0.05,
+                        0.05, 0.05), new Point(0.05, 0.05, 0.05)), this.vect);
 
         final Mesh ret = new Mesh();
         this.t.returnNeighbours(ret, contain);
@@ -406,8 +321,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#xAverage()}.
      */
     @Test
-    public final void testXAverage()
-    {
+    public final void testXAverage() {
         Assert.assertTrue(this.t.xAverage() == 0);
     }
 
@@ -415,8 +329,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#xMax()}.
      */
     @Test
-    public final void testXMax()
-    {
+    public final void testXMax() {
         Assert.assertTrue(this.t.xMax() == 1);
     }
 
@@ -424,8 +337,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#xMaxPoint()}.
      */
     @Test
-    public final void testXMaxPoint()
-    {
+    public final void testXMaxPoint() {
         Assert.assertTrue(this.t.xMaxPoint() == this.p1);
     }
 
@@ -433,8 +345,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#xMin()}.
      */
     @Test
-    public final void testXMin()
-    {
+    public final void testXMin() {
         Assert.assertTrue(this.t.xMin() == -1);
     }
 
@@ -442,8 +353,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#xMinPoint()}.
      */
     @Test
-    public final void testXMinPoint()
-    {
+    public final void testXMinPoint() {
         Assert.assertTrue(this.t.xMinPoint() == this.p3);
     }
 
@@ -451,8 +361,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#yAverage()}.
      */
     @Test
-    public final void testYAverage()
-    {
+    public final void testYAverage() {
         Assert.assertTrue(this.t.yAverage() == 1);
     }
 
@@ -460,8 +369,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#yMax()}.
      */
     @Test
-    public final void testYMax()
-    {
+    public final void testYMax() {
         Assert.assertTrue(this.t.yMax() == 2);
     }
 
@@ -469,8 +377,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#yMaxPoint()}.
      */
     @Test
-    public final void testYMaxPoint()
-    {
+    public final void testYMaxPoint() {
         Assert.assertTrue(this.t.yMaxPoint() == this.p3);
     }
 
@@ -478,8 +385,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#yMin()}.
      */
     @Test
-    public final void testYMin()
-    {
+    public final void testYMin() {
         Assert.assertTrue(this.t.yMin() == 0);
     }
 
@@ -487,8 +393,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#yMinPoint()}.
      */
     @Test
-    public final void testYMinPoint()
-    {
+    public final void testYMinPoint() {
         Assert.assertTrue(this.t.yMinPoint() == this.p1);
     }
 
@@ -496,8 +401,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#zAverage()}.
      */
     @Test
-    public final void testZAverage()
-    {
+    public final void testZAverage() {
         Assert.assertTrue(this.t.zAverage() == 0);
     }
 
@@ -505,8 +409,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#zMax()}.
      */
     @Test
-    public final void testZMax()
-    {
+    public final void testZMax() {
         Assert.assertTrue(this.t.zMax() == 1);
     }
 
@@ -514,8 +417,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#zMaxPoint()}.
      */
     @Test
-    public final void testZMaxPoint()
-    {
+    public final void testZMaxPoint() {
         Assert.assertTrue(this.t.zMaxPoint() == this.p3);
     }
 
@@ -523,8 +425,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#zMin()}.
      */
     @Test
-    public final void testZMin()
-    {
+    public final void testZMin() {
         Assert.assertTrue(this.t.zMin() == -1);
     }
 
@@ -532,8 +433,7 @@ public class TriangleTest extends TestCase
      * Test method for {@link nantes1900.models.basis.Triangle#zMinPoint()}.
      */
     @Test
-    public final void testZMinPoint()
-    {
+    public final void testZMinPoint() {
         Assert.assertTrue(this.t.zMinPoint() == this.p1);
     }
 }

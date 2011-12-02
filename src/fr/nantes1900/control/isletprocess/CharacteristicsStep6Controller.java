@@ -15,8 +15,9 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep6View;
  * @author Camille
  * @author Luc
  */
-public class CharacteristicsStep6Controller extends AbstractCharacteristicsSurfacesController
-{
+public class CharacteristicsStep6Controller extends
+        AbstractCharacteristicsSurfacesController {
+
     private Surface surfaceLocked;
     private boolean isEnabled;
 
@@ -26,10 +27,10 @@ public class CharacteristicsStep6Controller extends AbstractCharacteristicsSurfa
      * @param triangleSelected
      */
     public CharacteristicsStep6Controller(
-            IsletProcessController parentController, Surface surfaceLocked, ArrayList<Surface> neighbours)
-    {
+            IsletProcessController parentController, Surface surfaceLocked,
+            ArrayList<Surface> neighbours) {
         super(parentController);
-        
+
         this.surfaceLocked = surfaceLocked;
         this.surfacesList = neighbours;
         this.cView = new CharacteristicsStep6View(neighbours);
@@ -39,35 +40,31 @@ public class CharacteristicsStep6Controller extends AbstractCharacteristicsSurfa
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent arg0)
-            {
-                
+            public void actionPerformed(ActionEvent arg0) {
+
             }
         });
     }
 
-    public ArrayList<Surface> getSurfaces()
-    {
+    public ArrayList<Surface> getSurfaces() {
         return this.surfacesList;
     }
 
-    public void setEnabled(boolean enabled)
-    {
-        if (!this.isEnabled && enabled)
-        {
-            this.isEnabled = true;
-            ((CharacteristicsStep6View) this.cView).setModificationsEnabled(true);
-        } else if (this.isEnabled && !enabled)
-        {
-            this.isEnabled = false;
-            this.cView.setToolTipText("Test");
-            ((CharacteristicsStep6View) this.cView).setModificationsEnabled(false);
-        }
+    @Override
+    public void modifyViewCharacteristics() {
+        ((CharacteristicsStep6View) this.cView).setList(this.surfacesList);
     }
 
-    @Override
-    public void modifyViewCharacteristics()
-    {
-        ((CharacteristicsStep6View) this.cView).setList(this.surfacesList);
+    public void setEnabled(boolean enabled) {
+        if (!this.isEnabled && enabled) {
+            this.isEnabled = true;
+            ((CharacteristicsStep6View) this.cView)
+                    .setModificationsEnabled(true);
+        } else if (this.isEnabled && !enabled) {
+            this.isEnabled = false;
+            this.cView.setToolTipText("Test");
+            ((CharacteristicsStep6View) this.cView)
+                    .setModificationsEnabled(false);
+        }
     }
 }

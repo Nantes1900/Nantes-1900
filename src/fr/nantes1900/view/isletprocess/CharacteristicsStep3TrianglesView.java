@@ -16,8 +16,8 @@ import fr.nantes1900.view.components.HelpButton;
  * TODO .
  * @author Camille
  */
-public class CharacteristicsStep3TrianglesView extends CharacteristicsView
-{
+public class CharacteristicsStep3TrianglesView extends CharacteristicsView {
+
     /**
      * Default serial UID.
      */
@@ -25,27 +25,23 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView
     /**
      * TODO .
      */
-    private JCheckBox         cbDelete;
+    private JCheckBox cbDelete;
 
     /**
      * TODO .
      */
-    public CharacteristicsStep3TrianglesView()
-    {
+    public CharacteristicsStep3TrianglesView() {
         super();
 
         this.cbDelete = new JCheckBox();
         this.cbDelete.addItemListener(new ItemListener() {
 
             @Override
-            public void itemStateChanged(final ItemEvent arg0)
-            {
-                if (((JCheckBox) arg0.getSource()).isSelected())
-                {
+            public void itemStateChanged(final ItemEvent arg0) {
+                if (((JCheckBox) arg0.getSource()).isSelected()) {
                     CharacteristicsStep3TrianglesView.this.bValidate
                             .setEnabled(true);
-                } else
-                {
+                } else {
                     CharacteristicsStep3TrianglesView.this.bValidate
                             .setEnabled(false);
                 }
@@ -63,8 +59,7 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView
      * TODO .
      * @return TODO .
      */
-    public final boolean isDeleteSelected()
-    {
+    public final boolean isDeleteSelected() {
         return this.cbDelete.isSelected();
     }
 }

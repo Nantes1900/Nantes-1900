@@ -14,12 +14,12 @@ import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
  * the base change.
  * @author Daniel Lefèvre
  */
-public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
-{
+public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep {
+
     /**
      * The initial mesh before every process.
      */
-    private Surface    initialTotalMesh;
+    private Surface initialTotalMesh;
 
     /**
      * Change base matrix from the current base to a base which is ground-like
@@ -30,15 +30,14 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
     /**
      * The normal to the gravity.
      */
-    private Vector3d   gravityNormal;
+    private Vector3d gravityNormal;
 
     /**
      * Constructor.
      * @param mesh
      *            the mesh representing the entire islet
      */
-    public BuildingsIsletStep0(final Mesh mesh)
-    {
+    public BuildingsIsletStep0(final Mesh mesh) {
         this.initialTotalMesh = new Surface(mesh);
     }
 
@@ -47,10 +46,8 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      * @throws NullArgumentException
      *             if the matrix or the mesh has not been initialized
      */
-    public final void changeBase() throws NullArgumentException
-    {
-        if (this.matrix == null || this.initialTotalMesh == null)
-        {
+    public final void changeBase() throws NullArgumentException {
+        if (this.matrix == null || this.initialTotalMesh == null) {
             throw new NullArgumentException();
         }
         this.initialTotalMesh.getMesh().changeBase(this.matrix);
@@ -63,16 +60,13 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      *             if an argument needed for the process has not been
      *             initialized
      */
-    public final void createChangeBaseMatrix() throws NullArgumentException
-    {
-        try
-        {
+    public final void createChangeBaseMatrix() throws NullArgumentException {
+        try {
             // Base change
             this.matrix = MatrixMethod.createOrthoBase(this.gravityNormal);
             MatrixMethod.changeBase(this.gravityNormal, this.matrix);
 
-        } catch (final SingularMatrixException e)
-        {
+        } catch (final SingularMatrixException e) {
             System.out.println("Error : the matrix is badly formed !");
             System.exit(1);
         }
@@ -82,9 +76,16 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      * Getter.
      * @return the initial total mesh
      */
-    public final Surface getInitialTotalSurface()
-    {
+    public final Surface getInitialTotalSurface() {
         return this.initialTotalMesh;
+    }
+
+    /**
+     * Getter.
+     * @return the matrix
+     */
+    public final double[][] getMatrix() {
+        return this.matrix;
     }
 
     /*
@@ -95,10 +96,8 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      */
     @Override
     public final BuildingsIsletStep1 launchProcess()
-            throws NullArgumentException
-    {
-        if (this.gravityNormal == null)
-        {
+            throws NullArgumentException {
+        if (this.gravityNormal == null) {
             throw new NullArgumentException();
         }
         this.createChangeBaseMatrix();
@@ -114,8 +113,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode()
-    {
+    public final DefaultMutableTreeNode returnNode() {
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(
                 this.initialTotalMesh);
         return node;
@@ -126,17 +124,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep
      * @param gravityNormalIn
      *            the normal to the gravity
      */
-    public final void setArguments(final Vector3d gravityNormalIn)
-    {
+    public final void setArguments(final Vector3d gravityNormalIn) {
         this.gravityNormal = gravityNormalIn;
-    }
-
-    /**
-     * Getter.
-     * @return the matrix
-     */
-    public final double[][] getMatrix()
-    {
-        return this.matrix;
     }
 }

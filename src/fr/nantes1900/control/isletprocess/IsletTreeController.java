@@ -16,54 +16,44 @@ import fr.nantes1900.view.isletprocess.IsletTreeView;
 /**
  * @author Luc Jallerat, Camille Bouquet
  */
-public class IsletTreeController
-{
+public class IsletTreeController {
+
     /**
      * The view displaying the JTree.
      */
-    private IsletTreeView          itView;
+    private IsletTreeView itView;
 
     /**
      * The parent controller.
      */
     private IsletProcessController parentController;
 
-    public IsletTreeController(IsletProcessController parentControllerIn)
-    {
+    public IsletTreeController(IsletProcessController parentControllerIn) {
         this.parentController = parentControllerIn;
         this.itView = new IsletTreeView();
         this.buildTreeView();
         this.addTreeController();
     }
 
-    public IsletProcessController getParentController()
-    {
-        return this.parentController;
-    }
-
-    public void addTreeController()
-    {
+    public void addTreeController() {
         this.itView.getTree().addTreeSelectionListener(
                 new TreeSelectionListener() {
+
                     @Override
-                    public void valueChanged(final TreeSelectionEvent e)
-                    {
+                    public void valueChanged(final TreeSelectionEvent e) {
                         IsletTreeController.this.getParentController()
                                 .getU3DController().deselectEverySurfaces();
 
-                        for (Object o : e.getPath().getPath())
-                        {
+                        for (Object o : e.getPath().getPath()) {
                             DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
 
-                            if (node.getUserObject() instanceof Surface)
-                            {
+                            if (node.getUserObject() instanceof Surface) {
                                 IsletTreeController.this
                                         .getParentController()
                                         .getU3DController()
                                         .selectOrUnselectSurfaceFromTree(
                                                 (Surface) node.getUserObject());
-                            } else
-                            {
+                            } else {
                                 // TODO : throw exception if it is not a mesh.
                             }
                         }
@@ -73,29 +63,28 @@ public class IsletTreeController
         // than ONE object is selected ?
     }
 
-    public IsletTreeView getView()
-    {
-        return this.itView;
-    }
-
-    public void refreshView()
-    {
-        this.buildTreeView();
-        this.itView.repaint();
-        this.addTreeController();
-    }
-
-    private void buildTreeView()
-    {
-        try
-        {
+    private void buildTreeView() {
+        try {
             this.itView.buildTree(this.parentController.getBiController()
                     .returnNode());
-        } catch (InvalidCaseException e)
-        {
+        } catch (InvalidCaseException e) {
             // TODO Auto-generated catch block
             System.out.println(FileTools.readErrorMessage(
                     TextsKeys.KEY_RETURNNODE, TextsKeys.MESSAGETYPE_MESSAGE));
         }
+    }
+
+    public IsletProcessController getParentController() {
+        return this.parentController;
+    }
+
+    public IsletTreeView getView() {
+        return this.itView;
+    }
+
+    public void refreshView() {
+        this.buildTreeView();
+        this.itView.repaint();
+        this.addTreeController();
     }
 }

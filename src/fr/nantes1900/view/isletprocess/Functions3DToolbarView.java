@@ -18,6 +18,7 @@ import fr.nantes1900.utils.FileTools;
  * @author Camille
  */
 public class Functions3DToolbarView extends JToolBar {
+
     /**
      * TODO .
      */
@@ -77,6 +78,10 @@ public class Functions3DToolbarView extends JToolBar {
         setMinimumSize(new Dimension(30, 0));
     }
 
+    public JButton getDisplayTypeButton() {
+        return this.bDisplayType;
+    }
+
     public JButton getLockButton() {
         return this.bLockButton;
     }
@@ -85,39 +90,31 @@ public class Functions3DToolbarView extends JToolBar {
         return this.bRotationCenter;
     }
 
-    public JButton getDisplayTypeButton() {
-        return this.bDisplayType;
+    public JButton getSelectionModeMeshesButton() {
+        return this.bSelectionModeMeshes;
     }
 
     public JButton getSelectionModeTrianglesButton() {
         return this.bSelectionModeTriangles;
     }
 
-    public JButton getSelectionModeMeshesButton() {
-        return this.bSelectionModeMeshes;
+    public void setSelectionModeText(String readElementText) {
+        lSelectionMode.setText(readElementText);
     }
 
     public void showLockButton(boolean show) {
-        if (show)
-        {
+        if (show) {
             this.add(bLockButton);
-        } else
-        {
+        } else {
             this.remove(bLockButton);
         }
     }
 
     public void showTypeDisplayButton(boolean show) {
-        if (show)
-        {
+        if (show) {
             this.add(bDisplayType);
-        } else
-        {
+        } else {
             this.remove(bDisplayType);
         }
-    }
-
-    public void setSelectionModeText(String readElementText) {
-        lSelectionMode.setText(readElementText);
     }
 }
