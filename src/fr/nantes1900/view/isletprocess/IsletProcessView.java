@@ -68,7 +68,7 @@ public class IsletProcessView extends PFrame
             final Universe3DView universe3dView)
     {
         super();
-        this.setMinimumSize(new Dimension(960, 760));
+        this.setMinimumSize(new Dimension(960, 660));
         this.setPreferredSize(new Dimension(1200, 900));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 

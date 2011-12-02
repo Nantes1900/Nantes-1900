@@ -49,8 +49,8 @@ public class Functions3DToolbarView extends JToolBar
 
     public Functions3DToolbarView()
     {
-        super(JToolBar.VERTICAL);
-
+        super(JToolBar.HORIZONTAL);
+        this.setFloatable(false);
         // TODO puts icons instead
         bRotationCenter = new JButton("o");
         bRotationCenter.setToolTipText(FileTools
