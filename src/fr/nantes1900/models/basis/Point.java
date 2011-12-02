@@ -6,8 +6,7 @@ import fr.nantes1900.utils.MatrixMethod;
  * Implements a point, composed of three double coordinates.
  * @author Daniel Lefèvre, Elsa Arroud-Vignod
  */
-public class Point
-{
+public class Point {
 
     /**
      * x coordinate.
@@ -33,8 +32,7 @@ public class Point
      * @param zNew
      *            coordinate
      */
-    public Point(final double xNew, final double yNew, final double zNew)
-    {
+    public Point(final double xNew, final double yNew, final double zNew) {
         this.x = xNew;
         this.y = yNew;
         this.z = zNew;
@@ -46,8 +44,7 @@ public class Point
      * @param point
      *            the point to copy
      */
-    public Point(final Point point)
-    {
+    public Point(final Point point) {
         this.x = point.x;
         this.y = point.y;
         this.z = point.z;
@@ -59,9 +56,9 @@ public class Point
      * @param matrix
      *            of base change
      */
-    public final void changeBase(final double[][] matrix)
-    {
-        final double[] coords = {this.x, this.y, this.z, };
+    public final void changeBase(final double[][] matrix) {
+        final double[] coords = { this.x, this.y, this.z,
+        };
         this.set(MatrixMethod.changeBase(coords, matrix));
     }
 
@@ -71,8 +68,7 @@ public class Point
      *            the other point
      * @return the distance
      */
-    public final double distance(final Point p)
-    {
+    public final double distance(final Point p) {
         return Math.sqrt(Math.pow(p.x - this.x, 2) + Math.pow(p.y - this.y, 2)
                 + Math.pow(p.z - this.z, 2));
     }
@@ -82,34 +78,27 @@ public class Point
      * @see java.lang.Object#equals(java.lang.Object)
      */
     @Override
-    public final boolean equals(final Object obj)
-    {
-        if (this == obj)
-        {
+    public final boolean equals(final Object obj) {
+        if (this == obj) {
             return true;
         }
-        if (obj == null)
-        {
+        if (obj == null) {
             return false;
         }
-        if (this.getClass() != obj.getClass())
-        {
+        if (this.getClass() != obj.getClass()) {
             return false;
         }
         final Point other = (Point) obj;
         if (Double.doubleToLongBits((float) this.x) != Double
-                .doubleToLongBits((float) other.x))
-        {
+                .doubleToLongBits((float) other.x)) {
             return false;
         }
         if (Double.doubleToLongBits((float) this.y) != Double
-                .doubleToLongBits((float) other.y))
-        {
+                .doubleToLongBits((float) other.y)) {
             return false;
         }
         if (Double.doubleToLongBits((float) this.z) != Double
-                .doubleToLongBits((float) other.z))
-        {
+                .doubleToLongBits((float) other.z)) {
             return false;
         }
         return true;
@@ -119,17 +108,16 @@ public class Point
      * Getter of the coordinates of the point.
      * @return an array of doubles
      */
-    public final double[] getPointAsCoordinates()
-    {
-        return new double[] {this.x, this.y, this.z, };
+    public final double[] getPointAsCoordinates() {
+        return new double[] { this.x, this.y, this.z,
+        };
     }
 
     /**
      * Getter.
      * @return the x coordinate
      */
-    public final double getX()
-    {
+    public final double getX() {
         return this.x;
     }
 
@@ -137,8 +125,7 @@ public class Point
      * Getter.
      * @return the y coordinate
      */
-    public final double getY()
-    {
+    public final double getY() {
         return this.y;
     }
 
@@ -146,8 +133,7 @@ public class Point
      * Getter.
      * @return the z coordinate
      */
-    public final double getZ()
-    {
+    public final double getZ() {
         return this.z;
     }
 
@@ -156,8 +142,7 @@ public class Point
      * @see java.lang.Object#hashCode()
      */
     @Override
-    public final int hashCode()
-    {
+    public final int hashCode() {
         final int prime = 31;
         int result = 1;
         final int hashTemp = 32;
@@ -181,8 +166,7 @@ public class Point
      *            the new z coordinate
      */
     public final void set(final double xNew, final double yNew,
-            final double zNew)
-    {
+            final double zNew) {
         this.x = xNew;
         this.y = yNew;
         this.z = zNew;
@@ -193,8 +177,7 @@ public class Point
      * @param coords
      *            the three coordinates
      */
-    public final void set(final double[] coords)
-    {
+    public final void set(final double[] coords) {
         this.setX(coords[0]);
         this.setY(coords[1]);
         this.setZ(coords[2]);
@@ -205,8 +188,7 @@ public class Point
      * @param xNew
      *            : the x coordinate
      */
-    public final void setX(final double xNew)
-    {
+    public final void setX(final double xNew) {
         this.x = xNew;
     }
 
@@ -215,8 +197,7 @@ public class Point
      * @param yNew
      *            coordinate
      */
-    public final void setY(final double yNew)
-    {
+    public final void setY(final double yNew) {
         this.y = yNew;
     }
 
@@ -225,8 +206,7 @@ public class Point
      * @param zNew
      *            coordinate
      */
-    public final void setZ(final double zNew)
-    {
+    public final void setZ(final double zNew) {
         this.z = zNew;
     }
 
@@ -235,8 +215,7 @@ public class Point
      * @see java.lang.Object#toString()
      */
     @Override
-    public final String toString()
-    {
+    public final String toString() {
         return new String("(" + this.x + ", " + this.y + ", " + this.z + ")");
     }
 }

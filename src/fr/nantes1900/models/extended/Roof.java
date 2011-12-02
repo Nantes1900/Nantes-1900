@@ -7,14 +7,12 @@ import fr.nantes1900.models.basis.Polygon;
  * Implements a roof as a surface.
  * @author Daniel
  */
-public class Roof extends Surface
-{
+public class Roof extends Surface {
 
     /**
      * Void constructor.
      */
-    public Roof()
-    {
+    public Roof() {
     }
 
     /**
@@ -22,8 +20,7 @@ public class Roof extends Surface
      * @param m
      *            the mesh representing the roof
      */
-    public Roof(final Mesh m)
-    {
+    public Roof(final Mesh m) {
         super(m);
     }
 
@@ -32,8 +29,7 @@ public class Roof extends Surface
      * @param p
      *            the polygon representing the roof
      */
-    public Roof(final Polygon p)
-    {
+    public Roof(final Polygon p) {
         super(p);
     }
 
@@ -42,14 +38,12 @@ public class Roof extends Surface
      * @param r
      *            the roof to copy
      */
-    public Roof(final Roof r)
-    {
+    public Roof(final Roof r) {
         super(r);
     }
 
     @Override
-    public final String toString()
-    {
+    public final String toString() {
         return "Roof " + this.getID();
     }
 }

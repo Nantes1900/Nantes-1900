@@ -14,13 +14,12 @@ import fr.nantes1900.view.isletselection.GlobalTreeView;
 /**
  * @author Camille Bouquet, Luc Jallerat
  */
-public class GlobalTreeController
-{
+public class GlobalTreeController {
 
     /**
      * View of the tree.
      */
-    private GlobalTreeView           gtView;
+    private GlobalTreeView gtView;
 
     /**
      * The parent controller to give feedback to.
@@ -33,8 +32,8 @@ public class GlobalTreeController
      * @param isletSelectionController
      *            TODO.
      */
-    public GlobalTreeController(final IsletSelectionController isletSelectionController)
-    {
+    public GlobalTreeController(
+            final IsletSelectionController isletSelectionController) {
         this.parentController = isletSelectionController;
         this.gtView = new GlobalTreeView();
     }
@@ -43,8 +42,7 @@ public class GlobalTreeController
      * Returns the view of the tree associated with this controller.
      * @return The view of the tree.
      */
-    public final GlobalTreeView getGlobalTreeView()
-    {
+    public final GlobalTreeView getGlobalTreeView() {
         return this.gtView;
     }
 
@@ -52,8 +50,7 @@ public class GlobalTreeController
      * TODO.
      * @return TODO
      */
-    protected final IsletSelectionController getParentController()
-    {
+    protected final IsletSelectionController getParentController() {
         return this.parentController;
     }
 
@@ -62,17 +59,15 @@ public class GlobalTreeController
      * @param newDirectory
      *            The new root directory.
      */
-    public final void updateDirectory(final File newDirectory)
-    {
+    public final void updateDirectory(final File newDirectory) {
         this.gtView.displayDirectory(newDirectory);
-        this.gtView.getTree()
-                .addTreeSelectionListener(new TreeSelectionListener() {
+        this.gtView.getTree().addTreeSelectionListener(
+                new TreeSelectionListener() {
 
                     @Override
-                    public void valueChanged(final TreeSelectionEvent e)
-                    {
-                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e.getPath()
-                                .getLastPathComponent();
+                    public void valueChanged(final TreeSelectionEvent e) {
+                        DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
+                                .getPath().getLastPathComponent();
                         GlobalTreeController.this.getParentController()
                                 .displayFile(node);
                     }

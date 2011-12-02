@@ -7,8 +7,8 @@ import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.utils.FileTools;
 
 /**
- * Abstract the steps of the islet process. Each step must be able to launch
- * the next process and to return a TreeNode for the JTree.
+ * Abstract the steps of the islet process. Each step must be able to launch the
+ * next process and to return a TreeNode for the JTree.
  * @author Daniel Lefèvre
  */
 public abstract class AbstractBuildingsIsletStep {

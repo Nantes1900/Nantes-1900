@@ -14,8 +14,7 @@ import fr.nantes1900.models.extended.Wall;
  * determination of the neighbours and before the sort of neighbours.
  * @author Daniel Lefevre
  */
-public class BuildingStep6 extends AbstractBuildingStep
-{
+public class BuildingStep6 extends AbstractBuildingStep {
 
     /**
      * The list of walls.
@@ -30,7 +29,7 @@ public class BuildingStep6 extends AbstractBuildingStep
     /**
      * The grounds.
      */
-    private Ground     ground;
+    private Ground ground;
 
     /**
      * Constructor.
@@ -39,8 +38,7 @@ public class BuildingStep6 extends AbstractBuildingStep
      * @param roofsIn
      *            the list of roofs
      */
-    public BuildingStep6(final List<Wall> wallsIn, final List<Roof> roofsIn)
-    {
+    public BuildingStep6(final List<Wall> wallsIn, final List<Roof> roofsIn) {
         this.walls = wallsIn;
         this.roofs = roofsIn;
     }
@@ -49,8 +47,7 @@ public class BuildingStep6 extends AbstractBuildingStep
      * Getter.
      * @return the list of roofs
      */
-    public final List<Roof> getRoofs()
-    {
+    public final List<Roof> getRoofs() {
         return this.roofs;
     }
 
@@ -58,20 +55,17 @@ public class BuildingStep6 extends AbstractBuildingStep
      * Getter.
      * @return the list of walls
      */
-    public final List<Wall> getWalls()
-    {
+    public final List<Wall> getWalls() {
         return this.walls;
     }
 
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchProcess
-     * ()
+     * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchProcess ()
      */
     @Override
-    public final AbstractBuildingStep launchProcess()
-    {
+    public final AbstractBuildingStep launchProcess() {
         // No more processs for now : this method do nothing.
         return null;
     }
@@ -82,15 +76,12 @@ public class BuildingStep6 extends AbstractBuildingStep
      * fr.nantes1900.models.extended.steps.AbstractBuildingStep#returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode()
-    {
+    public final DefaultMutableTreeNode returnNode() {
         DefaultMutableTreeNode currentNode = new DefaultMutableTreeNode();
-        for (Wall w : this.walls)
-        {
+        for (Wall w : this.walls) {
             currentNode.add(new DefaultMutableTreeNode(w.returnNode()));
         }
-        for (Roof r : this.roofs)
-        {
+        for (Roof r : this.roofs) {
             currentNode.add(new DefaultMutableTreeNode(r.returnNode()));
         }
         currentNode.add(new DefaultMutableTreeNode(this.ground));
@@ -103,8 +94,7 @@ public class BuildingStep6 extends AbstractBuildingStep
      * @param groundIn
      *            the grounds
      */
-    public final void setArguments(final Ground groundIn)
-    {
+    public final void setArguments(final Ground groundIn) {
         this.ground = groundIn;
     }
 }

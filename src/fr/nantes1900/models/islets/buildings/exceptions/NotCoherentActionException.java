@@ -5,8 +5,7 @@ package fr.nantes1900.models.islets.buildings.exceptions;
  * its execution.
  * @author Daniel Lefevre
  */
-public final class NotCoherentActionException extends Exception
-{
+public final class NotCoherentActionException extends Exception {
 
     /**
      * Version attribute.
@@ -16,7 +15,6 @@ public final class NotCoherentActionException extends Exception
     /**
      * Private constructor.
      */
-    public NotCoherentActionException()
-    {
+    public NotCoherentActionException() {
     }
 }

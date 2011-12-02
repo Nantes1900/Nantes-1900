@@ -28,6 +28,7 @@ import fr.nantes1900.view.isletselection.IsletSelectionView;
  * @author Camille Bouquet
  */
 public class IsletSelectionController implements ElementsSelectedListener {
+
     /**
      * The controller of the panel containing buttons to perform the different
      * actions.
@@ -74,8 +75,7 @@ public class IsletSelectionController implements ElementsSelectedListener {
      * @param parentControllerIn
      *            Controller which handles this one.
      */
-    public IsletSelectionController(final GlobalController parentControllerIn)
-    {
+    public IsletSelectionController(final GlobalController parentControllerIn) {
         this.parentController = parentControllerIn;
         this.gtController = new GlobalTreeController(this);
         this.aController = new ActionsController(this);
@@ -103,8 +103,7 @@ public class IsletSelectionController implements ElementsSelectedListener {
     public final boolean computeGravityNormal() {
         boolean normalSaved = false;
         if (this.selectedFile != null
-                && !this.u3DController.getTrianglesSelected().isEmpty())
-        {
+                && !this.u3DController.getTrianglesSelected().isEmpty()) {
             // TODO by Daniel : Move this code
             WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
                     + "/gravity_normal.stl");
@@ -123,8 +122,7 @@ public class IsletSelectionController implements ElementsSelectedListener {
             writer.write();
             System.out.println("Enregistre");
             normalSaved = true;
-        } else
-        {
+        } else {
             // TODO : put this text in the text file (or XML for Luc).
             JOptionPane
                     .showMessageDialog(
@@ -155,13 +153,10 @@ public class IsletSelectionController implements ElementsSelectedListener {
         // Reads the file object of the Tree
         FileNode fileNode = (FileNode) node.getUserObject();
 
-        if (fileNode.isFile())
-        {
-            try
-            {
+        if (fileNode.isFile()) {
+            try {
                 this.biController.readFile(fileNode.getEntireName());
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 // FIXME : make a pop-up :)
                 e.printStackTrace();
             }
@@ -200,22 +195,18 @@ public class IsletSelectionController implements ElementsSelectedListener {
 
         if ((!this.u3DController.getTrianglesSelected().isEmpty() || this.aController
                 .getActionsView().isGravityGroundCheckBoxSelected())
-                && this.selectedFile != null)
-        {
+                && this.selectedFile != null) {
             this.isView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             if (this.aController.getActionsView()
-                    .isGravityGroundCheckBoxSelected())
-            {
+                    .isGravityGroundCheckBoxSelected()) {
                 this.biController.useGravityNormalAsGroundNormal();
-            } else
-            {
+            } else {
                 this.computeGroundNormal();
             }
             this.parentController.launchIsletProcess(this.selectedFile,
                     this.biController);
             processLaunched = true;
-        } else
-        {
+        } else {
             // TODO by Luc : put this text in a XML file.
             JOptionPane
                     .showMessageDialog(
@@ -227,6 +218,32 @@ public class IsletSelectionController implements ElementsSelectedListener {
         }
 
         return processLaunched;
+    }
+
+    @Override
+    public void surfaceDeselected(Surface surfaceSelected) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void surfaceSelected(Surface surfaceSelected) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void triangleDeselected(Triangle triangleSelected) {
+        // TODO Auto-generated method stub
+
+    }
+
+    // FIXME : is that useful ? Is it useful to implement
+    // ElementsSelectedListener ?
+    @Override
+    public void triangleSelected(Triangle triangleSelected) {
+        // TODO Auto-generated method stub
+
     }
 
     /**
@@ -241,8 +258,7 @@ public class IsletSelectionController implements ElementsSelectedListener {
         // checks if the gravity normal already exists
         File gravityNormal = new File(this.openedDirectory.getPath()
                 + "/gravity_normal.stl");
-        if (!gravityNormal.exists())
-        {
+        if (!gravityNormal.exists()) {
             JOptionPane.showMessageDialog(this.isView,
                     "La normale orientée selon la gravité n'a pas été trouvée "
                             + "dans le dossier ouvert.\nVeuillez en créer "
@@ -252,14 +268,11 @@ public class IsletSelectionController implements ElementsSelectedListener {
             this.aController.setComputeNormalMode();
             this.isView.setStatusBarText(FileTools.readHelpMessage(
                     "ISGravityNormal", TextsKeys.MESSAGETYPE_STATUSBAR));
-        } else
-        {
-            try
-            {
+        } else {
+            try {
                 // Reads the gravity normal in the file, and keeps it in memory.
                 this.biController.readGravityNormal(gravityNormal.getPath());
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 // If the file can not be read or is not well built.
                 // TODO Auto-generated catch block
                 e.printStackTrace();
@@ -268,31 +281,5 @@ public class IsletSelectionController implements ElementsSelectedListener {
                     "ISLaunchProcess", TextsKeys.MESSAGETYPE_STATUSBAR));
             this.aController.setLaunchMode();
         }
-    }
-
-    // FIXME : is that useful ? Is it useful to implement
-    // ElementsSelectedListener ?
-    @Override
-    public void triangleSelected(Triangle triangleSelected) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void triangleDeselected(Triangle triangleSelected) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void surfaceSelected(Surface surfaceSelected) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void surfaceDeselected(Surface surfaceSelected) {
-        // TODO Auto-generated method stub
-
     }
 }

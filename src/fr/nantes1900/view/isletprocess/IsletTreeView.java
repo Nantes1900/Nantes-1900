@@ -13,23 +13,23 @@ import javax.swing.tree.DefaultMutableTreeNode;
 /**
  * @author Camille
  */
-public class IsletTreeView extends JPanel
-{
-    private JTree             tree;
-    private JScrollPane       spTree;
-    
-    public IsletTreeView(){
+public class IsletTreeView extends JPanel {
+
+    private JTree tree;
+    private JScrollPane spTree;
+
+    public IsletTreeView() {
         this.setLayout(new BorderLayout());
         this.spTree = new JScrollPane();
         this.add(this.spTree, BorderLayout.CENTER);
     }
-    
-    public void buildTree(DefaultMutableTreeNode root){
+
+    public void buildTree(DefaultMutableTreeNode root) {
         this.tree = new JTree(root);
         this.spTree.setViewportView(this.tree);
     }
-    
-    public JTree getTree(){
+
+    public JTree getTree() {
         return this.tree;
     }
 }

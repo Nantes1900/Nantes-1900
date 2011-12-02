@@ -7,14 +7,12 @@ import fr.nantes1900.models.basis.Polygon;
  * Implements a wall as a surface.
  * @author Daniel
  */
-public class Wall extends Surface
-{
+public class Wall extends Surface {
 
     /**
      * Void constructor.
      */
-    public Wall()
-    {
+    public Wall() {
     }
 
     /**
@@ -22,8 +20,7 @@ public class Wall extends Surface
      * @param m
      *            the mesh representing the wall
      */
-    public Wall(final Mesh m)
-    {
+    public Wall(final Mesh m) {
         super(m);
     }
 
@@ -32,8 +29,7 @@ public class Wall extends Surface
      * @param p
      *            the polygon representing the wall
      */
-    public Wall(final Polygon p)
-    {
+    public Wall(final Polygon p) {
         super(p);
     }
 
@@ -42,14 +38,12 @@ public class Wall extends Surface
      * @param w
      *            the wall to copy
      */
-    public Wall(final Wall w)
-    {
+    public Wall(final Wall w) {
         super(w);
     }
 
     @Override
-    public final String toString()
-    {
+    public final String toString() {
         return "Wall " + this.getID();
     }
 }

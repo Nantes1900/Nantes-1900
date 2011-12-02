@@ -24,34 +24,29 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep3TrianglesView;
  * @author Luc Jallerat
  */
 public class CharacteristicsStep3TrianglesController extends
-        AbstractCharacteristicsTrianglesController
-{
+        AbstractCharacteristicsTrianglesController {
+
     /**
      * Constructor.
      * @param parentController
      * @param triangleSelected
      */
     public CharacteristicsStep3TrianglesController(
-            IsletProcessController parentController, Triangle triangleSelected)
-    {
+            IsletProcessController parentController, Triangle triangleSelected) {
         super(parentController, triangleSelected);
         this.cView = new CharacteristicsStep2View();
 
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent arg0)
-            {
+            public void actionPerformed(ActionEvent arg0) {
                 if (((CharacteristicsStep3TrianglesView) cView)
-                        .isDeleteSelected())
-                {
-                    try
-                    {
+                        .isDeleteSelected()) {
+                    try {
                         CharacteristicsStep3TrianglesController.this.parentController
                                 .getBiController().action3(trianglesList,
                                         ActionTypes.REMOVE);
-                    } catch (InvalidCaseException e)
-                    {
+                    } catch (InvalidCaseException e) {
                         JOptionPane.showMessageDialog(cView, FileTools
                                 .readErrorMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
@@ -67,18 +62,15 @@ public class CharacteristicsStep3TrianglesController extends
         });
     }
 
-    public void addTriangleSelected(Triangle triangleSelected)
-    {
+    public void addTriangleSelected(Triangle triangleSelected) {
     }
 
-    public ArrayList<Triangle> getTriangles()
-    {
+    public ArrayList<Triangle> getTriangles() {
         return this.trianglesList;
     }
 
     @Override
-    public void modifyViewCharacteristics()
-    {
+    public void modifyViewCharacteristics() {
         // Nothing special to do
     }
 }

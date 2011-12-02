@@ -10,40 +10,39 @@ import fr.nantes1900.view.isletprocess.ParametersView;
  * @author Camille
  */
 // FIXME : Javadoc
-public class ParametersController
-{
-    private ParametersView         pView;
+public class ParametersController {
+
+    private ParametersView pView;
     private IsletProcessController parentController;
 
-    public ParametersController(IsletProcessController parentController)
-    {
+    public ParametersController(IsletProcessController parentController) {
         this.setParent(parentController);
         this.pView = new ParametersView();
     }
 
-    public ParametersView getView()
-    {
-        return pView;
-    }
-
-    public IsletProcessController getParent()
-    {
-        return parentController;
-    }
-
-    public void setParent(IsletProcessController parentController)
-    {
-        this.parentController = parentController;
-    }
-    
-    public void displayProcessingParameters(int i){
+    public void displayProcessingParameters(int i) {
         this.pView.displayParameters(i);
         this.pView.enableChanges(i);
     }
-    
-    public void loadNewParameters(){
-        SeparationGroundBuilding.setAltitureError(this.pView.getValueProperty1());
-        SeparationGroundBuilding.setAngleGroundError(this.pView.getValueProperty2());
-        SeparationGroundBuilding.setLargeAngleGroundError(this.pView.getValueProperty3());
+
+    public IsletProcessController getParent() {
+        return parentController;
+    }
+
+    public ParametersView getView() {
+        return pView;
+    }
+
+    public void loadNewParameters() {
+        SeparationGroundBuilding.setAltitureError(this.pView
+                .getValueProperty1());
+        SeparationGroundBuilding.setAngleGroundError(this.pView
+                .getValueProperty2());
+        SeparationGroundBuilding.setLargeAngleGroundError(this.pView
+                .getValueProperty3());
+    }
+
+    public void setParent(IsletProcessController parentController) {
+        this.parentController = parentController;
     }
 }

@@ -21,34 +21,30 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep5View;
  * @author Camille
  * @author Luc
  */
-public class CharacteristicsStep5Controller extends AbstractCharacteristicsSurfacesController
-{
+public class CharacteristicsStep5Controller extends
+        AbstractCharacteristicsSurfacesController {
+
     /**
      * Constructor.
      * @param parentController
      * @param triangleSelected
      */
     public CharacteristicsStep5Controller(
-            IsletProcessController parentController, Surface surfaceSelected)
-    {
+            IsletProcessController parentController, Surface surfaceSelected) {
         super(parentController, surfaceSelected);
 
         this.cView = new CharacteristicsStep5View();
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent arg0)
-            {
+            public void actionPerformed(ActionEvent arg0) {
 
-                if (((CharacteristicsStep5View) cView).isMergeSelected())
-                {
-                    try
-                    {
+                if (((CharacteristicsStep5View) cView).isMergeSelected()) {
+                    try {
                         CharacteristicsStep5Controller.this.parentController
                                 .getBiController().action5(surfacesList,
                                         ActionTypes.MERGE);
-                    } catch (InvalidCaseException e1)
-                    {
+                    } catch (InvalidCaseException e1) {
                         JOptionPane.showMessageDialog(cView, FileTools
                                 .readErrorMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
@@ -60,15 +56,12 @@ public class CharacteristicsStep5Controller extends AbstractCharacteristicsSurfa
                     }
                 }
 
-                if (((CharacteristicsStep5View) cView).isNoiseSelected())
-                {
-                    try
-                    {
+                if (((CharacteristicsStep5View) cView).isNoiseSelected()) {
+                    try {
                         CharacteristicsStep5Controller.this.parentController
                                 .getBiController().action5(surfacesList,
                                         ActionTypes.TURN_TO_NOISE);
-                    } catch (InvalidCaseException e1)
-                    {
+                    } catch (InvalidCaseException e1) {
                         JOptionPane.showMessageDialog(cView, FileTools
                                 .readErrorMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
@@ -83,25 +76,20 @@ public class CharacteristicsStep5Controller extends AbstractCharacteristicsSurfa
         });
     }
 
-    public ArrayList<Surface> getSurfaces()
-    {
-        return this.surfacesList;
-    }
-
-    public void addSurfaceSelected(Surface surfaceSelected)
-    {
+    public void addSurfaceSelected(Surface surfaceSelected) {
         this.surfacesList.add(surfaceSelected);
     }
 
+    public ArrayList<Surface> getSurfaces() {
+        return this.surfacesList;
+    }
+
     @Override
-    public void modifyViewCharacteristics()
-    {
+    public void modifyViewCharacteristics() {
         ((CharacteristicsStep5View) cView).deselectAll();
-        if (surfacesList.size() > 1)
-        {
+        if (surfacesList.size() > 1) {
             ((CharacteristicsStep5View) cView).setMergeEnable(true);
-        } else
-        {
+        } else {
             ((CharacteristicsStep5View) cView).setMergeEnable(false);
         }
     }

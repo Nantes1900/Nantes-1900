@@ -22,46 +22,42 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
  * @author Camille
  * @author Luc
  */
-public class CharacteristicsStep4Controller extends AbstractCharacteristicsTrianglesController
-{
+public class CharacteristicsStep4Controller extends
+        AbstractCharacteristicsTrianglesController {
+
     /**
      * Constructor.
      * @param parentController
      * @param triangleSelected
      */
     public CharacteristicsStep4Controller(
-            IsletProcessController parentController, Triangle triangleSelected)
-    {
+            IsletProcessController parentController, Triangle triangleSelected) {
         super(parentController, triangleSelected);
 
         this.cView = new CharacteristicsStep2View();
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent arg0)
-            {
+            public void actionPerformed(ActionEvent arg0) {
                 String typeChosen = ((CharacteristicsStep2View) cView)
                         .getTypeSelected();
 
                 int actionType = -1;
-                switch (typeChosen)
-                {
-                    case Characteristics.TYPE_WALL:
-                        actionType = ActionTypes.TURN_TO_WALL;
+                switch (typeChosen) {
+                case Characteristics.TYPE_WALL:
+                    actionType = ActionTypes.TURN_TO_WALL;
                     break;
 
-                    case Characteristics.TYPE_ROOF:
-                        actionType = ActionTypes.TURN_TO_ROOF;
+                case Characteristics.TYPE_ROOF:
+                    actionType = ActionTypes.TURN_TO_ROOF;
                     break;
                 }
 
-                try
-                {
+                try {
                     CharacteristicsStep4Controller.this.parentController
                             .getBiController().action4(trianglesList,
                                     actionType);
-                } catch (InvalidCaseException e)
-                {
+                } catch (InvalidCaseException e) {
                     JOptionPane.showMessageDialog(cView, FileTools
                             .readErrorMessage(
                                     TextsKeys.KEY_ERROR_INCORRECTTYPE,
@@ -76,32 +72,27 @@ public class CharacteristicsStep4Controller extends AbstractCharacteristicsTrian
         });
     }
 
-    public ArrayList<Triangle> getTriangles()
-    {
-        return this.trianglesList;
-    }
-
-    public void addTriangleSelected(Triangle triangleSelected)
-    {
+    public void addTriangleSelected(Triangle triangleSelected) {
         this.trianglesList.add(triangleSelected);
         ((CharacteristicsStep2View) this.cView).setType("");
     }
 
+    public ArrayList<Triangle> getTriangles() {
+        return this.trianglesList;
+    }
+
     @Override
-    public void modifyViewCharacteristics()
-    {
-        if (trianglesList.size() == 1)
-        {
-            try
-            {
-                ((CharacteristicsStep2View) this.cView).setType(parentController.getBiController().getCharacteristics4(trianglesList.get(0)));
-            } catch (InvalidCaseException e)
-            {
+    public void modifyViewCharacteristics() {
+        if (trianglesList.size() == 1) {
+            try {
+                ((CharacteristicsStep2View) this.cView)
+                        .setType(parentController.getBiController()
+                                .getCharacteristics4(trianglesList.get(0)));
+            } catch (InvalidCaseException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        } else
-        {
+        } else {
             ((CharacteristicsStep2View) this.cView).setType("");
         }
     }

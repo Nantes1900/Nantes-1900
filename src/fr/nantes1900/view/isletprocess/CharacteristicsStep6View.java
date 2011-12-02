@@ -27,48 +27,46 @@ import fr.nantes1900.view.components.HelpButton;
  * TODO.
  * @author Camille Bouquet TODO .
  */
-public class CharacteristicsStep6View extends CharacteristicsView
-{
+public class CharacteristicsStep6View extends CharacteristicsView {
+
     /**
      * Default serial UID.
      */
-    private static final long         serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     /**
      * TODO .
      */
-    private JList<Surface>            lNeighbours;
+    private JList<Surface> lNeighbours;
     /**
      * TODO .
      */
-    private DefaultListModel<Surface> dlm              = new DefaultListModel<>();
+    private DefaultListModel<Surface> dlm = new DefaultListModel<>();
     /**
      * TODO .
      */
-    private JButton                   upButton;
+    private JButton upButton;
     /**
      * TODO .
      */
-    private JButton                   downButton;
+    private JButton downButton;
     /**
      * TODO .
      */
-    private HelpButton                helpButton;
+    private HelpButton helpButton;
 
     /**
      * TODO .
      * @param neighbours
      *            TODO .
      */
-    public CharacteristicsStep6View(final List<Surface> neighbours)
-    {
+    public CharacteristicsStep6View(final List<Surface> neighbours) {
         super();
         // TODO modify with arrows
         this.upButton = new JButton("^");
         this.upButton.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(final ActionEvent e)
-            {
+            public void actionPerformed(final ActionEvent e) {
                 int selectedIndex = lNeighbours.getSelectedIndex();
                 // TODO change to Surface when link ok
                 Surface selectedSurface = lNeighbours.getSelectedValue();
@@ -82,8 +80,7 @@ public class CharacteristicsStep6View extends CharacteristicsView
         this.downButton.addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(final ActionEvent e)
-            {
+            public void actionPerformed(final ActionEvent e) {
                 int selectedIndex = lNeighbours.getSelectedIndex();
                 // TODO change to Surface when link ok
                 Surface selectedSurface = lNeighbours.getSelectedValue();
@@ -94,8 +91,7 @@ public class CharacteristicsStep6View extends CharacteristicsView
             }
         });
 
-        for (Surface neighbour : neighbours)
-        {
+        for (Surface neighbour : neighbours) {
             this.dlm.addElement(neighbour);
         }
 
@@ -104,22 +100,17 @@ public class CharacteristicsStep6View extends CharacteristicsView
         this.lNeighbours.addListSelectionListener(new ListSelectionListener() {
 
             @Override
-            public void valueChanged(ListSelectionEvent arg0)
-            {
-                if (lNeighbours.getSelectedIndex() == 0)
-                {
+            public void valueChanged(ListSelectionEvent arg0) {
+                if (lNeighbours.getSelectedIndex() == 0) {
                     upButton.setEnabled(false);
-                } else if (!upButton.isEnabled())
-                {
+                } else if (!upButton.isEnabled()) {
                     upButton.setEnabled(true);
                 }
 
                 if (lNeighbours.getSelectedIndex() == CharacteristicsStep6View.this.dlm
-                        .getSize() - 1)
-                {
+                        .getSize() - 1) {
                     downButton.setEnabled(false);
-                } else if (!downButton.isEnabled())
-                {
+                } else if (!downButton.isEnabled()) {
                     downButton.setEnabled(true);
                 }
 
@@ -156,11 +147,9 @@ public class CharacteristicsStep6View extends CharacteristicsView
      * @param neighbours
      *            TODO .
      */
-    public final void setList(final ArrayList<Surface> neighbours)
-    {
+    public final void setList(final ArrayList<Surface> neighbours) {
         this.dlm.removeAllElements();
-        for (Surface neighbour : neighbours)
-        {
+        for (Surface neighbour : neighbours) {
             this.dlm.addElement(neighbour);
         }
     }
@@ -170,8 +159,7 @@ public class CharacteristicsStep6View extends CharacteristicsView
      * @param enable
      *            TODO .
      */
-    public final void setModificationsEnabled(final boolean enable)
-    {
+    public final void setModificationsEnabled(final boolean enable) {
         this.lNeighbours.setEnabled(enable);
         this.upButton.setEnabled(enable);
         this.downButton.setEnabled(enable);

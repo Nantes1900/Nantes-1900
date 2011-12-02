@@ -17,42 +17,40 @@ import fr.nantes1900.models.basis.Triangle;
  * all the triangles of the mesh.
  * @author Nicolas Bouillon Siju Wu
  */
-public class MeshView extends TriangleArray
-{
+public class MeshView extends TriangleArray {
 
     /**
      * The center of the mesh.
      */
-    private Point                        centroid;
+    private Point centroid;
 
     /**
      * The mesh of the things displayed.
      */
-    private Mesh                         mesh;
+    private Mesh mesh;
 
     /**
      * Hash table linking the triangles with their indexes.
      */
-    private Hashtable<Triangle, Integer> selectTableTriangle   = new Hashtable<>();
+    private Hashtable<Triangle, Integer> selectTableTriangle = new Hashtable<>();
 
     /**
      * Hash table linking the indexes of the triangles with the references of
      * these triangles.
      */
-    private Hashtable<Integer, Triangle> selectTableIndex      = new Hashtable<>();
+    private Hashtable<Integer, Triangle> selectTableIndex = new Hashtable<>();
 
     /**
      * The number of the points of triangle.
      */
-    public static final int              TRIANGLE_POINTS_COUNT = 3;
+    public static final int TRIANGLE_POINTS_COUNT = 3;
 
     /**
      * Constructor of the class MeshView.
      * @param m
      *            The mesh of the things displayed.
      */
-    public MeshView(final Mesh m)
-    {
+    public MeshView(final Mesh m) {
 
         super(m.size() * TRIANGLE_POINTS_COUNT, GeometryArray.COORDINATES
                 | GeometryArray.COLOR_3 | GeometryArray.NORMALS
@@ -70,8 +68,7 @@ public class MeshView extends TriangleArray
         int i = 0;
 
         // Create the triangles to be displayed.
-        for (Triangle triangle : this.mesh)
-        {
+        for (Triangle triangle : this.mesh) {
             this.selectTableTriangle.put(triangle, i / TRIANGLE_POINTS_COUNT);
             this.selectTableIndex.put(i / TRIANGLE_POINTS_COUNT, triangle);
 
@@ -100,8 +97,7 @@ public class MeshView extends TriangleArray
      *            The triangle to get the normal from.
      * @return the normal as a Vector3d
      */
-    public static Vector3f convertNormal(final Triangle triangle)
-    {
+    public static Vector3f convertNormal(final Triangle triangle) {
         Vector3f normalFloat = new Vector3f(
                 (float) triangle.getNormal().getX(), (float) triangle
                         .getNormal().getY(), (float) triangle.getNormal()
@@ -116,8 +112,7 @@ public class MeshView extends TriangleArray
      *            the triangle we want to have index of
      * @return the index of this Triangle in the TriangleArray
      */
-    public final Integer getArrayPositionFromTriangle(final Triangle triangle)
-    {
+    public final Integer getArrayPositionFromTriangle(final Triangle triangle) {
         return this.selectTableTriangle.get(triangle);
     }
 
@@ -125,8 +120,7 @@ public class MeshView extends TriangleArray
      * Getter.
      * @return the centroid point
      */
-    public final Point getCentroid()
-    {
+    public final Point getCentroid() {
         return this.centroid;
     }
 
@@ -134,8 +128,7 @@ public class MeshView extends TriangleArray
      * Getter.
      * @return the reference to the mesh contained
      */
-    public final Mesh getMesh()
-    {
+    public final Mesh getMesh() {
         return this.mesh;
     }
 
@@ -145,8 +138,7 @@ public class MeshView extends TriangleArray
      *            the index of the triangle we want to have the reference of
      * @return the Triangle associated
      */
-    public final Triangle getTriangleFromArrayPosition(final int position)
-    {
+    public final Triangle getTriangleFromArrayPosition(final int position) {
         return this.selectTableIndex.get(position);
     }
 
@@ -155,8 +147,7 @@ public class MeshView extends TriangleArray
      * @param i
      *            The index of the triangle to select in the TriangleArray
      */
-    public final void select(final int i)
-    {
+    public final void select(final int i) {
         // FIXME : add the triangle in the Universe3DController triangle
         // selection.
 
@@ -173,8 +164,7 @@ public class MeshView extends TriangleArray
      * @param triangle
      *            The Triangle to select
      */
-    public final void select(final Triangle triangle)
-    {
+    public final void select(final Triangle triangle) {
         this.select(this.getArrayPositionFromTriangle(triangle));
     }
 
@@ -183,8 +173,7 @@ public class MeshView extends TriangleArray
      * @param i
      *            The index of the triangle which to be unselected.
      */
-    public final void unSelect(final int i)
-    {
+    public final void unSelect(final int i) {
         // FIXME : remove the triangle from the Universe3DController triangle
         // selection.
 
@@ -196,10 +185,9 @@ public class MeshView extends TriangleArray
                 new TexCoord2f(1.0f, 0.0f));
     }
 
-    public void unSelect(Triangle triangle)
-    {
+    public void unSelect(Triangle triangle) {
         Integer arrayPosition = this.getArrayPositionFromTriangle(triangle);
-        if (arrayPosition != null){
+        if (arrayPosition != null) {
             this.unSelect(this.getArrayPositionFromTriangle(triangle));
         }
     }

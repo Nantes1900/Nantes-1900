@@ -4,13 +4,11 @@ package fr.nantes1900.models.islets.buildings;
  * Implements a residential islet as an abstract buildings islet.
  * @author Daniel Lefèvre
  */
-public class ResidentialIslet extends AbstractBuildingsIslet
-{
+public class ResidentialIslet extends AbstractBuildingsIslet {
 
     /**
      * Constructor.
      */
-    public ResidentialIslet()
-    {
+    public ResidentialIslet() {
     }
 }

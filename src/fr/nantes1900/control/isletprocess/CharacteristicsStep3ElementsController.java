@@ -5,7 +5,6 @@ package fr.nantes1900.control.isletprocess;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -15,7 +14,6 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
-import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep3ElementsView;
 
 /**
@@ -26,16 +24,15 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep3ElementsView;
  * @author Luc
  */
 public class CharacteristicsStep3ElementsController extends
-        AbstractCharacteristicsSurfacesController
-{
+        AbstractCharacteristicsSurfacesController {
+
     /**
      * Constructor.
      * @param parentController
      * @param triangleSelected
      */
     public CharacteristicsStep3ElementsController(
-            IsletProcessController parentController, Surface elementSelected)
-    {
+            IsletProcessController parentController, Surface elementSelected) {
         super(parentController, elementSelected);
 
         this.cView = new CharacteristicsStep3ElementsView();
@@ -43,30 +40,25 @@ public class CharacteristicsStep3ElementsController extends
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent arg0)
-            {
+            public void actionPerformed(ActionEvent arg0) {
                 String typeChosen = ((CharacteristicsStep3ElementsView) CharacteristicsStep3ElementsController.this.cView)
                         .getTypeSelected();
 
                 int actionType = -1;
-                switch (typeChosen)
-                {
-                    case Characteristics.TYPE_NOISE:
-                        actionType = ActionTypes.TURN_TO_NOISE;
+                switch (typeChosen) {
+                case Characteristics.TYPE_NOISE:
+                    actionType = ActionTypes.TURN_TO_NOISE;
                     break;
 
-                    case Characteristics.TYPE_BUILDING:
-                        actionType = ActionTypes.TURN_TO_BUILDING;
+                case Characteristics.TYPE_BUILDING:
+                    actionType = ActionTypes.TURN_TO_BUILDING;
                     break;
                 }
-                for (Surface surface : surfacesList)
-                {
-                    try
-                    {
+                for (Surface surface : surfacesList) {
+                    try {
                         CharacteristicsStep3ElementsController.this.parentController
                                 .getBiController().action3(surface, actionType);
-                    } catch (InvalidCaseException e)
-                    {
+                    } catch (InvalidCaseException e) {
                         JOptionPane
                                 .showMessageDialog(
                                         CharacteristicsStep3ElementsController.this.cView,
@@ -85,35 +77,30 @@ public class CharacteristicsStep3ElementsController extends
         });
     }
 
-    public void addSurfaceSelected(Surface surfaceSelected)
-    {
+    public void addSurfaceSelected(Surface surfaceSelected) {
         surfacesList.add(surfaceSelected);
         ((CharacteristicsStep3ElementsView) this.cView).setType("");
     }
 
-    public boolean removeSurfaceSelected(Surface surfaceSelected)
-    {
-        surfacesList.remove(surfaceSelected);
-
-        return surfacesList.isEmpty();
-    }
-
     @Override
-    public void modifyViewCharacteristics()
-    {
-        if (surfacesList.size() == 1)
-        {
-            try
-            {
-                ((CharacteristicsStep3ElementsView) this.cView).setType(parentController.getBiController().getCharacteristics3(surfacesList.get(0)));
-            } catch (InvalidCaseException e)
-            {
+    public void modifyViewCharacteristics() {
+        if (surfacesList.size() == 1) {
+            try {
+                ((CharacteristicsStep3ElementsView) this.cView)
+                        .setType(parentController.getBiController()
+                                .getCharacteristics3(surfacesList.get(0)));
+            } catch (InvalidCaseException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        } else
-        {
+        } else {
             ((CharacteristicsStep3ElementsView) this.cView).setType("");
         }
+    }
+
+    public boolean removeSurfaceSelected(Surface surfaceSelected) {
+        surfacesList.remove(surfaceSelected);
+
+        return surfacesList.isEmpty();
     }
 }

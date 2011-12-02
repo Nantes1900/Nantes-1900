@@ -23,56 +23,55 @@ import fr.nantes1900.models.basis.Point;
  * make a rotation of the object by using the mouse.
  * @author TODO
  */
-public class NewMouseRotate extends MouseRotate
-{
+public class NewMouseRotate extends MouseRotate {
 
     /**
      * TODO .
      */
-    private double                xAngle;
+    private double xAngle;
     /**
      * TODO .
      */
-    private double                yAngle;
-    /**
-     * TODO .
-     */
-    // FIXME : magic number !
-    private double                xFactor      = .03;
+    private double yAngle;
     /**
      * TODO .
      */
     // FIXME : magic number !
-    private double                yFactor      = .03;
+    private double xFactor = .03;
     /**
      * TODO .
      */
-    private MouseBehaviorCallback callback     = null;
+    // FIXME : magic number !
+    private double yFactor = .03;
+    /**
+     * TODO .
+     */
+    private MouseBehaviorCallback callback = null;
 
     /**
      * TODO .
      */
-    private TransformGroup        tg1;
+    private TransformGroup tg1;
     /**
      * TODO .
      */
-    private TransformGroup        tg2;
+    private TransformGroup tg2;
     /**
      * TODO .
      */
-    private TransformGroup        tg3;
+    private TransformGroup tg3;
     /**
      * TODO .
      */
-    private Transform3D           translation1 = new Transform3D();
+    private Transform3D translation1 = new Transform3D();
     /**
      * TODO .
      */
-    private Transform3D           translation2 = new Transform3D();
+    private Transform3D translation2 = new Transform3D();
     /**
      * TODO .
      */
-    private Point3d               center;
+    private Point3d center;
 
     /**
      * Constructor.
@@ -84,8 +83,7 @@ public class NewMouseRotate extends MouseRotate
      *            TODO
      */
     public NewMouseRotate(final TransformGroup tg1In,
-            final TransformGroup tg2In, final TransformGroup tg3In)
-    {
+            final TransformGroup tg2In, final TransformGroup tg3In) {
         super();
         this.tg1 = tg1In;
         this.tg2 = tg2In;
@@ -97,27 +95,23 @@ public class NewMouseRotate extends MouseRotate
      * @param evt
      *            TODO
      */
-    final void doNewProcess(final MouseEvent evt)
-    {
+    final void doNewProcess(final MouseEvent evt) {
         int id;
         int dx, dy;
 
         processMouseEvent(evt);
         if (((this.buttonPress) && ((this.flags & MANUAL_WAKEUP) == 0))
-                || ((this.wakeUp) && ((this.flags & MANUAL_WAKEUP) != 0)))
-        {
+                || ((this.wakeUp) && ((this.flags & MANUAL_WAKEUP) != 0))) {
             id = evt.getID();
             if ((id == MouseEvent.MOUSE_DRAGGED) && !evt.isMetaDown()
-                    && !evt.isAltDown() && !evt.isShiftDown())
-            {
+                    && !evt.isAltDown() && !evt.isShiftDown()) {
                 this.x = evt.getX();
                 this.y = evt.getY();
 
                 dx = this.x - this.x_last;
                 dy = this.y - this.y_last;
 
-                if (!this.reset)
-                {
+                if (!this.reset) {
                     this.xAngle = dy * this.yFactor;
                     this.yAngle = dx * this.xFactor;
 
@@ -132,12 +126,10 @@ public class NewMouseRotate extends MouseRotate
 
                     // Translate to origin
                     this.currXform.setTranslation(new Vector3d(.0, .0, .0));
-                    if (this.invert)
-                    {
+                    if (this.invert) {
                         this.currXform.mul(this.currXform, this.transformX);
                         this.currXform.mul(this.currXform, this.transformY);
-                    } else
-                    {
+                    } else {
                         this.currXform.mul(this.transformX, this.currXform);
                         this.currXform.mul(this.transformY, this.currXform);
                     }
@@ -152,20 +144,17 @@ public class NewMouseRotate extends MouseRotate
 
                     transformChanged(this.currXform);
 
-                    if (this.callback != null)
-                    {
+                    if (this.callback != null) {
                         this.callback.transformChanged(
                                 MouseBehaviorCallback.ROTATE, this.currXform);
                     }
-                } else
-                {
+                } else {
                     this.reset = false;
                 }
 
                 this.x_last = this.x;
                 this.y_last = this.y;
-            } else if (id == MouseEvent.MOUSE_PRESSED)
-            {
+            } else if (id == MouseEvent.MOUSE_PRESSED) {
                 this.x_last = evt.getX();
                 this.y_last = evt.getY();
             }
@@ -176,8 +165,7 @@ public class NewMouseRotate extends MouseRotate
      * TODO .
      * @return TODO
      */
-    public final Point3d getCenter()
-    {
+    public final Point3d getCenter() {
         return this.center;
     }
 
@@ -188,20 +176,16 @@ public class NewMouseRotate extends MouseRotate
      * .Enumeration)
      */
     @Override
-    public void processStimulus(Enumeration criteria)
-    {
+    public void processStimulus(Enumeration criteria) {
         WakeupCriterion wakeup;
         AWTEvent[] events;
         MouseEvent evt;
 
-        while (criteria.hasMoreElements())
-        {
+        while (criteria.hasMoreElements()) {
             wakeup = (WakeupCriterion) criteria.nextElement();
-            if (wakeup instanceof WakeupOnAWTEvent)
-            {
+            if (wakeup instanceof WakeupOnAWTEvent) {
                 events = ((WakeupOnAWTEvent) wakeup).getAWTEvent();
-                if (events.length > 0)
-                {
+                if (events.length > 0) {
                     evt = (MouseEvent) events[events.length - 1];
 
                     Point3d centerpoint = new Point3d();
@@ -226,23 +210,18 @@ public class NewMouseRotate extends MouseRotate
                     doNewProcess(evt);
                     this.tg3.setTransform(this.translation2);
                 }
-            } else if (wakeup instanceof WakeupOnBehaviorPost)
-            {
-                while (true)
-                {
+            } else if (wakeup instanceof WakeupOnBehaviorPost) {
+                while (true) {
                     // access to the queue must be synchronized
-                    synchronized (this.mouseq)
-                    {
-                        if (this.mouseq.isEmpty())
-                        {
+                    synchronized (this.mouseq) {
+                        if (this.mouseq.isEmpty()) {
                             break;
                         }
                         evt = (MouseEvent) this.mouseq.remove(0);
                         // consolidate MOUSE_DRAG events
                         while ((evt.getID() == MouseEvent.MOUSE_DRAGGED)
                                 && !this.mouseq.isEmpty()
-                                && (((MouseEvent) this.mouseq.get(0)).getID() == MouseEvent.MOUSE_DRAGGED))
-                        {
+                                && (((MouseEvent) this.mouseq.get(0)).getID() == MouseEvent.MOUSE_DRAGGED)) {
                             evt = (MouseEvent) this.mouseq.remove(0);
                         }
                     }
@@ -259,8 +238,7 @@ public class NewMouseRotate extends MouseRotate
      * @param point
      *            TODO
      */
-    public final void setCenter(final Point point)
-    {
+    public final void setCenter(final Point point) {
         this.center = new Point3d(point.getX(), point.getY(), point.getZ());
     }
 

@@ -18,8 +18,7 @@ import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
  * neighbours.
  * @author Daniel Lefèvre
  */
-public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
-{
+public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
 
     /**
      * The list of buildings.
@@ -28,16 +27,16 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
     /**
      * The grounds.
      */
-    private Ground         grounds;
+    private Ground grounds;
     /**
      * The noise used in the algorithms.
      */
-    private Surface        noise;
+    private Surface noise;
 
     /**
      * The normal to the ground.
      */
-    private Vector3d       groundNormal;
+    private Vector3d groundNormal;
 
     /**
      * Constructor.
@@ -47,8 +46,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      *            the grounds
      */
     public BuildingsIsletStep5(final List<Building> buildingsIn,
-            final Ground groundsIn)
-    {
+            final Ground groundsIn) {
         this.buildings = buildingsIn;
         this.grounds = groundsIn;
     }
@@ -57,8 +55,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      * Getter.
      * @return the list of buildings
      */
-    public final List<Building> getBuildings()
-    {
+    public final List<Building> getBuildings() {
         return this.buildings;
     }
 
@@ -66,8 +63,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      * Getter.
      * @return the grounds
      */
-    public final Ground getGrounds()
-    {
+    public final Ground getGrounds() {
         return this.grounds;
     }
 
@@ -75,8 +71,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      * Getter.
      * @return the noise
      */
-    public final Surface getNoise()
-    {
+    public final Surface getNoise() {
         return this.noise;
     }
 
@@ -88,10 +83,8 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      */
     @Override
     public final BuildingsIsletStep6 launchProcess()
-            throws NullArgumentException
-    {
-        for (Building b : this.buildings)
-        {
+            throws NullArgumentException {
+        for (Building b : this.buildings) {
             BuildingStep5 buildingStep = b.getbStep5();
             buildingStep.setArguments(this.noise, this.grounds,
                     this.groundNormal);
@@ -108,11 +101,9 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode()
-    {
+    public final DefaultMutableTreeNode returnNode() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
-        for (Building b : this.buildings)
-        {
+        for (Building b : this.buildings) {
             root.add(b.returnNode5());
         }
         root.add(new DefaultMutableTreeNode(this.grounds));
@@ -130,8 +121,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      *            the normal to the ground
      */
     public final void setArguments(final Surface noiseIn,
-            final Ground groundsIn, final Vector3d groundNormalIn)
-    {
+            final Ground groundsIn, final Vector3d groundNormalIn) {
         this.grounds = groundsIn;
         this.groundNormal = groundNormalIn;
         this.noise = noiseIn;
@@ -144,8 +134,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep
      * #toString()
      */
     @Override
-    public final String toString()
-    {
+    public final String toString() {
         return super.toString() + AbstractBuildingsIslet.FIFTH_STEP;
     }
 }

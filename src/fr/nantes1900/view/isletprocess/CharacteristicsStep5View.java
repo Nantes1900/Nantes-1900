@@ -13,8 +13,8 @@ import fr.nantes1900.view.components.HelpButton;
  * TODO .
  * @author Camille Bouquet
  */
-public class CharacteristicsStep5View extends CharacteristicsView
-{
+public class CharacteristicsStep5View extends CharacteristicsView {
+
     /**
      * Default serial UID.
      */
@@ -22,30 +22,26 @@ public class CharacteristicsStep5View extends CharacteristicsView
     /**
      * TODO .
      */
-    private JCheckBox         cbMerge;
+    private JCheckBox cbMerge;
     /**
      * TODO .
      */
-    private JCheckBox         cbNoise;
+    private JCheckBox cbNoise;
 
     /**
      * TODO .
      */
-    public CharacteristicsStep5View()
-    {
+    public CharacteristicsStep5View() {
         super();
         this.cbMerge = new JCheckBox();
         this.cbMerge.addItemListener(new ItemListener() {
 
             @Override
-            public void itemStateChanged(final ItemEvent arg0)
-            {
-                if (((JCheckBox) arg0.getSource()).isSelected())
-                {
+            public void itemStateChanged(final ItemEvent arg0) {
+                if (((JCheckBox) arg0.getSource()).isSelected()) {
                     CharacteristicsStep5View.this.getCBMerge()
                             .setEnabled(false);
-                } else
-                {
+                } else {
                     CharacteristicsStep5View.this.getCBMerge().setEnabled(true);
                 }
             }
@@ -58,15 +54,12 @@ public class CharacteristicsStep5View extends CharacteristicsView
         this.cbNoise.addItemListener(new ItemListener() {
 
             @Override
-            public void itemStateChanged(final ItemEvent arg0)
-            {
-                if (((JCheckBox) arg0.getSource()).isSelected())
-                {
+            public void itemStateChanged(final ItemEvent arg0) {
+                if (((JCheckBox) arg0.getSource()).isSelected()) {
                     CharacteristicsStep5View.this.getCBMerge()
                             .setEnabled(false);
                     CharacteristicsStep5View.this.bValidate.setEnabled(true);
-                } else
-                {
+                } else {
                     CharacteristicsStep5View.this.getCBMerge().setEnabled(true);
                     CharacteristicsStep5View.this.bValidate.setEnabled(false);
                 }
@@ -80,11 +73,18 @@ public class CharacteristicsStep5View extends CharacteristicsView
     }
 
     /**
+     * TODO .
+     */
+    public final void deselectAll() {
+        this.cbMerge.setSelected(false);
+        this.cbNoise.setSelected(false);
+    }
+
+    /**
      * Getter.
      * @return TODO .
      */
-    public final JCheckBox getCBMerge()
-    {
+    public final JCheckBox getCBMerge() {
         return this.cbMerge;
     }
 
@@ -92,8 +92,7 @@ public class CharacteristicsStep5View extends CharacteristicsView
      * TODO .
      * @return TODO .
      */
-    public final boolean isMergeSelected()
-    {
+    public final boolean isMergeSelected() {
         return this.cbMerge.isSelected();
     }
 
@@ -101,8 +100,7 @@ public class CharacteristicsStep5View extends CharacteristicsView
      * TODO .
      * @return TODO .
      */
-    public final boolean isNoiseSelected()
-    {
+    public final boolean isNoiseSelected() {
         return this.cbNoise.isSelected();
     }
 
@@ -111,17 +109,7 @@ public class CharacteristicsStep5View extends CharacteristicsView
      * @param mergeEnable
      *            TODO .
      */
-    public final void setMergeEnable(final boolean mergeEnable)
-    {
+    public final void setMergeEnable(final boolean mergeEnable) {
         this.cbMerge.setEnabled(mergeEnable);
-    }
-
-    /**
-     * TODO .
-     */
-    public final void deselectAll()
-    {
-        this.cbMerge.setSelected(false);
-        this.cbNoise.setSelected(false);
     }
 }
