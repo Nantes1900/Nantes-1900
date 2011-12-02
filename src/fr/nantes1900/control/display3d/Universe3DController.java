@@ -141,6 +141,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      * Change the selection mode.
      */
     public final void changeSelectionMode(int selectionMode) {
+        
+        // TODO clear selections
         if (selectionMode == SELECTION_TRIANGLE_MODE) {
             this.selectionMode = SELECTION_TRIANGLE_MODE;
         } else if (selectionMode == SELECTION_SURFACE_MODE) {
@@ -454,8 +456,12 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      * @param displayModeIn
      *            TODO
      */
-    public final void setDisplayMode(final int displayModeIn) {
-        this.displayMode = displayModeIn;
+    public final void setDisplayMode(final int newDisplayMode) {
+        if (newDisplayMode == DISPLAY_POLYGON_MODE) {
+            this.displayMode = DISPLAY_POLYGON_MODE;
+        } else if (newDisplayMode == DISPLAY_MESH_MODE) {
+            this.displayMode = DISPLAY_MESH_MODE;
+        }
     }
 
     /**

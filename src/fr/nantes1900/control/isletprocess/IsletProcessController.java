@@ -90,10 +90,10 @@ public class IsletProcessController implements ElementsSelectedListener {
         this.u3DController.getUniverse3DView().setToolbar(
                 this.f3DController.getToolbar());
 
-        this.f3DController.getToolbar().showLockButton(true);
-        this.f3DController.getToolbar().showTypeDisplayButton(true);
         this.f3DController
                 .setSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
+        this.f3DController.setDisplayType(Universe3DController.DISPLAY_MESH_MODE);
+        this.f3DController.setEnableDisplayType(false, Universe3DController.DISPLAY_POLYGON_MODE);
 
         this.biController.setUniverse3DController(this.u3DController);
         this.biController.display();

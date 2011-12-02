@@ -84,6 +84,9 @@ public final class TextsKeys {
     public static final String KEY_LOCKMESH = "LockMesh";
     public static final String KEY_UNLOCKMESH = "UnlockMesh";
 
+    public static final String KEY_DISPLAYPOLYGONSLABEL = "DisplayPolygonsLabel";
+    public static final String KEY_DISPLAYMESHESLABEL = "DisplayMeshesLabel";
+
     public TextsKeys() {
     }
 }
