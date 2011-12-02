@@ -198,6 +198,9 @@ public class MeshView extends TriangleArray
 
     public void unSelect(Triangle triangle)
     {
-        this.unSelect(this.getArrayPositionFromTriangle(triangle));
+        Integer arrayPosition = this.getArrayPositionFromTriangle(triangle);
+        if (arrayPosition != null){
+            this.unSelect(this.getArrayPositionFromTriangle(triangle));
+        }
     }
 }

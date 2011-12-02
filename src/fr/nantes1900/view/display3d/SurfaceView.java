@@ -24,60 +24,44 @@ import fr.nantes1900.models.extended.Surface;
  * to null (for example in the first steps, the polygonView is null)
  * @author Siju Wu, Nicolas Bouillon
  */
-public class SurfaceView extends Shape3D
-{
+public class SurfaceView extends Shape3D {
     /**
      * The material of a surface selected.
      */
-    public static final Material MATERIAL_SELECTED   = new Material(
-                                                             new Color3f(0.2f,
-                                                                     0f, 0f),
-                                                             new Color3f(0.0f,
-                                                                     0.0f, 0.0f),
-                                                             new Color3f(
-                                                                     Color.blue),
-                                                             new Color3f(
-                                                                     Color.blue),
-                                                             64);
+    public static final Material MATERIAL_SELECTED = new Material(new Color3f(
+            0.2f, 0f, 0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(
+            Color.blue), new Color3f(Color.blue), 64);
 
     /**
      * The material of a surface non-selected.
      */
     public static final Material MATERIAL_UNSELECTED = new Material(
-                                                             new Color3f(0.2f,
-                                                                     0f, 0f),
-                                                             new Color3f(0.0f,
-                                                                     0.0f, 0.0f),
-                                                             new Color3f(0.7f,
-                                                                     0f, 0f),
-                                                             new Color3f(0.7f,
-                                                                     0f, 0f),
-                                                             64);
+            new Color3f(0.2f, 0f, 0f), new Color3f(0.0f, 0.0f, 0.0f),
+            new Color3f(0.7f, 0f, 0f), new Color3f(0.7f, 0f, 0f), 64);
 
     /**
      * The surface linked to this view.
      */
-    private Surface              surface;
+    private Surface surface;
     /**
      * The mesh to be displayed.
      */
-    private MeshView             meshView;
+    private MeshView meshView;
     /**
      * The polygon to be displayed.
      */
-    private PolygonView          polygonView;
+    private PolygonView polygonView;
     /**
      * The appearance of the surface.
      */
-    private Appearance           appearance          = new Appearance();
+    private Appearance appearance = new Appearance();
 
     /**
      * Constructor of the surfaceView.
      * @param surfaceIn
      *            the surface to build from
      */
-    public SurfaceView(final Surface surfaceIn)
-    {
+    public SurfaceView(final Surface surfaceIn) {
         super();
 
         this.surface = surfaceIn;
@@ -116,8 +100,7 @@ public class SurfaceView extends Shape3D
      * @return this.meshView
      */
 
-    public final MeshView getMeshView()
-    {
+    public final MeshView getMeshView() {
         return this.meshView;
     }
 
@@ -126,8 +109,7 @@ public class SurfaceView extends Shape3D
      * @return this.polygonView
      */
 
-    public final PolygonView getPolygonView()
-    {
+    public final PolygonView getPolygonView() {
         return this.polygonView;
     }
 
@@ -135,8 +117,7 @@ public class SurfaceView extends Shape3D
      * Getter.
      * @return the surface
      */
-    public final Surface getSurface()
-    {
+    public final Surface getSurface() {
         return this.surface;
     }
 
@@ -146,8 +127,7 @@ public class SurfaceView extends Shape3D
      *            The material to be used.
      */
 
-    public final void setMaterial(final Material material)
-    {
+    public final void setMaterial(final Material material) {
         this.appearance.setMaterial(material);
 
     }
@@ -158,8 +138,7 @@ public class SurfaceView extends Shape3D
      *            The mesh of triangles to be displayed.
      */
 
-    public final void setMeshView(final MeshView meshViewIn)
-    {
+    public final void setMeshView(final MeshView meshViewIn) {
         this.meshView = meshViewIn;
         this.setGeometry(this.meshView);
     }
@@ -170,8 +149,7 @@ public class SurfaceView extends Shape3D
      *            The polygon to be displayed.
      */
 
-    public final void setPolygonView(final PolygonView polygonViewIn)
-    {
+    public final void setPolygonView(final PolygonView polygonViewIn) {
         this.polygonView = polygonViewIn;
         this.setGeometry(this.polygonView);
     }
@@ -181,8 +159,7 @@ public class SurfaceView extends Shape3D
      * @param surfaceIn
      *            the surface to set
      */
-    public final void setSurface(final Surface surfaceIn)
-    {
+    public final void setSurface(final Surface surfaceIn) {
         this.surface = surfaceIn;
     }
 
