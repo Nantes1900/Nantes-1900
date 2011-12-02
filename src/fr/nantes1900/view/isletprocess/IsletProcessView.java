@@ -8,6 +8,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import fr.nantes1900.view.components.PFrame;
@@ -16,13 +17,12 @@ import fr.nantes1900.view.display3d.Universe3DView;
 /**
  * @author Camille
  */
-public class IsletProcessView extends PFrame
-{
+public class IsletProcessView extends PFrame {
 
     /**
      * Version ID.
      */
-    private static final long   serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
     /**
      * TODO .
      */
@@ -30,23 +30,25 @@ public class IsletProcessView extends PFrame
     /**
      * TODO .
      */
-    private IsletTreeView       itView;
+    private IsletTreeView itView;
     /**
      * TODO .
      */
-    private NavigationBarView   nbView;
+    private NavigationBarView nbView;
     /**
      * TODO .
      */
-    private ParametersView      pView;
+    private ParametersView pView;
     /**
      * TODO .
      */
-    private Universe3DView      u3DView;
+    private Universe3DView u3DView;
     /**
      * TODO .
      */
-    private JTabbedPane         tabs;
+    private JTabbedPane tabs;
+
+    private JScrollPane jspParameters;
 
     /**
      * TODO .
@@ -65,10 +67,9 @@ public class IsletProcessView extends PFrame
             final IsletTreeView isletTreeView,
             final NavigationBarView navigationBarView,
             final ParametersView parametersView,
-            final Universe3DView universe3dView)
-    {
+            final Universe3DView universe3dView) {
         super();
-        this.setMinimumSize(new Dimension(960, 660));
+        this.setMinimumSize(new Dimension(1100, 660));
         this.setPreferredSize(new Dimension(1200, 900));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -77,8 +78,10 @@ public class IsletProcessView extends PFrame
         this.nbView = navigationBarView;
         this.pView = parametersView;
         this.u3DView = universe3dView;
+        this.jspParameters = new JScrollPane(pView);
+        jspParameters.setMinimumSize(new Dimension(pView.getPreferredWidth(), 0));
         this.tabs = new JTabbedPane();
-        this.tabs.addTab("Paramètres", this.pView);
+        this.tabs.addTab("Paramètres", this.jspParameters);
         this.tabs.addTab("Arbre", this.itView);
         this.pComponents.setLayout(new GridBagLayout());
 
@@ -102,8 +105,7 @@ public class IsletProcessView extends PFrame
      * @param view
      *            TODO .
      */
-    public final void setCharacteristicsView(final CharacteristicsView view)
-    {
+    public final void setCharacteristicsView(final CharacteristicsView view) {
         this.pComponents.remove(this.cView);
         this.cView = view;
         this.pComponents.add(this.cView, new GridBagConstraints(1, 2, 1, 1,
