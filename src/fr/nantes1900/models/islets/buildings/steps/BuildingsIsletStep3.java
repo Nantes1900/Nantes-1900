@@ -14,10 +14,10 @@ import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 /**
  * Implements a step of the process. This step is after the separation between
  * buildings and before the separation between walls and roofs.
+ * 
  * @author Daniel Lefèvre
  */
-public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
-{
+public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
 
     /**
      * The list of buildings contained in the islet.
@@ -27,56 +27,56 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
     /**
      * The grounds.
      */
-    private Ground         grounds;
+    private Ground grounds;
 
     /**
      * The gravity normal used in algorithms.
      */
-    private Vector3d       gravityNormal;
+    private Vector3d gravityNormal;
 
     /**
      * The noise used in algorithms.
      */
-    private Surface        noise;
+    private Surface noise;
 
     /**
      * Constructor.
+     * 
      * @param buildingsIn
      *            the list of buildings
      * @param groundsIn
      *            the ground
      */
     public BuildingsIsletStep3(final List<Building> buildingsIn,
-            final Ground groundsIn)
-    {
+        final Ground groundsIn) {
         this.buildings = buildingsIn;
         this.grounds = groundsIn;
     }
 
     /**
      * Getter.
+     * 
      * @return the list of buildings
      */
-    public final List<Building> getBuildings()
-    {
+    public final List<Building> getBuildings() {
         return this.buildings;
     }
 
     /**
      * Getter.
+     * 
      * @return the grounds
      */
-    public final Ground getGrounds()
-    {
+    public final Ground getGrounds() {
         return this.grounds;
     }
 
     /**
      * Getter.
+     * 
      * @return the noise
      */
-    public final Surface getNoise()
-    {
+    public final Surface getNoise() {
         return this.noise;
     }
 
@@ -88,10 +88,8 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
      */
     @Override
     public final BuildingsIsletStep4 launchProcess()
-            throws NullArgumentException
-    {
-        for (Building b : this.buildings)
-        {
+        throws NullArgumentException {
+        for (Building b : this.buildings) {
             b.getbStep3().setArguments(this.gravityNormal);
             b.launchProcess3();
         }
@@ -106,11 +104,9 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode()
-    {
+    public final DefaultMutableTreeNode returnNode() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
-        for (Building b : this.buildings)
-        {
+        for (Building b : this.buildings) {
             root.add(b.returnNode3());
         }
         root.add(new DefaultMutableTreeNode(this.grounds));
@@ -121,14 +117,14 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
 
     /**
      * Setter.
+     * 
      * @param gravityNormalIn
      *            the gravity normal used in processs
      * @param noiseIn
      *            the noise
      */
     public final void setArguments(final Vector3d gravityNormalIn,
-            final Surface noiseIn)
-    {
+        final Surface noiseIn) {
         this.gravityNormal = gravityNormalIn;
         this.noise = noiseIn;
     }
@@ -140,8 +136,7 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep
      * #toString()
      */
     @Override
-    public final String toString()
-    {
+    public final String toString() {
         return super.toString() + AbstractBuildingsIslet.THIRD_STEP;
     }
 }

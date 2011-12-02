@@ -52,6 +52,7 @@ public class Surface {
      */
     public Surface()
     {
+        this.mesh = new Mesh();
     }
 
     /**
