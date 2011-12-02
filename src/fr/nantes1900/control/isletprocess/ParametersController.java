@@ -36,6 +36,11 @@ public class ParametersController
         this.parentController = parentController;
     }
     
+    public void displayProcessingParameters(int i){
+        this.pView.displayParameters(i);
+        this.pView.enableChanges(i);
+    }
+    
     public void loadNewParameters(){
         SeparationGroundBuilding.setAltitureError(this.pView.getValueProperty1());
         SeparationGroundBuilding.setAngleGroundError(this.pView.getValueProperty2());

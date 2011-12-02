@@ -153,6 +153,7 @@ public class IsletProcessController implements ElementsSelectedListener
         this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         this.nbController.getView().refreshStepTitle(this.getProgression());
         setToolbarButtons();
+        this.pController.displayProcessingParameters(this.getProgression());
     }
 
     public void goToPreviousProcess() throws UnexistingStepException
@@ -166,6 +167,7 @@ public class IsletProcessController implements ElementsSelectedListener
         this.nbController.getView().refreshStepTitle(this.getProgression());
         setDefaultCharacterisitcsPanel();
         setToolbarButtons();
+        this.pController.displayProcessingParameters(this.getProgression());
     }
 
     private void setToolbarButtons()
