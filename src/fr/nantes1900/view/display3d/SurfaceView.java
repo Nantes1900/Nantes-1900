@@ -24,8 +24,7 @@ import fr.nantes1900.models.extended.Surface;
  * to null (for example in the first steps, the polygonView is null)
  * @author Siju Wu, Nicolas Bouillon
  */
-public class SurfaceView extends Shape3D
-{
+public class SurfaceView extends Shape3D {
     /**
      * The material of a surface selected.
      */
@@ -62,8 +61,7 @@ public class SurfaceView extends Shape3D
      * @param surfaceIn
      *            the surface to build from
      */
-    public SurfaceView(final Surface surfaceIn)
-    {
+    public SurfaceView(final Surface surfaceIn) {
         super();
 
         this.surface = surfaceIn;
@@ -102,8 +100,7 @@ public class SurfaceView extends Shape3D
      * @return this.meshView
      */
 
-    public final MeshView getMeshView()
-    {
+    public final MeshView getMeshView() {
         return this.meshView;
     }
 
@@ -112,8 +109,7 @@ public class SurfaceView extends Shape3D
      * @return this.polygonView
      */
 
-    public final PolygonView getPolygonView()
-    {
+    public final PolygonView getPolygonView() {
         return this.polygonView;
     }
 
@@ -121,8 +117,7 @@ public class SurfaceView extends Shape3D
      * Getter.
      * @return the surface
      */
-    public final Surface getSurface()
-    {
+    public final Surface getSurface() {
         return this.surface;
     }
 
@@ -132,8 +127,7 @@ public class SurfaceView extends Shape3D
      *            The material to be used.
      */
 
-    public final void setMaterial(final Material material)
-    {
+    public final void setMaterial(final Material material) {
         this.appearance.setMaterial(material);
 
     }
@@ -144,8 +138,7 @@ public class SurfaceView extends Shape3D
      *            The mesh of triangles to be displayed.
      */
 
-    public final void setMeshView(final MeshView meshViewIn)
-    {
+    public final void setMeshView(final MeshView meshViewIn) {
         this.meshView = meshViewIn;
         this.setGeometry(this.meshView);
     }
@@ -156,8 +149,7 @@ public class SurfaceView extends Shape3D
      *            The polygon to be displayed.
      */
 
-    public final void setPolygonView(final PolygonView polygonViewIn)
-    {
+    public final void setPolygonView(final PolygonView polygonViewIn) {
         this.polygonView = polygonViewIn;
         this.setGeometry(this.polygonView);
     }
@@ -167,8 +159,7 @@ public class SurfaceView extends Shape3D
      * @param surfaceIn
      *            the surface to set
      */
-    public final void setSurface(final Surface surfaceIn)
-    {
+    public final void setSurface(final Surface surfaceIn) {
         this.surface = surfaceIn;
     }
 
