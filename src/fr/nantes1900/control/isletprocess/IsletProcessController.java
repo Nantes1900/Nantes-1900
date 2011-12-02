@@ -152,6 +152,7 @@ public class IsletProcessController implements ElementsSelectedListener
         this.itController.refreshView();
         this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         this.nbController.getView().refreshStepTitle(this.getProgression());
+        setToolbarButtons();
     }
 
     public void goToPreviousProcess() throws UnexistingStepException
@@ -164,6 +165,15 @@ public class IsletProcessController implements ElementsSelectedListener
         this.itController.refreshView();
         this.nbController.getView().refreshStepTitle(this.getProgression());
         setDefaultCharacterisitcsPanel();
+        setToolbarButtons();
+    }
+
+    private void setToolbarButtons()
+    {
+        switch (getProgression())
+        {
+            case 2:
+        }
     }
 
     public void abortProcess()
@@ -187,7 +197,7 @@ public class IsletProcessController implements ElementsSelectedListener
     {
         int step = this.getProgression();
         boolean empty = false;
-        if ((step == 3
+        if (!(cController instanceof CharacteristicsController) && (step == 3
                 && f3DController.getSelectionMode().equals(
                         Functions3DToolbarController.ACTION_TRIANGLES)
                 || step == 2 || step == 4))
