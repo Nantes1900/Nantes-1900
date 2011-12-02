@@ -20,68 +20,96 @@ public class IsletProcessView extends PFrame
 {
 
     /**
-     * 
+     * Version ID.
      */
-    private static final long  serialVersionUID = 1L;
+    private static final long   serialVersionUID = 1L;
+    /**
+     * TODO .
+     */
     private CharacteristicsView cView;
-    private IsletTreeView      itView;
-    private NavigationBarView  nbView;
-    private ParametersView     pView;
-    private Universe3DView     u3DView;
-    private JTabbedPane        tabs;
+    /**
+     * TODO .
+     */
+    private IsletTreeView       itView;
+    /**
+     * TODO .
+     */
+    private NavigationBarView   nbView;
+    /**
+     * TODO .
+     */
+    private ParametersView      pView;
+    /**
+     * TODO .
+     */
+    private Universe3DView      u3DView;
+    /**
+     * TODO .
+     */
+    private JTabbedPane         tabs;
 
-    public IsletProcessView(CharacteristicsView caracteristicsView,
-            IsletTreeView isletTreeView, NavigationBarView navigationBarView,
-            ParametersView parametersView, Universe3DView universe3dView)
+    /**
+     * TODO .
+     * @param caracteristicsView
+     *            TODO .
+     * @param isletTreeView
+     *            TODO .
+     * @param navigationBarView
+     *            TODO .
+     * @param parametersView
+     *            TODO .
+     * @param universe3dView
+     *            TODO .
+     */
+    public IsletProcessView(final CharacteristicsView caracteristicsView,
+            final IsletTreeView isletTreeView,
+            final NavigationBarView navigationBarView,
+            final ParametersView parametersView,
+            final Universe3DView universe3dView)
     {
         super();
         this.setMinimumSize(new Dimension(960, 760));
         this.setPreferredSize(new Dimension(1200, 900));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        
+
         this.cView = caracteristicsView;
         this.itView = isletTreeView;
         this.nbView = navigationBarView;
         this.pView = parametersView;
         this.u3DView = universe3dView;
         this.tabs = new JTabbedPane();
-        this.tabs.addTab("Paramètres", pView);
-        this.tabs.addTab("Arbre", itView);
+        this.tabs.addTab("Paramètres", this.pView);
+        this.tabs.addTab("Arbre", this.itView);
         this.pComponents.setLayout(new GridBagLayout());
-        
-        this.pComponents.add(
-                nbView,
-                new GridBagConstraints(0, 0, 2, 1, 1.0, 0.20,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(10, 10, 5, 10), 0, 0));
-        
-        this.pComponents.add(
-                this.tabs,
-                new GridBagConstraints(0, 1, 1, 2, 0.40, 1.0,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(5, 10, 5, 5), 0, 0));
-        this.pComponents.add(
-                u3DView,
-                new GridBagConstraints(1, 1, 1, 1, 0.60, 0.60,
-                        GridBagConstraints.CENTER, GridBagConstraints.NONE,
-                        new Insets(5, 5, 5, 10), 0, 0));
-        this.pComponents.add(
-                cView,
-                new GridBagConstraints(1, 2, 1, 1, 0.60, 0.20,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(5, 5, 10, 10), 0, 0));
+
+        this.pComponents.add(this.nbView, new GridBagConstraints(0, 0, 2, 1,
+                1.0, 0.20, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(10, 10, 5, 10), 0, 0));
+
+        this.pComponents.add(this.tabs, new GridBagConstraints(0, 1, 1, 2,
+                0.40, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(5, 10, 5, 5), 0, 0));
+        this.pComponents.add(this.u3DView, new GridBagConstraints(1, 1, 1, 1,
+                0.60, 0.60, GridBagConstraints.CENTER, GridBagConstraints.NONE,
+                new Insets(5, 5, 5, 10), 0, 0));
+        this.pComponents.add(this.cView, new GridBagConstraints(1, 2, 1, 1,
+                0.60, 0.20, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(5, 5, 10, 10), 0, 0));
     }
 
-    public void setCharacteristicsView(CharacteristicsView view)
+    /**
+     * TODO .
+     * @param view
+     *            TODO .
+     */
+    public final void setCharacteristicsView(final CharacteristicsView view)
     {
-        this.pComponents.remove(cView);
+        this.pComponents.remove(this.cView);
         this.cView = view;
-        this.pComponents.add(
-                cView,
-                new GridBagConstraints(1, 2, 1, 1, 0.60, 0.20,
-                        GridBagConstraints.CENTER, GridBagConstraints.BOTH,
-                        new Insets(5, 5, 10, 10), 0, 0));
-        
+        this.pComponents.add(this.cView, new GridBagConstraints(1, 2, 1, 1,
+                0.60, 0.20, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                new Insets(5, 5, 10, 10), 0, 0));
+
         this.pComponents.revalidate();
         this.pComponents.repaint();
     }

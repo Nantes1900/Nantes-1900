@@ -18,7 +18,6 @@ import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 
 import fr.nantes1900.models.basis.Point;
 
-
 /**
  * NewMouseRotate is a class extended of the class MouseRotate. It is used to
  * make a rotation of the object by using the mouse.
@@ -27,28 +26,78 @@ import fr.nantes1900.models.basis.Point;
 public class NewMouseRotate extends MouseRotate
 {
 
-    double                        x_angle, y_angle;
-    double                        x_factor     = .03;
-    double                        y_factor     = .03;
+    /**
+     * TODO .
+     */
+    private double                xAngle;
+    /**
+     * TODO .
+     */
+    private double                yAngle;
+    /**
+     * TODO .
+     */
+    // FIXME : magic number !
+    private double                xFactor      = .03;
+    /**
+     * TODO .
+     */
+    // FIXME : magic number !
+    private double                yFactor      = .03;
+    /**
+     * TODO .
+     */
     private MouseBehaviorCallback callback     = null;
 
+    /**
+     * TODO .
+     */
     private TransformGroup        tg1;
+    /**
+     * TODO .
+     */
     private TransformGroup        tg2;
+    /**
+     * TODO .
+     */
     private TransformGroup        tg3;
+    /**
+     * TODO .
+     */
     private Transform3D           translation1 = new Transform3D();
+    /**
+     * TODO .
+     */
     private Transform3D           translation2 = new Transform3D();
+    /**
+     * TODO .
+     */
     private Point3d               center;
 
-    public NewMouseRotate(TransformGroup TG1, TransformGroup TG2,
-            TransformGroup TG3)
+    /**
+     * Constructor.
+     * @param tg1In
+     *            TODO
+     * @param tg2In
+     *            TODO
+     * @param tg3In
+     *            TODO
+     */
+    public NewMouseRotate(final TransformGroup tg1In,
+            final TransformGroup tg2In, final TransformGroup tg3In)
     {
         super();
-        this.tg1 = TG1;
-        this.tg2 = TG2;
-        this.tg3 = TG3;
+        this.tg1 = tg1In;
+        this.tg2 = tg2In;
+        this.tg3 = tg3In;
     }
 
-    void doNewProcess(MouseEvent evt)
+    /**
+     * TODO .
+     * @param evt
+     *            TODO
+     */
+    final void doNewProcess(final MouseEvent evt)
     {
         int id;
         int dx, dy;
@@ -69,11 +118,11 @@ public class NewMouseRotate extends MouseRotate
 
                 if (!this.reset)
                 {
-                    this.x_angle = dy * this.y_factor;
-                    this.y_angle = dx * this.x_factor;
+                    this.xAngle = dy * this.yFactor;
+                    this.yAngle = dx * this.xFactor;
 
-                    this.transformX.rotX(this.x_angle);
-                    this.transformY.rotY(this.y_angle);
+                    this.transformX.rotX(this.xAngle);
+                    this.transformY.rotY(this.yAngle);
 
                     this.tg2.getTransform(this.currXform);
 
@@ -123,11 +172,21 @@ public class NewMouseRotate extends MouseRotate
         }
     }
 
-    public Point3d getCenter()
+    /**
+     * TODO .
+     * @return TODO
+     */
+    public final Point3d getCenter()
     {
         return this.center;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * com.sun.j3d.utils.behaviors.mouse.MouseRotate#processStimulus(java.util
+     * .Enumeration)
+     */
     @Override
     public void processStimulus(Enumeration criteria)
     {
@@ -167,9 +226,7 @@ public class NewMouseRotate extends MouseRotate
                     doNewProcess(evt);
                     this.tg3.setTransform(this.translation2);
                 }
-            }
-
-            else if (wakeup instanceof WakeupOnBehaviorPost)
+            } else if (wakeup instanceof WakeupOnBehaviorPost)
             {
                 while (true)
                 {
@@ -198,8 +255,9 @@ public class NewMouseRotate extends MouseRotate
     }
 
     /**
-     * TODO.
-     * @param new Point3d(centroid.getX(), centroid.getY() TODO
+     * TODO .
+     * @param point
+     *            TODO
      */
     public final void setCenter(final Point point)
     {
