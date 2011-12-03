@@ -36,7 +36,8 @@ public class CharacteristicsStep3ElementsController extends
         super(parentController, elementSelected);
 
         this.cView = new CharacteristicsStep3ElementsView();
-        ((CharacteristicsStep3ElementsView) this.cView).setType("");
+        modifyViewCharacteristics();
+        
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override

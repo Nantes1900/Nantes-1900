@@ -11,6 +11,7 @@ import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -152,7 +153,7 @@ public class CharacteristicsStep6View extends CharacteristicsView {
 
         this.getPanelContent().add(bLock);
         this.addCaracteristic(createSimpleCaracteristic(sortPanel,
-                FileTools.readElementText(TextsKeys.KEY_SORTOUTNEIGHBOURS),
+                new JLabel(FileTools.readElementText(TextsKeys.KEY_SORTOUTNEIGHBOURS)),
                 this.helpButton));
         this.bValidate.setEnabled(true);
     }

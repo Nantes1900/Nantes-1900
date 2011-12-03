@@ -34,6 +34,7 @@ public class CharacteristicsStep5Controller extends
         super(parentController, surfaceSelected);
 
         this.cView = new CharacteristicsStep5View();
+        ((CharacteristicsStep5View) this.cView).setMergeEnable(false);
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override

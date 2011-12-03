@@ -14,7 +14,6 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
-import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep3TrianglesView;
 
 /**

@@ -7,6 +7,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.utils.FileTools;
@@ -49,7 +50,7 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView {
 
         });
         this.addCaracteristic(createSimpleCaracteristic(this.cbDelete,
-                FileTools.readElementText(TextsKeys.KEY_DELETETEXT),
+                new JLabel(FileTools.readElementText(TextsKeys.KEY_DELETETEXT)),
                 new HelpButton()));
 
         this.bValidate.setEnabled(true);

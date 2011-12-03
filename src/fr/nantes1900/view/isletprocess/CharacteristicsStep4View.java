@@ -1,6 +1,10 @@
 package fr.nantes1900.view.isletprocess;
 
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
 import javax.swing.JComboBox;
+import javax.swing.JLabel;
 
 import fr.nantes1900.constants.Characteristics;
 import fr.nantes1900.constants.TextsKeys;
@@ -27,13 +31,20 @@ public class CharacteristicsStep4View extends CharacteristicsView {
      */
     public CharacteristicsStep4View() {
         super();
-        String[] types = { "", Characteristics.TYPE_WALL,
-                Characteristics.TYPE_ROOF
-        };
+        String[] types = {"", Characteristics.TYPE_WALL,
+                Characteristics.TYPE_ROOF};
 
         this.cbType = new JComboBox<>(types);
+        this.cbType.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(ItemEvent arg0) {
+                CharacteristicsStep4View.this.checkTypeSelected();
+            }
+
+        });
         this.addCaracteristic(createSimpleCaracteristic(this.cbType,
-                FileTools.readElementText(TextsKeys.KEY_TYPETEXT),
+                new JLabel(FileTools.readElementText(TextsKeys.KEY_TYPETEXT)),
                 new HelpButton()));
         this.bValidate.setEnabled(true);
     }
@@ -46,6 +57,16 @@ public class CharacteristicsStep4View extends CharacteristicsView {
         return (String) this.cbType.getSelectedItem();
     }
 
+    private void checkTypeSelected() {
+        if (cbType.getSelectedItem().equals(""))
+        {
+            bValidate.setEnabled(false);
+        } else
+        {
+            bValidate.setEnabled(true);
+        }
+    }
+
     /**
      * TODO .
      * @param string
@@ -53,5 +74,6 @@ public class CharacteristicsStep4View extends CharacteristicsView {
      */
     public final void setType(final String string) {
         this.cbType.setSelectedItem(string);
+        checkTypeSelected();
     }
 }
