@@ -101,25 +101,32 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
     @Override
     public final DefaultMutableTreeNode returnNode() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
+
+        int counter = 0;
         for (Building b : this.buildings) {
-            root.add(b.returnNode3());
+            root.add(b.returnNode3(counter));
+            counter++;
         }
+
+        this.grounds.setNodeString("Grounds");
         root.add(new DefaultMutableTreeNode(this.grounds));
-        root.add(new DefaultMutableTreeNode(this.noise));
+
+        // FIXME
+        // if (this.noise.getMesh() != null && !this.noise.getMesh().isEmpty())
+        // {
+        // this.noise.setNodeString("Noise");
+        // root.add(new DefaultMutableTreeNode(this.noise));
+        // }
 
         return root;
     }
 
     /**
      * Setter.
-     * @param gravityNormalIn
-     *            the gravity normal used in processs
      * @param noiseIn
      *            the noise
      */
-    public final void setArguments(final Vector3d gravityNormalIn,
-            final Surface noiseIn) {
-        this.gravityNormal = gravityNormalIn;
+    public final void setArguments(final Surface noiseIn) {
         this.noise = noiseIn;
     }
 
@@ -132,5 +139,14 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
     @Override
     public final String toString() {
         return super.toString() + AbstractBuildingsIslet.THIRD_STEP;
+    }
+
+    /**
+     * Setter.
+     * @param gravityNormalIn
+     *            the gravity normal used in process
+     */
+    public final void setArguments(final Vector3d gravityNormalIn) {
+        this.gravityNormal = gravityNormalIn;
     }
 }

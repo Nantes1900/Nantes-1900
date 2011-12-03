@@ -41,9 +41,4 @@ public class Roof extends Surface {
     public Roof(final Roof r) {
         super(r);
     }
-
-    @Override
-    public final String toString() {
-        return "Roof " + this.getID();
-    }
 }

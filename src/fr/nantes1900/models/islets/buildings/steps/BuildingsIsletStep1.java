@@ -12,6 +12,7 @@ import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.utils.Algos;
 
@@ -25,7 +26,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
     /**
      * The initial total mesh after the base change.
      */
-    private Surface initialTotalMeshAfterBaseChange;
+    private Surface initialTotalSurfaceAfterBaseChange;
     /**
      * The normal to the ground.
      */
@@ -37,7 +38,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
      *            the mesh after the base change representing the total islet
      */
     public BuildingsIsletStep1(final Surface initialTotalMesh) {
-        this.initialTotalMeshAfterBaseChange = initialTotalMesh;
+        this.initialTotalSurfaceAfterBaseChange = initialTotalMesh;
     }
 
     /**
@@ -45,7 +46,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
      * @return the mesh
      */
     public final Surface getInitialTotalSurfaceAfterBaseChange() {
-        return this.initialTotalMeshAfterBaseChange;
+        return this.initialTotalSurfaceAfterBaseChange;
     }
 
     /**
@@ -54,7 +55,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
      */
     private Ground groundExtraction() {
         // Searches for ground-oriented triangles with an error.
-        Mesh meshOriented = this.initialTotalMeshAfterBaseChange.getMesh()
+        Mesh meshOriented = this.initialTotalSurfaceAfterBaseChange.getMesh()
                 .orientedAs(this.groundNormal,
                         SeparationGroundBuilding.getAngleGroundError());
 
@@ -70,8 +71,9 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
 
         // We consider the altitude of the blocks on an axis parallel to the
         // normal ground.
-        final double highDiff = this.initialTotalMeshAfterBaseChange.getMesh()
-                .zMax() - this.initialTotalMeshAfterBaseChange.getMesh().zMin();
+        final double highDiff = this.initialTotalSurfaceAfterBaseChange
+                .getMesh().zMax()
+                - this.initialTotalSurfaceAfterBaseChange.getMesh().zMin();
 
         // Builds an axis normal to the current ground.
         final Edge axisNormalGround = new Edge(new Point(0, 0, 0), new Point(
@@ -108,7 +110,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
         // Now that we found the real grounds, we extract the other
         // triangles
         // which are almost ground-oriented to add them.
-        meshOriented = this.initialTotalMeshAfterBaseChange.getMesh()
+        meshOriented = this.initialTotalSurfaceAfterBaseChange.getMesh()
                 .orientedAs(this.groundNormal,
                         SeparationGroundBuilding.getLargeAngleGroundError());
 
@@ -147,16 +149,21 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
         }
         Ground initialGround = this.groundExtraction();
         Surface initialBuildings = new Surface(new Mesh(
-                this.initialTotalMeshAfterBaseChange.getMesh()));
+                this.initialTotalSurfaceAfterBaseChange.getMesh()));
         initialBuildings.getMesh().remove(initialGround.getMesh());
         return new BuildingsIsletStep2(initialBuildings, initialGround);
     }
 
     @Override
     public final DefaultMutableTreeNode returnNode() {
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
+
+        this.initialTotalSurfaceAfterBaseChange.setNodeString("Total surface");
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(
-                this.initialTotalMeshAfterBaseChange);
-        return node;
+                this.initialTotalSurfaceAfterBaseChange);
+
+        root.add(node);
+        return root;
     }
 
     /**
@@ -166,5 +173,16 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
      */
     public final void setArguments(final Vector3d groundNormalIn) {
         this.groundNormal = groundNormalIn;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * #toString()
+     */
+    @Override
+    public final String toString() {
+        return super.toString() + AbstractBuildingsIslet.FIRST_STEP;
     }
 }

@@ -160,12 +160,20 @@ public class BuildingStep4 extends AbstractBuildingStep {
     }
 
     @Override
-    public final DefaultMutableTreeNode returnNode() {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode();
+    public final DefaultMutableTreeNode returnNode(final int counter) {
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Building"
+                + counter);
 
+        this.initialWallSurface.setNodeString("Walls");
         root.add(new DefaultMutableTreeNode(this.initialWallSurface));
+        this.initialRoofSurface.setNodeString("Roofs");
         root.add(new DefaultMutableTreeNode(this.initialRoofSurface));
-        root.add(new DefaultMutableTreeNode(this.noise));
+
+        // FIXME
+        // if (this.noise != null) {
+        // this.noise.setNodeString("Noise");
+        // root.add(new DefaultMutableTreeNode(this.noise));
+        // }
 
         return root;
     }
@@ -296,5 +304,4 @@ public class BuildingStep4 extends AbstractBuildingStep {
         Algos.blockTreatOrientedNoise(roofsOut, this.noise.getMesh(),
                 SeparationWallsSeparationRoofs.getLargeAngleError());
     }
-
 }

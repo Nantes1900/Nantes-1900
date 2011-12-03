@@ -226,18 +226,29 @@ public class BuildingStep5 extends AbstractBuildingStep {
     }
 
     @Override
-    public final DefaultMutableTreeNode returnNode() {
-        DefaultMutableTreeNode currentNode = new DefaultMutableTreeNode();
-        for (Wall w : this.walls) {
-            currentNode.add(new DefaultMutableTreeNode(w.returnNode()));
-        }
-        for (Roof r : this.roofs) {
-            currentNode.add(new DefaultMutableTreeNode(r.returnNode()));
-        }
-        currentNode.add(new DefaultMutableTreeNode(this.noise));
-        currentNode.add(new DefaultMutableTreeNode(this.ground));
+    public final DefaultMutableTreeNode returnNode(final int counter) {
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Building "
+                + counter);
 
-        return currentNode;
+        int counterWall = 0;
+        for (Wall w : this.walls) {
+            w.setNodeString("Wall " + counterWall);
+            root.add(new DefaultMutableTreeNode(w.returnNode()));
+            counterWall++;
+        }
+
+        int counterRoof = 0;
+        for (Roof r : this.roofs) {
+            r.setNodeString("Roof " + counterRoof);
+            root.add(new DefaultMutableTreeNode(r.returnNode()));
+            counterRoof++;
+        }
+
+        // FIXME
+        // this.noise.setNodeString("Noise");
+        // root.add(new DefaultMutableTreeNode(this.noise));
+
+        return root;
     }
 
     /**

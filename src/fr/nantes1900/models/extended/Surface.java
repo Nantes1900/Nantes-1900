@@ -29,6 +29,11 @@ public class Surface {
     private static int counterID = 0;
 
     /**
+     * The String to display in a node to represent the object.
+     */
+    private String nodeString;
+
+    /**
      * ID of the object.
      */
     private int iD = Surface.counterID++;
@@ -506,7 +511,24 @@ public class Surface {
      */
     @Override
     public String toString() {
-        return "Surface " + this.iD;
+        return this.nodeString;
+    }
+
+    /**
+     * Getter.
+     * @return the string displayed in a node to represent this surface
+     */
+    public final String getNodeString() {
+        return this.nodeString;
+    }
+
+    /**
+     * Setter.
+     * @param nodeStringIn
+     *            the string displayed in a node to represent this surface
+     */
+    public final void setNodeString(final String nodeStringIn) {
+        this.nodeString = nodeStringIn;
     }
 
     /**

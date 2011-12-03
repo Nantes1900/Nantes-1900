@@ -19,7 +19,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep {
     /**
      * The initial mesh before every process.
      */
-    private Surface initialTotalMesh;
+    private Surface initialTotalSurface;
 
     /**
      * Change base matrix from the current base to a base which is ground-like
@@ -38,7 +38,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep {
      *            the mesh representing the entire islet
      */
     public BuildingsIsletStep0(final Mesh mesh) {
-        this.initialTotalMesh = new Surface(mesh);
+        this.initialTotalSurface = new Surface(mesh);
     }
 
     /**
@@ -47,10 +47,10 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep {
      *             if the matrix or the mesh has not been initialized
      */
     public final void changeBase() throws NullArgumentException {
-        if (this.matrix == null || this.initialTotalMesh == null) {
+        if (this.matrix == null || this.initialTotalSurface == null) {
             throw new NullArgumentException();
         }
-        this.initialTotalMesh.getMesh().changeBase(this.matrix);
+        this.initialTotalSurface.getMesh().changeBase(this.matrix);
     }
 
     /**
@@ -77,7 +77,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep {
      * @return the initial total mesh
      */
     public final Surface getInitialTotalSurface() {
-        return this.initialTotalMesh;
+        return this.initialTotalSurface;
     }
 
     /**
@@ -103,7 +103,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep {
         this.createChangeBaseMatrix();
         this.changeBase();
 
-        return new BuildingsIsletStep1(this.initialTotalMesh);
+        return new BuildingsIsletStep1(this.initialTotalSurface);
     }
 
     /*
@@ -114,8 +114,9 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep {
      */
     @Override
     public final DefaultMutableTreeNode returnNode() {
+        this.initialTotalSurface.setNodeString("Total surface");
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(
-                this.initialTotalMesh);
+                this.initialTotalSurface);
         return node;
     }
 
