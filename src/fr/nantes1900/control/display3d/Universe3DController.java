@@ -349,16 +349,19 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     @Override
     public final void mouseClicked(final MouseEvent e) {
         int buttonDown = e.getButton();
-        this.pickCanvas.setShapeLocation(e);
-        PickResult result = this.pickCanvas.pickClosest();
+        if(this.pickCanvas!=null){
+            this.pickCanvas.setShapeLocation(e);
+            PickResult result = this.pickCanvas.pickClosest();
 
-        if (buttonDown == MouseEvent.BUTTON1 && result != null) {
-            if (this.selectionMode == SELECTION_TRIANGLE_MODE) {
-                this.treatTriangleSelection(e, result);
-            } else if (this.selectionMode == SELECTION_SURFACE_MODE) {
-                this.treatSurfaceSelection(e, result);
+            if (buttonDown == MouseEvent.BUTTON1 && result != null) {
+                if (this.selectionMode == SELECTION_TRIANGLE_MODE) {
+                    this.treatTriangleSelection(e, result);
+                } else if (this.selectionMode == SELECTION_SURFACE_MODE) {
+                    this.treatSurfaceSelection(e, result);
+                }
             }
         }
+        
     }
 
     @Override
