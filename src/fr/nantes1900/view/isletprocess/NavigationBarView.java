@@ -12,6 +12,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.utils.FileTools;
 
 /**
@@ -25,8 +26,7 @@ public class NavigationBarView extends JPanel {
             FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
     protected JButton bBack = new JButton(
             FileTools.readElementText(TextsKeys.KEY_BACKBUTTON));
-    protected JLabel title = new JLabel(
-            FileTools.readElementText(TextsKeys.KEY_PROCESSTITLE + "1"));
+    protected JLabel title = new JLabel();
     protected JPanel pCentral = new JPanel();
 
     public NavigationBarView() {
@@ -38,6 +38,7 @@ public class NavigationBarView extends JPanel {
         this.add(pCentral, BorderLayout.CENTER);
         this.add(bBack, BorderLayout.EAST);
         this.setMinimumSize(new Dimension(100, 50));
+        this.refreshStepTitle(AbstractBuildingsIslet.FIRST_STEP);
     }
 
     public JButton getAbortButton() {
@@ -56,5 +57,17 @@ public class NavigationBarView extends JPanel {
         this.title.setText(FileTools.readElementText(TextsKeys.KEY_PROCESSTITLE
                 + i));
         this.title.repaint();
+        if (i==1){
+            this.bBack.setEnabled(false);
+        }
+        else {
+            this.bBack.setEnabled(true);
+        }
+        if (i==7){
+            this.bLaunch.setEnabled(false);
+        }
+        else {
+            this.bLaunch.setEnabled(true);
+        }
     }
 }
