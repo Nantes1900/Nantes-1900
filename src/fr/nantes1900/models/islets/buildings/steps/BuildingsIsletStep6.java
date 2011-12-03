@@ -74,8 +74,11 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
     @Override
     public final DefaultMutableTreeNode returnNode() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
+
+        int counter = 0;
         for (Building b : this.buildings) {
-            root.add(b.returnNode6());
+            root.add(b.returnNode6(counter));
+            counter++;
         }
         root.add(new DefaultMutableTreeNode(this.grounds));
 

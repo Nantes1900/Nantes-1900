@@ -41,9 +41,4 @@ public class Wall extends Surface {
     public Wall(final Wall w) {
         super(w);
     }
-
-    @Override
-    public final String toString() {
-        return "Wall " + this.getID();
-    }
 }

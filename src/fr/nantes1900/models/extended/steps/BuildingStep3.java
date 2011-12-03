@@ -53,6 +53,7 @@ public class BuildingStep3 extends AbstractBuildingStep {
         if (this.gravityNormal == null) {
             throw new NullArgumentException();
         }
+
         // Selects the triangles which are oriented normal to normalGround.
         Surface initialWall = new Surface(this.initialTotalMesh.getMesh()
                 .orientedNormalTo(this.gravityNormal,
@@ -72,8 +73,16 @@ public class BuildingStep3 extends AbstractBuildingStep {
      * fr.nantes1900.models.extended.steps.AbstractBuildingStep#returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode() {
-        return new DefaultMutableTreeNode(this.initialTotalMesh);
+    public final DefaultMutableTreeNode returnNode(final int counter) {
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Building"
+                + counter);
+
+        this.initialTotalMesh.setNodeString("Total surface");
+        DefaultMutableTreeNode node = new DefaultMutableTreeNode(
+                this.initialTotalMesh);
+        root.add(node);
+
+        return root;
     }
 
     /**

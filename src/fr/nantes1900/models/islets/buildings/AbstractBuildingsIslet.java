@@ -4,6 +4,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.models.extended.Building;
+import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
@@ -201,7 +202,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      *             if the gravity normal has not been initiliazed
      */
     public final void launchProcess0() throws NullArgumentException {
-        if (this.getGravityNormal() == null) {
+        if (this.gravityNormal == null) {
             throw new NullArgumentException();
         }
 
@@ -236,16 +237,17 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      *             initialized
      */
     public final void launchProcess3() throws NullArgumentException {
-        if (this.getGravityNormal() == null || this.getGroundNormal() == null
-                || this.getBiStep2().getNoise() == null) {
+        if (this.gravityNormal == null || this.groundNormal == null
+                || this.biStep2.getNoise() == null) {
             throw new NullArgumentException();
         }
-        for (Building b : this.getBiStep3().getBuildings()) {
+
+        for (Building b : this.biStep3.getBuildings()) {
             b.setArguments(this.getGroundNormal(), this.getGravityNormal(),
-                    this.getBiStep2().getInitialGrounds(), this.getBiStep2()
-                            .getNoise());
+                    this.biStep2.getInitialGrounds(), this.biStep2.getNoise());
         }
-        this.biStep4 = this.getBiStep3().launchProcess();
+
+        this.biStep4 = this.biStep3.launchProcess();
     }
 
     /**

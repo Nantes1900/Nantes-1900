@@ -572,10 +572,14 @@ public class BuildingsIsletController {
                 this.islet.launchProcess3();
                 break;
             case AbstractBuildingsIslet.FOURTH_STEP:
+                System.out.println("fourth process");
                 this.islet.launchProcess4();
+                System.out.println("end");
                 break;
             case AbstractBuildingsIslet.FIFTH_STEP:
+                System.out.println("fifth process");
                 this.islet.launchProcess5();
+                System.out.println("end");
                 break;
             default:
                 throw new InvalidCaseException();
@@ -584,10 +588,9 @@ public class BuildingsIsletController {
             this.incProgression();
             this.display();
         } catch (InvalidCaseException e) {
-            System.out.println("Invalid case exc.");
             e.printStackTrace();
         } catch (NullArgumentException e) {
-            System.out.println("Null argument exc.");
+            // It should never happen.
             e.printStackTrace();
         }
     }
@@ -849,12 +852,13 @@ public class BuildingsIsletController {
             }
         }
 
-        if (!this.islet.getBiStep5().getNoise().getMesh().isEmpty()) {
-            surfacesList.add(this.islet.getBiStep5().getNoise());
-
-        } else {
-            System.out.println("Noise empty : error !");
-        }
+        // FIXME
+        // if (!this.islet.getBiStep5().getNoise().getMesh().isEmpty()) {
+        // surfacesList.add(this.islet.getBiStep5().getNoise());
+        //
+        // } else {
+        // System.out.println("Noise empty : error !");
+        // }
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
     }
@@ -869,13 +873,12 @@ public class BuildingsIsletController {
             BuildingStep6 buildingStep = building.getbStep6();
             for (Surface wall : buildingStep.getWalls()) {
                 surfacesList.add(wall);
-
             }
             for (Surface roof : buildingStep.getRoofs()) {
                 surfacesList.add(roof);
-
             }
         }
+        surfacesList.add(this.islet.getBiStep6().getGrounds());
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
     }

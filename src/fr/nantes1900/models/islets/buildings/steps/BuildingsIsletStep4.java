@@ -8,7 +8,6 @@ import javax.vecmath.Vector3d;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
-import fr.nantes1900.models.extended.steps.BuildingStep4;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
@@ -77,8 +76,7 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
     public final BuildingsIsletStep5 launchProcess()
             throws NullArgumentException {
         for (Building b : this.buildings) {
-            BuildingStep4 buildingStep = b.getbStep4();
-            buildingStep.setArguments(this.groundNormal, this.grounds,
+            b.getbStep4().setArguments(this.groundNormal, this.grounds,
                     this.noise);
             b.launchProcess4();
         }
@@ -95,10 +93,12 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
     @Override
     public final DefaultMutableTreeNode returnNode() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
+
+        int counter = 0;
         for (Building b : this.buildings) {
-            root.add(b.returnNode3());
+            root.add(b.returnNode4(counter));
+            counter++;
         }
-        root.add(new DefaultMutableTreeNode(this.grounds));
 
         return root;
     }

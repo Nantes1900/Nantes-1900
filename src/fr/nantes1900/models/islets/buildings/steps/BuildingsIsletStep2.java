@@ -112,7 +112,11 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
 
         this.initialGrounds = this.noiseProcess();
 
-        return new BuildingsIsletStep3(buildings, this.initialGrounds);
+        BuildingsIsletStep3 biStep3 = new BuildingsIsletStep3(buildings,
+                this.initialGrounds);
+        biStep3.setArguments(this.noise);
+
+        return biStep3;
     }
 
     /**
@@ -133,8 +137,11 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
     @Override
     public final DefaultMutableTreeNode returnNode() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
+
+        this.initialBuildings.setNodeString("Buildings");
         DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(
                 this.initialBuildings);
+        this.initialGrounds.setNodeString("Grounds");
         DefaultMutableTreeNode node2 = new DefaultMutableTreeNode(
                 this.initialGrounds);
 

@@ -128,34 +128,42 @@ public class Building {
 
     /**
      * Creates a tree node for the third step.
+     * @param counter
+     *            the number of the current building
      * @return the mutable tree node
      */
-    public final DefaultMutableTreeNode returnNode3() {
-        return this.bStep3.returnNode();
+    public final DefaultMutableTreeNode returnNode3(final int counter) {
+        return this.bStep3.returnNode(counter);
     }
 
     /**
      * Creates a tree node for the fourth step.
+     * @param counter
+     *            the number of the current building
      * @return the mutable tree node
      */
-    public final DefaultMutableTreeNode returnNode4() {
-        return this.bStep4.returnNode();
+    public final DefaultMutableTreeNode returnNode4(final int counter) {
+        return this.bStep4.returnNode(counter);
     }
 
     /**
      * Creates a tree node for the fifth step.
+     * @param counter
+     *            the number of the current building
      * @return the mutable tree node
      */
-    public final DefaultMutableTreeNode returnNode5() {
-        return this.bStep5.returnNode();
+    public final DefaultMutableTreeNode returnNode5(final int counter) {
+        return this.bStep5.returnNode(counter);
     }
 
     /**
      * Creates a tree node for the sixth step.
+     * @param counter
+     *            the number of the current building
      * @return the mutable tree node
      */
-    public final DefaultMutableTreeNode returnNode6() {
-        return this.bStep6.returnNode();
+    public final DefaultMutableTreeNode returnNode6(final int counter) {
+        return this.bStep6.returnNode(counter);
     }
 
     /**

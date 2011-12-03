@@ -16,13 +16,4 @@ public final class Ground extends Surface {
     public Ground(final Mesh m) {
         super(m);
     }
-
-    /*
-     * (non-Javadoc)
-     * @see java.util.AbstractCollection#toString()
-     */
-    @Override
-    public String toString() {
-        return "Ground " + this.getID();
-    }
 }
