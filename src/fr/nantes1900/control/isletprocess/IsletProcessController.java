@@ -148,9 +148,8 @@ public class IsletProcessController implements ElementsSelectedListener {
             throw new UnexistingStepException();
         }
         this.biController.getPreviousStep();
-        this.itController.refreshView();
-        this.nbController.getView().refreshStepTitle(this.getProgression());
         setDefaultCharacterisitcsPanel();
+        refreshViews();
         setToolbarButtons();
         this.pController.displayProcessingParameters(this.getProgression());
     }
@@ -165,11 +164,18 @@ public class IsletProcessController implements ElementsSelectedListener {
         setDefaultCharacterisitcsPanel();
         this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         this.biController.launchProcess();
-        this.itController.refreshView();
+        refreshViews();
         this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        this.nbController.getView().refreshStepTitle(this.getProgression());
+        
         setToolbarButtons();
         this.pController.displayProcessingParameters(this.getProgression());
+    }
+    
+    public void refreshViews()
+    {
+        this.itController.refreshView();
+        this.nbController.getView().refreshStepTitle(this.getProgression());
+        this.biController.display();
     }
 
     public void loadParameters() {

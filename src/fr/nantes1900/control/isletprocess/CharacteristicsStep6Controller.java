@@ -69,7 +69,7 @@ public class CharacteristicsStep6Controller extends
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-
+                CharacteristicsStep6Controller.this.parentController.refreshViews();
             }
         });
     }

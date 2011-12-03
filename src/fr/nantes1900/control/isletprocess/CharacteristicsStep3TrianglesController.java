@@ -34,7 +34,7 @@ public class CharacteristicsStep3TrianglesController extends
     public CharacteristicsStep3TrianglesController(
             IsletProcessController parentController, Triangle triangleSelected) {
         super(parentController, triangleSelected);
-        this.cView = new CharacteristicsStep2View();
+        this.cView = new CharacteristicsStep3TrianglesView();
 
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
@@ -57,6 +57,7 @@ public class CharacteristicsStep3TrianglesController extends
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 }
+                CharacteristicsStep3TrianglesController.this.parentController.refreshViews();
             }
 
         });

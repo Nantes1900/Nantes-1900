@@ -68,6 +68,8 @@ public class CharacteristicsStep2Controller extends
                                     TextsKeys.MESSAGETYPE_TITLE),
                             JOptionPane.ERROR_MESSAGE);
                 }
+                
+                CharacteristicsStep2Controller.this.parentController.refreshViews();
             }
 
         });

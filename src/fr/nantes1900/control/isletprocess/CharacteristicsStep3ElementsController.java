@@ -73,6 +73,7 @@ public class CharacteristicsStep3ElementsController extends
                                         JOptionPane.ERROR_MESSAGE);
                     }
                 }
+                CharacteristicsStep3ElementsController.this.parentController.refreshViews();
             }
         });
     }

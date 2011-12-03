@@ -67,6 +67,7 @@ public class CharacteristicsStep4Controller extends
                                     TextsKeys.MESSAGETYPE_TITLE),
                             JOptionPane.ERROR_MESSAGE);
                 }
+                CharacteristicsStep4Controller.this.parentController.refreshViews();
             }
 
         });
