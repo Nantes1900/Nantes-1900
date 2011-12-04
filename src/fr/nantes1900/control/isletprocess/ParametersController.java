@@ -124,7 +124,7 @@ public class ParametersController {
             parameters.setProperty(parametersKeys[i],
                     String.valueOf(this.pView.getValueProperty(i + 1)));
         }
-        FileTools.saveProperties(file, new Properties());
+        FileTools.saveProperties(file, parameters);
     }
 
     public void displayProcessingParameters(int i) {
