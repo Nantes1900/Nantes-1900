@@ -7,11 +7,15 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 
 import fr.nantes1900.constants.SeparationBuildings;
 import fr.nantes1900.constants.SeparationGroundBuilding;
@@ -26,9 +30,8 @@ import fr.nantes1900.utils.FileTools;
  * @author Camille
  */
 @SuppressWarnings("serial")
-public class ParametersView extends JPanel { // FIX ME
-
-                                             // plein de trucs a fixer
+public class ParametersView extends JPanel {
+    
     protected JLabel[] property;
     protected ValueProperty[] value;
     private final Dimension valueDimension = new Dimension(50, 30);
@@ -84,6 +87,7 @@ public class ParametersView extends JPanel { // FIX ME
         }
   
         this.displayParameters(AbstractBuildingsIslet.FIRST_STEP);
+        
     }
 
     private void displayOneParameter(int x, int y, int n) {

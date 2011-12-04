@@ -3,6 +3,9 @@
  */
 package fr.nantes1900.control.isletprocess;
 
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import fr.nantes1900.constants.SeparationBuildings;
 import fr.nantes1900.constants.SeparationGroundBuilding;
 import fr.nantes1900.constants.SeparationWallRoof;

@@ -3,6 +3,11 @@
  */
 package fr.nantes1900.control.isletprocess;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -27,12 +32,21 @@ public class IsletTreeController {
      * The parent controller.
      */
     private IsletProcessController parentController;
+    
+    private ActionListener hideActionListener;
 
     public IsletTreeController(IsletProcessController parentControllerIn) {
         this.parentController = parentControllerIn;
         this.itView = new IsletTreeView();
         this.buildTreeView();
         this.addTreeController();
+        this.hideActionListener = new ActionListener(){
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                System.out.println("hide !");
+            }
+        };
+        this.addContextuelMenu();
     }
 
     public void addTreeController() {
@@ -61,6 +75,27 @@ public class IsletTreeController {
                 });
         // FIXME : what if a object is deselected in the tree ? What if more
         // than ONE object is selected ?
+    }
+    
+    public void addContextuelMenu(){
+        this.itView.getTree().addMouseListener(new MouseAdapter(){
+            public void mousePressed(MouseEvent event){
+                    if(event.getButton() == MouseEvent.BUTTON3)
+                {   
+                        if (IsletTreeController.this.itView.getTree().isSelectionEmpty()){
+                            IsletTreeController.this.itView.disableHide();
+                        }
+                        else{
+                            IsletTreeController.this.itView.enableHide();
+                        }
+                        IsletTreeController.this.itView.setHideListener(
+                                IsletTreeController.this.hideActionListener);
+                        IsletTreeController.this.itView.addItemsToJpm();
+                        IsletTreeController.this.itView.getJpm().show(
+                                IsletTreeController.this.itView, event.getX(), event.getY());
+                }
+            }
+        });
     }
 
     private void buildTreeView() {
