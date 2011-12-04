@@ -12,12 +12,10 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
-import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.utils.WriterSTL;
 import fr.nantes1900.view.isletselection.GlobalTreeView.FileNode;
@@ -27,7 +25,7 @@ import fr.nantes1900.view.isletselection.IsletSelectionView;
  * TODO.
  * @author Camille Bouquet
  */
-public class IsletSelectionController implements ElementsSelectedListener {
+public class IsletSelectionController {
 
     /**
      * The controller of the panel containing buttons to perform the different
@@ -79,7 +77,7 @@ public class IsletSelectionController implements ElementsSelectedListener {
         this.parentController = parentControllerIn;
         this.gtController = new GlobalTreeController(this);
         this.aController = new ActionsController(this);
-        this.u3DController = new Universe3DController(this);
+        this.u3DController = new Universe3DController();
         this.biController = new BuildingsIsletController(this,
                 this.u3DController);
 
@@ -224,32 +222,6 @@ public class IsletSelectionController implements ElementsSelectedListener {
         }
 
         return processLaunched;
-    }
-
-    @Override
-    public void surfaceDeselected(Surface surfaceSelected) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void surfaceSelected(Surface surfaceSelected) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public void triangleDeselected(Triangle triangleSelected) {
-        // TODO Auto-generated method stub
-
-    }
-
-    // FIXME : is that useful ? Is it useful to implement
-    // ElementsSelectedListener ?
-    @Override
-    public void triangleSelected(Triangle triangleSelected) {
-        // TODO Auto-generated method stub
-
     }
 
     /**

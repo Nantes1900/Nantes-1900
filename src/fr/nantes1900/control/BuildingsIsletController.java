@@ -350,7 +350,7 @@ public class BuildingsIsletController {
         if (this.islet.getBiStep2().getInitialBuildings().getMesh()
                 .contains(triangle)) {
             return Characteristics.TYPE_BUILDING;
-        } else if (this.islet.getBiStep2().getInitialBuildings().getMesh()
+        } else if (this.islet.getBiStep2().getInitialGrounds().getMesh()
                 .contains(triangle)) {
             return Characteristics.TYPE_GROUND;
         } else {
