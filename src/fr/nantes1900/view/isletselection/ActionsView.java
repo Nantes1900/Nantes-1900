@@ -4,10 +4,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
+import fr.nantes1900.constants.Icones;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
@@ -46,10 +48,13 @@ public class ActionsView extends JPanel {
      * Creates a new panel containing the open and launch buttons.
      */
     public ActionsView() {
+        //definition of the buttons
         this.bOpen = new JButton(
-                FileTools.readElementText(TextsKeys.KEY_OPENBUTTON));
+                new ImageIcon(Icones.open));
+        this.bOpen.setToolTipText(FileTools.readElementText(TextsKeys.KEY_OPENBUTTON));
         this.bLaunch = new JButton(
-                FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
+                new ImageIcon(Icones.launch));
+        this.bLaunch.setToolTipText(FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
         this.bLaunch.setEnabled(false);
         this.bHelp = new HelpButton(FileTools.readHelpMessage(
                 TextsKeys.KEY_IS_OPENDIRECTORY, TextsKeys.MESSAGETYPE_TOOLTIP),
@@ -61,6 +66,7 @@ public class ActionsView extends JPanel {
                 FileTools.readElementText(TextsKeys.KEY_USEGRAVITYNORMALTEXT));
         this.cbGravityGround.setEnabled(false);
 
+        //layout
         this.setLayout(new GridBagLayout());
         this.add(this.bOpen, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,

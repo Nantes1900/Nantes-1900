@@ -103,7 +103,6 @@ public class ActionsController {
                         FileTools.readHelpMessage(
                                 TextsKeys.KEY_IS_GRAVITYNORMAL,
                                 TextsKeys.MESSAGETYPE_TITLE));
-        this.aView.getLaunchButton().setText("Sauver");
         this.aView.getLaunchButton().setEnabled(true);
     }
 
@@ -128,7 +127,6 @@ public class ActionsController {
                         FileTools.readHelpMessage(
                                 TextsKeys.KEY_IS_LAUNCHPROCESS,
                                 TextsKeys.MESSAGETYPE_TITLE));
-        this.aView.getLaunchButton().setText("Lancer");
         this.aView.getLaunchButton().setEnabled(true);
     }
 
