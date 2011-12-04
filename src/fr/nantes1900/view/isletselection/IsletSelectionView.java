@@ -56,7 +56,7 @@ public class IsletSelectionView extends PFrame {
             final Universe3DView buildingsIsletView) {
         super();
         // initializes the frame
-        this.setTitle("Nantes 1900");
+        this.setTitle(FileTools.readElementText(TextsKeys.KEY_TITLE));
         this.setMinimumSize(new Dimension(600, 600));
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

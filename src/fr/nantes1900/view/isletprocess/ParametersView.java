@@ -18,7 +18,9 @@ import fr.nantes1900.constants.SeparationGroundBuilding;
 import fr.nantes1900.constants.SeparationWallRoof;
 import fr.nantes1900.constants.SeparationWallsSeparationRoofs;
 import fr.nantes1900.constants.SimplificationSurfaces;
+import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
+import fr.nantes1900.utils.FileTools;
 
 /**
  * @author Camille
@@ -35,45 +37,45 @@ public class ParametersView extends JPanel { // FIX ME
     public ParametersView() {
         this.property = new JLabel[15];
         this.value = new ValueProperty[15];
-        this.property[1] = new JLabel("AltitureError");        
+        this.property[1] = new JLabel(FileTools.readElementText(TextsKeys.KEY_ALTITUDEERROR));        
         this.value[1] = new ValueProperty(
                 SeparationGroundBuilding.getAltitureError());
-        this.property[2] = new JLabel("AngleGroundError");
+        this.property[2] = new JLabel(FileTools.readElementText(TextsKeys.KEY_ANGLEGROUNDERROR));
         this.value[2] = new ValueProperty(
                 SeparationGroundBuilding.getAngleGroundError());
-        this.property[3] = new JLabel("LargeAngleGroundError");
+        this.property[3] = new JLabel(FileTools.readElementText(TextsKeys.KEY_LARGEANGLEGROUNDERROR));
         this.value[3] = new ValueProperty(
                 SeparationGroundBuilding.getLargeAngleGroundError());
-        this.property[4] = new JLabel("BlockGroundsSizeError");
+        this.property[4] = new JLabel(FileTools.readElementText(TextsKeys.KEY_BLOCKGROUNDSSIZEERROR));
         this.value[4] = new ValueProperty(
                 SeparationGroundBuilding.getBlockGroundsSizeError());
-        this.property[5] = new JLabel("BlockBuildingSize");
+        this.property[5] = new JLabel(FileTools.readElementText(TextsKeys.KEY_BLOCKBUILDINGSIZE));
         this.value[5] = new ValueProperty(
                 SeparationBuildings.getBlockBuildingSize());
-        this.property[6] = new JLabel("NormalToError");
+        this.property[6] = new JLabel(FileTools.readElementText(TextsKeys.KEY_NORMALTOERROR));
         this.value[6] = new ValueProperty(SeparationWallRoof.getNormalToError());
-        this.property[7] = new JLabel("LargeAngleError");
+        this.property[7] = new JLabel(FileTools.readElementText(TextsKeys.KEY_LARGEANGLEERROR));
         this.value[7] = new ValueProperty(
                 SeparationWallsSeparationRoofs.getLargeAngleError());
-        this.property[8] = new JLabel("MiddleAngleError");
+        this.property[8] = new JLabel(FileTools.readElementText(TextsKeys.KEY_MIDDLEANGLEERROR));
         this.value[8] = new ValueProperty(
                 SeparationWallsSeparationRoofs.getMiddleAngleError());
-        this.property[9] = new JLabel("PlanesError");
+        this.property[9] = new JLabel(FileTools.readElementText(TextsKeys.KEY_PLANESERROR));
         this.value[9] = new ValueProperty(
                 SeparationWallsSeparationRoofs.getPlanesError());
-        this.property[10] = new JLabel("RoofAngleError");
+        this.property[10] = new JLabel(FileTools.readElementText(TextsKeys.KEY_ROOFANGLEERROR));
         this.value[10] = new ValueProperty(
                 SeparationWallsSeparationRoofs.getRoofAngleError());
-        this.property[11] = new JLabel("RoofSizeError");
+        this.property[11] = new JLabel(FileTools.readElementText(TextsKeys.KEY_ROOFSIZEERROR));
         this.value[11] = new ValueProperty(
                 SeparationWallsSeparationRoofs.getRoofSizeError());
-        this.property[12] = new JLabel("WallAngleError");
+        this.property[12] = new JLabel(FileTools.readElementText(TextsKeys.KEY_WALLANGLEERROR));
         this.value[12] = new ValueProperty(
                 SeparationWallsSeparationRoofs.getWallAngleError());
-        this.property[13] = new JLabel("WallSizeError");
+        this.property[13] = new JLabel(FileTools.readElementText(TextsKeys.KEY_WALLSIZEERROR));
         this.value[13] = new ValueProperty(
                 SeparationWallsSeparationRoofs.getWallSizeError());
-        this.property[14] = new JLabel("IsOrientedFactor");
+        this.property[14] = new JLabel(FileTools.readElementText(TextsKeys.KEY_ISORIENTEDFACTOR));
         this.value[14] = new ValueProperty(
                 SimplificationSurfaces.getIsOrientedFactor());
         
@@ -117,8 +119,9 @@ public class ParametersView extends JPanel { // FIX ME
             this.displayOneParameter(0, 4, 11);
             this.displayOneParameter(0, 5, 12);
             this.displayOneParameter(0, 6, 13);
-            this.displayOneParameter(0, 7, 14);
             break;
+        case 5:
+            this.displayOneParameter(0, 0, 14);break;
         default:
             break;
         }

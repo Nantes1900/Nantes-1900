@@ -6,6 +6,9 @@ package fr.nantes1900.view.isletprocess;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -30,13 +33,19 @@ public class NavigationBarView extends JPanel {
     protected JPanel pCentral = new JPanel();
 
     public NavigationBarView() {
-        this.pCentral.setLayout(new FlowLayout(FlowLayout.CENTER));
-        pCentral.add(title);
-        pCentral.add(bLaunch);
+        this.pCentral.setLayout(new GridBagLayout());
+        pCentral.add(this.bBack, new GridBagConstraints(0, 0, 1, 1, 0, 1,
+                GridBagConstraints.PAGE_START, GridBagConstraints.NONE,
+                new Insets(8, 8, 8, 8), 0, 5));
+        pCentral.add(this.title, new GridBagConstraints(1, 0, 1, 1, 0, 1,
+                GridBagConstraints.CENTER, GridBagConstraints.NONE,
+                new Insets(8, 8, 8, 8), 0, 5));
+        pCentral.add(this.bLaunch, new GridBagConstraints(2, 0, 1, 1, 0, 1,
+                GridBagConstraints.PAGE_START, GridBagConstraints.NONE,
+                new Insets(8, 8, 8, 8), 0, 5));
         this.setLayout(new BorderLayout());
         this.add(bAbort, BorderLayout.WEST);
         this.add(pCentral, BorderLayout.CENTER);
-        this.add(bBack, BorderLayout.EAST);
         this.setMinimumSize(new Dimension(100, 50));
         this.refreshStepTitle(AbstractBuildingsIslet.FIRST_STEP);
     }

@@ -11,6 +11,8 @@ import java.awt.Insets;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
+import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.PFrame;
 import fr.nantes1900.view.display3d.Universe3DView;
 
@@ -82,8 +84,8 @@ public class IsletProcessView extends PFrame {
         jspParameters
                 .setMinimumSize(new Dimension(pView.getPreferredWidth(), 0));
         this.tabs = new JTabbedPane();
-        this.tabs.addTab("Paramètres", this.jspParameters);
-        this.tabs.addTab("Arbre", this.itView);
+        this.tabs.addTab(FileTools.readElementText(TextsKeys.KEY_PARAMETERS), this.jspParameters);
+        this.tabs.addTab(FileTools.readElementText(TextsKeys.KEY_TREEVIEW), this.itView);
         this.pComponents.setLayout(new GridBagLayout());
 
         this.pComponents.add(this.nbView, new GridBagConstraints(0, 0, 2, 1,
@@ -99,6 +101,7 @@ public class IsletProcessView extends PFrame {
         this.pComponents.add(this.cView, new GridBagConstraints(1, 2, 1, 1,
                 0.60, 0.20, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(5, 5, 10, 10), 0, 0));
+        this.setStatusBarText(FileTools.readElementText(TextsKeys.KEY_STATUS_STEP1));
     }
 
     /**

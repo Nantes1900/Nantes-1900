@@ -126,10 +126,13 @@ public class IsletSelectionController implements ElementsSelectedListener {
             // TODO : put this text in the text file (or XML for Luc).
             JOptionPane
                     .showMessageDialog(
-                            this.isView,
-                            "Sélectionnez un îlot dans l'arbre\npuis "
-                                    + "sélectionnez des triangles pour créer la normale.",
-                            "Sauvegarde impossible", JOptionPane.ERROR_MESSAGE);
+                            this.isView,FileTools.readHelpMessage(
+                                    TextsKeys.KEY_COMPUTEGRAVITY, 
+                                    TextsKeys.MESSAGETYPE_MESSAGE),
+                                    FileTools.readHelpMessage(
+                                            TextsKeys.KEY_COMPUTEGRAVITY, 
+                                            TextsKeys.MESSAGETYPE_TITLE), 
+                                            JOptionPane.ERROR_MESSAGE);
         }
 
         return normalSaved;
@@ -211,10 +214,13 @@ public class IsletSelectionController implements ElementsSelectedListener {
             JOptionPane
                     .showMessageDialog(
                             this.isView,
-                            "Veuillez sélectionner un îlot et une normale pour "
-                                    + "lancer le traitement\nou sélectionnez \"Utiliser la normale "
-                                    + "orientée selon la gravité\n",
-                            "Traitement impossible", JOptionPane.ERROR_MESSAGE);
+                            FileTools.readHelpMessage(
+                                    TextsKeys.KEY_LAUNCHISLET, 
+                                    TextsKeys.MESSAGETYPE_MESSAGE),
+                                    FileTools.readHelpMessage(
+                                            TextsKeys.KEY_LAUNCHISLET, 
+                                            TextsKeys.MESSAGETYPE_TITLE),
+                                            JOptionPane.ERROR_MESSAGE);
         }
 
         return processLaunched;
@@ -260,14 +266,16 @@ public class IsletSelectionController implements ElementsSelectedListener {
                 + "/gravity_normal.stl");
         if (!gravityNormal.exists()) {
             JOptionPane.showMessageDialog(this.isView,
-                    "La normale orientée selon la gravité n'a pas été trouvée "
-                            + "dans le dossier ouvert.\nVeuillez en créer "
-                            + "une nouvelle.",
-                    "Normale orientée selon la gravité inexistante",
-                    JOptionPane.INFORMATION_MESSAGE);
+                    FileTools.readHelpMessage(
+                            TextsKeys.KEY_UPDATEMOCKUP, 
+                            TextsKeys.MESSAGETYPE_MESSAGE),
+                            FileTools.readHelpMessage(
+                                    TextsKeys.KEY_UPDATEMOCKUP, 
+                                    TextsKeys.MESSAGETYPE_TITLE),
+                                    JOptionPane.INFORMATION_MESSAGE);
             this.aController.setComputeNormalMode();
             this.isView.setStatusBarText(FileTools.readHelpMessage(
-                    "ISGravityNormal", TextsKeys.MESSAGETYPE_STATUSBAR));
+                    TextsKeys.KEY_IS_GRAVITYNORMAL, TextsKeys.MESSAGETYPE_STATUSBAR));
         } else {
             try {
                 // Reads the gravity normal in the file, and keeps it in memory.
@@ -278,7 +286,7 @@ public class IsletSelectionController implements ElementsSelectedListener {
                 e.printStackTrace();
             }
             this.isView.setStatusBarText(FileTools.readHelpMessage(
-                    "ISLaunchProcess", TextsKeys.MESSAGETYPE_STATUSBAR));
+                    TextsKeys.KEY_IS_LAUNCHPROCESS, TextsKeys.MESSAGETYPE_STATUSBAR));
             this.aController.setLaunchMode();
         }
     }

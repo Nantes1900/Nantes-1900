@@ -87,6 +87,33 @@ public final class TextsKeys {
     public static final String KEY_DISPLAYPOLYGONSLABEL = "DisplayPolygonsLabel";
     public static final String KEY_DISPLAYMESHESLABEL = "DisplayMeshesLabel";
 
+    public static final String KEY_TITLE = "Title";
+    public static final String KEY_TREEVIEW = "TreeView";
+    public static final String KEY_PARAMETERS = "Parameters";
+    public static final String KEY_CHARACTERISTICS = "Characteristics";
+    
+    public static final String KEY_STATUS_STEP1 = "StatusStep1";
+    
+    public static final String KEY_ALTITUDEERROR = "AltitureError";
+    public static final String KEY_ANGLEGROUNDERROR = "AngleGroundError";
+    public static final String KEY_LARGEANGLEGROUNDERROR = "LargeAngleGroundError";
+    public static final String KEY_BLOCKGROUNDSSIZEERROR = "BlockGroundsSizeError";
+    public static final String KEY_BLOCKBUILDINGSIZE = "BlockBuildingSize";
+    public static final String KEY_NORMALTOERROR = "NormalToError";
+    public static final String KEY_LARGEANGLEERROR = "LargeAngleError";
+    public static final String KEY_MIDDLEANGLEERROR = "MiddleAngleError";
+    public static final String KEY_PLANESERROR = "PlanesError";
+    public static final String KEY_ROOFANGLEERROR = "RoofAngleError";
+    public static final String KEY_ROOFSIZEERROR = "RoofSizeError";
+    public static final String KEY_WALLANGLEERROR = "WallAngleError";
+    public static final String KEY_WALLSIZEERROR = "WallSizeError";
+    public static final String KEY_ISORIENTEDFACTOR = "IsOrientedFactor";
+    
+    public static final String KEY_COMPUTEGRAVITY = "ComputeGravity";
+    public static final String KEY_LAUNCHISLET = "LaunchIslet";
+    public static final String KEY_UPDATEMOCKUP = "UpdateMockup";
+    public static final String KEY_TOVALID= "ToValid";
+    
     public TextsKeys() {
     }
 }

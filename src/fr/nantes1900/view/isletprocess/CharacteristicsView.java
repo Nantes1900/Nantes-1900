@@ -17,6 +17,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.view.components.HelpButton;
 
 /**
@@ -42,8 +43,8 @@ public class CharacteristicsView extends JPanel {
      */
     public CharacteristicsView() {
         this.setBorder(new TitledBorder(BorderFactory
-                .createRaisedSoftBevelBorder(), "Caractéristiques"));
-        this.bValidate = new JButton("Valider");
+                .createRaisedSoftBevelBorder(), TextsKeys.KEY_CHARACTERISTICS));
+        this.bValidate = new JButton(TextsKeys.KEY_TOVALID);
 
         // Disables the validate button for this empty characteristic panel
         this.bValidate.setEnabled(false);
