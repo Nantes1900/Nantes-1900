@@ -72,12 +72,12 @@ public class CharacteristicsView extends JPanel {
      * @return TODO .
      */
     protected static JPanel createSimpleCaracteristic(
-            final JComponent caracteristic, final String title,
+            final JComponent caracteristic, final JLabel title,
             final HelpButton helpButton) {
         JPanel caracteristicPanel = new JPanel();
 
         caracteristicPanel.setLayout(new GridBagLayout());
-        caracteristicPanel.add(new JLabel(title), new GridBagConstraints(0, 0,
+        caracteristicPanel.add(title, new GridBagConstraints(0, 0,
                 1, 1, 0.0, 0.0, GridBagConstraints.CENTER,
                 GridBagConstraints.HORIZONTAL, new Insets(0, 10, 5, 10), 0, 0));
         caracteristicPanel.add(caracteristic, new GridBagConstraints(1, 0, 1,

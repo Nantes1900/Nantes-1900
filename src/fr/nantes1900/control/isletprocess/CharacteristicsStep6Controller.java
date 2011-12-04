@@ -69,13 +69,29 @@ public class CharacteristicsStep6Controller extends
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                CharacteristicsStep6Controller.this.parentController.refreshViews();
+                CharacteristicsStep6Controller.this.parentController
+                        .refreshViews();
             }
         });
     }
 
-    public ArrayList<Surface> getSurfaces() {
-        return this.surfacesList;
+    @Override
+    public void addSurfaceSelected(Surface surfaceSelected) {
+        if (this.surfaceLocked)
+        {
+            this.surfacesList.add(surfaceSelected);
+            modifyViewCharacteristics();
+        }
+    }
+
+    @Override
+    public boolean removeSurfaceSelected(Surface surfaceSelected) {
+        if (this.surfaceLocked)
+        {
+            surfacesList.remove(surfaceSelected);
+            modifyViewCharacteristics();
+        }
+        return surfacesList.isEmpty();
     }
 
     @Override

@@ -5,7 +5,6 @@ package fr.nantes1900.control.isletprocess;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -16,6 +15,7 @@ import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
+import fr.nantes1900.view.isletprocess.CharacteristicsStep4View;
 
 /**
  * Characteristics panel for the fourth step of process of an islet. TODO
@@ -34,7 +34,8 @@ public class CharacteristicsStep4Controller extends
             IsletProcessController parentController, Triangle triangleSelected) {
         super(parentController, triangleSelected);
 
-        this.cView = new CharacteristicsStep2View();
+        this.cView = new CharacteristicsStep4View();
+        modifyViewCharacteristics();
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
@@ -73,20 +74,11 @@ public class CharacteristicsStep4Controller extends
         });
     }
 
-    public void addTriangleSelected(Triangle triangleSelected) {
-        this.trianglesList.add(triangleSelected);
-        ((CharacteristicsStep2View) this.cView).setType("");
-    }
-
-    public ArrayList<Triangle> getTriangles() {
-        return this.trianglesList;
-    }
-
     @Override
     public void modifyViewCharacteristics() {
         if (trianglesList.size() == 1) {
             try {
-                ((CharacteristicsStep2View) this.cView)
+                ((CharacteristicsStep4View) this.cView)
                         .setType(parentController.getBiController()
                                 .getCharacteristics4(trianglesList.get(0)));
             } catch (InvalidCaseException e) {
@@ -94,7 +86,7 @@ public class CharacteristicsStep4Controller extends
                 e.printStackTrace();
             }
         } else {
-            ((CharacteristicsStep2View) this.cView).setType("");
+            ((CharacteristicsStep4View) this.cView).setType("");
         }
     }
 }

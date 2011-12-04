@@ -5,7 +5,6 @@ package fr.nantes1900.control.isletprocess;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -14,7 +13,6 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
-import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep3TrianglesView;
 
 /**
@@ -61,13 +59,6 @@ public class CharacteristicsStep3TrianglesController extends
             }
 
         });
-    }
-
-    public void addTriangleSelected(Triangle triangleSelected) {
-    }
-
-    public ArrayList<Triangle> getTriangles() {
-        return this.trianglesList;
     }
 
     @Override

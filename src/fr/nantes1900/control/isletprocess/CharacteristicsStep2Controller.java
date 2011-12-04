@@ -36,6 +36,7 @@ public class CharacteristicsStep2Controller extends
         super(parentController, triangleSelected);
 
         this.cView = new CharacteristicsStep2View();
+        modifyViewCharacteristics();
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override

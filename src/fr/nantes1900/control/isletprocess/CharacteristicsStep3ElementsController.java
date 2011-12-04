@@ -36,7 +36,8 @@ public class CharacteristicsStep3ElementsController extends
         super(parentController, elementSelected);
 
         this.cView = new CharacteristicsStep3ElementsView();
-        ((CharacteristicsStep3ElementsView) this.cView).setType("");
+        modifyViewCharacteristics();
+        
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
@@ -78,11 +79,6 @@ public class CharacteristicsStep3ElementsController extends
         });
     }
 
-    public void addSurfaceSelected(Surface surfaceSelected) {
-        surfacesList.add(surfaceSelected);
-        ((CharacteristicsStep3ElementsView) this.cView).setType("");
-    }
-
     @Override
     public void modifyViewCharacteristics() {
         if (surfacesList.size() == 1) {
@@ -97,11 +93,5 @@ public class CharacteristicsStep3ElementsController extends
         } else {
             ((CharacteristicsStep3ElementsView) this.cView).setType("");
         }
-    }
-
-    public boolean removeSurfaceSelected(Surface surfaceSelected) {
-        surfacesList.remove(surfaceSelected);
-
-        return surfacesList.isEmpty();
     }
 }

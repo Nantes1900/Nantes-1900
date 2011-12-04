@@ -4,6 +4,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
 import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.utils.FileTools;
@@ -28,6 +29,8 @@ public class CharacteristicsStep5View extends CharacteristicsView {
      */
     private JCheckBox cbNoise;
 
+    private JLabel lMerge;
+
     /**
      * TODO .
      */
@@ -38,38 +41,53 @@ public class CharacteristicsStep5View extends CharacteristicsView {
 
             @Override
             public void itemStateChanged(final ItemEvent arg0) {
-                if (((JCheckBox) arg0.getSource()).isSelected()) {
-                    CharacteristicsStep5View.this.getCBMerge()
+                if (((JCheckBox) arg0.getSource()).isSelected())
+                {
+                    CharacteristicsStep5View.this.bValidate.setEnabled(true);
+                    CharacteristicsStep5View.this.getCBNoise()
                             .setEnabled(false);
-                } else {
-                    CharacteristicsStep5View.this.getCBMerge().setEnabled(true);
+                } else
+                {
+                    CharacteristicsStep5View.this.getCBNoise().setEnabled(true);
                 }
             }
 
         });
-        this.addCaracteristic(createSimpleCaracteristic(this.cbMerge,
-                FileTools.readElementText(TextsKeys.KEY_MERGETEXT),
+        lMerge = new JLabel(FileTools.readElementText(TextsKeys.KEY_MERGETEXT));
+        this.addCaracteristic(createSimpleCaracteristic(this.cbMerge, lMerge,
                 new HelpButton()));
         this.cbNoise = new JCheckBox();
         this.cbNoise.addItemListener(new ItemListener() {
 
             @Override
             public void itemStateChanged(final ItemEvent arg0) {
-                if (((JCheckBox) arg0.getSource()).isSelected()) {
-                    CharacteristicsStep5View.this.getCBMerge()
-                            .setEnabled(false);
+                if (((JCheckBox) arg0.getSource()).isSelected())
+                {
+                    if (CharacteristicsStep5View.this.lMerge.isEnabled())
+                    {
+                        CharacteristicsStep5View.this.getCBMerge().setEnabled(
+                                false);
+                    }
+
                     CharacteristicsStep5View.this.bValidate.setEnabled(true);
-                } else {
-                    CharacteristicsStep5View.this.getCBMerge().setEnabled(true);
+                } else
+                {
+                    if (CharacteristicsStep5View.this.lMerge.isEnabled())
+                    {
+                        CharacteristicsStep5View.this.getCBMerge().setEnabled(
+                                true);
+                    }
                     CharacteristicsStep5View.this.bValidate.setEnabled(false);
                 }
             }
 
         });
-        this.addCaracteristic(createSimpleCaracteristic(this.cbNoise,
-                FileTools.readElementText(TextsKeys.KEY_PUTINNOISETEXT),
+
+        this.addCaracteristic(createSimpleCaracteristic(
+                this.cbNoise,
+                new JLabel(FileTools
+                        .readElementText(TextsKeys.KEY_PUTINNOISETEXT)),
                 new HelpButton()));
-        this.bValidate.setEnabled(true);
     }
 
     /**
@@ -86,6 +104,14 @@ public class CharacteristicsStep5View extends CharacteristicsView {
      */
     public final JCheckBox getCBMerge() {
         return this.cbMerge;
+    }
+
+    /**
+     * Getter.
+     * @return TODO .
+     */
+    public final JCheckBox getCBNoise() {
+        return this.cbNoise;
     }
 
     /**
@@ -111,5 +137,6 @@ public class CharacteristicsStep5View extends CharacteristicsView {
      */
     public final void setMergeEnable(final boolean mergeEnable) {
         this.cbMerge.setEnabled(mergeEnable);
+        this.lMerge.setEnabled(mergeEnable);
     }
 }
