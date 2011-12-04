@@ -83,6 +83,9 @@ public class SurfaceView extends Shape3D {
 
         this.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
         this.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
+        
+        this.setCapability(Shape3D.ALLOW_GEOMETRY_READ);
+        this.setCapability(Shape3D.ALLOW_GEOMETRY_WRITE);
 
         this.appearance.setCapability(Appearance.ALLOW_MATERIAL_READ);
         this.appearance.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
