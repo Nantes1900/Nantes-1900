@@ -3,19 +3,20 @@
  */
 package fr.nantes1900.view.isletprocess;
 
+import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.text.DecimalFormat;
 
+import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 
 import fr.nantes1900.constants.SeparationBuildings;
 import fr.nantes1900.constants.SeparationGroundBuilding;
@@ -34,9 +35,17 @@ public class ParametersView extends JPanel {
     
     protected JLabel[] property;
     protected ValueProperty[] value;
+    protected JButton bSave = new JButton("Save");
+    protected JButton bLoad = new JButton("Load");
+    protected JButton bShow = new JButton("Show");
+    
+    protected JPanel pTop;
+    protected JPanel pCenter;
+    protected JPanel pBottom;
+    
     private final Dimension valueDimension = new Dimension(50, 30);
     private final Dimension labelDimension = new Dimension(140, 30);
-
+    
     public ParametersView() {
         this.property = new JLabel[15];
         this.value = new ValueProperty[15];
@@ -86,22 +95,30 @@ public class ParametersView extends JPanel {
             this.property[i].setPreferredSize(this.labelDimension);
         }
   
-        this.displayParameters(AbstractBuildingsIslet.FIRST_STEP);
+        this.setLayout(new BorderLayout());
+        pTop = new JPanel();
+        pCenter = new JPanel();
+        pBottom = new JPanel();
+        this.add(pTop, BorderLayout.NORTH);
+        this.add(pCenter, BorderLayout.CENTER);
+        this.add(pBottom, BorderLayout.SOUTH);
         
+        this.displayParameters(AbstractBuildingsIslet.FIRST_STEP);
+        this.displayButtons();
     }
 
     private void displayOneParameter(int x, int y, int n) {
-        this.add(this.property[n], new GridBagConstraints(x, y, 1, 1, 0, 0,
+        this.pCenter.add(this.property[n], new GridBagConstraints(x, y, 1, 1, 0, 0,
                 GridBagConstraints.PAGE_START, GridBagConstraints.HORIZONTAL,
                 new Insets(8, 8, 8, 8), 0, 5));
-        this.add(this.value[n], new GridBagConstraints(x+1, y, 1, 1, 0, 0,
+        this.pCenter.add(this.value[n], new GridBagConstraints(x+1, y, 1, 1, 0, 0,
                 GridBagConstraints.PAGE_START, GridBagConstraints.HORIZONTAL,
                 new Insets(8, 8, 8, 8), 0, 5));
     }
 
     public void displayParameters(int i) {
-        this.removeAll();
-        this.setLayout(new GridBagLayout());
+        this.pCenter.removeAll();
+        this.pCenter.setLayout(new GridBagLayout());
         switch (i) {
         case 1:
             this.displayOneParameter(0, 0, 1);
@@ -130,6 +147,14 @@ public class ParametersView extends JPanel {
             break;
         }
     }
+    
+    private void displayButtons(){
+        this.pTop.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        this.pTop.add(this.bLoad);
+        this.pTop.add(this.bSave);
+        this.pBottom.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        this.pBottom.add(this.bShow);
+    }
 
     public int getPreferredWidth() {
         // width of each + little margin
@@ -137,14 +162,42 @@ public class ParametersView extends JPanel {
     }
 
     public double getValueProperty(int i) {
-        return (double) (this.value[i]).getValue();
+        return  ((Number)(this.value[i]).getValue()).doubleValue();
     }
 
-    public class ValueProperty extends JFormattedTextField {
+    public JButton getSaveButton(){
+        return this.bSave;
+    }
+    
+    public JButton getLoadButton(){
+        return this.bLoad;
+    }
+    
+    public JButton getShowButton(){
+        return this.bShow;
+    }
+    
+    private class ValueProperty extends JFormattedTextField {
         public ValueProperty(double f) {
             super(new DecimalFormat());
             this.setValue(f);
             this.setPreferredSize(ParametersView.this.valueDimension);
+        }
+    }
+    
+    private class PopupProperties extends JDialog{
+        protected JPanel pWest;
+        protected JPanel pEast;
+        
+        public PopupProperties(JFrame owner, String title, boolean modal){
+            super(owner, title, modal);
+            this.setSize(450, 900);
+            this.setLocationRelativeTo(null);
+            this.setResizable(true);
+            this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+            this.getContentPane().setLayout(new BorderLayout());
+            this.getContentPane().add(pWest, BorderLayout.WEST);
+            this.getContentPane().add(pEast, BorderLayout.EAST);
         }
     }
 }
