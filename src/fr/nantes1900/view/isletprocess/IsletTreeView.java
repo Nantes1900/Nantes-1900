@@ -13,13 +13,15 @@ import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import fr.nantes1900.constants.TextsKeys;
+
 /**
  * @author Camille
  */
 public class IsletTreeView extends JPanel {
 
     private JPopupMenu jpm = new JPopupMenu();
-    private JMenuItem mHide = new JMenuItem("Cacher l'élément sélectionné");
+    private JMenuItem mHide = new JMenuItem(TextsKeys.KEY_HIDEITEM);
     
     private JTree tree;
     private JScrollPane spTree;

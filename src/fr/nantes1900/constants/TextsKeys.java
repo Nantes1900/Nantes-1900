@@ -114,6 +114,8 @@ public final class TextsKeys {
     public static final String KEY_UPDATEMOCKUP = "UpdateMockup";
     public static final String KEY_TOVALID= "ToValid";
     
+    public static final String KEY_HIDEITEM= "HideItem";
+    
     public TextsKeys() {
     }
 }

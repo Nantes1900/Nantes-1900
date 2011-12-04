@@ -3,6 +3,8 @@
  */
 package fr.nantes1900.control.isletprocess;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -11,6 +13,7 @@ import fr.nantes1900.constants.SeparationGroundBuilding;
 import fr.nantes1900.constants.SeparationWallRoof;
 import fr.nantes1900.constants.SeparationWallsSeparationRoofs;
 import fr.nantes1900.constants.SimplificationSurfaces;
+import fr.nantes1900.control.isletprocess.IsletProcessController.UnexistingStepException;
 import fr.nantes1900.view.isletprocess.ParametersView;
 
 /**
@@ -25,6 +28,27 @@ public class ParametersController {
     public ParametersController(IsletProcessController parentController) {
         this.setParent(parentController);
         this.pView = new ParametersView();
+        this.pView.getLoadButton().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                //TODO
+            }
+        });
+        this.pView.getSaveButton().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                //TODO
+            }
+        });
+        this.pView.getShowButton().addActionListener(new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                //TODO
+            }
+        });
     }
 
     public void displayProcessingParameters(int i) {
