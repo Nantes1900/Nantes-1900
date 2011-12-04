@@ -49,7 +49,8 @@ public class CharacteristicsView extends JPanel {
         // Disables the validate button for this empty characteristic panel
         this.bValidate.setEnabled(false);
 
-        this.setMinimumSize(new Dimension(100, 100));
+        this.setMinimumSize(new Dimension(0, 100));
+        this.setPreferredSize(new Dimension(0, 100));
 
         this.pContent = new JPanel();
         FlowLayout contentLayout = new FlowLayout();

@@ -71,7 +71,7 @@ public class IsletProcessView extends PFrame {
             final ParametersView parametersView,
             final Universe3DView universe3dView) {
         super();
-        this.setMinimumSize(new Dimension(1100, 660));
+        this.setMinimumSize(new Dimension(1100, 700));
         this.setPreferredSize(new Dimension(1200, 900));
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -89,17 +89,17 @@ public class IsletProcessView extends PFrame {
         this.pComponents.setLayout(new GridBagLayout());
 
         this.pComponents.add(this.nbView, new GridBagConstraints(0, 0, 2, 1,
-                1.0, 0.20, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                1.0, 0.10, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
                 new Insets(10, 10, 5, 10), 0, 0));
 
         this.pComponents.add(this.tabs, new GridBagConstraints(0, 1, 1, 2,
                 0.40, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(5, 10, 5, 5), 0, 0));
         this.pComponents.add(this.u3DView, new GridBagConstraints(1, 1, 1, 1,
-                0.60, 0.60, GridBagConstraints.CENTER, GridBagConstraints.NONE,
+                0.60, 0.75, GridBagConstraints.CENTER, GridBagConstraints.NONE,
                 new Insets(5, 5, 5, 10), 0, 0));
         this.pComponents.add(this.cView, new GridBagConstraints(1, 2, 1, 1,
-                0.60, 0.20, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
+                0.60, 0.15, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(5, 5, 10, 10), 0, 0));
         this.setStatusBarText(FileTools.readElementText(TextsKeys.KEY_STATUS_STEP1));
     }

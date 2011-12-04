@@ -606,6 +606,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         {
             this.unSelectTriangles(m);
         }
+        fireNewTrianglesSelection();
     }
 
     /**
