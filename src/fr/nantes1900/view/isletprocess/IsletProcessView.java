@@ -96,7 +96,7 @@ public class IsletProcessView extends PFrame {
                 0.40, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(5, 10, 5, 5), 0, 0));
         this.pComponents.add(this.u3DView, new GridBagConstraints(1, 1, 1, 1,
-                0.60, 0.75, GridBagConstraints.CENTER, GridBagConstraints.NONE,
+                0.60, 0.75, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(5, 5, 5, 10), 0, 0));
         this.pComponents.add(this.cView, new GridBagConstraints(1, 2, 1, 1,
                 0.60, 0.15, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
