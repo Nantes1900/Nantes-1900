@@ -79,11 +79,6 @@ public class CharacteristicsStep3ElementsController extends
         });
     }
 
-    public void addSurfaceSelected(Surface surfaceSelected) {
-        surfacesList.add(surfaceSelected);
-        ((CharacteristicsStep3ElementsView) this.cView).setType("");
-    }
-
     @Override
     public void modifyViewCharacteristics() {
         if (surfacesList.size() == 1) {
@@ -98,11 +93,5 @@ public class CharacteristicsStep3ElementsController extends
         } else {
             ((CharacteristicsStep3ElementsView) this.cView).setType("");
         }
-    }
-
-    public boolean removeSurfaceSelected(Surface surfaceSelected) {
-        surfacesList.remove(surfaceSelected);
-
-        return surfacesList.isEmpty();
     }
 }

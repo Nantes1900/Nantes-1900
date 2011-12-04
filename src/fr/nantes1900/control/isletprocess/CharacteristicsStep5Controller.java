@@ -5,7 +5,6 @@ package fr.nantes1900.control.isletprocess;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -78,21 +77,13 @@ public class CharacteristicsStep5Controller extends
         });
     }
 
-    public void addSurfaceSelected(Surface surfaceSelected) {
-        this.surfacesList.add(surfaceSelected);
-    }
-
-    public ArrayList<Surface> getSurfaces() {
-        return this.surfacesList;
-    }
-
     @Override
     public void modifyViewCharacteristics() {
         ((CharacteristicsStep5View) cView).deselectAll();
-        if (surfacesList.size() > 1) {
-            ((CharacteristicsStep5View) cView).setMergeEnable(true);
-        } else {
+        if (surfacesList.size() == 1) {
             ((CharacteristicsStep5View) cView).setMergeEnable(false);
+        } else {
+            ((CharacteristicsStep5View) cView).setMergeEnable(true);
         }
     }
 }

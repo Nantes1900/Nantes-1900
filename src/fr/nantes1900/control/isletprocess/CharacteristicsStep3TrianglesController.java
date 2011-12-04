@@ -5,7 +5,6 @@ package fr.nantes1900.control.isletprocess;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 
@@ -60,13 +59,6 @@ public class CharacteristicsStep3TrianglesController extends
             }
 
         });
-    }
-
-    public void addTriangleSelected(Triangle triangleSelected) {
-    }
-
-    public ArrayList<Triangle> getTriangles() {
-        return this.trianglesList;
     }
 
     @Override

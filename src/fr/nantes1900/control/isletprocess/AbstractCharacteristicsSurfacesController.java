@@ -34,4 +34,8 @@ public abstract class AbstractCharacteristicsSurfacesController extends
         modifyViewCharacteristics();
         return surfacesList.isEmpty();
     }
+    
+    public ArrayList<Surface> getSurfaces() {
+        return this.surfacesList;
+    }
 }
