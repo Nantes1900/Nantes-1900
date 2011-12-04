@@ -10,10 +10,12 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import fr.nantes1900.constants.Icones;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.utils.FileTools;
@@ -21,18 +23,20 @@ import fr.nantes1900.utils.FileTools;
 /**
  * @author Camille
  */
+
 public class NavigationBarView extends JPanel {
 
     protected JButton bAbort = new JButton(
-            FileTools.readElementText(TextsKeys.KEY_ABORTBUTTON));
+            new ImageIcon(Icones.abort));
     protected JButton bLaunch = new JButton(
-            FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
+            new ImageIcon(Icones.launch));
     protected JButton bBack = new JButton(
-            FileTools.readElementText(TextsKeys.KEY_BACKBUTTON));
+            new ImageIcon(Icones.back));
     protected JLabel title = new JLabel();
     protected JPanel pCentral = new JPanel();
 
     public NavigationBarView() {
+        //Layout
         this.pCentral.setLayout(new GridBagLayout());
         pCentral.add(this.bBack, new GridBagConstraints(0, 0, 1, 1, 0, 1,
                 GridBagConstraints.PAGE_START, GridBagConstraints.NONE,
@@ -47,6 +51,13 @@ public class NavigationBarView extends JPanel {
         this.add(bAbort, BorderLayout.WEST);
         this.add(pCentral, BorderLayout.CENTER);
         this.setMinimumSize(new Dimension(100, 50));
+        //Tooltips
+        this.bLaunch.setToolTipText(
+                FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
+        this.bBack.setToolTipText(FileTools.readElementText(TextsKeys.KEY_BACKBUTTON));
+        this.bAbort.setToolTipText(FileTools.readElementText(TextsKeys.KEY_ABORTBUTTON));
+        //refresh the title and enable the buttons launch
+        //and previous process or not
         this.refreshStepTitle(AbstractBuildingsIslet.FIRST_STEP);
     }
 

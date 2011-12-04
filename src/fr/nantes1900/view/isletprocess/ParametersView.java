@@ -11,6 +11,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.text.DecimalFormat;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
@@ -18,6 +19,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import fr.nantes1900.constants.Icones;
 import fr.nantes1900.constants.SeparationBuildings;
 import fr.nantes1900.constants.SeparationGroundBuilding;
 import fr.nantes1900.constants.SeparationWallRoof;
@@ -35,9 +37,12 @@ public class ParametersView extends JPanel {
     
     protected JLabel[] property;
     protected ValueProperty[] value;
-    protected JButton bSave = new JButton("Save");
-    protected JButton bLoad = new JButton("Load");
-    protected JButton bShow = new JButton("Show");
+    protected JButton bSave = new JButton(
+            new ImageIcon(Icones.save));
+    protected JButton bLoad = new JButton(
+            new ImageIcon(Icones.open));
+    protected JButton bShow = new JButton(
+            new ImageIcon(Icones.showProperties));
     
     protected JPanel pTop;
     protected JPanel pCenter;
@@ -47,6 +52,7 @@ public class ParametersView extends JPanel {
     private final Dimension labelDimension = new Dimension(140, 30);
     
     public ParametersView() {
+        //init parameters
         this.property = new JLabel[15];
         this.value = new ValueProperty[15];
         this.property[1] = new JLabel(FileTools.readElementText(TextsKeys.KEY_ALTITUDEERROR));        
@@ -90,11 +96,12 @@ public class ParametersView extends JPanel {
         this.property[14] = new JLabel(FileTools.readElementText(TextsKeys.KEY_ISORIENTEDFACTOR));
         this.value[14] = new ValueProperty(
                 SimplificationSurfaces.getIsOrientedFactor());
-        
+        //dimensions of the formatted text fields
         for (int i=1; i<=14; i++){
             this.property[i].setPreferredSize(this.labelDimension);
         }
   
+        //layout
         this.setLayout(new BorderLayout());
         pTop = new JPanel();
         pCenter = new JPanel();
@@ -103,7 +110,15 @@ public class ParametersView extends JPanel {
         this.add(pCenter, BorderLayout.CENTER);
         this.add(pBottom, BorderLayout.SOUTH);
         
+        //displays the parameters
         this.displayParameters(AbstractBuildingsIslet.FIRST_STEP);
+        
+        //tooltips of the buttons
+        this.bSave.setToolTipText("Sauvegarder les paramètres");
+        this.bLoad.setToolTipText("Charger les paramètres");
+        this.bShow.setToolTipText("Afficher tous les paramètres");
+        
+        //displays the buttons
         this.displayButtons();
     }
 

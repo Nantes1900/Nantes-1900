@@ -1,8 +1,8 @@
 ﻿﻿#date
-OpenButton=Ouvrir
-LaunchButton=Lancer
-AbortButton=Arrêter
-BackButton=Retourner
+OpenButton=Ouvrir un fichier de maillage
+LaunchButton=Lancer le traitement
+AbortButton=Arrêter le traitement de cet îlot
+BackButton=Retourner au traitement précédent
 ProcessTitle1=Découper en sol et bâtiment (1/6)
 ProcessTitle2=Découper les bâtiments entre eux (2/6)
 ProcessTitle3=Séparer les murs et les toits de chaque bâtiment (3/6)

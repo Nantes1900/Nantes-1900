@@ -11,12 +11,14 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
+import fr.nantes1900.constants.Icones;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.view.components.HelpButton;
 
@@ -44,7 +46,8 @@ public class CharacteristicsView extends JPanel {
     public CharacteristicsView() {
         this.setBorder(new TitledBorder(BorderFactory
                 .createRaisedSoftBevelBorder(), TextsKeys.KEY_CHARACTERISTICS));
-        this.bValidate = new JButton(TextsKeys.KEY_TOVALID);
+        this.bValidate = new JButton(new ImageIcon(Icones.validate));
+        this.bValidate.setToolTipText(TextsKeys.KEY_TOVALID);
 
         // Disables the validate button for this empty characteristic panel
         this.bValidate.setEnabled(false);
