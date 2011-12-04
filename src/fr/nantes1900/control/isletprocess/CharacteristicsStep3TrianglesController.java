@@ -5,6 +5,7 @@ package fr.nantes1900.control.isletprocess;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -27,11 +28,11 @@ public class CharacteristicsStep3TrianglesController extends
     /**
      * Constructor.
      * @param parentController
-     * @param triangleSelected
+     * @param trianglesSelected
      */
     public CharacteristicsStep3TrianglesController(
-            IsletProcessController parentController, Triangle triangleSelected) {
-        super(parentController, triangleSelected);
+            IsletProcessController parentController, List<Triangle> trianglesSelected) {
+        super(parentController, trianglesSelected);
         this.cView = new CharacteristicsStep3TrianglesView();
 
         this.cView.getValidateButton().addActionListener(new ActionListener() {
@@ -59,6 +60,7 @@ public class CharacteristicsStep3TrianglesController extends
             }
 
         });
+        modifyViewCharacteristics();
     }
 
     @Override

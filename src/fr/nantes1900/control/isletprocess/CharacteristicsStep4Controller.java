@@ -5,6 +5,7 @@ package fr.nantes1900.control.isletprocess;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.JOptionPane;
 
@@ -14,7 +15,6 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
-import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep4View;
 
 /**
@@ -28,19 +28,18 @@ public class CharacteristicsStep4Controller extends
     /**
      * Constructor.
      * @param parentController
-     * @param triangleSelected
+     * @param trianglesSelected
      */
     public CharacteristicsStep4Controller(
-            IsletProcessController parentController, Triangle triangleSelected) {
-        super(parentController, triangleSelected);
+            IsletProcessController parentController, List<Triangle> trianglesSelected) {
+        super(parentController, trianglesSelected);
 
         this.cView = new CharacteristicsStep4View();
-        modifyViewCharacteristics();
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                String typeChosen = ((CharacteristicsStep2View) cView)
+                String typeChosen = ((CharacteristicsStep4View) cView)
                         .getTypeSelected();
 
                 int actionType = -1;
@@ -72,6 +71,7 @@ public class CharacteristicsStep4Controller extends
             }
 
         });
+        modifyViewCharacteristics();
     }
 
     @Override
