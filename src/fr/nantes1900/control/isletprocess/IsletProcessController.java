@@ -90,10 +90,6 @@ public class IsletProcessController implements ElementsSelectedListener {
         this.u3DController.getUniverse3DView().setToolbar(
                 this.f3DController.getToolbar());
 
-        this.f3DController
-                .setSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
-        this.f3DController.setDisplayType(Universe3DController.DISPLAY_MESH_MODE);
-        this.f3DController.setEnableDisplayType(false, Universe3DController.DISPLAY_POLYGON_MODE);
 
         this.biController.setUniverse3DController(this.u3DController);
         this.biController.display();
@@ -104,6 +100,7 @@ public class IsletProcessController implements ElementsSelectedListener {
                 this.pController.getView(),
                 this.u3DController.getUniverse3DView());
 
+        setToolbarButtons();
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
     }
@@ -117,9 +114,11 @@ public class IsletProcessController implements ElementsSelectedListener {
         if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE) {
             u3DController
                     .changeSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
+            setDefaultCharacterisitcsPanel();
         } else if (selectionMode == Universe3DController.SELECTION_SURFACE_MODE) {
             u3DController
                     .changeSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
+            setDefaultCharacterisitcsPanel();
         }
     }
 
@@ -176,6 +175,7 @@ public class IsletProcessController implements ElementsSelectedListener {
         this.itController.refreshView();
         this.nbController.getView().refreshStepTitle(this.getProgression());
         this.biController.display();
+        setDefaultCharacterisitcsPanel();
     }
 
     public void loadParameters() {
@@ -201,9 +201,30 @@ public class IsletProcessController implements ElementsSelectedListener {
     }
 
     private void setToolbarButtons() {
-        switch (getProgression()) {
-        case 2:
+        int step = getProgression();
+        
+        // Enabling / disabling specifics selection modes, beware of order of methods call
+        if (step == 1 || step == 5 || step == 6)
+        {
+            this.f3DController.setSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
+            this.f3DController.setEnableSelectionMode(false, Universe3DController.SELECTION_TRIANGLE_MODE);
+        } else
+        {
+            this.f3DController.setEnableSelectionMode(true, Universe3DController.SELECTION_TRIANGLE_MODE);
+            this.f3DController.setSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
         }
+        
+        // Enabling / disabling specifics display types
+        if (step == 6)
+        {
+            this.f3DController.setEnableDisplayType(true, Universe3DController.DISPLAY_POLYGON_MODE);
+            this.f3DController.setDisplayType(Universe3DController.DISPLAY_POLYGON_MODE);
+        } else
+        {
+            this.f3DController.setDisplayType(Universe3DController.DISPLAY_MESH_MODE);
+            this.f3DController.setEnableDisplayType(false, Universe3DController.DISPLAY_POLYGON_MODE);
+        }
+        
     }
 
     @Override
