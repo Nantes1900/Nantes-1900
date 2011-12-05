@@ -395,6 +395,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             this.surfacesSelected.add(surface);
             surfaceView.setMaterial(SurfaceView.MATERIAL_SELECTED);
             fireSurfaceSelected(surface);
+            showNeighbours(surface);
         } else {
             // surface already selected when clicked
             this.surfacesSelected.remove(surface);
