@@ -21,15 +21,15 @@ public final class FileTools {
     /**
      * TODO.
      */
-    private static final String ELEMENT_TEXTS_FILE = "files/elementTexts.txt";
+    private static final String ELEMENT_TEXTS_FILE = "res/texts/elementTexts.txt";
     /**
      * TODO.
      */
-    private static final String ERROR_MESSAGES_FILE = "files/errorMessages.txt";
+    private static final String ERROR_MESSAGES_FILE = "res/texts/errorMessages.txt";
     /**
      * TODO.
      */
-    private static final String HELP_MESSAGES_FILE = "files/helpMessages.txt";
+    private static final String HELP_MESSAGES_FILE = "res/texts/helpMessages.txt";
 
     /**
      * Private constructor.

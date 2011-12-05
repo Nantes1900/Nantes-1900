@@ -83,7 +83,7 @@ public class SurfaceView extends Shape3D {
 
         this.setCapability(Shape3D.ALLOW_APPEARANCE_READ);
         this.setCapability(Shape3D.ALLOW_APPEARANCE_WRITE);
-        
+
         this.setCapability(Shape3D.ALLOW_GEOMETRY_READ);
         this.setCapability(Shape3D.ALLOW_GEOMETRY_WRITE);
 
@@ -91,7 +91,8 @@ public class SurfaceView extends Shape3D {
         this.appearance.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
 
         // Read the texture.
-        TextureLoader loader = new TextureLoader("texture.jpg", null);
+        TextureLoader loader = new TextureLoader("res/texture/texture.jpg",
+                null);
         ImageComponent2D image = loader.getImage();
         Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGB,
                 image.getWidth(), image.getHeight());
