@@ -68,57 +68,6 @@ public class BuildingsIsletController {
     }
 
     /**
-     * Modifies characteristics of the list of surfaces (add neighbour, or
-     * remove). To call only in the sixth step.
-     * @param surfacesSelected
-     *            the list of surfaces
-     * @param currentSurface
-     *            the current surface, where to add or remove neighbours
-     * @param actionType
-     *            the type of action to make
-     * @throws InvalidCaseException
-     *             if the type of action is not possible in this method
-     */
-    public static final void action6(final List<Surface> surfacesSelected,
-            final Surface currentSurface, final int actionType)
-            throws InvalidCaseException {
-        if (actionType == ActionTypes.ADD_NEIGHBOURS) {
-            currentSurface.getNeighbours().addAll(surfacesSelected);
-        } else if (actionType == ActionTypes.REMOVE_NEIGHBOURS) {
-            currentSurface.getNeighbours().removeAll(surfacesSelected);
-        } else {
-            throw new InvalidCaseException();
-        }
-    }
-
-    /**
-     * Changes the order of the list of neighbours of one surface. To call only
-     * in the seventh step.
-     * @param surfaceToMove
-     *            the neighbour whose order has to be changed
-     * @param currentSurface
-     *            the surface we want to change neighbours order of
-     * @param actionType
-     *            the type of action
-     * @throws InvalidCaseException
-     *             if the type of action is not possible in this method
-     */
-    public static final void action7(final Surface surfaceToMove,
-            final Surface currentSurface, final int actionType)
-            throws InvalidCaseException {
-        List<Surface> neighbours = currentSurface.getNeighbours();
-        if (actionType == ActionTypes.UP_NEIGHBOUR) {
-            neighbours
-                    .set(neighbours.indexOf(surfaceToMove) - 1, surfaceToMove);
-        } else if (actionType == ActionTypes.DOWN_NEIGHBOUR) {
-            neighbours
-                    .set(neighbours.indexOf(surfaceToMove) + 1, surfaceToMove);
-        } else {
-            throw new InvalidCaseException();
-        }
-    }
-
-    /**
      * Resets the process to come back to the step 0.
      */
     public final void abortProcess() {
@@ -137,18 +86,21 @@ public class BuildingsIsletController {
      */
     public final void action2(final List<Triangle> trianglesSelected,
             final int type) throws InvalidCaseException {
+
         if (type == ActionTypes.TURN_TO_BUILDING) {
             // The user wants these triangles to turn building.
             this.islet.getBiStep2().getInitialGrounds().getMesh()
                     .removeAll(trianglesSelected);
             this.islet.getBiStep2().getInitialBuildings().getMesh()
                     .addAll(trianglesSelected);
+
         } else if (type == ActionTypes.TURN_TO_GROUND) {
             // The user wants these triangles to turn ground.
             this.islet.getBiStep2().getInitialBuildings().getMesh()
                     .removeAll(trianglesSelected);
             this.islet.getBiStep2().getInitialGrounds().getMesh()
                     .addAll(trianglesSelected);
+
         } else {
             throw new InvalidCaseException();
         }
@@ -164,16 +116,20 @@ public class BuildingsIsletController {
      * @throws InvalidCaseException
      *             if the type of action is not possible in this method
      */
+    // FIXME : bugs
     public final void action3(final List<Triangle> trianglesSelected,
             final int actionType) throws InvalidCaseException {
+
         if (actionType == ActionTypes.REMOVE) {
+            // The user wants these triangles to be removed.
             for (Building building : this.islet.getBiStep3().getBuildings()) {
-                BuildingStep3 buildingStep = building.getbStep3();
-                buildingStep.getInitialTotalSurface().getMesh()
+                building.getbStep3().getInitialTotalSurface().getMesh()
                         .removeAll(trianglesSelected);
             }
+
             this.islet.getBiStep3().getGrounds().getMesh()
                     .removeAll(trianglesSelected);
+
         } else {
             throw new InvalidCaseException();
         }
@@ -191,16 +147,20 @@ public class BuildingsIsletController {
      */
     public final void action3(final Surface surface, final int actionType)
             throws InvalidCaseException {
+
         if (actionType == ActionTypes.TURN_TO_NOISE) {
+            // The user wants the surface to turn to noise.
             this.islet.getBiStep3().getBuildings()
                     .remove(this.returnBuildingContaining3(surface));
             this.islet.getBiStep3().getNoise().getMesh()
                     .addAll(surface.getMesh());
+
         } else if (actionType == ActionTypes.TURN_TO_BUILDING) {
-            this.islet.getBiStep3().getBuildings()
-                    .add(new Building(surface.getMesh()));
+            // The user wants the surface to turn to building.
+            this.islet.getBiStep3().getBuildings().add(new Building(surface));
             this.islet.getBiStep3().getNoise().getMesh()
                     .removeAll(surface.getMesh());
+
         } else {
             throw new InvalidCaseException();
         }
@@ -223,15 +183,19 @@ public class BuildingsIsletController {
         BuildingStep4 buildingStep = building.getbStep4();
 
         if (actionType == ActionTypes.TURN_TO_WALL) {
-            buildingStep.getInitialWallSurface().getMesh()
-                    .addAll(trianglesSelected);
-            buildingStep.getInitialRoofSurface().getMesh()
-                    .remove(trianglesSelected);
+            // The user wants the triangles to turn to wall.
+            System.out.println(buildingStep.getInitialWallSurface().getMesh()
+                    .addAll(trianglesSelected));
+            System.out.println(buildingStep.getInitialRoofSurface().getMesh()
+                    .removeAll(trianglesSelected));
+
         } else if (actionType == ActionTypes.TURN_TO_ROOF) {
+            // The user wants the triangles to turn to roof.
             buildingStep.getInitialRoofSurface().getMesh()
                     .addAll(trianglesSelected);
             buildingStep.getInitialWallSurface().getMesh()
-                    .remove(trianglesSelected);
+                    .removeAll(trianglesSelected);
+
         } else {
             throw new InvalidCaseException();
         }
@@ -284,6 +248,57 @@ public class BuildingsIsletController {
         } catch (NotCoherentActionException e) {
             // TODO Implement the case when this exception is throwed.
             e.printStackTrace();
+        }
+    }
+
+    /**
+     * Modifies characteristics of the list of surfaces (add neighbour, or
+     * remove). To call only in the sixth step.
+     * @param surfacesSelected
+     *            the list of surfaces
+     * @param currentSurface
+     *            the current surface, where to add or remove neighbours
+     * @param actionType
+     *            the type of action to make
+     * @throws InvalidCaseException
+     *             if the type of action is not possible in this method
+     */
+    public final void action6(final List<Surface> surfacesSelected,
+            final Surface currentSurface, final int actionType)
+            throws InvalidCaseException {
+        if (actionType == ActionTypes.ADD_NEIGHBOURS) {
+            currentSurface.getNeighbours().addAll(surfacesSelected);
+        } else if (actionType == ActionTypes.REMOVE_NEIGHBOURS) {
+            currentSurface.getNeighbours().removeAll(surfacesSelected);
+        } else {
+            throw new InvalidCaseException();
+        }
+    }
+
+    /**
+     * Changes the order of the list of neighbours of one surface. To call only
+     * in the seventh step.
+     * @param surfaceToMove
+     *            the neighbour whose order has to be changed
+     * @param currentSurface
+     *            the surface we want to change neighbours order of
+     * @param actionType
+     *            the type of action
+     * @throws InvalidCaseException
+     *             if the type of action is not possible in this method
+     */
+    public final void action7(final Surface surfaceToMove,
+            final Surface currentSurface, final int actionType)
+            throws InvalidCaseException {
+        List<Surface> neighbours = currentSurface.getNeighbours();
+        if (actionType == ActionTypes.UP_NEIGHBOUR) {
+            neighbours
+                    .set(neighbours.indexOf(surfaceToMove) - 1, surfaceToMove);
+        } else if (actionType == ActionTypes.DOWN_NEIGHBOUR) {
+            neighbours
+                    .set(neighbours.indexOf(surfaceToMove) + 1, surfaceToMove);
+        } else {
+            throw new InvalidCaseException();
         }
     }
 
@@ -572,14 +587,10 @@ public class BuildingsIsletController {
                 this.islet.launchProcess3();
                 break;
             case AbstractBuildingsIslet.FOURTH_STEP:
-                System.out.println("fourth process");
                 this.islet.launchProcess4();
-                System.out.println("end");
                 break;
             case AbstractBuildingsIslet.FIFTH_STEP:
-                System.out.println("fifth process");
                 this.islet.launchProcess5();
-                System.out.println("end");
                 break;
             default:
                 throw new InvalidCaseException();
@@ -640,7 +651,7 @@ public class BuildingsIsletController {
         for (Building building : this.islet.getBiStep3().getBuildings()) {
             BuildingStep3 buildingStep = building.getbStep3();
             if (buildingStep.getInitialTotalSurface() == surface) {
-                return null;
+                return building;
             }
         }
         return null;
@@ -669,9 +680,9 @@ public class BuildingsIsletController {
         for (Building building : this.islet.getBiStep4().getBuildings()) {
             BuildingStep4 buildingStep = building.getbStep4();
             if (buildingStep.getInitialWallSurface().getMesh()
-                    .containsAll(trianglesSelected)
+                    .contains(trianglesSelected.get(0))
                     || buildingStep.getInitialRoofSurface().getMesh()
-                            .containsAll(trianglesSelected)) {
+                            .contains(trianglesSelected.get(0))) {
                 return building;
             }
         }
@@ -788,13 +799,13 @@ public class BuildingsIsletController {
         if (!this.islet.getBiStep2().getInitialBuildings().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep2().getInitialBuildings());
         } else {
-            // TODO
+            // TODO : pop-up
             System.out.println("Warning : initial buildings empty !");
         }
         if (!this.islet.getBiStep2().getInitialGrounds().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep2().getInitialGrounds());
         } else {
-            // TODO
+            // TODO : pop-up
             System.out.println("Warning : initial grounds empty !");
         }
 
@@ -807,15 +818,20 @@ public class BuildingsIsletController {
     public final void viewStep3() {
         List<Surface> surfacesList = new ArrayList<>();
 
-        if (!this.islet.getBiStep2().getInitialGrounds().getMesh().isEmpty()) {
+        if (!this.islet.getBiStep3().getGrounds().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep2().getInitialGrounds());
         } else {
-            // TODO
+            // TODO : pop-up
             System.out.println("Warning : initial grounds empty !");
         }
 
         for (Building building : this.islet.getBiStep3().getBuildings()) {
             surfacesList.add(building.getbStep3().getInitialTotalSurface());
+        }
+
+        if (!this.islet.getBiStep3().getNoise().getMesh().isEmpty()) {
+            this.islet.getBiStep3().getNoise().setNodeString("Noise");
+            surfacesList.add(this.islet.getBiStep3().getNoise());
         }
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);

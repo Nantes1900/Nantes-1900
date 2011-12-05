@@ -104,19 +104,19 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
 
         int counter = 0;
         for (Building b : this.buildings) {
-            root.add(b.returnNode3(counter));
-            counter++;
+            if (!b.getbStep3().getInitialTotalSurface().getMesh().isEmpty()) {
+                root.add(b.returnNode3(counter));
+                counter++;
+            }
         }
 
         this.grounds.setNodeString("Grounds");
         root.add(new DefaultMutableTreeNode(this.grounds));
 
-        // FIXME
-        // if (this.noise.getMesh() != null && !this.noise.getMesh().isEmpty())
-        // {
-        // this.noise.setNodeString("Noise");
-        // root.add(new DefaultMutableTreeNode(this.noise));
-        // }
+        if (!this.noise.getMesh().isEmpty()) {
+            this.noise.setNodeString("Noise");
+            root.add(new DefaultMutableTreeNode(this.noise));
+        }
 
         return root;
     }
