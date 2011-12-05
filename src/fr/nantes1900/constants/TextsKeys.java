@@ -115,6 +115,11 @@ public final class TextsKeys {
     public static final String KEY_TOVALID= "ToValid";
     
     public static final String KEY_HIDEITEM= "HideItem";
+
+    public static final String KEY_FILEPARAMEXTENSION = "FileParamExtension";
+    public static final String KEY_FILEPARAMDESCRIPTION = "FileParamDescription";
+
+    public static final String KEY_ERROR_INCORRECTPARAMETER = "ErrorIncorrectParameter";
     
     public TextsKeys() {
     }

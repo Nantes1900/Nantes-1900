@@ -51,3 +51,5 @@ IsOrientedFactor=Facteur d'orientation
 Characteristics=Caractéristiques
 ToValid=Valider
 HideItem=Cacher l'élément sélectionné
+FileParamExtension=txt
+FileParamDescription=Fichier texte

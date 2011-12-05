@@ -180,6 +180,10 @@ public class ParametersView extends JPanel {
         return  ((Number)(this.value[i]).getValue()).doubleValue();
     }
 
+    public void setValueProperty(int i, double newValue) {
+        this.value[i].setValue(newValue);
+    }
+
     public JButton getSaveButton(){
         return this.bSave;
     }
