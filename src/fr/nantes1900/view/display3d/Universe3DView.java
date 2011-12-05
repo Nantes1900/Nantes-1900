@@ -23,6 +23,7 @@ import javax.vecmath.Vector3f;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
+import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
@@ -235,7 +236,8 @@ public class Universe3DView extends JPanel {
         translationGroup2.setCapability(TransformGroup.ALLOW_TRANSFORM_WRITE);
         translationGroup2.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
         rotationGroup.addChild(translationGroup2);
-
+        
+       
         BranchGroup sceneRoot = new BranchGroup();
 
         for (SurfaceView surface : this.surfaceViewList) {
