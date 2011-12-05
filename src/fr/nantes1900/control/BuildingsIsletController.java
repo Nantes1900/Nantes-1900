@@ -82,11 +82,14 @@ public class BuildingsIsletController {
     public static final void action6(final List<Surface> surfacesSelected,
             final Surface currentSurface, final int actionType)
             throws InvalidCaseException {
-        if (actionType == ActionTypes.ADD_NEIGHBOURS) {
+        if (actionType == ActionTypes.ADD_NEIGHBOURS)
+        {
             currentSurface.getNeighbours().addAll(surfacesSelected);
-        } else if (actionType == ActionTypes.REMOVE_NEIGHBOURS) {
+        } else if (actionType == ActionTypes.REMOVE_NEIGHBOURS)
+        {
             currentSurface.getNeighbours().removeAll(surfacesSelected);
-        } else {
+        } else
+        {
             throw new InvalidCaseException();
         }
     }
@@ -107,13 +110,16 @@ public class BuildingsIsletController {
             final Surface currentSurface, final int actionType)
             throws InvalidCaseException {
         List<Surface> neighbours = currentSurface.getNeighbours();
-        if (actionType == ActionTypes.UP_NEIGHBOUR) {
+        if (actionType == ActionTypes.UP_NEIGHBOUR)
+        {
             neighbours
                     .set(neighbours.indexOf(surfaceToMove) - 1, surfaceToMove);
-        } else if (actionType == ActionTypes.DOWN_NEIGHBOUR) {
+        } else if (actionType == ActionTypes.DOWN_NEIGHBOUR)
+        {
             neighbours
                     .set(neighbours.indexOf(surfaceToMove) + 1, surfaceToMove);
-        } else {
+        } else
+        {
             throw new InvalidCaseException();
         }
     }
@@ -137,19 +143,22 @@ public class BuildingsIsletController {
      */
     public final void action2(final List<Triangle> trianglesSelected,
             final int type) throws InvalidCaseException {
-        if (type == ActionTypes.TURN_TO_BUILDING) {
+        if (type == ActionTypes.TURN_TO_BUILDING)
+        {
             // The user wants these triangles to turn building.
             this.islet.getBiStep2().getInitialGrounds().getMesh()
                     .removeAll(trianglesSelected);
             this.islet.getBiStep2().getInitialBuildings().getMesh()
                     .addAll(trianglesSelected);
-        } else if (type == ActionTypes.TURN_TO_GROUND) {
+        } else if (type == ActionTypes.TURN_TO_GROUND)
+        {
             // The user wants these triangles to turn ground.
             this.islet.getBiStep2().getInitialBuildings().getMesh()
                     .removeAll(trianglesSelected);
             this.islet.getBiStep2().getInitialGrounds().getMesh()
                     .addAll(trianglesSelected);
-        } else {
+        } else
+        {
             throw new InvalidCaseException();
         }
     }
@@ -166,15 +175,23 @@ public class BuildingsIsletController {
      */
     public final void action3(final List<Triangle> trianglesSelected,
             final int actionType) throws InvalidCaseException {
-        if (actionType == ActionTypes.REMOVE) {
-            for (Building building : this.islet.getBiStep3().getBuildings()) {
+        if (actionType == ActionTypes.REMOVE)
+        {
+            for (Building building : this.islet.getBiStep3().getBuildings())
+            {
                 BuildingStep3 buildingStep = building.getbStep3();
                 buildingStep.getInitialTotalSurface().getMesh()
                         .removeAll(trianglesSelected);
             }
             this.islet.getBiStep3().getGrounds().getMesh()
                     .removeAll(trianglesSelected);
-        } else {
+            //Remove the meshes selected from the list.
+            this.u3DController.getMeshesSelected().clear();
+            //Remove the triangles selected from the list.
+            trianglesSelected.clear();
+
+        } else
+        {
             throw new InvalidCaseException();
         }
     }
@@ -191,17 +208,20 @@ public class BuildingsIsletController {
      */
     public final void action3(final Surface surface, final int actionType)
             throws InvalidCaseException {
-        if (actionType == ActionTypes.TURN_TO_NOISE) {
+        if (actionType == ActionTypes.TURN_TO_NOISE)
+        {
             this.islet.getBiStep3().getBuildings()
                     .remove(this.returnBuildingContaining3(surface));
             this.islet.getBiStep3().getNoise().getMesh()
                     .addAll(surface.getMesh());
-        } else if (actionType == ActionTypes.TURN_TO_BUILDING) {
+        } else if (actionType == ActionTypes.TURN_TO_BUILDING)
+        {
             this.islet.getBiStep3().getBuildings()
                     .add(new Building(surface.getMesh()));
             this.islet.getBiStep3().getNoise().getMesh()
                     .removeAll(surface.getMesh());
-        } else {
+        } else
+        {
             throw new InvalidCaseException();
         }
     }
@@ -222,17 +242,20 @@ public class BuildingsIsletController {
                 .searchForBuildingContaining4(trianglesSelected);
         BuildingStep4 buildingStep = building.getbStep4();
 
-        if (actionType == ActionTypes.TURN_TO_WALL) {
+        if (actionType == ActionTypes.TURN_TO_WALL)
+        {
             buildingStep.getInitialWallSurface().getMesh()
                     .addAll(trianglesSelected);
             buildingStep.getInitialRoofSurface().getMesh()
                     .remove(trianglesSelected);
-        } else if (actionType == ActionTypes.TURN_TO_ROOF) {
+        } else if (actionType == ActionTypes.TURN_TO_ROOF)
+        {
             buildingStep.getInitialRoofSurface().getMesh()
                     .addAll(trianglesSelected);
             buildingStep.getInitialWallSurface().getMesh()
                     .remove(trianglesSelected);
-        } else {
+        } else
+        {
             throw new InvalidCaseException();
         }
     }
@@ -250,38 +273,48 @@ public class BuildingsIsletController {
     public final void action5(final List<Surface> surfacesSelected,
             final int actionType) throws InvalidCaseException {
         Building building;
-        try {
+        try
+        {
             building = this.searchForBuildingContaining5(surfacesSelected);
 
             BuildingStep5 buildingStep = building.getbStep5();
-            if (actionType == ActionTypes.MERGE) {
-                if (buildingStep.getWalls().contains(surfacesSelected.get(0))) {
+            if (actionType == ActionTypes.MERGE)
+            {
+                if (buildingStep.getWalls().contains(surfacesSelected.get(0)))
+                {
                     // It means the meshes selected belong to the walls.
                     buildingStep.getWalls().removeAll(surfacesSelected);
                     Wall sum = new Wall();
-                    for (Surface s : surfacesSelected) {
+                    for (Surface s : surfacesSelected)
+                    {
                         sum.getMesh().addAll(s.getMesh());
                     }
                     buildingStep.getWalls().add(sum);
-                } else {
+                } else
+                {
                     // It means the meshes selected belong to the roofs.
                     buildingStep.getRoofs().removeAll(surfacesSelected);
                     Roof sum = new Roof();
-                    for (Surface s : surfacesSelected) {
+                    for (Surface s : surfacesSelected)
+                    {
                         sum.getMesh().addAll(s.getMesh());
                     }
                     buildingStep.getRoofs().add(sum);
                 }
-            } else if (actionType == ActionTypes.TURN_TO_NOISE) {
+            } else if (actionType == ActionTypes.TURN_TO_NOISE)
+            {
                 buildingStep.getWalls().removeAll(surfacesSelected);
                 buildingStep.getRoofs().removeAll(surfacesSelected);
-                for (Surface s : surfacesSelected) {
+                for (Surface s : surfacesSelected)
+                {
                     buildingStep.getNoise().getMesh().addAll(s.getMesh());
                 }
-            } else {
+            } else
+            {
                 throw new InvalidCaseException();
             }
-        } catch (NotCoherentActionException e) {
+        } catch (NotCoherentActionException e)
+        {
             // TODO Implement the case when this exception is throwed.
             e.printStackTrace();
         }
@@ -304,33 +337,36 @@ public class BuildingsIsletController {
     public final void display() {
         this.u3DController.clearAll();
 
-        try {
-            switch (this.islet.getProgression()) {
-            case AbstractBuildingsIslet.ZERO_STEP:
-                this.viewStep0();
+        try
+        {
+            switch (this.islet.getProgression())
+            {
+                case AbstractBuildingsIslet.ZERO_STEP:
+                    this.viewStep0();
                 break;
-            case AbstractBuildingsIslet.FIRST_STEP:
-                this.viewStep1();
+                case AbstractBuildingsIslet.FIRST_STEP:
+                    this.viewStep1();
                 break;
-            case AbstractBuildingsIslet.SECOND_STEP:
-                this.viewStep2();
+                case AbstractBuildingsIslet.SECOND_STEP:
+                    this.viewStep2();
                 break;
-            case AbstractBuildingsIslet.THIRD_STEP:
-                this.viewStep3();
+                case AbstractBuildingsIslet.THIRD_STEP:
+                    this.viewStep3();
                 break;
-            case AbstractBuildingsIslet.FOURTH_STEP:
-                this.viewStep4();
+                case AbstractBuildingsIslet.FOURTH_STEP:
+                    this.viewStep4();
                 break;
-            case AbstractBuildingsIslet.FIFTH_STEP:
-                this.viewStep5();
+                case AbstractBuildingsIslet.FIFTH_STEP:
+                    this.viewStep5();
                 break;
-            case AbstractBuildingsIslet.SIXTH_STEP:
-                this.viewStep6();
+                case AbstractBuildingsIslet.SIXTH_STEP:
+                    this.viewStep6();
                 break;
-            default:
-                throw new InvalidCaseException();
+                default:
+                    throw new InvalidCaseException();
             }
-        } catch (InvalidCaseException e) {
+        } catch (InvalidCaseException e)
+        {
             System.out.println("Big problem");
         }
     }
@@ -348,12 +384,15 @@ public class BuildingsIsletController {
     public final String getCharacteristics2(final Triangle triangle)
             throws InvalidCaseException {
         if (this.islet.getBiStep2().getInitialBuildings().getMesh()
-                .contains(triangle)) {
+                .contains(triangle))
+        {
             return Characteristics.TYPE_BUILDING;
         } else if (this.islet.getBiStep2().getInitialGrounds().getMesh()
-                .contains(triangle)) {
+                .contains(triangle))
+        {
             return Characteristics.TYPE_GROUND;
-        } else {
+        } else
+        {
             throw new InvalidCaseException();
         }
     }
@@ -369,16 +408,20 @@ public class BuildingsIsletController {
      */
     public final String getCharacteristics3(final Surface surface)
             throws InvalidCaseException {
-        if (this.islet.getBiStep3().getGrounds() == surface) {
+        if (this.islet.getBiStep3().getGrounds() == surface)
+        {
             return Characteristics.TYPE_GROUND;
         }
 
-        if (this.islet.getBiStep3().getNoise() == surface) {
+        if (this.islet.getBiStep3().getNoise() == surface)
+        {
             return Characteristics.TYPE_NOISE;
         }
 
-        for (Building b : this.islet.getBiStep3().getBuildings()) {
-            if (b.getbStep3().getInitialTotalSurface() == surface) {
+        for (Building b : this.islet.getBiStep3().getBuildings())
+        {
+            if (b.getbStep3().getInitialTotalSurface() == surface)
+            {
                 return Characteristics.TYPE_BUILDING;
             }
         }
@@ -398,17 +441,21 @@ public class BuildingsIsletController {
      */
     public final String getCharacteristics3(final Triangle triangle)
             throws InvalidCaseException {
-        if (this.islet.getBiStep3().getGrounds().getMesh().contains(triangle)) {
+        if (this.islet.getBiStep3().getGrounds().getMesh().contains(triangle))
+        {
             return Characteristics.TYPE_GROUND;
         }
 
-        if (this.islet.getBiStep3().getNoise().getMesh().contains(triangle)) {
+        if (this.islet.getBiStep3().getNoise().getMesh().contains(triangle))
+        {
             return Characteristics.TYPE_NOISE;
         }
 
-        for (Building b : this.islet.getBiStep3().getBuildings()) {
+        for (Building b : this.islet.getBiStep3().getBuildings())
+        {
             if (b.getbStep3().getInitialTotalSurface().getMesh()
-                    .contains(triangle)) {
+                    .contains(triangle))
+            {
                 return Characteristics.TYPE_BUILDING;
             }
         }
@@ -428,16 +475,20 @@ public class BuildingsIsletController {
      */
     public final String getCharacteristics4(final Triangle triangle)
             throws InvalidCaseException {
-        if (this.islet.getBiStep4().getGrounds().getMesh().contains(triangle)) {
+        if (this.islet.getBiStep4().getGrounds().getMesh().contains(triangle))
+        {
             return Characteristics.TYPE_GROUND;
         }
 
-        for (Building b : this.islet.getBiStep4().getBuildings()) {
+        for (Building b : this.islet.getBiStep4().getBuildings())
+        {
             if (b.getbStep4().getInitialWallSurface().getMesh()
-                    .contains(triangle)) {
+                    .contains(triangle))
+            {
                 return Characteristics.TYPE_WALL;
             } else if (b.getbStep4().getInitialRoofSurface().getMesh()
-                    .contains(triangle)) {
+                    .contains(triangle))
+            {
                 return Characteristics.TYPE_ROOF;
             }
         }
@@ -456,18 +507,24 @@ public class BuildingsIsletController {
      */
     public final String getCharacteristics5(final Surface surface)
             throws InvalidCaseException {
-        if (this.islet.getBiStep5().getGrounds() == surface) {
+        if (this.islet.getBiStep5().getGrounds() == surface)
+        {
             return Characteristics.TYPE_GROUND;
         }
 
-        for (Building b : this.islet.getBiStep5().getBuildings()) {
-            for (Wall w : b.getbStep5().getWalls()) {
-                if (w == surface) {
+        for (Building b : this.islet.getBiStep5().getBuildings())
+        {
+            for (Wall w : b.getbStep5().getWalls())
+            {
+                if (w == surface)
+                {
                     return Characteristics.TYPE_WALL;
                 }
             }
-            for (Roof r : b.getbStep5().getRoofs()) {
-                if (r == surface) {
+            for (Roof r : b.getbStep5().getRoofs())
+            {
+                if (r == surface)
+                {
                     return Characteristics.TYPE_ROOF;
                 }
             }
@@ -487,18 +544,24 @@ public class BuildingsIsletController {
      */
     public final String getCharacteristics6(final Surface surface)
             throws InvalidCaseException {
-        if (this.islet.getBiStep6().getGrounds() == surface) {
+        if (this.islet.getBiStep6().getGrounds() == surface)
+        {
             return Characteristics.TYPE_GROUND;
         }
 
-        for (Building b : this.islet.getBiStep6().getBuildings()) {
-            for (Wall w : b.getbStep6().getWalls()) {
-                if (w == surface) {
+        for (Building b : this.islet.getBiStep6().getBuildings())
+        {
+            for (Wall w : b.getbStep6().getWalls())
+            {
+                if (w == surface)
+                {
                     return Characteristics.TYPE_WALL;
                 }
             }
-            for (Roof r : b.getbStep6().getRoofs()) {
-                if (r == surface) {
+            for (Roof r : b.getbStep6().getRoofs())
+            {
+                if (r == surface)
+                {
                     return Characteristics.TYPE_ROOF;
                 }
             }
@@ -557,39 +620,43 @@ public class BuildingsIsletController {
      * Launch the process, considering the progression.
      */
     public final void launchProcess() {
-        try {
-            switch (this.islet.getProgression()) {
-            case AbstractBuildingsIslet.ZERO_STEP:
-                this.islet.launchProcess0();
+        try
+        {
+            switch (this.islet.getProgression())
+            {
+                case AbstractBuildingsIslet.ZERO_STEP:
+                    this.islet.launchProcess0();
                 break;
-            case AbstractBuildingsIslet.FIRST_STEP:
-                this.islet.launchProcess1();
+                case AbstractBuildingsIslet.FIRST_STEP:
+                    this.islet.launchProcess1();
                 break;
-            case AbstractBuildingsIslet.SECOND_STEP:
-                this.islet.launchProcess2();
+                case AbstractBuildingsIslet.SECOND_STEP:
+                    this.islet.launchProcess2();
                 break;
-            case AbstractBuildingsIslet.THIRD_STEP:
-                this.islet.launchProcess3();
+                case AbstractBuildingsIslet.THIRD_STEP:
+                    this.islet.launchProcess3();
                 break;
-            case AbstractBuildingsIslet.FOURTH_STEP:
-                System.out.println("fourth process");
-                this.islet.launchProcess4();
-                System.out.println("end");
+                case AbstractBuildingsIslet.FOURTH_STEP:
+                    System.out.println("fourth process");
+                    this.islet.launchProcess4();
+                    System.out.println("end");
                 break;
-            case AbstractBuildingsIslet.FIFTH_STEP:
-                System.out.println("fifth process");
-                this.islet.launchProcess5();
-                System.out.println("end");
+                case AbstractBuildingsIslet.FIFTH_STEP:
+                    System.out.println("fifth process");
+                    this.islet.launchProcess5();
+                    System.out.println("end");
                 break;
-            default:
-                throw new InvalidCaseException();
+                default:
+                    throw new InvalidCaseException();
             }
 
             this.incProgression();
             this.display();
-        } catch (InvalidCaseException e) {
+        } catch (InvalidCaseException e)
+        {
             e.printStackTrace();
-        } catch (NullArgumentException e) {
+        } catch (NullArgumentException e)
+        {
             // It should never happen.
             e.printStackTrace();
         }
@@ -637,9 +704,11 @@ public class BuildingsIsletController {
      * @return the building containing the surface
      */
     public final Building returnBuildingContaining3(final Surface surface) {
-        for (Building building : this.islet.getBiStep3().getBuildings()) {
+        for (Building building : this.islet.getBiStep3().getBuildings())
+        {
             BuildingStep3 buildingStep = building.getbStep3();
-            if (buildingStep.getInitialTotalSurface() == surface) {
+            if (buildingStep.getInitialTotalSurface() == surface)
+            {
                 return null;
             }
         }
@@ -666,12 +735,14 @@ public class BuildingsIsletController {
      */
     private Building searchForBuildingContaining4(
             final List<Triangle> trianglesSelected) {
-        for (Building building : this.islet.getBiStep4().getBuildings()) {
+        for (Building building : this.islet.getBiStep4().getBuildings())
+        {
             BuildingStep4 buildingStep = building.getbStep4();
             if (buildingStep.getInitialWallSurface().getMesh()
                     .containsAll(trianglesSelected)
                     || buildingStep.getInitialRoofSurface().getMesh()
-                            .containsAll(trianglesSelected)) {
+                            .containsAll(trianglesSelected))
+            {
                 return building;
             }
         }
@@ -690,10 +761,12 @@ public class BuildingsIsletController {
     private Building searchForBuildingContaining5(
             final List<Surface> surfacesSelected)
             throws NotCoherentActionException {
-        for (Building building : this.islet.getBiStep5().getBuildings()) {
+        for (Building building : this.islet.getBiStep5().getBuildings())
+        {
             BuildingStep5 buildingStep = building.getbStep5();
             if (buildingStep.getWalls().containsAll(surfacesSelected)
-                    || buildingStep.getRoofs().containsAll(surfacesSelected)) {
+                    || buildingStep.getRoofs().containsAll(surfacesSelected))
+            {
                 return building;
             }
         }
@@ -785,15 +858,19 @@ public class BuildingsIsletController {
     public final void viewStep2() {
         List<Surface> surfacesList = new ArrayList<>();
 
-        if (!this.islet.getBiStep2().getInitialBuildings().getMesh().isEmpty()) {
+        if (!this.islet.getBiStep2().getInitialBuildings().getMesh().isEmpty())
+        {
             surfacesList.add(this.islet.getBiStep2().getInitialBuildings());
-        } else {
+        } else
+        {
             // TODO
             System.out.println("Warning : initial buildings empty !");
         }
-        if (!this.islet.getBiStep2().getInitialGrounds().getMesh().isEmpty()) {
+        if (!this.islet.getBiStep2().getInitialGrounds().getMesh().isEmpty())
+        {
             surfacesList.add(this.islet.getBiStep2().getInitialGrounds());
-        } else {
+        } else
+        {
             // TODO
             System.out.println("Warning : initial grounds empty !");
         }
@@ -807,14 +884,17 @@ public class BuildingsIsletController {
     public final void viewStep3() {
         List<Surface> surfacesList = new ArrayList<>();
 
-        if (!this.islet.getBiStep2().getInitialGrounds().getMesh().isEmpty()) {
+        if (!this.islet.getBiStep2().getInitialGrounds().getMesh().isEmpty())
+        {
             surfacesList.add(this.islet.getBiStep2().getInitialGrounds());
-        } else {
+        } else
+        {
             // TODO
             System.out.println("Warning : initial grounds empty !");
         }
 
-        for (Building building : this.islet.getBiStep3().getBuildings()) {
+        for (Building building : this.islet.getBiStep3().getBuildings())
+        {
             surfacesList.add(building.getbStep3().getInitialTotalSurface());
         }
 
@@ -827,7 +907,8 @@ public class BuildingsIsletController {
     public final void viewStep4() {
         List<Surface> surfacesList = new ArrayList<>();
 
-        for (Building building : this.islet.getBiStep4().getBuildings()) {
+        for (Building building : this.islet.getBiStep4().getBuildings())
+        {
             surfacesList.add(building.getbStep4().getInitialWallSurface());
             surfacesList.add(building.getbStep4().getInitialRoofSurface());
         }
@@ -841,13 +922,16 @@ public class BuildingsIsletController {
     public final void viewStep5() {
         List<Surface> surfacesList = new ArrayList<>();
 
-        for (Building building : this.islet.getBiStep5().getBuildings()) {
+        for (Building building : this.islet.getBiStep5().getBuildings())
+        {
             BuildingStep5 buildingStep = building.getbStep5();
 
-            for (Surface wall : buildingStep.getWalls()) {
+            for (Surface wall : buildingStep.getWalls())
+            {
                 surfacesList.add(wall);
             }
-            for (Surface roof : buildingStep.getRoofs()) {
+            for (Surface roof : buildingStep.getRoofs())
+            {
                 surfacesList.add(roof);
             }
         }
@@ -869,12 +953,15 @@ public class BuildingsIsletController {
     public final void viewStep6() {
         List<Surface> surfacesList = new ArrayList<>();
 
-        for (Building building : this.islet.getBiStep6().getBuildings()) {
+        for (Building building : this.islet.getBiStep6().getBuildings())
+        {
             BuildingStep6 buildingStep = building.getbStep6();
-            for (Surface wall : buildingStep.getWalls()) {
+            for (Surface wall : buildingStep.getWalls())
+            {
                 surfacesList.add(wall);
             }
-            for (Surface roof : buildingStep.getRoofs()) {
+            for (Surface roof : buildingStep.getRoofs())
+            {
                 surfacesList.add(roof);
             }
         }

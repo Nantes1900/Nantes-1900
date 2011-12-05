@@ -11,6 +11,7 @@ import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.view.isletprocess.IsletProcessView;
 
 /**
@@ -145,7 +146,7 @@ public class IsletProcessController implements ElementsSelectedListener {
     }
 
     public void goToPreviousProcess() throws UnexistingStepException {
-        if (this.getProgression() <= 1)
+        if (this.getProgression() <= AbstractBuildingsIslet.FIRST_STEP)
         {
             throw new UnexistingStepException();
         }
@@ -160,7 +161,7 @@ public class IsletProcessController implements ElementsSelectedListener {
      * Launches next process.
      */
     public final void launchProcess() throws UnexistingStepException {
-        if (this.getProgression() >= 6)
+        if (this.getProgression() >= AbstractBuildingsIslet.SIXTH_STEP)
         {
             throw new UnexistingStepException();
         }

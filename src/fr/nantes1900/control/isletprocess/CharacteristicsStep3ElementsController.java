@@ -64,11 +64,11 @@ public class CharacteristicsStep3ElementsController extends
                                 .showMessageDialog(
                                         CharacteristicsStep3ElementsController.this.cView,
                                         FileTools
-                                                .readErrorMessage(
+                                                .readInformationMessage(
                                                         TextsKeys.KEY_ERROR_INCORRECTTYPE,
                                                         TextsKeys.MESSAGETYPE_MESSAGE),
                                         FileTools
-                                                .readErrorMessage(
+                                                .readInformationMessage(
                                                         TextsKeys.KEY_ERROR_INCORRECTTYPE,
                                                         TextsKeys.MESSAGETYPE_TITLE),
                                         JOptionPane.ERROR_MESSAGE);

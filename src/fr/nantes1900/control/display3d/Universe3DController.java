@@ -653,4 +653,15 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             surfaceViewHide.addGeometry(surfaceViewHide.getPolygonView());
         }
     }
+    
+  /**
+   * Get the list of meshes selected.
+ * @return meshesSelected
+ *              the list of the meshes selected.
+ */
+public List<Mesh> getMeshesSelected(){
+      return this.meshesSelected;
+  }
+    
+  
 }

@@ -25,7 +25,7 @@ public final class FileTools {
     /**
      * TODO.
      */
-    private static final String ERROR_MESSAGES_FILE = "res/texts/errorMessages.txt";
+    private static final String INFORMATION_MESSAGES_FILE = "res/texts/informationMessages.txt";
     /**
      * TODO.
      */
@@ -56,9 +56,9 @@ public final class FileTools {
      *            The type of message to get : error message or title.
      * @return The read message.
      */
-    public static String readErrorMessage(final String keyName,
+    public static String readInformationMessage(final String keyName,
             final String messageType) {
-        return readProperty(new File(ERROR_MESSAGES_FILE), keyName
+        return readProperty(new File(INFORMATION_MESSAGES_FILE), keyName
                 + messageType);
     }
 

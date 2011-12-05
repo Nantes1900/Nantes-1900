@@ -30,6 +30,7 @@ public class IsletTreeView extends JPanel {
         this.setLayout(new BorderLayout());
         this.spTree = new JScrollPane();
         this.add(this.spTree, BorderLayout.CENTER);
+        this.addItemsToJpm();
     }
 
     public void buildTree(DefaultMutableTreeNode root) {
@@ -41,11 +42,14 @@ public class IsletTreeView extends JPanel {
         return this.tree;
     }
     
-    public void addItemsToJpm(){
+    private void addItemsToJpm(){
         this.jpm.add(this.mHide);
     }
     
     public void setHideListener(ActionListener al){
+        if (this.mHide.getActionListeners().length>0){
+            this.mHide.removeActionListener(this.mHide.getActionListeners()[0]);
+        }
         this.mHide.addActionListener(al);
     }
     

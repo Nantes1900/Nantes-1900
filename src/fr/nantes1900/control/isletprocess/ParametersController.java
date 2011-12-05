@@ -105,10 +105,10 @@ public class ParametersController {
             } catch (NumberFormatException e)
             {
                 JOptionPane.showMessageDialog(pView, FileTools
-                        .readErrorMessage(
+                        .readInformationMessage(
                                 TextsKeys.KEY_ERROR_INCORRECTPARAMETER,
                                 TextsKeys.MESSAGETYPE_MESSAGE), FileTools
-                        .readErrorMessage(
+                        .readInformationMessage(
                                 TextsKeys.KEY_ERROR_INCORRECTPARAMETER,
                                 TextsKeys.MESSAGETYPE_TITLE),
                         JOptionPane.ERROR_MESSAGE);
