@@ -646,8 +646,22 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
                 surfaceView.addGeometry(surfaceView.getPolygonView());
             }
         }
-
     }
-   
+
+    public void showNeighbours(Surface surface){
+ 
+        List<SurfaceView> surfaceViewNeighbours = new ArrayList<>();
+        for(Surface surfaceNeighbours: surface.getNeighbours()){
+            for(SurfaceView surfaceViewsDisplayed: this.u3DView.getSurfaceViewList()){
+                if(surfaceViewsDisplayed.getSurface()==surfaceNeighbours){
+                    surfaceViewNeighbours.add(surfaceViewsDisplayed);
+                    break;
+                }
+            }
+        }
+        for(SurfaceView surfaceViewNeighbour: surfaceViewNeighbours){
+            surfaceViewNeighbour.setMaterial(SurfaceView.MATERIAL_NEIGHBOUR);
+        }
+    }
 
 }

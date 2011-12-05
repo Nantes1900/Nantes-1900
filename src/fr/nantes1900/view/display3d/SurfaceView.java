@@ -66,6 +66,7 @@ public class SurfaceView extends Shape3D {
      * The polygon to be displayed.
      */
     private PolygonView polygonView;
+    
     /**
      * The appearance of the surface.
      */
