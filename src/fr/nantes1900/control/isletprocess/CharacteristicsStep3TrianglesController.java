@@ -47,10 +47,10 @@ public class CharacteristicsStep3TrianglesController extends
                                         ActionTypes.REMOVE);
                     } catch (InvalidCaseException e) {
                         JOptionPane.showMessageDialog(cView, FileTools
-                                .readErrorMessage(
+                                .readInformationMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
                                         TextsKeys.MESSAGETYPE_MESSAGE),
-                                FileTools.readErrorMessage(
+                                FileTools.readInformationMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
                                         TextsKeys.MESSAGETYPE_TITLE),
                                 JOptionPane.ERROR_MESSAGE);

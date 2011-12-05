@@ -104,7 +104,7 @@ public class IsletTreeController {
                     .returnNode());
         } catch (InvalidCaseException e) {
             // TODO Auto-generated catch block
-            System.out.println(FileTools.readErrorMessage(
+            System.out.println(FileTools.readInformationMessage(
                     TextsKeys.KEY_RETURNNODE, TextsKeys.MESSAGETYPE_MESSAGE));
         }
     }

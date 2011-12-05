@@ -59,10 +59,10 @@ public class CharacteristicsStep4Controller extends
                                     actionType);
                 } catch (InvalidCaseException e) {
                     JOptionPane.showMessageDialog(cView, FileTools
-                            .readErrorMessage(
+                            .readInformationMessage(
                                     TextsKeys.KEY_ERROR_INCORRECTTYPE,
                                     TextsKeys.MESSAGETYPE_MESSAGE), FileTools
-                            .readErrorMessage(
+                            .readInformationMessage(
                                     TextsKeys.KEY_ERROR_INCORRECTTYPE,
                                     TextsKeys.MESSAGETYPE_TITLE),
                             JOptionPane.ERROR_MESSAGE);
