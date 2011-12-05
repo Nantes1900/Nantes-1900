@@ -86,21 +86,18 @@ public class BuildingsIsletController {
      */
     public final void action2(final List<Triangle> trianglesSelected,
             final int type) throws InvalidCaseException {
-
         if (type == ActionTypes.TURN_TO_BUILDING) {
             // The user wants these triangles to turn building.
             this.islet.getBiStep2().getInitialGrounds().getMesh()
                     .removeAll(trianglesSelected);
             this.islet.getBiStep2().getInitialBuildings().getMesh()
                     .addAll(trianglesSelected);
-
         } else if (type == ActionTypes.TURN_TO_GROUND) {
             // The user wants these triangles to turn ground.
             this.islet.getBiStep2().getInitialBuildings().getMesh()
                     .removeAll(trianglesSelected);
             this.islet.getBiStep2().getInitialGrounds().getMesh()
                     .addAll(trianglesSelected);
-
         } else {
             throw new InvalidCaseException();
         }
@@ -147,20 +144,18 @@ public class BuildingsIsletController {
      */
     public final void action3(final Surface surface, final int actionType)
             throws InvalidCaseException {
-
         if (actionType == ActionTypes.TURN_TO_NOISE) {
             // The user wants the surface to turn to noise.
+
             this.islet.getBiStep3().getBuildings()
                     .remove(this.returnBuildingContaining3(surface));
             this.islet.getBiStep3().getNoise().getMesh()
                     .addAll(surface.getMesh());
-
         } else if (actionType == ActionTypes.TURN_TO_BUILDING) {
             // The user wants the surface to turn to building.
             this.islet.getBiStep3().getBuildings().add(new Building(surface));
             this.islet.getBiStep3().getNoise().getMesh()
                     .removeAll(surface.getMesh());
-
         } else {
             throw new InvalidCaseException();
         }

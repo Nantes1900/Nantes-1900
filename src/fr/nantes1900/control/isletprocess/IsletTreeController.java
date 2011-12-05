@@ -32,7 +32,7 @@ public class IsletTreeController {
      * The parent controller.
      */
     private IsletProcessController parentController;
-    
+
     private ActionListener hideActionListener;
 
     public IsletTreeController(IsletProcessController parentControllerIn) {
@@ -40,7 +40,7 @@ public class IsletTreeController {
         this.itView = new IsletTreeView();
         this.buildTreeView();
         this.addTreeController();
-        this.hideActionListener = new ActionListener(){
+        this.hideActionListener = new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent arg0) {
                 System.out.println("hide !");
@@ -58,16 +58,19 @@ public class IsletTreeController {
                         IsletTreeController.this.getParentController()
                                 .getU3DController().deselectEverySurfaces();
 
-                        for (Object o : e.getPath().getPath()) {
+                        for (Object o : e.getPath().getPath())
+                        {
                             DefaultMutableTreeNode node = (DefaultMutableTreeNode) o;
 
-                            if (node.getUserObject() instanceof Surface) {
+                            if (node.getUserObject() instanceof Surface)
+                            {
                                 IsletTreeController.this
                                         .getParentController()
                                         .getU3DController()
                                         .selectOrUnselectSurfaceFromTree(
                                                 (Surface) node.getUserObject());
-                            } else {
+                            } else
+                            {
                                 // TODO : throw exception if it is not a mesh.
                             }
                         }
@@ -76,32 +79,39 @@ public class IsletTreeController {
         // FIXME : what if a object is deselected in the tree ? What if more
         // than ONE object is selected ?
     }
-    
-    public void addContextuelMenu(){
-        this.itView.getTree().addMouseListener(new MouseAdapter(){
-            public void mouseReleased(MouseEvent event){
-                    if(event.getButton() == MouseEvent.BUTTON3)
-                {   
-                        if (IsletTreeController.this.itView.getTree().isSelectionEmpty()){
-                            IsletTreeController.this.itView.disableHide();
-                        }
-                        else{
-                            IsletTreeController.this.itView.setHideListener(
-                                    IsletTreeController.this.hideActionListener);
-                            IsletTreeController.this.itView.enableHide();
-                            IsletTreeController.this.itView.getJpm().show(
-                                IsletTreeController.this.itView, event.getX(), event.getY());
-                        }
+
+    public void addContextuelMenu() {
+        this.itView.getTree().addMouseListener(new MouseAdapter() {
+            public void mouseReleased(MouseEvent event) {
+                if (event.getButton() == MouseEvent.BUTTON3)
+                {
+                    if (IsletTreeController.this.itView.getTree()
+                            .isSelectionEmpty())
+                    {
+                        IsletTreeController.this.itView.disableHide();
+                    } else
+                    {
+                        IsletTreeController.this.itView
+                                .setHideListener(IsletTreeController.this.hideActionListener);
+                        IsletTreeController.this.itView.enableHide();
+
+                        IsletTreeController.this.itView.getJpm().show(
+
+                        IsletTreeController.this.itView, event.getX(),
+                                event.getY());
+                    }
                 }
             }
-            });
+        });
     }
 
     private void buildTreeView() {
-        try {
+        try
+        {
             this.itView.buildTree(this.parentController.getBiController()
                     .returnNode());
-        } catch (InvalidCaseException e) {
+        } catch (InvalidCaseException e)
+        {
             // TODO Auto-generated catch block
             System.out.println(FileTools.readInformationMessage(
                     TextsKeys.KEY_RETURNNODE, TextsKeys.MESSAGETYPE_MESSAGE));
