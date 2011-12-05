@@ -398,7 +398,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         } else {
             // surface already selected when clicked
             this.surfacesSelected.remove(surface);
-            surfaceView.setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
+            if(surfaceView.getPolygonView()!=null){
+                surfaceView.setMaterial(SurfaceView.MATERIAL_POLYGON);
+            }
+            else{
+                surfaceView.setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
+            }
+            
             fireSurfaceDeselected(surface);
         }
     }
