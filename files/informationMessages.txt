@@ -1,9 +1,0 @@
-﻿#date
-ReturnNodeMessage=Erreur du chargement de l'arborescence du résultat
-CIncorrectTypeMessage=Le type choisi est incorrrect.
-CIncorrectTypeTitle=Validation impossible
-CIncorrectActionMessage=L'action choisie est incorrrecte.
-CIncorrectActionTitle=Validation impossible
-ErrorIncorrectParameterMessage=Les paramètres chargés sont incorrects.\nL'import est annulé.
-ErrorIncorrectParameterTitle=Paramètres incorrects
-
