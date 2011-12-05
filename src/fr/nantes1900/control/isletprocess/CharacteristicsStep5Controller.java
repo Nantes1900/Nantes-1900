@@ -46,10 +46,10 @@ public class CharacteristicsStep5Controller extends
                                         ActionTypes.MERGE);
                     } catch (InvalidCaseException e1) {
                         JOptionPane.showMessageDialog(cView, FileTools
-                                .readErrorMessage(
+                                .readInformationMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
                                         TextsKeys.MESSAGETYPE_MESSAGE),
-                                FileTools.readErrorMessage(
+                                FileTools.readInformationMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
                                         TextsKeys.MESSAGETYPE_TITLE),
                                 JOptionPane.ERROR_MESSAGE);
@@ -63,10 +63,10 @@ public class CharacteristicsStep5Controller extends
                                         ActionTypes.TURN_TO_NOISE);
                     } catch (InvalidCaseException e1) {
                         JOptionPane.showMessageDialog(cView, FileTools
-                                .readErrorMessage(
+                                .readInformationMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
                                         TextsKeys.MESSAGETYPE_MESSAGE),
-                                FileTools.readErrorMessage(
+                                FileTools.readInformationMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
                                         TextsKeys.MESSAGETYPE_TITLE),
                                 JOptionPane.ERROR_MESSAGE);
