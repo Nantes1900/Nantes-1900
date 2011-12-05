@@ -79,23 +79,22 @@ public class IsletTreeController {
     
     public void addContextuelMenu(){
         this.itView.getTree().addMouseListener(new MouseAdapter(){
-            public void mousePressed(MouseEvent event){
+            public void mouseReleased(MouseEvent event){
                     if(event.getButton() == MouseEvent.BUTTON3)
                 {   
                         if (IsletTreeController.this.itView.getTree().isSelectionEmpty()){
                             IsletTreeController.this.itView.disableHide();
                         }
                         else{
+                            IsletTreeController.this.itView.setHideListener(
+                                    IsletTreeController.this.hideActionListener);
                             IsletTreeController.this.itView.enableHide();
-                        }
-                        IsletTreeController.this.itView.setHideListener(
-                                IsletTreeController.this.hideActionListener);
-                        IsletTreeController.this.itView.addItemsToJpm();
-                        IsletTreeController.this.itView.getJpm().show(
+                            IsletTreeController.this.itView.getJpm().show(
                                 IsletTreeController.this.itView, event.getX(), event.getY());
+                        }
                 }
             }
-        });
+            });
     }
 
     private void buildTreeView() {
@@ -121,5 +120,6 @@ public class IsletTreeController {
         this.buildTreeView();
         this.itView.repaint();
         this.addTreeController();
+        this.addContextuelMenu();
     }
 }

@@ -77,13 +77,13 @@ public class NavigationBarView extends JPanel {
         this.title.setText(FileTools.readElementText(TextsKeys.KEY_PROCESSTITLE
                 + i));
         this.title.repaint();
-        if (i==1){
+        if (i==AbstractBuildingsIslet.FIRST_STEP){
             this.bBack.setEnabled(false);
         }
         else {
             this.bBack.setEnabled(true);
         }
-        if (i==7){
+        if (i==AbstractBuildingsIslet.SIXTH_STEP){
             this.bLaunch.setEnabled(false);
         }
         else {
