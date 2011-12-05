@@ -29,30 +29,30 @@ public class SurfaceView extends Shape3D {
      */
     public static final Material MATERIAL_SELECTED = new Material(new Color3f(
 
-    0.0f, 0.2f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.0f, 0.2f,
-            0.0f), new Color3f(0.0f, 0.2f, 0.0f), 64);
+    0.0f, 0.7f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.0f, 0.5f,
+            0.0f), new Color3f(0.0f, 0.5f, 0.0f), 64);
 
     /**
      * The material of a surface non-selected.
      */
 
     public static final Material MATERIAL_NON_POLYGON = new Material(
-            new Color3f(0.2f, 0.0f, 0f), new Color3f(0.0f, 0.0f, 0.0f),
-            new Color3f(0.2f, 0.0f, 0f), new Color3f(0.2f, 0.0f, 0f), 64);
+            new Color3f(0.7f, 0.0f, 0f), new Color3f(0.0f, 0.0f, 0.0f),
+            new Color3f(0.5f, 0.0f, 0f), new Color3f(0.5f, 0.0f, 0f), 64);
 
     /**
      * 
      */
     public static final Material MATERIAL_POLYGON = new Material(new Color3f(
-            0.2f, 0.0f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.2f,
-            0.0f, 0.0f), new Color3f(0.2f, 0.0f, 0.0f), 64);
+            0.0f, 0.0f, 0.7f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.0f,
+            0.0f, 0.5f), new Color3f(0.0f, 0.0f, 0.5f), 64);
 
     /**
      * 
      */
     public static final Material MATERIAL_NEIGHBOUR = new Material(new Color3f(
-            0f, 0.2f, 0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0f, 0.2f,
-            0f), new Color3f(0f, 0.2f, 0f), 64);
+            0.7f, 0.7f, 0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.5f, 0.5f,
+            0f), new Color3f(0.5f, 0.5f, 0f), 64);
 
     /**
      * The surface linked to this view.

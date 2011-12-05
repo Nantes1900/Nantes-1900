@@ -540,9 +540,10 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         MeshView meshView = (MeshView) pickIntersection.getGeometryArray();
         // Gets the the triangle picked.
         int[] pointIndex = pickIntersection.getPrimitiveVertexIndices();
-        
+
         Triangle trianglePicked = meshView
-                .getTriangleFromArrayPosition(pointIndex[0] / MeshView.TRIANGLE_POINTS_COUNT);
+                .getTriangleFromArrayPosition(pointIndex[0]
+                        / MeshView.TRIANGLE_POINTS_COUNT);
 
         // Computes the neighbours of the triangle picked.
         Mesh oriented = meshView.getMesh().orientedAs(
@@ -629,7 +630,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
     /**
      * Hide the surface selected.
-     * @param surfacehide the surface selected to hide.
+     * @param surfacehide
+     *            the surface selected to hide.
      */
     public void hideSurface(Surface surfacehide) {
         SurfaceView surfaceViewHide = this
@@ -639,7 +641,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
     /**
      * Cancel the hide mode of the surface.
-     * @param surfacehide the surface selected to cancel the hide mode.
+     * @param surfacehide
+     *            the surface selected to cancel the hide mode.
      */
     public void showSurface(Surface surfacehide) {
         SurfaceView surfaceViewHide = this
@@ -653,15 +656,33 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             surfaceViewHide.addGeometry(surfaceViewHide.getPolygonView());
         }
     }
-    
-  /**
-   * Get the list of meshes selected.
- * @return meshesSelected
- *              the list of the meshes selected.
- */
-public List<Mesh> getMeshesSelected(){
-      return this.meshesSelected;
-  }
-    
-  
+
+    /**
+     * Get the list of meshes selected.
+     * @return meshesSelected
+     *         the list of the meshes selected.
+     */
+    public List<Mesh> getMeshesSelected() {
+        return this.meshesSelected;
+    }
+
+    public void showMeshOrPolygon() {
+        if (this.displayMode == DISPLAY_MESH_MODE)
+        {
+            for (SurfaceView surfaceView : this.u3DView.getSurfaceViewList())
+            {
+                surfaceView.removeAllGeometries();
+                surfaceView.addGeometry(surfaceView.getMeshView());
+            }
+        } else
+        {
+            for (SurfaceView surfaceView : this.u3DView.getSurfaceViewList())
+            {
+                surfaceView.removeAllGeometries();
+                surfaceView.addGeometry(surfaceView.getPolygonView());
+            }
+        }
+
+    }
+   
 }
