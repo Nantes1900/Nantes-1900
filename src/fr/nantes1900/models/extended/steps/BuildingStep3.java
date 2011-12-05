@@ -28,11 +28,11 @@ public class BuildingStep3 extends AbstractBuildingStep {
 
     /**
      * Constructor.
-     * @param mesh
-     *            the mesh representing the entire building.
+     * @param surface
+     *            the surface representing the entire building.
      */
-    public BuildingStep3(final Mesh mesh) {
-        this.initialTotalMesh = new Surface(mesh);
+    public BuildingStep3(final Surface surface) {
+        this.initialTotalMesh = surface;
     }
 
     /**
@@ -77,7 +77,7 @@ public class BuildingStep3 extends AbstractBuildingStep {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Building"
                 + counter);
 
-        this.initialTotalMesh.setNodeString("Total surface");
+        this.initialTotalMesh.setNodeString("Surface totale");
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(
                 this.initialTotalMesh);
         root.add(node);

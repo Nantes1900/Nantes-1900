@@ -54,11 +54,11 @@ public class Building {
 
     /**
      * Constructor.
-     * @param mesh
-     *            the mesh representing the building
+     * @param surface
+     *            the surface representing the building
      */
-    public Building(final Mesh mesh) {
-        this.bStep3 = new BuildingStep3(mesh);
+    public Building(final Surface surface) {
+        this.bStep3 = new BuildingStep3(surface);
     }
 
     /**

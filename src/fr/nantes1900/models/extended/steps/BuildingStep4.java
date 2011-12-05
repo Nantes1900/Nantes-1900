@@ -136,17 +136,14 @@ public class BuildingStep4 extends AbstractBuildingStep {
                 || this.noise == null) {
             throw new NullArgumentException();
         }
-        System.out
-                .println("Beginning cut walls : it's very long. Please wait.");
+
         this.cutWalls();
-        System.out
-                .println("Beginning cut roofs : it's very long. Please wait.");
+
         this.cutRoofs();
-        System.out.println("Beginning tr noise : it's very long. Please wait.");
+
         this.treatNoise();
-        System.out.println("Beginning tr new neighb");
+
         this.treatNewNeighbours();
-        System.out.println("End tr new neighb");
 
         List<Wall> wallsCopy = new ArrayList<>();
         for (Wall w : this.walls) {

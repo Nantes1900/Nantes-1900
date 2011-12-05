@@ -74,7 +74,7 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
         List<Building> buildings = new ArrayList<>();
 
         for (Mesh m : buildingList) {
-            buildings.add(new Building(m));
+            buildings.add(new Building(new Surface(m)));
         }
 
         return buildings;
