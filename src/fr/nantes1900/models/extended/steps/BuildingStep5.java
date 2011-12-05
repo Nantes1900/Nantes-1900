@@ -70,9 +70,11 @@ public class BuildingStep5 extends AbstractBuildingStep {
     }
 
     /**
-     * Computes the contour of the surface, using the sorted neighbours.
+     * Orders the neighbours by calling the method orderNeighbours from the
+     * class Surface and then computes the contour of the surface, using the
+     * sorted neighbours.
      */
-    public final void determinateContours() {
+    public final void orderNeighboursAndDeterminateContours() {
         // Creates the map where the points and edges will be put : if one
         // point is created a second time, it will be given the same
         // reference as the other one having the same values.
@@ -85,6 +87,11 @@ public class BuildingStep5 extends AbstractBuildingStep {
 
         for (final Surface surface : wholeList) {
             try {
+                // Orders its neighbours in order to treat them.
+                // If the neighbours of one surface are not 2 per 2 neighbours
+                // each other, then it tries to correct it.
+                surface.orderNeighbours(wholeList, this.ground);
+
                 // When the neighbours are sorted, finds the intersection of
                 // them to find the edges of this surface.
                 final Polygon p = surface.findEdges(this.walls, pointMap,
@@ -93,6 +100,8 @@ public class BuildingStep5 extends AbstractBuildingStep {
                 surface.setPolygone(p);
             } catch (final InvalidSurfaceException e) {
                 // If there is a problem, we cannot continue the process.
+            } catch (final ImpossibleNeighboursOrderException e) {
+                // If there is a problem, the process cannot continue.
             }
         }
     }
@@ -185,9 +194,7 @@ public class BuildingStep5 extends AbstractBuildingStep {
 
         this.sortSurfaces();
 
-        this.orderNeighbours();
-
-        this.determinateContours();
+        this.orderNeighboursAndDeterminateContours();
 
         // Copies the walls and roofs to work on different versions.
         List<Wall> wallsCopy = new ArrayList<>();
@@ -200,29 +207,6 @@ public class BuildingStep5 extends AbstractBuildingStep {
         }
         return new BuildingStep6(wallsCopy, roofsCopy);
 
-    }
-
-    /**
-     * Orders the neighbours by calling the method orderNeighbours from the
-     * class Surface.
-     */
-    public final void orderNeighbours() {
-        // Adds all the surfaces
-        final List<Surface> wholeList = new ArrayList<>();
-        wholeList.addAll(this.walls);
-        wholeList.addAll(this.roofs);
-
-        for (final Surface surface : wholeList) {
-            try {
-                // Orders its neighbours in order to treat them.
-                // If the neighbours of one surface are not 2 per 2 neighbours
-                // each other, then it tries to correct it.
-                surface.orderNeighbours(wholeList, this.ground);
-
-            } catch (final ImpossibleNeighboursOrderException e) {
-                // If there is a problem, the process cannot continue.
-            }
-        }
     }
 
     @Override
