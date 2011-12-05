@@ -123,7 +123,8 @@ public class BuildingStep5 extends AbstractBuildingStep {
             final Mesh fake = new Mesh(m.getMesh());
             wholeListFakes.add(fake);
         }
-        Algos.blockTreatPlanedNoise(wholeListFakes, this.noise.getMesh(),
+        Algos.blockTreatPlanedNoise(wholeListFakes,
+                new Mesh(this.noise.getMesh()),
                 SeparationWallsSeparationRoofs.getPlanesError());
 
         // First we clear the neighbours.
@@ -227,9 +228,10 @@ public class BuildingStep5 extends AbstractBuildingStep {
             counterRoof++;
         }
 
-        // FIXME
-        // this.noise.setNodeString("Noise");
-        // root.add(new DefaultMutableTreeNode(this.noise));
+        if (!this.noise.getMesh().isEmpty()) {
+            this.noise.setNodeString("Noise");
+            root.add(new DefaultMutableTreeNode(this.noise));
+        }
 
         return root;
     }
