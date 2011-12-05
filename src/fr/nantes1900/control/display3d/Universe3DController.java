@@ -541,9 +541,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         // Gets the the triangle picked.
         int[] pointIndex = pickIntersection.getPrimitiveVertexIndices();
         
-        // TODO : magic number !
         Triangle trianglePicked = meshView
-                .getTriangleFromArrayPosition(pointIndex[0] / 3);
+                .getTriangleFromArrayPosition(pointIndex[0] / MeshView.TRIANGLE_POINTS_COUNT);
 
         // Computes the neighbours of the triangle picked.
         Mesh oriented = meshView.getMesh().orientedAs(
@@ -642,7 +641,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      * Cancel the hide mode of the surface.
      * @param surfacehide the surface selected to cancel the hide mode.
      */
-    public void cancleHideSurface(Surface surfacehide) {
+    public void showSurface(Surface surfacehide) {
         SurfaceView surfaceViewHide = this
                 .getSurfaceViewFromSurface(surfacehide);
         if (this.displayMode == DISPLAY_MESH_MODE)

@@ -87,6 +87,7 @@ public class IsletTreeController {
                         }
                         else{
                             IsletTreeController.this.itView.enableHide();
+                           
                         }
                         IsletTreeController.this.itView.setHideListener(
                                 IsletTreeController.this.hideActionListener);
