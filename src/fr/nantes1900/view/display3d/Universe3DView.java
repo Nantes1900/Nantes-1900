@@ -23,6 +23,7 @@ import javax.vecmath.Vector3f;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
+import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
@@ -139,14 +140,8 @@ public class Universe3DView extends JPanel {
                 .createSceneGraph(transformGroup));
 
         // Computes the centroid of the first surface.
-        Point centroid;
-        if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE) {
+        Point 
             centroid = surfaces.get(0).getMesh().getCentroid();
-        } else {
-            Polygon polygon = surfaces.get(0).getPolygon();
-            centroid = new Point(polygon.xAverage(), polygon.yAverage(),
-                    polygon.zAverage());
-        }
 
         // Translates the camera.
         this.translateCamera(centroid.getX(), centroid.getY(), centroid.getZ()
@@ -293,9 +288,11 @@ public class Universe3DView extends JPanel {
     private void displayPolygons(final List<Surface> surfacesList) {
         for (Surface surface : surfacesList) {
             SurfaceView surfaceView = new SurfaceView(surface);
-            PolygonView polygonView = new PolygonView(surface.getPolygon());
-            surfaceView.setPolygonView(polygonView);
-            this.surfaceViewList.add(surfaceView);
+            if (surface.getPolygon() != null) {
+                PolygonView polygonView = new PolygonView(surface.getPolygon());
+                surfaceView.setPolygonView(polygonView);
+                this.surfaceViewList.add(surfaceView);
+            }
         }
     }
 

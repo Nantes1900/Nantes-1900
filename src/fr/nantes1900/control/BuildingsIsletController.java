@@ -213,6 +213,7 @@ public class BuildingsIsletController {
             building = this.searchForBuildingContaining5(surfacesSelected);
 
             BuildingStep5 buildingStep = building.getbStep5();
+
             if (actionType == ActionTypes.MERGE) {
                 if (buildingStep.getWalls().contains(surfacesSelected.get(0))) {
                     // It means the meshes selected belong to the walls.
@@ -222,6 +223,7 @@ public class BuildingsIsletController {
                         sum.getMesh().addAll(s.getMesh());
                     }
                     buildingStep.getWalls().add(sum);
+
                 } else {
                     // It means the meshes selected belong to the roofs.
                     buildingStep.getRoofs().removeAll(surfacesSelected);
@@ -231,12 +233,14 @@ public class BuildingsIsletController {
                     }
                     buildingStep.getRoofs().add(sum);
                 }
+
             } else if (actionType == ActionTypes.TURN_TO_NOISE) {
                 buildingStep.getWalls().removeAll(surfacesSelected);
                 buildingStep.getRoofs().removeAll(surfacesSelected);
                 for (Surface s : surfacesSelected) {
                     buildingStep.getNoise().getMesh().addAll(s.getMesh());
                 }
+
             } else {
                 throw new InvalidCaseException();
             }
@@ -698,8 +702,9 @@ public class BuildingsIsletController {
             throws NotCoherentActionException {
         for (Building building : this.islet.getBiStep5().getBuildings()) {
             BuildingStep5 buildingStep = building.getbStep5();
-            if (buildingStep.getWalls().containsAll(surfacesSelected)
-                    || buildingStep.getRoofs().containsAll(surfacesSelected)) {
+            if (buildingStep.getWalls().contains(surfacesSelected.get(0))
+                    || buildingStep.getRoofs()
+                            .contains(surfacesSelected.get(0))) {
                 return building;
             }
         }
@@ -882,13 +887,16 @@ public class BuildingsIsletController {
 
         for (Building building : this.islet.getBiStep6().getBuildings()) {
             BuildingStep6 buildingStep = building.getbStep6();
+
             for (Surface wall : buildingStep.getWalls()) {
                 surfacesList.add(wall);
             }
+
             for (Surface roof : buildingStep.getRoofs()) {
                 surfacesList.add(roof);
             }
         }
+
         surfacesList.add(this.islet.getBiStep6().getGrounds());
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);

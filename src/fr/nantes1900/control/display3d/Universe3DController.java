@@ -512,7 +512,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         MeshView meshView = (MeshView) pickIntersection.getGeometryArray();
         // Gets the the triangle picked.
         int[] pointIndex = pickIntersection.getPrimitiveVertexIndices();
-        // TODO : magic number !
+
         Triangle trianglePicked = meshView
                 .getTriangleFromArrayPosition(pointIndex[0]
                         / MeshView.TRIANGLE_POINTS_COUNT);
@@ -619,15 +619,35 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         }
     }
 
-    public List<Surface> getSurfacesSelected() {
-        return surfacesSelected;
-    }
 
     /**
      * Get the list of meshes selected.
-     * @return meshesSelected the list of the meshes selected.
+     * @return meshesSelected
+     *         the list of the meshes selected.
      */
     public List<Mesh> getMeshesSelected() {
         return this.meshesSelected;
     }
+
+
+    public void showMeshOrPolygon() {
+        if (this.displayMode == DISPLAY_MESH_MODE)
+        {
+            for (SurfaceView surfaceView : this.u3DView.getSurfaceViewList())
+            {
+                surfaceView.removeAllGeometries();
+                surfaceView.addGeometry(surfaceView.getMeshView());
+            }
+        } else
+        {
+            for (SurfaceView surfaceView : this.u3DView.getSurfaceViewList())
+            {
+                surfaceView.removeAllGeometries();
+                surfaceView.addGeometry(surfaceView.getPolygonView());
+            }
+        }
+
+    }
+   
+
 }

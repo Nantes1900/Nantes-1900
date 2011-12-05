@@ -94,7 +94,7 @@ public class BuildingStep5 extends AbstractBuildingStep {
 
                 // When the neighbours are sorted, finds the intersection of
                 // them to find the edges of this surface.
-                surface.setPolygone(surface.findEdges(this.walls, pointMap,
+                surface.setPolygon(surface.findEdges(this.walls, pointMap,
                         this.groundNormal));
 
             } catch (final InvalidSurfaceException e) {
