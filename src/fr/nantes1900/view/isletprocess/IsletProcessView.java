@@ -17,7 +17,9 @@ import fr.nantes1900.view.components.PFrame;
 import fr.nantes1900.view.display3d.Universe3DView;
 
 /**
- * @author Camille
+ * Window to launch process on an islet in order to simplify it.
+ * @author Camille Bouquet
+ * @author Luc Jallerat
  */
 public class IsletProcessView extends PFrame {
 
@@ -26,44 +28,50 @@ public class IsletProcessView extends PFrame {
      */
     private static final long serialVersionUID = 1L;
     /**
-     * TODO .
+     * Current characteristics panel. Is modified contextually.
      */
     private CharacteristicsView cView;
     /**
-     * TODO .
+     * Islet tree. Is Modified at each step and can be when characteristics
+     * changed.
      */
     private IsletTreeView itView;
     /**
-     * TODO .
+     * Navigation bar panel. Contains buttons to navigate through steps and
+     * indications.
      */
     private NavigationBarView nbView;
     /**
-     * TODO .
+     * Parameters panel. Each step needs parameters that the user can modify.
      */
     private ParametersView pView;
     /**
-     * TODO .
+     * The 3D view of the islet.
      */
     private Universe3DView u3DView;
     /**
-     * TODO .
+     * Tabs containing parameters panel and the tree.
      */
     private JTabbedPane tabs;
 
+    /**
+     * Scroll pane containing the parameter pane in order to add scroll bar if
+     * there are size issues.
+     */
     private JScrollPane jspParameters;
 
     /**
-     * TODO .
+     * Constructs a new window with the compulsory elements.
      * @param caracteristicsView
-     *            TODO .
+     *            the characteristics panel
      * @param isletTreeView
-     *            TODO .
+     *            the islet tree
      * @param navigationBarView
-     *            TODO .
+     *            the navigation bar
      * @param parametersView
-     *            TODO .
+     *            the parameters panel
      * @param universe3dView
-     *            TODO .
+     *            the 3D view
      */
     public IsletProcessView(final CharacteristicsView caracteristicsView,
             final IsletTreeView isletTreeView,
@@ -84,13 +92,17 @@ public class IsletProcessView extends PFrame {
         jspParameters
                 .setMinimumSize(new Dimension(pView.getPreferredWidth(), 0));
         this.tabs = new JTabbedPane();
-        this.tabs.addTab(FileTools.readElementText(TextsKeys.KEY_PARAMETERS), this.jspParameters);
-        this.tabs.addTab(FileTools.readElementText(TextsKeys.KEY_TREEVIEW), this.itView);
+        this.tabs.addTab(FileTools.readElementText(TextsKeys.KEY_PARAMETERS),
+                this.jspParameters);
+        this.tabs.addTab(FileTools.readElementText(TextsKeys.KEY_TREEVIEW),
+                this.itView);
         this.pComponents.setLayout(new GridBagLayout());
 
-        this.pComponents.add(this.nbView, new GridBagConstraints(0, 0, 2, 1,
-                1.0, 0.10, GridBagConstraints.CENTER, GridBagConstraints.HORIZONTAL,
-                new Insets(10, 10, 5, 10), 0, 0));
+        this.pComponents
+                .add(this.nbView, new GridBagConstraints(0, 0, 2, 1, 1.0, 0.10,
+                        GridBagConstraints.CENTER,
+                        GridBagConstraints.HORIZONTAL,
+                        new Insets(10, 10, 5, 10), 0, 0));
 
         this.pComponents.add(this.tabs, new GridBagConstraints(0, 1, 1, 2,
                 0.40, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
@@ -101,13 +113,14 @@ public class IsletProcessView extends PFrame {
         this.pComponents.add(this.cView, new GridBagConstraints(1, 2, 1, 1,
                 0.60, 0.15, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(5, 5, 10, 10), 0, 0));
-        this.setStatusBarText(FileTools.readElementText(TextsKeys.KEY_STATUS_STEP1));
+        this.setStatusBarText(FileTools
+                .readElementText(TextsKeys.KEY_STATUS_STEP1));
     }
 
     /**
-     * TODO .
+     * Shows a new characteristics panel instead of the older one.
      * @param view
-     *            TODO .
+     *            the new characteristics panel
      */
     public final void setCharacteristicsView(final CharacteristicsView view) {
         this.pComponents.remove(this.cView);
