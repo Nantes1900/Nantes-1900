@@ -75,7 +75,7 @@ public class Surface {
      *            the polygon to build the surface
      */
     public Surface(final Polygon p) {
-        this.setPolygone(p);
+        this.setPolygon(p);
     }
 
     /**
@@ -501,7 +501,7 @@ public class Surface {
      * @param polygoneIn
      *            the new polygon
      */
-    public final void setPolygone(final Polygon polygoneIn) {
+    public final void setPolygon(final Polygon polygoneIn) {
         this.polygon = polygoneIn;
     }
 
