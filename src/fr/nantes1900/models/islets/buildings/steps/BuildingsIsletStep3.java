@@ -110,8 +110,14 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
             }
         }
 
-        this.grounds.setNodeString("Grounds");
-        root.add(new DefaultMutableTreeNode(this.grounds));
+        if (!this.getGrounds().getMesh().isEmpty()) {
+            this.grounds.setNodeString("Grounds");
+            root.add(new DefaultMutableTreeNode(this.grounds));
+
+        } else {
+            // TODO : pop-up
+            System.out.println("Warning : initial grounds empty !");
+        }
 
         if (!this.noise.getMesh().isEmpty()) {
             this.noise.setNodeString("Noise");

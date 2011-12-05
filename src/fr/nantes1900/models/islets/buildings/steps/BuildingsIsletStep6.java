@@ -80,7 +80,15 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
             root.add(b.returnNode6(counter));
             counter++;
         }
-        root.add(new DefaultMutableTreeNode(this.grounds));
+
+        if (!this.getGrounds().getMesh().isEmpty()) {
+            this.grounds.setNodeString("Grounds");
+            root.add(new DefaultMutableTreeNode(this.grounds));
+
+        } else {
+            // TODO : pop-up
+            System.out.println("Warning : grounds empty !");
+        }
 
         return root;
     }

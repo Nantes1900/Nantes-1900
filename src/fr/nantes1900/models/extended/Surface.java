@@ -358,8 +358,7 @@ public class Surface {
 
         // If the ground is the neighbour of this surface, then we begin with
         // the ground, to avoid some problems in the future. Otherwise, we
-        // begin
-        // where we want.
+        // begin where we want.
         Surface current = null;
         try {
             current = this.getNeighbours().get(0);
