@@ -12,10 +12,12 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
+import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.utils.WriterSTL;
 import fr.nantes1900.view.isletselection.GlobalTreeView.FileNode;
@@ -78,8 +80,7 @@ public class IsletSelectionController {
         this.gtController = new GlobalTreeController(this);
         this.aController = new ActionsController(this);
         this.u3DController = new Universe3DController();
-        this.biController = new BuildingsIsletController(this,
-                this.u3DController);
+        this.biController = new BuildingsIsletController(this.u3DController);
 
         this.isView = new IsletSelectionView(this.aController.getActionsView(),
                 this.gtController.getGlobalTreeView(),
@@ -122,15 +123,12 @@ public class IsletSelectionController {
             normalSaved = true;
         } else {
             // TODO : put this text in the text file (or XML for Luc).
-            JOptionPane
-                    .showMessageDialog(
-                            this.isView,FileTools.readHelpMessage(
-                                    TextsKeys.KEY_COMPUTEGRAVITY, 
-                                    TextsKeys.MESSAGETYPE_MESSAGE),
-                                    FileTools.readHelpMessage(
-                                            TextsKeys.KEY_COMPUTEGRAVITY, 
-                                            TextsKeys.MESSAGETYPE_TITLE), 
-                                            JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this.isView, FileTools
+                    .readHelpMessage(TextsKeys.KEY_COMPUTEGRAVITY,
+                            TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                    .readHelpMessage(TextsKeys.KEY_COMPUTEGRAVITY,
+                            TextsKeys.MESSAGETYPE_TITLE),
+                    JOptionPane.ERROR_MESSAGE);
         }
 
         return normalSaved;
@@ -148,8 +146,9 @@ public class IsletSelectionController {
      * Displays a file in the 3d universe selected in the tree.
      * @param node
      *            The node of the tree corresponding to the file to display.
+     * @throws WeirdResultException 
      */
-    public final void displayFile(final DefaultMutableTreeNode node) {
+    public final void displayFile(final DefaultMutableTreeNode node) throws WeirdResultException {
         this.isView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         // Reads the file object of the Tree
         FileNode fileNode = (FileNode) node.getUserObject();
@@ -209,16 +208,12 @@ public class IsletSelectionController {
             processLaunched = true;
         } else {
             // TODO by Luc : put this text in a XML file.
-            JOptionPane
-                    .showMessageDialog(
-                            this.isView,
-                            FileTools.readHelpMessage(
-                                    TextsKeys.KEY_LAUNCHISLET, 
-                                    TextsKeys.MESSAGETYPE_MESSAGE),
-                                    FileTools.readHelpMessage(
-                                            TextsKeys.KEY_LAUNCHISLET, 
-                                            TextsKeys.MESSAGETYPE_TITLE),
-                                            JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this.isView, FileTools
+                    .readHelpMessage(TextsKeys.KEY_LAUNCHISLET,
+                            TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                    .readHelpMessage(TextsKeys.KEY_LAUNCHISLET,
+                            TextsKeys.MESSAGETYPE_TITLE),
+                    JOptionPane.ERROR_MESSAGE);
         }
 
         return processLaunched;
@@ -237,17 +232,16 @@ public class IsletSelectionController {
         File gravityNormal = new File(this.openedDirectory.getPath()
                 + "/gravity_normal.stl");
         if (!gravityNormal.exists()) {
-            JOptionPane.showMessageDialog(this.isView,
-                    FileTools.readHelpMessage(
-                            TextsKeys.KEY_UPDATEMOCKUP, 
-                            TextsKeys.MESSAGETYPE_MESSAGE),
-                            FileTools.readHelpMessage(
-                                    TextsKeys.KEY_UPDATEMOCKUP, 
-                                    TextsKeys.MESSAGETYPE_TITLE),
-                                    JOptionPane.INFORMATION_MESSAGE);
+            JOptionPane.showMessageDialog(this.isView, FileTools
+                    .readHelpMessage(TextsKeys.KEY_UPDATEMOCKUP,
+                            TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                    .readHelpMessage(TextsKeys.KEY_UPDATEMOCKUP,
+                            TextsKeys.MESSAGETYPE_TITLE),
+                    JOptionPane.INFORMATION_MESSAGE);
             this.aController.setComputeNormalMode();
             this.isView.setStatusBarText(FileTools.readHelpMessage(
-                    TextsKeys.KEY_IS_GRAVITYNORMAL, TextsKeys.MESSAGETYPE_STATUSBAR));
+                    TextsKeys.KEY_IS_GRAVITYNORMAL,
+                    TextsKeys.MESSAGETYPE_STATUSBAR));
         } else {
             try {
                 // Reads the gravity normal in the file, and keeps it in memory.
@@ -258,7 +252,8 @@ public class IsletSelectionController {
                 e.printStackTrace();
             }
             this.isView.setStatusBarText(FileTools.readHelpMessage(
-                    TextsKeys.KEY_IS_LAUNCHPROCESS, TextsKeys.MESSAGETYPE_STATUSBAR));
+                    TextsKeys.KEY_IS_LAUNCHPROCESS,
+                    TextsKeys.MESSAGETYPE_STATUSBAR));
             this.aController.setLaunchMode();
         }
     }

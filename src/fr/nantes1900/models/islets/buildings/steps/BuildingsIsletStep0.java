@@ -6,6 +6,7 @@ import javax.vecmath.Vector3d;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
@@ -56,19 +57,17 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep {
     /**
      * Creates a change base matrix with the normal to the ground. See the
      * MatrixMethod class for more informations.
-     * @throws NullArgumentException
-     *             if an argument needed for the process has not been
-     *             initialized
+     * @throws WeirdResultException
      */
-    public final void createChangeBaseMatrix() throws NullArgumentException {
+    public final void createChangeBaseMatrix() throws WeirdResultException {
         try {
             // Base change
             this.matrix = MatrixMethod.createOrthoBase(this.gravityNormal);
             MatrixMethod.changeBase(this.gravityNormal, this.matrix);
 
         } catch (final SingularMatrixException e) {
-            System.out.println("Error : the matrix is badly formed !");
-            System.exit(1);
+            throw new WeirdResultException(
+                    "Error : the matrix is badly formed !");
         }
     }
 
@@ -96,7 +95,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep {
      */
     @Override
     public final BuildingsIsletStep1 launchProcess()
-            throws NullArgumentException {
+            throws NullArgumentException, WeirdResultException {
         if (this.gravityNormal == null) {
             throw new NullArgumentException();
         }
