@@ -56,6 +56,7 @@ public class CharacteristicsStep6Controller extends
 
                     @Override
                     public void actionPerformed(ActionEvent arg0) {
+                        // TODO tell the parent controller that the surface is locked
                         CharacteristicsStep6Controller.this.surfaceLocked = !CharacteristicsStep6Controller.this.surfaceLocked;
                         JButton source = ((JButton) arg0.getSource());
                         if (CharacteristicsStep6Controller.this.surfaceLocked)
