@@ -93,7 +93,7 @@ public class SurfaceView extends Shape3D {
         this.appearance.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
 
         // Read the texture.
-        TextureLoader loader = new TextureLoader("res/texture/texture1.jpg",
+        TextureLoader loader = new TextureLoader("res/texture/texture.jpg",
                 null);
         ImageComponent2D image = loader.getImage();
         Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGB,
