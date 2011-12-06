@@ -247,9 +247,24 @@ public class BuildingsIsletController {
     }
 
     /**
+     * Changes the list of neighbours of one surface.
+     * @param surfaceLocked
+     *            the current surface
+     * @param newNeighbours
+     *            the new list of neighbours
+     */
+    public final void action6(final Surface surfaceLocked,
+            final List<Surface> newNeighbours) {
+        surfaceLocked.setNeighbours(newNeighbours);
+        Building building = this.searchForBuildingContaining6(surfaceLocked);
+        building.getbStep5().orderNeighboursAndDeterminateContours();
+    }
+
+    /**
      * Dsisplays the set of meshes, considering the progression of the
      * treatement.
      * @throws WeirdResultException
+     *             if the result is not coherent
      */
     public final void display() throws WeirdResultException {
         this.u3DController.clearAll();
@@ -490,6 +505,7 @@ public class BuildingsIsletController {
     /**
      * Launch the process, considering the progression.
      * @throws WeirdResultException
+     *             if the result is not coherent
      */
     public final void launchProcess() throws WeirdResultException {
         try {
@@ -583,6 +599,7 @@ public class BuildingsIsletController {
      * @throws InvalidCaseException
      *             if an invalid case has been called
      * @throws WeirdResultException
+     *             if the result is not coherent
      */
     public final DefaultMutableTreeNode returnNode()
             throws InvalidCaseException, WeirdResultException {
@@ -628,6 +645,24 @@ public class BuildingsIsletController {
                 return building;
             }
         }
+        return null;
+    }
+
+    /**
+     * Searches for the building containing the surface.
+     * @param surface
+     *            the surface
+     * @return the building containing this surface
+     */
+    private Building searchForBuildingContaining6(final Surface surface) {
+        for (Building building : this.islet.getBiStep6().getBuildings()) {
+
+            if (building.getbStep6().getWalls().contains(surface)
+                    || building.getbStep6().getRoofs().contains(surface)) {
+                return building;
+            }
+        }
+
         return null;
     }
 
@@ -693,6 +728,7 @@ public class BuildingsIsletController {
     /**
      * Displays the second step.
      * @throws WeirdResultException
+     *             if the result is not coherent
      */
     public final void viewStep2() throws WeirdResultException {
         List<Surface> surfacesList = new ArrayList<>();
@@ -715,6 +751,7 @@ public class BuildingsIsletController {
     /**
      * Displays the third step.
      * @throws WeirdResultException
+     *             if the result is not coherent
      */
     public final void viewStep3() throws WeirdResultException {
         List<Surface> surfacesList = new ArrayList<>();
@@ -739,6 +776,7 @@ public class BuildingsIsletController {
     /**
      * Displays the fourth step.
      * @throws WeirdResultException
+     *             if the result is not coherent
      */
     public final void viewStep4() throws WeirdResultException {
         List<Surface> surfacesList = new ArrayList<>();
@@ -761,6 +799,7 @@ public class BuildingsIsletController {
     /**
      * Displays the fifth step.
      * @throws WeirdResultException
+     *             if the result is not coherent
      */
     public final void viewStep5() throws WeirdResultException {
         List<Surface> surfacesList = new ArrayList<>();
@@ -784,24 +823,6 @@ public class BuildingsIsletController {
         }
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
-    }
-
-    public void action6(Surface surfaceLocked, List<Surface> newNeighbours) {
-        surfaceLocked.setNeighbours(newNeighbours);
-        Building building = this.searchForBuildingContaining6(surfaceLocked);
-        building.getbStep5().orderNeighboursAndDeterminateContours();
-    }
-
-    private Building searchForBuildingContaining6(Surface surface) {
-        for (Building building : this.islet.getBiStep6().getBuildings()) {
-
-            if (building.getbStep6().getWalls().contains(surface)
-                    || building.getbStep6().getRoofs().contains(surface)) {
-                return building;
-            }
-        }
-
-        return null;
     }
 
     /**

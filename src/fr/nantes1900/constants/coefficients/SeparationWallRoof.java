@@ -1,4 +1,4 @@
-package fr.nantes1900.constants;
+package fr.nantes1900.constants.coefficients;
 
 /**
  * Contains some coefficients used in the algorithms.

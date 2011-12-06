@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.control;
 
 import java.io.File;
@@ -43,11 +40,9 @@ public class GlobalController {
     public final void launchIsletProcess(final File isletFile,
             final BuildingsIsletController biController) {
         // Launches the base change : the process 0.
-        try
-        {
+        try {
             biController.launchProcess();
-        } catch (WeirdResultException e)
-        {
+        } catch (WeirdResultException e) {
             // TODO by Camille : pop-up
             e.printStackTrace();
         }

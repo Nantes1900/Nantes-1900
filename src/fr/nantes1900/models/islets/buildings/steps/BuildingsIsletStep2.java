@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import fr.nantes1900.constants.SeparationBuildings;
+import fr.nantes1900.constants.coefficients.SeparationBuildings;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;

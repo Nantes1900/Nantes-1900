@@ -3,7 +3,7 @@ package fr.nantes1900.models.extended.steps;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.constants.SeparationWallRoof;
+import fr.nantes1900.constants.coefficients.SeparationWallRoof;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
