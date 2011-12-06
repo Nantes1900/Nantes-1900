@@ -74,7 +74,7 @@ public class BuildingStep3 extends AbstractBuildingStep {
      */
     @Override
     public final DefaultMutableTreeNode returnNode(final int counter) {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Building"
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Bâtiment "
                 + counter);
 
         this.initialTotalMesh.setNodeString("Surface totale");

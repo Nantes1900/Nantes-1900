@@ -158,7 +158,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
     public final DefaultMutableTreeNode returnNode() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
 
-        this.initialTotalSurfaceAfterBaseChange.setNodeString("Total surface");
+        this.initialTotalSurfaceAfterBaseChange.setNodeString("Surface totale");
         DefaultMutableTreeNode node = new DefaultMutableTreeNode(
                 this.initialTotalSurfaceAfterBaseChange);
 

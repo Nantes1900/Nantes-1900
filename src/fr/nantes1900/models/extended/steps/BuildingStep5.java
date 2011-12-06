@@ -8,8 +8,6 @@ import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
-import org.w3c.dom.css.Counter;
-
 import fr.nantes1900.constants.SeparationWallsSeparationRoofs;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
@@ -145,7 +143,7 @@ public class BuildingStep5 extends AbstractBuildingStep {
         int counter = 0;
         for (final Mesh m : wholeListFakes) {
             m.writeSTL("fuck" + counter + ".stl");
-            counter ++;
+            counter++;
         }
 
         // Then we check every edge of the bounds to see if some are shared by
@@ -221,19 +219,19 @@ public class BuildingStep5 extends AbstractBuildingStep {
 
     @Override
     public final DefaultMutableTreeNode returnNode(final int counter) {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Building "
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Bâtiment "
                 + counter);
 
         int counterWall = 0;
         for (Wall w : this.walls) {
-            w.setNodeString("Wall " + counterWall);
+            w.setNodeString("Mur " + counterWall);
             root.add(w.returnNode());
             counterWall++;
         }
 
         int counterRoof = 0;
         for (Roof r : this.roofs) {
-            r.setNodeString("Roof " + counterRoof);
+            r.setNodeString("Toit " + counterRoof);
             root.add(r.returnNode());
             counterRoof++;
         }
