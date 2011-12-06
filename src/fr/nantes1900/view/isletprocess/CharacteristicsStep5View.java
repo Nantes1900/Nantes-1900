@@ -52,12 +52,8 @@ public class CharacteristicsStep5View extends CharacteristicsView {
                 if (((JCheckBox) arg0.getSource()).isSelected())
                 {
                     CharacteristicsStep5View.this.bValidate.setEnabled(true);
-                    CharacteristicsStep5View.this.getCBNoise().setSelected(
-                            false);
-                } else
-                {
-                    CharacteristicsStep5View.this.getCBNoise().setEnabled(true);
                 }
+                CharacteristicsStep5View.this.checkEnableValidateButton();
             }
 
         });
@@ -73,22 +69,10 @@ public class CharacteristicsStep5View extends CharacteristicsView {
             public void itemStateChanged(final ItemEvent arg0) {
                 if (((JCheckBox) arg0.getSource()).isSelected())
                 {
-                    if (CharacteristicsStep5View.this.lMerge.isEnabled())
-                    {
-                        CharacteristicsStep5View.this.getCBMerge().setSelected(
-                                false);
-                    }
-
-                    CharacteristicsStep5View.this.bValidate.setEnabled(true);
-                } else
-                {
-                    if (CharacteristicsStep5View.this.lMerge.isEnabled())
-                    {
-                        CharacteristicsStep5View.this.getCBMerge().setEnabled(
-                                true);
-                    }
-                    CharacteristicsStep5View.this.bValidate.setEnabled(false);
+                    CharacteristicsStep5View.this.getCBMerge().setSelected(
+                            false);
                 }
+                CharacteristicsStep5View.this.checkEnableValidateButton();
             }
 
         });
@@ -98,6 +82,16 @@ public class CharacteristicsStep5View extends CharacteristicsView {
                 new JLabel(FileTools
                         .readElementText(TextsKeys.KEY_PUTINNOISETEXT)),
                 new HelpButton()));
+    }
+
+    private void checkEnableValidateButton() {
+        if (cbMerge.isSelected() || cbNoise.isSelected())
+        {
+            CharacteristicsStep5View.this.bValidate.setEnabled(true);
+        } else
+        {
+            CharacteristicsStep5View.this.bValidate.setEnabled(false);
+        }
     }
 
     /**
