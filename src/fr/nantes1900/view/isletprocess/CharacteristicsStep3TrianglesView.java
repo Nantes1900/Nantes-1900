@@ -14,8 +14,10 @@ import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
 
 /**
- * TODO .
- * @author Camille
+ * Characteristics panel for the 3rd step of an islet process when triangles are
+ * selected.
+ * @author Camille Bouquet
+ * @author Luc Jallerat
  */
 public class CharacteristicsStep3TrianglesView extends CharacteristicsView {
 
@@ -24,12 +26,13 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView {
      */
     private static final long serialVersionUID = 1L;
     /**
-     * TODO .
+     * Check box to delete a list of triangles.
      */
     private JCheckBox cbDelete;
 
     /**
-     * TODO .
+     * Creates a new characteristics panels for a list of selected triangles in
+     * the step 3.
      */
     public CharacteristicsStep3TrianglesView() {
         super();
@@ -39,17 +42,20 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView {
 
             @Override
             public void itemStateChanged(final ItemEvent arg0) {
-                if (((JCheckBox) arg0.getSource()).isSelected()) {
+                if (((JCheckBox) arg0.getSource()).isSelected())
+                {
                     CharacteristicsStep3TrianglesView.this.bValidate
                             .setEnabled(true);
-                } else {
+                } else
+                {
                     CharacteristicsStep3TrianglesView.this.bValidate
                             .setEnabled(false);
                 }
             }
 
         });
-        this.addCaracteristic(createSimpleCaracteristic(this.cbDelete,
+        this.addCaracteristic(createSimpleCaracteristic(
+                this.cbDelete,
                 new JLabel(FileTools.readElementText(TextsKeys.KEY_DELETETEXT)),
                 new HelpButton()));
 
@@ -57,8 +63,9 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView {
     }
 
     /**
-     * TODO .
-     * @return TODO .
+     * Tells if the delete check box is selected.
+     * @return true - delete check box is selected\n
+     *         false - delete check box is not selected
      */
     public final boolean isDeleteSelected() {
         return this.cbDelete.isSelected();

@@ -116,13 +116,12 @@ public class IsletProcessController implements ElementsSelectedListener {
         {
             u3DController
                     .changeSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
-            setDefaultCharacterisitcsPanel();
-        } else if (selectionMode == Universe3DController.SELECTION_SURFACE_MODE)
+        } else
         {
             u3DController
                     .changeSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
-            setDefaultCharacterisitcsPanel();
         }
+        setDefaultCharacterisitcsPanel();
     }
 
     public void deselectAllSurfaces() {
@@ -169,7 +168,7 @@ public class IsletProcessController implements ElementsSelectedListener {
         this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         this.biController.launchProcess();
         refreshViews();
-        this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR)); 
+        this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
         setToolbarButtons();
         this.pController.displayProcessingParameters(this.getProgression());
     }
@@ -309,9 +308,9 @@ public class IsletProcessController implements ElementsSelectedListener {
     @Override
     public void newTrianglesSelection(List<Triangle> trianglesSelected) {
         int step = this.getProgression();
-        
+
         if ((step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_TRIANGLE_MODE)
-                        || step == 2 || step == 4)
+                || step == 2 || step == 4)
         {
             if (trianglesSelected.isEmpty())
             {
