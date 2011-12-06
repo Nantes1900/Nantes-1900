@@ -12,7 +12,6 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
-import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
@@ -24,8 +23,10 @@ import fr.nantes1900.view.isletselection.GlobalTreeView.FileNode;
 import fr.nantes1900.view.isletselection.IsletSelectionView;
 
 /**
- * TODO.
+ * Controller for the islet selection window. Manages child components such as
+ * the action panel, the tree and the 3D view.
  * @author Camille Bouquet
+ * @author Luc Jallerat
  */
 public class IsletSelectionController {
 
@@ -102,7 +103,8 @@ public class IsletSelectionController {
     public final boolean computeGravityNormal() {
         boolean normalSaved = false;
         if (this.selectedFile != null
-                && !this.u3DController.getTrianglesSelected().isEmpty()) {
+                && !this.u3DController.getTrianglesSelected().isEmpty())
+        {
             // TODO by Daniel : Move this code
             WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
                     + "/gravity_normal.stl");
@@ -121,8 +123,8 @@ public class IsletSelectionController {
             writer.write();
             System.out.println("Enregistre");
             normalSaved = true;
-        } else {
-            // TODO : put this text in the text file (or XML for Luc).
+        } else
+        {
             JOptionPane.showMessageDialog(this.isView, FileTools
                     .readHelpMessage(TextsKeys.KEY_COMPUTEGRAVITY,
                             TextsKeys.MESSAGETYPE_MESSAGE), FileTools
@@ -146,17 +148,21 @@ public class IsletSelectionController {
      * Displays a file in the 3d universe selected in the tree.
      * @param node
      *            The node of the tree corresponding to the file to display.
-     * @throws WeirdResultException 
+     * @throws WeirdResultException
      */
-    public final void displayFile(final DefaultMutableTreeNode node) throws WeirdResultException {
+    public final void displayFile(final DefaultMutableTreeNode node)
+            throws WeirdResultException {
         this.isView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         // Reads the file object of the Tree
         FileNode fileNode = (FileNode) node.getUserObject();
 
-        if (fileNode.isFile()) {
-            try {
+        if (fileNode.isFile())
+        {
+            try
+            {
                 this.biController.readFile(fileNode.getEntireName());
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 // FIXME : make a pop-up :)
                 e.printStackTrace();
             }
@@ -175,8 +181,8 @@ public class IsletSelectionController {
     }
 
     /**
-     * TODO.
-     * @return TODO
+     * Gets the islet selection view.
+     * @return the islet selection view
      */
     public final JFrame getWindow() {
         return this.isView;
@@ -195,18 +201,22 @@ public class IsletSelectionController {
 
         if ((!this.u3DController.getTrianglesSelected().isEmpty() || this.aController
                 .getActionsView().isGravityGroundCheckBoxSelected())
-                && this.selectedFile != null) {
+                && this.selectedFile != null)
+        {
             this.isView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
             if (this.aController.getActionsView()
-                    .isGravityGroundCheckBoxSelected()) {
+                    .isGravityGroundCheckBoxSelected())
+            {
                 this.biController.useGravityNormalAsGroundNormal();
-            } else {
+            } else
+            {
                 this.computeGroundNormal();
             }
             this.parentController.launchIsletProcess(this.selectedFile,
                     this.biController);
             processLaunched = true;
-        } else {
+        } else
+        {
             // TODO by Luc : put this text in a XML file.
             JOptionPane.showMessageDialog(this.isView, FileTools
                     .readHelpMessage(TextsKeys.KEY_LAUNCHISLET,
@@ -231,7 +241,8 @@ public class IsletSelectionController {
         // checks if the gravity normal already exists
         File gravityNormal = new File(this.openedDirectory.getPath()
                 + "/gravity_normal.stl");
-        if (!gravityNormal.exists()) {
+        if (!gravityNormal.exists())
+        {
             JOptionPane.showMessageDialog(this.isView, FileTools
                     .readHelpMessage(TextsKeys.KEY_UPDATEMOCKUP,
                             TextsKeys.MESSAGETYPE_MESSAGE), FileTools
@@ -242,11 +253,14 @@ public class IsletSelectionController {
             this.isView.setStatusBarText(FileTools.readHelpMessage(
                     TextsKeys.KEY_IS_GRAVITYNORMAL,
                     TextsKeys.MESSAGETYPE_STATUSBAR));
-        } else {
-            try {
+        } else
+        {
+            try
+            {
                 // Reads the gravity normal in the file, and keeps it in memory.
                 this.biController.readGravityNormal(gravityNormal.getPath());
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 // If the file can not be read or is not well built.
                 // TODO Auto-generated catch block
                 e.printStackTrace();
