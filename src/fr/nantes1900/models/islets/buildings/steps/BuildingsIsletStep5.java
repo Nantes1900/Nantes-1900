@@ -11,6 +11,7 @@ import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.steps.BuildingStep5;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 
 /**
  * Implements a step of the process. This step is after the separation between
@@ -101,7 +102,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode() {
+    public final DefaultMutableTreeNode returnNode() throws WeirdResultException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
 
         int counter = 0;
@@ -115,8 +116,8 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
             this.getNoise().setNodeString("Bruit");
             root.add(new DefaultMutableTreeNode(this.getNoise()));
         } else {
-            // TODO : pop-up
-            System.out.println("Noise empty : error !");
+            throw new WeirdResultException(
+                    "Noise empty : error !");
         }
 
         return root;

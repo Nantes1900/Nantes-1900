@@ -10,6 +10,7 @@ import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 
 /**
  * Implements a step of the process. This step is after the separation between
@@ -102,7 +103,7 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode() {
+    public final DefaultMutableTreeNode returnNode() throws WeirdResultException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
 
         int counter = 0;
@@ -118,8 +119,8 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
             root.add(new DefaultMutableTreeNode(this.grounds));
 
         } else {
-            // TODO : pop-up
-            System.out.println("Warning : initial grounds empty !");
+            throw new WeirdResultException(
+                    "Warning : initial grounds empty !");
         }
 
         if (!this.noise.getMesh().isEmpty()) {

@@ -7,6 +7,7 @@ import java.io.File;
 
 import fr.nantes1900.control.isletprocess.IsletProcessController;
 import fr.nantes1900.control.isletselection.IsletSelectionController;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 
 /**
  * @author Camille
@@ -39,7 +40,12 @@ public class GlobalController {
     public final void launchIsletProcess(final File isletFile,
             final BuildingsIsletController biController) {
         // Launches the base change : the treatmen 0.
-        biController.launchProcess();
+        try {
+            biController.launchProcess();
+        } catch (WeirdResultException e) {
+            // TODO by Camille : pop-up
+            e.printStackTrace();
+        }
 
         this.isletProcessController = new IsletProcessController(this,
                 isletFile, biController);
