@@ -179,6 +179,7 @@ public final class TextsKeys {
     public static final String KEY_TOVALID= "ToValid";
     
     public static final String KEY_HIDEITEM= "HideItem";
+    public static final String KEY_SHOWITEM= "ShowItem";
 
     /**
      * Key for parameters files extension.
