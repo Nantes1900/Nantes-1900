@@ -110,6 +110,15 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
             counter++;
         }
 
+        if (this.getNoise().getMesh() != null
+                && !this.getNoise().getMesh().isEmpty()) {
+            this.getNoise().setNodeString("Noise");
+            root.add(new DefaultMutableTreeNode(this.getNoise()));
+        } else {
+            // TODO : pop-up
+            System.out.println("Noise empty : error !");
+        }
+
         return root;
     }
 
@@ -117,15 +126,21 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
      * Setter.
      * @param groundsIn
      *            the grounds
-     * @param noiseIn
-     *            the noise
      * @param groundNormalIn
      *            the normal to the ground
      */
-    public final void setArguments(final Surface noiseIn,
-            final Ground groundsIn, final Vector3d groundNormalIn) {
+    public final void setArguments(final Ground groundsIn,
+            final Vector3d groundNormalIn) {
         this.grounds = groundsIn;
         this.groundNormal = groundNormalIn;
+    }
+
+    /**
+     * Setter.
+     * @param noiseIn
+     *            the noise
+     */
+    public final void setArguments(final Surface noiseIn) {
         this.noise = noiseIn;
     }
 

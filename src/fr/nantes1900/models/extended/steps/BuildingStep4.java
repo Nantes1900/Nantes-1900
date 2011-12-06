@@ -166,12 +166,6 @@ public class BuildingStep4 extends AbstractBuildingStep {
         this.initialRoofSurface.setNodeString("Roofs");
         root.add(new DefaultMutableTreeNode(this.initialRoofSurface));
 
-        // FIXME
-        // if (this.noise != null) {
-        // this.noise.setNodeString("Noise");
-        // root.add(new DefaultMutableTreeNode(this.noise));
-        // }
-
         return root;
     }
 

@@ -257,6 +257,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      *             initialized
      */
     public final void launchProcess4() throws NullArgumentException {
+        this.biStep4.setArguments(this.groundNormal);
         this.biStep5 = this.getBiStep4().launchProcess();
     }
 
@@ -267,6 +268,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      *             initialized
      */
     public final void launchProcess5() throws NullArgumentException {
+        this.biStep5.setArguments(this.biStep4.getGrounds(), this.groundNormal);
         this.biStep6 = this.getBiStep5().launchProcess();
     }
 

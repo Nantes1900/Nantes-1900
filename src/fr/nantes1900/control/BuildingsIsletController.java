@@ -25,7 +25,6 @@ import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.ResidentialIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
-import fr.nantes1900.models.islets.buildings.exceptions.NotCoherentActionException;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.utils.ParserSTL;
@@ -113,7 +112,6 @@ public class BuildingsIsletController {
      * @throws InvalidCaseException
      *             if the type of action is not possible in this method
      */
-    // FIXME : bugs
     public final void action3(final List<Triangle> trianglesSelected,
             final int actionType) throws InvalidCaseException {
 
@@ -144,20 +142,29 @@ public class BuildingsIsletController {
      */
     public final void action3(final Surface surface, final int actionType)
             throws InvalidCaseException {
-        if (actionType == ActionTypes.TURN_TO_NOISE) {
-            // The user wants the surface to turn to noise.
+        if (surface != this.islet.getBiStep3().getGrounds()) {
+            if (actionType == ActionTypes.TURN_TO_NOISE) {
+                // The user wants the surface to turn to noise.
+                Building b = this.returnBuildingContaining3(surface);
 
-            this.islet.getBiStep3().getBuildings()
-                    .remove(this.returnBuildingContaining3(surface));
-            this.islet.getBiStep3().getNoise().getMesh()
-                    .addAll(surface.getMesh());
-        } else if (actionType == ActionTypes.TURN_TO_BUILDING) {
-            // The user wants the surface to turn to building.
-            this.islet.getBiStep3().getBuildings().add(new Building(surface));
-            this.islet.getBiStep3().getNoise().getMesh()
-                    .removeAll(surface.getMesh());
-        } else {
-            throw new InvalidCaseException();
+                this.islet.getBiStep3().getBuildings()
+                        .remove(this.returnBuildingContaining3(surface));
+                this.islet.getBiStep3().getNoise().getMesh()
+                        .addAll(surface.getMesh());
+
+            } else if (actionType == ActionTypes.TURN_TO_BUILDING) {
+                // The user wants the surface to turn to building.
+                this.islet
+                        .getBiStep3()
+                        .getBuildings()
+                        .add(new Building(new Surface(new Mesh(surface
+                                .getMesh()))));
+                this.islet.getBiStep3().getNoise().getMesh()
+                        .removeAll(surface.getMesh());
+
+            } else {
+                throw new InvalidCaseException();
+            }
         }
     }
 
@@ -208,9 +215,11 @@ public class BuildingsIsletController {
      */
     public final void action5(final List<Surface> surfacesSelected,
             final int actionType) throws InvalidCaseException {
-        Building building;
-        try {
-            building = this.searchForBuildingContaining5(surfacesSelected);
+        Building building = this.searchForBuildingContaining5(surfacesSelected);
+
+        // If it is null, this means that the triangles selected are not
+        // coherent with the action asked. Then we do nothing.
+        if (building != null) {
 
             BuildingStep5 buildingStep = building.getbStep5();
 
@@ -244,9 +253,6 @@ public class BuildingsIsletController {
             } else {
                 throw new InvalidCaseException();
             }
-        } catch (NotCoherentActionException e) {
-            // TODO Implement the case when this exception is throwed.
-            e.printStackTrace();
         }
     }
 
@@ -643,12 +649,10 @@ public class BuildingsIsletController {
      * @param surfacesSelected
      *            the list of surfaces
      * @return the building containing <strong>all</strong> these surfaces
-     * @throws NotCoherentActionException
-     *             if no building contains all of these surfaces
      */
     private Building searchForBuildingContaining5(
-            final List<Surface> surfacesSelected)
-            throws NotCoherentActionException {
+            final List<Surface> surfacesSelected) {
+
         for (Building building : this.islet.getBiStep5().getBuildings()) {
             BuildingStep5 buildingStep = building.getbStep5();
             if (buildingStep.getWalls().contains(surfacesSelected.get(0))
@@ -657,7 +661,7 @@ public class BuildingsIsletController {
                 return building;
             }
         }
-        throw new NotCoherentActionException();
+        return null;
     }
 
     /**
@@ -797,6 +801,14 @@ public class BuildingsIsletController {
             surfacesList.add(building.getbStep4().getInitialRoofSurface());
         }
 
+        if (this.islet.getBiStep4().getNoise().getMesh() != null
+                && !this.islet.getBiStep4().getNoise().getMesh().isEmpty()) {
+            surfacesList.add(this.islet.getBiStep4().getNoise());
+        } else {
+            // TODO : pop-up
+            System.out.println("Noise empty : error !");
+        }
+
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
     }
 
@@ -817,7 +829,8 @@ public class BuildingsIsletController {
             }
         }
 
-        if (!this.islet.getBiStep5().getNoise().getMesh().isEmpty()) {
+        if (this.islet.getBiStep5().getNoise().getMesh() != null
+                && !this.islet.getBiStep5().getNoise().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep5().getNoise());
         } else {
             // TODO : pop-up

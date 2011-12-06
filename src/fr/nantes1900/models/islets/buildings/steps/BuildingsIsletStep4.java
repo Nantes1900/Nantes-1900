@@ -52,6 +52,14 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
 
     /**
      * Getter.
+     * @return the noise
+     */
+    public Surface getNoise() {
+        return this.noise;
+    }
+
+    /**
+     * Getter.
      * @return the list of buildings
      */
     public final List<Building> getBuildings() {
@@ -82,7 +90,10 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
             b.launchProcess4();
         }
 
-        return new BuildingsIsletStep5(this.buildings, this.grounds);
+        BuildingsIsletStep5 biStep = new BuildingsIsletStep5(this.buildings,
+                this.grounds);
+        biStep.setArguments(this.noise);
+        return biStep;
     }
 
     /*
@@ -101,6 +112,15 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
             counter++;
         }
 
+        if (this.getNoise().getMesh() != null
+                && !this.getNoise().getMesh().isEmpty()) {
+            this.noise.setNodeString("Noise");
+            root.add(new DefaultMutableTreeNode(this.noise));
+        } else {
+            // TODO : pop-up
+            System.out.println("Noise empty : error !");
+        }
+
         return root;
     }
 
@@ -111,9 +131,16 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
      * @param noiseIn
      *            the noise
      */
-    public final void setArguments(final Vector3d groundNormalIn,
-            final Surface noiseIn) {
+    public final void setArguments(final Vector3d groundNormalIn) {
         this.groundNormal = groundNormalIn;
+    }
+
+    /**
+     * Setter.
+     * @param noiseIn
+     *            the noise
+     */
+    public final void setArguments(final Surface noiseIn) {
         this.noise = noiseIn;
     }
 

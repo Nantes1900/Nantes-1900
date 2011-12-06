@@ -89,7 +89,10 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
             b.launchProcess3();
         }
 
-        return new BuildingsIsletStep4(this.buildings, this.grounds);
+        BuildingsIsletStep4 biStep = new BuildingsIsletStep4(this.buildings,
+                this.grounds);
+        biStep.setArguments(this.noise);
+        return biStep;
     }
 
     /*
