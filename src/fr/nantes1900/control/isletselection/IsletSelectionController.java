@@ -99,13 +99,15 @@ public class IsletSelectionController {
     public final boolean computeGravityNormal() {
         boolean normalSaved = false;
         if (this.selectedFile != null
-                && !this.u3DController.getTrianglesSelected().isEmpty()) {
+                && !this.u3DController.getTrianglesSelected().isEmpty())
+        {
             WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
                     + "/gravity_normal.stl");
             writer.setMesh(new Mesh(this.u3DController.getTrianglesSelected()));
             writer.write();
             normalSaved = true;
-        } else {
+        } else
+        {
             JOptionPane.showMessageDialog(this.isView, FileTools
                     .readHelpMessage(TextsKeys.KEY_COMPUTEGRAVITY,
                             TextsKeys.MESSAGETYPE_MESSAGE), FileTools
@@ -137,10 +139,13 @@ public class IsletSelectionController {
         // Reads the file object of the Tree
         FileNode fileNode = (FileNode) node.getUserObject();
 
-        if (fileNode.isFile()) {
-            try {
+        if (fileNode.isFile())
+        {
+            try
+            {
                 this.biController.readFile(fileNode.getEntireName());
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 // FIXME : make a pop-up :)
                 e.printStackTrace();
             }
@@ -177,20 +182,16 @@ public class IsletSelectionController {
     public final boolean launchIsletProcess() {
         boolean processLaunched = false;
 
-        if ((!this.u3DController.getTrianglesSelected().isEmpty() || this.aController
-                .getActionsView().isGravityGroundCheckBoxSelected())
-                && this.selectedFile != null) {
+        if ((!this.u3DController.getTrianglesSelected().isEmpty())
+                && this.selectedFile != null)
+        {
             this.isView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-            if (this.aController.getActionsView()
-                    .isGravityGroundCheckBoxSelected()) {
-                this.biController.useGravityNormalAsGroundNormal();
-            } else {
-                this.computeGroundNormal();
-            }
+            this.computeGroundNormal();
             this.parentController.launchIsletProcess(this.selectedFile,
                     this.biController);
             processLaunched = true;
-        } else {
+        } else
+        {
             JOptionPane.showMessageDialog(this.isView, FileTools
                     .readHelpMessage(TextsKeys.KEY_LAUNCHISLET,
                             TextsKeys.MESSAGETYPE_MESSAGE), FileTools
@@ -214,7 +215,8 @@ public class IsletSelectionController {
         // checks if the gravity normal already exists
         File gravityNormal = new File(this.openedDirectory.getPath()
                 + "/gravity_normal.stl");
-        if (!gravityNormal.exists()) {
+        if (!gravityNormal.exists())
+        {
             JOptionPane.showMessageDialog(this.isView, FileTools
                     .readHelpMessage(TextsKeys.KEY_UPDATEMOCKUP,
                             TextsKeys.MESSAGETYPE_MESSAGE), FileTools
@@ -225,11 +227,14 @@ public class IsletSelectionController {
             this.isView.setStatusBarText(FileTools.readHelpMessage(
                     TextsKeys.KEY_IS_GRAVITYNORMAL,
                     TextsKeys.MESSAGETYPE_STATUSBAR));
-        } else {
-            try {
+        } else
+        {
+            try
+            {
                 // Reads the gravity normal in the file, and keeps it in memory.
                 this.biController.readGravityNormal(gravityNormal.getPath());
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 // If the file can not be read or is not well built.
                 e.printStackTrace();
             }

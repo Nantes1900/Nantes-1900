@@ -695,13 +695,6 @@ public class BuildingsIsletController {
     }
 
     /**
-     * Sets the islet ground normal with the gravity normal.
-     */
-    public final void useGravityNormalAsGroundNormal() {
-        this.islet.setGroundNormal(new Vector3d(this.islet.getGravityNormal()));
-    }
-
-    /**
      * Displays the zero step.
      */
     public final void viewStep0() {
