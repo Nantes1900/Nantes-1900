@@ -28,12 +28,16 @@ public class CharacteristicsStep2Controller extends
         AbstractCharacteristicsTrianglesController {
 
     /**
-     * Constructor.
+     * Creates a new step 2 characteristics controller which will create the
+     * panel and sets the action to perform when validate button is clicked.
      * @param parentController
+     *            the parent controller
      * @param trianglesSelected
+     *            the selected triangles
      */
     public CharacteristicsStep2Controller(
-            IsletProcessController parentController, List<Triangle> trianglesSelected) {
+            IsletProcessController parentController,
+            List<Triangle> trianglesSelected) {
         super(parentController, trianglesSelected);
 
         this.cView = new CharacteristicsStep2View();
@@ -44,22 +48,26 @@ public class CharacteristicsStep2Controller extends
                 String typeChosen = ((CharacteristicsStep2View) cView)
                         .getTypeSelected();
 
+                // gets the selected type
                 int actionType = -1;
-                switch (typeChosen) {
-                case Characteristics.TYPE_GROUND:
-                    actionType = ActionTypes.TURN_TO_GROUND;
+                switch (typeChosen)
+                {
+                    case Characteristics.TYPE_GROUND:
+                        actionType = ActionTypes.TURN_TO_GROUND;
                     break;
 
-                case Characteristics.TYPE_BUILDING:
-                    actionType = ActionTypes.TURN_TO_BUILDING;
+                    case Characteristics.TYPE_BUILDING:
+                        actionType = ActionTypes.TURN_TO_BUILDING;
                     break;
                 }
 
-                try {
+                try
+                {
                     CharacteristicsStep2Controller.this.parentController
                             .getBiController().action2(trianglesList,
                                     actionType);
-                } catch (InvalidCaseException e) {
+                } catch (InvalidCaseException e)
+                {
                     JOptionPane.showMessageDialog(cView, FileTools
                             .readInformationMessage(
                                     TextsKeys.KEY_ERROR_INCORRECTTYPE,
@@ -69,8 +77,9 @@ public class CharacteristicsStep2Controller extends
                                     TextsKeys.MESSAGETYPE_TITLE),
                             JOptionPane.ERROR_MESSAGE);
                 }
-                
-                CharacteristicsStep2Controller.this.parentController.refreshViews();
+
+                CharacteristicsStep2Controller.this.parentController
+                        .refreshViews();
             }
 
         });
@@ -79,16 +88,20 @@ public class CharacteristicsStep2Controller extends
 
     @Override
     public void modifyViewCharacteristics() {
-        if (trianglesList.size() == 1) {
-            try {
+        if (trianglesList.size() == 1)
+        {
+            try
+            {
                 ((CharacteristicsStep2View) this.cView)
                         .setType(parentController.getBiController()
                                 .getCharacteristics2(trianglesList.get(0)));
-            } catch (InvalidCaseException e) {
+            } catch (InvalidCaseException e)
+            {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        } else {
+        } else
+        {
             ((CharacteristicsStep2View) this.cView).setType("");
         }
     }

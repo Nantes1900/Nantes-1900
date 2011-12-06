@@ -22,9 +22,10 @@ import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.ParametersView;
 
 /**
- * @author Camille
+ * TODO
+ * @author Luc Jallerat
+ * @author Camille Bouquet
  */
-// FIXME : Javadoc
 public class ParametersController {
 
     private ParametersView pView;
@@ -42,6 +43,7 @@ public class ParametersController {
     public ParametersController(IsletProcessController parentController) {
         this.setParent(parentController);
         this.pView = new ParametersView();
+        // Loads parameters from a file
         this.pView.getLoadButton().addActionListener(new ActionListener() {
 
             @Override
@@ -63,6 +65,7 @@ public class ParametersController {
                 }
             }
         });
+        // Saves parameters in a file
         this.pView.getSaveButton().addActionListener(new ActionListener() {
 
             @Override
@@ -90,6 +93,11 @@ public class ParametersController {
         });
     }
 
+    /**
+     * Loads properties from a file.
+     * @param file
+     *            the file to load properties from.
+     */
     private void loadProperties(File file) {
         Properties parameters = FileTools.readProperties(file);
 
@@ -117,6 +125,11 @@ public class ParametersController {
         }
     }
 
+    /**
+     * Saves parameters in the file.
+     * @param file
+     *            the file to store parameters in
+     */
     private void saveProperties(File file) {
         Properties parameters = new Properties();
         for (int i = 0; i < parametersKeys.length; i++)
@@ -173,9 +186,13 @@ public class ParametersController {
         this.parentController = parentController;
     }
 
+    /**
+     * File chooser for parameters files.
+     * @author Camille
+     */
     public class ParametersFileChooser extends JFileChooser {
         /**
-         * 
+         * Default serial UID.
          */
         private static final long serialVersionUID = 1L;
 
@@ -194,26 +211,42 @@ public class ParametersController {
         }
     }
 
+    /**
+     * Filter for parameters files.
+     * @author Camille
+     */
     public class ParametersFileFilter extends FileFilter {
 
+        /**
+         * Extension of parameters files.
+         */
         private String extension = FileTools
                 .readElementText(TextsKeys.KEY_FILEPARAMEXTENSION);
+        /**
+         * Description of the extension.
+         */
         private String description = FileTools
                 .readElementText(TextsKeys.KEY_FILEPARAMDESCRIPTION);
 
+        @Override
         public boolean accept(File file) {
             return (file.isDirectory() || file.getName().endsWith(
                     this.extension));
         }
 
+        @Override
         public String getDescription() {
             return "." + this.extension + " - " + this.description;
         }
 
+        /**
+         * Gets the extension of the filer.
+         * @return
+         *         the extension
+         */
         public String getExtension() {
             return this.extension;
         }
-
     }
 
 }

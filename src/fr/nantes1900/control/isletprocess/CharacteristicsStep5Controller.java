@@ -16,7 +16,7 @@ import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep5View;
 
 /**
- * Characteristics panel for the fifth step of process of an islet. TODO
+ * Characteristics panel for the fifth step of process of an islet.
  * @author Camille
  * @author Luc
  */
@@ -24,9 +24,12 @@ public class CharacteristicsStep5Controller extends
         AbstractCharacteristicsSurfacesController {
 
     /**
-     * Constructor.
+     * Creates a new step 5 characteristics controller which will create the
+     * panel and sets the action to perform when validate button is clicked.
      * @param parentController
-     * @param triangleSelected
+     *            the parent controller
+     * @param surfaceSelected
+     *            the selected surface
      */
     public CharacteristicsStep5Controller(
             IsletProcessController parentController, Surface surfaceSelected) {
@@ -38,13 +41,16 @@ public class CharacteristicsStep5Controller extends
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-
-                if (((CharacteristicsStep5View) cView).isMergeSelected()) {
-                    try {
+                // if the merge check box is selected
+                if (((CharacteristicsStep5View) cView).isMergeSelected())
+                {
+                    try
+                    {
                         CharacteristicsStep5Controller.this.parentController
                                 .getBiController().action5(surfacesList,
                                         ActionTypes.MERGE);
-                    } catch (InvalidCaseException e1) {
+                    } catch (InvalidCaseException e1)
+                    {
                         JOptionPane.showMessageDialog(cView, FileTools
                                 .readInformationMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
@@ -56,12 +62,16 @@ public class CharacteristicsStep5Controller extends
                     }
                 }
 
-                if (((CharacteristicsStep5View) cView).isNoiseSelected()) {
-                    try {
+                // if the put in noise check box is selected
+                if (((CharacteristicsStep5View) cView).isNoiseSelected())
+                {
+                    try
+                    {
                         CharacteristicsStep5Controller.this.parentController
                                 .getBiController().action5(surfacesList,
                                         ActionTypes.TURN_TO_NOISE);
-                    } catch (InvalidCaseException e1) {
+                    } catch (InvalidCaseException e1)
+                    {
                         JOptionPane.showMessageDialog(cView, FileTools
                                 .readInformationMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
@@ -72,7 +82,8 @@ public class CharacteristicsStep5Controller extends
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 }
-                CharacteristicsStep5Controller.this.parentController.refreshViews();
+                CharacteristicsStep5Controller.this.parentController
+                        .refreshViews();
             }
         });
     }
@@ -80,9 +91,11 @@ public class CharacteristicsStep5Controller extends
     @Override
     public void modifyViewCharacteristics() {
         ((CharacteristicsStep5View) cView).deselectAll();
-        if (surfacesList.size() == 1) {
+        if (surfacesList.size() == 1)
+        {
             ((CharacteristicsStep5View) cView).setMergeEnable(false);
-        } else {
+        } else
+        {
             ((CharacteristicsStep5View) cView).setMergeEnable(true);
         }
     }

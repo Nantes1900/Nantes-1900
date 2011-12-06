@@ -26,12 +26,17 @@ public class CharacteristicsStep3TrianglesController extends
         AbstractCharacteristicsTrianglesController {
 
     /**
-     * Constructor.
+     * Creates a new step 3 characteristics controller for triangles selection
+     * which will create the
+     * panel and sets the action to perform when validate button is clicked.
      * @param parentController
+     *            the parent controller
      * @param trianglesSelected
+     *            the selected triangles
      */
     public CharacteristicsStep3TrianglesController(
-            IsletProcessController parentController, List<Triangle> trianglesSelected) {
+            IsletProcessController parentController,
+            List<Triangle> trianglesSelected) {
         super(parentController, trianglesSelected);
         this.cView = new CharacteristicsStep3TrianglesView();
 
@@ -40,12 +45,15 @@ public class CharacteristicsStep3TrianglesController extends
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 if (((CharacteristicsStep3TrianglesView) cView)
-                        .isDeleteSelected()) {
-                    try {
+                        .isDeleteSelected())
+                {
+                    try
+                    {
                         CharacteristicsStep3TrianglesController.this.parentController
                                 .getBiController().action3(trianglesList,
                                         ActionTypes.REMOVE);
-                    } catch (InvalidCaseException e) {
+                    } catch (InvalidCaseException e)
+                    {
                         JOptionPane.showMessageDialog(cView, FileTools
                                 .readInformationMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
@@ -56,7 +64,8 @@ public class CharacteristicsStep3TrianglesController extends
                                 JOptionPane.ERROR_MESSAGE);
                     }
                 }
-                CharacteristicsStep3TrianglesController.this.parentController.refreshViews();
+                CharacteristicsStep3TrianglesController.this.parentController
+                        .refreshViews();
             }
 
         });

@@ -97,13 +97,12 @@ public class CharacteristicsStep6Controller extends
     }
 
     @Override
-    public boolean removeSurfaceSelected(Surface surfaceSelected) {
+    public void removeSurfaceSelected(Surface surfaceSelected) {
         if (this.surfaceLocked)
         {
             surfacesList.remove(surfaceSelected);
             modifyViewCharacteristics();
         }
-        return surfacesList.isEmpty();
     }
 
     @Override

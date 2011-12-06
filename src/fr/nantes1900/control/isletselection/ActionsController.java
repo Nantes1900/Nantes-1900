@@ -11,7 +11,8 @@ import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletselection.ActionsView;
 
 /**
- * TODO .
+ * Controller of the action panel. Handles actions such as open a directory,
+ * launch an islet or use the gravity normal as ground normal.
  * @author Camille Bouquet
  */
 public class ActionsController {
@@ -35,7 +36,7 @@ public class ActionsController {
      * Creates a new controller to handle the panel containing buttons to launch
      * the different actions.
      * @param isletSelectionController
-     *            TODO.
+     *            the parent controller
      */
     public ActionsController(
             final IsletSelectionController isletSelectionController) {
@@ -52,9 +53,11 @@ public class ActionsController {
                 fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
 
                 if (fileChooser.showOpenDialog(ActionsController.this
-                        .getActionsView()) == JFileChooser.APPROVE_OPTION) {
+                        .getActionsView()) == JFileChooser.APPROVE_OPTION)
+                {
                     File file = fileChooser.getSelectedFile();
-                    if (file.isDirectory()) {
+                    if (file.isDirectory())
+                    {
                         ActionsController.this.getParentController()
                                 .updateMockupDirectory(file);
                     }
@@ -76,15 +79,15 @@ public class ActionsController {
     }
 
     /**
-     * TODO.
-     * @return TODO.
+     * Gets the parent controller
+     * @return the parent controller
      */
     public final IsletSelectionController getParentController() {
         return this.parentController;
     }
 
     /**
-     * TODO.
+     * Sets the mode compute normal.
      */
     public final void setComputeNormalMode() {
         this.laListener.setComputeNormalMode(true);
@@ -107,7 +110,7 @@ public class ActionsController {
     }
 
     /**
-     * TODO.
+     * Sets the mode launch process.
      */
     public final void setLaunchMode() {
         this.laListener.setComputeNormalMode(false);
@@ -154,13 +157,16 @@ public class ActionsController {
         @Override
         public final void actionPerformed(final ActionEvent arg0) {
             // If no gravity normal have been chosen
-            if (this.computeNormal) {
+            if (this.computeNormal)
+            {
                 boolean normalSaved = ActionsController.this
                         .getParentController().computeGravityNormal();
-                if (normalSaved) {
+                if (normalSaved)
+                {
                     ActionsController.this.setLaunchMode();
                 }
-            } else {
+            } else
+            {
                 // If every normals have been choosen
                 ActionsController.this.getParentController()
                         .launchIsletProcess();
@@ -168,9 +174,10 @@ public class ActionsController {
         }
 
         /**
-         * TODO.
+         * Sets the mode compute normal or not.
          * @param computeNormalIn
-         *            TODO.
+         *            true - sets the mode compute normal\n
+         *            false - disables the mode compute normal
          */
         public final void setComputeNormalMode(final boolean computeNormalIn) {
             this.computeNormal = computeNormalIn;
