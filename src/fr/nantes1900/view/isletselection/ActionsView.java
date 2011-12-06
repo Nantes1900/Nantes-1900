@@ -15,7 +15,9 @@ import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
 
 /**
- * @author Camille
+ * Panel containing elements to manage the window.
+ * @author Camille Bouquet
+ * @author Luc Jallerat
  */
 public class ActionsView extends JPanel {
 
@@ -48,13 +50,13 @@ public class ActionsView extends JPanel {
      * Creates a new panel containing the open and launch buttons.
      */
     public ActionsView() {
-        //definition of the buttons
-        this.bOpen = new JButton(
-                new ImageIcon(Icones.open));
-        this.bOpen.setToolTipText(FileTools.readElementText(TextsKeys.KEY_OPENBUTTON));
-        this.bLaunch = new JButton(
-                new ImageIcon(Icones.launch));
-        this.bLaunch.setToolTipText(FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
+        // definition of the buttons
+        this.bOpen = new JButton(new ImageIcon(Icones.open));
+        this.bOpen.setToolTipText(FileTools
+                .readElementText(TextsKeys.KEY_OPENBUTTON));
+        this.bLaunch = new JButton(new ImageIcon(Icones.launch));
+        this.bLaunch.setToolTipText(FileTools
+                .readElementText(TextsKeys.KEY_LAUNCHBUTTON));
         this.bLaunch.setEnabled(false);
         this.bHelp = new HelpButton(FileTools.readHelpMessage(
                 TextsKeys.KEY_IS_OPENDIRECTORY, TextsKeys.MESSAGETYPE_TOOLTIP),
@@ -66,7 +68,7 @@ public class ActionsView extends JPanel {
                 FileTools.readElementText(TextsKeys.KEY_USEGRAVITYNORMALTEXT));
         this.cbGravityGround.setEnabled(false);
 
-        //layout
+        // layout
         this.setLayout(new GridBagLayout());
         this.add(this.bOpen, new GridBagConstraints(0, 0, 1, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
@@ -117,8 +119,9 @@ public class ActionsView extends JPanel {
     }
 
     /**
-     * TODO.
-     * @return TODO.
+     * Tells if the gravity ground check box is selected or not.
+     * @return true - the gravity ground check box is selected\n
+     *         false - the gravity ground check box is not selected
      */
     public final boolean isGravityGroundCheckBoxSelected() {
         return this.cbGravityGround.isSelected();

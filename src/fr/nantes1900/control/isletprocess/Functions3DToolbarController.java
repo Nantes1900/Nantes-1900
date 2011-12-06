@@ -34,8 +34,6 @@ public class Functions3DToolbarController {
 
                     @Override
                     public void actionPerformed(ActionEvent arg0) {
-                        // TODO call 3D universe controller to modify rotation
-                        // center
                         Functions3DToolbarController.this.parentController.getU3DController().changeRotationCenter();
                     }
                 });
@@ -210,5 +208,9 @@ public class Functions3DToolbarController {
         } else {
             toolbarView.getDisplayTypeLabel().setEnabled(true);
         }
+    }
+
+    public void setRotationCenterEnable(boolean enable) {
+        toolbarView.getRotationCenterButton().setEnabled(enable);
     }
 }

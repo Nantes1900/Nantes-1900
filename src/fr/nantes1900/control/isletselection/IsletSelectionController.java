@@ -20,8 +20,10 @@ import fr.nantes1900.view.isletselection.GlobalTreeView.FileNode;
 import fr.nantes1900.view.isletselection.IsletSelectionView;
 
 /**
- * TODO.
+ * Controller for the islet selection window. Manages child components such as
+ * the action panel, the tree and the 3D view.
  * @author Camille Bouquet
+ * @author Luc Jallerat
  */
 public class IsletSelectionController {
 
@@ -98,7 +100,6 @@ public class IsletSelectionController {
         boolean normalSaved = false;
         if (this.selectedFile != null
                 && !this.u3DController.getTrianglesSelected().isEmpty()) {
-
             WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
                     + "/gravity_normal.stl");
             writer.setMesh(new Mesh(this.u3DController.getTrianglesSelected()));
@@ -158,8 +159,8 @@ public class IsletSelectionController {
     }
 
     /**
-     * TODO.
-     * @return TODO
+     * Gets the islet selection view.
+     * @return the islet selection view
      */
     public final JFrame getWindow() {
         return this.isView;

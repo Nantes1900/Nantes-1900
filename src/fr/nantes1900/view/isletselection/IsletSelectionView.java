@@ -16,12 +16,14 @@ import fr.nantes1900.view.components.PFrame;
 import fr.nantes1900.view.display3d.Universe3DView;
 
 /**
- * @author Camille
+ * Window to select an islet to make process on it.
+ * @author Camille Bouquet
+ * @author Luc Jallerat
  */
 public class IsletSelectionView extends PFrame {
 
     /**
-     * 
+     * Default serial UID.
      */
     private static final long serialVersionUID = 1L;
 
