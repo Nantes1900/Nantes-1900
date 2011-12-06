@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900;
 
 import fr.nantes1900.control.GlobalController;

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.utils;
 
 import java.io.BufferedOutputStream;
