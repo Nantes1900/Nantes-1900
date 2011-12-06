@@ -783,7 +783,6 @@ public class BuildingsIsletController {
         }
 
         if (!this.islet.getBiStep3().getNoise().getMesh().isEmpty()) {
-            this.islet.getBiStep3().getNoise().setNodeString("Noise");
             surfacesList.add(this.islet.getBiStep3().getNoise());
         }
 

@@ -113,8 +113,8 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
             }
         }
 
-        if (!this.getGrounds().getMesh().isEmpty()) {
-            this.grounds.setNodeString("Grounds");
+        if (!this.grounds.getMesh().isEmpty()) {
+            this.grounds.setNodeString("Sols");
             root.add(new DefaultMutableTreeNode(this.grounds));
 
         } else {
@@ -123,7 +123,7 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
         }
 
         if (!this.noise.getMesh().isEmpty()) {
-            this.noise.setNodeString("Noise");
+            this.noise.setNodeString("Bruit");
             root.add(new DefaultMutableTreeNode(this.noise));
         }
 

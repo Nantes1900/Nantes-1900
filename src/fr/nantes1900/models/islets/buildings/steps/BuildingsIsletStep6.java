@@ -6,7 +6,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
-import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 
 /**
@@ -83,7 +82,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
         }
 
         if (!this.getGrounds().getMesh().isEmpty()) {
-            this.grounds.setNodeString("Grounds");
+            this.grounds.setNodeString("Sols");
             root.add(new DefaultMutableTreeNode(this.grounds));
 
         } else {

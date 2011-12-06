@@ -23,14 +23,12 @@ import javax.vecmath.Vector3f;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
-import com.sun.j3d.utils.geometry.Cylinder;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ViewingPlatform;
 
 import fr.nantes1900.control.display3d.NewMouseRotate;
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.extended.Surface;
 
 /**
@@ -64,7 +62,7 @@ public class Universe3DView extends JPanel {
      * Constant defining the drawing back of the camera when initializing the
      * 3DView.
      */
-    public static final double TRANSLATION_CAMERA_Z_DIRECTION = 30;
+    public static final double TRANSLATION_CAMERA_Z_DIRECTION = 300;
     /**
      * Constant defining the 3DView panel height.
      */
@@ -140,8 +138,7 @@ public class Universe3DView extends JPanel {
                 .createSceneGraph(transformGroup));
 
         // Computes the centroid of the first surface.
-        Point 
-            centroid = surfaces.get(0).getMesh().getCentroid();
+        Point centroid = surfaces.get(0).getMesh().getCentroid();
 
         // Translates the camera.
         this.translateCamera(centroid.getX(), centroid.getY(), centroid.getZ()

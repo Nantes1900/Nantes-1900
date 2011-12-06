@@ -80,7 +80,7 @@ public final class SeparationWallsSeparationRoofs {
     /**
      * The default value of the coefficient.
      */
-    private static final double PLANES_ERROR_DEFAULT = 1;
+    private static final double PLANES_ERROR_DEFAULT = 2.5;
 
     /**
      * Error factor used in the cutting of the walls and roofs. When a surface
