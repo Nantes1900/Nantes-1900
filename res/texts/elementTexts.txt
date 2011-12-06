@@ -51,5 +51,6 @@ IsOrientedFactor=Facteur d'orientation
 Characteristics=Caractéristiques
 ToValid=Valider
 HideItem=Cacher l'élément sélectionné
+ShowItem=Montrer l'élément sélectionné
 FileParamExtension=parametres
 FileParamDescription=Paramètres du programme "Nantes 1900"
