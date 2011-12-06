@@ -89,19 +89,16 @@ public final class FileTools {
         FileReader fr;
         Properties prop = new Properties();
 
-        try
-        {
+        try {
             fr = new FileReader(file);
 
             prop.load(fr);
 
             fr.close();
 
-        } catch (FileNotFoundException e)
-        {
+        } catch (FileNotFoundException e) {
             System.err.println("File wasn't found:" + e.getMessage());
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             System.err.println("IO exception when loading properties: "
                     + e.getMessage());
         }
@@ -139,29 +136,23 @@ public final class FileTools {
             saveProperties(final File file, final Properties prop) {
         boolean saveOk = true;
         DataOutputStream dos;
-        try
-        {
+        try {
             dos = new DataOutputStream(new BufferedOutputStream(
                     new FileOutputStream(file)));
-            try
-            {
+            try {
                 prop.store(dos, null); // 2nd parameter allows to store comments
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 saveOk = false;
                 System.err.println("IO exception during storage process: "
                         + e.getMessage());
             }
-            try
-            {
+            try {
                 dos.close();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 System.err.println("IO exeption while closing the stream: "
                         + e.getMessage());
             }
-        } catch (FileNotFoundException e1)
-        {
+        } catch (FileNotFoundException e1) {
             saveOk = false;
             System.err.println("File wasn't found: " + e1.getMessage());
         }

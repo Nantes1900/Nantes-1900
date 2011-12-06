@@ -8,7 +8,7 @@ import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.constants.SeparationWallsSeparationRoofs;
+import fr.nantes1900.constants.coefficients.SeparationWallsSeparationRoofs;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Polygon;
@@ -189,8 +189,6 @@ public class BuildingStep5 extends AbstractBuildingStep {
                 || this.groundNormal == null) {
             throw new NullArgumentException();
         }
-
-        this.noise.getMesh().writeSTL("NoiseSTEP5.stl");
 
         this.determinateNeighbours();
 

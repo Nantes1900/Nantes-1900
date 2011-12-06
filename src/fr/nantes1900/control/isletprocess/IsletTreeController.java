@@ -11,8 +11,6 @@ import java.awt.event.MouseListener;
 import java.util.List;
 
 import javax.swing.JTree;
-import javax.swing.event.TreeSelectionEvent;
-import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
 
@@ -41,6 +39,8 @@ public class IsletTreeController implements ElementsSelectedListener {
     private IsletProcessController parentController;
 
     private ActionListener hideActionListener;
+    
+    private ActionListener showActionListener;
 
     public IsletTreeController(IsletProcessController parentControllerIn) {
         this.parentController = parentControllerIn;
@@ -51,9 +51,32 @@ public class IsletTreeController implements ElementsSelectedListener {
 
             @Override
             public void actionPerformed(final ActionEvent arg0) {
+                DefaultMutableTreeNode node;
                 System.out.println("hide !");
-                System.out.println(
-                        IsletTreeController.this.itView.getTree().getSelectionPaths().length);
+                for (TreePath tp:IsletTreeController.this.itView.getTree().getSelectionPaths())
+                {
+                   node = (DefaultMutableTreeNode)tp.getLastPathComponent();
+                   if (node.getUserObject() instanceof Surface) {
+                       IsletTreeController.this.parentController.getU3DController()
+                        .hideSurface((Surface)node.getUserObject());
+                    }
+                }
+            }
+        };
+        this.showActionListener = new ActionListener() {
+
+            @Override
+            public void actionPerformed(final ActionEvent arg0) {
+                DefaultMutableTreeNode node;
+                System.out.println("show !");
+                for (TreePath tp:IsletTreeController.this.itView.getTree().getSelectionPaths())
+                {
+                   node = (DefaultMutableTreeNode)tp.getLastPathComponent();
+                   if (node.getUserObject() instanceof Surface) {
+                       IsletTreeController.this.parentController.getU3DController()
+                        .showSurface((Surface)node.getUserObject());
+                    }
+                }
             }
         };
     }
@@ -106,6 +129,7 @@ public class IsletTreeController implements ElementsSelectedListener {
         
     }
     
+    
     private class HomeMadeTreeListener extends MouseAdapter{
         JTree tree;
         public HomeMadeTreeListener(JTree tree){
@@ -138,6 +162,7 @@ public class IsletTreeController implements ElementsSelectedListener {
                 this.tree.removeSelectionInterval(0, this.tree.getMaxSelectionRow());
                 System.out.println("all removed");
             }
+            this.refresh3DSelection();
         }
         
         private void manageCMenu(MouseEvent event){
@@ -148,10 +173,31 @@ public class IsletTreeController implements ElementsSelectedListener {
             else{
                 IsletTreeController.this.itView.setHideListener(
                         IsletTreeController.this.hideActionListener);
-                IsletTreeController.this.itView.enableHide();
+                IsletTreeController.this.itView.setShowListener(
+                        IsletTreeController.this.showActionListener);
+                //IsletTreeController.this.itView.enableHide();
                 IsletTreeController.this.itView.getJpm().show(
                     IsletTreeController.this.itView, event.getX(), event.getY());
             }
         }
+        
+        private void refresh3DSelection(){
+            IsletTreeController.this.getParentController()
+            .getU3DController().deselectEverySurfaces();
+
+            for (TreePath tp:IsletTreeController.this.itView.getTree().getSelectionPaths()) {
+                DefaultMutableTreeNode node = (DefaultMutableTreeNode) tp.getLastPathComponent();
+                if (node.getUserObject() instanceof Surface) {
+                    IsletTreeController.this
+                            .getParentController()
+                            .getU3DController()
+                            .selectOrUnselectSurfaceFromTree(
+                                    (Surface) node.getUserObject());
+                } else {
+                    // TODO : throw exception if it is not a mesh.
+                }
+            }
+        }
+        
     }
 }

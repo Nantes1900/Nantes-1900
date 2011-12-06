@@ -201,6 +201,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      * @throws NullArgumentException
      *             if the gravity normal has not been initiliazed
      * @throws WeirdResultException
+     *             if the result is not coherent
      */
     public final void launchProcess0() throws NullArgumentException,
             WeirdResultException {
@@ -289,6 +290,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      * @throws InvalidCaseException
      *             if the case in not valid (more than 8 or less than 0)
      * @throws WeirdResultException
+     *             if the result is not coherent
      */
     public final DefaultMutableTreeNode returnNode()
             throws InvalidCaseException, WeirdResultException {

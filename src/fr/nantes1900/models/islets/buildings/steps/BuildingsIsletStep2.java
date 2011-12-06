@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import fr.nantes1900.constants.SeparationBuildings;
+import fr.nantes1900.constants.coefficients.SeparationBuildings;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
@@ -136,7 +136,8 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode() throws WeirdResultException {
+    public final DefaultMutableTreeNode returnNode()
+            throws WeirdResultException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
 
         if (!this.getInitialBuildings().getMesh().isEmpty()) {

@@ -20,12 +20,12 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import fr.nantes1900.constants.Icones;
-import fr.nantes1900.constants.SeparationBuildings;
-import fr.nantes1900.constants.SeparationGroundBuilding;
-import fr.nantes1900.constants.SeparationWallRoof;
-import fr.nantes1900.constants.SeparationWallsSeparationRoofs;
-import fr.nantes1900.constants.SimplificationSurfaces;
 import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.constants.coefficients.SeparationBuildings;
+import fr.nantes1900.constants.coefficients.SeparationGroundBuilding;
+import fr.nantes1900.constants.coefficients.SeparationWallRoof;
+import fr.nantes1900.constants.coefficients.SeparationWallsSeparationRoofs;
+import fr.nantes1900.constants.coefficients.SimplificationSurfaces;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.utils.FileTools;
 

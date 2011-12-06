@@ -18,10 +18,12 @@ import fr.nantes1900.constants.TextsKeys;
 /**
  * @author Camille
  */
+@SuppressWarnings("serial")
 public class IsletTreeView extends JPanel {
 
     private JPopupMenu jpm = new JPopupMenu();
     private JMenuItem mHide = new JMenuItem(TextsKeys.KEY_HIDEITEM);
+    private JMenuItem mShow = new JMenuItem(TextsKeys.KEY_SHOWITEM);
     
     private JTree tree;
     private JScrollPane spTree;
@@ -44,6 +46,7 @@ public class IsletTreeView extends JPanel {
     
     private void addItemsToJpm(){
         this.jpm.add(this.mHide);
+        this.jpm.add(this.mShow);
     }
     
     public void setHideListener(ActionListener al){
@@ -51,6 +54,13 @@ public class IsletTreeView extends JPanel {
             this.mHide.removeActionListener(this.mHide.getActionListeners()[0]);
         }
         this.mHide.addActionListener(al);
+    }
+    
+    public void setShowListener(ActionListener al){
+        if (this.mShow.getActionListeners().length>0){
+            this.mShow.removeActionListener(this.mShow.getActionListeners()[0]);
+        }
+        this.mShow.addActionListener(al);
     }
     
     public JPopupMenu getJpm(){
@@ -63,5 +73,13 @@ public class IsletTreeView extends JPanel {
     
     public void disableHide(){
         this.mHide.setEnabled(false);
+    }
+    
+    public void enableShow(){
+        this.mShow.setEnabled(true);
+    }
+    
+    public void disableShow(){
+        this.mShow.setEnabled(false);
     }
 }

@@ -129,8 +129,6 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
      * Setter.
      * @param groundNormalIn
      *            the normal to the ground.
-     * @param noiseIn
-     *            the noise
      */
     public final void setArguments(final Vector3d groundNormalIn) {
         this.groundNormal = groundNormalIn;
