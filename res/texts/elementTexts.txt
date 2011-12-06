@@ -54,3 +54,8 @@ HideItem=Cacher l'élément sélectionné
 ShowItem=Montrer l'élément sélectionné
 FileParamExtension=parametres
 FileParamDescription=Paramètres du programme "Nantes 1900"
+
+SaveResultButton=sauvegarder les résultats
+SaveParametersButton=Sauvegarder les paramètres
+LoadParametersButton=Charger les paramètres
+ShowParametersButton=Afficher tous les paramètres

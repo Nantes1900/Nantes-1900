@@ -114,7 +114,6 @@ public class ActionsController {
      */
     public final void setLaunchMode() {
         this.laListener.setComputeNormalMode(false);
-        this.aView.getGravityCheckBox().setEnabled(true);
         this.getActionsView()
                 .getHelpButton()
                 .setTooltip(

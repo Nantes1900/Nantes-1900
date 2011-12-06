@@ -6,7 +6,6 @@ import java.awt.Insets;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 
 import fr.nantes1900.constants.Icones;
@@ -42,11 +41,6 @@ public class ActionsView extends JPanel {
     private HelpButton bHelp;
 
     /**
-     * Checkbox to select gravity normal as ground normal.
-     */
-    private JCheckBox cbGravityGround;
-
-    /**
      * Creates a new panel containing the open and launch buttons.
      */
     public ActionsView() {
@@ -64,9 +58,6 @@ public class ActionsView extends JPanel {
                         TextsKeys.MESSAGETYPE_MESSAGE),
                 FileTools.readHelpMessage(TextsKeys.KEY_IS_OPENDIRECTORY,
                         TextsKeys.MESSAGETYPE_TITLE));
-        this.cbGravityGround = new JCheckBox(
-                FileTools.readElementText(TextsKeys.KEY_USEGRAVITYNORMALTEXT));
-        this.cbGravityGround.setEnabled(false);
 
         // layout
         this.setLayout(new GridBagLayout());
@@ -80,18 +71,6 @@ public class ActionsView extends JPanel {
                 GridBagConstraints.REMAINDER, 1, 0.0, 0.0,
                 GridBagConstraints.WEST, GridBagConstraints.HORIZONTAL,
                 new Insets(5, 10, 5, 10), 0, 0));
-        this.add(this.cbGravityGround, new GridBagConstraints(0, 1,
-                GridBagConstraints.REMAINDER, GridBagConstraints.REMAINDER,
-                0.0, 0.0, GridBagConstraints.EAST,
-                GridBagConstraints.HORIZONTAL, new Insets(5, 10, 5, 10), 0, 0));
-    }
-
-    /**
-     * Returns the use gravity normal as ground normal check box.
-     * @return The use gravity normal as ground normal check box.
-     */
-    public final JCheckBox getGravityCheckBox() {
-        return this.cbGravityGround;
     }
 
     /**
@@ -116,14 +95,5 @@ public class ActionsView extends JPanel {
      */
     public final JButton getOpenButton() {
         return this.bOpen;
-    }
-
-    /**
-     * Tells if the gravity ground check box is selected or not.
-     * @return true - the gravity ground check box is selected\n
-     *         false - the gravity ground check box is not selected
-     */
-    public final boolean isGravityGroundCheckBoxSelected() {
-        return this.cbGravityGround.isSelected();
     }
 }
