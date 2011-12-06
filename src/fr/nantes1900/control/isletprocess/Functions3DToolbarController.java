@@ -32,6 +32,16 @@ public class Functions3DToolbarController {
      * Display type : surfaces or polygons.
      */
     private int displayType;
+    /**
+     * Is the selection mode button enabled. 0 : selection mode triangles; 1 :
+     * selection mode meshes
+     */
+    private boolean[] selectionModeEnable = {true, true};
+    /**
+     * Is the display type button enabled. 0 : display type meshes; 1 : display
+     * type polygons
+     */
+    private boolean[] displayTypeEnable = {true, true};
 
     /**
      * Creates a new toolbar controller which creates the view and sets actions
@@ -160,9 +170,11 @@ public class Functions3DToolbarController {
     public void setSelectionMode(int selectionMode) {
         if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE)
         {
-            this.selectionMode = selectionMode;
-            toolbarView.getSelectionModeTrianglesButton().setEnabled(false);
             toolbarView.getSelectionModeMeshesButton().setEnabled(true);
+            if (selectionModeEnable[1])
+            {
+                toolbarView.getSelectionModeTrianglesButton().setEnabled(false);
+            }
             toolbarView
                     .getSelectionModeLabel()
                     .setText(
@@ -172,14 +184,17 @@ public class Functions3DToolbarController {
                     .changeSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
         } else
         {
-            this.selectionMode = selectionMode;
             toolbarView.getSelectionModeMeshesButton().setEnabled(false);
-            toolbarView.getSelectionModeTrianglesButton().setEnabled(true);
+            if (selectionModeEnable[0])
+            {
+                toolbarView.getSelectionModeTrianglesButton().setEnabled(true);
+            }
             toolbarView.getSelectionModeLabel().setText(
                     FileTools.readElementText(TextsKeys.KEY_SELECTMESHESLABEL));
             Functions3DToolbarController.this.parentController
                     .changeSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
         }
+        this.selectionMode = selectionMode;
         checkAllDisabledSelectionMode();
     }
 
@@ -193,9 +208,11 @@ public class Functions3DToolbarController {
     public void setDisplayType(int displayType) {
         if (displayType == Universe3DController.DISPLAY_MESH_MODE)
         {
-            this.displayType = displayType;
             toolbarView.getDisplayTypeMeshesButton().setEnabled(false);
-            toolbarView.getDisplayTypePolygonsButton().setEnabled(true);
+            if (displayTypeEnable[1])
+            {
+                toolbarView.getDisplayTypePolygonsButton().setEnabled(true);
+            }
             toolbarView
                     .getDisplayTypeLabel()
                     .setText(
@@ -206,9 +223,11 @@ public class Functions3DToolbarController {
                             Universe3DController.DISPLAY_MESH_MODE);
         } else
         {
-            this.displayType = displayType;
             toolbarView.getDisplayTypePolygonsButton().setEnabled(false);
-            toolbarView.getDisplayTypeMeshesButton().setEnabled(true);
+            if (displayTypeEnable[0])
+            {
+                toolbarView.getDisplayTypeMeshesButton().setEnabled(true);
+            }
             toolbarView
                     .getDisplayTypeLabel()
                     .setText(
@@ -219,6 +238,7 @@ public class Functions3DToolbarController {
                             Universe3DController.DISPLAY_POLYGON_MODE);
         }
 
+        this.displayType = displayType;
         checkAllDisabledDisplayType();
     }
 
@@ -235,9 +255,11 @@ public class Functions3DToolbarController {
         if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE)
         {
             toolbarView.getSelectionModeTrianglesButton().setEnabled(enable);
+            selectionModeEnable[0] = enable;
         } else if (selectionMode == Universe3DController.SELECTION_SURFACE_MODE)
         {
             toolbarView.getSelectionModeMeshesButton().setEnabled(enable);
+            selectionModeEnable[1] = enable;
         }
         checkAllDisabledSelectionMode();
     }
@@ -255,9 +277,11 @@ public class Functions3DToolbarController {
         if (dislayType == Universe3DController.DISPLAY_MESH_MODE)
         {
             toolbarView.getDisplayTypeMeshesButton().setEnabled(enable);
+            displayTypeEnable[0] = enable;
         } else if (dislayType == Universe3DController.DISPLAY_POLYGON_MODE)
         {
             toolbarView.getDisplayTypePolygonsButton().setEnabled(enable);
+            displayTypeEnable[1] = enable;
         }
 
         checkAllDisabledDisplayType();

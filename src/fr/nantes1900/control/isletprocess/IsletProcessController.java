@@ -110,6 +110,9 @@ public class IsletProcessController implements ElementsSelectedListener {
                 this.pController.getView(),
                 this.u3DController.getUniverse3DView());
 
+        // Initialization
+        f3DController.setSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
+        f3DController.setDisplayType(Universe3DController.DISPLAY_MESH_MODE);
         setToolbarButtons();
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
@@ -170,8 +173,8 @@ public class IsletProcessController implements ElementsSelectedListener {
         }
         this.biController.getPreviousStep();
         setDefaultCharacterisitcsPanel();
-        refreshViews();
         setToolbarButtons();
+        refreshViews();
         this.pController.displayProcessingParameters(this.getProgression());
     }
 
@@ -193,9 +196,9 @@ public class IsletProcessController implements ElementsSelectedListener {
             // TODO by Camille : pop-up
             e.printStackTrace();
         }
+        setToolbarButtons();
         refreshViews();
         this.ipView.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-        setToolbarButtons();
         this.pController.displayProcessingParameters(this.getProgression());
     }
 
@@ -270,10 +273,10 @@ public class IsletProcessController implements ElementsSelectedListener {
         // methods call
         if (step == 1 || step == 5 || step == 6)
         {
-            this.f3DController
-                    .setSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
             this.f3DController.setEnableSelectionMode(false,
                     Universe3DController.SELECTION_TRIANGLE_MODE);
+            this.f3DController
+                    .setSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
         } else
         {
             this.f3DController.setEnableSelectionMode(true,
@@ -291,10 +294,10 @@ public class IsletProcessController implements ElementsSelectedListener {
                     .setDisplayType(Universe3DController.DISPLAY_POLYGON_MODE);
         } else
         {
-            this.f3DController
-                    .setDisplayType(Universe3DController.DISPLAY_MESH_MODE);
             this.f3DController.setEnableDisplayType(false,
                     Universe3DController.DISPLAY_POLYGON_MODE);
+            this.f3DController
+                    .setDisplayType(Universe3DController.DISPLAY_MESH_MODE);
         }
         f3DController.setRotationCenterEnable(false);
     }
