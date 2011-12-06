@@ -4,6 +4,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 import fr.nantes1900.utils.FileTools;
 
 /**
@@ -21,13 +22,14 @@ public abstract class AbstractBuildingsIsletStep {
      *             initialized
      */
     public abstract AbstractBuildingsIsletStep launchProcess()
-            throws NullArgumentException;
+            throws NullArgumentException, WeirdResultException;
 
     /**
      * Builds a tree node for the JTree.
      * @return a default mutable tree node
+     * @throws WeirdResultException 
      */
-    public abstract DefaultMutableTreeNode returnNode();
+    public abstract DefaultMutableTreeNode returnNode() throws WeirdResultException;
 
     /*
      * (non-Javadoc)

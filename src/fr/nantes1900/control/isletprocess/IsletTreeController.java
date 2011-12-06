@@ -15,6 +15,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.IsletTreeView;
 
@@ -107,6 +108,9 @@ public class IsletTreeController {
             // TODO Auto-generated catch block
             System.out.println(FileTools.readInformationMessage(
                     TextsKeys.KEY_RETURNNODE, TextsKeys.MESSAGETYPE_MESSAGE));
+        } catch (WeirdResultException e) {
+            // TODO by Luc
+            e.printStackTrace();
         }
     }
 

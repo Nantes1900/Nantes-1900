@@ -30,12 +30,6 @@ import fr.nantes1900.view.display3d.Universe3DView;
  * clicks on the 3D view.
  * @author Daniel Lefevre, Siju Wu, Nicolas Bouillon
  */
-/**
- * @author WSJ
- */
-/**
- * @author WSJ
- */
 public class Universe3DController implements MouseListener, MouseMotionListener {
 
     private IsletProcessController parentController;
@@ -87,7 +81,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      * A constant defining the orientation tolerance (in degrees) when getting
      * all the triangles oriented as a triangle input.
      */
-    public static final int ORIENTATION_TOLERANCE = 10;
+    public static final int ORIENTATION_TOLERANCE = 20;
     /**
      * The list of the triangles currently selected.
      */
@@ -104,8 +98,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
     /**
      * Generates the U3DView and set the display mode to mesh.
-     * @param parentControllerIn
-     *            TODO
      */
     public Universe3DController() {
         this.u3DView = new Universe3DView(this);
@@ -142,10 +134,12 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
     public final void changeRotationCenter() {
         Point center = null;
+
         if (this.selectionMode == SELECTION_SURFACE_MODE)
         {
-            if (this.surfacesSelected.size()!=0)
+            if (this.surfacesSelected.size() != 0)
             {
+
                 SurfaceView surfaceViewSeleted = this
                         .getSurfaceViewFromSurface(this.surfacesSelected.get(0));
 
@@ -158,10 +152,12 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
                     center = surfaceViewSeleted.getPolygonView().getCentroid();
                 }
             }
+
         } else
         {
-            if (this.trianglesSelected.size()!=0)
+            if (this.trianglesSelected.size() != 0)
             {
+
                 Triangle triangleSelected = this.trianglesSelected.get(0);
 
                 center = triangleSelected.getP1();
@@ -171,26 +167,23 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         {
             this.mouseRotate.setCenter(center);
         }
-        
+
     }
 
     /**
      * Change the selection mode.
      */
-    public final void changeSelectionMode(int selectionMode) {
-        if(this.surfacesSelected != null){
+    public final void changeSelectionMode(int selectionModeIn) {
+        if (this.surfacesSelected != null)
+        {
             this.deselectEverySurfaces();
         }
-        if(this.meshesSelected != null){
-            List<Mesh> meshesToRemove = new  ArrayList<Mesh>(this.meshesSelected);
+        if (this.meshesSelected != null)
+        {
+            List<Mesh> meshesToRemove = new ArrayList<Mesh>(this.meshesSelected);
             this.unSelectTriangles(meshesToRemove);
         }
-        if (selectionMode == SELECTION_TRIANGLE_MODE) {
-            this.selectionMode = SELECTION_TRIANGLE_MODE;
-        } else if (selectionMode == SELECTION_SURFACE_MODE)
-        {
-            this.selectionMode = SELECTION_SURFACE_MODE;
-        }
+        this.selectionMode = selectionModeIn;
     }
 
     /**
@@ -711,8 +704,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
     /**
      * Get the list of meshes selected.
-     * @return meshesSelected
-     *         the list of the meshes selected.
+     * @return meshesSelected the list of the meshes selected.
      */
     public List<Mesh> getMeshesSelected() {
         return this.meshesSelected;

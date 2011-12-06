@@ -182,6 +182,17 @@ public class CharacteristicsStep6View extends CharacteristicsView {
             this.dlm.addElement(neighbour);
         }
     }
+    
+    public ArrayList<Surface> getList()
+    {
+        ArrayList<Surface> neighborsList = new ArrayList<Surface>();
+        
+        for (int i = 0 ; i < dlm.size(); i ++)
+        {
+            neighborsList.add(dlm.elementAt(i));
+        }
+        return neighborsList;
+    }
 
     /**
      * Gets the lock button.

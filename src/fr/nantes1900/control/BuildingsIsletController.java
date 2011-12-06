@@ -26,6 +26,7 @@ import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.ResidentialIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.utils.ParserSTL;
 
@@ -51,15 +52,11 @@ public class BuildingsIsletController {
 
     /**
      * Constructor.
-     * @param isletSelectionController
-     *            the controller of the islet selection
      * @param universe3DControllerIn
      *            the universe 3D controller
      */
     public BuildingsIsletController(
-            final IsletSelectionController isletSelectionController,
             final Universe3DController universe3DControllerIn) {
-        this.parentController = isletSelectionController;
         this.u3DController = universe3DControllerIn;
         // LOOK : maybe it would be good to choose between industrial islet and
         // residential islet.
@@ -269,8 +266,9 @@ public class BuildingsIsletController {
     /**
      * Dsisplays the set of meshes, considering the progression of the
      * treatement.
+     * @throws WeirdResultException
      */
-    public final void display() {
+    public final void display() throws WeirdResultException {
         this.u3DController.clearAll();
 
         try {
@@ -485,22 +483,6 @@ public class BuildingsIsletController {
     }
 
     /**
-     * Getter.
-     * @return the controller of the islet selection
-     */
-    public final IsletSelectionController getIsletSelectionController() {
-        return this.parentController;
-    }
-
-    /**
-     * Getter.
-     * @return the parent controller
-     */
-    public final IsletSelectionController getParentController() {
-        return this.parentController;
-    }
-
-    /**
      * Returns to the previous step.
      */
     public final void getPreviousStep() {
@@ -524,8 +506,9 @@ public class BuildingsIsletController {
 
     /**
      * Launch the process, considering the progression.
+     * @throws WeirdResultException
      */
-    public final void launchProcess() {
+    public final void launchProcess() throws WeirdResultException {
         try {
             switch (this.islet.getProgression()) {
             case AbstractBuildingsIslet.ZERO_STEP:
@@ -616,9 +599,10 @@ public class BuildingsIsletController {
      * @return a mutable tree node
      * @throws InvalidCaseException
      *             if an invalid case has been called
+     * @throws WeirdResultException 
      */
     public final DefaultMutableTreeNode returnNode()
-            throws InvalidCaseException {
+            throws InvalidCaseException, WeirdResultException {
         return this.islet.returnNode();
     }
 
@@ -684,26 +668,6 @@ public class BuildingsIsletController {
 
     /**
      * Setter.
-     * @param isletSelectionControllerIn
-     *            the controller of the islet selection
-     */
-    public final void setIsletSelectionController(
-            final IsletSelectionController isletSelectionControllerIn) {
-        this.parentController = isletSelectionControllerIn;
-    }
-
-    /**
-     * Setter.
-     * @param parentControllerIn
-     *            the parent controller
-     */
-    public final void setParentController(
-            final IsletSelectionController parentControllerIn) {
-        this.parentController = parentControllerIn;
-    }
-
-    /**
-     * Setter.
      * @param u3dcontrollerIn
      *            the universe 3D controller
      */
@@ -745,21 +709,21 @@ public class BuildingsIsletController {
 
     /**
      * Displays the second step.
+     * @throws WeirdResultException
      */
-    public final void viewStep2() {
+    public final void viewStep2() throws WeirdResultException {
         List<Surface> surfacesList = new ArrayList<>();
 
         if (!this.islet.getBiStep2().getInitialBuildings().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep2().getInitialBuildings());
         } else {
-            // TODO : pop-up
-            System.out.println("Warning : initial buildings empty !");
+            throw new WeirdResultException(
+                    "Warning : initial buildings empty !");
         }
         if (!this.islet.getBiStep2().getInitialGrounds().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep2().getInitialGrounds());
         } else {
-            // TODO : pop-up
-            System.out.println("Warning : initial grounds empty !");
+            throw new WeirdResultException("Warning : initial grounds empty !");
         }
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
@@ -767,15 +731,15 @@ public class BuildingsIsletController {
 
     /**
      * Displays the third step.
+     * @throws WeirdResultException
      */
-    public final void viewStep3() {
+    public final void viewStep3() throws WeirdResultException {
         List<Surface> surfacesList = new ArrayList<>();
 
         if (!this.islet.getBiStep3().getGrounds().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep2().getInitialGrounds());
         } else {
-            // TODO : pop-up
-            System.out.println("Warning : initial grounds empty !");
+            throw new WeirdResultException("Warning : initial grounds empty !");
         }
 
         for (Building building : this.islet.getBiStep3().getBuildings()) {
@@ -791,8 +755,9 @@ public class BuildingsIsletController {
 
     /**
      * Displays the fourth step.
+     * @throws WeirdResultException
      */
-    public final void viewStep4() {
+    public final void viewStep4() throws WeirdResultException {
         List<Surface> surfacesList = new ArrayList<>();
 
         for (Building building : this.islet.getBiStep4().getBuildings()) {
@@ -804,8 +769,7 @@ public class BuildingsIsletController {
                 && !this.islet.getBiStep4().getNoise().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep4().getNoise());
         } else {
-            // TODO : pop-up
-            System.out.println("Noise empty : error !");
+            throw new WeirdResultException("Noise empty : error !");
         }
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
@@ -813,8 +777,9 @@ public class BuildingsIsletController {
 
     /**
      * Displays the fifth step.
+     * @throws WeirdResultException 
      */
-    public final void viewStep5() {
+    public final void viewStep5() throws WeirdResultException {
         List<Surface> surfacesList = new ArrayList<>();
 
         for (Building building : this.islet.getBiStep5().getBuildings()) {
@@ -832,8 +797,7 @@ public class BuildingsIsletController {
                 && !this.islet.getBiStep5().getNoise().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep5().getNoise());
         } else {
-            // TODO : pop-up
-            System.out.println("Noise empty : error !");
+            throw new WeirdResultException("Noise empty : error !");
         }
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);

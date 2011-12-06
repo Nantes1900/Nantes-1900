@@ -11,6 +11,7 @@ import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 import fr.nantes1900.utils.Algos;
 
 /**
@@ -135,7 +136,7 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode() {
+    public final DefaultMutableTreeNode returnNode() throws WeirdResultException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
 
         if (!this.getInitialBuildings().getMesh().isEmpty()) {
@@ -145,8 +146,8 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
             root.add(node1);
 
         } else {
-            // TODO : pop-up
-            System.out.println("Warning : initial buildings empty !");
+            throw new WeirdResultException(
+                    "Warning : initial buildings empty !");
         }
 
         if (!this.getInitialGrounds().getMesh().isEmpty()) {
@@ -156,8 +157,7 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
             root.add(node2);
 
         } else {
-            // TODO : pop-up
-            System.out.println("Warning : initial grounds empty !");
+            throw new WeirdResultException("Warning : initial grounds empty !");
         }
 
         return root;
