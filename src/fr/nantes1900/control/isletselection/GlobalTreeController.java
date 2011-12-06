@@ -9,6 +9,7 @@ import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 import fr.nantes1900.view.isletselection.GlobalTreeView;
 
 /**
@@ -68,8 +69,13 @@ public class GlobalTreeController {
                     public void valueChanged(final TreeSelectionEvent e) {
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
                                 .getPath().getLastPathComponent();
-                        GlobalTreeController.this.getParentController()
-                                .displayFile(node);
+                        try {
+                            GlobalTreeController.this.getParentController()
+                                    .displayFile(node);
+                        } catch (WeirdResultException e1) {
+                            // TODO by Camille : pop-up
+                            e1.printStackTrace();
+                        }
                     }
                 });
     }

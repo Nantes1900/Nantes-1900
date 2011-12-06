@@ -62,7 +62,7 @@ public class Universe3DView extends JPanel {
      * Constant defining the drawing back of the camera when initializing the
      * 3DView.
      */
-    public static final double TRANSLATION_CAMERA_Z_DIRECTION = 30;
+    public static final double TRANSLATION_CAMERA_Z_DIRECTION = 300;
     /**
      * Constant defining the 3DView panel height.
      */

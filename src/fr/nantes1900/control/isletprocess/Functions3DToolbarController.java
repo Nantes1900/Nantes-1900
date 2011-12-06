@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.display3d.Universe3DController;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.Functions3DToolbarView;
 
@@ -35,6 +36,7 @@ public class Functions3DToolbarController {
                     public void actionPerformed(ActionEvent arg0) {
                         // TODO call 3D universe controller to modify rotation
                         // center
+                        Functions3DToolbarController.this.parentController.getU3DController().changeRotationCenter();
                     }
                 });
 
@@ -44,8 +46,13 @@ public class Functions3DToolbarController {
                     @Override
                     public void actionPerformed(ActionEvent arg0) {
                         setDisplayType(Universe3DController.DISPLAY_MESH_MODE);
-                        Functions3DToolbarController.this.getParentController()
-                        .getBiController().display();
+                        try {
+                            Functions3DToolbarController.this.getParentController()
+                            .getBiController().display();
+                        } catch (WeirdResultException e) {
+                            // TODO by Camille : pop-up
+                            e.printStackTrace();
+                        }
                     }
                 });
 
@@ -55,8 +62,13 @@ public class Functions3DToolbarController {
                     @Override
                     public void actionPerformed(ActionEvent arg0) {
                         setDisplayType(Universe3DController.DISPLAY_POLYGON_MODE);
-                        Functions3DToolbarController.this.getParentController()
-                                .getBiController().display();
+                        try {
+                            Functions3DToolbarController.this.getParentController()
+                                    .getBiController().display();
+                        } catch (WeirdResultException e) {
+                            // TODO by Camille : pop-up
+                            e.printStackTrace();
+                        }
                     }
                 });
 
