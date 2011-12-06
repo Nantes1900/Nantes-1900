@@ -22,6 +22,8 @@ public abstract class AbstractBuildingStep {
 
     /**
      * Creates a tree node.
+     * @param counter
+     *            the counter of the building
      * @return the tree node
      */
     public abstract DefaultMutableTreeNode returnNode(int counter);

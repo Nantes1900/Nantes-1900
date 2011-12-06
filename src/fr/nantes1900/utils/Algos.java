@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Surface;
-import fr.nantes1900.models.extended.Wall;
 
 /**
  * Contains some algorithms used in the other classes.

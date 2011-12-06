@@ -20,6 +20,8 @@ public abstract class AbstractBuildingsIsletStep {
      * @throws NullArgumentException
      *             when an argument needed in the process have not been
      *             initialized
+     * @throws WeirdResultException
+     *             if the result is not coherent
      */
     public abstract AbstractBuildingsIsletStep launchProcess()
             throws NullArgumentException, WeirdResultException;
@@ -27,9 +29,11 @@ public abstract class AbstractBuildingsIsletStep {
     /**
      * Builds a tree node for the JTree.
      * @return a default mutable tree node
-     * @throws WeirdResultException 
+     * @throws WeirdResultException
+     *             if the result is not coherent
      */
-    public abstract DefaultMutableTreeNode returnNode() throws WeirdResultException;
+    public abstract DefaultMutableTreeNode returnNode()
+            throws WeirdResultException;
 
     /*
      * (non-Javadoc)

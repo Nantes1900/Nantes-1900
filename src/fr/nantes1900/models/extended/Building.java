@@ -3,7 +3,6 @@ package fr.nantes1900.models.extended;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.steps.BuildingStep3;
 import fr.nantes1900.models.extended.steps.BuildingStep4;
 import fr.nantes1900.models.extended.steps.BuildingStep5;

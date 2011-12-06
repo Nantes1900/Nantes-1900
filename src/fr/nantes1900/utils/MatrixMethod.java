@@ -56,7 +56,7 @@ public final class MatrixMethod {
      *            the base change matrix
      */
     public static void changeBase(final Vector3d vect, final double[][] matrix) {
-        final double[] coord = { vect.x, vect.y, vect.z,
+        final double[] coord = {vect.x, vect.y, vect.z,
         };
         vect.set(MatrixMethod.changeBase(coord, matrix));
     }

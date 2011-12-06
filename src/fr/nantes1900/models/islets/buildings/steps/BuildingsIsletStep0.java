@@ -58,6 +58,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep {
      * Creates a change base matrix with the normal to the ground. See the
      * MatrixMethod class for more informations.
      * @throws WeirdResultException
+     *             if the result is not coherent
      */
     public final void createChangeBaseMatrix() throws WeirdResultException {
         try {
