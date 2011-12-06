@@ -85,7 +85,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      * A constant defining the orientation tolerance (in degrees) when getting
      * all the triangles oriented as a triangle input.
      */
-    public static final int ORIENTATION_TOLERANCE = 10;
+    public static final int ORIENTATION_TOLERANCE = 20;
     /**
      * The list of the triangles currently selected.
      */
