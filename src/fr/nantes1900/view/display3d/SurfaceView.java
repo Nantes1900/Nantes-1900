@@ -62,11 +62,11 @@ public class SurfaceView extends Shape3D {
     /**
      * The mesh to be displayed.
      */
-    private MeshView meshView;
+    private MeshView meshView=null;
     /**
      * The polygon to be displayed.
      */
-    private PolygonView polygonView;
+    private PolygonView polygonView=null;
 
     /**
      * The appearance of the surface.
@@ -168,7 +168,7 @@ public class SurfaceView extends Shape3D {
 
     public final void setMeshView(final MeshView meshViewIn) {
         this.meshView = meshViewIn;
-        this.setGeometry(this.meshView);
+//        this.setGeometry(this.meshView);
     }
 
     /**
@@ -179,7 +179,16 @@ public class SurfaceView extends Shape3D {
 
     public final void setPolygonView(final PolygonView polygonViewIn) {
         this.polygonView = polygonViewIn;
-        this.setGeometry(this.polygonView);
+//        this.setGeometry(this.polygonView);
+    }
+    public final void showMeshView(){
+        this.setGeometry(this.meshView);
+    }
+    public final void showPolygonView(){
+        if(this.polygonView!=null){
+            this.setGeometry(this.polygonView);
+        }
+        
     }
 
     /**

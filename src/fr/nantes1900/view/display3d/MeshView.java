@@ -83,9 +83,7 @@ public class MeshView extends TriangleArray {
             this.setNormal(i + 1, convertNormal(triangle));
             this.setNormal(i + 2, convertNormal(triangle));
 
-//            this.setTextureCoordinate(0, i, new TexCoord2f(0.0f, 1.0f));
-//            this.setTextureCoordinate(0, i + 1, new TexCoord2f(0.0f, 0.0f));
-//            this.setTextureCoordinate(0, i + 2, new TexCoord2f(1.0f, 0.0f));
+
 
             i += TRIANGLE_POINTS_COUNT;
         }
@@ -177,12 +175,7 @@ public class MeshView extends TriangleArray {
         // FIXME : remove the triangle from the Universe3DController triangle
         // selection.
 
-//        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT, new TexCoord2f(
-//                0.0f, 1.0f));
-//        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT + 1,
-//                new TexCoord2f(0.0f, 0.0f));
-//        this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT + 2,
-//                new TexCoord2f(1.0f, 0.0f));
+
         this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT, new TexCoord2f(
                 0.0f, 0.0f));
         this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT + 1,

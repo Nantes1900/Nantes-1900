@@ -48,7 +48,6 @@ public class IsletTreeController implements ElementsSelectedListener {
         this.buildTreeView();
         this.addTreeController();
         this.hideActionListener = new ActionListener() {
-
             @Override
             public void actionPerformed(final ActionEvent arg0) {
                 DefaultMutableTreeNode node;
@@ -64,7 +63,6 @@ public class IsletTreeController implements ElementsSelectedListener {
             }
         };
         this.showActionListener = new ActionListener() {
-
             @Override
             public void actionPerformed(final ActionEvent arg0) {
                 DefaultMutableTreeNode node;
@@ -180,6 +178,7 @@ public class IsletTreeController implements ElementsSelectedListener {
                     IsletTreeController.this.itView, event.getX(), event.getY());
             }
         }
+
         
         private void refresh3DSelection(){
             IsletTreeController.this.getParentController()

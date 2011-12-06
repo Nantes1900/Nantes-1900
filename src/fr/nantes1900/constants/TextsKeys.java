@@ -56,6 +56,10 @@ public final class TextsKeys {
     public static final String KEY_PROCESSTITLE = "ProcessTitle";
     public static final String KEY_RETURNNODE = "ReturnNode";
     public static final String KEY_ISLET = "IsletProcess";
+    public static final String KEY_SAVERESULTBUTTON = "SaveResultButton";
+    public static final String KEY_SAVEPARAMETERSBUTTON = "SaveParametersButton";
+    public static final String KEY_LOADPARAMETERSBUTTON = "LoadParametersButton";
+    public static final String KEY_SHOWPARAMETERSBUTTON = "ShowParametersButton";
 
     /**
      * Key for error message for incorrect types selected in characteristics panels.
@@ -176,7 +180,7 @@ public final class TextsKeys {
      */
     public static final String KEY_LAUNCHISLET = "LaunchIslet";
     public static final String KEY_UPDATEMOCKUP = "UpdateMockup";
-    public static final String KEY_TOVALID= "ToValid";
+    public static final String KEY_TOVALID= "ToValid"; 
     
     public static final String KEY_HIDEITEM= "HideItem";
     public static final String KEY_SHOWITEM= "ShowItem";
