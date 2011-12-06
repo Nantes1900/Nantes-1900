@@ -32,6 +32,8 @@ public class NavigationBarView extends JPanel {
             new ImageIcon(Icones.launch));
     protected JButton bBack = new JButton(
             new ImageIcon(Icones.back));
+    protected JButton bSave = new JButton(
+            new ImageIcon(Icones.save));
     protected JLabel title = new JLabel();
     protected JPanel pCentral = new JPanel();
 
@@ -50,12 +52,15 @@ public class NavigationBarView extends JPanel {
         this.setLayout(new BorderLayout());
         this.add(bAbort, BorderLayout.WEST);
         this.add(pCentral, BorderLayout.CENTER);
+        this.add(bSave, BorderLayout.EAST);
         this.setMinimumSize(new Dimension(100, 50));
         //Tooltips
         this.bLaunch.setToolTipText(
                 FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
         this.bBack.setToolTipText(FileTools.readElementText(TextsKeys.KEY_BACKBUTTON));
         this.bAbort.setToolTipText(FileTools.readElementText(TextsKeys.KEY_ABORTBUTTON));
+        this.bSave.setToolTipText(FileTools.readElementText(TextsKeys.KEY_SAVERESULTBUTTON));
+        
         //refresh the title and enable the buttons launch
         //and previous process or not
         this.refreshStepTitle(AbstractBuildingsIslet.FIRST_STEP);
@@ -72,6 +77,10 @@ public class NavigationBarView extends JPanel {
     public JButton getLaunchButton() {
         return this.bLaunch;
     }
+    
+    public JButton getSaveButton() {
+        return this.bSave;
+    }
 
     public void refreshStepTitle(int i) {
         this.title.setText(FileTools.readElementText(TextsKeys.KEY_PROCESSTITLE
@@ -85,9 +94,11 @@ public class NavigationBarView extends JPanel {
         }
         if (i==AbstractBuildingsIslet.SIXTH_STEP){
             this.bLaunch.setEnabled(false);
+            this.bSave.setEnabled(true);
         }
         else {
             this.bLaunch.setEnabled(true);
+            this.bSave.setEnabled(false);
         }
     }
 }

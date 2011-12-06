@@ -114,9 +114,12 @@ public class ParametersView extends JPanel {
         this.displayParameters(AbstractBuildingsIslet.FIRST_STEP);
         
         //tooltips of the buttons
-        this.bSave.setToolTipText("Sauvegarder les paramètres");
-        this.bLoad.setToolTipText("Charger les paramètres");
-        this.bShow.setToolTipText("Afficher tous les paramètres");
+        this.bSave.setToolTipText(
+                FileTools.readElementText(TextsKeys.KEY_SAVEPARAMETERSBUTTON));
+        this.bLoad.setToolTipText(
+                FileTools.readElementText(TextsKeys.KEY_LOADPARAMETERSBUTTON));
+        this.bShow.setToolTipText(
+                FileTools.readElementText(TextsKeys.KEY_SHOWPARAMETERSBUTTON));
         
         //displays the buttons
         this.displayButtons();
