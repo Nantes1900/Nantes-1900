@@ -18,7 +18,7 @@ import fr.nantes1900.view.isletprocess.IsletProcessView;
 /**
  * Controller of the process of an islet. This controller makes the link between
  * each elements in the window and also with the model which contains mesh
- * datas.
+ * data.
  * @author Camille Bouquet,
  * @author Luc Jallerat
  */
@@ -120,6 +120,11 @@ public class IsletProcessController implements ElementsSelectedListener {
         this.getBiController().abortProcess();
     }
 
+    /**
+     * Modifies the selection mode.
+     * @param selectionMode
+     *            the new selected selection mode
+     */
     public void changeSelectionMode(int selectionMode) {
         if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE)
         {
@@ -149,6 +154,11 @@ public class IsletProcessController implements ElementsSelectedListener {
         return this.getBiController().getIslet().getProgression();
     }
 
+    /**
+     * Gets the 3D controller
+     * @return
+     *         the 3D controller
+     */
     public Universe3DController getU3DController() {
         return this.u3DController;
     }
@@ -189,6 +199,10 @@ public class IsletProcessController implements ElementsSelectedListener {
         this.pController.displayProcessingParameters(this.getProgression());
     }
 
+    /**
+     * Refreshes views : tree, 3D view, navigation bar and characteristics
+     * panel.
+     */
     public void refreshViews() {
         this.itController.refreshView();
         this.nbController.getView().refreshStepTitle(this.getProgression());
@@ -207,6 +221,12 @@ public class IsletProcessController implements ElementsSelectedListener {
         this.pController.loadNewParameters();
     }
 
+    /**
+     * Locks or unlocks a surface.
+     * @param lock
+     *            true - locks the surface\n
+     *            false - unlocks the surface
+     */
     public void lock(boolean lock) {
         // TODO lock and unlock in the universe 3d and maybe the tree too.
     }
@@ -222,16 +242,27 @@ public class IsletProcessController implements ElementsSelectedListener {
         }
     }
 
+    /**
+     * Sets the default characteristics panel as current one.
+     */
     private void setDefaultCharacterisitcsPanel() {
         this.cController = new CharacteristicsController(this);
         this.ipView.setCharacteristicsView(this.cController.getView());
     }
 
+    /**
+     * Sets the new display mode.
+     * @param displayMode
+     *            the new display mode
+     */
     public void setDisplayMode(int displayMode) {
         u3DController.setDisplayMode(displayMode);
         setDefaultCharacterisitcsPanel();
     }
 
+    /**
+     * Sets toolbar buttons depending of the step.
+     */
     private void setToolbarButtons() {
         int step = getProgression();
 

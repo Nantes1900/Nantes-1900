@@ -37,7 +37,6 @@ public class HelpButton extends JButton implements MouseListener {
     /**
      * The normal wanted color for the background.
      */
-    // TODO : magic number !
     private Color backgroundColor = new Color(240, 240, 240);
 
     /**
@@ -174,7 +173,8 @@ public class HelpButton extends JButton implements MouseListener {
     @Override
     public final void mouseExited(final MouseEvent arg0) {
         this.in = false;
-        if (!this.pressed) {
+        if (!this.pressed)
+        {
             this.textColorCurrent = this.textColor;
             this.backgroundColorCurrent = this.backgroundColor;
             revalidate();
@@ -184,7 +184,8 @@ public class HelpButton extends JButton implements MouseListener {
 
     @Override
     public final void mousePressed(final MouseEvent arg0) {
-        if (arg0.getButton() == MouseEvent.BUTTON1) {
+        if (arg0.getButton() == MouseEvent.BUTTON1)
+        {
             this.pressed = true;
             this.textColorCurrent = darken(this.textColor, 100);
             this.backgroundColorCurrent = this.backgroundColor;
@@ -195,20 +196,24 @@ public class HelpButton extends JButton implements MouseListener {
 
     @Override
     public final void mouseReleased(final MouseEvent arg0) {
-        if (arg0.getButton() == MouseEvent.BUTTON1) {
+        if (arg0.getButton() == MouseEvent.BUTTON1)
+        {
             this.pressed = false;
 
-            if (this.in) {
+            if (this.in)
+            {
                 this.textColorCurrent = lighten(this.textColor, 50);
                 this.backgroundColorCurrent = lighten(this.backgroundColor, 25);
-            } else {
+            } else
+            {
                 this.textColorCurrent = this.textColor;
                 this.backgroundColorCurrent = this.backgroundColor;
             }
             revalidate();
             repaint();
 
-            if (!this.helpMessage.isEmpty()) {
+            if (!this.helpMessage.isEmpty())
+            {
                 // TODO : title masque un attribut.
                 String title = (this.title.isEmpty()) ? "Informations complémentaires"
                         : this.title;

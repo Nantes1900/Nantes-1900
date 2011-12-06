@@ -15,8 +15,6 @@ import javax.swing.JPanel;
 /**
  * Personnalized JFrame with a status bar on the bottom and a different look.
  * @author Camille
- */
-/**
  * @author Daniel
  */
 public class PFrame extends JFrame {
