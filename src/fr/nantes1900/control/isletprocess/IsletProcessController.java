@@ -229,6 +229,20 @@ public class IsletProcessController implements ElementsSelectedListener {
      */
     public void lock(boolean lock) {
         // TODO lock and unlock in the universe 3d and maybe the tree too.
+        if(lock=true){
+            //Change to lock mode.
+            this.u3DController.setLockMode();
+            //Lock when only a surface is selected.
+            if(this.u3DController.getSurfacesSelected().size()==1){
+                this.u3DController.setSurfaceLocked(this.u3DController.getSurfacesSelected().get(0));
+            }
+        }
+        else{
+            //Change to unlock mode.
+            this.u3DController.setUnLockMode();
+            //Clear the surfaceLocked.
+            this.u3DController.setSurfaceLocked(null);
+        }
     }
 
     public void refreshView() {
