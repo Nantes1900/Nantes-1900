@@ -1,5 +1,7 @@
 package fr.nantes1900.view.display3d;
 
+import java.awt.Color;
+
 import javax.media.j3d.Appearance;
 import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.Material;
@@ -28,17 +30,15 @@ public class SurfaceView extends Shape3D {
      * The material of a surface selected.
      */
     public static final Material MATERIAL_SELECTED = new Material(new Color3f(
-
-    0.0f, 0.7f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.0f, 0.5f,
-            0.0f), new Color3f(0.0f, 0.5f, 0.0f), 64);
+            1f, 0.0f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(
+            Color.red), new Color3f(Color.red), 64);
 
     /**
      * The material of a surface non-selected.
      */
-
     public static final Material MATERIAL_NON_POLYGON = new Material(
-            new Color3f(0.7f, 0.0f, 0f), new Color3f(0.0f, 0.0f, 0.0f),
-            new Color3f(0.5f, 0.0f, 0f), new Color3f(0.5f, 0.0f, 0f), 64);
+            new Color3f(0.7f, 0.7f, 0.7f), new Color3f(0.0f, 0.0f, 0.0f),
+            new Color3f(Color.white), new Color3f(Color.white), 64);
 
     /**
      * 
@@ -51,8 +51,8 @@ public class SurfaceView extends Shape3D {
      * 
      */
     public static final Material MATERIAL_NEIGHBOUR = new Material(new Color3f(
-            0.7f, 0.7f, 0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.5f, 0.5f,
-            0f), new Color3f(0.5f, 0.5f, 0f), 64);
+            0.7f, 0.7f, 0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.5f,
+            0.5f, 0f), new Color3f(0.5f, 0.5f, 0f), 64);
 
     /**
      * The surface linked to this view.
@@ -66,7 +66,7 @@ public class SurfaceView extends Shape3D {
      * The polygon to be displayed.
      */
     private PolygonView polygonView;
-    
+
     /**
      * The appearance of the surface.
      */
@@ -111,9 +111,11 @@ public class SurfaceView extends Shape3D {
         rendering.setIgnoreVertexColors(true);
         this.appearance.setRenderingAttributes(rendering);
 
-        if (this.surface.getPolygon() == null) {
+        if (this.surface.getPolygon() == null)
+        {
             this.setMaterial(MATERIAL_NON_POLYGON);
-        } else {
+        } else
+        {
             this.setMaterial(MATERIAL_POLYGON);
         }
 
