@@ -15,8 +15,10 @@ import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
 
 /**
- * TODO .
- * @author Camille
+ * Characteristics panel for the 3rd step of an islet process when one or more
+ * surfaces are selected.
+ * @author Camille Bouquet
+ * @author Luc Jallerat
  */
 public class CharacteristicsStep3ElementsView extends CharacteristicsView {
 
@@ -25,34 +27,39 @@ public class CharacteristicsStep3ElementsView extends CharacteristicsView {
      */
     private static final long serialVersionUID = 1L;
     /**
-     * TODO .
+     * Combo box to set the type of selected surfaces. The two types are :
+     * buildings
+     * and noise.
      */
     private JComboBox<String> cbType;
 
     /**
-     * TODO .
+     * Creates a new panel to display and modify step 3 characteristics for one
+     * or more surfaces.
      */
     public CharacteristicsStep3ElementsView() {
         super();
-        String[] types = { "", Characteristics.TYPE_BUILDING,
-                Characteristics.TYPE_NOISE
-        };
+        String[] types = {"", Characteristics.TYPE_BUILDING,
+                Characteristics.TYPE_NOISE};
 
         this.cbType = new JComboBox<String>(types);
-        this.cbType.addItemListener(new ItemListener(){
+        this.cbType.addItemListener(new ItemListener() {
 
             @Override
             public void itemStateChanged(ItemEvent arg0) {
-                    CharacteristicsStep3ElementsView.this.checkTypeSelected();
+                CharacteristicsStep3ElementsView.this.checkTypeSelected();
             }
-            
+
         });
         this.addCaracteristic(createSimpleCaracteristic(this.cbType,
                 new JLabel(FileTools.readElementText(TextsKeys.KEY_TYPETEXT)),
                 new HelpButton()));
         this.bValidate.setEnabled(true);
     }
-    
+
+    /**
+     * Checks the selected type and enables or disables the validate button.
+     */
     private void checkTypeSelected() {
         if (cbType.getSelectedItem().equals(""))
         {
@@ -64,17 +71,17 @@ public class CharacteristicsStep3ElementsView extends CharacteristicsView {
     }
 
     /**
-     * Getter.
-     * @return TODO .
+     * Gets the selectted type.
+     * @return the selected type
      */
     public final String getTypeSelected() {
         return (String) this.cbType.getSelectedItem();
     }
 
     /**
-     * Getter.
+     * Selects the given type.
      * @param string
-     *            TODO .
+     *            the new type to select
      */
     public final void setType(final String string) {
         this.cbType.setSelectedItem(string);

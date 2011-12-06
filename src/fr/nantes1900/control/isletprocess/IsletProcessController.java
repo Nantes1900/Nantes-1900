@@ -121,12 +121,11 @@ public class IsletProcessController implements ElementsSelectedListener {
         if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE) {
             u3DController
                     .changeSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
-            setDefaultCharacterisitcsPanel();
-        } else if (selectionMode == Universe3DController.SELECTION_SURFACE_MODE) {
+        } else {
             u3DController
                     .changeSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
-            setDefaultCharacterisitcsPanel();
         }
+        setDefaultCharacterisitcsPanel();
     }
 
     public void deselectAllSurfaces() {

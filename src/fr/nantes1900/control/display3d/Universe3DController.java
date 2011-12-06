@@ -14,6 +14,7 @@ import com.sun.j3d.utils.picking.PickIntersection;
 import com.sun.j3d.utils.picking.PickResult;
 import com.sun.j3d.utils.picking.PickTool;
 
+import fr.nantes1900.control.isletprocess.IsletProcessController;
 import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
@@ -31,6 +32,7 @@ import fr.nantes1900.view.display3d.Universe3DView;
  */
 public class Universe3DController implements MouseListener, MouseMotionListener {
 
+    private IsletProcessController parentController;
     /**
      * The Universe3DView linked to this controller.
      */
@@ -129,17 +131,42 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
     }
 
+    public final void changeRotationCenter() {
+        Point center = null;
+        if (this.selectionMode == SELECTION_SURFACE_MODE) {
+            if (this.surfacesSelected != null) {
+                SurfaceView surfaceViewSeleted = this
+                        .getSurfaceViewFromSurface(this.surfacesSelected.get(0));
+
+                if (this.displayMode == DISPLAY_MESH_MODE) {
+                    center = surfaceViewSeleted.getMeshView().getCentroid();
+
+                } else {
+                    center = surfaceViewSeleted.getPolygonView().getCentroid();
+                }
+            }
+        } else {
+            if (this.trianglesSelected != null) {
+                Triangle triangleSelected = this.trianglesSelected.get(0);
+
+                center = triangleSelected.getP1();
+            }
+        }
+        this.mouseRotate.setCenter(center);
+    }
+
     /**
      * Change the selection mode.
      */
-    public final void changeSelectionMode(int selectionMode) {
-
-        // TODO clear selections
-        if (selectionMode == SELECTION_TRIANGLE_MODE) {
-            this.selectionMode = SELECTION_TRIANGLE_MODE;
-        } else if (selectionMode == SELECTION_SURFACE_MODE) {
-            this.selectionMode = SELECTION_SURFACE_MODE;
+    public final void changeSelectionMode(int selectionModeIn) {
+        if (this.surfacesSelected != null) {
+            this.deselectEverySurfaces();
         }
+        if (this.meshesSelected != null) {
+            List<Mesh> meshesToRemove = new ArrayList<Mesh>(this.meshesSelected);
+            this.unSelectTriangles(meshesToRemove);
+        }
+        this.selectionMode = selectionModeIn;
     }
 
     /**
