@@ -158,12 +158,12 @@ public class BuildingStep4 extends AbstractBuildingStep {
 
     @Override
     public final DefaultMutableTreeNode returnNode(final int counter) {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Building"
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Bâtiment "
                 + counter);
 
-        this.initialWallSurface.setNodeString("Walls");
+        this.initialWallSurface.setNodeString("Murs");
         root.add(new DefaultMutableTreeNode(this.initialWallSurface));
-        this.initialRoofSurface.setNodeString("Roofs");
+        this.initialRoofSurface.setNodeString("Toits");
         root.add(new DefaultMutableTreeNode(this.initialRoofSurface));
 
         return root;
