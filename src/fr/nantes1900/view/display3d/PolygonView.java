@@ -3,6 +3,7 @@ package fr.nantes1900.view.display3d;
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.TriangleFanArray;
 import javax.vecmath.Point3d;
+import javax.vecmath.TexCoord2f;
 import javax.vecmath.Vector3f;
 
 import fr.nantes1900.models.basis.Point;
@@ -80,6 +81,13 @@ public class PolygonView extends TriangleFanArray {
         for (int i = 0; i < poly.getPointList().size(); i++) {
             normal[i] = convertNormal(this.polygon);
             normal[poly.getPointList().size() * POLYGON_FACES_COUNT - 1 - i] = reverseConvertNormal(this.polygon);
+        }
+        
+        for (int i = 0; i < poly.getPointList().size(); i++)
+        {
+            this.setTextureCoordinate(0, i, new TexCoord2f(0.0f, 0.0f));
+            this.setTextureCoordinate(0, poly.getPointList().size()
+                    * POLYGON_FACES_COUNT - 1 - i, new TexCoord2f(0.0f, 0.0f));
         }
 
         this.setNormals(0, normal);

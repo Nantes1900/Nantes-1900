@@ -736,11 +736,21 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             for (SurfaceView surfaceViewsDisplayed : this.u3DView
                     .getSurfaceViewList())
             {
-                if (surfaceViewsDisplayed.getSurface() == surfaceNeighbours)
-                {
-                    surfaceViewNeighbours.add(surfaceViewsDisplayed);
-                    break;
+                if(this.displayMode==DISPLAY_MESH_MODE){
+                    if (surfaceViewsDisplayed.getSurface().getMesh() == surfaceNeighbours.getMesh())
+                    {
+                        surfaceViewNeighbours.add(surfaceViewsDisplayed);
+                        break;
+                    }
                 }
+                else{
+                    if (surfaceViewsDisplayed.getSurface().getPolygon() == surfaceNeighbours.getPolygon())
+                    {
+                        surfaceViewNeighbours.add(surfaceViewsDisplayed);
+                        break;
+                    }
+                }
+               
             }
         }
         for (SurfaceView surfaceViewNeighbour : surfaceViewNeighbours)
@@ -756,11 +766,21 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             for (SurfaceView surfaceViewsDisplayed : this.u3DView
                     .getSurfaceViewList())
             {
-                if (surfaceViewsDisplayed.getSurface() == surfaceNeighbours)
-                {
-                    surfaceViewNeighbours.add(surfaceViewsDisplayed);
-                    break;
+                if(this.displayMode==DISPLAY_MESH_MODE){
+                    if (surfaceViewsDisplayed.getSurface().getMesh() == surfaceNeighbours.getMesh())
+                    {
+                        surfaceViewNeighbours.add(surfaceViewsDisplayed);
+                        break;
+                    }
                 }
+                else{
+                    if (surfaceViewsDisplayed.getSurface().getPolygon() == surfaceNeighbours.getPolygon())
+                    {
+                        surfaceViewNeighbours.add(surfaceViewsDisplayed);
+                        break;
+                    }
+                }
+                
             }
         }
         for (SurfaceView surfaceViewNeighbour : surfaceViewNeighbours)
