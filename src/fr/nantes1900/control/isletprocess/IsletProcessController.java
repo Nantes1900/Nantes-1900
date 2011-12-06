@@ -248,23 +248,28 @@ public class IsletProcessController implements ElementsSelectedListener {
             this.f3DController.setEnableDisplayType(false,
                     Universe3DController.DISPLAY_POLYGON_MODE);
         }
-
+        f3DController.setRotationCenterEnable(false);
     }
 
     @Override
     public void surfaceDeselected(final Surface surfaceSelected) {
         int step = this.getProgression();
-        boolean empty = false;
+
         if (!this.cController.getClass()
                 .equals(CharacteristicsController.class)
                 && ((step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
                         || step == 5 || step == 6)) {
-            empty = ((AbstractCharacteristicsSurfacesController) cController)
-                    .removeSurfaceSelected(surfaceSelected);
+            
+            if(((AbstractCharacteristicsSurfacesController) cController)
+                    .removeSurfaceSelected(surfaceSelected))
+            {
+                // if the selection is now empty
+                setDefaultCharacterisitcsPanel();
+            }
         }
-
-        if (empty) {
-            setDefaultCharacterisitcsPanel();
+        if (u3DController.getMeshesSelected().isEmpty())
+        {
+            f3DController.setRotationCenterEnable(false);
         }
     }
 
@@ -300,6 +305,7 @@ public class IsletProcessController implements ElementsSelectedListener {
                         .addSurfaceSelected(surfaceSelected);
             }
         }
+        f3DController.setRotationCenterEnable(true);
     }
 
     // FIXME : Luc, please find some correct names.
@@ -320,6 +326,7 @@ public class IsletProcessController implements ElementsSelectedListener {
                 || step == 2 || step == 4) {
             if (trianglesSelected.isEmpty()) {
                 setDefaultCharacterisitcsPanel();
+                f3DController.setRotationCenterEnable(false);
             } else {
                 switch (step) {
                 case 2:
@@ -336,6 +343,7 @@ public class IsletProcessController implements ElementsSelectedListener {
                     break;
 
                 }
+                f3DController.setRotationCenterEnable(true);
             }
             this.ipView.setCharacteristicsView(this.cController.getView());
         }
