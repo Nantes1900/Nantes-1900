@@ -79,7 +79,8 @@ public class CharacteristicsStep6Controller extends
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                // TODO
+                surfacesList = ((CharacteristicsStep6View) cView).getList();
+                CharacteristicsStep6Controller.this.parentController.getBiController().action6(surfaceToCheck, surfacesList);
                 CharacteristicsStep6Controller.this.parentController
                         .refreshViews();
             }
