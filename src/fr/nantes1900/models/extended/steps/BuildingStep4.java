@@ -15,7 +15,6 @@ import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.Wall;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.utils.Algos;
-import fr.nantes1900.utils.WriterSTL;
 
 /**
  * Implements a building step : a state of the building. This step is after the
@@ -138,62 +137,13 @@ public class BuildingStep4 extends AbstractBuildingStep {
             throw new NullArgumentException();
         }
 
-        int counter1 = 0;
-        counter1 += this.initialRoofSurface.getMesh().size();
-        counter1 += this.initialWallSurface.getMesh().size();
-        counter1 += this.noise.getMesh().size();
-
-        System.out.println(counter1);
-
         this.cutWalls();
-
-        int counter2 = 0;
-        for (Wall w : this.walls) {
-            counter2 += w.getMesh().size();
-        }
-        counter2 += this.initialRoofSurface.getMesh().size();
-        counter2 += this.noise.getMesh().size();
-
-        System.out.println(counter2);
 
         this.cutRoofs();
 
-        int counter3 = 0;
-        for (Wall w : this.walls) {
-            counter3 += w.getMesh().size();
-        }
-        for (Roof r : this.roofs) {
-            counter3 += r.getMesh().size();
-        }
-        counter3 += this.noise.getMesh().size();
-
-        System.out.println(counter3);
-
         this.treatNoise();
 
-        int counter4 = 0;
-        for (Wall w : this.walls) {
-            counter4 += w.getMesh().size();
-        }
-        for (Roof r : this.roofs) {
-            counter4 += r.getMesh().size();
-        }
-        counter4 += this.noise.getMesh().size();
-
-        System.out.println(counter4);
-
         this.treatNewNeighbours();
-
-        int counter5 = 0;
-        for (Wall w : this.walls) {
-            counter5 += w.getMesh().size();
-        }
-        for (Roof r : this.roofs) {
-            counter5 += r.getMesh().size();
-        }
-        counter5 += this.noise.getMesh().size();
-
-        System.out.println(counter5);
 
         List<Wall> wallsCopy = new ArrayList<>();
         for (Wall w : this.walls) {

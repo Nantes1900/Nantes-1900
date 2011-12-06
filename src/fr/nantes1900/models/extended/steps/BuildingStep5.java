@@ -190,8 +190,6 @@ public class BuildingStep5 extends AbstractBuildingStep {
             throw new NullArgumentException();
         }
 
-        this.noise.getMesh().writeSTL("NoiseSTEP5.stl");
-
         this.determinateNeighbours();
 
         this.sortSurfaces();
