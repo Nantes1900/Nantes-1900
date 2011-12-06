@@ -271,6 +271,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      */
     public final void launchProcess5() throws NullArgumentException {
         this.biStep5.setArguments(this.biStep4.getGrounds(), this.groundNormal);
+        this.biStep5.setArguments(this.biStep4.getNoise());
         this.biStep6 = this.getBiStep5().launchProcess();
     }
 
@@ -287,7 +288,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      * @return the node
      * @throws InvalidCaseException
      *             if the case in not valid (more than 8 or less than 0)
-     * @throws WeirdResultException 
+     * @throws WeirdResultException
      */
     public final DefaultMutableTreeNode returnNode()
             throws InvalidCaseException, WeirdResultException {

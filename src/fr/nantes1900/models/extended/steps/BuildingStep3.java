@@ -62,7 +62,7 @@ public class BuildingStep3 extends AbstractBuildingStep {
         // Copies the mesh and removes all the walls.
         Surface initialRoof = new Surface(new Mesh(
                 this.initialTotalMesh.getMesh()));
-        initialRoof.getMesh().remove(initialWall.getMesh());
+        initialRoof.getMesh().removeAll(initialWall.getMesh());
 
         return new BuildingStep4(initialWall, initialRoof);
     }

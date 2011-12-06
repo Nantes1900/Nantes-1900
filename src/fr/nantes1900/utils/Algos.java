@@ -6,7 +6,9 @@ import java.util.List;
 import java.util.Set;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.extended.Wall;
 
 /**
  * Contains some algorithms used in the other classes.
@@ -128,6 +130,18 @@ public final class Algos {
      */
     public static void blockTreatOrientedNoise(final List<Surface> surfaceList,
             final Mesh noise, final double largeAngleNormalErrorFactor) {
+
+        Mesh total = new Mesh();
+        for (Surface r : surfaceList) {
+            total.addAll(r.getMesh());
+        }
+        WriterSTL writer = new WriterSTL("surfacesBAlgos.stl");
+        writer.setMesh(total);
+        writer.write();
+
+        writer = new WriterSTL("noiseBAlgos.stl");
+        writer.setMesh(noise);
+        writer.write();
 
         final List<Surface> list = new ArrayList<>();
 
