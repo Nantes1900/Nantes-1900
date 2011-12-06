@@ -35,6 +35,7 @@ public class Functions3DToolbarController {
                     public void actionPerformed(ActionEvent arg0) {
                         // TODO call 3D universe controller to modify rotation
                         // center
+                        Functions3DToolbarController.this.parentController.getU3DController().changeRotationCenter();
                     }
                 });
 
