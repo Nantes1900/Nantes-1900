@@ -12,11 +12,7 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
-import fr.nantes1900.listener.ElementsSelectedListener;
-import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.utils.WriterSTL;
@@ -98,31 +94,17 @@ public class IsletSelectionController {
     // boolean, but nothing.
     // If an error happens (no file or triangles not selected, then throw an
     // exception : it has been created for that case !
-
     public final boolean computeGravityNormal() {
         boolean normalSaved = false;
         if (this.selectedFile != null
                 && !this.u3DController.getTrianglesSelected().isEmpty()) {
-            // TODO by Daniel : Move this code
+
             WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
                     + "/gravity_normal.stl");
-            Point point1 = new Point(1, 1, 1);
-            Point point2 = new Point(2, 2, 2);
-            Point point3 = new Point(0, 0, 0);
-            Edge edge1 = new Edge(point1, point2);
-            Edge edge2 = new Edge(point1, point3);
-            Edge edge3 = new Edge(point3, point2);
-            Triangle triangle = new Triangle(point1, point2, point3, edge1,
-                    edge2, edge3,
-                    this.biController.computeNormalWithTrianglesSelected());
-            Mesh mesh = new Mesh();
-            mesh.add(triangle);
-            writer.setMesh(mesh);
+            writer.setMesh(new Mesh(this.u3DController.getTrianglesSelected()));
             writer.write();
-            System.out.println("Enregistre");
             normalSaved = true;
         } else {
-            // TODO : put this text in the text file (or XML for Luc).
             JOptionPane.showMessageDialog(this.isView, FileTools
                     .readHelpMessage(TextsKeys.KEY_COMPUTEGRAVITY,
                             TextsKeys.MESSAGETYPE_MESSAGE), FileTools
@@ -138,17 +120,18 @@ public class IsletSelectionController {
      * Computes the ground normal.
      */
     public final void computeGroundNormal() {
-        this.biController.setGroundNormal(this.biController
-                .computeNormalWithTrianglesSelected());
+        this.biController.setGroundNormal(new Mesh(this.u3DController
+                .getTrianglesSelected()).averageNormal());
     }
 
     /**
      * Displays a file in the 3d universe selected in the tree.
      * @param node
      *            The node of the tree corresponding to the file to display.
-     * @throws WeirdResultException 
+     * @throws WeirdResultException
      */
-    public final void displayFile(final DefaultMutableTreeNode node) throws WeirdResultException {
+    public final void displayFile(final DefaultMutableTreeNode node)
+            throws WeirdResultException {
         this.isView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         // Reads the file object of the Tree
         FileNode fileNode = (FileNode) node.getUserObject();
@@ -207,7 +190,6 @@ public class IsletSelectionController {
                     this.biController);
             processLaunched = true;
         } else {
-            // TODO by Luc : put this text in a XML file.
             JOptionPane.showMessageDialog(this.isView, FileTools
                     .readHelpMessage(TextsKeys.KEY_LAUNCHISLET,
                             TextsKeys.MESSAGETYPE_MESSAGE), FileTools
@@ -248,7 +230,6 @@ public class IsletSelectionController {
                 this.biController.readGravityNormal(gravityNormal.getPath());
             } catch (IOException e) {
                 // If the file can not be read or is not well built.
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             this.isView.setStatusBarText(FileTools.readHelpMessage(

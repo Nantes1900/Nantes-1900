@@ -10,7 +10,6 @@ import javax.vecmath.Vector3d;
 import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.constants.Characteristics;
 import fr.nantes1900.control.display3d.Universe3DController;
-import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Building;
@@ -41,10 +40,6 @@ public class BuildingsIsletController {
      * The buildings islet containing the model.
      */
     private AbstractBuildingsIslet islet;
-    /**
-     * The islet selection controller, which is the parent of this.
-     */
-    private IsletSelectionController parentController;
     /**
      * The universe 3D controller to interact with the universe 3D.
      */
@@ -142,8 +137,6 @@ public class BuildingsIsletController {
         if (surface != this.islet.getBiStep3().getGrounds()) {
             if (actionType == ActionTypes.TURN_TO_NOISE) {
                 // The user wants the surface to turn to noise.
-                Building b = this.returnBuildingContaining3(surface);
-
                 this.islet.getBiStep3().getBuildings()
                         .remove(this.returnBuildingContaining3(surface));
                 this.islet.getBiStep3().getNoise().getMesh()
@@ -251,16 +244,6 @@ public class BuildingsIsletController {
                 throw new InvalidCaseException();
             }
         }
-    }
-
-    /**
-     * Computes the average normal with the triangles selected in the universe
-     * 3D controller.
-     * @return the average normal
-     */
-    public final Vector3d computeNormalWithTrianglesSelected() {
-        Mesh mesh = new Mesh(this.u3DController.getTrianglesSelected());
-        return mesh.averageNormal();
     }
 
     /**
@@ -599,7 +582,7 @@ public class BuildingsIsletController {
      * @return a mutable tree node
      * @throws InvalidCaseException
      *             if an invalid case has been called
-     * @throws WeirdResultException 
+     * @throws WeirdResultException
      */
     public final DefaultMutableTreeNode returnNode()
             throws InvalidCaseException, WeirdResultException {
@@ -680,7 +663,7 @@ public class BuildingsIsletController {
      * Sets the islet ground normal with the gravity normal.
      */
     public final void useGravityNormalAsGroundNormal() {
-        this.islet.setGroundNormal(this.islet.getGravityNormal());
+        this.islet.setGroundNormal(new Vector3d(this.islet.getGravityNormal()));
     }
 
     /**
@@ -777,7 +760,7 @@ public class BuildingsIsletController {
 
     /**
      * Displays the fifth step.
-     * @throws WeirdResultException 
+     * @throws WeirdResultException
      */
     public final void viewStep5() throws WeirdResultException {
         List<Surface> surfacesList = new ArrayList<>();
