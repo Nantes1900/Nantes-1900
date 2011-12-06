@@ -144,7 +144,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         Point center = null;
         if (this.selectionMode == SELECTION_SURFACE_MODE)
         {
-            if (this.surfacesSelected != null)
+            if (this.surfacesSelected.size()!=0)
             {
                 SurfaceView surfaceViewSeleted = this
                         .getSurfaceViewFromSurface(this.surfacesSelected.get(0));
@@ -160,14 +160,18 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             }
         } else
         {
-            if (this.trianglesSelected != null)
+            if (this.trianglesSelected.size()!=0)
             {
                 Triangle triangleSelected = this.trianglesSelected.get(0);
 
                 center = triangleSelected.getP1();
             }
         }
-        this.mouseRotate.setCenter(center);
+        if (center != null)
+        {
+            this.mouseRotate.setCenter(center);
+        }
+        
     }
 
     /**
