@@ -8,6 +8,8 @@ import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
+import org.w3c.dom.css.Counter;
+
 import fr.nantes1900.constants.SeparationWallsSeparationRoofs;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
@@ -140,6 +142,12 @@ public class BuildingStep5 extends AbstractBuildingStep {
             wholeBoundsList.add(m.returnUnsortedBounds());
         }
 
+        int counter = 0;
+        for (final Mesh m : wholeListFakes) {
+            m.writeSTL("fuck" + counter + ".stl");
+            counter ++;
+        }
+
         // Then we check every edge of the bounds to see if some are shared by
         // two meshes. If they do, they are neighbours.
         for (int i = 0; i < wholeBoundsList.size(); i = i + 1) {
@@ -150,11 +158,13 @@ public class BuildingStep5 extends AbstractBuildingStep {
 
                 if (polygone1.isNeighbour(polygone2)) {
                     wholeList.get(i).addNeighbour(wholeList.get(j));
+                    System.out.println("One more");
                 }
             }
 
             if (polygone1.isNeighbour(groundsBounds)) {
                 wholeList.get(i).addNeighbour(this.ground);
+                System.out.println("One ground");
             }
         }
     }

@@ -840,6 +840,24 @@ public class BuildingsIsletController {
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
     }
 
+    public void action6(Surface surfaceLocked, List<Surface> newNeighbours) {
+        surfaceLocked.setNeighbours(newNeighbours);
+        Building building = this.searchForBuildingContaining6(surfaceLocked);
+        building.getbStep5().orderNeighboursAndDeterminateContours();
+    }
+
+    private Building searchForBuildingContaining6(Surface surface) {
+        for (Building building : this.islet.getBiStep6().getBuildings()) {
+
+            if (building.getbStep6().getWalls().contains(surface)
+                    || building.getbStep6().getRoofs().contains(surface)) {
+                return building;
+            }
+        }
+
+        return null;
+    }
+
     /**
      * Displays the sixth step.
      */
