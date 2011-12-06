@@ -30,29 +30,30 @@ public class SurfaceView extends Shape3D {
      * The material of a surface selected.
      */
     public static final Material MATERIAL_SELECTED = new Material(new Color3f(
-            1f, 0.0f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(
-            Color.red), new Color3f(Color.red), 64);
+            0.0f, 0.4f, 0.7f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.0f,
+            0.4f, 0.7f), new Color3f(0.0f, 0.4f, 0.7f), 64);
 
     /**
      * The material of a surface non-selected.
      */
+
     public static final Material MATERIAL_NON_POLYGON = new Material(
-            new Color3f(0.7f, 0.7f, 0.7f), new Color3f(0.0f, 0.0f, 0.0f),
-            new Color3f(Color.white), new Color3f(Color.white), 64);
+            new Color3f(0.5f, 0.5f, 0.5f), new Color3f(0.0f, 0.0f, 0.0f),
+            new Color3f(0.5f, 0.5f, 0.5f), new Color3f(0.5f, 0.5f, 0.5f), 64);
 
     /**
      * 
      */
     public static final Material MATERIAL_POLYGON = new Material(new Color3f(
-            0.0f, 0.0f, 0.7f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.0f,
-            0.0f, 0.5f), new Color3f(0.0f, 0.0f, 0.5f), 64);
+            0.0f, 0.5f, 0.3f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.0f,
+            0.5f, 0.3f), new Color3f(0.0f, 0.5f, 0.3f), 64);
 
     /**
      * 
      */
     public static final Material MATERIAL_NEIGHBOUR = new Material(new Color3f(
-            0.7f, 0.7f, 0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.5f,
-            0.5f, 0f), new Color3f(0.5f, 0.5f, 0f), 64);
+            0.7f, 0.5f, 0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.7f,
+            0.5f, 0f), new Color3f(0.7f, 0.5f, 0f), 64);
 
     /**
      * The surface linked to this view.
@@ -92,7 +93,7 @@ public class SurfaceView extends Shape3D {
         this.appearance.setCapability(Appearance.ALLOW_MATERIAL_WRITE);
 
         // Read the texture.
-        TextureLoader loader = new TextureLoader("res/texture/texture.jpg",
+        TextureLoader loader = new TextureLoader("res/texture/texture1.jpg",
                 null);
         ImageComponent2D image = loader.getImage();
         Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGB,
