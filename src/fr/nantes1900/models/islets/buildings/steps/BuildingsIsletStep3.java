@@ -10,6 +10,7 @@ import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 
 /**
  * Implements a step of the process. This step is after the separation between
@@ -89,7 +90,10 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
             b.launchProcess3();
         }
 
-        return new BuildingsIsletStep4(this.buildings, this.grounds);
+        BuildingsIsletStep4 biStep = new BuildingsIsletStep4(this.buildings,
+                this.grounds);
+        biStep.setArguments(this.noise);
+        return biStep;
     }
 
     /*
@@ -99,24 +103,30 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode() {
+    public final DefaultMutableTreeNode returnNode() throws WeirdResultException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
 
         int counter = 0;
         for (Building b : this.buildings) {
-            root.add(b.returnNode3(counter));
-            counter++;
+            if (!b.getbStep3().getInitialTotalSurface().getMesh().isEmpty()) {
+                root.add(b.returnNode3(counter));
+                counter++;
+            }
         }
 
-        this.grounds.setNodeString("Grounds");
-        root.add(new DefaultMutableTreeNode(this.grounds));
+        if (!this.grounds.getMesh().isEmpty()) {
+            this.grounds.setNodeString("Sols");
+            root.add(new DefaultMutableTreeNode(this.grounds));
 
-        // FIXME
-        // if (this.noise.getMesh() != null && !this.noise.getMesh().isEmpty())
-        // {
-        // this.noise.setNodeString("Noise");
-        // root.add(new DefaultMutableTreeNode(this.noise));
-        // }
+        } else {
+            throw new WeirdResultException(
+                    "Warning : initial grounds empty !");
+        }
+
+        if (!this.noise.getMesh().isEmpty()) {
+            this.noise.setNodeString("Bruit");
+            root.add(new DefaultMutableTreeNode(this.noise));
+        }
 
         return root;
     }

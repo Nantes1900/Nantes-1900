@@ -27,17 +27,21 @@ public class CharacteristicsStep3ElementsController extends
         AbstractCharacteristicsSurfacesController {
 
     /**
-     * Constructor.
+     * Creates a new step 3 characteristics controller for surfaces selection
+     * which will create the
+     * panel and sets the action to perform when validate button is clicked.
      * @param parentController
-     * @param triangleSelected
+     *            the parent controller
+     * @param surfaceSelected
+     *            the selected surface
      */
     public CharacteristicsStep3ElementsController(
-            IsletProcessController parentController, Surface elementSelected) {
-        super(parentController, elementSelected);
+            IsletProcessController parentController, Surface surfaceSelected) {
+        super(parentController, surfaceSelected);
 
         this.cView = new CharacteristicsStep3ElementsView();
         modifyViewCharacteristics();
-        
+
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
@@ -45,21 +49,28 @@ public class CharacteristicsStep3ElementsController extends
                 String typeChosen = ((CharacteristicsStep3ElementsView) CharacteristicsStep3ElementsController.this.cView)
                         .getTypeSelected();
 
+                // gets the selected type
                 int actionType = -1;
-                switch (typeChosen) {
-                case Characteristics.TYPE_NOISE:
-                    actionType = ActionTypes.TURN_TO_NOISE;
+                switch (typeChosen)
+                {
+                    case Characteristics.TYPE_NOISE:
+                        actionType = ActionTypes.TURN_TO_NOISE;
                     break;
 
-                case Characteristics.TYPE_BUILDING:
-                    actionType = ActionTypes.TURN_TO_BUILDING;
+                    case Characteristics.TYPE_BUILDING:
+                        actionType = ActionTypes.TURN_TO_BUILDING;
                     break;
                 }
-                for (Surface surface : surfacesList) {
-                    try {
+
+                // launches actions
+                for (Surface surface : surfacesList)
+                {
+                    try
+                    {
                         CharacteristicsStep3ElementsController.this.parentController
                                 .getBiController().action3(surface, actionType);
-                    } catch (InvalidCaseException e) {
+                    } catch (InvalidCaseException e)
+                    {
                         JOptionPane
                                 .showMessageDialog(
                                         CharacteristicsStep3ElementsController.this.cView,
@@ -74,23 +85,28 @@ public class CharacteristicsStep3ElementsController extends
                                         JOptionPane.ERROR_MESSAGE);
                     }
                 }
-                CharacteristicsStep3ElementsController.this.parentController.refreshViews();
+                CharacteristicsStep3ElementsController.this.parentController
+                        .refreshViews();
             }
         });
     }
 
     @Override
     public void modifyViewCharacteristics() {
-        if (surfacesList.size() == 1) {
-            try {
+        if (surfacesList.size() == 1)
+        {
+            try
+            {
                 ((CharacteristicsStep3ElementsView) this.cView)
                         .setType(parentController.getBiController()
                                 .getCharacteristics3(surfacesList.get(0)));
-            } catch (InvalidCaseException e) {
+            } catch (InvalidCaseException e)
+            {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-        } else {
+        } else
+        {
             ((CharacteristicsStep3ElementsView) this.cView).setType("");
         }
     }

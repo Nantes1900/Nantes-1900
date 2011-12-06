@@ -21,6 +21,7 @@ import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.IsletTreeView;
 
@@ -38,7 +39,7 @@ public class IsletTreeController implements ElementsSelectedListener {
      * The parent controller.
      */
     private IsletProcessController parentController;
-    
+
     private ActionListener hideActionListener;
 
     public IsletTreeController(IsletProcessController parentControllerIn) {
@@ -46,7 +47,8 @@ public class IsletTreeController implements ElementsSelectedListener {
         this.itView = new IsletTreeView();
         this.buildTreeView();
         this.addTreeController();
-        this.hideActionListener = new ActionListener(){
+        this.hideActionListener = new ActionListener() {
+
             @Override
             public void actionPerformed(final ActionEvent arg0) {
                 System.out.println("hide !");
@@ -58,7 +60,7 @@ public class IsletTreeController implements ElementsSelectedListener {
 
     public void addTreeController() {
         MouseListener[] mliste = this.itView.getTree().getMouseListeners();
-        System.out.println(mliste.length);
+        //System.out.println(mliste.length);
         this.itView.getTree().removeMouseListener(mliste[0]);
         this.itView.getTree().addMouseListener(new HomeMadeTreeListener(
                 this.itView.getTree()));
@@ -72,6 +74,9 @@ public class IsletTreeController implements ElementsSelectedListener {
             // TODO Auto-generated catch block
             System.out.println(FileTools.readInformationMessage(
                     TextsKeys.KEY_RETURNNODE, TextsKeys.MESSAGETYPE_MESSAGE));
+        } catch (WeirdResultException e) {
+            // TODO by Luc
+            e.printStackTrace();
         }
     }
 

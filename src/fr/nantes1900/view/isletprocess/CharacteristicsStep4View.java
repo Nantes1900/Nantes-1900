@@ -12,8 +12,9 @@ import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
 
 /**
- * TODO .
+ * Characteristics panel for the 4th step of an islet process.
  * @author Camille Bouquet
+ * @author Luc Jallerat
  */
 public class CharacteristicsStep4View extends CharacteristicsView {
 
@@ -22,12 +23,13 @@ public class CharacteristicsStep4View extends CharacteristicsView {
      */
     private static final long serialVersionUID = 1L;
     /**
-     * TODO .
+     * Combo box to set the type of selected triangles. The two types are : roof
+     * and wall.
      */
     private JComboBox<String> cbType;
 
     /**
-     * TODO .
+     * Creates a new panel to display and manage step 4 characteristics.
      */
     public CharacteristicsStep4View() {
         super();
@@ -50,13 +52,16 @@ public class CharacteristicsStep4View extends CharacteristicsView {
     }
 
     /**
-     * TODO .
-     * @return TODO .
+     * Gets the current selected type.
+     * @return the current selected type
      */
     public final String getTypeSelected() {
         return (String) this.cbType.getSelectedItem();
     }
 
+    /**
+     * Checks the selected type and enables or disables the validate button.
+     */
     private void checkTypeSelected() {
         if (cbType.getSelectedItem().equals(""))
         {
@@ -68,9 +73,9 @@ public class CharacteristicsStep4View extends CharacteristicsView {
     }
 
     /**
-     * TODO .
+     * Selects the given type.
      * @param string
-     *            TODO .
+     *            the new type to select
      */
     public final void setType(final String string) {
         this.cbType.setSelectedItem(string);

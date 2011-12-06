@@ -94,10 +94,9 @@ public class BuildingStep5 extends AbstractBuildingStep {
 
                 // When the neighbours are sorted, finds the intersection of
                 // them to find the edges of this surface.
-                final Polygon p = surface.findEdges(this.walls, pointMap,
-                        this.groundNormal);
+                surface.setPolygon(surface.findEdges(this.walls, pointMap,
+                        this.groundNormal));
 
-                surface.setPolygone(p);
             } catch (final InvalidSurfaceException e) {
                 // If there is a problem, we cannot continue the process.
             } catch (final ImpossibleNeighboursOrderException e) {
@@ -124,7 +123,8 @@ public class BuildingStep5 extends AbstractBuildingStep {
             final Mesh fake = new Mesh(m.getMesh());
             wholeListFakes.add(fake);
         }
-        Algos.blockTreatPlanedNoise(wholeListFakes, this.noise.getMesh(),
+        Algos.blockTreatPlanedNoise(wholeListFakes,
+                new Mesh(this.noise.getMesh()),
                 SeparationWallsSeparationRoofs.getPlanesError());
 
         // First we clear the neighbours.
@@ -140,6 +140,12 @@ public class BuildingStep5 extends AbstractBuildingStep {
             wholeBoundsList.add(m.returnUnsortedBounds());
         }
 
+        int counter = 0;
+        for (final Mesh m : wholeListFakes) {
+            m.writeSTL("fuck" + counter + ".stl");
+            counter++;
+        }
+
         // Then we check every edge of the bounds to see if some are shared by
         // two meshes. If they do, they are neighbours.
         for (int i = 0; i < wholeBoundsList.size(); i = i + 1) {
@@ -150,11 +156,13 @@ public class BuildingStep5 extends AbstractBuildingStep {
 
                 if (polygone1.isNeighbour(polygone2)) {
                     wholeList.get(i).addNeighbour(wholeList.get(j));
+                    System.out.println("One more");
                 }
             }
 
             if (polygone1.isNeighbour(groundsBounds)) {
                 wholeList.get(i).addNeighbour(this.ground);
+                System.out.println("One ground");
             }
         }
     }
@@ -211,26 +219,22 @@ public class BuildingStep5 extends AbstractBuildingStep {
 
     @Override
     public final DefaultMutableTreeNode returnNode(final int counter) {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Building "
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Bâtiment "
                 + counter);
 
         int counterWall = 0;
         for (Wall w : this.walls) {
-            w.setNodeString("Wall " + counterWall);
-            root.add(new DefaultMutableTreeNode(w.returnNode()));
+            w.setNodeString("Mur " + counterWall);
+            root.add(w.returnNode());
             counterWall++;
         }
 
         int counterRoof = 0;
         for (Roof r : this.roofs) {
-            r.setNodeString("Roof " + counterRoof);
-            root.add(new DefaultMutableTreeNode(r.returnNode()));
+            r.setNodeString("Toit " + counterRoof);
+            root.add(r.returnNode());
             counterRoof++;
         }
-
-        // FIXME
-        // this.noise.setNodeString("Noise");
-        // root.add(new DefaultMutableTreeNode(this.noise));
 
         return root;
     }

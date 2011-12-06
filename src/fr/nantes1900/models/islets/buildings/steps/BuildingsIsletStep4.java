@@ -10,6 +10,7 @@ import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 
 /**
  * Implements a step of the process. This step is after the separation between
@@ -52,6 +53,14 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
 
     /**
      * Getter.
+     * @return the noise
+     */
+    public final Surface getNoise() {
+        return this.noise;
+    }
+
+    /**
+     * Getter.
      * @return the list of buildings
      */
     public final List<Building> getBuildings() {
@@ -75,13 +84,17 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
     @Override
     public final BuildingsIsletStep5 launchProcess()
             throws NullArgumentException {
+
         for (Building b : this.buildings) {
             b.getbStep4().setArguments(this.groundNormal, this.grounds,
                     this.noise);
             b.launchProcess4();
         }
 
-        return new BuildingsIsletStep5(this.buildings, this.grounds);
+        BuildingsIsletStep5 biStep = new BuildingsIsletStep5(this.buildings,
+                this.grounds);
+        biStep.setArguments(this.noise);
+        return biStep;
     }
 
     /*
@@ -91,13 +104,22 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode() {
+    public final DefaultMutableTreeNode returnNode() throws WeirdResultException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
 
         int counter = 0;
         for (Building b : this.buildings) {
             root.add(b.returnNode4(counter));
             counter++;
+        }
+
+        if (this.getNoise().getMesh() != null
+                && !this.getNoise().getMesh().isEmpty()) {
+            this.noise.setNodeString("Bruit");
+            root.add(new DefaultMutableTreeNode(this.noise));
+        } else {
+            throw new WeirdResultException(
+                    "Noise empty : error !");
         }
 
         return root;
@@ -110,9 +132,16 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
      * @param noiseIn
      *            the noise
      */
-    public final void setArguments(final Vector3d groundNormalIn,
-            final Surface noiseIn) {
+    public final void setArguments(final Vector3d groundNormalIn) {
         this.groundNormal = groundNormalIn;
+    }
+
+    /**
+     * Setter.
+     * @param noiseIn
+     *            the noise
+     */
+    public final void setArguments(final Surface noiseIn) {
         this.noise = noiseIn;
     }
 

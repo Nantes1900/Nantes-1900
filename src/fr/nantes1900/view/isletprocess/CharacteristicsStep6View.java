@@ -25,8 +25,9 @@ import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
 
 /**
- * TODO.
- * @author Camille Bouquet TODO .
+ * Characteristics panel for the 6th step of an islet process.
+ * @author Camille Bouquet
+ * @author Luc Jallerat
  */
 public class CharacteristicsStep6View extends CharacteristicsView {
 
@@ -35,34 +36,39 @@ public class CharacteristicsStep6View extends CharacteristicsView {
      */
     private static final long serialVersionUID = 1L;
     /**
-     * TODO .
+     * List of the neighbors for the locked surface. The order in the list
+     * indicates the order of the neighbors.
      */
-    private JList<Surface> lNeighbours;
+    private JList<Surface> lNeighbors;
     /**
-     * TODO .
+     * Model of list to modify elements in the JList.
      */
-    private DefaultListModel<Surface> dlm = new DefaultListModel<>();
+    private DefaultListModel<Surface> dlm = new DefaultListModel<Surface>();
     /**
-     * TODO .
+     * Button to move up a surface in the neighbors order.
      */
     private JButton upButton;
     /**
-     * TODO .
+     * Button to move down a surface in the neighbors order.
      */
     private JButton downButton;
     /**
-     * TODO .
+     * Help button to indicate what to do whith the list and the buttons.
      */
     private HelpButton helpButton;
 
+    /**
+     * Button to lock a surface and modify the list of its neighbors.
+     */
     private JButton bLock;
 
     /**
-     * TODO .
-     * @param neighbours
+     * New step 6 characteristics panel with the list of neighbors of the
+     * current selected surface.
+     * @param neighbors
      *            TODO .
      */
-    public CharacteristicsStep6View(final List<Surface> neighbours) {
+    public CharacteristicsStep6View(final List<Surface> neighbors) {
         super();
 
         this.bLock = new JButton("Lock");
@@ -73,14 +79,16 @@ public class CharacteristicsStep6View extends CharacteristicsView {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                int selectedIndex = lNeighbours.getSelectedIndex();
+                int selectedIndex = lNeighbors.getSelectedIndex();
+
+                // if the selected index is in the list.
                 if (selectedIndex != -1)
                 {
-                    Surface selectedSurface = lNeighbours.getSelectedValue();
+                    Surface selectedSurface = lNeighbors.getSelectedValue();
 
                     dlm.removeElement(selectedSurface);
                     dlm.insertElementAt(selectedSurface, selectedIndex - 1);
-                    lNeighbours.setSelectedValue(selectedSurface, true);
+                    lNeighbors.setSelectedValue(selectedSurface, true);
                 }
             }
         });
@@ -89,30 +97,33 @@ public class CharacteristicsStep6View extends CharacteristicsView {
 
             @Override
             public void actionPerformed(final ActionEvent e) {
-                int selectedIndex = lNeighbours.getSelectedIndex();
+                int selectedIndex = lNeighbors.getSelectedIndex();
+
+                // if the selected index is in the list.
                 if (selectedIndex != -1)
                 {
-                    Surface selectedSurface = lNeighbours.getSelectedValue();
+                    Surface selectedSurface = lNeighbors.getSelectedValue();
 
                     dlm.removeElement(selectedSurface);
                     dlm.insertElementAt(selectedSurface, selectedIndex + 1);
-                    lNeighbours.setSelectedValue(selectedSurface, true);
+                    lNeighbors.setSelectedValue(selectedSurface, true);
                 }
             }
         });
 
-        for (Surface neighbour : neighbours)
+        // Creation of the list
+        for (Surface neighbour : neighbors)
         {
             this.dlm.addElement(neighbour);
         }
 
-        this.lNeighbours = new JList<>(this.dlm);
-        this.lNeighbours.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        this.lNeighbours.addListSelectionListener(new ListSelectionListener() {
+        this.lNeighbors = new JList<>(this.dlm);
+        this.lNeighbors.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        this.lNeighbors.addListSelectionListener(new ListSelectionListener() {
 
             @Override
             public void valueChanged(ListSelectionEvent arg0) {
-                if (lNeighbours.getSelectedIndex() == 0)
+                if (lNeighbors.getSelectedIndex() == 0)
                 {
                     upButton.setEnabled(false);
                 } else if (!upButton.isEnabled())
@@ -120,7 +131,7 @@ public class CharacteristicsStep6View extends CharacteristicsView {
                     upButton.setEnabled(true);
                 }
 
-                if (lNeighbours.getSelectedIndex() == CharacteristicsStep6View.this.dlm
+                if (lNeighbors.getSelectedIndex() == CharacteristicsStep6View.this.dlm
                         .getSize() - 1)
                 {
                     downButton.setEnabled(false);
@@ -132,7 +143,8 @@ public class CharacteristicsStep6View extends CharacteristicsView {
             }
         });
 
-        JScrollPane jsp = new JScrollPane(this.lNeighbours);
+        // Sets layout and adds components
+        JScrollPane jsp = new JScrollPane(this.lNeighbors);
         jsp.setPreferredSize(new Dimension(100, 50));
         jsp.setMaximumSize(new Dimension(100, 50));
         jsp.setMinimumSize(new Dimension(100, 50));
@@ -152,36 +164,52 @@ public class CharacteristicsStep6View extends CharacteristicsView {
         this.helpButton = new HelpButton();
 
         this.getPanelContent().add(bLock);
-        this.addCaracteristic(createSimpleCaracteristic(sortPanel,
-                new JLabel(FileTools.readElementText(TextsKeys.KEY_SORTOUTNEIGHBOURS)),
+        this.addCaracteristic(createSimpleCaracteristic(sortPanel, new JLabel(
+                FileTools.readElementText(TextsKeys.KEY_SORTOUTNEIGHBOURS)),
                 this.helpButton));
         this.bValidate.setEnabled(true);
     }
 
     /**
-     * TODO .
-     * @param neighbours
-     *            TODO .
+     * Modify the list of neighbors whith the new one.
+     * @param neighbors
+     *            the new list of neighbors
      */
-    public final void setList(final ArrayList<Surface> neighbours) {
+    public final void setList(final ArrayList<Surface> neighbors) {
         this.dlm.removeAllElements();
-        for (Surface neighbour : neighbours)
+        for (Surface neighbour : neighbors)
         {
             this.dlm.addElement(neighbour);
         }
     }
+    
+    public ArrayList<Surface> getList()
+    {
+        ArrayList<Surface> neighborsList = new ArrayList<Surface>();
+        
+        for (int i = 0 ; i < dlm.size(); i ++)
+        {
+            neighborsList.add(dlm.elementAt(i));
+        }
+        return neighborsList;
+    }
 
+    /**
+     * Gets the lock button.
+     * @return the lock button
+     */
     public JButton getLockButton() {
         return this.bLock;
     }
 
     /**
-     * TODO .
+     * Enables or disables all characteristics elements excepted lock button.
      * @param enable
-     *            TODO .
+     *            true - enables\n
+     *            false - disables
      */
     public final void setModificationsEnabled(final boolean enable) {
-        this.lNeighbours.setEnabled(enable);
+        this.lNeighbors.setEnabled(enable);
         this.upButton.setEnabled(enable);
         this.downButton.setEnabled(enable);
         this.bValidate.setEnabled(enable);

@@ -11,6 +11,7 @@ import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 import fr.nantes1900.utils.Algos;
 
 /**
@@ -74,7 +75,7 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
         List<Building> buildings = new ArrayList<>();
 
         for (Mesh m : buildingList) {
-            buildings.add(new Building(m));
+            buildings.add(new Building(new Surface(m)));
         }
 
         return buildings;
@@ -135,18 +136,29 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode() {
+    public final DefaultMutableTreeNode returnNode() throws WeirdResultException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
 
-        this.initialBuildings.setNodeString("Buildings");
-        DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(
-                this.initialBuildings);
-        this.initialGrounds.setNodeString("Grounds");
-        DefaultMutableTreeNode node2 = new DefaultMutableTreeNode(
-                this.initialGrounds);
+        if (!this.getInitialBuildings().getMesh().isEmpty()) {
+            this.initialBuildings.setNodeString("Bâtiments");
+            DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(
+                    this.initialBuildings);
+            root.add(node1);
 
-        root.add(node1);
-        root.add(node2);
+        } else {
+            throw new WeirdResultException(
+                    "Warning : initial buildings empty !");
+        }
+
+        if (!this.getInitialGrounds().getMesh().isEmpty()) {
+            this.initialGrounds.setNodeString("Sols");
+            DefaultMutableTreeNode node2 = new DefaultMutableTreeNode(
+                    this.initialGrounds);
+            root.add(node2);
+
+        } else {
+            throw new WeirdResultException("Warning : initial grounds empty !");
+        }
 
         return root;
     }

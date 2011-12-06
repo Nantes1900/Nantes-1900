@@ -7,6 +7,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 
 /**
  * Implements a step of the process. This step is after the determination of the
@@ -72,7 +73,8 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode() {
+    public final DefaultMutableTreeNode returnNode()
+            throws WeirdResultException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
 
         int counter = 0;
@@ -80,7 +82,14 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
             root.add(b.returnNode6(counter));
             counter++;
         }
-        root.add(new DefaultMutableTreeNode(this.grounds));
+
+        if (!this.getGrounds().getMesh().isEmpty()) {
+            this.grounds.setNodeString("Sols");
+            root.add(new DefaultMutableTreeNode(this.grounds));
+
+        } else {
+            throw new WeirdResultException("Grounds empty : error !");
+        }
 
         return root;
     }

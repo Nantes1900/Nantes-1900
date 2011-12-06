@@ -4,10 +4,10 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.models.extended.Building;
-import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep1;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep2;
@@ -200,8 +200,10 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      * Launches the first process.
      * @throws NullArgumentException
      *             if the gravity normal has not been initiliazed
+     * @throws WeirdResultException
      */
-    public final void launchProcess0() throws NullArgumentException {
+    public final void launchProcess0() throws NullArgumentException,
+            WeirdResultException {
         if (this.gravityNormal == null) {
             throw new NullArgumentException();
         }
@@ -257,6 +259,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      *             initialized
      */
     public final void launchProcess4() throws NullArgumentException {
+        this.biStep4.setArguments(this.groundNormal);
         this.biStep5 = this.getBiStep4().launchProcess();
     }
 
@@ -267,6 +270,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      *             initialized
      */
     public final void launchProcess5() throws NullArgumentException {
+        this.biStep5.setArguments(this.biStep4.getGrounds(), this.groundNormal);
         this.biStep6 = this.getBiStep5().launchProcess();
     }
 
@@ -283,9 +287,10 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      * @return the node
      * @throws InvalidCaseException
      *             if the case in not valid (more than 8 or less than 0)
+     * @throws WeirdResultException 
      */
     public final DefaultMutableTreeNode returnNode()
-            throws InvalidCaseException {
+            throws InvalidCaseException, WeirdResultException {
         switch (this.getProgression()) {
         case AbstractBuildingsIslet.ZERO_STEP:
             throw new InvalidCaseException();

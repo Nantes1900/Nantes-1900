@@ -75,7 +75,7 @@ public class Surface {
      *            the polygon to build the surface
      */
     public Surface(final Polygon p) {
-        this.setPolygone(p);
+        this.setPolygon(p);
     }
 
     /**
@@ -358,8 +358,7 @@ public class Surface {
 
         // If the ground is the neighbour of this surface, then we begin with
         // the ground, to avoid some problems in the future. Otherwise, we
-        // begin
-        // where we want.
+        // begin where we want.
         Surface current = null;
         try {
             current = this.getNeighbours().get(0);
@@ -501,7 +500,7 @@ public class Surface {
      * @param polygoneIn
      *            the new polygon
      */
-    public final void setPolygone(final Polygon polygoneIn) {
+    public final void setPolygon(final Polygon polygoneIn) {
         this.polygon = polygoneIn;
     }
 
@@ -586,5 +585,14 @@ public class Surface {
          */
         public ParallelPlanesException() {
         }
+    }
+
+    /**
+     * Setter.
+     * @param newNeighbours
+     *            the new list of neighbours
+     */
+    public final void setNeighbours(final List<Surface> newNeighbours) {
+        this.neighbours = newNeighbours;
     }
 }

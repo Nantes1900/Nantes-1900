@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Wall;
 
@@ -72,31 +71,23 @@ public class BuildingStep6 extends AbstractBuildingStep {
      */
     @Override
     public final DefaultMutableTreeNode returnNode(final int counter) {
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Building"
+        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Bâtiment "
                 + counter);
 
         int counterWall = 0;
         for (Wall w : this.walls) {
-            w.setNodeString("Wall " + counterWall);
+            w.setNodeString("Mur " + counterWall);
             root.add(new DefaultMutableTreeNode(w.returnNode()));
             counterWall++;
         }
 
         int counterRoof = 0;
         for (Roof r : this.roofs) {
-            r.setNodeString("Wall " + counterRoof);
+            r.setNodeString("Toit  " + counterRoof);
             root.add(new DefaultMutableTreeNode(r.returnNode()));
             counterRoof++;
         }
 
         return root;
-    }
-
-    /**
-     * Setter.
-     * @param groundIn
-     *            the grounds
-     */
-    public final void setArguments(final Ground groundIn) {
     }
 }

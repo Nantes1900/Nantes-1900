@@ -11,6 +11,7 @@ import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.steps.BuildingStep5;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 
 /**
  * Implements a step of the process. This step is after the separation between
@@ -101,13 +102,22 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode() {
+    public final DefaultMutableTreeNode returnNode() throws WeirdResultException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
 
         int counter = 0;
         for (Building b : this.buildings) {
             root.add(b.returnNode5(counter));
             counter++;
+        }
+
+        if (this.getNoise().getMesh() != null
+                && !this.getNoise().getMesh().isEmpty()) {
+            this.getNoise().setNodeString("Bruit");
+            root.add(new DefaultMutableTreeNode(this.getNoise()));
+        } else {
+            throw new WeirdResultException(
+                    "Noise empty : error !");
         }
 
         return root;
@@ -117,15 +127,21 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
      * Setter.
      * @param groundsIn
      *            the grounds
-     * @param noiseIn
-     *            the noise
      * @param groundNormalIn
      *            the normal to the ground
      */
-    public final void setArguments(final Surface noiseIn,
-            final Ground groundsIn, final Vector3d groundNormalIn) {
+    public final void setArguments(final Ground groundsIn,
+            final Vector3d groundNormalIn) {
         this.grounds = groundsIn;
         this.groundNormal = groundNormalIn;
+    }
+
+    /**
+     * Setter.
+     * @param noiseIn
+     *            the noise
+     */
+    public final void setArguments(final Surface noiseIn) {
         this.noise = noiseIn;
     }
 

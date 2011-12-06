@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Surface;
@@ -66,9 +65,9 @@ public final class Algos {
         final List<Mesh> meshList = Algos.blockExtract(m);
 
         for (final Mesh mesh : meshList) {
+
             while (!mesh.isEmpty()) {
-                // FIXME : remove that.
-                System.out.println(mesh.size());
+
                 final Mesh e = new Mesh();
                 final Triangle tri = mesh.getOne();
 

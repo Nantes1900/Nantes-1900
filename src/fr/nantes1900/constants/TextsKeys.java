@@ -58,38 +58,96 @@ public final class TextsKeys {
     public static final String KEY_ISLET = "IsletProcess";
 
     /**
-     * Error message for incorrect types selected in characteristics panels.
+     * Key for error message for incorrect types selected in characteristics panels.
      */
     public static final String KEY_ERROR_INCORRECTTYPE = "CIncorrectType";
 
     /**
-     * Error message for incorrect action selected in characteristics panels.
+     * Key for error message for incorrect action selected in characteristics panels.
      */
     public static final String KEY_ERROR_INCORRECTACTION = "CIncorrectAction";
 
+    /**
+     * Key for title of the type combo box.
+     */
     public static final String KEY_TYPETEXT = "CType";
+    /**
+     * Key for title of the delete check box.
+     */
     public static final String KEY_DELETETEXT = "CDelete";
+    /**
+     * Key for title of the merge check box.
+     */
     public static final String KEY_MERGETEXT = "CMerge";
+    /**
+     * Key for title of the put in noise check box.
+     */
     public static final String KEY_PUTINNOISETEXT = "CPutInNoise";
+    /**
+     * Key for title of the sort neighbors characteristic.
+     */
     public static final String KEY_SORTOUTNEIGHBOURS = "CSortOutNeighbours";
+    
+    /**
+     * To delete when checkbox deleted. TODO
+     */
     public static final String KEY_USEGRAVITYNORMALTEXT = "UseGravityNormal";
 
+    /**
+     * Key for tooltip text of the modify rotation center button.
+     */
     public static final String KEY_ROTATIONCENTER = "RotationCenter";
+    /**
+     * Key for tooltip text of the display meshes button.
+     */
     public static final String KEY_DISPLAYMESHES = "DisplayMeshes";
+    /**
+     * Key for tooltip text of the display polygons button.
+     */
     public static final String KEY_DISPLAYPOLYGONS = "DisplayPolygons";
+    /**
+     * Key for tooltip text of the select meshes button.
+     */
     public static final String KEY_SELECTMESHES = "SelectMeshes";
+    /**
+     * Key for tooltip text of the select triangles button.
+     */
     public static final String KEY_SELECTTRIANGLES = "SelectTriangles";
+    /**
+     * Key for text for selection mode triangles.
+     */
     public static final String KEY_SELECTTRIANGLESLABEL = "SelectTrianglesLabel";
+    /**
+     * Key for text for selection mode meshes.
+     */
     public static final String KEY_SELECTMESHESLABEL = "SelectMeshesLabel";
+    /**
+     * Key for tooltip for lock mesh button.
+     */
     public static final String KEY_LOCKMESH = "LockMesh";
+    /**
+     * Key for tooltip for unlock mesh button.
+     */
     public static final String KEY_UNLOCKMESH = "UnlockMesh";
 
+    /**
+     * Key for text for display type polygons.
+     */
     public static final String KEY_DISPLAYPOLYGONSLABEL = "DisplayPolygonsLabel";
+    /**
+     * Key for text for display type meshes.
+     */
     public static final String KEY_DISPLAYMESHESLABEL = "DisplayMeshesLabel";
 
+    /**
+     * Key for title of the window.
+     */
     public static final String KEY_TITLE = "Title";
     public static final String KEY_TREEVIEW = "TreeView";
     public static final String KEY_PARAMETERS = "Parameters";
+    /**
+     * Key for title of characteristics panels.
+     */
     public static final String KEY_CHARACTERISTICS = "Characteristics";
     
     public static final String KEY_STATUS_STEP1 = "StatusStep1";
@@ -109,16 +167,31 @@ public final class TextsKeys {
     public static final String KEY_WALLSIZEERROR = "WallSizeError";
     public static final String KEY_ISORIENTEDFACTOR = "IsOrientedFactor";
     
+    /**
+     * Key for tooltip of compute gravity normal button.
+     */
     public static final String KEY_COMPUTEGRAVITY = "ComputeGravity";
+    /**
+     * Key for tooltip of launch islet button.
+     */
     public static final String KEY_LAUNCHISLET = "LaunchIslet";
     public static final String KEY_UPDATEMOCKUP = "UpdateMockup";
     public static final String KEY_TOVALID= "ToValid";
     
     public static final String KEY_HIDEITEM= "HideItem";
 
+    /**
+     * Key for parameters files extension.
+     */
     public static final String KEY_FILEPARAMEXTENSION = "FileParamExtension";
+    /**
+     * Key for parameters files extension description.
+     */
     public static final String KEY_FILEPARAMDESCRIPTION = "FileParamDescription";
 
+    /**
+     * Key for incorrect parameters messages.
+     */
     public static final String KEY_ERROR_INCORRECTPARAMETER = "ErrorIncorrectParameter";
     
     public TextsKeys() {
