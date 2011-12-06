@@ -7,6 +7,9 @@ import fr.nantes1900.models.basis.Polygon;
  * Implements a wall as a surface.
  * @author Daniel
  */
+/**
+ * @author Daniel
+ */
 public class Wall extends Surface {
 
     /**
@@ -40,5 +43,14 @@ public class Wall extends Surface {
      */
     public Wall(final Wall w) {
         super(w);
+    }
+
+    /**
+     * Constructor.
+     * @param s
+     *            the surface to copy
+     */
+    public Wall(final Surface s) {
+        super(s);
     }
 }

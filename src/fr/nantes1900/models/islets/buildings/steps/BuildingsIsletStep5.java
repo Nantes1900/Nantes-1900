@@ -86,8 +86,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
     public final BuildingsIsletStep6 launchProcess()
             throws NullArgumentException {
         for (Building b : this.buildings) {
-            BuildingStep5 buildingStep = b.getbStep5();
-            buildingStep.setArguments(this.noise, this.grounds,
+            b.getbStep5().setArguments(this.noise, this.grounds,
                     this.groundNormal);
             b.launchProcess5();
         }
@@ -102,7 +101,8 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode() throws WeirdResultException {
+    public final DefaultMutableTreeNode returnNode()
+            throws WeirdResultException {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
 
         int counter = 0;
@@ -116,8 +116,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
             this.getNoise().setNodeString("Bruit");
             root.add(new DefaultMutableTreeNode(this.getNoise()));
         } else {
-            throw new WeirdResultException(
-                    "Noise empty : error !");
+            throw new WeirdResultException("Noise empty : error !");
         }
 
         return root;

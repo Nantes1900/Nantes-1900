@@ -41,4 +41,13 @@ public class Roof extends Surface {
     public Roof(final Roof r) {
         super(r);
     }
+
+    /**
+     * Constructor.
+     * @param s
+     *            the surface to copy
+     */
+    public Roof(final Surface s) {
+        super(s);
+    }
 }
