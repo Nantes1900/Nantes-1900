@@ -586,4 +586,13 @@ public class Surface {
         public ParallelPlanesException() {
         }
     }
+
+    /**
+     * Setter.
+     * @param newNeighbours
+     *            the new list of neighbours
+     */
+    public final void setNeighbours(final List<Surface> newNeighbours) {
+        this.neighbours = newNeighbours;
+    }
 }

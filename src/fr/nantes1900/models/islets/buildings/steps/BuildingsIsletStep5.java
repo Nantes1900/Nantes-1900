@@ -112,7 +112,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
 
         if (this.getNoise().getMesh() != null
                 && !this.getNoise().getMesh().isEmpty()) {
-            this.getNoise().setNodeString("Noise");
+            this.getNoise().setNodeString("Bruit");
             root.add(new DefaultMutableTreeNode(this.getNoise()));
         } else {
             // TODO : pop-up

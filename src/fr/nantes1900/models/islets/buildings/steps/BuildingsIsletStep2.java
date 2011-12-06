@@ -139,18 +139,18 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
 
         if (!this.getInitialBuildings().getMesh().isEmpty()) {
-            this.initialBuildings.setNodeString("Buildings");
+            this.initialBuildings.setNodeString("Bâtiments");
             DefaultMutableTreeNode node1 = new DefaultMutableTreeNode(
                     this.initialBuildings);
             root.add(node1);
-            
+
         } else {
             // TODO : pop-up
             System.out.println("Warning : initial buildings empty !");
         }
-        
+
         if (!this.getInitialGrounds().getMesh().isEmpty()) {
-            this.initialGrounds.setNodeString("Grounds");
+            this.initialGrounds.setNodeString("Sols");
             DefaultMutableTreeNode node2 = new DefaultMutableTreeNode(
                     this.initialGrounds);
             root.add(node2);

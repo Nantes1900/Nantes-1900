@@ -54,7 +54,7 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
      * Getter.
      * @return the noise
      */
-    public Surface getNoise() {
+    public final Surface getNoise() {
         return this.noise;
     }
 
@@ -114,7 +114,7 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
 
         if (this.getNoise().getMesh() != null
                 && !this.getNoise().getMesh().isEmpty()) {
-            this.noise.setNodeString("Noise");
+            this.noise.setNodeString("Bruit");
             root.add(new DefaultMutableTreeNode(this.noise));
         } else {
             // TODO : pop-up
