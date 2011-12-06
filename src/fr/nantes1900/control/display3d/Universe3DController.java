@@ -141,7 +141,18 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      * Change the selection mode.
      */
     public final void changeSelectionMode(int selectionMode) {
-        this.selectionMode = selectionMode;
+        if(this.surfacesSelected != null){
+            this.deselectEverySurfaces();
+        }
+        if(this.meshesSelected != null){
+            List<Mesh> meshesToRemove = new  ArrayList<Mesh>(this.meshesSelected);
+            this.unSelectTriangles(meshesToRemove);
+        }
+        if (selectionMode == SELECTION_TRIANGLE_MODE) {
+            this.selectionMode = SELECTION_TRIANGLE_MODE;
+        } else if (selectionMode == SELECTION_SURFACE_MODE) {
+            this.selectionMode = SELECTION_SURFACE_MODE;
+        }
     }
 
     /**
