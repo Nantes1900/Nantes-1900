@@ -179,15 +179,9 @@ public class MeshView extends TriangleArray {
     }
 
     /**
-<<<<<<< HEAD
-     * Unselect a triangle.
-     * @param triangle
-     *            The triangle to be unselected.
-=======
      * Unselects a triangle.
      * @param triangle
      *            the triangle to unselect
->>>>>>> 8e7cc8935180b0f137299520ac24e9e7f3a0dc13
      */
     public void unSelect(Triangle triangle) {
         Integer arrayPosition = this.getArrayPositionFromTriangle(triangle);

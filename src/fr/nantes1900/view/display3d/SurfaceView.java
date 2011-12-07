@@ -111,9 +111,11 @@ public class SurfaceView extends Shape3D {
         rendering.setIgnoreVertexColors(true);
         this.appearance.setRenderingAttributes(rendering);
 
-        if (this.surface.getPolygon() == null) {
+        if (this.surface.getPolygon() == null)
+        {
             this.setMaterial(MATERIAL_NON_POLYGON);
-        } else {
+        } else
+        {
             this.setMaterial(MATERIAL_POLYGON);
         }
 
@@ -177,16 +179,17 @@ public class SurfaceView extends Shape3D {
         this.polygonView = polygonViewIn;
     }
 
-
     /**
-     * TODO.
+     * Add the meshView to the shape3D.
      */
 
     public final void showMeshView() {
         this.setGeometry(this.meshView);
     }
 
-
+    /**
+     * Add the polygonView to the shape3D.
+     */
     public final void showPolygonView() {
         if (this.polygonView != null)
         {
