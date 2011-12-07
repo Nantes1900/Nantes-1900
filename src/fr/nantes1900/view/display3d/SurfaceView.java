@@ -174,26 +174,30 @@ public class SurfaceView extends Shape3D {
      * @param polygonViewIn
      *            The polygon to be displayed.
      */
-
     public final void setPolygonView(final PolygonView polygonViewIn) {
         this.polygonView = polygonViewIn;
     }
 
     /**
-     * Add the meshView to the shape3D.
-     */
 
+     * Sets the shape3D geometry with the MeshView attribute of this
+     * SurfaceView.
+     */
     public final void showMeshView() {
         this.setGeometry(this.meshView);
     }
 
     /**
+<<<<<<< HEAD
      * Add the polygonView to the shape3D.
+=======
+     * Sets the shape3D geometry with the PolygonView attribute of this
+     * SurfaceView (if it exists!).
+>>>>>>> a82020fbe19c142c79d4e1953d3b94158566ae80
      */
     public final void showPolygonView() {
         if (this.polygonView != null)
         {
-
             this.setGeometry(this.polygonView);
         }
 

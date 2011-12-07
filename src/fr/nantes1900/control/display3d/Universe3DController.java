@@ -83,7 +83,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      * A constant defining the orientation tolerance (in degrees) when getting
      * all the triangles oriented as a triangle input.
      */
-    public static final int ORIENTATION_TOLERANCE = 20;
+    public static final int ORIENTATION_TOLERANCE = 45;
     /**
      * Constant defining the unlocked mode.
      */
@@ -131,6 +131,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
+     * <<<<<<< HEAD
      * Changes the rotation center when clicking on a surface.
      * @param surfaceView
      *            The surfaceView becomming the rotation center
@@ -149,6 +150,12 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
     /**
      * Changes the rotation center.
+     * =======
+     * Changes the rotation center.
+     * Called when clicking on the 'change rotation center button'
+     * Sets the roation center to the center of the selected surfaces or
+     * triangles according to the case.
+     * >>>>>>> a82020fbe19c142c79d4e1953d3b94158566ae80
      */
     public final void changeRotationCenter() {
         Point center = null;
@@ -157,33 +164,27 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         {
             if (this.surfacesSelected.size() != 0)
             {
-
                 SurfaceView surfaceViewSeleted = this
                         .getSurfaceViewFromSurface(this.surfacesSelected.get(0));
 
                 if (this.displayMode == DISPLAY_MESH_MODE)
                 {
                     center = surfaceViewSeleted.getMeshView().getCentroid();
-
                 } else
                 {
                     center = surfaceViewSeleted.getPolygonView().getCentroid();
                 }
             }
-
         } else
         {
             if (this.trianglesSelected.size() != 0)
             {
-
                 Triangle triangleSelected = this.trianglesSelected.get(0);
-
                 center = triangleSelected.getP1();
             }
         }
         if (center != null)
         {
-
             this.mouseRotate.setCenter(center);
         }
 
@@ -645,6 +646,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      * @param surfacehide
      *            the surface selected to hide.
      */
+
     public final void hideSurface(final Surface surfacehide) {
         SurfaceView surfaceViewHide = this
                 .getSurfaceViewFromSurface(surfacehide);
@@ -815,6 +817,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
+     * <<<<<<< HEAD
      * Displays the neighbours.
      * @param surface
      *            the surface which neighbours will be displayed
@@ -833,6 +836,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
     /**
      * Cancel the display of the neighbours.
+     * =======
+     * TODO .
+     * >>>>>>> a82020fbe19c142c79d4e1953d3b94158566ae80
      * @param surface
      *            The surface to unselect.
      */
@@ -882,6 +888,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     public boolean checkNeighbour(SurfaceView surfaceView) {
         boolean neighbourOrNot = false;
         for (Surface surfaceSelected : this.surfacesSelected)
+
         {
             if (surfaceSelected.getNeighbours().contains(
                     surfaceView.getSurface()))
