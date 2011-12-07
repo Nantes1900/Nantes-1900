@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import fr.nantes1900.listener.ProgressComputer;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Surface;
@@ -65,6 +66,13 @@ public final class Algos {
         final List<Mesh> thingsList = new ArrayList<>();
         final List<Mesh> meshList = Algos.blockExtract(m);
 
+        int counter = 0;
+        for (Mesh mesh : meshList) {
+            counter += mesh.size();
+        }
+
+        ProgressComputer.setTrianglesNumber(counter);
+
         for (final Mesh mesh : meshList) {
 
             while (!mesh.isEmpty()) {
@@ -79,6 +87,8 @@ public final class Algos {
 
                 mesh.remove(e);
                 thingsList.add(e);
+
+                ProgressComputer.incTrianglesCounter(e.size());
             }
         }
 

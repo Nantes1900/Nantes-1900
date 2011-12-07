@@ -20,9 +20,11 @@ public class ProgressComputer extends Thread {
 
     public static void computeProgress() {
         ProgressComputer.progress = (buildingsCounter / buildingsNumber)
+                * (stepsCounter / stepsNumber)
+                * (trianglesCounter / trianglesNumber)
                 + (stepsCounter / stepsNumber)
+                * (trianglesCounter / trianglesNumber)
                 + (trianglesCounter / trianglesNumber);
-        System.out.print(progress);
     }
 
     public static void init() {
@@ -51,5 +53,11 @@ public class ProgressComputer extends Thread {
 
     public static void incTrianglesCounter(int size) {
         ProgressComputer.trianglesCounter += size;
+        ProgressComputer.computeProgress();
+        ProgressComputer.sysout();
+    }
+
+    public static void sysout() {
+        System.out.println(ProgressComputer.getProgress());
     }
 }
