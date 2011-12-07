@@ -44,8 +44,9 @@ public class SurfaceView extends Shape3D {
     /**
      * 
      */
+    
     public static final Material MATERIAL_POLYGON = new Material(new Color3f(
-            0.0f, 0.5f, 0.3f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.0f,
+            0.0f, 0.5f, 0.3f), new Color3f(0.1f, 0.0f, 0.0f), new Color3f(0.0f,
             0.5f, 0.3f), new Color3f(0.0f, 0.5f, 0.3f), 64);
 
     /**

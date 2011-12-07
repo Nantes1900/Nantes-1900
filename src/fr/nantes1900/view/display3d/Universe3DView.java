@@ -183,7 +183,7 @@ public class Universe3DView extends JPanel {
         BoundingSphere lightBounds = new BoundingSphere(new Point3d(0.0, 0.0,
                 0.0), LIGHT_BOUND_RADIUS);
         // Ambient light
-        AmbientLight ambLight = new AmbientLight(true, new Color3f(Color.white));
+        AmbientLight ambLight = new AmbientLight(true, new Color3f(1.0f,1.0f,1.0f));
         ambLight.setInfluencingBounds(lightBounds);
         // Directional light
         DirectionalLight headLight = new DirectionalLight(new Color3f(
