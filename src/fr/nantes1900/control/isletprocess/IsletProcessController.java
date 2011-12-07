@@ -231,8 +231,7 @@ public class IsletProcessController implements ElementsSelectedListener {
      *            false - unlocks the surface
      */
     public void lock(boolean lock) {
-        // TODO lock and unlock in the universe 3d and maybe the tree too.
-        if(lock=true){
+        if(lock){
             //Change to lock mode.
             this.u3DController.setLockMode();
             //Lock when only a surface is selected.
@@ -320,20 +319,43 @@ public class IsletProcessController implements ElementsSelectedListener {
     public void surfaceDeselected(final Surface surfaceSelected) {
         int step = this.getProgression();
 
+     // case 6 : more complicated
+        if (step == 6)
+        {
+            if (u3DController.getLockOrUnlockMode() == Universe3DController.LOCK_MODE)
+            {
+                ((AbstractCharacteristicsSurfacesController) cController)
+                .removeSurfaceSelected(surfaceSelected);
+            } else
+            {
+                if (u3DController.getSurfacesSelected().size() == 1)
+                {
+                    this.cController = new CharacteristicsStep6Controller(
+                            this, surfaceSelected,
+                            (ArrayList<Surface>) surfaceSelected
+                            .getNeighbours());
+                    this.ipView.setCharacteristicsView(this.cController.getView());
+                } else
+                {
+                    setDefaultCharacterisitcsPanel();
+                }
+            }
+        }
+        
         if (!this.cController.getClass()
                 .equals(CharacteristicsController.class)
-                && ((step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
-                        || step == 5 || step == 6))
+                && (step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
+                        || step == 5)
         {
             ((AbstractCharacteristicsSurfacesController) cController)
                     .removeSurfaceSelected(surfaceSelected);
-            if (u3DController.getMeshesSelected().isEmpty())
+            if (u3DController.getSurfacesSelected().isEmpty())
             {
                 // if the selection is now empty
                 setDefaultCharacterisitcsPanel();
             }
         }
-        if (u3DController.getMeshesSelected().isEmpty())
+        if (u3DController.getSurfacesSelected().isEmpty())
         {
             f3DController.setRotationCenterEnable(false);
         }
@@ -343,9 +365,31 @@ public class IsletProcessController implements ElementsSelectedListener {
     public void surfaceSelected(Surface surfaceSelected) {
         int step = this.getProgression();
 
-        // step 3 in meshes selection mode or in step 5 or 6.
+        // case 6 : more complicated
+        if (step == 6)
+        {
+            if (u3DController.getLockOrUnlockMode() == Universe3DController.LOCK_MODE)
+            {
+                ((AbstractCharacteristicsSurfacesController) this.cController)
+                .addSurfaceSelected(surfaceSelected);
+            } else
+            {
+                if (u3DController.getSurfacesSelected().size() == 1)
+                {
+                    this.cController = new CharacteristicsStep6Controller(
+                            this, surfaceSelected,
+                            (ArrayList<Surface>) surfaceSelected
+                            .getNeighbours());
+                    this.ipView.setCharacteristicsView(this.cController.getView());
+                } else
+                {
+                    setDefaultCharacterisitcsPanel();
+                }
+            }
+        }
+        // step 3 in meshes selection mode or in step 5 
         if ((step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
-                || step == 5 || step == 6)
+                || step == 5)
         {
             if (this.cController.getClass().equals(
                     CharacteristicsController.class))
@@ -359,12 +403,6 @@ public class IsletProcessController implements ElementsSelectedListener {
                     case 5:
                         this.cController = new CharacteristicsStep5Controller(
                                 this, surfaceSelected);
-                    break;
-                    case 6:
-                        this.cController = new CharacteristicsStep6Controller(
-                                this, surfaceSelected,
-                                (ArrayList<Surface>) surfaceSelected
-                                        .getNeighbours());
                     break;
 
                 }
