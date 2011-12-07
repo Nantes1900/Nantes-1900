@@ -58,6 +58,6 @@ public class ProgressComputer extends Thread {
     }
 
     public static void sysout() {
-        System.out.println(ProgressComputer.getProgress());
+        // System.out.println(ProgressComputer.getProgress());
     }
 }

@@ -840,4 +840,8 @@ public class BuildingsIsletController {
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
     }
+
+    public void saveFinalResults(String fileName) {
+        this.islet.saveFinalResults(fileName);
+    }
 }

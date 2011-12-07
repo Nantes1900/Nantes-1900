@@ -21,10 +21,6 @@ public class PolygonView extends TriangleFanArray {
      */
     private Polygon polygon;
     /**
-     * Indicate if the polygon is selected. TODO
-     */
-    private boolean selected;
-    /**
      * The center of the polygon.
      */
     private Point centroid;
@@ -40,24 +36,22 @@ public class PolygonView extends TriangleFanArray {
      *            The polygon of the thing displayed.
      */
     public PolygonView(final Polygon poly) {
-        // FIXME : instead of POLYOGN_FACES_COUNT, put poly.getNumEdges() or I
-        // don't know why to count the number of faces.
         super(poly.getPointList().size() * POLYGON_FACES_COUNT,
                 GeometryArray.COORDINATES | GeometryArray.COLOR_3
                         | GeometryArray.NORMALS
-                        | GeometryArray.TEXTURE_COORDINATE_2, new int[] {poly
-                        .getPointList().size() * POLYGON_FACES_COUNT});
+                        | GeometryArray.TEXTURE_COORDINATE_2, new int[] { poly
+                        .getPointList().size() * POLYGON_FACES_COUNT
+                });
 
         this.polygon = poly;
         this.centroid = new Point(0, 0, 0);
-        
+
         this.setCapability(ALLOW_COLOR_WRITE);
         this.setCapability(ALLOW_COLOR_READ);
         this.setCapability(ALLOW_TEXCOORD_READ);
         this.setCapability(ALLOW_TEXCOORD_WRITE);
-        
-        for (Point point : poly.getPointList())
-        {
+
+        for (Point point : poly.getPointList()) {
             this.centroid.setX(this.centroid.getX() + point.getX());
             this.centroid.setY(this.centroid.getY() + point.getY());
             this.centroid.setZ(this.centroid.getZ() + point.getZ());
@@ -67,13 +61,9 @@ public class PolygonView extends TriangleFanArray {
         this.centroid.setY(this.centroid.getY() / (poly.getPointList().size()));
         this.centroid.setZ(this.centroid.getZ() / (poly.getPointList().size()));
 
-        // TODO
-        this.selected = false;
-
         Point3d[] vertex = new Point3d[poly.getPointList().size()
                 * POLYGON_FACES_COUNT];
-        for (int i = 0; i < poly.getPointList().size(); i++)
-        {
+        for (int i = 0; i < poly.getPointList().size(); i++) {
             vertex[i] = new Point3d(poly.getPointList().get(i).getX(), poly
                     .getPointList().get(i).getY(), poly.getPointList().get(i)
                     .getZ());
@@ -85,13 +75,10 @@ public class PolygonView extends TriangleFanArray {
 
         Vector3f[] normal = new Vector3f[poly.getPointList().size()
                 * POLYGON_FACES_COUNT];
-        for (int i = 0; i < poly.getPointList().size(); i++)
-        {
+        for (int i = 0; i < poly.getPointList().size(); i++) {
             normal[i] = convertNormal(this.polygon);
             normal[poly.getPointList().size() * POLYGON_FACES_COUNT - 1 - i] = reverseConvertNormal(this.polygon);
         }
-
-       
 
         this.setNormals(0, normal);
     }
@@ -141,22 +128,6 @@ public class PolygonView extends TriangleFanArray {
     }
 
     /**
-     * To know if the polygon is selected.
-     * @return selected the condition of selection.
-     */
-    public final boolean isSelected() {
-        return this.selected;
-    }
-
-    /**
-     * Select the polygon.
-     */
-    public final void select() {
-        this.selected = true;
-
-    }
-
-    /**
      * Set the polygon to be displayed.
      * @param polygonIn
      *            the polygon to set.
@@ -164,13 +135,4 @@ public class PolygonView extends TriangleFanArray {
     public final void setPolygon(final Polygon polygonIn) {
         this.polygon = polygonIn;
     }
-
-    /**
-     * Unselect the polygon.
-     */
-    public final void unselect() {
-        this.selected = false;
-
-    }
-
 }

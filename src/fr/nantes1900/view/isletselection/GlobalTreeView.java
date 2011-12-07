@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.view.isletselection;
 
 import java.awt.BorderLayout;
