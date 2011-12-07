@@ -21,64 +21,63 @@ import fr.nantes1900.models.basis.Point;
 /**
  * NewMouseRotate is a class extended of the class MouseRotate. It is used to
  * make a rotation of the object by using the mouse.
- * @author TODO
+ * @author Siju Wu & Nicolas Bouillon
  */
 public class NewMouseRotate extends MouseRotate {
 
     /**
-     * TODO .
+     * The abscissa projection of the rotation angle.
      */
     private double xAngle;
     /**
-     * TODO .
+     * The ordinate projection of the rotation angle.
      */
     private double yAngle;
     /**
-     * TODO .
+     * The amplification factor of the abscissa mouse movement.
      */
     private double xFactor = .03;
     /**
-     * TODO .
+     * The amplification factor of the ordinate mouse movement.
      */
     private double yFactor = .03;
     /**
      * TODO .
      */
     private MouseBehaviorCallback callback = null;
-
     /**
-     * TODO .
+     * The transformGroup containing the translation to the universe center.
      */
     private TransformGroup tg1;
     /**
-     * TODO .
+     * The transformGroup containing the rotation.
      */
     private TransformGroup tg2;
     /**
-     * TODO .
+     * The transformGroup containing the reverse translation the initial position of the mesh.
      */
     private TransformGroup tg3;
     /**
-     * TODO .
+     * The translation to the universe center.
      */
     private Transform3D translation1 = new Transform3D();
     /**
-     * TODO .
+     * The reverse translation the initial position.
      */
     private Transform3D translation2 = new Transform3D();
     /**
-     * TODO .
+     * The rotation center.
      */
     private Point3d center;
 
     /**
      * Constructor.
      * @param tg1In
-     *            TODO
+     *            The transformGroup containing the translation to the universe center. 
      * @param tg2In
-     *            TODO
+     *            The transformGroup containing the rotation.
      * @param tg3In
-     *            TODO
+     *            The transformGroup containing the reverse translation the initial position of the mesh.
      */
     public NewMouseRotate(final TransformGroup tg1In,
             final TransformGroup tg2In, final TransformGroup tg3In) {
@@ -89,9 +88,9 @@ public class NewMouseRotate extends MouseRotate {
     }
 
     /**
-     * TODO .
+     * The override process of left click dragging.
      * @param evt
-     *            TODO
+     *            the mouse event.
      */
     final void doNewProcess(final MouseEvent evt) {
         int id;
@@ -160,21 +159,25 @@ public class NewMouseRotate extends MouseRotate {
     }
 
     /**
-     * TODO .
-     * @return TODO
+     * Setter.
+     * @param point
+     *            the rotation center to set.
+     */
+    public final void setCenter(final Point point) {
+        this.center = new Point3d(point.getX(), point.getY(), point.getZ());
+    }
+    
+    /**
+     * Getter.
+     * @return the rotation center.
      */
     public final Point3d getCenter() {
         return this.center;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * com.sun.j3d.utils.behaviors.mouse.MouseRotate#processStimulus(java.util
-     * .Enumeration)
-     */
+
     @Override
-    public final void processStimulus(Enumeration criteria) {
+    public final void processStimulus( Enumeration criteria) {
         WakeupCriterion wakeup;
         AWTEvent[] events;
         MouseEvent evt;
@@ -231,13 +234,5 @@ public class NewMouseRotate extends MouseRotate {
         wakeupOn(this.mouseCriterion);
     }
 
-    /**
-     * TODO .
-     * @param point
-     *            TODO
-     */
-    public final void setCenter(final Point point) {
-        this.center = new Point3d(point.getX(), point.getY(), point.getZ());
-    }
 
 }
