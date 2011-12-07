@@ -7,7 +7,6 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.constants.coefficients.SeparationWallsSeparationRoofs;
-import fr.nantes1900.listener.ProgressComputer;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.extended.Ground;
@@ -15,6 +14,7 @@ import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.Wall;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+import fr.nantes1900.models.islets.buildings.steps.ProgressComputer;
 import fr.nantes1900.utils.Algos;
 
 /**
@@ -138,6 +138,7 @@ public class BuildingStep4 extends AbstractBuildingStep {
             throw new NullArgumentException();
         }
 
+        ProgressComputer.initStepsCounter();
         ProgressComputer.setStepsNumber(2);
 
         this.cutWalls();
@@ -278,6 +279,11 @@ public class BuildingStep4 extends AbstractBuildingStep {
                     this.roofs.remove(m);
                 }
             }
+        }
+
+        // Clears the list of neighbours to be coherent with the future display.
+        for (Surface s : wholeList) {
+            s.getNeighbours().clear();
         }
     }
 
