@@ -42,7 +42,6 @@ public final class Algos {
             mesh.getOne().returnNeighbours(e, mesh);
             mesh.remove(e);
             thingsList.add(e);
-
         }
 
         return new ArrayList<>(thingsList);
@@ -67,10 +66,11 @@ public final class Algos {
         final List<Mesh> meshList = Algos.blockExtract(m);
 
         int counter = 0;
-        for (Mesh mesh : meshList) {
+        for (final Mesh mesh : meshList) {
             counter += mesh.size();
         }
 
+        ProgressComputer.initTrianglesCounter();
         ProgressComputer.setTrianglesNumber(counter);
 
         for (final Mesh mesh : meshList) {
