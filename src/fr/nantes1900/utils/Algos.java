@@ -5,10 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import fr.nantes1900.listener.ProgressComputer;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.islets.buildings.steps.ProgressComputer;
 
 /**
  * Contains some algorithms used in the other classes.
@@ -42,7 +42,6 @@ public final class Algos {
             mesh.getOne().returnNeighbours(e, mesh);
             mesh.remove(e);
             thingsList.add(e);
-
         }
 
         return new ArrayList<>(thingsList);
@@ -67,10 +66,11 @@ public final class Algos {
         final List<Mesh> meshList = Algos.blockExtract(m);
 
         int counter = 0;
-        for (Mesh mesh : meshList) {
+        for (final Mesh mesh : meshList) {
             counter += mesh.size();
         }
 
+        ProgressComputer.initTrianglesCounter();
         ProgressComputer.setTrianglesNumber(counter);
 
         for (final Mesh mesh : meshList) {

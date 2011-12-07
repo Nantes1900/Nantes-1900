@@ -3,7 +3,6 @@ package fr.nantes1900.view.display3d;
 import javax.media.j3d.GeometryArray;
 import javax.media.j3d.TriangleFanArray;
 import javax.vecmath.Point3d;
-import javax.vecmath.TexCoord2f;
 import javax.vecmath.Vector3f;
 
 import fr.nantes1900.models.basis.Point;
@@ -26,7 +25,7 @@ public class PolygonView extends TriangleFanArray {
     private Point centroid;
 
     /**
-     * FIXME : problem : the number of faces is different for each polygons.
+     * The number of faces in a polygon.
      */
     public static final int POLYGON_FACES_COUNT = 2;
 
