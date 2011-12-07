@@ -64,11 +64,13 @@ public class CharacteristicsStep6Controller extends
                             source.setText("Unlock");
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_LOCKMESH));
+                            CharacteristicsStep6Controller.this.parentController.lock(true);
                         } else
                         {
                             source.setText("Lock");
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_UNLOCKMESH));
+                            CharacteristicsStep6Controller.this.parentController.lock(false);
                         }
                         ((CharacteristicsStep6View) CharacteristicsStep6Controller.this.cView)
                                 .setModificationsEnabled(CharacteristicsStep6Controller.this.surfaceLocked);
@@ -109,5 +111,16 @@ public class CharacteristicsStep6Controller extends
     @Override
     public void modifyViewCharacteristics() {
         ((CharacteristicsStep6View) this.cView).setList(this.surfacesList);
+    }
+    
+    /**
+     * Tells if the surface is locked or not.
+     * @return
+     *      true - the surface is locked\n
+     *      false - the surface is not locked
+     */
+    public boolean isSurfaceLocked()
+    {
+        return this.surfaceLocked;
     }
 }
