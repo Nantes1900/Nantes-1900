@@ -179,6 +179,7 @@ public class SurfaceView extends Shape3D {
     }
 
     /**
+
      * Sets the shape3D geometry with the MeshView attribute of this
      * SurfaceView.
      */
@@ -187,8 +188,12 @@ public class SurfaceView extends Shape3D {
     }
 
     /**
+<<<<<<< HEAD
+     * Add the polygonView to the shape3D.
+=======
      * Sets the shape3D geometry with the PolygonView attribute of this
      * SurfaceView (if it exists!).
+>>>>>>> a82020fbe19c142c79d4e1953d3b94158566ae80
      */
     public final void showPolygonView() {
         if (this.polygonView != null)

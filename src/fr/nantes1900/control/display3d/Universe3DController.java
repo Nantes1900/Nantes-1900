@@ -131,10 +131,31 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
+     * <<<<<<< HEAD
+     * Changes the rotation center when clicking on a surface.
+     * @param surfaceView
+     *            The surfaceView becomming the rotation center
+     */
+    public final void changeRotationCenter(final SurfaceView surfaceView) {
+
+        if (surfaceView.getMeshView() != null)
+        {
+            Point center = new Point(surfaceView.getMeshView().getCentroid()
+                    .getX(), surfaceView.getMeshView().getCentroid().getY(),
+                    surfaceView.getMeshView().getCentroid().getZ());
+            this.mouseRotate.setCenter(center);
+        }
+
+    }
+
+    /**
+     * Changes the rotation center.
+     * =======
      * Changes the rotation center.
      * Called when clicking on the 'change rotation center button'
      * Sets the roation center to the center of the selected surfaces or
      * triangles according to the case.
+     * >>>>>>> a82020fbe19c142c79d4e1953d3b94158566ae80
      */
     public final void changeRotationCenter() {
         Point center = null;
@@ -145,11 +166,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             {
                 SurfaceView surfaceViewSeleted = this
                         .getSurfaceViewFromSurface(this.surfacesSelected.get(0));
-                
+
                 if (this.displayMode == DISPLAY_MESH_MODE)
-                { center = surfaceViewSeleted.getMeshView().getCentroid();
-                } else 
-                { center = surfaceViewSeleted.getPolygonView().getCentroid();
+                {
+                    center = surfaceViewSeleted.getMeshView().getCentroid();
+                } else
+                {
+                    center = surfaceViewSeleted.getPolygonView().getCentroid();
                 }
             }
         } else
@@ -405,17 +428,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Hide the surface selected.
-     * @param surfacehide
-     *            the surface selected to hide.
-     */
-    public final void hideSurface(final Surface surfacehide) {
-        SurfaceView surfaceViewHide = this
-                .getSurfaceViewFromSurface(surfacehide);
-        surfaceViewHide.removeAllGeometries();
-    }
-
-    /**
      * Treats the different clicking actions (left or right).
      * @param e
      *            The MouseEvent caught by the mouseListener when clicking
@@ -501,16 +513,16 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
         } else
         {
-
             // Surface already selected when clicked
             this.surfacesSelected.remove(surface);
-            if (surfaceView.getPolygonView() != null)
+            if (this.checkNeighbour(surfaceView))
             {
-                surfaceView.setMaterial(SurfaceView.MATERIAL_POLYGON);
+                this.setNeighbourMaterial(surfaceView);
             } else
             {
-                surfaceView.setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
+                this.setNonNeighbourMaterial(surfaceView);
             }
+
             unshowNeighbours(surface);
 
             fireSurfaceDeselected(surface);
@@ -630,49 +642,15 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Displays the neighbours.
-     * @param surface
-     *            the surface which neighbours will be displayed
+     * Hide the surface selected.
+     * @param surfacehide
+     *            the surface selected to hide.
      */
-    public final void showNeighbours(final Surface surface) {
 
-        // FIXME by Daniel : look at this.
-
-        List<SurfaceView> surfaceViewNeighbours = new ArrayList<>();
-        for (Surface surfaceNeighbours : surface.getNeighbours())
-        {
-            for (SurfaceView surfaceViewsDisplayed : this.u3DView
-                    .getSurfaceViewList())
-            {
-                if (this.displayMode == DISPLAY_MESH_MODE)
-                {
-                    if (surfaceViewsDisplayed.getSurface().getMesh() == surfaceNeighbours
-                            .getMesh())
-                    {
-                        surfaceViewNeighbours.add(surfaceViewsDisplayed);
-                        break;
-                    }
-                } else
-                {
-                    if (surfaceViewsDisplayed.getSurface().getPolygon() == surfaceNeighbours
-                            .getPolygon())
-                    {
-                        surfaceViewNeighbours.add(surfaceViewsDisplayed);
-                        break;
-                    }
-                }
-
-            }
-        }
-        for (SurfaceView surfaceViewNeighbour : surfaceViewNeighbours)
-        {
-            if (!this.surfacesSelected.contains(surfaceViewNeighbour
-                    .getSurface()))
-            {
-                surfaceViewNeighbour
-                        .setMaterial(SurfaceView.MATERIAL_NEIGHBOUR);
-            }
-        }
+    public final void hideSurface(final Surface surfacehide) {
+        SurfaceView surfaceViewHide = this
+                .getSurfaceViewFromSurface(surfacehide);
+        surfaceViewHide.removeAllGeometries();
     }
 
     /**
@@ -703,60 +681,31 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     private void treatSurfaceSelection(final MouseEvent e,
             final PickResult result) {
 
-        // FIXME : look at this...
-
         SurfaceView surfaceViewPicked = (SurfaceView) result
                 .getNode(PickResult.SHAPE3D);
         Surface surfacePicked = surfaceViewPicked.getSurface();
 
-        if (e.isControlDown())
+        if (this.lockMode == UNLOCK_MODE)
         {
-            if (this.lockMode == UNLOCK_MODE)
-            {
-                // Control down
-                // -> Add or remove the surface to the surfacesSelected list.
-                this.selectOrUnselectSurface(surfaceViewPicked);
-            }
-
-        } else
-        {
-            // If a surface is locked.
-            if (this.lockMode == LOCK_MODE)
-            {
-                // If the surfacePicked is not the surface locked.
-                if (this.surfaceLocked != surfacePicked)
-                {
-                    // If the surfacePicked is not in the list of the neighbours
-                    // of the surface locked, add it to the list.
-                    if (!this.surfaceLocked.getNeighbours().contains(
-                            surfacePicked))
-                    // if (!this.includeNeighbour(this.surfaceLocked,
-                    // surfacePicked))
-                    {
-                        // FIXME by Daniel
-                        this.surfaceLocked.getNeighbours().add(surfacePicked);
-                    } else
-                    {
-                        // If the surfacePicked is in the list of the neighbours
-                        // of the surface locked, delete it from the list.
-                        this.removeNeighbour(surfaceLocked, surfacePicked);
-                    }
-                }
-            } else
+            if (!e.isControlDown())
             {
                 // Control up
                 // -> Unselect all the selected surfaces except the picked one.
-                if (this.surfacesSelected.contains(surfacePicked)
-                        && this.surfacesSelected.size() == 1)
-                {
-                    this.selectOrUnselectSurface(surfaceViewPicked);
-                } else
+                if (!(this.surfacesSelected.contains(surfacePicked) && this.surfacesSelected
+                        .size() == 1))
                 {
                     this.deselectEverySurfaces();
-                    this.selectOrUnselectSurface(surfaceViewPicked);
                 }
             }
-
+            this.selectOrUnselectSurface(surfaceViewPicked);
+        } else
+        {
+            if (!e.isControlDown() && this.surfaceLocked != surfacePicked)
+            {
+                // If the surfacePicked is not the surface locked.
+                // FIXME
+                // fireSurfaceSelected(surfacePicked).
+            }
         }
     }
 
@@ -868,78 +817,87 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * TODO .
+     * <<<<<<< HEAD
+     * Displays the neighbours.
      * @param surface
-     *            TODO .
+     *            the surface which neighbours will be displayed
      */
-    public final void unshowNeighbours(final Surface surface) {
-        List<SurfaceView> surfaceViewNeighbours = new ArrayList<>();
-        for (Surface surfaceNeighbours : surface.getNeighbours())
+    public final void showNeighbours(final Surface surface) {
+        for (SurfaceView surfaceViewDisplayed : this.u3DView
+                .getSurfaceViewList())
         {
-            for (SurfaceView surfaceViewsDisplayed : this.u3DView
-                    .getSurfaceViewList())
+            if (surface.getNeighbours().contains(
+                    surfaceViewDisplayed.getSurface()))
             {
-                if (this.displayMode == DISPLAY_MESH_MODE)
-                {
-                    if (surfaceViewsDisplayed.getSurface().getMesh() == surfaceNeighbours
-                            .getMesh())
-                    {
-                        surfaceViewNeighbours.add(surfaceViewsDisplayed);
-                        break;
-                    }
-                } else
-                {
-                    if (surfaceViewsDisplayed.getSurface().getPolygon() == surfaceNeighbours
-                            .getPolygon())
-                    {
-                        surfaceViewNeighbours.add(surfaceViewsDisplayed);
-                        break;
-                    }
-                }
-
-            }
-        }
-        for (SurfaceView surfaceViewNeighbour : surfaceViewNeighbours)
-        {
-            if (surfaceViewNeighbour.getPolygonView() != null)
-            {
-                if (!this.surfacesSelected.contains(surfaceViewNeighbour
-                        .getSurface()))
-                {
-                    surfaceViewNeighbour
-                            .setMaterial(SurfaceView.MATERIAL_POLYGON);
-                }
-
-            } else
-            {
-                if (!this.surfacesSelected.contains(surfaceViewNeighbour
-                        .getSurface()))
-                {
-                    surfaceViewNeighbour
-                            .setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
-                }
-
+                this.setNeighbourMaterial(surfaceViewDisplayed);
             }
         }
     }
 
     /**
-     * TODO
-     * @param surfaceLocked
-     * @param surfacePicked
+     * Cancel the display of the neighbours.
+     * =======
+     * TODO .
+     * >>>>>>> a82020fbe19c142c79d4e1953d3b94158566ae80
+     * @param surface
+     *            The surface to unselect.
      */
-    public void removeNeighbour(Surface surfaceLocked, Surface surfacePicked) {
-        List<Surface> surfacesNeighbours = surfaceLocked.getNeighbours();
-        Surface surfaceNeighbourPicked = null;
-        for (Surface surfaceNeighbour : surfacesNeighbours)
+    public final void unshowNeighbours(final Surface surface) {
+        for (SurfaceView surfaceViewDisplayed : this.u3DView
+                .getSurfaceViewList())
         {
-            if (surfaceNeighbour.getMesh().equals(surfacePicked.getMesh()))
+            if (surface.getNeighbours().contains(
+                    surfaceViewDisplayed.getSurface()))
             {
-                surfaceNeighbourPicked = surfaceNeighbour;
+                setNonNeighbourMaterial(surfaceViewDisplayed);
+            }
+        }
+    }
+
+    /**
+     * Change the material of the neighbour of the surface selected.
+     * @param surfaceViewDisplayed
+     *            The surfaceView of the neighbour.
+     */
+    public void setNeighbourMaterial(SurfaceView surfaceViewDisplayed) {
+        if (!this.surfacesSelected.contains(surfaceViewDisplayed.getSurface()))
+        {
+            surfaceViewDisplayed.setMaterial(SurfaceView.MATERIAL_NEIGHBOUR);
+        }
+    }
+
+    /**
+     * Change the material of the neighbour of the surface unselected.
+     * @param surfaceViewDisplayed
+     *            The surfaceView of the neighbour.
+     */
+    public void setNonNeighbourMaterial(SurfaceView surfaceViewDisplayed) {
+        if (!this.surfacesSelected.contains(surfaceViewDisplayed.getSurface()))
+        {
+            if (surfaceViewDisplayed.getPolygonView() != null)
+            {
+                surfaceViewDisplayed.setMaterial(SurfaceView.MATERIAL_POLYGON);
+            } else
+            {
+                surfaceViewDisplayed
+                        .setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
+            }
+        }
+    }
+
+    public boolean checkNeighbour(SurfaceView surfaceView) {
+        boolean neighbourOrNot = false;
+        for (Surface surfaceSelected : this.surfacesSelected)
+
+        {
+            if (surfaceSelected.getNeighbours().contains(
+                    surfaceView.getSurface()))
+            {
+                neighbourOrNot = true;
                 break;
             }
         }
-        surfaceLocked.getNeighbours().remove(surfaceNeighbourPicked);
+        return neighbourOrNot;
     }
 
 }
