@@ -123,6 +123,7 @@ public class BuildingStep5 extends AbstractBuildingStep {
             final Mesh fake = new Mesh(m.getMesh());
             wholeListFakes.add(fake);
         }
+
         Algos.blockTreatPlanedNoise(wholeListFakes,
                 new Mesh(this.noise.getMesh()),
                 SeparationWallsSeparationRoofs.getPlanesError());
@@ -199,11 +200,11 @@ public class BuildingStep5 extends AbstractBuildingStep {
         // Copies the walls and roofs to work on different versions.
         List<Wall> wallsCopy = new ArrayList<>();
         for (Wall w : this.walls) {
-            wallsCopy.add(new Wall(w));
+            wallsCopy.add(w);
         }
         List<Roof> roofsCopy = new ArrayList<>();
         for (Roof r : this.roofs) {
-            roofsCopy.add(new Roof(r));
+            roofsCopy.add(r);
         }
         return new BuildingStep6(wallsCopy, roofsCopy);
 
@@ -254,6 +255,7 @@ public class BuildingStep5 extends AbstractBuildingStep {
     private void sortSurfaces() {
         for (int i = 0; i < this.walls.size(); i++) {
             final Surface s = this.walls.get(i);
+
             if (s.getNeighbours().size() < NUMBER_MIN_OF_NEIGHBOURS) {
                 this.walls.remove(s);
                 for (final Surface neighbour : s.getNeighbours()) {
@@ -261,8 +263,10 @@ public class BuildingStep5 extends AbstractBuildingStep {
                 }
             }
         }
+
         for (int i = 0; i < this.roofs.size(); i++) {
             final Surface s = this.roofs.get(i);
+
             if (s.getNeighbours().size() < NUMBER_MIN_OF_NEIGHBOURS) {
                 this.roofs.remove(s);
                 for (final Surface neighbour : s.getNeighbours()) {
