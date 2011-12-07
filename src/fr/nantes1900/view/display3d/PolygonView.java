@@ -25,8 +25,12 @@ public class PolygonView extends TriangleFanArray {
     private Point centroid;
 
     /**
+<<<<<<< HEAD
      * FIXME : problem : the number of faces is different for each polygons.
      * the count of face means two sides of a face.
+=======
+     * The number of faces in a polygon.
+>>>>>>> 8e7cc8935180b0f137299520ac24e9e7f3a0dc13
      */
     public static final int POLYGON_FACES_COUNT = 2;
 
