@@ -36,12 +36,10 @@ public class NewMouseRotate extends MouseRotate {
     /**
      * TODO .
      */
-    // FIXME : magic number !
     private double xFactor = .03;
     /**
      * TODO .
      */
-    // FIXME : magic number !
     private double yFactor = .03;
     /**
      * TODO .
@@ -176,7 +174,7 @@ public class NewMouseRotate extends MouseRotate {
      * .Enumeration)
      */
     @Override
-    public void processStimulus(Enumeration criteria) {
+    public final void processStimulus(Enumeration criteria) {
         WakeupCriterion wakeup;
         AWTEvent[] events;
         MouseEvent evt;

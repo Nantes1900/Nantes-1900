@@ -36,11 +36,12 @@ public class NavigationBarController extends JToolBar {
      */
     public NavigationBarController(
             final IsletProcessController parentControllerIn) {
-        
+
         this.parentController = parentControllerIn;
         this.nbView = new NavigationBarView();
-        
+
         this.nbView.getAbortButton().addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(final ActionEvent arg0) {
                 NavigationBarController.this.getParentController()
@@ -48,17 +49,20 @@ public class NavigationBarController extends JToolBar {
             }
         });
         this.nbView.getBackButton().addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(final ActionEvent arg0) {
                 try {
                     NavigationBarController.this.getParentController()
                             .goToPreviousProcess();
                 } catch (UnexistingStepException e) {
+                    // TODO by Luc : pop-up.
                     e.printStackTrace();
                 }
             }
         });
         this.nbView.getLaunchButton().addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(final ActionEvent arg0) {
                 try {
@@ -67,18 +71,19 @@ public class NavigationBarController extends JToolBar {
                     NavigationBarController.this.getParentController()
                             .launchProcess();
                 } catch (UnexistingStepException e) {
+                    // TODO by Luc : pop-up.
                     e.printStackTrace();
                 }
             }
         });
         this.nbView.getSaveButton().addActionListener(new ActionListener() {
+
             @Override
             public void actionPerformed(final ActionEvent arg0) {
-                try {
-                    //TODO Save by Daniel
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                // FIXME : define this file name :
+                String fileName = "test.stl";
+                NavigationBarController.this.getParentController()
+                        .getBiController().saveFinalResults(fileName);
             }
         });
     }

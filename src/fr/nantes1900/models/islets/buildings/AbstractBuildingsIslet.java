@@ -3,7 +3,10 @@ package fr.nantes1900.models.islets.buildings;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
+import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Building;
+import fr.nantes1900.models.extended.Roof;
+import fr.nantes1900.models.extended.Wall;
 import fr.nantes1900.models.islets.AbstractIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
@@ -16,6 +19,7 @@ import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep4;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep5;
 import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep6;
 import fr.nantes1900.utils.MatrixMethod;
+import fr.nantes1900.utils.WriterSTL;
 
 /**
  * Abstracts a building islet : residential or industrial. This class contains
@@ -339,5 +343,41 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      */
     public final void setGroundNormal(final Vector3d groundNormalIn) {
         this.groundNormal = groundNormalIn;
+    }
+
+    /**
+     * Saves the results in the file (erase the file if it already exists).
+     * Saves the polygons of the surface which have one (it means which have
+     * been simplified) or saves the meshes of the other surfaces.
+     * @param fileName
+     *            the name of the file
+     */
+    public final void saveFinalResults(final String fileName) {
+        Mesh totalSurface = new Mesh();
+
+        for (Building b : this.getBiStep6().getBuildings()) {
+
+            for (Wall w : b.getbStep6().getWalls()) {
+                if (w.getPolygon() != null) {
+                    totalSurface.addAll(w.getPolygon().returnCentroidMesh());
+                } else {
+                    totalSurface.addAll(w.getMesh());
+                }
+            }
+
+            for (Roof r : b.getbStep6().getRoofs()) {
+                if (r.getPolygon() != null) {
+                    totalSurface.addAll(r.getPolygon().returnCentroidMesh());
+                } else {
+                    totalSurface.addAll(r.getMesh());
+                }
+            }
+        }
+
+        totalSurface.addAll(this.getBiStep6().getGrounds().getMesh());
+
+        WriterSTL writer = new WriterSTL(fileName);
+        writer.setMesh(totalSurface);
+        writer.write();
     }
 }

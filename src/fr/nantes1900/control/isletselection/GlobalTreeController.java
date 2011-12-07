@@ -4,6 +4,7 @@
 package fr.nantes1900.control.isletselection;
 
 import java.io.File;
+import java.io.IOException;
 
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
@@ -75,6 +76,9 @@ public class GlobalTreeController {
                         } catch (WeirdResultException e1) {
                             // TODO by Camille : pop-up
                             e1.printStackTrace();
+                        } catch (IOException e2) {
+                            // TODO by Luc : pop-up error
+                            e2.printStackTrace();
                         }
                     }
                 });

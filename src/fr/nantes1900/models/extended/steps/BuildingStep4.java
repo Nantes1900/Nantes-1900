@@ -7,6 +7,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.constants.coefficients.SeparationWallsSeparationRoofs;
+import fr.nantes1900.listener.ProgressComputer;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.extended.Ground;
@@ -137,9 +138,15 @@ public class BuildingStep4 extends AbstractBuildingStep {
             throw new NullArgumentException();
         }
 
+        ProgressComputer.setStepsNumber(2);
+
         this.cutWalls();
 
+        ProgressComputer.incStepsCounter();
+
         this.cutRoofs();
+
+        ProgressComputer.incStepsCounter();
 
         this.treatNoise();
 

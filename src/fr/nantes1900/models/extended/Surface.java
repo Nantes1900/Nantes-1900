@@ -249,6 +249,8 @@ public class Surface {
                 .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
                 wallList, normalGround));
 
+        edges.setNormal(this.getMesh().averageNormal());
+
         return edges;
     }
 
