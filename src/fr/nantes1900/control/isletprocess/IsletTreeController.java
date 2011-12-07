@@ -9,6 +9,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
+import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -60,6 +61,11 @@ public class IsletTreeController implements ElementsSelectedListener {
                         .hideSurface((Surface)node.getUserObject());
                     }
                 }
+                IsletTreeController.this.itView.getTree().removeSelectionInterval(
+                        0, IsletTreeController.this.itView.getTree().getMaxSelectionRow());
+                HomeMadeTreeListener hmtl = (HomeMadeTreeListener)(IsletTreeController.this.itView
+                        .getTree().getMouseListeners()[0]);
+                hmtl.refresh3DSelection();
             }
         };
         this.showActionListener = new ActionListener() {
@@ -75,13 +81,17 @@ public class IsletTreeController implements ElementsSelectedListener {
                         .showSurface((Surface)node.getUserObject());
                     }
                 }
+                IsletTreeController.this.itView.getTree().removeSelectionInterval(
+                        0, IsletTreeController.this.itView.getTree().getMaxSelectionRow());
+                HomeMadeTreeListener hmtl = (HomeMadeTreeListener)(IsletTreeController.this.itView
+                        .getTree().getMouseListeners()[0]);
+                hmtl.refresh3DSelection();
             }
         };
     }
 
     public void addTreeController() {
         MouseListener[] mliste = this.itView.getTree().getMouseListeners();
-        //System.out.println(mliste.length);
         this.itView.getTree().removeMouseListener(mliste[0]);
         this.itView.getTree().addMouseListener(new HomeMadeTreeListener(
                 this.itView.getTree()));
@@ -148,14 +158,20 @@ public class IsletTreeController implements ElementsSelectedListener {
                     System.out.println("removed");
                 }
                 else{
-                    this.tree.addSelectionPath(path);
-                    System.out.println("added");
+                    if (event.getModifiersEx() == CTRL_DOWN_MASK){
+                        this.tree.addSelectionPath(path);
+                        System.out.println("added");
+                    }
+                    else{
+                        this.tree.removeSelectionInterval(0, this.tree.getMaxSelectionRow());
+                        this.tree.addSelectionPath(path);
+                        System.out.println("all removed and one added");
+                    }
                     if (event.getButton() == MouseEvent.BUTTON3){
                         this.manageCMenu(event);
                     }
-                        
                 }
-            }
+                }
             else{
                 this.tree.removeSelectionInterval(0, this.tree.getMaxSelectionRow());
                 System.out.println("all removed");
