@@ -231,8 +231,7 @@ public class IsletProcessController implements ElementsSelectedListener {
      *            false - unlocks the surface
      */
     public void lock(boolean lock) {
-        // TODO lock and unlock in the universe 3d and maybe the tree too.
-        if(lock=true){
+        if(lock){
             //Change to lock mode.
             this.u3DController.setLockMode();
             //Lock when only a surface is selected.
@@ -327,13 +326,19 @@ public class IsletProcessController implements ElementsSelectedListener {
         {
             ((AbstractCharacteristicsSurfacesController) cController)
                     .removeSurfaceSelected(surfaceSelected);
-            if (u3DController.getMeshesSelected().isEmpty())
+            if (u3DController.getSurfacesSelected().isEmpty() || (step == 6 && u3DController.getSurfacesSelected().size() != 1))
             {
                 // if the selection is now empty
                 setDefaultCharacterisitcsPanel();
+            } else if (step == 6 && u3DController.getSurfacesSelected().size() == 1 && !((CharacteristicsStep6Controller) cController).isSurfaceLocked())
+            {
+                this.cController = new CharacteristicsStep6Controller(
+                        this, surfaceSelected,
+                        (ArrayList<Surface>) surfaceSelected
+                                .getNeighbours());
             }
         }
-        if (u3DController.getMeshesSelected().isEmpty())
+        if (u3DController.getSurfacesSelected().isEmpty())
         {
             f3DController.setRotationCenterEnable(false);
         }
@@ -345,7 +350,7 @@ public class IsletProcessController implements ElementsSelectedListener {
 
         // step 3 in meshes selection mode or in step 5 or 6.
         if ((step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
-                || step == 5 || step == 6)
+                || step == 5 || (step == 6 && u3DController.getSurfacesSelected().size() == 1))
         {
             if (this.cController.getClass().equals(
                     CharacteristicsController.class))
@@ -374,6 +379,9 @@ public class IsletProcessController implements ElementsSelectedListener {
                 ((AbstractCharacteristicsSurfacesController) this.cController)
                         .addSurfaceSelected(surfaceSelected);
             }
+        } else if ((step == 6 && u3DController.getSurfacesSelected().size() != 1))
+        {
+            setDefaultCharacterisitcsPanel();
         }
         f3DController.setRotationCenterEnable(true);
     }
