@@ -83,8 +83,6 @@ public class MeshView extends TriangleArray {
             this.setNormal(i + 1, convertNormal(triangle));
             this.setNormal(i + 2, convertNormal(triangle));
 
-
-
             i += TRIANGLE_POINTS_COUNT;
         }
     }
@@ -167,15 +165,11 @@ public class MeshView extends TriangleArray {
     }
 
     /**
-     * Unselect a triangle knowing its index in the TriangleArray.
+     * Unselects a triangle knowing its index in the TriangleArray.
      * @param i
      *            The index of the triangle which to be unselected.
      */
     public final void unSelect(final int i) {
-        // FIXME : remove the triangle from the Universe3DController triangle
-        // selection.
-
-
         this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT, new TexCoord2f(
                 0.0f, 0.0f));
         this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT + 1,
@@ -184,6 +178,11 @@ public class MeshView extends TriangleArray {
                 new TexCoord2f(0.0f, 0.0f));
     }
 
+    /**
+     * Unselects a triangle.
+     * @param triangle
+     *            the triangle to unselect
+     */
     public void unSelect(Triangle triangle) {
         Integer arrayPosition = this.getArrayPositionFromTriangle(triangle);
         if (arrayPosition != null) {

@@ -1,7 +1,5 @@
 package fr.nantes1900.view.display3d;
 
-import java.awt.Color;
-
 import javax.media.j3d.Appearance;
 import javax.media.j3d.ImageComponent2D;
 import javax.media.j3d.Material;
@@ -42,15 +40,14 @@ public class SurfaceView extends Shape3D {
             new Color3f(0.5f, 0.5f, 0.5f), new Color3f(0.5f, 0.5f, 0.5f), 64);
 
     /**
-     * 
+     * The material of a surface which contains a Mesh AND a Polygon.
      */
-    
     public static final Material MATERIAL_POLYGON = new Material(new Color3f(
             0.0f, 0.5f, 0.3f), new Color3f(0.1f, 0.0f, 0.0f), new Color3f(0.0f,
             0.5f, 0.3f), new Color3f(0.0f, 0.5f, 0.3f), 64);
 
     /**
-     * 
+     * The material of a surface which is neighbour of the one selected.
      */
     public static final Material MATERIAL_NEIGHBOUR = new Material(new Color3f(
             0.7f, 0.5f, 0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.7f,
@@ -63,11 +60,11 @@ public class SurfaceView extends Shape3D {
     /**
      * The mesh to be displayed.
      */
-    private MeshView meshView=null;
+    private MeshView meshView = null;
     /**
      * The polygon to be displayed.
      */
-    private PolygonView polygonView=null;
+    private PolygonView polygonView = null;
 
     /**
      * The appearance of the surface.
@@ -113,11 +110,9 @@ public class SurfaceView extends Shape3D {
         rendering.setIgnoreVertexColors(true);
         this.appearance.setRenderingAttributes(rendering);
 
-        if (this.surface.getPolygon() == null)
-        {
+        if (this.surface.getPolygon() == null) {
             this.setMaterial(MATERIAL_NON_POLYGON);
-        } else
-        {
+        } else {
             this.setMaterial(MATERIAL_POLYGON);
         }
 
@@ -169,7 +164,6 @@ public class SurfaceView extends Shape3D {
 
     public final void setMeshView(final MeshView meshViewIn) {
         this.meshView = meshViewIn;
-//        this.setGeometry(this.meshView);
     }
 
     /**
@@ -180,16 +174,23 @@ public class SurfaceView extends Shape3D {
 
     public final void setPolygonView(final PolygonView polygonViewIn) {
         this.polygonView = polygonViewIn;
-//        this.setGeometry(this.polygonView);
     }
-    public final void showMeshView(){
+
+    /**
+     * TODO.
+     */
+    public final void showMeshView() {
         this.setGeometry(this.meshView);
     }
-    public final void showPolygonView(){
-        if(this.polygonView!=null){
+
+    /**
+     * TODO.
+     */
+    public final void showPolygonView() {
+        if (this.polygonView != null) {
             this.setGeometry(this.polygonView);
         }
-        
+
     }
 
     /**
