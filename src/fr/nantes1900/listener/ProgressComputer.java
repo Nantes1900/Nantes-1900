@@ -1,6 +1,10 @@
 package fr.nantes1900.listener;
 
-public class ProgressComputer extends Thread {
+import javax.swing.event.EventListenerList;
+
+public class ProgressComputer {
+
+    private static EventListenerList progressListenerList = new EventListenerList();
 
     private static double progress;
 
@@ -18,20 +22,37 @@ public class ProgressComputer extends Thread {
         return ProgressComputer.progress;
     }
 
+    public static final void
+            addProgressListener(final ProgressListener listener) {
+        ProgressComputer.progressListenerList.add(ProgressListener.class,
+                listener);
+    }
+
+    public static final void removeProgressListener(
+            final ProgressListener listener) {
+        ProgressComputer.progressListenerList.remove(ProgressListener.class,
+                listener);
+    }
+
     public static void computeProgress() {
-        ProgressComputer.progress = (buildingsCounter / buildingsNumber)
-                * (stepsCounter / stepsNumber)
-                * (trianglesCounter / trianglesNumber)
-                + (stepsCounter / stepsNumber)
-                * (trianglesCounter / trianglesNumber)
-                + (trianglesCounter / trianglesNumber);
+        ProgressComputer.progress = (buildingsCounter + (stepsCounter + ((double) trianglesCounter / (double) trianglesNumber))
+                / stepsNumber)
+                / buildingsNumber;
+        fireProgress(ProgressComputer.progress);
     }
 
-    public static void init() {
-        progress = 0;
+    private static void fireProgress(double progress2) {
+        for (ProgressListener listener : progressListenerList
+                .getListeners(ProgressListener.class)) {
+            listener.updateProgress(ProgressComputer.progress);
+        }
     }
 
-    public static void setBuildingNumber(int buildingsNumberIn) {
+    public static void initTrianglesCounter() {
+        ProgressComputer.trianglesCounter = 0;
+    }
+
+    public static void setBuildingsNumber(int buildingsNumberIn) {
         ProgressComputer.buildingsNumber = buildingsNumberIn;
     }
 
@@ -54,10 +75,13 @@ public class ProgressComputer extends Thread {
     public static void incTrianglesCounter(int size) {
         ProgressComputer.trianglesCounter += size;
         ProgressComputer.computeProgress();
-        ProgressComputer.sysout();
     }
 
-    public static void sysout() {
-        // System.out.println(ProgressComputer.getProgress());
+    public static void initBuildingsNumber() {
+        ProgressComputer.buildingsCounter = 0;
+    }
+
+    public static void initStepsNumber() {
+        ProgressComputer.stepsCounter = 0;
     }
 }

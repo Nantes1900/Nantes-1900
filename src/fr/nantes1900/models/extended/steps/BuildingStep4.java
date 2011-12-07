@@ -138,6 +138,7 @@ public class BuildingStep4 extends AbstractBuildingStep {
             throw new NullArgumentException();
         }
 
+        ProgressComputer.initStepsNumber();
         ProgressComputer.setStepsNumber(2);
 
         this.cutWalls();
@@ -278,6 +279,11 @@ public class BuildingStep4 extends AbstractBuildingStep {
                     this.roofs.remove(m);
                 }
             }
+        }
+
+        // Clears the list of neighbours to be coherent with the future display.
+        for (Surface s : wholeList) {
+            s.getNeighbours().clear();
         }
     }
 
