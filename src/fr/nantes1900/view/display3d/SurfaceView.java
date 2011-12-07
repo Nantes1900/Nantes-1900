@@ -42,6 +42,7 @@ public class SurfaceView extends Shape3D {
     /**
      * The material of a surface which contains a Mesh AND a Polygon.
      */
+
     public static final Material MATERIAL_POLYGON = new Material(new Color3f(
             0.0f, 0.5f, 0.3f), new Color3f(0.1f, 0.0f, 0.0f), new Color3f(0.0f,
             0.5f, 0.3f), new Color3f(0.0f, 0.5f, 0.3f), 64);
@@ -176,18 +177,20 @@ public class SurfaceView extends Shape3D {
         this.polygonView = polygonViewIn;
     }
 
-    /**
-     * TODO.
-     */
-    public final void showMeshView() {
-        this.setGeometry(this.meshView);
-    }
 
     /**
      * TODO.
      */
+
+    public final void showMeshView() {
+        this.setGeometry(this.meshView);
+    }
+
+
     public final void showPolygonView() {
-        if (this.polygonView != null) {
+        if (this.polygonView != null)
+        {
+
             this.setGeometry(this.polygonView);
         }
 

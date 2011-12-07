@@ -68,7 +68,8 @@ public class MeshView extends TriangleArray {
         int i = 0;
 
         // Create the triangles to be displayed.
-        for (Triangle triangle : this.mesh) {
+        for (Triangle triangle : this.mesh)
+        {
             this.selectTableTriangle.put(triangle, i / TRIANGLE_POINTS_COUNT);
             this.selectTableIndex.put(i / TRIANGLE_POINTS_COUNT, triangle);
 
@@ -144,8 +145,6 @@ public class MeshView extends TriangleArray {
      *            The index of the triangle to select in the TriangleArray
      */
     public final void select(final int i) {
-        // FIXME : add the triangle in the Universe3DController triangle
-        // selection.
 
         this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT, new TexCoord2f(
                 0.0f, 1.0f));
@@ -170,6 +169,7 @@ public class MeshView extends TriangleArray {
      *            The index of the triangle which to be unselected.
      */
     public final void unSelect(final int i) {
+
         this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT, new TexCoord2f(
                 0.0f, 0.0f));
         this.setTextureCoordinate(0, i * TRIANGLE_POINTS_COUNT + 1,
@@ -179,13 +179,20 @@ public class MeshView extends TriangleArray {
     }
 
     /**
+<<<<<<< HEAD
+     * Unselect a triangle.
+     * @param triangle
+     *            The triangle to be unselected.
+=======
      * Unselects a triangle.
      * @param triangle
      *            the triangle to unselect
+>>>>>>> 8e7cc8935180b0f137299520ac24e9e7f3a0dc13
      */
     public void unSelect(Triangle triangle) {
         Integer arrayPosition = this.getArrayPositionFromTriangle(triangle);
-        if (arrayPosition != null) {
+        if (arrayPosition != null)
+        {
             this.unSelect(this.getArrayPositionFromTriangle(triangle));
         }
     }
