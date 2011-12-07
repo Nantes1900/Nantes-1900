@@ -350,7 +350,7 @@ public class IsletProcessController implements ElementsSelectedListener {
 
         // step 3 in meshes selection mode or in step 5 or 6.
         if ((step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
-                || step == 5 || (step == 6 && u3DController.getSurfacesSelected().size() == 1))
+                || step == 5 || (step == 6 && (u3DController.getSurfacesSelected().size() == 1 || u3DController.getLockOrUnlockMode() == Universe3DController.LOCK_MODE)))
         {
             if (this.cController.getClass().equals(
                     CharacteristicsController.class))
@@ -379,7 +379,7 @@ public class IsletProcessController implements ElementsSelectedListener {
                 ((AbstractCharacteristicsSurfacesController) this.cController)
                         .addSurfaceSelected(surfaceSelected);
             }
-        } else if ((step == 6 && u3DController.getSurfacesSelected().size() != 1))
+        } else if ((step == 6 && u3DController.getSurfacesSelected().size() != 1 && u3DController.getLockOrUnlockMode() == Universe3DController.UNLOCK_MODE))
         {
             setDefaultCharacterisitcsPanel();
         }
