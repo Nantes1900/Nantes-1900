@@ -122,11 +122,14 @@ public class Universe3DView extends JPanel {
      *            the list of surfaces to add
      */
     public final void addSurfaces(final List<Surface> surfaces) {
-        if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE) {
+        if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
+        {
             this.displayMeshes(surfaces);
-        } else if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_POLYGON_MODE) {
+        } else if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_POLYGON_MODE)
+        {
             this.displayPolygons(surfaces);
-        } else {
+        } else
+        {
             // If the display mode is not well initialized.
             this.u3DController
                     .setDisplayMode(Universe3DController.DISPLAY_MESH_MODE);
@@ -231,7 +234,8 @@ public class Universe3DView extends JPanel {
 
         BranchGroup sceneRoot = new BranchGroup();
 
-        for (SurfaceView surface : this.surfaceViewList) {
+        for (SurfaceView surface : this.surfaceViewList)
+        {
             sceneRoot.addChild(surface);
         }
         translationGroup2.addChild(sceneRoot);
@@ -268,12 +272,14 @@ public class Universe3DView extends JPanel {
      *            The list of surfaces containing the meshes to display.
      */
     private void displayMeshes(final List<Surface> surfacesList) {
-        for (Surface surface : surfacesList) {
+        for (Surface surface : surfacesList)
+        {
             SurfaceView surfaceView = new SurfaceView(surface);
 
             MeshView meshView = new MeshView(surface.getMesh());
             surfaceView.setMeshView(meshView);
-            if (surface.getPolygon() != null) {
+            if (surface.getPolygon() != null)
+            {
                 PolygonView polygonView = new PolygonView(surface.getPolygon());
                 surfaceView.setPolygonView(polygonView);
             }
@@ -291,13 +297,15 @@ public class Universe3DView extends JPanel {
      *            The list of surfaces containing the meshes to display.
      */
     private void displayPolygons(final List<Surface> surfacesList) {
-        for (Surface surface : surfacesList) {
+        for (Surface surface : surfacesList)
+        {
             SurfaceView surfaceView = new SurfaceView(surface);
 
             MeshView meshView = new MeshView(surface.getMesh());
             surfaceView.setMeshView(meshView);
 
-            if (surface.getPolygon() != null) {
+            if (surface.getPolygon() != null)
+            {
                 PolygonView polygonView = new PolygonView(surface.getPolygon());
                 surfaceView.setPolygonView(polygonView);
             }
@@ -336,7 +344,8 @@ public class Universe3DView extends JPanel {
      *            The new toolbar.
      */
     public final void setToolbar(final JToolBar newToolbar) {
-        if (this.toolbar != null) {
+        if (this.toolbar != null)
+        {
             this.remove(this.toolbar);
         }
         this.toolbar = newToolbar;
