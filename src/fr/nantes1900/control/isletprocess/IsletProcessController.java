@@ -344,8 +344,8 @@ public class IsletProcessController implements ElementsSelectedListener {
         
         if (!this.cController.getClass()
                 .equals(CharacteristicsController.class)
-                && (step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
-                        || step == 5)
+                && ((step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
+                        || step == 5))
         {
             ((AbstractCharacteristicsSurfacesController) cController)
                     .removeSurfaceSelected(surfaceSelected);
