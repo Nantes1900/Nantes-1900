@@ -202,6 +202,9 @@ public final class TextsKeys {
      */
     public static final String KEY_ERROR_INCORRECTPARAMETER = "ErrorIncorrectParameter";
 
-    public TextsKeys() {
+    /**
+     * Private constructor.
+     */
+    private TextsKeys() {
     }
 }

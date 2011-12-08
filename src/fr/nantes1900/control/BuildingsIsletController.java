@@ -9,6 +9,7 @@ import javax.vecmath.Vector3d;
 
 import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.constants.Characteristics;
+import fr.nantes1900.constants.WeirdResultMessages;
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Triangle;
@@ -729,8 +730,7 @@ public class BuildingsIsletController {
         if (!this.islet.getBiStep2().getInitialBuildings().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep2().getInitialBuildings());
         } else {
-            throw new WeirdResultException(
-                    "Warning : initial buildings empty !");
+            throw new WeirdResultException(WeirdResultMessages.NO_BUILDINGS);
         }
         if (!this.islet.getBiStep2().getInitialGrounds().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep2().getInitialGrounds());
@@ -752,7 +752,7 @@ public class BuildingsIsletController {
         if (!this.islet.getBiStep3().getGrounds().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep2().getInitialGrounds());
         } else {
-            throw new WeirdResultException("Warning : initial grounds empty !");
+            throw new WeirdResultException(WeirdResultMessages.NO_GROUND);
         }
 
         for (Building building : this.islet.getBiStep3().getBuildings()) {
@@ -783,7 +783,7 @@ public class BuildingsIsletController {
                 && !this.islet.getBiStep4().getNoise().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep4().getNoise());
         } else {
-            throw new WeirdResultException("Noise empty : error !");
+            throw new WeirdResultException(WeirdResultMessages.NO_NOISE);
         }
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
@@ -812,7 +812,7 @@ public class BuildingsIsletController {
                 && !this.islet.getBiStep5().getNoise().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep5().getNoise());
         } else {
-            throw new WeirdResultException("Noise empty : error !");
+            throw new WeirdResultException(WeirdResultMessages.NO_NOISE);
         }
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);

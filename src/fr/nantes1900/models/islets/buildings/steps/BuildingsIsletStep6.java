@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import fr.nantes1900.constants.WeirdResultMessages;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
@@ -88,7 +89,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
             root.add(new DefaultMutableTreeNode(this.grounds));
 
         } else {
-            throw new WeirdResultException("Grounds empty : error !");
+            throw new WeirdResultException(WeirdResultMessages.NO_GROUND);
         }
 
         return root;

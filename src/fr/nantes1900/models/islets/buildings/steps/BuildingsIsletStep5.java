@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
+import fr.nantes1900.constants.WeirdResultMessages;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
@@ -115,7 +116,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
             this.getNoise().setNodeString("Bruit");
             root.add(new DefaultMutableTreeNode(this.getNoise()));
         } else {
-            throw new WeirdResultException("Noise empty : error !");
+            throw new WeirdResultException(WeirdResultMessages.NO_NOISE);
         }
 
         return root;

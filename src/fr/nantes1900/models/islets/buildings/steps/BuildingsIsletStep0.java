@@ -3,6 +3,7 @@ package fr.nantes1900.models.islets.buildings.steps;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
+import fr.nantes1900.constants.WeirdResultMessages;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
@@ -67,8 +68,7 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep {
             MatrixMethod.changeBase(this.gravityNormal, this.matrix);
 
         } catch (final SingularMatrixException e) {
-            throw new WeirdResultException(
-                    "Error : the matrix is badly formed !");
+            throw new WeirdResultException(WeirdResultMessages.BAD_MATRIX);
         }
     }
 

@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
+import fr.nantes1900.constants.WeirdResultMessages;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
@@ -120,7 +121,7 @@ public class BuildingsIsletStep3 extends AbstractBuildingsIsletStep {
             root.add(new DefaultMutableTreeNode(this.grounds));
 
         } else {
-            throw new WeirdResultException("Warning : initial grounds empty !");
+            throw new WeirdResultException(WeirdResultMessages.NO_GROUND);
         }
 
         if (!this.noise.getMesh().isEmpty()) {
