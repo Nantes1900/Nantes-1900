@@ -13,7 +13,6 @@ import javax.vecmath.Matrix4d;
 import javax.vecmath.Point3d;
 import javax.vecmath.Vector3d;
 
-import com.sun.j3d.utils.behaviors.mouse.MouseBehaviorCallback;
 import com.sun.j3d.utils.behaviors.mouse.MouseRotate;
 
 import fr.nantes1900.models.basis.Point;
@@ -41,10 +40,6 @@ public class NewMouseRotate extends MouseRotate {
      * The amplification factor of the ordinate mouse movement.
      */
     private double yFactor = .03;
-    /**
-     * TODO by Nicolas.
-     */
-    private MouseBehaviorCallback callback = null;
     /**
      * The transformGroup containing the translation to the universe center.
      */
@@ -144,10 +139,6 @@ public class NewMouseRotate extends MouseRotate {
 
                     transformChanged(this.currXform);
 
-                    if (this.callback != null) {
-                        this.callback.transformChanged(
-                                MouseBehaviorCallback.ROTATE, this.currXform);
-                    }
                 } else {
                     this.reset = false;
                 }
