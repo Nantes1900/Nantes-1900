@@ -44,12 +44,12 @@ public class IsletTreeController implements ElementsSelectedListener {
     private IsletProcessController parentController;
 
     /**
-     * TODO by Luc.
+     * The listener that will listen to the item "hide" from the contextual menu.
      */
     private ActionListener hideActionListener;
 
     /**
-     * TODO by Luc.
+     * The listener that will listen to the item "show" from the contextual menu.
      */
     private ActionListener showActionListener;
 
@@ -141,7 +141,6 @@ public class IsletTreeController implements ElementsSelectedListener {
             System.out.println(FileTools.readInformationMessage(
                     TextsKeys.KEY_RETURNNODE, TextsKeys.MESSAGETYPE_MESSAGE));
         } catch (WeirdResultException e) {
-            // TODO by Luc
             e.printStackTrace();
         }
     }
@@ -209,7 +208,6 @@ public class IsletTreeController implements ElementsSelectedListener {
      * manipulate the surfaces correctly.
      * @author Luc Jallerat
      */
-    // FIXME : put this class in an other file : Java is not C++.
     private class ImprovedTreeListener extends MouseAdapter {
 
         /**
@@ -258,23 +256,24 @@ public class IsletTreeController implements ElementsSelectedListener {
                         this.manageCMenu(event);
                     }
                 }
-
-                // If the node has children, expands it or collapses it
-                // depending on its state.
-                TreePath treepath = this.tree.getLeadSelectionPath();
-                if (treepath != null) {
-                    if (this.tree.isCollapsed(treepath)) {
-                        this.tree.expandPath(treepath);
-                    } else {
-                        this.tree.collapsePath(treepath);
-                    }
-                }
             } else {
                 // If nothing has been selected, deselected everything.
                 this.tree.removeSelectionInterval(0,
                         this.tree.getMaxSelectionRow());
             }
 
+            // If the node has children, expands it or collapses it
+            // depending on its state.
+            TreePath treepath = this.tree.getClosestPathForLocation(
+                    event.getX(), event.getY());
+            if (treepath != null) {
+                if (this.tree.isCollapsed(treepath)) {
+                    this.tree.expandPath(treepath);
+                } else {
+                    this.tree.collapsePath(treepath);
+                }
+            }
+            
             // Refresh the tree.
             this.refresh3DSelection();
         }
@@ -299,9 +298,9 @@ public class IsletTreeController implements ElementsSelectedListener {
         }
 
         /**
-         * TODO by Luc.
+         * Displays the contextual menu.
          * @param event
-         *            TODO by Luc.
+         *            The mouseEvent used to give the mouse location to the contextual menu.
          */
         private void manageCMenu(final MouseEvent event) {
             if (this.tree.isSelectionEmpty()) {
@@ -311,7 +310,6 @@ public class IsletTreeController implements ElementsSelectedListener {
                         .setHideListener(IsletTreeController.this.hideActionListener);
                 IsletTreeController.this.itView
                         .setShowListener(IsletTreeController.this.showActionListener);
-                // IsletTreeController.this.itView.enableHide();
                 IsletTreeController.this.itView.getJpm().show(
                         IsletTreeController.this.itView, event.getX(),
                         event.getY());
@@ -319,7 +317,7 @@ public class IsletTreeController implements ElementsSelectedListener {
         }
 
         /**
-         * TODO by Luc.
+         * Refreshes the list of the selected objects in the 3D view.
          */
         public void refresh3DSelection() {
             IsletTreeController.this.getParentController().getU3DController()
