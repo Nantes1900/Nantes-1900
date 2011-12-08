@@ -209,10 +209,10 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * TODO by Siju.
+     * Check if the surface is the neighbour of the surfaces selected.
      * @param surfaceView
-     *            TODO by Siju.
-     * @return TODO by Siju.
+     *            The surface to check.
+     * @return If the surfaceView is neighbour of the surfaces selected.
      */
     public final boolean checkNeighbour(final SurfaceView surfaceView) {
         for (Surface surfaceSelected : this.surfacesSelected)
@@ -644,13 +644,17 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             final SurfaceView surfaceViewDisplayed) {
         if (!this.surfacesSelected.contains(surfaceViewDisplayed.getSurface()))
         {
-            if (surfaceViewDisplayed.getPolygonView() != null)
+            if (!this.checkNeighbour(surfaceViewDisplayed))
             {
-                surfaceViewDisplayed.setMaterial(SurfaceView.MATERIAL_POLYGON);
-            } else
-            {
-                surfaceViewDisplayed
-                        .setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
+                if (surfaceViewDisplayed.getPolygonView() != null)
+                {
+                    surfaceViewDisplayed
+                            .setMaterial(SurfaceView.MATERIAL_POLYGON);
+                } else
+                {
+                    surfaceViewDisplayed
+                            .setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
+                }
             }
         }
     }
