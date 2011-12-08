@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Properties;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
@@ -38,7 +39,7 @@ public class ParametersController {
     /**
      * An array containing all the names of the parameters.
      */
-    private static final String[] PARAMETERS_KEY = {
+    public static final String[] PARAMETERS_KEY = {
             TextsKeys.KEY_ALTITUDEERROR, TextsKeys.KEY_ANGLEGROUNDERROR,
             TextsKeys.KEY_LARGEANGLEGROUNDERROR,
             TextsKeys.KEY_BLOCKGROUNDSSIZEERROR,
@@ -105,7 +106,18 @@ public class ParametersController {
 
             @Override
             public void actionPerformed(final ActionEvent arg0) {
-                // TODO by Luc
+                String parametersList = new String();
+
+                for (int i = 0; i < PARAMETERS_KEY.length; i++) {
+                    parametersList += PARAMETERS_KEY[i] + "       "
+                            + String.valueOf(pView.getValueProperty(i + 1))
+                            + "\n";
+                }
+
+                JOptionPane
+                        .showMessageDialog(null, parametersList,
+                                "Liste des paramètres",
+                                JOptionPane.INFORMATION_MESSAGE);
             }
         });
     }
@@ -120,23 +132,22 @@ public class ParametersController {
 
         // FIXME : put the try catch out of the loop for and you will be able to
         // remove the break :).
-        for (int i = 0; i < PARAMETERS_KEY.length; i++) {
-            try {
+        try {
+            for (int i = 0; i < PARAMETERS_KEY.length; i++) {
                 this.pView.setValueProperty(i + 1, Double
                         .parseDouble(parameters.getProperty(PARAMETERS_KEY[i],
                                 String.valueOf(this.pView
                                         .getValueProperty(i + 1)))));
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(this.pView, FileTools
-                        .readInformationMessage(
-                                TextsKeys.KEY_ERROR_INCORRECTPARAMETER,
-                                TextsKeys.MESSAGETYPE_MESSAGE), FileTools
-                        .readInformationMessage(
-                                TextsKeys.KEY_ERROR_INCORRECTPARAMETER,
-                                TextsKeys.MESSAGETYPE_TITLE),
-                        JOptionPane.ERROR_MESSAGE);
-                break;
             }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this.pView, FileTools
+                    .readInformationMessage(
+                            TextsKeys.KEY_ERROR_INCORRECTPARAMETER,
+                            TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                    .readInformationMessage(
+                            TextsKeys.KEY_ERROR_INCORRECTPARAMETER,
+                            TextsKeys.MESSAGETYPE_TITLE),
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 

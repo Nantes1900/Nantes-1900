@@ -118,7 +118,7 @@ public class IsletProcessController implements ElementsSelectedListener,
                 .setSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
         this.f3DController
                 .setDisplayType(Universe3DController.DISPLAY_MESH_MODE);
-        setToolbarButtons();
+        this.setToolbarButtons();
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
     }
@@ -213,7 +213,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
         if (this.getProgression() == AbstractBuildingsIslet.FOURTH_STEP) {
             // ipView.showProgressBar(true);
-            //TODO : think about remove this.
+            // TODO : think about remove this.
             System.out.println("show");
         }
 
@@ -226,7 +226,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
         if (this.getProgression() == AbstractBuildingsIslet.FIFTH_STEP) {
             // ipView.showProgressBar(false);
-            //TODO : think about remove this.
+            // TODO : think about remove this.
             System.out.println("not show");
         }
 
