@@ -47,9 +47,13 @@ public class NavigationBarView extends JPanel {
      */
     private JButton bSave = new JButton(new ImageIcon(Icons.save));
     /**
-     * The title of the bar.
+     * The title of the bar, describing the next process.
      */
-    private JLabel title = new JLabel();
+    private JLabel titleProcess = new JLabel();
+    /**
+     * Another text, describing the current step.
+     */
+    private JLabel titleStep = new JLabel();
     /**
      * The panel.
      */
@@ -62,13 +66,19 @@ public class NavigationBarView extends JPanel {
         // Layout
         this.pCentral.setLayout(new GridBagLayout());
 
-        this.pCentral.add(this.bBack, new GridBagConstraints(0, 0, 1, 1, 0, 1,
+        this.pCentral.add(this.titleStep, new GridBagConstraints(-1, 0, 1, 1,
+                0, 1, GridBagConstraints.WEST, GridBagConstraints.NONE,
+                new Insets(8, 8, 8, 8), 0, 5));
+
+        this.pCentral.add(this.bBack, new GridBagConstraints(1, 0, 1, 1, 0, 1,
                 GridBagConstraints.PAGE_START, GridBagConstraints.NONE,
                 new Insets(8, 8, 8, 8), 0, 5));
-        this.pCentral.add(this.title, new GridBagConstraints(1, 0, 1, 1, 0, 1,
-                GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(
-                        8, 8, 8, 8), 0, 5));
-        this.pCentral.add(this.bLaunch, new GridBagConstraints(2, 0, 1, 1, 0,
+
+        this.pCentral.add(this.titleProcess, new GridBagConstraints(2, 0, 1, 1,
+                0, 1, GridBagConstraints.CENTER, GridBagConstraints.NONE,
+                new Insets(8, 8, 8, 8), 0, 5));
+
+        this.pCentral.add(this.bLaunch, new GridBagConstraints(3, 0, 1, 1, 0,
                 1, GridBagConstraints.PAGE_START, GridBagConstraints.NONE,
                 new Insets(8, 8, 8, 8), 0, 5));
 
@@ -131,14 +141,21 @@ public class NavigationBarView extends JPanel {
      *            the number of the step
      */
     public final void refreshStepTitle(final int i) {
-        this.title.setText(FileTools.readElementText(TextsKeys.KEY_PROCESSTITLE
-                + i));
-        this.title.repaint();
+
+        this.titleProcess.setText(FileTools
+                .readElementText(TextsKeys.KEY_PROCESSTITLE + i));
+
+        this.titleStep.setText(FileTools
+                .readElementText(TextsKeys.KEY_STEPTITLE + i));
+
+        this.titleProcess.repaint();
+
         if (i == AbstractBuildingsIslet.FIRST_STEP) {
             this.bBack.setEnabled(false);
         } else {
             this.bBack.setEnabled(true);
         }
+
         if (i == AbstractBuildingsIslet.SIXTH_STEP) {
             this.bLaunch.setEnabled(false);
             this.bSave.setEnabled(true);

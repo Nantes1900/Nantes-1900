@@ -54,6 +54,7 @@ public final class TextsKeys {
      */
     public static final String KEY_BACKBUTTON = "BackButton";
     public static final String KEY_PROCESSTITLE = "ProcessTitle";
+    public static final String KEY_STEPTITLE = "StepTitle";
     public static final String KEY_RETURNNODE = "ReturnNode";
     public static final String KEY_ISLET = "IsletProcess";
     public static final String KEY_SAVERESULTBUTTON = "SaveResultButton";
