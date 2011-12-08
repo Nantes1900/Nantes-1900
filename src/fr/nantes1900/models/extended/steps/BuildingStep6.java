@@ -77,14 +77,14 @@ public class BuildingStep6 extends AbstractBuildingStep {
         int counterWall = 0;
         for (Wall w : this.walls) {
             w.setNodeString("Mur " + counterWall);
-            root.add(new DefaultMutableTreeNode(w.returnNode()));
+            root.add(w.returnNode());
             counterWall++;
         }
 
         int counterRoof = 0;
         for (Roof r : this.roofs) {
             r.setNodeString("Toit  " + counterRoof);
-            root.add(new DefaultMutableTreeNode(r.returnNode()));
+            root.add(r.returnNode());
             counterRoof++;
         }
 

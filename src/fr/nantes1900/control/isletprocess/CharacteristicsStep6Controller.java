@@ -21,11 +21,11 @@ public class CharacteristicsStep6Controller extends
     /**
      * Tells if the surface is locked.
      */
-    private boolean surfaceLocked = false;
+    protected boolean surfaceLocked = false;
     /**
      * Surface to display neighbors from.
      */
-    private Surface surfaceToCheck;
+    protected Surface surfaceToCheck;
 
     /**
      * Creates a new controller for the 6th step characteristics panel.
@@ -44,9 +44,10 @@ public class CharacteristicsStep6Controller extends
         this.surfaceToCheck = newSurface;
         this.surfacesList = neighbors;
         this.cView = new CharacteristicsStep6View(neighbors);
-        this.surfaceLocked = false;
+
         ((CharacteristicsStep6View) this.cView)
                 .setModificationsEnabled(this.surfaceLocked);
+
         ((CharacteristicsStep6View) this.cView).getLockButton()
                 .addActionListener(new ActionListener() {
 
@@ -54,22 +55,22 @@ public class CharacteristicsStep6Controller extends
                     public void actionPerformed(final ActionEvent arg0) {
                         // TODO tell the parent controller that the surface is
                         // locked
-                        // FIXME : weird
                         surfaceLocked = !surfaceLocked;
                         JButton source = ((JButton) arg0.getSource());
+
                         if (surfaceLocked) {
                             source.setText("Unlock");
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_LOCKMESH));
-                            CharacteristicsStep6Controller.this.parentController
-                                    .lock(true);
+                            parentController.lock(true);
+
                         } else {
                             source.setText("Lock");
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_UNLOCKMESH));
-                            CharacteristicsStep6Controller.this.parentController
-                                    .lock(false);
+                            parentController.lock(false);
                         }
+
                         ((CharacteristicsStep6View) cView)
                                 .setModificationsEnabled(surfaceLocked);
                     }
@@ -99,7 +100,7 @@ public class CharacteristicsStep6Controller extends
         if (this.surfaceLocked) {
             this.surfacesList.add(surfaceSelected);
             modifyViewCharacteristics();
-            System.out.println("Voisin ajoutée");
+            System.out.println("Voisin ajouté");
         }
     }
 
@@ -114,7 +115,7 @@ public class CharacteristicsStep6Controller extends
         if (this.surfaceLocked) {
             this.surfacesList.remove(surfaceSelected);
             modifyViewCharacteristics();
-            System.out.println("Voisin enlevée");
+            System.out.println("Voisin enlevé");
         }
     }
 

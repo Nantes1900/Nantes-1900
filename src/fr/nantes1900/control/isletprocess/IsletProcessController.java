@@ -260,25 +260,25 @@ public class IsletProcessController implements ElementsSelectedListener,
     }
 
     /**
-     * Locks or unlocks a surface.
+     * Locks or unlocks a surface selected.
      * @param lock
      *            true - locks the surface\n false - unlocks the surface
      */
     public final void lock(final boolean lock) {
         if (lock) {
-            
-            // Lock when only a surface is selected.
+            // Locks when only one surface is selected.
             if (this.u3DController.getSurfacesSelected().size() == 1) {
                 this.u3DController.setSurfaceLocked(this.u3DController
                         .getSurfacesSelected().get(0));
-             // Change to lock mode.
+                // Changes to lock mode.
                 this.u3DController.setLockMode();
             }
         } else {
-            // Change to unlock mode.
+            // Changes to unlock mode.
             this.u3DController.setUnLockMode();
-            // Clear the surfaceLocked.
+            // Clears the surfaceLocked.
             this.u3DController.setSurfaceLocked(null);
+            this.u3DController.setSurfaceLockedNeighbours(null);
         }
     }
 
