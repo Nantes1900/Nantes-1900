@@ -327,6 +327,14 @@ public class Surface {
 
     /**
      * Getter.
+     * @return the string displayed in a node to represent this surface
+     */
+    public final String getNodeString() {
+        return this.nodeString;
+    }
+
+    /**
+     * Getter.
      * @return the polygon contained in this
      */
     public final Polygon getPolygon() {
@@ -499,6 +507,24 @@ public class Surface {
 
     /**
      * Setter.
+     * @param newNeighbours
+     *            the new list of neighbours
+     */
+    public final void setNeighbours(final List<Surface> newNeighbours) {
+        this.neighbours = newNeighbours;
+    }
+
+    /**
+     * Setter.
+     * @param nodeStringIn
+     *            the string displayed in a node to represent this surface
+     */
+    public final void setNodeString(final String nodeStringIn) {
+        this.nodeString = nodeStringIn;
+    }
+
+    /**
+     * Setter.
      * @param polygoneIn
      *            the new polygon
      */
@@ -513,23 +539,6 @@ public class Surface {
     @Override
     public String toString() {
         return this.nodeString;
-    }
-
-    /**
-     * Getter.
-     * @return the string displayed in a node to represent this surface
-     */
-    public final String getNodeString() {
-        return this.nodeString;
-    }
-
-    /**
-     * Setter.
-     * @param nodeStringIn
-     *            the string displayed in a node to represent this surface
-     */
-    public final void setNodeString(final String nodeStringIn) {
-        this.nodeString = nodeStringIn;
     }
 
     /**
@@ -587,14 +596,5 @@ public class Surface {
          */
         public ParallelPlanesException() {
         }
-    }
-
-    /**
-     * Setter.
-     * @param newNeighbours
-     *            the new list of neighbours
-     */
-    public final void setNeighbours(final List<Surface> newNeighbours) {
-        this.neighbours = newNeighbours;
     }
 }

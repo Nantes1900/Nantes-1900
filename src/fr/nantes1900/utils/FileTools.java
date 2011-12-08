@@ -48,21 +48,6 @@ public final class FileTools {
     }
 
     /**
-     * Reads a help message from the file errorMessages.txt with the key
-     * keyName+messageType.
-     * @param keyName
-     *            Name of the error message.
-     * @param messageType
-     *            The type of message to get : error message or title.
-     * @return The read message.
-     */
-    public static String readInformationMessage(final String keyName,
-            final String messageType) {
-        return readProperty(new File(INFORMATION_MESSAGES_FILE), keyName
-                + messageType);
-    }
-
-    /**
      * Reads a help message from the file helpMessage.txt with the key
      * keyName+messageType.
      * @param keyName
@@ -76,6 +61,21 @@ public final class FileTools {
     public static String readHelpMessage(final String keyName,
             final String messageType) {
         return readProperty(new File(HELP_MESSAGES_FILE), keyName + messageType);
+    }
+
+    /**
+     * Reads a help message from the file errorMessages.txt with the key
+     * keyName+messageType.
+     * @param keyName
+     *            Name of the error message.
+     * @param messageType
+     *            The type of message to get : error message or title.
+     * @return The read message.
+     */
+    public static String readInformationMessage(final String keyName,
+            final String messageType) {
+        return readProperty(new File(INFORMATION_MESSAGES_FILE), keyName
+                + messageType);
     }
 
     /**

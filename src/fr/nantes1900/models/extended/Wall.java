@@ -37,20 +37,20 @@ public class Wall extends Surface {
     }
 
     /**
-     * Copy constructor.
-     * @param w
-     *            the wall to copy
-     */
-    public Wall(final Wall w) {
-        super(w);
-    }
-
-    /**
      * Constructor.
      * @param s
      *            the surface to copy
      */
     public Wall(final Surface s) {
         super(s);
+    }
+
+    /**
+     * Copy constructor.
+     * @param w
+     *            the wall to copy
+     */
+    public Wall(final Wall w) {
+        super(w);
     }
 }

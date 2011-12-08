@@ -319,33 +319,6 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
     }
 
     /**
-     * Setter.
-     * @param biStep0In
-     *            the new step 0
-     */
-    public final void setBiStep0(final BuildingsIsletStep0 biStep0In) {
-        this.biStep0 = biStep0In;
-    }
-
-    /**
-     * Setter.
-     * @param gravityNormalIn
-     *            the new gravity normal
-     */
-    public final void setGravityNormal(final Vector3d gravityNormalIn) {
-        this.gravityNormal = gravityNormalIn;
-    }
-
-    /**
-     * Setter.
-     * @param groundNormalIn
-     *            the normal to set as ground normal
-     */
-    public final void setGroundNormal(final Vector3d groundNormalIn) {
-        this.groundNormal = groundNormalIn;
-    }
-
-    /**
      * Saves the results in the file (erase the file if it already exists).
      * Saves the polygons of the surface which have one (it means which have
      * been simplified) or saves the meshes of the other surfaces.
@@ -379,5 +352,32 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
         WriterSTL writer = new WriterSTL(fileName);
         writer.setMesh(totalSurface);
         writer.write();
+    }
+
+    /**
+     * Setter.
+     * @param biStep0In
+     *            the new step 0
+     */
+    public final void setBiStep0(final BuildingsIsletStep0 biStep0In) {
+        this.biStep0 = biStep0In;
+    }
+
+    /**
+     * Setter.
+     * @param gravityNormalIn
+     *            the new gravity normal
+     */
+    public final void setGravityNormal(final Vector3d gravityNormalIn) {
+        this.gravityNormal = gravityNormalIn;
+    }
+
+    /**
+     * Setter.
+     * @param groundNormalIn
+     *            the normal to set as ground normal
+     */
+    public final void setGroundNormal(final Vector3d groundNormalIn) {
+        this.groundNormal = groundNormalIn;
     }
 }
