@@ -44,12 +44,12 @@ public class IsletTreeController implements ElementsSelectedListener {
     private IsletProcessController parentController;
 
     /**
-     * 
+     * TODO by Luc.
      */
     private ActionListener hideActionListener;
 
     /**
-     * 
+     * TODO by Luc.
      */
     private ActionListener showActionListener;
 
@@ -234,38 +234,68 @@ public class IsletTreeController implements ElementsSelectedListener {
         @Override
         public void mouseClicked(final MouseEvent event) {
 
-            boolean b = false;
             TreePath path = this.tree.getPathForLocation(event.getX(),
                     event.getY());
 
-            // FIXME : too dirty
             if (path != null) {
-                TreePath[] liste = this.tree.getSelectionPaths();
-                for (TreePath tp : liste) {
-                    b = (b || (tp.equals(path)));
-                }
-                if (b) {
+                if (this.contains(path)) {
+                    // If the path has already been selected.
                     this.tree.removeSelectionPath(path);
+
                 } else {
                     if (event.getModifiersEx() == CTRL_DOWN_MASK) {
+                        // If CTRL is down, adds the path selected.
                         this.tree.addSelectionPath(path);
                     } else {
+                        // If not, deselected every other paths, and selects
+                        // only the new one.
                         this.tree.removeSelectionInterval(0,
                                 this.tree.getMaxSelectionRow());
                         this.tree.addSelectionPath(path);
                     }
+                    // If the right button of the mouse have been pressed.
                     if (event.getButton() == MouseEvent.BUTTON3) {
                         this.manageCMenu(event);
                     }
                 }
-                if (this.tree.getLeadSelectionPath() != null) {
-                    this.tree.expandPath(this.tree.getLeadSelectionPath());
+
+                // If the node has children, expands it or collapses it
+                // depending on its state.
+                TreePath treepath = this.tree.getLeadSelectionPath();
+                if (treepath != null) {
+                    if (this.tree.isCollapsed(treepath)) {
+                        this.tree.expandPath(treepath);
+                    } else {
+                        this.tree.collapsePath(treepath);
+                    }
                 }
             } else {
+                // If nothing has been selected, deselected everything.
                 this.tree.removeSelectionInterval(0,
                         this.tree.getMaxSelectionRow());
             }
+
+            // Refresh the tree.
             this.refresh3DSelection();
+        }
+
+        /**
+         * Checks if the tree contains the path.
+         * @param path
+         *            the path to check
+         * @return true if one of the tree selectionPaths has the same reference
+         *         as path, false otherwise
+         */
+        private boolean contains(final TreePath path) {
+            TreePath[] liste = this.tree.getSelectionPaths();
+
+            for (TreePath tp : liste) {
+                if (tp == path) {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         /**
