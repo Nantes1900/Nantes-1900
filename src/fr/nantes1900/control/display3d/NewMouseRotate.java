@@ -54,7 +54,8 @@ public class NewMouseRotate extends MouseRotate {
      */
     private TransformGroup tg2;
     /**
-     * The transformGroup containing the reverse translation the initial position of the mesh.
+     * The transformGroup containing the reverse translation the initial
+     * position of the mesh.
      */
     private TransformGroup tg3;
     /**
@@ -73,11 +74,13 @@ public class NewMouseRotate extends MouseRotate {
     /**
      * Constructor.
      * @param tg1In
-     *            The transformGroup containing the translation to the universe center. 
+     *            The transformGroup containing the translation to the universe
+     *            center.
      * @param tg2In
      *            The transformGroup containing the rotation.
      * @param tg3In
-     *            The transformGroup containing the reverse translation the initial position of the mesh.
+     *            The transformGroup containing the reverse translation the
+     *            initial position of the mesh.
      */
     public NewMouseRotate(final TransformGroup tg1In,
             final TransformGroup tg2In, final TransformGroup tg3In) {
@@ -159,15 +162,6 @@ public class NewMouseRotate extends MouseRotate {
     }
 
     /**
-     * Setter.
-     * @param point
-     *            the rotation center to set.
-     */
-    public final void setCenter(final Point point) {
-        this.center = new Point3d(point.getX(), point.getY(), point.getZ());
-    }
-    
-    /**
      * Getter.
      * @return the rotation center.
      */
@@ -175,9 +169,8 @@ public class NewMouseRotate extends MouseRotate {
         return this.center;
     }
 
-
     @Override
-    public final void processStimulus( Enumeration criteria) {
+    public final void processStimulus(Enumeration criteria) {
         WakeupCriterion wakeup;
         AWTEvent[] events;
         MouseEvent evt;
@@ -234,5 +227,13 @@ public class NewMouseRotate extends MouseRotate {
         wakeupOn(this.mouseCriterion);
     }
 
+    /**
+     * Setter.
+     * @param point
+     *            the rotation center to set.
+     */
+    public final void setCenter(final Point point) {
+        this.center = new Point3d(point.getX(), point.getY(), point.getZ());
+    }
 
 }
