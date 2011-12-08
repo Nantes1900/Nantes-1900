@@ -17,8 +17,7 @@ import fr.nantes1900.view.isletprocess.IsletProcessView;
 
 /**
  * Controller of the process of an islet. This controller makes the link between
- * each elements in the window and also with the model which contains mesh
- * data.
+ * each elements in the window and also with the model which contains mesh data.
  * @author Camille Bouquet,
  * @author Luc Jallerat
  */
@@ -95,12 +94,10 @@ public class IsletProcessController implements ElementsSelectedListener {
                 this.f3DController.getToolbar());
 
         this.biController.setUniverse3DController(this.u3DController);
-        try
-        {
+        try {
             this.biController.display();
-        } catch (WeirdResultException e)
-        {
-            // TODO by Camille : pop_up
+        } catch (WeirdResultException e) {
+            // TODO by Camille : pop-up
             e.printStackTrace();
         }
 
@@ -111,8 +108,10 @@ public class IsletProcessController implements ElementsSelectedListener {
                 this.u3DController.getUniverse3DView());
 
         // Initialization
-        f3DController.setSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
-        f3DController.setDisplayType(Universe3DController.DISPLAY_MESH_MODE);
+        this.f3DController
+                .setSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
+        this.f3DController
+                .setDisplayType(Universe3DController.DISPLAY_MESH_MODE);
         setToolbarButtons();
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
@@ -129,20 +128,18 @@ public class IsletProcessController implements ElementsSelectedListener {
      *            the new selected selection mode
      */
     public void changeSelectionMode(int selectionMode) {
-        if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE)
-        {
-            u3DController
+        if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE) {
+            this.u3DController
                     .changeSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
-        } else
-        {
-            u3DController
+        } else {
+            this.u3DController
                     .changeSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
         }
         setDefaultCharacterisitcsPanel();
     }
 
     public void deselectAllSurfaces() {
-        u3DController.deselectEverySurfaces();
+        this.u3DController.deselectEverySurfaces();
     }
 
     /**
@@ -159,16 +156,14 @@ public class IsletProcessController implements ElementsSelectedListener {
 
     /**
      * Gets the 3D controller
-     * @return
-     *         the 3D controller
+     * @return the 3D controller
      */
     public Universe3DController getU3DController() {
         return this.u3DController;
     }
 
     public void goToPreviousProcess() throws UnexistingStepException {
-        if (this.getProgression() <= AbstractBuildingsIslet.FIRST_STEP)
-        {
+        if (this.getProgression() <= AbstractBuildingsIslet.FIRST_STEP) {
             throw new UnexistingStepException();
         }
         this.biController.getPreviousStep();
@@ -182,17 +177,14 @@ public class IsletProcessController implements ElementsSelectedListener {
      * Launches next process.
      */
     public final void launchProcess() throws UnexistingStepException {
-        if (this.getProgression() >= AbstractBuildingsIslet.SIXTH_STEP)
-        {
+        if (this.getProgression() >= AbstractBuildingsIslet.SIXTH_STEP) {
             throw new UnexistingStepException();
         }
         setDefaultCharacterisitcsPanel();
         this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-        try
-        {
+        try {
             this.biController.launchProcess();
-        } catch (WeirdResultException e)
-        {
+        } catch (WeirdResultException e) {
             // TODO by Camille : pop-up
             e.printStackTrace();
         }
@@ -209,11 +201,9 @@ public class IsletProcessController implements ElementsSelectedListener {
     public void refreshViews() {
         this.itController.refreshView();
         this.nbController.getView().refreshStepTitle(this.getProgression());
-        try
-        {
+        try {
             this.biController.display();
-        } catch (WeirdResultException e)
-        {
+        } catch (WeirdResultException e) {
             // TODO by Camille : pop-up
             e.printStackTrace();
         }
@@ -227,32 +217,29 @@ public class IsletProcessController implements ElementsSelectedListener {
     /**
      * Locks or unlocks a surface.
      * @param lock
-     *            true - locks the surface\n
-     *            false - unlocks the surface
+     *            true - locks the surface\n false - unlocks the surface
      */
     public void lock(boolean lock) {
-        if(lock){
-            //Change to lock mode.
+        if (lock) {
+            // Change to lock mode.
             this.u3DController.setLockMode();
-            //Lock when only a surface is selected.
-            if(this.u3DController.getSurfacesSelected().size()==1){
-                this.u3DController.setSurfaceLocked(this.u3DController.getSurfacesSelected().get(0));
+            // Lock when only a surface is selected.
+            if (this.u3DController.getSurfacesSelected().size() == 1) {
+                this.u3DController.setSurfaceLocked(this.u3DController
+                        .getSurfacesSelected().get(0));
             }
-        }
-        else{
-            //Change to unlock mode.
+        } else {
+            // Change to unlock mode.
             this.u3DController.setUnLockMode();
-            //Clear the surfaceLocked.
+            // Clear the surfaceLocked.
             this.u3DController.setSurfaceLocked(null);
         }
     }
 
     public void refreshView() {
-        try
-        {
+        try {
             this.biController.display();
-        } catch (WeirdResultException e)
-        {
+        } catch (WeirdResultException e) {
             // TODO by Camille : pop-up.
             e.printStackTrace();
         }
@@ -272,7 +259,7 @@ public class IsletProcessController implements ElementsSelectedListener {
      *            the new display mode
      */
     public void setDisplayMode(int displayMode) {
-        u3DController.setDisplayMode(displayMode);
+        this.u3DController.setDisplayMode(displayMode);
         setDefaultCharacterisitcsPanel();
     }
 
@@ -284,14 +271,12 @@ public class IsletProcessController implements ElementsSelectedListener {
 
         // Enabling / disabling specifics selection modes, beware of order of
         // methods call
-        if (step == 1 || step == 5 || step == 6)
-        {
+        if (step == 1 || step == 5 || step == 6) {
             this.f3DController.setEnableSelectionMode(false,
                     Universe3DController.SELECTION_TRIANGLE_MODE);
             this.f3DController
                     .setSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
-        } else
-        {
+        } else {
             this.f3DController.setEnableSelectionMode(true,
                     Universe3DController.SELECTION_TRIANGLE_MODE);
             this.f3DController
@@ -299,65 +284,55 @@ public class IsletProcessController implements ElementsSelectedListener {
         }
 
         // Enabling / disabling specifics display types
-        if (step == 6)
-        {
+        if (step == 6) {
             this.f3DController.setEnableDisplayType(true,
                     Universe3DController.DISPLAY_POLYGON_MODE);
             this.f3DController
                     .setDisplayType(Universe3DController.DISPLAY_POLYGON_MODE);
-        } else
-        {
+        } else {
             this.f3DController.setEnableDisplayType(false,
                     Universe3DController.DISPLAY_POLYGON_MODE);
             this.f3DController
                     .setDisplayType(Universe3DController.DISPLAY_MESH_MODE);
         }
-        f3DController.setRotationCenterEnable(false);
+        this.f3DController.setRotationCenterEnable(false);
     }
 
     @Override
     public void surfaceDeselected(final Surface surfaceSelected) {
         int step = this.getProgression();
 
-     // case 6 : more complicated
-        if (step == 6)
-        {
-            if (u3DController.getLockOrUnlockMode() == Universe3DController.LOCK_MODE)
-            {
-                ((AbstractCharacteristicsSurfacesController) cController)
-                .removeSurfaceSelected(surfaceSelected);
-            } else
-            {
-                if (u3DController.getSurfacesSelected().size() == 1)
-                {
-                    this.cController = new CharacteristicsStep6Controller(
-                            this, surfaceSelected,
+        // case 6 : more complicated
+        if (step == 6) {
+            if (this.u3DController.getLockOrUnlockMode() == Universe3DController.LOCK_MODE) {
+                ((AbstractCharacteristicsSurfacesController) this.cController)
+                        .removeSurfaceSelected(surfaceSelected);
+            } else {
+                if (this.u3DController.getSurfacesSelected().size() == 1) {
+                    this.cController = new CharacteristicsStep6Controller(this,
+                            surfaceSelected,
                             (ArrayList<Surface>) surfaceSelected
-                            .getNeighbours());
-                    this.ipView.setCharacteristicsView(this.cController.getView());
-                } else
-                {
+                                    .getNeighbours());
+                    this.ipView.setCharacteristicsView(this.cController
+                            .getView());
+                } else {
                     setDefaultCharacterisitcsPanel();
                 }
             }
         }
-        
+
         if (!this.cController.getClass()
                 .equals(CharacteristicsController.class)
-                && ((step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
-                        || step == 5))
-        {
-            ((AbstractCharacteristicsSurfacesController) cController)
+                && ((step == 3 && this.f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE) || step == 5)) {
+            ((AbstractCharacteristicsSurfacesController) this.cController)
                     .removeSurfaceSelected(surfaceSelected);
-            if (u3DController.getSurfacesSelected().isEmpty())
-            {
+            if (this.u3DController.getSurfacesSelected().isEmpty()) {
                 // if the selection is now empty
                 setDefaultCharacterisitcsPanel();
             }
         }
-        if (u3DController.getSurfacesSelected().isEmpty())
-        {
-            f3DController.setRotationCenterEnable(false);
+        if (this.u3DController.getSurfacesSelected().isEmpty()) {
+            this.f3DController.setRotationCenterEnable(false);
         }
     }
 
@@ -366,96 +341,79 @@ public class IsletProcessController implements ElementsSelectedListener {
         int step = this.getProgression();
 
         // case 6 : more complicated
-        if (step == 6)
-        {
-            if (u3DController.getLockOrUnlockMode() == Universe3DController.LOCK_MODE)
-            {
+        if (step == 6) {
+            if (this.u3DController.getLockOrUnlockMode() == Universe3DController.LOCK_MODE) {
                 ((AbstractCharacteristicsSurfacesController) this.cController)
-                .addSurfaceSelected(surfaceSelected);
-            } else
-            {
-                if (u3DController.getSurfacesSelected().size() == 1)
-                {
-                    this.cController = new CharacteristicsStep6Controller(
-                            this, surfaceSelected,
+                        .addSurfaceSelected(surfaceSelected);
+            } else {
+                if (this.u3DController.getSurfacesSelected().size() == 1) {
+                    this.cController = new CharacteristicsStep6Controller(this,
+                            surfaceSelected,
                             (ArrayList<Surface>) surfaceSelected
-                            .getNeighbours());
-                    this.ipView.setCharacteristicsView(this.cController.getView());
-                } else
-                {
+                                    .getNeighbours());
+                    this.ipView.setCharacteristicsView(this.cController
+                            .getView());
+                } else {
                     setDefaultCharacterisitcsPanel();
                 }
             }
         }
-        // step 3 in meshes selection mode or in step 5 
-        if ((step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
-                || step == 5)
-        {
+        // step 3 in meshes selection mode or in step 5
+        if ((step == 3 && this.f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
+                || step == 5) {
             if (this.cController.getClass().equals(
-                    CharacteristicsController.class))
-            {
-                switch (this.getProgression())
-                {
-                    case 3:
-                        this.cController = new CharacteristicsStep3ElementsController(
-                                this, surfaceSelected);
+                    CharacteristicsController.class)) {
+                switch (this.getProgression()) {
+                case 3:
+                    this.cController = new CharacteristicsStep3ElementsController(
+                            this, surfaceSelected);
                     break;
-                    case 5:
-                        this.cController = new CharacteristicsStep5Controller(
-                                this, surfaceSelected);
+                case 5:
+                    this.cController = new CharacteristicsStep5Controller(this,
+                            surfaceSelected);
                     break;
 
                 }
                 this.ipView.setCharacteristicsView(this.cController.getView());
-            } else
-            {
+            } else {
                 ((AbstractCharacteristicsSurfacesController) this.cController)
                         .addSurfaceSelected(surfaceSelected);
             }
         }
-        f3DController.setRotationCenterEnable(true);
+        this.f3DController.setRotationCenterEnable(true);
     }
 
-    // FIXME : Luc, please find some correct names.
-    public final void throwInTheBin() {
+    public final void disposeWindow() {
         this.ipView.dispose();
         this.ipView.setVisible(false);
-
-        // TODO : if it is not a really big object, don't do this : it's kinda
-        // dirty.
-        this.ipView = null;
     }
 
     @Override
     public void newTrianglesSelection(List<Triangle> trianglesSelected) {
         int step = this.getProgression();
 
-        if ((step == 3 && f3DController.getSelectionMode() == Universe3DController.SELECTION_TRIANGLE_MODE)
-                || step == 2 || step == 4)
-        {
-            if (trianglesSelected.isEmpty())
-            {
+        if ((step == 3 && this.f3DController.getSelectionMode() == Universe3DController.SELECTION_TRIANGLE_MODE)
+                || step == 2 || step == 4) {
+            if (trianglesSelected.isEmpty()) {
                 setDefaultCharacterisitcsPanel();
-                f3DController.setRotationCenterEnable(false);
-            } else
-            {
-                switch (step)
-                {
-                    case 2:
-                        this.cController = new CharacteristicsStep2Controller(
-                                this, trianglesSelected);
+                this.f3DController.setRotationCenterEnable(false);
+            } else {
+                switch (step) {
+                case 2:
+                    this.cController = new CharacteristicsStep2Controller(this,
+                            trianglesSelected);
                     break;
-                    case 3:
-                        this.cController = new CharacteristicsStep3TrianglesController(
-                                this, trianglesSelected);
+                case 3:
+                    this.cController = new CharacteristicsStep3TrianglesController(
+                            this, trianglesSelected);
                     break;
-                    case 4:
-                        this.cController = new CharacteristicsStep4Controller(
-                                this, trianglesSelected);
+                case 4:
+                    this.cController = new CharacteristicsStep4Controller(this,
+                            trianglesSelected);
                     break;
 
                 }
-                f3DController.setRotationCenterEnable(true);
+                this.f3DController.setRotationCenterEnable(true);
             }
             this.ipView.setCharacteristicsView(this.cController.getView());
         }
