@@ -610,7 +610,23 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      */
     public final void setLockMode() {
         this.lockMode = LOCK_MODE;
+        for (Surface surfaceNeighbour : this.surfaceLocked.getNeighbours())
+        {
+            SurfaceView surfaceViewNeighbour=this.getSurfaceViewFromSurface(surfaceNeighbour);
+            surfaceViewNeighbour.setMaterial(SurfaceView.MATERIAL_NEIGHBOUR_LOCK);
+        }
+    }
 
+    /**
+     * Sets up the unlocked mode.
+     */
+    public final void setUnLockMode() {
+        this.lockMode = UNLOCK_MODE;
+        // TODO
+        for(Surface surfaceNeighbour: this.surfaceNeighbours){
+            this.getSurfaceViewFromSurface(surfaceNeighbour).setMaterial(SurfaceView.MATERIAL_NEIGHBOUR);
+        }
+        this.surfaceNeighbours = null;
     }
 
     /**
@@ -686,15 +702,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             this.surfaceNeighbours = surface.getNeighbours();
         }
 
-    }
-
-    /**
-     * Sets up the unlocked mode.
-     */
-    public final void setUnLockMode() {
-        this.lockMode = UNLOCK_MODE;
-        // TODO
-        this.surfaceNeighbours = null;
     }
 
     /**
@@ -794,10 +801,18 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
                     // it
                     // has been selected.
                     this.surfaceNeighbours.add(surfacePicked);
+                    this.getSurfaceViewFromSurface(surfacePicked).setMaterial(SurfaceView.MATERIAL_NEIGHBOUR_LOCK);
                 } else
                 {
                     this.fireSurfaceDeselected(surfacePicked);
                     this.surfaceNeighbours.remove(surfacePicked);
+                    if(surfacePicked.getPolygon()!=null){
+                        this.getSurfaceViewFromSurface(surfacePicked).setMaterial(SurfaceView.MATERIAL_POLYGON);
+                    }
+                    else{
+                        this.getSurfaceViewFromSurface(surfacePicked).setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
+                    }
+                    
                 }
 
             }
