@@ -96,6 +96,7 @@ public class CharacteristicsStep6Controller extends
         {
             this.surfacesList.add(surfaceSelected);
             modifyViewCharacteristics();
+            System.out.println("Voisin ajoutée");
         }
     }
 
@@ -105,6 +106,7 @@ public class CharacteristicsStep6Controller extends
         {
             surfacesList.remove(surfaceSelected);
             modifyViewCharacteristics();
+            System.out.println("Voisin enlevée");
         }
     }
 

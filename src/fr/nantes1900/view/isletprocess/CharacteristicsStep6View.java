@@ -181,6 +181,8 @@ public class CharacteristicsStep6View extends CharacteristicsView {
         {
             this.dlm.addElement(neighbour);
         }
+        revalidate();
+        repaint();
     }
     
     public ArrayList<Surface> getList()

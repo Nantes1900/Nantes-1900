@@ -11,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JProgressBar;
 
 /**
  * Personnalized JFrame with a status bar on the bottom and a different look.
@@ -36,6 +37,16 @@ public class PFrame extends JFrame {
     protected JPanel pComponents;
 
     /**
+     * Progress bar
+     */
+    protected JProgressBar progressBar;
+    
+    /**
+     * Status text.
+     */
+    protected JLabel statusBarText;
+    
+    /**
      * Creates a new frame with an empty status bar.
      */
     public PFrame() {
@@ -44,7 +55,8 @@ public class PFrame extends JFrame {
         this.statusBar.setBorder(BorderFactory.createLoweredBevelBorder());
         this.statusBar.setLayout(new FlowLayout(FlowLayout.RIGHT));
         this.statusBar.setMinimumSize(new Dimension(0, 40));
-
+        this.statusBarText = new JLabel();
+        this.statusBar.add(statusBarText);
         this.pComponents = new JPanel();
 
         this.getContentPane().setLayout(new BorderLayout());
@@ -66,9 +78,29 @@ public class PFrame extends JFrame {
      *            The text to display in the status bar.
      */
     public final void setStatusBarText(final String text) {
-        this.statusBar.removeAll();
-        this.statusBar.add(new JLabel(text));
+        this.statusBarText.setText(text);
         this.validate();
         this.repaint();
+    }
+
+    public final void showProgressBar(boolean show) {
+        if (show)
+        {
+            progressBar = new JProgressBar(0, 100);
+            this.statusBar.add(progressBar);
+        } else
+        {
+            this.statusBar.remove(progressBar);
+        }
+        this.validate();
+        this.repaint();
+    }
+    
+    public final void updatesProgressBar(double progression)
+    {
+        if (progressBar != null)
+        {
+            this.progressBar.setValue((int) Math.round(progression * 100));
+        }
     }
 }
