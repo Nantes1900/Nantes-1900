@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.control.isletprocess;
 
 import java.awt.event.ActionEvent;
@@ -27,33 +24,30 @@ public class CharacteristicsStep3TrianglesController extends
 
     /**
      * Creates a new step 3 characteristics controller for triangles selection
-     * which will create the
-     * panel and sets the action to perform when validate button is clicked.
-     * @param parentController
+     * which will create the panel and sets the action to perform when validate
+     * button is clicked.
+     * @param parentControllerIn
      *            the parent controller
      * @param trianglesSelected
      *            the selected triangles
      */
     public CharacteristicsStep3TrianglesController(
-            IsletProcessController parentController,
-            List<Triangle> trianglesSelected) {
-        super(parentController, trianglesSelected);
+            final IsletProcessController parentControllerIn,
+            final List<Triangle> trianglesSelected) {
+        super(parentControllerIn, trianglesSelected);
         this.cView = new CharacteristicsStep3TrianglesView();
 
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(final ActionEvent arg0) {
                 if (((CharacteristicsStep3TrianglesView) cView)
-                        .isDeleteSelected())
-                {
-                    try
-                    {
+                        .isDeleteSelected()) {
+                    try {
                         CharacteristicsStep3TrianglesController.this.parentController
                                 .getBiController().action3(trianglesList,
                                         ActionTypes.REMOVE);
-                    } catch (InvalidCaseException e)
-                    {
+                    } catch (InvalidCaseException e) {
                         JOptionPane.showMessageDialog(cView, FileTools
                                 .readInformationMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
@@ -69,11 +63,11 @@ public class CharacteristicsStep3TrianglesController extends
             }
 
         });
-        modifyViewCharacteristics();
+        this.modifyViewCharacteristics();
     }
 
     @Override
     public void modifyViewCharacteristics() {
-        // Nothing special to do
+        // Nothing special to do.
     }
 }

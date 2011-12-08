@@ -13,8 +13,7 @@ import fr.nantes1900.view.components.HelpButton;
 
 /**
  * Characteristics panel for the 2nd step of an islet process.
- * @author Camille Bouquet
- * @author Luc Jallerat
+ * @author Camille Bouquet, Luc Jallerat
  */
 public class CharacteristicsStep2View extends CharacteristicsView {
 
@@ -23,26 +22,28 @@ public class CharacteristicsStep2View extends CharacteristicsView {
      */
     private static final long serialVersionUID = 1L;
     /**
-     * Combo box to set the type of selected triangles. The two types are : buildings and ground.
+     * Combo box to set the type of selected triangles. The two types are :
+     * buildings and ground.
      */
     private JComboBox<String> cbType;
 
     /**
-     * Creates a new panel to display and modify characteristics for step 2. 
+     * Creates a new panel to display and modify characteristics for step 2.
      */
     public CharacteristicsStep2View() {
         super();
-        String[] types = {"", Characteristics.TYPE_BUILDING,
-                Characteristics.TYPE_GROUND};
+        String[] types = { "", Characteristics.TYPE_BUILDING,
+                Characteristics.TYPE_GROUND
+        };
 
         this.cbType = new JComboBox<>(types);
-        this.cbType.addItemListener(new ItemListener(){
+        this.cbType.addItemListener(new ItemListener() {
 
             @Override
-            public void itemStateChanged(ItemEvent arg0) {
+            public void itemStateChanged(final ItemEvent arg0) {
                 CharacteristicsStep2View.this.checkTypeSelected();
             }
-            
+
         });
         this.addCaracteristic(createSimpleCaracteristic(this.cbType,
                 new JLabel(FileTools.readElementText(TextsKeys.KEY_TYPETEXT)),
@@ -52,19 +53,17 @@ public class CharacteristicsStep2View extends CharacteristicsView {
     /**
      * Checks the selected type and enables or disables the validate button.
      */
-    private void checkTypeSelected() {
-        if (cbType.getSelectedItem().equals(""))
-        {
-            bValidate.setEnabled(false);
-        } else
-        {
-            bValidate.setEnabled(true);
+    public final void checkTypeSelected() {
+        if (this.cbType.getSelectedItem().equals("")) {
+            this.bValidate.setEnabled(false);
+        } else {
+            this.bValidate.setEnabled(true);
         }
     }
 
     /**
      * Gets the current selected type.
-     * @return te current selected type
+     * @return the current selected type
      */
     public final String getTypeSelected() {
         return (String) this.cbType.getSelectedItem();

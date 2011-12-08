@@ -2,6 +2,8 @@ package fr.nantes1900.view.isletselection;
 
 import java.awt.BorderLayout;
 import java.io.File;
+import java.util.Arrays;
+import java.util.List;
 
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -19,12 +21,12 @@ public class GlobalTreeView extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /**
-     * TODO.
+     * The JTree displaying the tree.
      */
     private JTree tree;
 
     /**
-     * TODO.
+     * The ScrollPane containing the tree.
      */
     private JScrollPane spTree;
 
@@ -38,9 +40,10 @@ public class GlobalTreeView extends JPanel {
     }
 
     /**
-     * TODO.
+     * From a directory, builds the JTree of the contained STL files, and
+     * displays it.
      * @param newDirectory
-     *            TODO.
+     *            the name of the directory
      */
     public final void displayDirectory(final File newDirectory) {
         FileNode newDirectoryNode = new FileNode(newDirectory);
@@ -53,67 +56,76 @@ public class GlobalTreeView extends JPanel {
     }
 
     /**
-     * TODO.
+     * Builds a tree from the content of the directory : if there is other
+     * directory, calls this method, and if there is STL files, adds it to the
+     * tree.
      * @param root
-     *            TODO.
+     *            the treeNode where will be returned the tree
      * @param newDirectoryNode
-     *            TODO.
+     *            the directory to explore
      */
     public final void fillMyTree(final DefaultMutableTreeNode root,
             final FileNode newDirectoryNode) {
-        File[] childrenFiles = newDirectoryNode.listFiles();
-        if (childrenFiles.length > 0) {
-            for (File file : childrenFiles) {
-                FileNode currentNode = new FileNode(file);
-                DefaultMutableTreeNode child = new DefaultMutableTreeNode(
-                        currentNode);
+        List<File> childrenFiles = Arrays.asList(newDirectoryNode.listFiles());
 
-                if (file.isDirectory()) {
-                    root.add(child);
-                    this.fillMyTree(child, currentNode);
-                } else if (currentNode.toString().endsWith("stl")) {
-                    root.add(child);
-                }
+        for (File file : childrenFiles) {
+            FileNode currentNode = new FileNode(file);
+            DefaultMutableTreeNode child = new DefaultMutableTreeNode(
+                    currentNode);
+
+            // If it is a directory, search for others STL files inside of it.
+            if (file.isDirectory()) {
+                root.add(child);
+                this.fillMyTree(child, currentNode);
+
+                // Displays the file in the tree only if it is a STL file.
+            } else if (currentNode.toString().endsWith("stl")) {
+                root.add(child);
             }
         }
     }
 
     /**
-     * TODO.
-     * @return TODO.
+     * Getter.
+     * @return the JTree
      */
     public final JTree getTree() {
         return this.tree;
     }
 
     /**
-     * TODO.
-     * @author TODO.
+     * Implements an extension of the File with an overriden method toString
+     * used to display correctly the name of the file in the JTree.
+     * @author Luc Jallerat
      */
     public class FileNode extends File {
 
         /**
-         * TODO.
+         * Serial version UID.
          */
         private static final long serialVersionUID = 1L;
 
         /**
-         * TODO.
+         * Constructor.
          * @param file
-         *            TODO.
+         *            the file object
          */
         public FileNode(final File file) {
             super(file.getAbsolutePath());
         }
 
         /**
-         * TODO.
-         * @return TODO.
+         * Returns the complete name of the file.
+         * @return the name of the file
          */
         public final String getEntireName() {
             return super.toString();
         }
 
+        /**
+         * Returns the short name of the file to display it in the JTree.
+         * @return the short name of the file
+         */
         @Override
         public final String toString() {
             return super.getName();

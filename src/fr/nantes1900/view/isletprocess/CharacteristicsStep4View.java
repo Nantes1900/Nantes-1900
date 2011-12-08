@@ -33,14 +33,15 @@ public class CharacteristicsStep4View extends CharacteristicsView {
      */
     public CharacteristicsStep4View() {
         super();
-        String[] types = {"", Characteristics.TYPE_WALL,
-                Characteristics.TYPE_ROOF};
+        String[] types = { "", Characteristics.TYPE_WALL,
+                Characteristics.TYPE_ROOF
+        };
 
         this.cbType = new JComboBox<>(types);
         this.cbType.addItemListener(new ItemListener() {
 
             @Override
-            public void itemStateChanged(ItemEvent arg0) {
+            public void itemStateChanged(final ItemEvent arg0) {
                 CharacteristicsStep4View.this.checkTypeSelected();
             }
 
@@ -62,13 +63,11 @@ public class CharacteristicsStep4View extends CharacteristicsView {
     /**
      * Checks the selected type and enables or disables the validate button.
      */
-    private void checkTypeSelected() {
-        if (cbType.getSelectedItem().equals(""))
-        {
-            bValidate.setEnabled(false);
-        } else
-        {
-            bValidate.setEnabled(true);
+    public final void checkTypeSelected() {
+        if (this.cbType.getSelectedItem().equals("")) {
+            this.bValidate.setEnabled(false);
+        } else {
+            this.bValidate.setEnabled(true);
         }
     }
 

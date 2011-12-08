@@ -32,7 +32,7 @@ public class GlobalTreeController {
      * Creates a new controller to handle the tree used to select and view an
      * islet.
      * @param isletSelectionController
-     *            TODO.
+     *            the parent controller
      */
     public GlobalTreeController(
             final IsletSelectionController isletSelectionController) {
@@ -42,15 +42,15 @@ public class GlobalTreeController {
 
     /**
      * Returns the view of the tree associated with this controller.
-     * @return The view of the tree.
+     * @return the view of the tree.
      */
     public final GlobalTreeView getGlobalTreeView() {
         return this.gtView;
     }
 
     /**
-     * TODO.
-     * @return TODO
+     * Getter.
+     * @return the parent controller
      */
     protected final IsletSelectionController getParentController() {
         return this.parentController;

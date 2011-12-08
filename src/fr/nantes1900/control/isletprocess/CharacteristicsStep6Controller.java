@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.control.isletprocess;
 
 import java.awt.event.ActionEvent;
@@ -16,8 +13,7 @@ import fr.nantes1900.view.isletprocess.CharacteristicsStep6View;
 
 /**
  * Characteristics panel for the sixth step of process of an islet.
- * @author Camille Bouquet
- * @author Luc Jallerat
+ * @author Camille Bouquet, Luc Jallerat
  */
 public class CharacteristicsStep6Controller extends
         AbstractCharacteristicsSurfacesController {
@@ -33,7 +29,7 @@ public class CharacteristicsStep6Controller extends
 
     /**
      * Creates a new controller for the 6th step characteristics panel.
-     * @param parentController
+     * @param parentControllerIn
      *            the controller which handles this controller.
      * @param newSurface
      *            the new selected surface
@@ -41,9 +37,9 @@ public class CharacteristicsStep6Controller extends
      *            the list of current neighbors
      */
     public CharacteristicsStep6Controller(
-            IsletProcessController parentController, Surface newSurface,
-            ArrayList<Surface> neighbors) {
-        super(parentController);
+            final IsletProcessController parentControllerIn,
+            final Surface newSurface, final ArrayList<Surface> neighbors) {
+        super(parentControllerIn);
 
         this.surfaceToCheck = newSurface;
         this.surfacesList = neighbors;
@@ -55,25 +51,27 @@ public class CharacteristicsStep6Controller extends
                 .addActionListener(new ActionListener() {
 
                     @Override
-                    public void actionPerformed(ActionEvent arg0) {
-                        // TODO tell the parent controller that the surface is locked
-                        CharacteristicsStep6Controller.this.surfaceLocked = !CharacteristicsStep6Controller.this.surfaceLocked;
+                    public void actionPerformed(final ActionEvent arg0) {
+                        // TODO tell the parent controller that the surface is
+                        // locked
+                        // FIXME : weird
+                        surfaceLocked = !surfaceLocked;
                         JButton source = ((JButton) arg0.getSource());
-                        if (CharacteristicsStep6Controller.this.surfaceLocked)
-                        {
+                        if (surfaceLocked) {
                             source.setText("Unlock");
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_LOCKMESH));
-                            CharacteristicsStep6Controller.this.parentController.lock(true);
-                        } else
-                        {
+                            CharacteristicsStep6Controller.this.parentController
+                                    .lock(true);
+                        } else {
                             source.setText("Lock");
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_UNLOCKMESH));
-                            CharacteristicsStep6Controller.this.parentController.lock(false);
+                            CharacteristicsStep6Controller.this.parentController
+                                    .lock(false);
                         }
-                        ((CharacteristicsStep6View) CharacteristicsStep6Controller.this.cView)
-                                .setModificationsEnabled(CharacteristicsStep6Controller.this.surfaceLocked);
+                        ((CharacteristicsStep6View) cView)
+                                .setModificationsEnabled(surfaceLocked);
                     }
 
                 });
@@ -81,46 +79,61 @@ public class CharacteristicsStep6Controller extends
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(final ActionEvent arg0) {
                 surfacesList = ((CharacteristicsStep6View) cView).getList();
-                CharacteristicsStep6Controller.this.parentController.getBiController().action6(surfaceToCheck, surfacesList);
-                CharacteristicsStep6Controller.this.parentController
-                        .refreshViews();
+                parentController.getBiController().action6(surfaceToCheck,
+                        surfacesList);
+                parentController.refreshViews();
             }
         });
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.control.isletprocess.AbstractCharacteristicsSurfacesController
+     * #addSurfaceSelected(fr.nantes1900.models.extended.Surface)
+     */
     @Override
-    public void addSurfaceSelected(Surface surfaceSelected) {
-        if (this.surfaceLocked)
-        {
+    public final void addSurfaceSelected(final Surface surfaceSelected) {
+        if (this.surfaceLocked) {
             this.surfacesList.add(surfaceSelected);
             modifyViewCharacteristics();
+            System.out.println("Voisin ajoutée");
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.control.isletprocess.AbstractCharacteristicsSurfacesController
+     * #removeSurfaceSelected(fr.nantes1900.models.extended.Surface)
+     */
     @Override
-    public void removeSurfaceSelected(Surface surfaceSelected) {
-        if (this.surfaceLocked)
-        {
-            surfacesList.remove(surfaceSelected);
+    public final void removeSurfaceSelected(final Surface surfaceSelected) {
+        if (this.surfaceLocked) {
+            this.surfacesList.remove(surfaceSelected);
             modifyViewCharacteristics();
+            System.out.println("Voisin enlevée");
         }
     }
 
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.control.isletprocess.AbstractCharacteristicsSurfacesController
+     * #modifyViewCharacteristics()
+     */
     @Override
-    public void modifyViewCharacteristics() {
+    public final void modifyViewCharacteristics() {
         ((CharacteristicsStep6View) this.cView).setList(this.surfacesList);
     }
-    
+
     /**
      * Tells if the surface is locked or not.
-     * @return
-     *      true - the surface is locked\n
-     *      false - the surface is not locked
+     * @return true - the surface is locked\n false - the surface is not locked
      */
-    public boolean isSurfaceLocked()
-    {
+    public final boolean isSurfaceLocked() {
         return this.surfaceLocked;
     }
 }

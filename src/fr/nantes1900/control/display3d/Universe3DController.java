@@ -194,10 +194,10 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * TODO .
+     * TODO by Siju.
      * @param surfaceView
-     *            TODO .
-     * @return TODO .
+     *            TODO by Siju.
+     * @return TODO by Siju.
      */
     public final boolean checkNeighbour(final SurfaceView surfaceView) {
         for (Surface surfaceSelected : this.surfacesSelected) {
@@ -273,7 +273,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
         for (ElementsSelectedListener listener : elementsSelectedListeners) {
             listener.surfaceSelected(surfaceSelected);
-
         }
     }
 
@@ -715,6 +714,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             if (!e.isControlDown() && this.surfaceLocked != surfacePicked) {
                 // If the surfacePicked is not the surface locked.
                 this.fireSurfaceSelected(surfacePicked);
+                // TODO : changes its color to make the user understand that it
+                // has been selected.
             }
         }
     }

@@ -57,7 +57,6 @@ public class GlobalController {
      */
     public final void launchIsletSelection() {
         this.isletSelectionController = new IsletSelectionController(this);
-        this.isletProcessController.throwInTheBin();
-
+        this.isletProcessController.disposeWindow();
     }
 }

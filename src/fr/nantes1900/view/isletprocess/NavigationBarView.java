@@ -1,11 +1,7 @@
-/**
- * 
- */
 package fr.nantes1900.view.isletprocess;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -21,82 +17,132 @@ import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.utils.FileTools;
 
 /**
- * @author Camille
+ * * Implements a navigation bar with buttons to launch a new process, to come
+ * back to the previous one, to abort the process, or to save the results. Some
+ * informations are also displayed concerning the current step and process.
+ * @author Camille Bouquet, Luc Jallerat
  */
 
 public class NavigationBarView extends JPanel {
 
-    protected JButton bAbort = new JButton(
-            new ImageIcon(Icones.abort));
-    protected JButton bLaunch = new JButton(
-            new ImageIcon(Icones.launch));
-    protected JButton bBack = new JButton(
-            new ImageIcon(Icones.back));
-    protected JButton bSave = new JButton(
-            new ImageIcon(Icones.save));
-    protected JLabel title = new JLabel();
-    protected JPanel pCentral = new JPanel();
+    /**
+     * Serial version ID.
+     */
+    private static final long serialVersionUID = 1L;
 
+    /**
+     * Button abort (the entire process).
+     */
+    private JButton bAbort = new JButton(new ImageIcon(Icones.abort));
+    /**
+     * Button launch (the next process).
+     */
+    private JButton bLaunch = new JButton(new ImageIcon(Icones.launch));
+    /**
+     * Button to go back (to the previous process).
+     */
+    private JButton bBack = new JButton(new ImageIcon(Icones.back));
+    /**
+     * Button save (the final results).
+     */
+    private JButton bSave = new JButton(new ImageIcon(Icones.save));
+    /**
+     * The title of the bar.
+     */
+    private JLabel title = new JLabel();
+    /**
+     * The panel.
+     */
+    private JPanel pCentral = new JPanel();
+
+    /**
+     * Constructor.
+     */
     public NavigationBarView() {
-        //Layout
+        // Layout
         this.pCentral.setLayout(new GridBagLayout());
-        pCentral.add(this.bBack, new GridBagConstraints(0, 0, 1, 1, 0, 1,
+
+        this.pCentral.add(this.bBack, new GridBagConstraints(0, 0, 1, 1, 0, 1,
                 GridBagConstraints.PAGE_START, GridBagConstraints.NONE,
                 new Insets(8, 8, 8, 8), 0, 5));
-        pCentral.add(this.title, new GridBagConstraints(1, 0, 1, 1, 0, 1,
-                GridBagConstraints.CENTER, GridBagConstraints.NONE,
+        this.pCentral.add(this.title, new GridBagConstraints(1, 0, 1, 1, 0, 1,
+                GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(
+                        8, 8, 8, 8), 0, 5));
+        this.pCentral.add(this.bLaunch, new GridBagConstraints(2, 0, 1, 1, 0,
+                1, GridBagConstraints.PAGE_START, GridBagConstraints.NONE,
                 new Insets(8, 8, 8, 8), 0, 5));
-        pCentral.add(this.bLaunch, new GridBagConstraints(2, 0, 1, 1, 0, 1,
-                GridBagConstraints.PAGE_START, GridBagConstraints.NONE,
-                new Insets(8, 8, 8, 8), 0, 5));
+
         this.setLayout(new BorderLayout());
-        this.add(bAbort, BorderLayout.WEST);
-        this.add(pCentral, BorderLayout.CENTER);
-        this.add(bSave, BorderLayout.EAST);
+        this.add(this.bAbort, BorderLayout.WEST);
+        this.add(this.pCentral, BorderLayout.CENTER);
+        this.add(this.bSave, BorderLayout.EAST);
         this.setMinimumSize(new Dimension(100, 50));
-        //Tooltips
-        this.bLaunch.setToolTipText(
-                FileTools.readElementText(TextsKeys.KEY_LAUNCHBUTTON));
-        this.bBack.setToolTipText(FileTools.readElementText(TextsKeys.KEY_BACKBUTTON));
-        this.bAbort.setToolTipText(FileTools.readElementText(TextsKeys.KEY_ABORTBUTTON));
-        this.bSave.setToolTipText(FileTools.readElementText(TextsKeys.KEY_SAVERESULTBUTTON));
-        
-        //refresh the title and enable the buttons launch
-        //and previous process or not
+
+        // Tooltips
+        this.bLaunch.setToolTipText(FileTools
+                .readElementText(TextsKeys.KEY_LAUNCHBUTTON));
+        this.bBack.setToolTipText(FileTools
+                .readElementText(TextsKeys.KEY_BACKBUTTON));
+        this.bAbort.setToolTipText(FileTools
+                .readElementText(TextsKeys.KEY_ABORTBUTTON));
+        this.bSave.setToolTipText(FileTools
+                .readElementText(TextsKeys.KEY_SAVERESULTBUTTON));
+
+        // Refreshs the title and enable the buttons launch
+        // and previous process or not
         this.refreshStepTitle(AbstractBuildingsIslet.FIRST_STEP);
     }
 
-    public JButton getAbortButton() {
+    /**
+     * Getter.
+     * @return the abort button
+     */
+    public final JButton getAbortButton() {
         return this.bAbort;
     }
 
-    public JButton getBackButton() {
+    /**
+     * Getter.
+     * @return the back button
+     */
+    public final JButton getBackButton() {
         return this.bBack;
     }
 
-    public JButton getLaunchButton() {
+    /**
+     * Getter.
+     * @return the launch button
+     */
+    public final JButton getLaunchButton() {
         return this.bLaunch;
     }
-    
-    public JButton getSaveButton() {
+
+    /**
+     * Getter.
+     * @return the save button
+     */
+    public final JButton getSaveButton() {
         return this.bSave;
     }
 
-    public void refreshStepTitle(int i) {
+    /**
+     * Displays the current step title, depending on the current step.
+     * @param i
+     *            the number of the step
+     */
+    public final void refreshStepTitle(final int i) {
         this.title.setText(FileTools.readElementText(TextsKeys.KEY_PROCESSTITLE
                 + i));
         this.title.repaint();
-        if (i==AbstractBuildingsIslet.FIRST_STEP){
+        if (i == AbstractBuildingsIslet.FIRST_STEP) {
             this.bBack.setEnabled(false);
-        }
-        else {
+        } else {
             this.bBack.setEnabled(true);
         }
-        if (i==AbstractBuildingsIslet.SIXTH_STEP){
+        if (i == AbstractBuildingsIslet.SIXTH_STEP) {
             this.bLaunch.setEnabled(false);
             this.bSave.setEnabled(true);
-        }
-        else {
+        } else {
             this.bLaunch.setEnabled(true);
             this.bSave.setEnabled(false);
         }

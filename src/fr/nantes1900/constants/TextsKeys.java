@@ -62,12 +62,14 @@ public final class TextsKeys {
     public static final String KEY_SHOWPARAMETERSBUTTON = "ShowParametersButton";
 
     /**
-     * Key for error message for incorrect types selected in characteristics panels.
+     * Key for error message for incorrect types selected in characteristics
+     * panels.
      */
     public static final String KEY_ERROR_INCORRECTTYPE = "CIncorrectType";
 
     /**
-     * Key for error message for incorrect action selected in characteristics panels.
+     * Key for error message for incorrect action selected in characteristics
+     * panels.
      */
     public static final String KEY_ERROR_INCORRECTACTION = "CIncorrectAction";
 
@@ -91,9 +93,9 @@ public final class TextsKeys {
      * Key for title of the sort neighbors characteristic.
      */
     public static final String KEY_SORTOUTNEIGHBOURS = "CSortOutNeighbours";
-    
+
     /**
-     * To delete when checkbox deleted. TODO
+     * To delete when checkbox deleted.
      */
     public static final String KEY_USEGRAVITYNORMALTEXT = "UseGravityNormal";
 
@@ -153,9 +155,9 @@ public final class TextsKeys {
      * Key for title of characteristics panels.
      */
     public static final String KEY_CHARACTERISTICS = "Characteristics";
-    
+
     public static final String KEY_STATUS_STEP1 = "StatusStep1";
-    
+
     public static final String KEY_ALTITUDEERROR = "AltitureError";
     public static final String KEY_ANGLEGROUNDERROR = "AngleGroundError";
     public static final String KEY_LARGEANGLEGROUNDERROR = "LargeAngleGroundError";
@@ -170,7 +172,7 @@ public final class TextsKeys {
     public static final String KEY_WALLANGLEERROR = "WallAngleError";
     public static final String KEY_WALLSIZEERROR = "WallSizeError";
     public static final String KEY_ISORIENTEDFACTOR = "IsOrientedFactor";
-    
+
     /**
      * Key for tooltip of compute gravity normal button.
      */
@@ -180,10 +182,10 @@ public final class TextsKeys {
      */
     public static final String KEY_LAUNCHISLET = "LaunchIslet";
     public static final String KEY_UPDATEMOCKUP = "UpdateMockup";
-    public static final String KEY_TOVALID= "ToValid"; 
-    
-    public static final String KEY_HIDEITEM= "HideItem";
-    public static final String KEY_SHOWITEM= "ShowItem";
+    public static final String KEY_TOVALID = "ToValid";
+
+    public static final String KEY_HIDEITEM = "HideItem";
+    public static final String KEY_SHOWITEM = "ShowItem";
 
     /**
      * Key for parameters files extension.
@@ -198,7 +200,7 @@ public final class TextsKeys {
      * Key for incorrect parameters messages.
      */
     public static final String KEY_ERROR_INCORRECTPARAMETER = "ErrorIncorrectParameter";
-    
+
     public TextsKeys() {
     }
 }

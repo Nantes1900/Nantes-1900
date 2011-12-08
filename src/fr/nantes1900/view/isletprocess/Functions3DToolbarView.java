@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.view.isletprocess;
 
 import java.awt.FlowLayout;
@@ -56,51 +53,53 @@ public class Functions3DToolbarView extends JToolBar {
      * Constructor. Creates and adds every elements to the toolbar.
      */
     public Functions3DToolbarView() {
+
         super(JToolBar.HORIZONTAL);
         this.setFloatable(false);
+
         // TODO puts icons instead
-        bRotationCenter = new JButton("o");
-        bRotationCenter.setToolTipText(FileTools
+        this.bRotationCenter = new JButton("o");
+        this.bRotationCenter.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_ROTATIONCENTER));
 
         // Display type elements
-        bDisplayTypePolygons = new JButton("#");
-        bDisplayTypePolygons.setToolTipText(FileTools
+        this.bDisplayTypePolygons = new JButton("#");
+        this.bDisplayTypePolygons.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_DISPLAYPOLYGONS));
-        bDisplayTypeMeshes = new JButton("$");
-        bDisplayTypeMeshes.setToolTipText(FileTools
+        this.bDisplayTypeMeshes = new JButton("$");
+        this.bDisplayTypeMeshes.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_DISPLAYMESHES));
-        lDisplayType = new JLabel("");
+        this.lDisplayType = new JLabel("");
 
         // Selection mode elements
-        bSelectionModeTriangles = new JButton("t");
-        bSelectionModeTriangles.setToolTipText(FileTools
+        this.bSelectionModeTriangles = new JButton("t");
+        this.bSelectionModeTriangles.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_SELECTTRIANGLES));
-        bSelectionModeMeshes = new JButton("m");
-        bSelectionModeMeshes.setToolTipText(FileTools
+        this.bSelectionModeMeshes = new JButton("m");
+        this.bSelectionModeMeshes.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_SELECTMESHES));
-        lSelectionMode = new JLabel("");
+        this.lSelectionMode = new JLabel("");
 
         // Adds elements to the toolbar
         FlowLayout fl = new FlowLayout(FlowLayout.LEADING, 5, 5);
         this.setLayout(fl);
 
-        this.add(bRotationCenter);
+        this.add(this.bRotationCenter);
         this.addSeparator();
-        this.add(bSelectionModeTriangles);
-        this.add(bSelectionModeMeshes);
-        this.add(lSelectionMode);
+        this.add(this.bSelectionModeTriangles);
+        this.add(this.bSelectionModeMeshes);
+        this.add(this.lSelectionMode);
         this.addSeparator();
-        this.add(bDisplayTypeMeshes);
-        this.add(bDisplayTypePolygons);
-        this.add(lDisplayType);
+        this.add(this.bDisplayTypeMeshes);
+        this.add(this.bDisplayTypePolygons);
+        this.add(this.lDisplayType);
     }
 
     /**
      * Gets the display type polygons button.
      * @return the display type polygons button
      */
-    public JButton getDisplayTypePolygonsButton() {
+    public final JButton getDisplayTypePolygonsButton() {
         return this.bDisplayTypePolygons;
     }
 
@@ -108,7 +107,7 @@ public class Functions3DToolbarView extends JToolBar {
      * Gets the display type meshes button.
      * @return the display type meshes button
      */
-    public JButton getDisplayTypeMeshesButton() {
+    public final JButton getDisplayTypeMeshesButton() {
         return this.bDisplayTypeMeshes;
     }
 
@@ -116,7 +115,7 @@ public class Functions3DToolbarView extends JToolBar {
      * Gets the rotation center button.
      * @return the rotation center button
      */
-    public JButton getRotationCenterButton() {
+    public final JButton getRotationCenterButton() {
         return this.bRotationCenter;
     }
 
@@ -124,7 +123,7 @@ public class Functions3DToolbarView extends JToolBar {
      * Gets selection mode meshes button.
      * @return the selection mode meshes button
      */
-    public JButton getSelectionModeMeshesButton() {
+    public final JButton getSelectionModeMeshesButton() {
         return this.bSelectionModeMeshes;
     }
 
@@ -132,7 +131,7 @@ public class Functions3DToolbarView extends JToolBar {
      * Gets selection mode triangles button.
      * @return the selection mode meshes button
      */
-    public JButton getSelectionModeTrianglesButton() {
+    public final JButton getSelectionModeTrianglesButton() {
         return this.bSelectionModeTriangles;
     }
 
@@ -140,15 +139,15 @@ public class Functions3DToolbarView extends JToolBar {
      * Gets selection mode label.
      * @return the selection mode label
      */
-    public JLabel getSelectionModeLabel() {
-        return lSelectionMode;
+    public final JLabel getSelectionModeLabel() {
+        return this.lSelectionMode;
     }
 
     /**
      * Gets display type label.
      * @return the display type label
      */
-    public JLabel getDisplayTypeLabel() {
-        return lDisplayType;
+    public final JLabel getDisplayTypeLabel() {
+        return this.lDisplayType;
     }
 }

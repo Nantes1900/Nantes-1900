@@ -9,7 +9,9 @@ import fr.nantes1900.control.isletprocess.IsletProcessController.UnexistingStepE
 import fr.nantes1900.view.isletprocess.NavigationBarView;
 
 /**
- * TODO.
+ * Controller of the NavigationBarView : buttons to launch a new process, to
+ * come back to the previous one, to abort the process, or to save the results.
+ * Some informations are also displayed concerning the current step and process.
  * @author Camille Bouquet, Luc Jallerat
  */
 public class NavigationBarController extends JToolBar {
@@ -20,7 +22,7 @@ public class NavigationBarController extends JToolBar {
     private static final long serialVersionUID = 1L;
 
     /**
-     * TODO.
+     * The view associated.
      */
     private NavigationBarView nbView;
 
@@ -40,6 +42,7 @@ public class NavigationBarController extends JToolBar {
         this.parentController = parentControllerIn;
         this.nbView = new NavigationBarView();
 
+        // Implements the abort button.
         this.nbView.getAbortButton().addActionListener(new ActionListener() {
 
             @Override
@@ -48,6 +51,8 @@ public class NavigationBarController extends JToolBar {
                         .abortProcess();
             }
         });
+
+        // Implements the back button.
         this.nbView.getBackButton().addActionListener(new ActionListener() {
 
             @Override
@@ -61,6 +66,8 @@ public class NavigationBarController extends JToolBar {
                 }
             }
         });
+
+        // Implements the launch button.
         this.nbView.getLaunchButton().addActionListener(new ActionListener() {
 
             @Override
@@ -76,11 +83,13 @@ public class NavigationBarController extends JToolBar {
                 }
             }
         });
+
+        // Implements the save button.
         this.nbView.getSaveButton().addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(final ActionEvent arg0) {
-                // FIXME : define this file name :
+                // FIXME by Camille : JFileChooser
                 String fileName = "test.stl";
                 NavigationBarController.this.getParentController()
                         .getBiController().saveFinalResults(fileName);

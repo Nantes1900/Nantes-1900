@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.view.isletprocess;
 
 import java.awt.BorderLayout;
@@ -51,7 +48,8 @@ public class CharacteristicsView extends JPanel {
      */
     public CharacteristicsView() {
         this.setBorder(new TitledBorder(BorderFactory
-                .createRaisedSoftBevelBorder(), FileTools.readElementText(TextsKeys.KEY_CHARACTERISTICS)));
+                .createRaisedSoftBevelBorder(), FileTools
+                .readElementText(TextsKeys.KEY_CHARACTERISTICS)));
         this.bValidate = new JButton(new ImageIcon(Icones.validate));
         this.bValidate.setToolTipText(TextsKeys.KEY_TOVALID);
 
@@ -113,7 +111,7 @@ public class CharacteristicsView extends JPanel {
     }
 
     /**
-     * Gets the validate button
+     * Gets the validate button.
      * @return the validate button
      */
     public final JButton getValidateButton() {
@@ -122,9 +120,9 @@ public class CharacteristicsView extends JPanel {
 
     /**
      * Gets the content panel of this characteristics panel.
-     * @return the content panel.
+     * @return the content panel
      */
-    protected JPanel getPanelContent() {
+    protected final JPanel getPanelContent() {
         return this.pContent;
     }
 }

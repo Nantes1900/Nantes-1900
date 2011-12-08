@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.view.isletprocess;
 
 import java.awt.event.ItemEvent;
@@ -17,8 +14,7 @@ import fr.nantes1900.view.components.HelpButton;
 /**
  * Characteristics panel for the 3rd step of an islet process when one or more
  * surfaces are selected.
- * @author Camille Bouquet
- * @author Luc Jallerat
+ * @author Camille Bouquet, Luc Jallerat
  */
 public class CharacteristicsStep3ElementsView extends CharacteristicsView {
 
@@ -28,8 +24,7 @@ public class CharacteristicsStep3ElementsView extends CharacteristicsView {
     private static final long serialVersionUID = 1L;
     /**
      * Combo box to set the type of selected surfaces. The two types are :
-     * buildings
-     * and noise.
+     * buildings and noise.
      */
     private JComboBox<String> cbType;
 
@@ -39,14 +34,15 @@ public class CharacteristicsStep3ElementsView extends CharacteristicsView {
      */
     public CharacteristicsStep3ElementsView() {
         super();
-        String[] types = {"", Characteristics.TYPE_BUILDING,
-                Characteristics.TYPE_NOISE};
+        String[] types = { "", Characteristics.TYPE_BUILDING,
+                Characteristics.TYPE_NOISE
+        };
 
-        this.cbType = new JComboBox<String>(types);
+        this.cbType = new JComboBox<>(types);
         this.cbType.addItemListener(new ItemListener() {
 
             @Override
-            public void itemStateChanged(ItemEvent arg0) {
+            public void itemStateChanged(final ItemEvent arg0) {
                 CharacteristicsStep3ElementsView.this.checkTypeSelected();
             }
 
@@ -60,13 +56,11 @@ public class CharacteristicsStep3ElementsView extends CharacteristicsView {
     /**
      * Checks the selected type and enables or disables the validate button.
      */
-    private void checkTypeSelected() {
-        if (cbType.getSelectedItem().equals(""))
-        {
-            bValidate.setEnabled(false);
-        } else
-        {
-            bValidate.setEnabled(true);
+    public final void checkTypeSelected() {
+        if (this.cbType.getSelectedItem().equals("")) {
+            this.bValidate.setEnabled(false);
+        } else {
+            this.bValidate.setEnabled(true);
         }
     }
 

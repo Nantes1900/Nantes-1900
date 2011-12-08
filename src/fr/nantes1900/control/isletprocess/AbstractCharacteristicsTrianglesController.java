@@ -7,7 +7,7 @@ import fr.nantes1900.models.basis.Triangle;
 
 /**
  * Abstract class for triangles selection conrollers.
- * @author Camille
+ * @author Camille Bouquet
  */
 public abstract class AbstractCharacteristicsTrianglesController extends
         CharacteristicsController {
@@ -19,16 +19,16 @@ public abstract class AbstractCharacteristicsTrianglesController extends
 
     /**
      * Creates a new basic controller with the list of selected triangles.
-     * @param parentController
+     * @param parentControllerIn
      *            the parent controller
      * @param trianglesSelected
      *            the list of selected triangles
      */
     public AbstractCharacteristicsTrianglesController(
-            IsletProcessController parentController,
-            List<Triangle> trianglesSelected) {
-        super(parentController);
-        trianglesList = (ArrayList<Triangle>) trianglesSelected;
+            final IsletProcessController parentControllerIn,
+            final List<Triangle> trianglesSelected) {
+        super(parentControllerIn);
+        this.trianglesList = (ArrayList<Triangle>) trianglesSelected;
     }
 
     /**
@@ -38,10 +38,9 @@ public abstract class AbstractCharacteristicsTrianglesController extends
 
     /**
      * Gets the list of selected triangles.
-     * @return
-     *         the list of selected triangles.
+     * @return the list of selected triangles.
      */
-    public ArrayList<Triangle> getTriangles() {
+    public final ArrayList<Triangle> getTriangles() {
         return this.trianglesList;
     }
 }

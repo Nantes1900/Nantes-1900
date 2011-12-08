@@ -42,7 +42,7 @@ public class NewMouseRotate extends MouseRotate {
      */
     private double yFactor = .03;
     /**
-     * TODO .
+     * TODO by Nicolas.
      */
     private MouseBehaviorCallback callback = null;
     /**

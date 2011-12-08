@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.view.isletprocess;
 
 import java.awt.event.ItemEvent;
@@ -16,8 +13,7 @@ import fr.nantes1900.view.components.HelpButton;
 /**
  * Characteristics panel for the 3rd step of an islet process when triangles are
  * selected.
- * @author Camille Bouquet
- * @author Luc Jallerat
+ * @author Camille Bouquet, Luc Jallerat
  */
 public class CharacteristicsStep3TrianglesView extends CharacteristicsView {
 
@@ -42,18 +38,17 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView {
 
             @Override
             public void itemStateChanged(final ItemEvent arg0) {
-                if (((JCheckBox) arg0.getSource()).isSelected())
-                {
+                if (((JCheckBox) arg0.getSource()).isSelected()) {
                     CharacteristicsStep3TrianglesView.this.bValidate
                             .setEnabled(true);
-                } else
-                {
+                } else {
                     CharacteristicsStep3TrianglesView.this.bValidate
                             .setEnabled(false);
                 }
             }
 
         });
+
         this.addCaracteristic(createSimpleCaracteristic(
                 this.cbDelete,
                 new JLabel(FileTools.readElementText(TextsKeys.KEY_DELETETEXT)),
@@ -64,8 +59,8 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView {
 
     /**
      * Tells if the delete check box is selected.
-     * @return true - delete check box is selected\n
-     *         false - delete check box is not selected
+     * @return true - delete check box is selected\n false - delete check box is
+     *         not selected
      */
     public final boolean isDeleteSelected() {
         return this.cbDelete.isSelected();

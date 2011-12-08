@@ -15,7 +15,7 @@ import javax.swing.JOptionPane;
  * A button with a ? in a circle to show some help. When hovering, a quick help
  * * in a tooltip is displayed and when clicked a complete help is displayed in
  * a JOptionPane.
- * @author Camille
+ * @author Camille Bouquet
  */
 public class HelpButton extends JButton implements MouseListener {
 
@@ -60,7 +60,7 @@ public class HelpButton extends JButton implements MouseListener {
     private String title;
 
     /**
-     * 
+     * Serial version ID.
      */
     private static final long serialVersionUID = 1L;
 
@@ -156,9 +156,13 @@ public class HelpButton extends JButton implements MouseListener {
         return colorLightened;
     }
 
+    /*
+     * (non-Javadoc)
+     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
+     */
     @Override
     public void mouseClicked(final MouseEvent arg0) {
-        // TODO : commentary
+        // Not used.
     }
 
     @Override
@@ -173,8 +177,7 @@ public class HelpButton extends JButton implements MouseListener {
     @Override
     public final void mouseExited(final MouseEvent arg0) {
         this.in = false;
-        if (!this.pressed)
-        {
+        if (!this.pressed) {
             this.textColorCurrent = this.textColor;
             this.backgroundColorCurrent = this.backgroundColor;
             revalidate();
@@ -184,8 +187,7 @@ public class HelpButton extends JButton implements MouseListener {
 
     @Override
     public final void mousePressed(final MouseEvent arg0) {
-        if (arg0.getButton() == MouseEvent.BUTTON1)
-        {
+        if (arg0.getButton() == MouseEvent.BUTTON1) {
             this.pressed = true;
             this.textColorCurrent = darken(this.textColor, 100);
             this.backgroundColorCurrent = this.backgroundColor;
@@ -196,28 +198,23 @@ public class HelpButton extends JButton implements MouseListener {
 
     @Override
     public final void mouseReleased(final MouseEvent arg0) {
-        if (arg0.getButton() == MouseEvent.BUTTON1)
-        {
+        if (arg0.getButton() == MouseEvent.BUTTON1) {
             this.pressed = false;
 
-            if (this.in)
-            {
+            if (this.in) {
                 this.textColorCurrent = lighten(this.textColor, 50);
                 this.backgroundColorCurrent = lighten(this.backgroundColor, 25);
-            } else
-            {
+            } else {
                 this.textColorCurrent = this.textColor;
                 this.backgroundColorCurrent = this.backgroundColor;
             }
             revalidate();
             repaint();
 
-            if (!this.helpMessage.isEmpty())
-            {
-                // TODO : title masque un attribut.
-                String title = (this.title.isEmpty()) ? "Informations complémentaires"
+            if (!this.helpMessage.isEmpty()) {
+                String titl = (this.title.isEmpty()) ? "Informations complémentaires"
                         : this.title;
-                JOptionPane.showMessageDialog(this, this.helpMessage, title,
+                JOptionPane.showMessageDialog(this, this.helpMessage, titl,
                         JOptionPane.INFORMATION_MESSAGE);
             }
         }

@@ -35,10 +35,9 @@ public class CharacteristicsStep5View extends CharacteristicsView {
     private JLabel lMerge;
 
     /**
-     * Creates a new panel for step 5 characteristics.
-     * Adds 2 checkboxes, one for merge which is enabled only when several
-     * surfaces are selected.
-     * Only one checkbox can be selected at the same time.
+     * Creates a new panel for step 5 characteristics. Adds 2 checkboxes, one
+     * for merge which is enabled only when several surfaces are selected. Only
+     * one checkbox can be selected at the same time.
      */
     public CharacteristicsStep5View() {
         super();
@@ -49,26 +48,26 @@ public class CharacteristicsStep5View extends CharacteristicsView {
 
             @Override
             public void itemStateChanged(final ItemEvent arg0) {
-                if (((JCheckBox) arg0.getSource()).isSelected())
-                {
+                if (((JCheckBox) arg0.getSource()).isSelected()) {
                     CharacteristicsStep5View.this.bValidate.setEnabled(true);
                 }
                 CharacteristicsStep5View.this.checkEnableValidateButton();
             }
 
         });
-        lMerge = new JLabel(FileTools.readElementText(TextsKeys.KEY_MERGETEXT));
-        this.addCaracteristic(createSimpleCaracteristic(this.cbMerge, lMerge,
-                new HelpButton()));
 
-        // Put in noise actions
+        this.lMerge = new JLabel(
+                FileTools.readElementText(TextsKeys.KEY_MERGETEXT));
+        this.addCaracteristic(createSimpleCaracteristic(this.cbMerge,
+                this.lMerge, new HelpButton()));
+
+        // Puts in noise actions
         this.cbNoise = new JCheckBox();
         this.cbNoise.addItemListener(new ItemListener() {
 
             @Override
             public void itemStateChanged(final ItemEvent arg0) {
-                if (((JCheckBox) arg0.getSource()).isSelected())
-                {
+                if (((JCheckBox) arg0.getSource()).isSelected()) {
                     CharacteristicsStep5View.this.getCBMerge().setSelected(
                             false);
                 }
@@ -84,12 +83,13 @@ public class CharacteristicsStep5View extends CharacteristicsView {
                 new HelpButton()));
     }
 
-    private void checkEnableValidateButton() {
-        if (cbMerge.isSelected() || cbNoise.isSelected())
-        {
+    /**
+     * TODO by Camille.
+     */
+    public final void checkEnableValidateButton() {
+        if (this.cbMerge.isSelected() || this.cbNoise.isSelected()) {
             CharacteristicsStep5View.this.bValidate.setEnabled(true);
-        } else
-        {
+        } else {
             CharacteristicsStep5View.this.bValidate.setEnabled(false);
         }
     }
@@ -120,8 +120,8 @@ public class CharacteristicsStep5View extends CharacteristicsView {
 
     /**
      * Is the merge checkbox selected.
-     * @return true - the merge checkbox is selected\n
-     *         false - the merge checkbox is not selected
+     * @return true - the merge checkbox is selected\n false - the merge
+     *         checkbox is not selected
      */
     public final boolean isMergeSelected() {
         return this.cbMerge.isSelected();
@@ -129,8 +129,8 @@ public class CharacteristicsStep5View extends CharacteristicsView {
 
     /**
      * Is the noise checkbox selected.
-     * @return true - the noise checkbox is selected\n
-     *         false - the noise checkbox is not selected
+     * @return true - the noise checkbox is selected\n false - the noise
+     *         checkbox is not selected
      */
     public final boolean isNoiseSelected() {
         return this.cbNoise.isSelected();
@@ -139,8 +139,8 @@ public class CharacteristicsStep5View extends CharacteristicsView {
     /**
      * Enables or disables the merge label and checkbox.
      * @param mergeEnable
-     *            true - enables merge elements\n
-     *            false - disables the merge elements
+     *            true - enables merge elements\n false - disables the merge
+     *            elements
      */
     public final void setMergeEnable(final boolean mergeEnable) {
         this.cbMerge.setEnabled(mergeEnable);

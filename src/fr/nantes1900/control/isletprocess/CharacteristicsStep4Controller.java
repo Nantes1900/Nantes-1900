@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.control.isletprocess;
 
 import java.awt.event.ActionEvent;
@@ -28,45 +25,46 @@ public class CharacteristicsStep4Controller extends
     /**
      * Creates a new step 4 characteristics controller which will create the
      * panel and sets the action to perform when validate button is clicked.
-     * @param parentController
+     * @param parentControllerIn
      *            the parent controller
      * @param trianglesSelected
      *            the selected triangles
      */
     public CharacteristicsStep4Controller(
-            IsletProcessController parentController,
-            List<Triangle> trianglesSelected) {
-        super(parentController, trianglesSelected);
+            final IsletProcessController parentControllerIn,
+            final List<Triangle> trianglesSelected) {
+        super(parentControllerIn, trianglesSelected);
 
         this.cView = new CharacteristicsStep4View();
         this.cView.getValidateButton().addActionListener(new ActionListener() {
 
             @Override
-            public void actionPerformed(ActionEvent arg0) {
+            public void actionPerformed(final ActionEvent arg0) {
                 String typeChosen = ((CharacteristicsStep4View) cView)
                         .getTypeSelected();
 
                 // gets the seected type
                 int actionType = -1;
-                switch (typeChosen)
-                {
-                    case Characteristics.TYPE_WALL:
-                        actionType = ActionTypes.TURN_TO_WALL;
+                switch (typeChosen) {
+
+                case Characteristics.TYPE_WALL:
+                    actionType = ActionTypes.TURN_TO_WALL;
                     break;
 
-                    case Characteristics.TYPE_ROOF:
-                        actionType = ActionTypes.TURN_TO_ROOF;
+                case Characteristics.TYPE_ROOF:
+                    actionType = ActionTypes.TURN_TO_ROOF;
+                    break;
+
+                default:
                     break;
                 }
 
                 // launches the action
-                try
-                {
+                try {
                     CharacteristicsStep4Controller.this.parentController
                             .getBiController().action4(trianglesList,
                                     actionType);
-                } catch (InvalidCaseException e)
-                {
+                } catch (InvalidCaseException e) {
                     JOptionPane.showMessageDialog(cView, FileTools
                             .readInformationMessage(
                                     TextsKeys.KEY_ERROR_INCORRECTTYPE,
@@ -85,21 +83,17 @@ public class CharacteristicsStep4Controller extends
     }
 
     @Override
-    public void modifyViewCharacteristics() {
-        if (trianglesList.size() == 1)
-        {
-            try
-            {
+    public final void modifyViewCharacteristics() {
+        if (this.trianglesList.size() == 1) {
+            try {
                 ((CharacteristicsStep4View) this.cView)
-                        .setType(parentController.getBiController()
-                                .getCharacteristics4(trianglesList.get(0)));
-            } catch (InvalidCaseException e)
-            {
-                // TODO Auto-generated catch block
+                        .setType(this.parentController.getBiController()
+                                .getCharacteristics4(this.trianglesList.get(0)));
+            } catch (InvalidCaseException e) {
+                // TODO by Camille
                 e.printStackTrace();
             }
-        } else
-        {
+        } else {
             ((CharacteristicsStep4View) this.cView).setType("");
         }
     }

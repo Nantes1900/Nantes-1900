@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.view.isletprocess;
 
 import java.awt.Dimension;
@@ -78,6 +75,7 @@ public class IsletProcessView extends PFrame {
             final NavigationBarView navigationBarView,
             final ParametersView parametersView,
             final Universe3DView universe3dView) {
+
         super();
         this.setMinimumSize(new Dimension(1140, 700));
         this.setPreferredSize(new Dimension(1200, 900));
@@ -88,22 +86,23 @@ public class IsletProcessView extends PFrame {
         this.nbView = navigationBarView;
         this.pView = parametersView;
         this.u3DView = universe3dView;
-        this.jspParameters = new JScrollPane(pView);
-        jspParameters
-                .setMinimumSize(new Dimension(pView.getPreferredWidth(), 0));
+
+        this.jspParameters = new JScrollPane(this.pView);
+        this.jspParameters.setMinimumSize(new Dimension(this.pView
+                .getPreferredWidth(), 0));
+
         this.tabs = new JTabbedPane();
         this.tabs.addTab(FileTools.readElementText(TextsKeys.KEY_PARAMETERS),
                 this.jspParameters);
         this.tabs.addTab(FileTools.readElementText(TextsKeys.KEY_TREEVIEW),
                 this.itView);
-        this.pComponents.setLayout(new GridBagLayout());
 
+        this.pComponents.setLayout(new GridBagLayout());
         this.pComponents
                 .add(this.nbView, new GridBagConstraints(0, 0, 2, 1, 1.0, 0.10,
                         GridBagConstraints.CENTER,
                         GridBagConstraints.HORIZONTAL,
                         new Insets(10, 10, 5, 10), 0, 0));
-
         this.pComponents.add(this.tabs, new GridBagConstraints(0, 1, 1, 2,
                 0.40, 1.0, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(5, 10, 5, 5), 0, 0));
@@ -113,6 +112,7 @@ public class IsletProcessView extends PFrame {
         this.pComponents.add(this.cView, new GridBagConstraints(1, 2, 1, 1,
                 0.60, 0.15, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(5, 5, 10, 10), 0, 0));
+
         this.setStatusBarText(FileTools
                 .readElementText(TextsKeys.KEY_STATUS_STEP1));
     }
