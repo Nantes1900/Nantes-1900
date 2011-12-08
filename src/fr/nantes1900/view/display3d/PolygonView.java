@@ -38,8 +38,9 @@ public class PolygonView extends TriangleFanArray {
         super(poly.getPointList().size() * POLYGON_FACES_COUNT,
                 GeometryArray.COORDINATES | GeometryArray.COLOR_3
                         | GeometryArray.NORMALS
-                        | GeometryArray.TEXTURE_COORDINATE_2, new int[] {poly
-                        .getPointList().size() * POLYGON_FACES_COUNT});
+                        | GeometryArray.TEXTURE_COORDINATE_2, new int[] { poly
+                        .getPointList().size() * POLYGON_FACES_COUNT
+                });
 
         this.polygon = poly;
         this.centroid = new Point(0, 0, 0);
@@ -49,8 +50,7 @@ public class PolygonView extends TriangleFanArray {
         this.setCapability(ALLOW_TEXCOORD_READ);
         this.setCapability(ALLOW_TEXCOORD_WRITE);
 
-        for (Point point : poly.getPointList())
-        {
+        for (Point point : poly.getPointList()) {
             this.centroid.setX(this.centroid.getX() + point.getX());
             this.centroid.setY(this.centroid.getY() + point.getY());
             this.centroid.setZ(this.centroid.getZ() + point.getZ());
@@ -62,8 +62,7 @@ public class PolygonView extends TriangleFanArray {
 
         Point3d[] vertex = new Point3d[poly.getPointList().size()
                 * POLYGON_FACES_COUNT];
-        for (int i = 0; i < poly.getPointList().size(); i++)
-        {
+        for (int i = 0; i < poly.getPointList().size(); i++) {
             vertex[i] = new Point3d(poly.getPointList().get(i).getX(), poly
                     .getPointList().get(i).getY(), poly.getPointList().get(i)
                     .getZ());
@@ -75,8 +74,7 @@ public class PolygonView extends TriangleFanArray {
 
         Vector3f[] normal = new Vector3f[poly.getPointList().size()
                 * POLYGON_FACES_COUNT];
-        for (int i = 0; i < poly.getPointList().size(); i++)
-        {
+        for (int i = 0; i < poly.getPointList().size(); i++) {
             normal[i] = convertNormal(this.polygon);
             normal[poly.getPointList().size() * POLYGON_FACES_COUNT - 1 - i] = reverseConvertNormal(this.polygon);
         }

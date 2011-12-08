@@ -68,8 +68,7 @@ public class MeshView extends TriangleArray {
         int i = 0;
 
         // Create the triangles to be displayed.
-        for (Triangle triangle : this.mesh)
-        {
+        for (Triangle triangle : this.mesh) {
             this.selectTableTriangle.put(triangle, i / TRIANGLE_POINTS_COUNT);
             this.selectTableIndex.put(i / TRIANGLE_POINTS_COUNT, triangle);
 
@@ -185,8 +184,7 @@ public class MeshView extends TriangleArray {
      */
     public void unSelect(Triangle triangle) {
         Integer arrayPosition = this.getArrayPositionFromTriangle(triangle);
-        if (arrayPosition != null)
-        {
+        if (arrayPosition != null) {
             this.unSelect(this.getArrayPositionFromTriangle(triangle));
         }
     }

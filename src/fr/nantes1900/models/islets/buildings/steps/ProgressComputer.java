@@ -12,12 +12,6 @@ import fr.nantes1900.listener.ProgressListener;
 public final class ProgressComputer {
 
     /**
-     * Private constructor.
-     */
-    private ProgressComputer() {
-    }
-
-    /**
      * List of listeners.
      */
     private static EventListenerList progressListenerList = new EventListenerList();
@@ -51,17 +45,15 @@ public final class ProgressComputer {
      * The number of the current building.
      */
     private static int buildingsCounter;
+
     /**
      * The number of the current step.
      */
     private static int stepsCounter;
-
     /**
-     * Getter.
-     * @return the progress
+     * Private constructor.
      */
-    public static double getProgress() {
-        return ProgressComputer.progress;
+    private ProgressComputer() {
     }
 
     /**
@@ -71,16 +63,6 @@ public final class ProgressComputer {
      */
     public static void addProgressListener(final ProgressListener listener) {
         ProgressComputer.progressListenerList.add(ProgressListener.class,
-                listener);
-    }
-
-    /**
-     * Removes a listener.
-     * @param listener
-     *            the listener
-     */
-    public static void removeProgressListener(final ProgressListener listener) {
-        ProgressComputer.progressListenerList.remove(ProgressListener.class,
                 listener);
     }
 
@@ -106,37 +88,11 @@ public final class ProgressComputer {
     }
 
     /**
-     * Resets the counter of triangles.
+     * Getter.
+     * @return the progress
      */
-    public static void initTrianglesCounter() {
-        ProgressComputer.trianglesCounter = 0;
-    }
-
-    /**
-     * Setter.
-     * @param buildingsNumberIn
-     *            the number of buildings
-     */
-    public static void setBuildingsNumber(final int buildingsNumberIn) {
-        ProgressComputer.buildingsNumber = buildingsNumberIn;
-    }
-
-    /**
-     * Setter.
-     * @param stepsNumberIn
-     *            the total number of steps
-     */
-    public static void setStepsNumber(final int stepsNumberIn) {
-        ProgressComputer.stepsNumber = stepsNumberIn;
-    }
-
-    /**
-     * Setter.
-     * @param trianglesNumberIn
-     *            the total number of triangles
-     */
-    public static void setTrianglesNumber(final int trianglesNumberIn) {
-        ProgressComputer.trianglesNumber = trianglesNumberIn;
+    public static double getProgress() {
+        return ProgressComputer.progress;
     }
 
     /**
@@ -175,5 +131,49 @@ public final class ProgressComputer {
      */
     public static void initStepsCounter() {
         ProgressComputer.stepsCounter = 0;
+    }
+
+    /**
+     * Resets the counter of triangles.
+     */
+    public static void initTrianglesCounter() {
+        ProgressComputer.trianglesCounter = 0;
+    }
+
+    /**
+     * Removes a listener.
+     * @param listener
+     *            the listener
+     */
+    public static void removeProgressListener(final ProgressListener listener) {
+        ProgressComputer.progressListenerList.remove(ProgressListener.class,
+                listener);
+    }
+
+    /**
+     * Setter.
+     * @param buildingsNumberIn
+     *            the number of buildings
+     */
+    public static void setBuildingsNumber(final int buildingsNumberIn) {
+        ProgressComputer.buildingsNumber = buildingsNumberIn;
+    }
+
+    /**
+     * Setter.
+     * @param stepsNumberIn
+     *            the total number of steps
+     */
+    public static void setStepsNumber(final int stepsNumberIn) {
+        ProgressComputer.stepsNumber = stepsNumberIn;
+    }
+
+    /**
+     * Setter.
+     * @param trianglesNumberIn
+     *            the total number of triangles
+     */
+    public static void setTrianglesNumber(final int trianglesNumberIn) {
+        ProgressComputer.trianglesNumber = trianglesNumberIn;
     }
 }

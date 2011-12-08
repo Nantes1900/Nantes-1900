@@ -70,42 +70,6 @@ public class BuildingStep5 extends AbstractBuildingStep {
     }
 
     /**
-     * Orders the neighbours by calling the method orderNeighbours from the
-     * class Surface and then computes the contour of the surface, using the
-     * sorted neighbours.
-     */
-    public final void orderNeighboursAndDeterminateContours() {
-        // Creates the map where the points and edges will be put : if one
-        // point is created a second time, it will be given the same
-        // reference as the other one having the same values.
-        final Map<Point, Point> pointMap = new HashMap<>();
-
-        // Adds all the surfaces
-        final List<Surface> wholeList = new ArrayList<>();
-        wholeList.addAll(this.walls);
-        wholeList.addAll(this.roofs);
-
-        for (final Surface surface : wholeList) {
-            try {
-                // Orders its neighbours in order to treat them.
-                // If the neighbours of one surface are not 2 per 2 neighbours
-                // each other, then it tries to correct it.
-                surface.orderNeighbours(wholeList, this.ground);
-
-                // When the neighbours are sorted, finds the intersection of
-                // them to find the edges of this surface.
-                surface.setPolygon(surface.findEdges(this.walls, pointMap,
-                        this.groundNormal));
-
-            } catch (final InvalidSurfaceException e) {
-                // If there is a problem, we cannot continue the process.
-            } catch (final ImpossibleNeighboursOrderException e) {
-                // If there is a problem, the process cannot continue.
-            }
-        }
-    }
-
-    /**
      * Determinates the neighbours of a surface.
      */
     public final void determinateNeighbours() {
@@ -123,6 +87,7 @@ public class BuildingStep5 extends AbstractBuildingStep {
             final Mesh fake = new Mesh(m.getMesh());
             wholeListFakes.add(fake);
         }
+
         Algos.blockTreatPlanedNoise(wholeListFakes,
                 new Mesh(this.noise.getMesh()),
                 SeparationWallsSeparationRoofs.getPlanesError());
@@ -199,14 +164,50 @@ public class BuildingStep5 extends AbstractBuildingStep {
         // Copies the walls and roofs to work on different versions.
         List<Wall> wallsCopy = new ArrayList<>();
         for (Wall w : this.walls) {
-            wallsCopy.add(new Wall(w));
+            wallsCopy.add(w);
         }
         List<Roof> roofsCopy = new ArrayList<>();
         for (Roof r : this.roofs) {
-            roofsCopy.add(new Roof(r));
+            roofsCopy.add(r);
         }
         return new BuildingStep6(wallsCopy, roofsCopy);
 
+    }
+
+    /**
+     * Orders the neighbours by calling the method orderNeighbours from the
+     * class Surface and then computes the contour of the surface, using the
+     * sorted neighbours.
+     */
+    public final void orderNeighboursAndDeterminateContours() {
+        // Creates the map where the points and edges will be put : if one
+        // point is created a second time, it will be given the same
+        // reference as the other one having the same values.
+        final Map<Point, Point> pointMap = new HashMap<>();
+
+        // Adds all the surfaces
+        final List<Surface> wholeList = new ArrayList<>();
+        wholeList.addAll(this.walls);
+        wholeList.addAll(this.roofs);
+
+        for (final Surface surface : wholeList) {
+            try {
+                // Orders its neighbours in order to treat them.
+                // If the neighbours of one surface are not 2 per 2 neighbours
+                // each other, then it tries to correct it.
+                surface.orderNeighbours(wholeList, this.ground);
+
+                // When the neighbours are sorted, finds the intersection of
+                // them to find the edges of this surface.
+                surface.setPolygon(surface.findEdges(this.walls, pointMap,
+                        this.groundNormal));
+
+            } catch (final InvalidSurfaceException e) {
+                // If there is a problem, we cannot continue the process.
+            } catch (final ImpossibleNeighboursOrderException e) {
+                // If there is a problem, the process cannot continue.
+            }
+        }
     }
 
     @Override
@@ -254,6 +255,7 @@ public class BuildingStep5 extends AbstractBuildingStep {
     private void sortSurfaces() {
         for (int i = 0; i < this.walls.size(); i++) {
             final Surface s = this.walls.get(i);
+
             if (s.getNeighbours().size() < NUMBER_MIN_OF_NEIGHBOURS) {
                 this.walls.remove(s);
                 for (final Surface neighbour : s.getNeighbours()) {
@@ -261,8 +263,10 @@ public class BuildingStep5 extends AbstractBuildingStep {
                 }
             }
         }
+
         for (int i = 0; i < this.roofs.size(); i++) {
             final Surface s = this.roofs.get(i);
+
             if (s.getNeighbours().size() < NUMBER_MIN_OF_NEIGHBOURS) {
                 this.roofs.remove(s);
                 for (final Surface neighbour : s.getNeighbours()) {

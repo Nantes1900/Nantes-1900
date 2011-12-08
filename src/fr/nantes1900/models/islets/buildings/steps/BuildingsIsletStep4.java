@@ -53,14 +53,6 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
 
     /**
      * Getter.
-     * @return the noise
-     */
-    public final Surface getNoise() {
-        return this.noise;
-    }
-
-    /**
-     * Getter.
      * @return the list of buildings
      */
     public final List<Building> getBuildings() {
@@ -73,6 +65,14 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
      */
     public final Ground getGrounds() {
         return this.grounds;
+    }
+
+    /**
+     * Getter.
+     * @return the noise
+     */
+    public final Surface getNoise() {
+        return this.noise;
     }
 
     /*
@@ -132,20 +132,20 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
 
     /**
      * Setter.
-     * @param groundNormalIn
-     *            the normal to the ground.
-     */
-    public final void setArguments(final Vector3d groundNormalIn) {
-        this.groundNormal = groundNormalIn;
-    }
-
-    /**
-     * Setter.
      * @param noiseIn
      *            the noise
      */
     public final void setArguments(final Surface noiseIn) {
         this.noise = noiseIn;
+    }
+
+    /**
+     * Setter.
+     * @param groundNormalIn
+     *            the normal to the ground.
+     */
+    public final void setArguments(final Vector3d groundNormalIn) {
+        this.groundNormal = groundNormalIn;
     }
 
     /*
