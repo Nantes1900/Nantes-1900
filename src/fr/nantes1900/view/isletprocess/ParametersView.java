@@ -146,7 +146,8 @@ public class ParametersView extends JPanel {
                 SimplificationSurfaces.getIsOrientedFactor());
 
         // Dimensions of the formatted text fields
-        for (int i = 1; i <= this.property.length; i++) {
+        // first property is with number 1 so length is one more (index 0)
+        for (int i = 1; i < this.property.length; i++) {
             this.property[i].setPreferredSize(this.labelDimension);
         }
 
