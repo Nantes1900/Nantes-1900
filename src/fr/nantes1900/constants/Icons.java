@@ -1,6 +1,6 @@
 package fr.nantes1900.constants;
 
-public final class Icones {
+public final class Icons {
 
     public static final String back = "res/icons/back.png";
     public static final String launch = "res/icons/launch.png";
@@ -10,6 +10,6 @@ public final class Icones {
     public static final String showProperties = "res/icons/showProperties.png";
     public static final String validate = "res/icons/validate.png";
 
-    public Icones() {
+    public Icons() {
     }
 }

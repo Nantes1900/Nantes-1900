@@ -4,8 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 
+import fr.nantes1900.constants.Icons;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletselection.ActionsView;
@@ -53,17 +55,14 @@ public class ActionsController {
                 fileChooser.setDialogType(JFileChooser.OPEN_DIALOG);
 
                 if (fileChooser.showOpenDialog(ActionsController.this
-                        .getActionsView()) == JFileChooser.APPROVE_OPTION)
-                {
+                        .getActionsView()) == JFileChooser.APPROVE_OPTION) {
                     File file = fileChooser.getSelectedFile();
-                    if (file.isDirectory())
-                    {
+                    if (file.isDirectory()) {
                         ActionsController.this.getParentController()
                                 .updateMockupDirectory(file);
                     }
                 }
             }
-
         });
 
         this.laListener = new LaunchActionListener(false);
@@ -79,7 +78,7 @@ public class ActionsController {
     }
 
     /**
-     * Gets the parent controller
+     * Gets the parent controller.
      * @return the parent controller
      */
     public final IsletSelectionController getParentController() {
@@ -90,13 +89,19 @@ public class ActionsController {
      * Sets the mode compute normal.
      */
     public final void setComputeNormalMode() {
+
         this.laListener.setComputeNormalMode(true);
+
+        this.getActionsView().getLaunchButton()
+                .setIcon(new ImageIcon(Icons.save));
+
         this.getActionsView()
                 .getHelpButton()
                 .setTooltip(
                         FileTools.readHelpMessage(
                                 TextsKeys.KEY_IS_GRAVITYNORMAL,
                                 TextsKeys.MESSAGETYPE_TOOLTIP));
+
         this.getActionsView()
                 .getHelpButton()
                 .setHelpMessage(
@@ -113,13 +118,19 @@ public class ActionsController {
      * Sets the mode launch process.
      */
     public final void setLaunchMode() {
+
         this.laListener.setComputeNormalMode(false);
+
+        this.getActionsView().getLaunchButton()
+                .setIcon(new ImageIcon(Icons.launch));
+
         this.getActionsView()
                 .getHelpButton()
                 .setTooltip(
                         FileTools.readHelpMessage(
                                 TextsKeys.KEY_IS_LAUNCHPROCESS,
                                 TextsKeys.MESSAGETYPE_TOOLTIP));
+
         this.getActionsView()
                 .getHelpButton()
                 .setHelpMessage(
@@ -156,16 +167,13 @@ public class ActionsController {
         @Override
         public final void actionPerformed(final ActionEvent arg0) {
             // If no gravity normal have been chosen
-            if (this.computeNormal)
-            {
+            if (this.computeNormal) {
                 boolean normalSaved = ActionsController.this
                         .getParentController().computeGravityNormal();
-                if (normalSaved)
-                {
+                if (normalSaved) {
                     ActionsController.this.setLaunchMode();
                 }
-            } else
-            {
+            } else {
                 // If every normals have been choosen
                 ActionsController.this.getParentController()
                         .launchIsletProcess();
@@ -175,8 +183,8 @@ public class ActionsController {
         /**
          * Sets the mode compute normal or not.
          * @param computeNormalIn
-         *            true - sets the mode compute normal\n
-         *            false - disables the mode compute normal
+         *            true - sets the mode compute normal\n false - disables the
+         *            mode compute normal
          */
         public final void setComputeNormalMode(final boolean computeNormalIn) {
             this.computeNormal = computeNormalIn;

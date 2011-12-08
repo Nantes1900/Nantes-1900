@@ -16,7 +16,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import fr.nantes1900.constants.Icones;
+import fr.nantes1900.constants.Icons;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.constants.coefficients.SeparationBuildings;
 import fr.nantes1900.constants.coefficients.SeparationGroundBuilding;
@@ -49,15 +49,15 @@ public class ParametersView extends JPanel {
     /**
      * The button save.
      */
-    private JButton bSave = new JButton(new ImageIcon(Icones.save));
+    private JButton bSave = new JButton(new ImageIcon(Icons.save));
     /**
      * The button load.
      */
-    private JButton bLoad = new JButton(new ImageIcon(Icones.open));
+    private JButton bLoad = new JButton(new ImageIcon(Icons.open));
     /**
      * The button show.
      */
-    private JButton bShow = new JButton(new ImageIcon(Icones.showProperties));
+    private JButton bShow = new JButton(new ImageIcon(Icons.showProperties));
 
     /**
      * TODO by Luc.

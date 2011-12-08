@@ -11,7 +11,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import fr.nantes1900.constants.Icones;
+import fr.nantes1900.constants.Icons;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.utils.FileTools;
@@ -33,19 +33,19 @@ public class NavigationBarView extends JPanel {
     /**
      * Button abort (the entire process).
      */
-    private JButton bAbort = new JButton(new ImageIcon(Icones.abort));
+    private JButton bAbort = new JButton(new ImageIcon(Icons.abort));
     /**
      * Button launch (the next process).
      */
-    private JButton bLaunch = new JButton(new ImageIcon(Icones.launch));
+    private JButton bLaunch = new JButton(new ImageIcon(Icons.launch));
     /**
      * Button to go back (to the previous process).
      */
-    private JButton bBack = new JButton(new ImageIcon(Icones.back));
+    private JButton bBack = new JButton(new ImageIcon(Icons.back));
     /**
      * Button save (the final results).
      */
-    private JButton bSave = new JButton(new ImageIcon(Icones.save));
+    private JButton bSave = new JButton(new ImageIcon(Icons.save));
     /**
      * The title of the bar.
      */

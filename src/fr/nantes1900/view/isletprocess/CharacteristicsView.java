@@ -15,7 +15,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import fr.nantes1900.constants.Icones;
+import fr.nantes1900.constants.Icons;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
@@ -50,7 +50,7 @@ public class CharacteristicsView extends JPanel {
         this.setBorder(new TitledBorder(BorderFactory
                 .createRaisedSoftBevelBorder(), FileTools
                 .readElementText(TextsKeys.KEY_CHARACTERISTICS)));
-        this.bValidate = new JButton(new ImageIcon(Icones.validate));
+        this.bValidate = new JButton(new ImageIcon(Icons.validate));
         this.bValidate.setToolTipText(TextsKeys.KEY_TOVALID);
 
         // Disables the validate button for this empty characteristic panel
