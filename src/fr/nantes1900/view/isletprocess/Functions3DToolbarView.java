@@ -6,6 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 
 import fr.nantes1900.constants.Icons;
 import fr.nantes1900.constants.TextsKeys;
@@ -56,10 +57,9 @@ public class Functions3DToolbarView extends JToolBar {
      */
     public Functions3DToolbarView() {
 
-        super(JToolBar.HORIZONTAL);
+        super(SwingConstants.HORIZONTAL);
         this.setFloatable(false);
 
-        // TODO puts icons instead
         this.bRotationCenter = new JButton(new ImageIcon(Icons.rotation_center));
         this.bRotationCenter.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_ROTATIONCENTER));
@@ -74,7 +74,8 @@ public class Functions3DToolbarView extends JToolBar {
         this.lDisplayType = new JLabel("");
 
         // Selection mode elements
-        this.bSelectionModeTriangles = new JButton(new ImageIcon(Icons.triangles));
+        this.bSelectionModeTriangles = new JButton(new ImageIcon(
+                Icons.triangles));
         this.bSelectionModeTriangles.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_SELECTTRIANGLES));
         this.bSelectionModeMeshes = new JButton(new ImageIcon(Icons.surface));

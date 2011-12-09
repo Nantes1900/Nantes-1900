@@ -213,7 +213,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
         if (this.getProgression() == AbstractBuildingsIslet.FOURTH_STEP) {
             // ipView.showProgressBar(true);
-            // TODO : think about remove this.
+            // TODO by Camille : think about remove this.
             System.out.println("show");
         }
 
@@ -226,7 +226,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
         if (this.getProgression() == AbstractBuildingsIslet.FIFTH_STEP) {
             // ipView.showProgressBar(false);
-            // TODO : think about remove this.
+            // TODO by Camille : think about remove this.
             System.out.println("not show");
         }
 
