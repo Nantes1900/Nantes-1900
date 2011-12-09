@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
@@ -19,6 +20,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import fr.nantes1900.constants.Icons;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.utils.FileTools;
@@ -71,10 +73,10 @@ public class CharacteristicsStep6View extends CharacteristicsView {
     public CharacteristicsStep6View(final List<Surface> neighbors) {
         super();
 
-        this.bLock = new JButton("Lock");
+        this.bLock = new JButton(new ImageIcon(Icons.lock));
 
         // TODO by Camille : modify with arrows
-        this.upButton = new JButton("^");
+        this.upButton = new JButton(new ImageIcon(Icons.up));
         this.upButton.addActionListener(new ActionListener() {
 
             @Override
@@ -92,7 +94,7 @@ public class CharacteristicsStep6View extends CharacteristicsView {
             }
         });
 
-        this.downButton = new JButton("v");
+        this.downButton = new JButton(new ImageIcon(Icons.down));
         this.downButton.addActionListener(new ActionListener() {
 
             @Override

@@ -4,8 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
+import fr.nantes1900.constants.Icons;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.utils.FileTools;
@@ -59,13 +61,13 @@ public class CharacteristicsStep6Controller extends
                         JButton source = ((JButton) arg0.getSource());
 
                         if (surfaceLocked) {
-                            source.setText("Unlock");
+                            source.setIcon(new ImageIcon(Icons.unlock));
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_LOCKMESH));
                             parentController.lock(true);
-
+                            
                         } else {
-                            source.setText("Lock");
+                            source.setIcon(new ImageIcon(Icons.lock));
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_UNLOCKMESH));
                             parentController.lock(false);
