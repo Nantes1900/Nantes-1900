@@ -84,6 +84,7 @@ public class CharacteristicsStep6Controller extends
                 surfacesList = ((CharacteristicsStep6View) cView).getList();
                 parentController.getBiController().action6(surfaceToCheck,
                         surfacesList);
+                parentController.lock(false);
                 parentController.refreshViews();
             }
         });
@@ -100,7 +101,6 @@ public class CharacteristicsStep6Controller extends
         if (this.surfaceLocked) {
             this.surfacesList.add(surfaceSelected);
             modifyViewCharacteristics();
-            System.out.println("Voisin ajouté");
         }
     }
 
@@ -115,7 +115,6 @@ public class CharacteristicsStep6Controller extends
         if (this.surfaceLocked) {
             this.surfacesList.remove(surfaceSelected);
             modifyViewCharacteristics();
-            System.out.println("Voisin enlevé");
         }
     }
 
