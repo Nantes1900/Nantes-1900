@@ -70,7 +70,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     /**
      * The attribute to know about the lock mode: lock or unlock.
      */
-    private int lockMode;
+    private boolean lockMode;
     /**
      * The attribute to know that mouse left click will pick triangles.
      */
@@ -84,14 +84,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      * all the triangles oriented as a triangle input.
      */
     public static final int ORIENTATION_TOLERANCE = 45;
-    /**
-     * Constant defining the unlocked mode.
-     */
-    public static final int UNLOCK_MODE = 5;
-    /**
-     * Constant defining the locked mode.
-     */
-    public static final int LOCK_MODE = 6;
     /**
      * The list of the triangles currently selected.
      */
@@ -121,7 +113,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         this.u3DView = new Universe3DView(this);
         this.displayMode = DISPLAY_MESH_MODE;
         this.selectionMode = SELECTION_TRIANGLE_MODE;
-        this.lockMode = UNLOCK_MODE;
+        this.lockMode = false;
     }
 
     /**
@@ -166,7 +158,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * <<<<<<< HEAD Changes the rotation center when clicking on a surface.
+     * Changes the rotation center when clicking on a surface.
      * @param surfaceView
      *            The surfaceView becomming the rotation center
      */
@@ -309,11 +301,10 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
     /**
      * Returns the lock mode.
-     * @return LOCK_MODE if the mode is locked, UNLOCK_MODE if the mode is
-     *         unlocked, or everything else if there was an error in the
-     *         initialisation.
+     * @return true if the mode is locked, false if the mode is unlocked, or
+     *         everything else if there was an error in the initialisation.
      */
-    public final int getLockOrUnlockMode() {
+    public final boolean isLocked() {
         return this.lockMode;
     }
 
@@ -574,27 +565,25 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Sets up the locked mode.
+     * Setter.
+     * @param lock
+     *            the new lock mode
      */
-    public final void setLockMode() {
-        this.lockMode = LOCK_MODE;
-        for (Surface surfaceNeighbour : this.surfaceLocked.getNeighbours()) {
-            SurfaceView surfaceViewNeighbour = this
-                    .getSurfaceViewFromSurface(surfaceNeighbour);
-            surfaceViewNeighbour
-                    .setMaterial(SurfaceView.MATERIAL_NEIGHBOUR_LOCK);
-        }
-    }
-
-    /**
-     * Sets up the unlocked mode.
-     */
-    public final void setUnLockMode() {
-        this.lockMode = UNLOCK_MODE;
-        // TODO
-        for (Surface surfaceNeighbour : this.surfaceLockedNeighbours) {
-            this.getSurfaceViewFromSurface(surfaceNeighbour).setMaterial(
-                    SurfaceView.MATERIAL_NEIGHBOUR);
+    public final void setLockMode(final boolean lock) {
+        this.lockMode = lock;
+        if (lock) {
+            for (Surface surfaceNeighbour : this.surfaceLocked.getNeighbours()) {
+                SurfaceView surfaceViewNeighbour = this
+                        .getSurfaceViewFromSurface(surfaceNeighbour);
+                surfaceViewNeighbour
+                        .setMaterial(SurfaceView.MATERIAL_NEIGHBOUR_LOCK);
+            }
+        } else {
+            // TODO
+            for (Surface surfaceNeighbour : this.surfaceLockedNeighbours) {
+                this.getSurfaceViewFromSurface(surfaceNeighbour).setMaterial(
+                        SurfaceView.MATERIAL_NEIGHBOUR);
+            }
         }
     }
 
@@ -728,7 +717,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
                 .getNode(PickResult.SHAPE3D);
         Surface surfacePicked = surfaceViewPicked.getSurface();
 
-        if (this.lockMode == UNLOCK_MODE) {
+        if (!this.lockMode) {
             if (!e.isControlDown()
                     && !(this.surfacesSelected.contains(surfacePicked) && this.surfacesSelected
                             .size() == 1)) {
