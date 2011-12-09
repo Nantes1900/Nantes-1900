@@ -271,11 +271,11 @@ public class IsletProcessController implements ElementsSelectedListener,
                 this.u3DController.setSurfaceLocked(this.u3DController
                         .getSurfacesSelected().get(0));
                 // Changes to lock mode.
-                this.u3DController.setLockMode();
+                this.u3DController.setLockMode(true);
             }
         } else {
             // Changes to unlock mode.
-            this.u3DController.setUnLockMode();
+            this.u3DController.setLockMode(false);
             // Clears the surfaceLocked.
             this.u3DController.setSurfaceLocked(null);
             this.u3DController.setSurfaceLockedNeighbours(null);
@@ -353,7 +353,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
         // case 6 : more complicated
         if (step == 6) {
-            if (this.u3DController.getLockOrUnlockMode() == Universe3DController.LOCK_MODE) {
+            if (this.u3DController.isLocked()) {
                 ((AbstractCharacteristicsSurfacesController) this.cController)
                         .removeSurfaceSelected(surfaceSelected);
             } else {
@@ -392,7 +392,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
         // case 6 : more complicated
         if (step == 6) {
-            if (this.u3DController.getLockOrUnlockMode() == Universe3DController.LOCK_MODE) {
+            if (this.u3DController.isLocked()) {
                 ((AbstractCharacteristicsSurfacesController) this.cController)
                         .addSurfaceSelected(surfaceSelected);
             } else {
