@@ -11,6 +11,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.utils.FileTools;
 
 /**
  * Implements a tree displayer.
@@ -30,11 +31,11 @@ public class IsletTreeView extends JPanel {
     /**
      * The item hide in the popup menu.
      */
-    private JMenuItem mHide = new JMenuItem(TextsKeys.KEY_HIDEITEM);
+    private JMenuItem mHide = new JMenuItem(FileTools.readElementText(TextsKeys.KEY_HIDEITEM));
     /**
      * The item show in the popup menu.
      */
-    private JMenuItem mShow = new JMenuItem(TextsKeys.KEY_SHOWITEM);
+    private JMenuItem mShow = new JMenuItem(FileTools.readElementText(TextsKeys.KEY_SHOWITEM));
 
     /**
      * The Jtree to display.
