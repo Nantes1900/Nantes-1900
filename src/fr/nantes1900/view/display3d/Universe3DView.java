@@ -22,6 +22,7 @@ import javax.vecmath.Vector3d;
 import javax.vecmath.Vector3f;
 
 import com.sun.j3d.utils.behaviors.mouse.MouseTranslate;
+import com.sun.j3d.utils.behaviors.mouse.MouseWheelZoom;
 import com.sun.j3d.utils.behaviors.mouse.MouseZoom;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 import com.sun.j3d.utils.universe.ViewingPlatform;
@@ -88,6 +89,11 @@ public class Universe3DView extends JPanel {
      * Constant defining the sensitivity of the zoom transformation.
      */
     public static final double ZOOM_FACTOR = 2;
+    
+    /**
+     * Constant defining the sensitivity of the wheelzoom transformation.
+     */
+    public static final double WHEEL_ZOOM_FACTOR=3;
     /**
      * Constant defining the sensitivity of the zoom transformation.
      */
@@ -265,7 +271,14 @@ public class Universe3DView extends JPanel {
         mouseZoom.setTransformGroup(transformGroup);
         transformGroup.addChild(mouseZoom);
         mouseZoom.setSchedulingBounds(boundingSphere);
-
+        
+        //Links the wheel of the mouse with a zoom transformation
+        MouseWheelZoom mouseWheelZoom=new MouseWheelZoom();
+        mouseWheelZoom.setFactor(WHEEL_ZOOM_FACTOR);
+        mouseWheelZoom.setTransformGroup(rotationGroup);
+        transformGroup.addChild(mouseWheelZoom);
+        mouseWheelZoom.setSchedulingBounds(boundingSphere);
+        
         // Links the right button of the mouse with a translation transformation
         MouseTranslate mouseTranslate = new MouseTranslate();
         mouseTranslate.setFactor(TRANSLATION_FACTOR);
