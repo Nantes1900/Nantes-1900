@@ -213,7 +213,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
         if (this.getProgression() == AbstractBuildingsIslet.FOURTH_STEP) {
             // ipView.showProgressBar(true);
-            // TODO : think about remove this.
+            // TODO by Camille : think about remove this.
             System.out.println("show");
         }
 
@@ -226,7 +226,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
         if (this.getProgression() == AbstractBuildingsIslet.FIFTH_STEP) {
             // ipView.showProgressBar(false);
-            // TODO : think about remove this.
+            // TODO by Camille : think about remove this.
             System.out.println("not show");
         }
 
@@ -260,25 +260,25 @@ public class IsletProcessController implements ElementsSelectedListener,
     }
 
     /**
-     * Locks or unlocks a surface.
+     * Locks or unlocks a surface selected.
      * @param lock
      *            true - locks the surface\n false - unlocks the surface
      */
     public final void lock(final boolean lock) {
         if (lock) {
-            
-            // Lock when only a surface is selected.
+            // Locks when only one surface is selected.
             if (this.u3DController.getSurfacesSelected().size() == 1) {
                 this.u3DController.setSurfaceLocked(this.u3DController
                         .getSurfacesSelected().get(0));
-             // Change to lock mode.
-                this.u3DController.setLockMode();
+                // Changes to lock mode.
+                this.u3DController.setLockMode(true);
             }
         } else {
-            // Change to unlock mode.
-            this.u3DController.setUnLockMode();
-            // Clear the surfaceLocked.
+            // Changes to unlock mode.
+            this.u3DController.setLockMode(false);
+            // Clears the surfaceLocked.
             this.u3DController.setSurfaceLocked(null);
+            this.u3DController.setSurfaceLockedNeighbours(null);
         }
     }
 
@@ -353,7 +353,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
         // case 6 : more complicated
         if (step == 6) {
-            if (this.u3DController.getLockOrUnlockMode() == Universe3DController.LOCK_MODE) {
+            if (this.u3DController.isLocked()) {
                 ((AbstractCharacteristicsSurfacesController) this.cController)
                         .removeSurfaceSelected(surfaceSelected);
             } else {
@@ -392,7 +392,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
         // case 6 : more complicated
         if (step == 6) {
-            if (this.u3DController.getLockOrUnlockMode() == Universe3DController.LOCK_MODE) {
+            if (this.u3DController.isLocked()) {
                 ((AbstractCharacteristicsSurfacesController) this.cController)
                         .addSurfaceSelected(surfaceSelected);
             } else {

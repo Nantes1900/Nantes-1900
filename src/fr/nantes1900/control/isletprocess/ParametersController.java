@@ -130,8 +130,6 @@ public class ParametersController {
     public final void loadProperties(final File file) {
         Properties parameters = FileTools.readProperties(file);
 
-        // FIXME : put the try catch out of the loop for and you will be able to
-        // remove the break :).
         try {
             for (int i = 0; i < PARAMETERS_KEY.length; i++) {
                 this.pView.setValueProperty(i + 1, Double

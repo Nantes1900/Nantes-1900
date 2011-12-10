@@ -2,10 +2,13 @@ package fr.nantes1900.view.isletprocess;
 
 import java.awt.FlowLayout;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
 
+import fr.nantes1900.constants.Icons;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.utils.FileTools;
 
@@ -54,28 +57,28 @@ public class Functions3DToolbarView extends JToolBar {
      */
     public Functions3DToolbarView() {
 
-        super(JToolBar.HORIZONTAL);
+        super(SwingConstants.HORIZONTAL);
         this.setFloatable(false);
 
-        // TODO puts icons instead
-        this.bRotationCenter = new JButton("o");
+        this.bRotationCenter = new JButton(new ImageIcon(Icons.rotation_center));
         this.bRotationCenter.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_ROTATIONCENTER));
 
         // Display type elements
-        this.bDisplayTypePolygons = new JButton("#");
+        this.bDisplayTypePolygons = new JButton(new ImageIcon(Icons.polygon));
         this.bDisplayTypePolygons.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_DISPLAYPOLYGONS));
-        this.bDisplayTypeMeshes = new JButton("$");
+        this.bDisplayTypeMeshes = new JButton(new ImageIcon(Icons.meshes));
         this.bDisplayTypeMeshes.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_DISPLAYMESHES));
         this.lDisplayType = new JLabel("");
 
         // Selection mode elements
-        this.bSelectionModeTriangles = new JButton("t");
+        this.bSelectionModeTriangles = new JButton(new ImageIcon(
+                Icons.triangles));
         this.bSelectionModeTriangles.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_SELECTTRIANGLES));
-        this.bSelectionModeMeshes = new JButton("m");
+        this.bSelectionModeMeshes = new JButton(new ImageIcon(Icons.surface));
         this.bSelectionModeMeshes.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_SELECTMESHES));
         this.lSelectionMode = new JLabel("");

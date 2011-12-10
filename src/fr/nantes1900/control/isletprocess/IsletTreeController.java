@@ -44,12 +44,14 @@ public class IsletTreeController implements ElementsSelectedListener {
     private IsletProcessController parentController;
 
     /**
-     * The listener that will listen to the item "hide" from the contextual menu.
+     * The listener that will listen to the item "hide" from the contextual
+     * menu.
      */
     private ActionListener hideActionListener;
 
     /**
-     * The listener that will listen to the item "show" from the contextual menu.
+     * The listener that will listen to the item "show" from the contextual
+     * menu.
      */
     private ActionListener showActionListener;
 
@@ -239,7 +241,6 @@ public class IsletTreeController implements ElementsSelectedListener {
                 if (this.contains(path)) {
                     // If the path has already been selected.
                     this.tree.removeSelectionPath(path);
-
                 } else {
                     if (event.getModifiersEx() == CTRL_DOWN_MASK) {
                         // If CTRL is down, adds the path selected.
@@ -273,7 +274,7 @@ public class IsletTreeController implements ElementsSelectedListener {
                     this.tree.collapsePath(treepath);
                 }
             }
-            
+
             // Refresh the tree.
             this.refresh3DSelection();
         }
@@ -300,7 +301,8 @@ public class IsletTreeController implements ElementsSelectedListener {
         /**
          * Displays the contextual menu.
          * @param event
-         *            The mouseEvent used to give the mouse location to the contextual menu.
+         *            The mouseEvent used to give the mouse location to the
+         *            contextual menu.
          */
         private void manageCMenu(final MouseEvent event) {
             if (this.tree.isSelectionEmpty()) {

@@ -145,7 +145,6 @@ public class HelpButton extends JButton implements MouseListener {
      * @return The lightened color.
      */
     private static Color lighten(final Color color, final int amount) {
-        // TODO : magic number !
         int red = (color.getRed() + amount > 255) ? 255 : color.getRed()
                 + amount;
         int green = (color.getGreen() + amount > 255) ? 255 : color.getGreen()
