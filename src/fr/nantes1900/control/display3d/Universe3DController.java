@@ -88,7 +88,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      * A constant defining the max distance between the triangle picked and the
      * neighbours triangles to select.
      */
-    public double triangleSelectionDistance = 50;
+    private double triangleSelectionDistance = 50;
     /**
      * The list of the triangles currently selected.
      */
@@ -923,7 +923,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         trianglePicked.returnNeighbours(neighbours, oriented);
 
         // Limit the neigbours only to the neighbours at a distance to the
-        // trianglePicked less than TRIANGLE_SELECTION_DISTANCE constant
+        // trianglePicked less than triangleSelectionDistance variable
         Mesh neighboursLimited = new Mesh();
         for (Triangle t : neighbours)
         {
