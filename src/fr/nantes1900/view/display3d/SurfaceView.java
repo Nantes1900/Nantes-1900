@@ -54,9 +54,6 @@ public class SurfaceView extends Shape3D {
             0.7f, 0.5f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.7f,
             0.5f, 0.0f), new Color3f(0.7f, 0.5f, 0.0f), 64);
 
-    public static final Material MATERIAL_NEIGHBOUR_LOCK = new Material(
-            new Color3f(0.5f, 0.0f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f),
-            new Color3f(0.5f, 0.0f, 0.0f), new Color3f(0.5f, 0.0f, 0.0f), 64);
 
     /**
      * The surface linked to this view.

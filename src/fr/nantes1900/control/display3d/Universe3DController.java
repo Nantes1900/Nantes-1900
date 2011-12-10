@@ -235,18 +235,23 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
+     * TODO Siju has changed this function.Check it.
      * Deselects every surfaces.
      */
     public final void deselectEverySurfaces() {
         // Copies the list to avoid ConcurrentModificationException of the list
         // surfacesSelected.
-        List<Surface> surfaces = new ArrayList<>(this.surfacesSelected);
-
-        for (Surface surface : surfaces)
+        if (this.lockMode == UNLOCK_MODE)
         {
-            this.selectOrUnselectSurface(this
-                    .getSurfaceViewFromSurface(surface));
+            List<Surface> surfaces = new ArrayList<>(this.surfacesSelected);
+
+            for (Surface surface : surfaces)
+            {
+                this.selectOrUnselectSurface(this
+                        .getSurfaceViewFromSurface(surface));
+            }
         }
+
     }
 
     /**
@@ -567,8 +572,44 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      */
     public final void selectOrUnselectSurfaceFromTree(final Surface surface) {
         SurfaceView surfaceView = this.getSurfaceViewFromSurface(surface);
-
         this.selectOrUnselectSurface(surfaceView);
+
+//        if (this.lockMode == UNLOCK_MODE)
+//        {
+//            this.selectOrUnselectSurface(surfaceView);
+//        } else
+//        {
+//            if (this.surfaceLocked != surface)
+//            {
+//
+//                // If the surfacePicked is not the surface locked.
+//                // if(this.u3DView.get)
+//                // TODO
+//                if (!this.surfaceNeighbours.contains(surface))
+//                {
+//                    this.fireSurfaceSelected(surface);
+//                    // TODO : changes its color to make the user understand that
+//                    // it
+//                    // has been selected.
+//                    this.surfaceNeighbours.add(surface);
+//                    surfaceView.setMaterial(SurfaceView.MATERIAL_NEIGHBOUR);
+//                } else
+//                {
+//                    this.fireSurfaceDeselected(surface);
+//                    this.surfaceNeighbours.remove(surface);
+//                    if (surface.getPolygon() != null)
+//                    {
+//                        surfaceView.setMaterial(SurfaceView.MATERIAL_POLYGON);
+//                    } else
+//                    {
+//                        surfaceView
+//                                .setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
+//                    }
+//                }
+//
+//            }
+//        }
+
     }
 
     /**
@@ -610,11 +651,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      */
     public final void setLockMode() {
         this.lockMode = LOCK_MODE;
-        for (Surface surfaceNeighbour : this.surfaceLocked.getNeighbours())
-        {
-            SurfaceView surfaceViewNeighbour=this.getSurfaceViewFromSurface(surfaceNeighbour);
-            surfaceViewNeighbour.setMaterial(SurfaceView.MATERIAL_NEIGHBOUR_LOCK);
-        }
     }
 
     /**
@@ -623,8 +659,10 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     public final void setUnLockMode() {
         this.lockMode = UNLOCK_MODE;
         // TODO
-        for(Surface surfaceNeighbour: this.surfaceNeighbours){
-            this.getSurfaceViewFromSurface(surfaceNeighbour).setMaterial(SurfaceView.MATERIAL_NEIGHBOUR);
+        for (Surface surfaceNeighbour : this.surfaceNeighbours)
+        {
+            this.getSurfaceViewFromSurface(surfaceNeighbour).setMaterial(
+                    SurfaceView.MATERIAL_NEIGHBOUR);
         }
         this.surfaceNeighbours = null;
     }
@@ -801,20 +839,22 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
                     // it
                     // has been selected.
                     this.surfaceNeighbours.add(surfacePicked);
-                    this.getSurfaceViewFromSurface(surfacePicked).setMaterial(SurfaceView.MATERIAL_NEIGHBOUR_LOCK);
+                    this.getSurfaceViewFromSurface(surfacePicked).setMaterial(
+                            SurfaceView.MATERIAL_NEIGHBOUR);
                 } else
                 {
                     this.fireSurfaceDeselected(surfacePicked);
                     this.surfaceNeighbours.remove(surfacePicked);
-                    if(surfacePicked.getPolygon()!=null){
-                        this.getSurfaceViewFromSurface(surfacePicked).setMaterial(SurfaceView.MATERIAL_POLYGON);
+                    if (surfacePicked.getPolygon() != null)
+                    {
+                        this.getSurfaceViewFromSurface(surfacePicked)
+                                .setMaterial(SurfaceView.MATERIAL_POLYGON);
+                    } else
+                    {
+                        this.getSurfaceViewFromSurface(surfacePicked)
+                                .setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
                     }
-                    else{
-                        this.getSurfaceViewFromSurface(surfacePicked).setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
-                    }
-                    
                 }
-
             }
         }
     }
