@@ -83,7 +83,12 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      * A constant defining the orientation tolerance (in degrees) when getting
      * all the triangles oriented as a triangle input.
      */
-    public static final int ORIENTATION_TOLERANCE = 45;
+    public static final int ORIENTATION_TOLERANCE = 20;
+    /**
+     * A constant defining the max distance between the triangle picked and the
+     * neighbours triangles to select.
+     */
+    public double triangleSelectionDistance = 50;
     /**
      * The list of the triangles currently selected.
      */
@@ -197,6 +202,15 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             this.unSelectTriangles(meshesToRemove);
         }
         this.selectionMode = selectionModeIn;
+    }
+    
+    /**
+     * Change the triangleSelectionDistance
+     * @param triangleSelectionDistance
+     *            the new triangleSelectionDistance to set
+     */
+    public final void changeTriangleSelectionDistance(final double distance) {
+        this.triangleSelectionDistance = distance;
     }
 
     /**
@@ -568,43 +582,43 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      */
     public final void selectOrUnselectSurfaceFromTree(final Surface surface) {
         SurfaceView surfaceView = this.getSurfaceViewFromSurface(surface);
-        //this.selectOrUnselectSurface(surfaceView);
+        // this.selectOrUnselectSurface(surfaceView);
 
-         if (this.lockMode == false)
-         {
-         this.selectOrUnselectSurface(surfaceView);
-         } else
-         {
-         if (this.surfaceLocked != surface)
-         {
-        
-         // If the surfacePicked is not the surface locked.
-         // if(this.u3DView.get)
-         // TODO
-         if (!this.surfaceLockedNeighbours.contains(surface))
-         {
-         this.fireSurfaceSelected(surface);
-         // TODO : changes its color to make the user understand that
-         // it
-         // has been selected.
-         this.surfaceLockedNeighbours.add(surface);
-         surfaceView.setMaterial(SurfaceView.MATERIAL_NEIGHBOUR);
-         } else
-         {
-         this.fireSurfaceDeselected(surface);
-         this.surfaceLockedNeighbours.remove(surface);
-         if (surface.getPolygon() != null)
-         {
-         surfaceView.setMaterial(SurfaceView.MATERIAL_POLYGON);
-         } else
-         {
-         surfaceView
-         .setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
-         }
-         }
-        
-         }
-         }
+        if (this.lockMode == false)
+        {
+            this.selectOrUnselectSurface(surfaceView);
+        } else
+        {
+            if (this.surfaceLocked != surface)
+            {
+
+                // If the surfacePicked is not the surface locked.
+                // if(this.u3DView.get)
+                // TODO
+                if (!this.surfaceLockedNeighbours.contains(surface))
+                {
+                    this.fireSurfaceSelected(surface);
+                    // TODO : changes its color to make the user understand that
+                    // it
+                    // has been selected.
+                    this.surfaceLockedNeighbours.add(surface);
+                    surfaceView.setMaterial(SurfaceView.MATERIAL_NEIGHBOUR);
+                } else
+                {
+                    this.fireSurfaceDeselected(surface);
+                    this.surfaceLockedNeighbours.remove(surface);
+                    if (surface.getPolygon() != null)
+                    {
+                        surfaceView.setMaterial(SurfaceView.MATERIAL_POLYGON);
+                    } else
+                    {
+                        surfaceView
+                                .setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
+                    }
+                }
+
+            }
+        }
 
     }
 
@@ -907,6 +921,16 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
                 trianglePicked.getNormal(), ORIENTATION_TOLERANCE);
         Mesh neighbours = new Mesh();
         trianglePicked.returnNeighbours(neighbours, oriented);
+
+        // Limit the neigbours only to the neighbours at a distance to the
+        // trianglePicked less than TRIANGLE_SELECTION_DISTANCE constant
+        Mesh neighboursLimited = new Mesh();
+        for (Triangle t : neighbours)
+        {
+            if (t.getP1().distance(trianglePicked.getP1()) < triangleSelectionDistance)
+                neighboursLimited.add(t);
+        }
+        neighbours = new Mesh(neighboursLimited);
 
         if (e.isControlDown())
         {
