@@ -109,8 +109,10 @@ public class IsletProcessController implements ElementsSelectedListener,
             this.biController.display();
         } catch (WeirdResultException e)
         {
-            // TODO by Camille : pop-up
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(ipView, e.getMessage(), FileTools
+                    .readInformationMessage(TextsKeys.KEY_ERROR_WEIRDRESULT,
+                            TextsKeys.MESSAGETYPE_TITLE),
+                    JOptionPane.ERROR_MESSAGE);
         }
 
         // Creates the window with all needed panels
@@ -237,8 +239,10 @@ public class IsletProcessController implements ElementsSelectedListener,
             this.biController.launchProcess();
         } catch (WeirdResultException e)
         {
-            // TODO by Camille : pop-up
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(ipView, e.getMessage(), FileTools
+                    .readInformationMessage(TextsKeys.KEY_ERROR_WEIRDRESULT,
+                            TextsKeys.MESSAGETYPE_TITLE),
+                    JOptionPane.ERROR_MESSAGE);
         }
 
         if (this.getProgression() == AbstractBuildingsIslet.FIFTH_STEP)
@@ -264,8 +268,10 @@ public class IsletProcessController implements ElementsSelectedListener,
             this.biController.display();
         } catch (WeirdResultException e)
         {
-            // TODO by Camille : pop-up
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(ipView, e.getMessage(), FileTools
+                    .readInformationMessage(TextsKeys.KEY_ERROR_WEIRDRESULT,
+                            TextsKeys.MESSAGETYPE_TITLE),
+                    JOptionPane.ERROR_MESSAGE);
         }
         setDefaultCharacterisitcsPanel();
     }
@@ -312,8 +318,10 @@ public class IsletProcessController implements ElementsSelectedListener,
             this.biController.display();
         } catch (WeirdResultException e)
         {
-            // TODO by Camille : pop-up.
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(ipView, e.getMessage(), FileTools
+                    .readInformationMessage(TextsKeys.KEY_ERROR_WEIRDRESULT,
+                            TextsKeys.MESSAGETYPE_TITLE),
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 

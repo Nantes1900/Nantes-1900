@@ -237,6 +237,11 @@ public final class TextsKeys {
      * Keys for warning messages for long processes.
      */
     public static final String KEY_WARNING_LONGPROCESS = "WarningLongProcess";
+
+    /**
+     * Key for weird results messages.
+     */
+    public static final String KEY_ERROR_WEIRDRESULT = "ErrorWeirdResults";
     /**
      * Private constructor.
      */
