@@ -89,11 +89,11 @@ public class Universe3DView extends JPanel {
      * Constant defining the sensitivity of the zoom transformation.
      */
     public static final double ZOOM_FACTOR = 2;
-    
+
     /**
      * Constant defining the sensitivity of the wheelzoom transformation.
      */
-    public static final double WHEEL_ZOOM_FACTOR=3;
+    public static final double WHEEL_ZOOM_FACTOR = 3;
     /**
      * Constant defining the sensitivity of the zoom transformation.
      */
@@ -128,6 +128,10 @@ public class Universe3DView extends JPanel {
      *            the list of surfaces to add
      */
     public final void addSurfaces(final List<Surface> surfaces) {
+        this.u3DController.setSurfaceLocked(null);
+        this.u3DController.setSurfaceLockedNeighbours(null);
+        this.u3DController.setLockMode(false);
+        
         if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
         {
             this.displayMeshes(surfaces);
@@ -155,6 +159,7 @@ public class Universe3DView extends JPanel {
 
         // Changes the rotation center
         this.u3DController.getMouseRotate().setCenter(centroid);
+
     }
 
     /**
@@ -271,14 +276,14 @@ public class Universe3DView extends JPanel {
         mouseZoom.setTransformGroup(transformGroup);
         transformGroup.addChild(mouseZoom);
         mouseZoom.setSchedulingBounds(boundingSphere);
-        
-        //Links the wheel of the mouse with a zoom transformation
-        MouseWheelZoom mouseWheelZoom=new MouseWheelZoom();
+
+        // Links the wheel of the mouse with a zoom transformation
+        MouseWheelZoom mouseWheelZoom = new MouseWheelZoom();
         mouseWheelZoom.setFactor(WHEEL_ZOOM_FACTOR);
         mouseWheelZoom.setTransformGroup(rotationGroup);
         transformGroup.addChild(mouseWheelZoom);
         mouseWheelZoom.setSchedulingBounds(boundingSphere);
-        
+
         // Links the right button of the mouse with a translation transformation
         MouseTranslate mouseTranslate = new MouseTranslate();
         mouseTranslate.setFactor(TRANSLATION_FACTOR);
@@ -297,8 +302,12 @@ public class Universe3DView extends JPanel {
      *            The list of surfaces containing the meshes to display.
      */
     private void displayMeshes(final List<Surface> surfacesList) {
+        int triangleCount=0;
         for (Surface surface : surfacesList)
-        {
+        {       
+            if(surface.getNodeString()!="Sols"){
+                triangleCount+=surface.getMesh().size();
+            }
             SurfaceView surfaceView = new SurfaceView(surface);
 
             MeshView meshView = new MeshView(surface.getMesh());
@@ -312,6 +321,7 @@ public class Universe3DView extends JPanel {
             surfaceView.showMeshView();
             this.surfaceViewList.add(surfaceView);
         }
+        System.out.println(triangleCount);
     }
 
     /**
@@ -322,8 +332,10 @@ public class Universe3DView extends JPanel {
      *            The list of surfaces containing the meshes to display.
      */
     private void displayPolygons(final List<Surface> surfacesList) {
+        int triangleCount=0;
         for (Surface surface : surfacesList)
         {
+           
             SurfaceView surfaceView = new SurfaceView(surface);
 
             MeshView meshView = new MeshView(surface.getMesh());
@@ -333,10 +345,13 @@ public class Universe3DView extends JPanel {
             {
                 PolygonView polygonView = new PolygonView(surface.getPolygon());
                 surfaceView.setPolygonView(polygonView);
+                
+                triangleCount+=polygonView.getVertexCount()/2-2;
             }
             surfaceView.showPolygonView();
             this.surfaceViewList.add(surfaceView);
         }
+        System.out.println(triangleCount);
     }
 
     /**
