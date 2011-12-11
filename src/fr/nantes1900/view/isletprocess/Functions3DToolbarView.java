@@ -5,11 +5,13 @@ import java.awt.FlowLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 
 import fr.nantes1900.constants.Icons;
 import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.utils.FileTools;
 
 /**
@@ -51,7 +53,10 @@ public class Functions3DToolbarView extends JToolBar {
      * Default generated serial UID.
      */
     private static final long serialVersionUID = 1L;
-
+    /**
+     * Slider to modify the distance in triangles selection mode.
+     */
+    private JSlider sDistance;
     /**
      * Constructor. Creates and adds every elements to the toolbar.
      */
@@ -82,6 +87,7 @@ public class Functions3DToolbarView extends JToolBar {
         this.bSelectionModeMeshes.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_SELECTMESHES));
         this.lSelectionMode = new JLabel("");
+        this.sDistance = new JSlider(0, 200, 50);
 
         // Adds elements to the toolbar
         FlowLayout fl = new FlowLayout(FlowLayout.LEADING, 5, 5);
@@ -92,6 +98,7 @@ public class Functions3DToolbarView extends JToolBar {
         this.add(this.bSelectionModeTriangles);
         this.add(this.bSelectionModeMeshes);
         this.add(this.lSelectionMode);
+        this.add(sDistance);
         this.addSeparator();
         this.add(this.bDisplayTypeMeshes);
         this.add(this.bDisplayTypePolygons);
@@ -152,5 +159,9 @@ public class Functions3DToolbarView extends JToolBar {
      */
     public final JLabel getDisplayTypeLabel() {
         return this.lDisplayType;
+    }
+
+    public JSlider getDistanceSlider() {
+        return this.sDistance;
     }
 }

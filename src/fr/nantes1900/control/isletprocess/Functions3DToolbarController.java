@@ -3,6 +3,10 @@ package fr.nantes1900.control.isletprocess;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JSlider;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
+
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
@@ -36,14 +40,12 @@ public class Functions3DToolbarController {
      * Is the selection mode button enabled. 0 : selection mode triangles; 1 :
      * selection mode meshes
      */
-    private boolean[] selectionModeEnable = { true, true
-    };
+    private boolean[] selectionModeEnable = {true, true};
     /**
      * Is the display type button enabled. 0 : display type meshes; 1 : display
      * type polygons
      */
-    private boolean[] displayTypeEnable = { true, true
-    };
+    private boolean[] displayTypeEnable = {true, true};
 
     /**
      * Creates a new toolbar controller which creates the view and sets actions
@@ -76,11 +78,13 @@ public class Functions3DToolbarController {
                     @Override
                     public void actionPerformed(final ActionEvent arg0) {
                         setDisplayType(Universe3DController.DISPLAY_MESH_MODE);
-                        try {
+                        try
+                        {
                             Functions3DToolbarController.this
                                     .getParentController().getBiController()
                                     .display();
-                        } catch (WeirdResultException e) {
+                        } catch (WeirdResultException e)
+                        {
                             // TODO by Camille : pop-up
                             e.printStackTrace();
                         }
@@ -94,11 +98,13 @@ public class Functions3DToolbarController {
                     @Override
                     public void actionPerformed(final ActionEvent arg0) {
                         setDisplayType(Universe3DController.DISPLAY_POLYGON_MODE);
-                        try {
+                        try
+                        {
                             Functions3DToolbarController.this
                                     .getParentController().getBiController()
                                     .display();
-                        } catch (WeirdResultException e) {
+                        } catch (WeirdResultException e)
+                        {
                             // TODO by Camille : pop-up
                             e.printStackTrace();
                         }
@@ -123,6 +129,22 @@ public class Functions3DToolbarController {
                     public void actionPerformed(final ActionEvent arg0) {
                         setSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
                     }
+                });
+
+        // modifies the distance used for triangles selection
+        this.toolbarView.getDistanceSlider().addChangeListener(
+                new ChangeListener() {
+
+                    @Override
+                    public void stateChanged(ChangeEvent event) {
+                        double newValue = new Double(((JSlider) event
+                                .getSource()).getValue());
+                        newValue = (newValue < 1.0) ? 1.0 : newValue;
+                        Functions3DToolbarController.this.parentController
+                                .getU3DController()
+                                .changeTriangleSelectionDistance(newValue);
+                    }
+
                 });
     }
 
@@ -160,18 +182,21 @@ public class Functions3DToolbarController {
 
     /**
      * Sets the selection mode.
-     * @param selectionModeIn
+     * @param selectionMode
      *            the new selection mode to set :
      *            Universe3DController.SELECTION_TRIANGLE_MODE or
      *            Universe3DController.SELECTION_SURFACE_MODE
      */
-    public final void setSelectionMode(final int selectionModeIn) {
-        if (selectionModeIn == Universe3DController.SELECTION_TRIANGLE_MODE) {
-            this.toolbarView.getSelectionModeMeshesButton().setEnabled(true);
-
-            if (this.selectionModeEnable[1]) {
-                this.toolbarView.getSelectionModeTrianglesButton().setEnabled(
-                        false);
+    public final void setSelectionMode(final int selectionMode) {
+        if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE)
+        {
+            this.toolbarView.getSelectionModeTrianglesButton()
+                    .setEnabled(false);
+            this.toolbarView.getDistanceSlider().setEnabled(true);
+            if (this.selectionModeEnable[1])
+            {
+                this.toolbarView.getSelectionModeMeshesButton()
+                        .setEnabled(true);
             }
 
             this.toolbarView
@@ -182,11 +207,14 @@ public class Functions3DToolbarController {
             Functions3DToolbarController.this.parentController
                     .changeSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
 
-        } else {
+        } else
+        {
 
             this.toolbarView.getSelectionModeMeshesButton().setEnabled(false);
+            this.toolbarView.getDistanceSlider().setEnabled(false);
 
-            if (this.selectionModeEnable[0]) {
+            if (this.selectionModeEnable[0])
+            {
                 this.toolbarView.getSelectionModeTrianglesButton().setEnabled(
                         true);
             }
@@ -197,7 +225,7 @@ public class Functions3DToolbarController {
                     .changeSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
         }
 
-        this.selectionMode = selectionModeIn;
+        this.selectionMode = selectionMode;
         checkAllDisabledSelectionMode();
     }
 
@@ -209,11 +237,13 @@ public class Functions3DToolbarController {
      *            Universe3DController.DISPLAY_POLYGON_MODE
      */
     public final void setDisplayType(final int displayTypeIn) {
-        if (displayTypeIn == Universe3DController.DISPLAY_MESH_MODE) {
+        if (displayTypeIn == Universe3DController.DISPLAY_MESH_MODE)
+        {
 
             this.toolbarView.getDisplayTypeMeshesButton().setEnabled(false);
 
-            if (this.displayTypeEnable[1]) {
+            if (this.displayTypeEnable[1])
+            {
                 this.toolbarView.getDisplayTypePolygonsButton()
                         .setEnabled(true);
             }
@@ -228,10 +258,12 @@ public class Functions3DToolbarController {
                     .getU3DController().setDisplayMode(
                             Universe3DController.DISPLAY_MESH_MODE);
 
-        } else {
+        } else
+        {
             this.toolbarView.getDisplayTypePolygonsButton().setEnabled(false);
 
-            if (this.displayTypeEnable[0]) {
+            if (this.displayTypeEnable[0])
+            {
                 this.toolbarView.getDisplayTypeMeshesButton().setEnabled(true);
             }
 
@@ -262,12 +294,14 @@ public class Functions3DToolbarController {
     public final void setEnableSelectionMode(final boolean enable,
             final int selectionModeIn) {
 
-        if (selectionModeIn == Universe3DController.SELECTION_TRIANGLE_MODE) {
+        if (selectionModeIn == Universe3DController.SELECTION_TRIANGLE_MODE)
+        {
             this.toolbarView.getSelectionModeTrianglesButton().setEnabled(
                     enable);
             this.selectionModeEnable[0] = enable;
 
-        } else if (selectionModeIn == Universe3DController.SELECTION_SURFACE_MODE) {
+        } else if (selectionModeIn == Universe3DController.SELECTION_SURFACE_MODE)
+        {
             this.toolbarView.getSelectionModeMeshesButton().setEnabled(enable);
             this.selectionModeEnable[1] = enable;
         }
@@ -287,11 +321,13 @@ public class Functions3DToolbarController {
     public final void setEnableDisplayType(final boolean enable,
             final int displayTypeIn) {
 
-        if (displayTypeIn == Universe3DController.DISPLAY_MESH_MODE) {
+        if (displayTypeIn == Universe3DController.DISPLAY_MESH_MODE)
+        {
             this.toolbarView.getDisplayTypeMeshesButton().setEnabled(enable);
             this.displayTypeEnable[0] = enable;
 
-        } else if (displayTypeIn == Universe3DController.DISPLAY_POLYGON_MODE) {
+        } else if (displayTypeIn == Universe3DController.DISPLAY_POLYGON_MODE)
+        {
             this.toolbarView.getDisplayTypePolygonsButton().setEnabled(enable);
             this.displayTypeEnable[1] = enable;
         }
@@ -307,10 +343,12 @@ public class Functions3DToolbarController {
 
         if (!this.toolbarView.getSelectionModeMeshesButton().isEnabled()
                 && !this.toolbarView.getSelectionModeTrianglesButton()
-                        .isEnabled()) {
+                        .isEnabled())
+        {
             this.toolbarView.getSelectionModeLabel().setEnabled(false);
 
-        } else {
+        } else
+        {
             this.toolbarView.getSelectionModeLabel().setEnabled(true);
         }
     }
@@ -321,10 +359,12 @@ public class Functions3DToolbarController {
      */
     private void checkAllDisabledDisplayType() {
         if (!this.toolbarView.getDisplayTypePolygonsButton().isEnabled()
-                && !this.toolbarView.getDisplayTypeMeshesButton().isEnabled()) {
+                && !this.toolbarView.getDisplayTypeMeshesButton().isEnabled())
+        {
             this.toolbarView.getDisplayTypeLabel().setEnabled(false);
 
-        } else {
+        } else
+        {
             this.toolbarView.getDisplayTypeLabel().setEnabled(true);
         }
     }
