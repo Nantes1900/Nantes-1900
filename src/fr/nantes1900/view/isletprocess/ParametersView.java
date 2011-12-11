@@ -158,7 +158,7 @@ public class ParametersView extends JPanel {
         }
 
       //Create the HelpButtons
-        for(int i=1; i < this.value.length; i++){
+        for(int i=1; i < this.help.length; i++){
             this.help[i] = new HelpButton(FileTools.readHelpMessage(
                     TextsKeys.KEY_PARAMETERSTIP, TextsKeys.MESSAGETYPE_TOOLTIP),
                     FileTools.readHelpMessage(TextsKeys.KEY_PARAMETERSTIP+i,
