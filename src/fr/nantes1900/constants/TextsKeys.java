@@ -232,6 +232,11 @@ public final class TextsKeys {
      * Key for type characteristics help messages.
      */
     public static final String KEY_HELP_C_NEIGHBORS = "CharacteristicsType";
+
+    /**
+     * Keys for warning messages for long processes.
+     */
+    public static final String KEY_WARNING_LONGPROCESS = "WarningLongProcess";
     /**
      * Private constructor.
      */
