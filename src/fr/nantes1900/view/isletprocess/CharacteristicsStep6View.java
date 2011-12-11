@@ -157,7 +157,13 @@ public class CharacteristicsStep6View extends CharacteristicsView {
                 0.0, GridBagConstraints.CENTER, GridBagConstraints.NONE,
                 new Insets(0, 10, 0, 10), 0, 0));
 
-        this.helpButton = new HelpButton();
+        this.helpButton = new HelpButton(FileTools.readHelpMessage(
+                TextsKeys.KEY_HELP_C_NEIGHBORS,
+                TextsKeys.MESSAGETYPE_TOOLTIP), FileTools
+                .readHelpMessage(TextsKeys.KEY_HELP_C_NEIGHBORS,
+                        TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                .readHelpMessage(TextsKeys.KEY_HELP_C_NEIGHBORS,
+                        TextsKeys.MESSAGETYPE_TITLE));
 
         this.getPanelContent().add(bLock);
         this.addCaracteristic(createSimpleCaracteristic(sortPanel, new JLabel(

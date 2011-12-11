@@ -205,6 +205,34 @@ public final class TextsKeys {
     public static final String KEY_ERROR_INCORRECTPARAMETER = "ErrorIncorrectParameter";
 
     /**
+     * Key for type characteristics help messages.
+     */
+    public static final String KEY_HELP_C_TYPE = "CharacteristicsType";
+    /**
+     * Key for type characteristics help messages.
+     */
+    public static final String KEY_HELP_C_TYPE_TRIANGLES = "CharacteristicsTypeTriangles";
+    /**
+     * Key for type characteristics help messages.
+     */
+    public static final String KEY_HELP_C_TYPE_SURFACES = "CharacteristicsTypeSurfaces";
+    /**
+     * Key for type characteristics help messages.
+     */
+    public static final String KEY_HELP_C_DELETE = "CharacteristicsDelete";
+    /**
+     * Key for type characteristics help messages.
+     */
+    public static final String KEY_HELP_C_MERGE = "CharacteristicsMerge";
+    /**
+     * Key for type characteristics help messages.
+     */
+    public static final String KEY_HELP_C_NOISE = "CharacteristicsNeighbors";
+    /**
+     * Key for type characteristics help messages.
+     */
+    public static final String KEY_HELP_C_NEIGHBORS = "CharacteristicsType";
+    /**
      * Private constructor.
      */
     private TextsKeys() {
