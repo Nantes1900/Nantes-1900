@@ -157,8 +157,6 @@ public final class TextsKeys {
      */
     public static final String KEY_CHARACTERISTICS = "Characteristics";
 
-    public static final String KEY_STATUS_STEP1 = "StatusStep1";
-
     public static final String KEY_ALTITUDEERROR = "AltitureError";
     public static final String KEY_ANGLEGROUNDERROR = "AngleGroundError";
     public static final String KEY_LARGEANGLEGROUNDERROR = "LargeAngleGroundError";
@@ -174,6 +172,8 @@ public final class TextsKeys {
     public static final String KEY_WALLSIZEERROR = "WallSizeError";
     public static final String KEY_ISORIENTEDFACTOR = "IsOrientedFactor";
 
+    public static final String KEY_PARAMETERSTIP = "ParametersTip";
+    
     /**
      * Key for tooltip of compute gravity normal button.
      */
@@ -202,6 +202,70 @@ public final class TextsKeys {
      */
     public static final String KEY_ERROR_INCORRECTPARAMETER = "ErrorIncorrectParameter";
 
+    /**
+     * Key for type characteristics help messages.
+     */
+    public static final String KEY_HELP_C_TYPE = "CharacteristicsType";
+    /**
+     * Key for type characteristics help messages.
+     */
+    public static final String KEY_HELP_C_TYPE_TRIANGLES = "CharacteristicsTypeTriangles";
+    /**
+     * Key for type characteristics help messages.
+     */
+    public static final String KEY_HELP_C_TYPE_SURFACES = "CharacteristicsTypeSurfaces";
+    /**
+     * Key for type characteristics help messages.
+     */
+    public static final String KEY_HELP_C_DELETE = "CharacteristicsDelete";
+    /**
+     * Key for type characteristics help messages.
+     */
+    public static final String KEY_HELP_C_MERGE = "CharacteristicsMerge";
+    /**
+     * Key for type characteristics help messages.
+     */
+    public static final String KEY_HELP_C_NOISE = "CharacteristicsNeighbors";
+    /**
+     * Key for type characteristics help messages.
+     */
+    public static final String KEY_HELP_C_NEIGHBORS = "CharacteristicsType";
+
+    /**
+     * Keys for warning messages for long processes.
+     */
+    public static final String KEY_WARNING_LONGPROCESS = "WarningLongProcess";
+
+    /**
+     * Key for weird results messages.
+     */
+    public static final String KEY_ERROR_WEIRDRESULT = "ErrorWeirdResults";
+    
+    /**
+     * Key for step 1 explanations.
+     */
+    public static final String KEY_HELP_STEP1= "Step1";
+    /**
+     * Key for step 1 explanations.
+     */
+    public static final String KEY_HELP_STEP2= "Step2";
+    /**
+     * Key for step 1 explanations.
+     */
+    public static final String KEY_HELP_STEP3= "Step3";
+    /**
+     * Key for step 1 explanations.
+     */
+    public static final String KEY_HELP_STEP4= "Step4";
+    /**
+     * Key for step 1 explanations.
+     */
+    public static final String KEY_HELP_STEP5= "Step5";
+    /**
+     * Key for step 1 explanations.
+     */
+    public static final String KEY_HELP_STEP6= "Step6";
+    
     /**
      * Private constructor.
      */

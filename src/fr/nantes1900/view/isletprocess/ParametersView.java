@@ -25,6 +25,7 @@ import fr.nantes1900.constants.coefficients.SeparationWallsSeparationRoofs;
 import fr.nantes1900.constants.coefficients.SimplificationSurfaces;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.utils.FileTools;
+import fr.nantes1900.view.components.HelpButton;
 
 /**
  * Implements a panel displaying the parameters of the processes. The user can
@@ -46,6 +47,10 @@ public class ParametersView extends JPanel {
      * The list of values displaying the parameters.
      */
     private ValueProperty[] value;
+    /**
+     * The buttons help
+     */
+    private HelpButton[] help;
     /**
      * The button save.
      */
@@ -89,6 +94,7 @@ public class ParametersView extends JPanel {
         // Init parameters
         this.property = new JLabel[15];
         this.value = new ValueProperty[15];
+        this.help = new HelpButton[15];
         this.property[1] = new JLabel(
                 FileTools.readElementText(TextsKeys.KEY_ALTITUDEERROR));
         this.value[1] = new ValueProperty(
@@ -151,6 +157,16 @@ public class ParametersView extends JPanel {
             this.property[i].setPreferredSize(this.labelDimension);
         }
 
+      //Create the HelpButtons
+        for(int i=1; i < this.help.length; i++){
+            this.help[i] = new HelpButton(FileTools.readHelpMessage(
+                    TextsKeys.KEY_PARAMETERSTIP, TextsKeys.MESSAGETYPE_TOOLTIP),
+                    FileTools.readHelpMessage(TextsKeys.KEY_PARAMETERSTIP+i,
+                            TextsKeys.MESSAGETYPE_MESSAGE),
+                    FileTools.readHelpMessage(TextsKeys.KEY_PARAMETERSTIP,
+                            TextsKeys.MESSAGETYPE_TITLE));
+        }
+        
         // Layout
         this.setLayout(new BorderLayout());
         this.pTop = new JPanel();
@@ -170,7 +186,7 @@ public class ParametersView extends JPanel {
                 .readElementText(TextsKeys.KEY_LOADPARAMETERSBUTTON));
         this.bShow.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_SHOWPARAMETERSBUTTON));
-
+        
         // Displays the buttons
         this.pTop.setLayout(new FlowLayout(FlowLayout.RIGHT));
         this.pTop.add(this.bLoad);
@@ -191,10 +207,13 @@ public class ParametersView extends JPanel {
     private void displayOneParameter(final int x, final int y, final int n) {
         this.pCenter.add(this.property[n], new GridBagConstraints(x, y, 1, 1,
                 0, 0, GridBagConstraints.PAGE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 5));
+                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 0), 0, 5));
         this.pCenter.add(this.value[n], new GridBagConstraints(x + 1, y, 1, 1,
                 0, 0, GridBagConstraints.PAGE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 5));
+                GridBagConstraints.HORIZONTAL, new Insets(8, 6, 8, 0), 0, 5));
+        this.pCenter.add(this.help[n], new GridBagConstraints(x + 2, y, 1, 1,
+                0, 0, GridBagConstraints.PAGE_START,
+                GridBagConstraints.HORIZONTAL, new Insets(12, 5, 8, 5), 0, 5));
     }
 
     /**

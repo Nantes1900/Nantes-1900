@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -143,7 +144,10 @@ public class IsletTreeController implements ElementsSelectedListener {
             System.out.println(FileTools.readInformationMessage(
                     TextsKeys.KEY_RETURNNODE, TextsKeys.MESSAGETYPE_MESSAGE));
         } catch (WeirdResultException e) {
-            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e.getMessage(), FileTools
+                    .readInformationMessage(TextsKeys.KEY_ERROR_WEIRDRESULT,
+                            TextsKeys.MESSAGETYPE_TITLE),
+                    JOptionPane.ERROR_MESSAGE);
         }
     }
 

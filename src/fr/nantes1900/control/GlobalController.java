@@ -2,6 +2,8 @@ package fr.nantes1900.control;
 
 import java.io.File;
 
+import javax.swing.ToolTipManager;
+
 import fr.nantes1900.control.isletprocess.IsletProcessController;
 import fr.nantes1900.control.isletselection.IsletSelectionController;
 import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
@@ -27,6 +29,11 @@ public class GlobalController {
      */
     public GlobalController() {
         this.isletSelectionController = new IsletSelectionController(this);
+        
+        // For tooltips not be hidden by Canvas 3d
+        ToolTipManager ttManager = ToolTipManager.sharedInstance();
+        ttManager.setEnabled(true);
+        ttManager.setLightWeightPopupEnabled(false);
     }
 
     /**
