@@ -174,6 +174,8 @@ public final class TextsKeys {
     public static final String KEY_WALLSIZEERROR = "WallSizeError";
     public static final String KEY_ISORIENTEDFACTOR = "IsOrientedFactor";
 
+    public static final String KEY_PARAMETERSTIP = "ParametersTip";
+    
     /**
      * Key for tooltip of compute gravity normal button.
      */
