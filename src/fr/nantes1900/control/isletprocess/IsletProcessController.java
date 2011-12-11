@@ -127,6 +127,7 @@ public class IsletProcessController implements ElementsSelectedListener,
         this.f3DController
                 .setDisplayType(Universe3DController.DISPLAY_MESH_MODE);
         this.setToolbarButtons();
+        this.setStatusBarStep();
         this.ipView.setVisible(true);
         this.u3DController.addElementsSelectedListener(this);
     }
@@ -262,6 +263,7 @@ public class IsletProcessController implements ElementsSelectedListener,
      */
     public final void refreshViews() {
         this.itController.refreshView();
+        setStatusBarStep();
         this.nbController.getView().refreshStepTitle(this.getProgression());
         try
         {
@@ -341,6 +343,38 @@ public class IsletProcessController implements ElementsSelectedListener,
     public final void setDisplayMode(final int displayMode) {
         this.u3DController.setDisplayMode(displayMode);
         setDefaultCharacterisitcsPanel();
+    }
+    
+    /**
+     * Sets default status bar text for the current step.
+     */
+    private void setStatusBarStep()
+    {
+        int step = getProgression();
+        String text = "";
+        switch (step)
+        {
+            case 1:
+                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP1, TextsKeys.MESSAGETYPE_STATUSBAR);
+                break;
+            case 2:
+                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP2, TextsKeys.MESSAGETYPE_STATUSBAR);
+                break;
+            case 3:
+                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP3, TextsKeys.MESSAGETYPE_STATUSBAR);
+                break;
+            case 4:
+                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP4, TextsKeys.MESSAGETYPE_STATUSBAR);
+                break;
+            case 5:
+                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP5, TextsKeys.MESSAGETYPE_STATUSBAR);
+                break;
+            case 6:
+                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP6, TextsKeys.MESSAGETYPE_STATUSBAR);
+                break;
+        }
+        
+        this.ipView.setStatusBarText(text);
     }
 
     /**

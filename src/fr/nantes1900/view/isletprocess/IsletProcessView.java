@@ -114,7 +114,7 @@ public class IsletProcessView extends PFrame {
                 new Insets(5, 5, 10, 10), 0, 0));
 
         this.setStatusBarText(FileTools
-                .readElementText(TextsKeys.KEY_STATUS_STEP1));
+                .readElementText(TextsKeys.KEY_HELP_STEP1));
     }
 
     /**

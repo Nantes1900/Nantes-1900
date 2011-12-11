@@ -157,8 +157,6 @@ public final class TextsKeys {
      */
     public static final String KEY_CHARACTERISTICS = "Characteristics";
 
-    public static final String KEY_STATUS_STEP1 = "StatusStep1";
-
     public static final String KEY_ALTITUDEERROR = "AltitureError";
     public static final String KEY_ANGLEGROUNDERROR = "AngleGroundError";
     public static final String KEY_LARGEANGLEGROUNDERROR = "LargeAngleGroundError";
@@ -242,6 +240,32 @@ public final class TextsKeys {
      * Key for weird results messages.
      */
     public static final String KEY_ERROR_WEIRDRESULT = "ErrorWeirdResults";
+    
+    /**
+     * Key for step 1 explanations.
+     */
+    public static final String KEY_HELP_STEP1= "Step1";
+    /**
+     * Key for step 1 explanations.
+     */
+    public static final String KEY_HELP_STEP2= "Step2";
+    /**
+     * Key for step 1 explanations.
+     */
+    public static final String KEY_HELP_STEP3= "Step3";
+    /**
+     * Key for step 1 explanations.
+     */
+    public static final String KEY_HELP_STEP4= "Step4";
+    /**
+     * Key for step 1 explanations.
+     */
+    public static final String KEY_HELP_STEP5= "Step5";
+    /**
+     * Key for step 1 explanations.
+     */
+    public static final String KEY_HELP_STEP6= "Step6";
+    
     /**
      * Private constructor.
      */

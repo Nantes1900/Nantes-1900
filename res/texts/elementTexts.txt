@@ -35,7 +35,6 @@ DisplayMeshesLabel=Affichage : Maillages
 DisplayPolygonsLabel=Affichage : Polygones
 TreeView=Arborescence
 Parameters=Paramètres
-StatusStep1=Vous pouvez modifier les paramètres à l'aide de l'onglet "paramètres".
 Title=Nantes 1900
 AltitureError=Erreur d'altitude
 AngleGroundError=Erreur d'angle au sol
