@@ -61,8 +61,6 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView {
                                 TextsKeys.MESSAGETYPE_MESSAGE), FileTools
                         .readHelpMessage(TextsKeys.KEY_HELP_C_DELETE,
                                 TextsKeys.MESSAGETYPE_TITLE))));
-
-        this.bValidate.setEnabled(true);
     }
 
     /**
