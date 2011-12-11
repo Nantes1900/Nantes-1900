@@ -38,10 +38,12 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView {
 
             @Override
             public void itemStateChanged(final ItemEvent arg0) {
-                if (((JCheckBox) arg0.getSource()).isSelected()) {
+                if (((JCheckBox) arg0.getSource()).isSelected())
+                {
                     CharacteristicsStep3TrianglesView.this.bValidate
                             .setEnabled(true);
-                } else {
+                } else
+                {
                     CharacteristicsStep3TrianglesView.this.bValidate
                             .setEnabled(false);
                 }
@@ -52,9 +54,13 @@ public class CharacteristicsStep3TrianglesView extends CharacteristicsView {
         this.addCaracteristic(createSimpleCaracteristic(
                 this.cbDelete,
                 new JLabel(FileTools.readElementText(TextsKeys.KEY_DELETETEXT)),
-                new HelpButton()));
-
-        this.bValidate.setEnabled(true);
+                new HelpButton(FileTools.readHelpMessage(
+                        TextsKeys.KEY_HELP_C_DELETE,
+                        TextsKeys.MESSAGETYPE_TOOLTIP), FileTools
+                        .readHelpMessage(TextsKeys.KEY_HELP_C_DELETE,
+                                TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                        .readHelpMessage(TextsKeys.KEY_HELP_C_DELETE,
+                                TextsKeys.MESSAGETYPE_TITLE))));
     }
 
     /**

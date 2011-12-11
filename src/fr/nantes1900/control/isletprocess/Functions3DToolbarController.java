@@ -3,6 +3,7 @@ package fr.nantes1900.control.isletprocess;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -85,8 +86,10 @@ public class Functions3DToolbarController {
                                     .display();
                         } catch (WeirdResultException e)
                         {
-                            // TODO by Camille : pop-up
-                            e.printStackTrace();
+                            JOptionPane.showMessageDialog(null, e.getMessage(), FileTools
+                                    .readInformationMessage(TextsKeys.KEY_ERROR_WEIRDRESULT,
+                                            TextsKeys.MESSAGETYPE_TITLE),
+                                    JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 });
@@ -105,8 +108,10 @@ public class Functions3DToolbarController {
                                     .display();
                         } catch (WeirdResultException e)
                         {
-                            // TODO by Camille : pop-up
-                            e.printStackTrace();
+                            JOptionPane.showMessageDialog(null, e.getMessage(), FileTools
+                                    .readInformationMessage(TextsKeys.KEY_ERROR_WEIRDRESULT,
+                                            TextsKeys.MESSAGETYPE_TITLE),
+                                    JOptionPane.ERROR_MESSAGE);
                         }
                     }
                 });

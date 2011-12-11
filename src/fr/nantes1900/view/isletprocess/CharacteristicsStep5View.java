@@ -48,7 +48,8 @@ public class CharacteristicsStep5View extends CharacteristicsView {
 
             @Override
             public void itemStateChanged(final ItemEvent arg0) {
-                if (((JCheckBox) arg0.getSource()).isSelected()) {
+                if (((JCheckBox) arg0.getSource()).isSelected())
+                {
                     CharacteristicsStep5View.this.bValidate.setEnabled(true);
                 }
                 CharacteristicsStep5View.this.checkEnableValidateButton();
@@ -58,8 +59,16 @@ public class CharacteristicsStep5View extends CharacteristicsView {
 
         this.lMerge = new JLabel(
                 FileTools.readElementText(TextsKeys.KEY_MERGETEXT));
-        this.addCaracteristic(createSimpleCaracteristic(this.cbMerge,
-                this.lMerge, new HelpButton()));
+        this.addCaracteristic(createSimpleCaracteristic(
+                this.cbMerge,
+                this.lMerge,
+                new HelpButton(FileTools.readHelpMessage(
+                        TextsKeys.KEY_HELP_C_MERGE,
+                        TextsKeys.MESSAGETYPE_TOOLTIP), FileTools
+                        .readHelpMessage(TextsKeys.KEY_HELP_C_MERGE,
+                                TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                        .readHelpMessage(TextsKeys.KEY_HELP_C_MERGE,
+                                TextsKeys.MESSAGETYPE_TITLE))));
 
         // Puts in noise actions
         this.cbNoise = new JCheckBox();
@@ -67,7 +76,8 @@ public class CharacteristicsStep5View extends CharacteristicsView {
 
             @Override
             public void itemStateChanged(final ItemEvent arg0) {
-                if (((JCheckBox) arg0.getSource()).isSelected()) {
+                if (((JCheckBox) arg0.getSource()).isSelected())
+                {
                     CharacteristicsStep5View.this.getCBMerge().setSelected(
                             false);
                 }
@@ -80,16 +90,24 @@ public class CharacteristicsStep5View extends CharacteristicsView {
                 this.cbNoise,
                 new JLabel(FileTools
                         .readElementText(TextsKeys.KEY_PUTINNOISETEXT)),
-                new HelpButton()));
+                new HelpButton(FileTools.readHelpMessage(
+                        TextsKeys.KEY_HELP_C_NOISE,
+                        TextsKeys.MESSAGETYPE_TOOLTIP), FileTools
+                        .readHelpMessage(TextsKeys.KEY_HELP_C_NOISE,
+                                TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                        .readHelpMessage(TextsKeys.KEY_HELP_C_NOISE,
+                                TextsKeys.MESSAGETYPE_TITLE))));
     }
 
     /**
      * TODO by Camille.
      */
     public final void checkEnableValidateButton() {
-        if (this.cbMerge.isSelected() || this.cbNoise.isSelected()) {
+        if (this.cbMerge.isSelected() || this.cbNoise.isSelected())
+        {
             CharacteristicsStep5View.this.bValidate.setEnabled(true);
-        } else {
+        } else
+        {
             CharacteristicsStep5View.this.bValidate.setEnabled(false);
         }
     }
