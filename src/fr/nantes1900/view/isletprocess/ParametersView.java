@@ -213,7 +213,7 @@ public class ParametersView extends JPanel {
                 GridBagConstraints.HORIZONTAL, new Insets(8, 6, 8, 0), 0, 5));
         this.pCenter.add(this.help[n], new GridBagConstraints(x + 2, y, 1, 1,
                 0, 0, GridBagConstraints.PAGE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(12, 2, 8, 8), 0, 5));
+                GridBagConstraints.HORIZONTAL, new Insets(12, 5, 8, 5), 0, 5));
     }
 
     /**
