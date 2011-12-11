@@ -205,15 +205,15 @@ public class ParametersView extends JPanel {
      *            TODO by Luc.
      */
     private void displayOneParameter(final int x, final int y, final int n) {
-        this.pCenter.add(this.help[n], new GridBagConstraints(x, y, 1, 1,
+        this.pCenter.add(this.property[n], new GridBagConstraints(x, y, 1, 1,
                 0, 0, GridBagConstraints.PAGE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(12, 8, 8, 0), 0, 5));
-        this.pCenter.add(this.property[n], new GridBagConstraints(x + 1, y, 1, 1,
+                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 0), 0, 5));
+        this.pCenter.add(this.value[n], new GridBagConstraints(x + 1, y, 1, 1,
                 0, 0, GridBagConstraints.PAGE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(8, 2, 8, 0), 0, 5));
-        this.pCenter.add(this.value[n], new GridBagConstraints(x + 2, y, 1, 1,
+                GridBagConstraints.HORIZONTAL, new Insets(8, 6, 8, 0), 0, 5));
+        this.pCenter.add(this.help[n], new GridBagConstraints(x + 2, y, 1, 1,
                 0, 0, GridBagConstraints.PAGE_START,
-                GridBagConstraints.HORIZONTAL, new Insets(8, 8, 8, 8), 0, 5));
+                GridBagConstraints.HORIZONTAL, new Insets(12, 2, 8, 8), 0, 5));
     }
 
     /**
