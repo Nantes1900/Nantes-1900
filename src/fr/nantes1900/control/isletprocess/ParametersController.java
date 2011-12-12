@@ -108,9 +108,9 @@ public class ParametersController {
             public void actionPerformed(final ActionEvent arg0) {
                 String parametersList = new String();
 
-                for (int i = 0; i < PARAMETERS_KEY.length; i++) {
-                    parametersList += PARAMETERS_KEY[i] + "       "
-                            + String.valueOf(pView.getValueProperty(i + 1))
+                for (int i = 1; i < ParametersController.this.pView.getLengthProperty(); i++) {
+                    parametersList += ParametersController.this.pView.getNameProperty(i)+ "       "
+                            + String.valueOf(pView.getValueProperty(i))
                             + "\n";
                 }
 

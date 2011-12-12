@@ -41,10 +41,12 @@ public class ParametersView extends JPanel {
 
     /**
      * The list of labels displaying the names of the parameters.
+     * Caution : parameters begin to 1, not 0.
      */
     private JLabel[] property;
     /**
      * The list of values displaying the parameters.
+     * Caution : parameters begin to 1, not 0.
      */
     private ValueProperty[] value;
     /**
@@ -272,7 +274,25 @@ public class ParametersView extends JPanel {
     public final double getValueProperty(final int i) {
         return ((Number) (this.value[i]).getValue()).doubleValue();
     }
-
+    
+    /**
+     * Getter.
+     * @param i
+     *            the number of the parameter
+     * @return the name currently displayed
+     */
+    public final String getNameProperty(final int i) {
+        return (this.property[i]).getText();
+    }
+    
+/**
+ * Getter.
+ * @return the number of properties
+ */
+    public final int getLengthProperty(){
+        return (this.property.length);
+    }
+    
     /**
      * Setter.
      * @param i
