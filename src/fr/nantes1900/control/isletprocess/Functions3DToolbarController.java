@@ -147,7 +147,7 @@ public class Functions3DToolbarController {
                         newValue = (newValue < 1.0) ? 1.0 : newValue;
                         Functions3DToolbarController.this.parentController
                                 .getU3DController()
-                                .changeTriangleSelectionDistance(newValue);
+                                .setTriangleSelectionDistance(newValue);
                     }
 
                 });
