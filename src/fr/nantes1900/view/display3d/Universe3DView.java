@@ -280,7 +280,7 @@ public class Universe3DView extends JPanel {
         // Links the wheel of the mouse with a zoom transformation
         MouseWheelZoom mouseWheelZoom = new MouseWheelZoom();
         mouseWheelZoom.setFactor(WHEEL_ZOOM_FACTOR);
-        mouseWheelZoom.setTransformGroup(rotationGroup);
+        mouseWheelZoom.setTransformGroup(transformGroup);
         transformGroup.addChild(mouseWheelZoom);
         mouseWheelZoom.setSchedulingBounds(boundingSphere);
 
