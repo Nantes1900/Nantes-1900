@@ -3,11 +3,13 @@ package fr.nantes1900.models.islets.buildings.steps;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
+import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.constants.WeirdResultMessages;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
@@ -67,8 +69,10 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep {
             this.matrix = MatrixMethod.createOrthoBase(this.gravityNormal);
             MatrixMethod.changeBase(this.gravityNormal, this.matrix);
 
-        } catch (final SingularMatrixException e) {
-            throw new WeirdResultException(WeirdResultMessages.BAD_MATRIX);
+        } catch (final SingularMatrixException e) {   
+            throw new WeirdResultException(FileTools
+                    .readInformationMessage(WeirdResultMessages.BAD_MATRIX,
+                            TextsKeys.MESSAGETYPE_MESSAGE));
         }
     }
 
