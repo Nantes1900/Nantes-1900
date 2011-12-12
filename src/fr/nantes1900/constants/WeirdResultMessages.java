@@ -31,8 +31,4 @@ public final class WeirdResultMessages {
      * be.
      */
     public static final String NO_BUILDINGS = "NoBuildings";
-    /**
-     * Key for a pop-up message when the initial ground is empty.
-     */
-    public static final String EMPTY_GROUND = "EmptyGround";
 }

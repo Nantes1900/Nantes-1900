@@ -10,9 +10,7 @@ import java.text.DecimalFormat;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFormattedTextField;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
@@ -48,7 +46,7 @@ public class ParametersView extends JPanel {
      */
     private ValueProperty[] value;
     /**
-     * The buttons help
+     * The buttons help.
      */
     private HelpButton[] help;
     /**
@@ -157,16 +155,17 @@ public class ParametersView extends JPanel {
             this.property[i].setPreferredSize(this.labelDimension);
         }
 
-      //Create the HelpButtons
-        for(int i=1; i < this.help.length; i++){
-            this.help[i] = new HelpButton(FileTools.readHelpMessage(
-                    TextsKeys.KEY_PARAMETERSTIP, TextsKeys.MESSAGETYPE_TOOLTIP),
-                    FileTools.readHelpMessage(TextsKeys.KEY_PARAMETERSTIP+i,
+        // Create the HelpButtons
+        for (int i = 1; i < this.help.length; i++) {
+            this.help[i] = new HelpButton(
+                    FileTools.readHelpMessage(TextsKeys.KEY_PARAMETERSTIP,
+                            TextsKeys.MESSAGETYPE_TOOLTIP),
+                    FileTools.readHelpMessage(TextsKeys.KEY_PARAMETERSTIP + i,
                             TextsKeys.MESSAGETYPE_MESSAGE),
                     FileTools.readHelpMessage(TextsKeys.KEY_PARAMETERSTIP,
                             TextsKeys.MESSAGETYPE_TITLE));
         }
-        
+
         // Layout
         this.setLayout(new BorderLayout());
         this.pTop = new JPanel();
@@ -186,7 +185,7 @@ public class ParametersView extends JPanel {
                 .readElementText(TextsKeys.KEY_LOADPARAMETERSBUTTON));
         this.bShow.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_SHOWPARAMETERSBUTTON));
-        
+
         // Displays the buttons
         this.pTop.setLayout(new FlowLayout(FlowLayout.RIGHT));
         this.pTop.add(this.bLoad);
@@ -206,14 +205,14 @@ public class ParametersView extends JPanel {
      */
     private void displayOneParameter(final int x, final int y, final int n) {
         this.pCenter.add(this.property[n], new GridBagConstraints(x, y, 1, 1,
-                0, 0, GridBagConstraints.PAGE_START,
-                GridBagConstraints.BOTH, new Insets(8, 8, 8, 0), 0, 5));
+                0, 0, GridBagConstraints.PAGE_START, GridBagConstraints.BOTH,
+                new Insets(8, 8, 8, 0), 0, 5));
         this.pCenter.add(this.value[n], new GridBagConstraints(x + 1, y, 1, 1,
-                0, 0, GridBagConstraints.PAGE_START,
-                GridBagConstraints.BOTH, new Insets(8, 6, 8, 0), 0, 5));
+                0, 0, GridBagConstraints.PAGE_START, GridBagConstraints.BOTH,
+                new Insets(8, 6, 8, 0), 0, 5));
         this.pCenter.add(this.help[n], new GridBagConstraints(x + 2, y, 1, 1,
-                0, 0, GridBagConstraints.PAGE_START,
-                GridBagConstraints.BOTH, new Insets(12, 5, 8, 5), 0, 5));
+                0, 0, GridBagConstraints.PAGE_START, GridBagConstraints.BOTH,
+                new Insets(12, 5, 8, 5), 0, 5));
     }
 
     /**

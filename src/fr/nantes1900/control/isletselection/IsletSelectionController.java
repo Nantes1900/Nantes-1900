@@ -172,6 +172,8 @@ public class IsletSelectionController {
      *         launched\n false - the process wasn't launch, because no islet or
      *         ground normal are selected.
      */
+    // TODO : why does this method return a boolean ? Shouldn't this be a void
+    // method throwing an exception when a problem happened ?
     public final boolean launchIsletProcess() {
         boolean processLaunched = false;
 

@@ -69,10 +69,10 @@ public class BuildingsIsletStep0 extends AbstractBuildingsIsletStep {
             this.matrix = MatrixMethod.createOrthoBase(this.gravityNormal);
             MatrixMethod.changeBase(this.gravityNormal, this.matrix);
 
-        } catch (final SingularMatrixException e) {   
-            throw new WeirdResultException(FileTools
-                    .readInformationMessage(WeirdResultMessages.BAD_MATRIX,
-                            TextsKeys.MESSAGETYPE_MESSAGE));
+        } catch (final SingularMatrixException e) {
+            throw new WeirdResultException(FileTools.readInformationMessage(
+                    WeirdResultMessages.BAD_MATRIX,
+                    TextsKeys.MESSAGETYPE_MESSAGE));
         }
     }
 

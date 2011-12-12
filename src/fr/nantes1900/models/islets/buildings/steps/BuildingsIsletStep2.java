@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import fr.nantes1900.constants.WeirdResultMessages;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.coefficients.SeparationBuildings;
 import fr.nantes1900.models.extended.Building;
@@ -67,10 +66,6 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
             } else {
                 this.noise.getMesh().addAll(m);
             }
-        }
-
-        if (buildingList.size() == 0) {
-            System.out.println("Error : no building found !");
         }
 
         List<Building> buildings = new ArrayList<>();
@@ -137,8 +132,7 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode()
-            throws WeirdResultException {
+    public final DefaultMutableTreeNode returnNode() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
 
         if (!this.getInitialBuildings().getMesh().isEmpty()) {
@@ -147,8 +141,6 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
                     this.initialBuildings);
             root.add(node1);
 
-        } else {
-            throw new WeirdResultException(WeirdResultMessages.NO_BUILDINGS);
         }
 
         if (!this.getInitialGrounds().getMesh().isEmpty()) {
@@ -157,8 +149,6 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
                     this.initialGrounds);
             root.add(node2);
 
-        } else {
-            throw new WeirdResultException("Warning : initial grounds empty !");
         }
 
         return root;

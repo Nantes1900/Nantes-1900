@@ -29,11 +29,8 @@ public abstract class AbstractBuildingsIsletStep {
     /**
      * Builds a tree node for the JTree.
      * @return a default mutable tree node
-     * @throws WeirdResultException
-     *             if the result is not coherent
      */
-    public abstract DefaultMutableTreeNode returnNode()
-            throws WeirdResultException;
+    public abstract DefaultMutableTreeNode returnNode();
 
     /*
      * (non-Javadoc)

@@ -74,8 +74,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
      * #returnNode()
      */
     @Override
-    public final DefaultMutableTreeNode returnNode()
-            throws WeirdResultException {
+    public final DefaultMutableTreeNode returnNode() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode(this);
 
         int counter = 0;
@@ -87,9 +86,6 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
         if (!this.getGrounds().getMesh().isEmpty()) {
             this.grounds.setNodeString("Sols");
             root.add(new DefaultMutableTreeNode(this.grounds));
-
-        } else {
-            throw new WeirdResultException(WeirdResultMessages.NO_GROUND);
         }
 
         return root;

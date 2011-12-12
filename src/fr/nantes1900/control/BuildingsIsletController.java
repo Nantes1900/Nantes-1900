@@ -56,8 +56,6 @@ public class BuildingsIsletController {
     public BuildingsIsletController(
             final Universe3DController universe3DControllerIn) {
         this.u3DController = universe3DControllerIn;
-        // LOOK : maybe it would be good to choose between industrial islet and
-        // residential islet.
         this.islet = new ResidentialIslet();
     }
 
@@ -601,11 +599,9 @@ public class BuildingsIsletController {
      * @return a mutable tree node
      * @throws InvalidCaseException
      *             if an invalid case has been called
-     * @throws WeirdResultException
-     *             if the result is not coherent
      */
     public final DefaultMutableTreeNode returnNode()
-            throws InvalidCaseException, WeirdResultException {
+            throws InvalidCaseException {
         return this.islet.returnNode();
     }
 
@@ -732,16 +728,16 @@ public class BuildingsIsletController {
         if (!this.islet.getBiStep2().getInitialBuildings().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep2().getInitialBuildings());
         } else {
-            throw new WeirdResultException(FileTools
-                    .readInformationMessage(WeirdResultMessages.NO_BUILDINGS,
-                            TextsKeys.MESSAGETYPE_MESSAGE));
+            throw new WeirdResultException(FileTools.readInformationMessage(
+                    WeirdResultMessages.NO_BUILDINGS,
+                    TextsKeys.MESSAGETYPE_MESSAGE));
         }
         if (!this.islet.getBiStep2().getInitialGrounds().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep2().getInitialGrounds());
         } else {
-            throw new WeirdResultException(FileTools
-                    .readInformationMessage(WeirdResultMessages.EMPTY_GROUND,
-                            TextsKeys.MESSAGETYPE_MESSAGE));
+            throw new WeirdResultException(FileTools.readInformationMessage(
+                    WeirdResultMessages.NO_GROUND,
+                    TextsKeys.MESSAGETYPE_MESSAGE));
         }
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
@@ -758,9 +754,9 @@ public class BuildingsIsletController {
         if (!this.islet.getBiStep3().getGrounds().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep2().getInitialGrounds());
         } else {
-            throw new WeirdResultException(FileTools
-                    .readInformationMessage(WeirdResultMessages.NO_GROUND,
-                            TextsKeys.MESSAGETYPE_MESSAGE));
+            throw new WeirdResultException(FileTools.readInformationMessage(
+                    WeirdResultMessages.NO_GROUND,
+                    TextsKeys.MESSAGETYPE_MESSAGE));
         }
 
         for (Building building : this.islet.getBiStep3().getBuildings()) {
@@ -791,8 +787,9 @@ public class BuildingsIsletController {
                 && !this.islet.getBiStep4().getNoise().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep4().getNoise());
         } else {
-            throw new WeirdResultException(FileTools
-                    .readInformationMessage(WeirdResultMessages.NO_NOISE,
+            throw new WeirdResultException(
+                    FileTools.readInformationMessage(
+                            WeirdResultMessages.NO_NOISE,
                             TextsKeys.MESSAGETYPE_MESSAGE));
         }
 
@@ -822,8 +819,9 @@ public class BuildingsIsletController {
                 && !this.islet.getBiStep5().getNoise().getMesh().isEmpty()) {
             surfacesList.add(this.islet.getBiStep5().getNoise());
         } else {
-            throw new WeirdResultException(FileTools
-                    .readInformationMessage(WeirdResultMessages.NO_NOISE,
+            throw new WeirdResultException(
+                    FileTools.readInformationMessage(
+                            WeirdResultMessages.NO_NOISE,
                             TextsKeys.MESSAGETYPE_MESSAGE));
         }
 
