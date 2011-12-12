@@ -87,7 +87,7 @@ public class Functions3DToolbarView extends JToolBar {
         this.bSelectionModeMeshes.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_SELECTMESHES));
         this.lSelectionMode = new JLabel("");
-        this.sDistance = new JSlider(0, 200, 50);
+        this.sDistance = new JSlider(0, 100, 50);
 
         // Adds elements to the toolbar
         FlowLayout fl = new FlowLayout(FlowLayout.LEADING, 5, 5);

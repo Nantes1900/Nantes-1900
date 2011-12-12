@@ -15,6 +15,7 @@ import fr.nantes1900.constants.Icons;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.utils.FileTools;
+import fr.nantes1900.view.components.HelpButton;
 
 /**
  * * Implements a navigation bar with buttons to launch a new process, to come
@@ -54,7 +55,11 @@ public class NavigationBarView extends JPanel {
      * The panel.
      */
     private JPanel pCentral = new JPanel();
-
+    
+    /**
+     * Help button to explain the current step.
+     */
+    private HelpButton helpButton = new HelpButton();
     /**
      * Constructor.
      */
@@ -70,7 +75,11 @@ public class NavigationBarView extends JPanel {
                 1, GridBagConstraints.CENTER, GridBagConstraints.NONE,
                 new Insets(8, 8, 8, 8), 0, 5));
 
-        this.pCentral.add(this.bLaunch, new GridBagConstraints(2, 0, 1, 1, 0,
+        this.pCentral.add(helpButton, new GridBagConstraints(2, 0, 1, 1, 0,
+                1, GridBagConstraints.CENTER, GridBagConstraints.NONE,
+                new Insets(8, 8, 8, 8), 0, 2));
+
+        this.pCentral.add(this.bLaunch, new GridBagConstraints(3, 0, 1, 1, 0,
                 1, GridBagConstraints.PAGE_START, GridBagConstraints.NONE,
                 new Insets(8, 8, 8, 8), 0, 5));
 
@@ -125,6 +134,14 @@ public class NavigationBarView extends JPanel {
      */
     public final JButton getSaveButton() {
         return this.bSave;
+    }
+
+    /**
+     * Getter.
+     * @return the help button
+     */
+    public final HelpButton getHelpButton() {
+        return this.helpButton;
     }
 
     /**
