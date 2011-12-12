@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
-import javax.swing.JPopupMenu;
-import javax.swing.ToolTipManager;
 
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.BuildingsIsletController;
@@ -106,11 +104,9 @@ public class IsletProcessController implements ElementsSelectedListener,
                 this.f3DController.getToolbar());
 
         this.biController.setUniverse3DController(this.u3DController);
-        try
-        {
+        try {
             this.biController.display();
-        } catch (WeirdResultException e)
-        {
+        } catch (WeirdResultException e) {
             JOptionPane.showMessageDialog(ipView, e.getMessage(), FileTools
                     .readInformationMessage(TextsKeys.KEY_ERROR_WEIRDRESULT,
                             TextsKeys.MESSAGETYPE_TITLE),
@@ -147,13 +143,11 @@ public class IsletProcessController implements ElementsSelectedListener,
      * @param selectionMode
      *            the new selected selection mode
      */
-    public final void changeSelectionMode(final int selectionMode) {
-        if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE)
-        {
+    public final void changeSelectionMode(final int selectionMode) {        
+        if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE) {
             this.u3DController
                     .changeSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
-        } else
-        {
+        } else {
             this.u3DController
                     .changeSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
         }
@@ -200,8 +194,7 @@ public class IsletProcessController implements ElementsSelectedListener,
      *             if the step does not exist (progression < 1)
      */
     public final void goToPreviousProcess() throws UnexistingStepException {
-        if (this.getProgression() <= AbstractBuildingsIslet.FIRST_STEP)
-        {
+        if (this.getProgression() <= AbstractBuildingsIslet.FIRST_STEP) {
             throw new UnexistingStepException();
         }
         this.biController.getPreviousStep();
@@ -218,16 +211,14 @@ public class IsletProcessController implements ElementsSelectedListener,
      */
     public final void launchProcess() throws UnexistingStepException {
 
-        if (this.getProgression() >= AbstractBuildingsIslet.SIXTH_STEP)
-        {
+        if (this.getProgression() >= AbstractBuildingsIslet.SIXTH_STEP) {
             throw new UnexistingStepException();
         }
 
         this.setDefaultCharacterisitcsPanel();
         this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
-        if (this.getProgression() == AbstractBuildingsIslet.FOURTH_STEP)
-        {
+        if (this.getProgression() == AbstractBuildingsIslet.FOURTH_STEP) {
             // ipView.showProgressBar(true);
             JOptionPane.showMessageDialog(ipView, FileTools
                     .readInformationMessage(TextsKeys.KEY_WARNING_LONGPROCESS,
@@ -237,19 +228,16 @@ public class IsletProcessController implements ElementsSelectedListener,
                     JOptionPane.WARNING_MESSAGE);
         }
 
-        try
-        {
+        try {
             this.biController.launchProcess();
-        } catch (WeirdResultException e)
-        {
+        } catch (WeirdResultException e) {
             JOptionPane.showMessageDialog(ipView, e.getMessage(), FileTools
                     .readInformationMessage(TextsKeys.KEY_ERROR_WEIRDRESULT,
                             TextsKeys.MESSAGETYPE_TITLE),
                     JOptionPane.ERROR_MESSAGE);
         }
 
-        if (this.getProgression() == AbstractBuildingsIslet.FIFTH_STEP)
-        {
+        if (this.getProgression() == AbstractBuildingsIslet.FIFTH_STEP) {
             // ipView.showProgressBar(false);
         }
 
@@ -267,11 +255,9 @@ public class IsletProcessController implements ElementsSelectedListener,
         this.itController.refreshView();
         setStatusBarStep();
         this.nbController.getView().refreshStepTitle(this.getProgression());
-        try
-        {
+        try {
             this.biController.display();
-        } catch (WeirdResultException e)
-        {
+        } catch (WeirdResultException e) {
             JOptionPane.showMessageDialog(ipView, e.getMessage(), FileTools
                     .readInformationMessage(TextsKeys.KEY_ERROR_WEIRDRESULT,
                             TextsKeys.MESSAGETYPE_TITLE),
@@ -293,18 +279,15 @@ public class IsletProcessController implements ElementsSelectedListener,
      *            true - locks the surface\n false - unlocks the surface
      */
     public final void lock(final boolean lock) {
-        if (lock)
-        {
+        if (lock) {
             // Locks when only one surface is selected.
-            if (this.u3DController.getSurfacesSelected().size() == 1)
-            {
+            if (this.u3DController.getSurfacesSelected().size() == 1) {
                 this.u3DController.setSurfaceLocked(this.u3DController
                         .getSurfacesSelected().get(0));
                 // Changes to lock mode.
                 this.u3DController.setLockMode(true);
             }
-        } else
-        {
+        } else {
             // Changes to unlock mode.
             this.u3DController.setLockMode(false);
             // Clears the surfaceLocked.
@@ -317,11 +300,9 @@ public class IsletProcessController implements ElementsSelectedListener,
      * Calls the BuildingIsletController to clear and display the current step.
      */
     public final void refreshView() {
-        try
-        {
+        try {
             this.biController.display();
-        } catch (WeirdResultException e)
-        {
+        } catch (WeirdResultException e) {
             JOptionPane.showMessageDialog(ipView, e.getMessage(), FileTools
                     .readInformationMessage(TextsKeys.KEY_ERROR_WEIRDRESULT,
                             TextsKeys.MESSAGETYPE_TITLE),
@@ -346,36 +327,40 @@ public class IsletProcessController implements ElementsSelectedListener,
         this.u3DController.setDisplayMode(displayMode);
         setDefaultCharacterisitcsPanel();
     }
-    
+
     /**
      * Sets default status bar text for the current step.
      */
-    private void setStatusBarStep()
-    {
+    private void setStatusBarStep() {
         int step = getProgression();
         String text = "";
-        switch (step)
-        {
-            case 1:
-                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP1, TextsKeys.MESSAGETYPE_STATUSBAR);
-                break;
-            case 2:
-                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP2, TextsKeys.MESSAGETYPE_STATUSBAR);
-                break;
-            case 3:
-                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP3, TextsKeys.MESSAGETYPE_STATUSBAR);
-                break;
-            case 4:
-                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP4, TextsKeys.MESSAGETYPE_STATUSBAR);
-                break;
-            case 5:
-                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP5, TextsKeys.MESSAGETYPE_STATUSBAR);
-                break;
-            case 6:
-                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP6, TextsKeys.MESSAGETYPE_STATUSBAR);
-                break;
+        switch (step) {
+        case 1:
+            text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP1,
+                    TextsKeys.MESSAGETYPE_STATUSBAR);
+            break;
+        case 2:
+            text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP2,
+                    TextsKeys.MESSAGETYPE_STATUSBAR);
+            break;
+        case 3:
+            text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP3,
+                    TextsKeys.MESSAGETYPE_STATUSBAR);
+            break;
+        case 4:
+            text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP4,
+                    TextsKeys.MESSAGETYPE_STATUSBAR);
+            break;
+        case 5:
+            text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP5,
+                    TextsKeys.MESSAGETYPE_STATUSBAR);
+            break;
+        case 6:
+            text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP6,
+                    TextsKeys.MESSAGETYPE_STATUSBAR);
+            break;
         }
-        
+
         this.ipView.setStatusBarText(text);
     }
 
@@ -387,14 +372,12 @@ public class IsletProcessController implements ElementsSelectedListener,
 
         // Enabling / disabling specifics selection modes, beware of order of
         // methods call
-        if (step == 1 || step == 5 || step == 6)
-        {
+        if (step == 1 || step == 5 || step == 6) {
             this.f3DController.setEnableSelectionMode(false,
                     Universe3DController.SELECTION_TRIANGLE_MODE);
             this.f3DController
                     .setSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
-        } else
-        {
+        } else {
             this.f3DController.setEnableSelectionMode(true,
                     Universe3DController.SELECTION_TRIANGLE_MODE);
             this.f3DController
@@ -402,14 +385,12 @@ public class IsletProcessController implements ElementsSelectedListener,
         }
 
         // Enabling / disabling specifics display types
-        if (step == 6)
-        {
+        if (step == 6) {
             this.f3DController.setEnableDisplayType(true,
                     Universe3DController.DISPLAY_POLYGON_MODE);
             this.f3DController
                     .setDisplayType(Universe3DController.DISPLAY_POLYGON_MODE);
-        } else
-        {
+        } else {
             this.f3DController.setEnableDisplayType(false,
                     Universe3DController.DISPLAY_POLYGON_MODE);
             this.f3DController
@@ -423,24 +404,19 @@ public class IsletProcessController implements ElementsSelectedListener,
         int step = this.getProgression();
 
         // case 6 : more complicated
-        if (step == 6)
-        {
-            if (this.u3DController.isLocked())
-            {
+        if (step == 6) {
+            if (this.u3DController.isLocked()) {
                 ((AbstractCharacteristicsSurfacesController) this.cController)
                         .removeSurfaceSelected(surfaceSelected);
-            } else
-            {
-                if (this.u3DController.getSurfacesSelected().size() == 1)
-                {
+            } else {
+                if (this.u3DController.getSurfacesSelected().size() == 1) {
                     this.cController = new CharacteristicsStep6Controller(this,
                             surfaceSelected,
                             (ArrayList<Surface>) surfaceSelected
                                     .getNeighbours());
                     this.ipView.setCharacteristicsView(this.cController
                             .getView());
-                } else
-                {
+                } else {
                     setDefaultCharacterisitcsPanel();
                 }
             }
@@ -448,19 +424,16 @@ public class IsletProcessController implements ElementsSelectedListener,
 
         if (!this.cController.getClass()
                 .equals(CharacteristicsController.class)
-                && ((step == 3 && this.f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE) || step == 5))
-        {
+                && ((step == 3 && this.f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE) || step == 5)) {
 
             ((AbstractCharacteristicsSurfacesController) this.cController)
                     .removeSurfaceSelected(surfaceSelected);
-            if (this.u3DController.getSurfacesSelected().isEmpty())
-            {
+            if (this.u3DController.getSurfacesSelected().isEmpty()) {
                 // if the selection is now empty
                 setDefaultCharacterisitcsPanel();
             }
         }
-        if (this.u3DController.getSurfacesSelected().isEmpty())
-        {
+        if (this.u3DController.getSurfacesSelected().isEmpty()) {
             this.f3DController.setRotationCenterEnable(false);
         }
     }
@@ -470,24 +443,19 @@ public class IsletProcessController implements ElementsSelectedListener,
         int step = this.getProgression();
 
         // case 6 : more complicated
-        if (step == 6)
-        {
-            if (this.u3DController.isLocked())
-            {
+        if (step == 6) {
+            if (this.u3DController.isLocked()) {
                 ((AbstractCharacteristicsSurfacesController) this.cController)
                         .addSurfaceSelected(surfaceSelected);
-            } else
-            {
-                if (this.u3DController.getSurfacesSelected().size() == 1)
-                {
+            } else {
+                if (this.u3DController.getSurfacesSelected().size() == 1) {
                     this.cController = new CharacteristicsStep6Controller(this,
                             surfaceSelected,
                             (ArrayList<Surface>) surfaceSelected
                                     .getNeighbours());
                     this.ipView.setCharacteristicsView(this.cController
                             .getView());
-                } else
-                {
+                } else {
                     setDefaultCharacterisitcsPanel();
                 }
             }
@@ -495,28 +463,24 @@ public class IsletProcessController implements ElementsSelectedListener,
         // step 3 in meshes selection mode or in step 5
 
         if ((step == 3 && this.f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
-                || step == 5)
-        {
+                || step == 5) {
             if (this.cController.getClass().equals(
-                    CharacteristicsController.class))
-            {
-                switch (this.getProgression())
-                {
-                    case 3:
-                        this.cController = new CharacteristicsStep3ElementsController(
-                                this, surfaceSelected);
+                    CharacteristicsController.class)) {
+                switch (this.getProgression()) {
+                case 3:
+                    this.cController = new CharacteristicsStep3ElementsController(
+                            this, surfaceSelected);
                     break;
-                    case 5:
-                        this.cController = new CharacteristicsStep5Controller(
-                                this, surfaceSelected);
+                case 5:
+                    this.cController = new CharacteristicsStep5Controller(this,
+                            surfaceSelected);
                     break;
-                    default:
+                default:
                     break;
 
                 }
                 this.ipView.setCharacteristicsView(this.cController.getView());
-            } else
-            {
+            } else {
                 ((AbstractCharacteristicsSurfacesController) this.cController)
                         .addSurfaceSelected(surfaceSelected);
             }
@@ -544,29 +508,25 @@ public class IsletProcessController implements ElementsSelectedListener,
         int step = this.getProgression();
 
         if ((step == 3 && this.f3DController.getSelectionMode() == Universe3DController.SELECTION_TRIANGLE_MODE)
-                || step == 2 || step == 4)
-        {
-            if (trianglesSelected.isEmpty())
-            {
+                || step == 2 || step == 4) {
+            if (trianglesSelected.isEmpty()) {
                 setDefaultCharacterisitcsPanel();
                 this.f3DController.setRotationCenterEnable(false);
-            } else
-            {
-                switch (step)
-                {
-                    case 2:
-                        this.cController = new CharacteristicsStep2Controller(
-                                this, trianglesSelected);
+            } else {
+                switch (step) {
+                case 2:
+                    this.cController = new CharacteristicsStep2Controller(this,
+                            trianglesSelected);
                     break;
-                    case 3:
-                        this.cController = new CharacteristicsStep3TrianglesController(
-                                this, trianglesSelected);
+                case 3:
+                    this.cController = new CharacteristicsStep3TrianglesController(
+                            this, trianglesSelected);
                     break;
-                    case 4:
-                        this.cController = new CharacteristicsStep4Controller(
-                                this, trianglesSelected);
+                case 4:
+                    this.cController = new CharacteristicsStep4Controller(this,
+                            trianglesSelected);
                     break;
-                    default:
+                default:
                     break;
 
                 }

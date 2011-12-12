@@ -6,9 +6,9 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.constants.coefficients.SeparationWallsSeparationRoofs;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Polygon;
+import fr.nantes1900.models.coefficients.SeparationWallsSeparationRoofs;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Surface;

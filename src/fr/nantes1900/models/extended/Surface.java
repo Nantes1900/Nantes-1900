@@ -7,12 +7,12 @@ import java.util.Map;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.constants.coefficients.SimplificationSurfaces;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.coefficients.SimplificationSurfaces;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 /**

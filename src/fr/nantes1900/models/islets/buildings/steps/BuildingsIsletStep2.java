@@ -6,8 +6,8 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.constants.WeirdResultMessages;
-import fr.nantes1900.constants.coefficients.SeparationBuildings;
 import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.coefficients.SeparationBuildings;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
