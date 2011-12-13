@@ -4,7 +4,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
+import javax.swing.AbstractAction;
+import javax.swing.JCheckBox;
 import javax.swing.JOptionPane;
+import javax.swing.KeyStroke;
 
 import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.constants.Characteristics;
@@ -107,6 +110,27 @@ public class CharacteristicsStep2Controller extends
             }
 
         });
+        parentController.addShortcut(KeyStroke.getKeyStroke("DELETE"),
+                "action delete", new AbstractAction() {
+
+                    /**
+                     * default serial UID.
+                     */
+                    private static final long serialVersionUID = 1L;
+
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        JCheckBox deleteCB = ((CharacteristicsStep2View) CharacteristicsStep2Controller.this.cView)
+                                .getDeleteCheckBox();
+                        if (!deleteCB.isSelected())
+                        {
+                            deleteCB.doClick();
+                        }
+                        ((CharacteristicsStep2View) CharacteristicsStep2Controller.this.cView)
+                                .getValidateButton().doClick();
+                    }
+                });
+
         modifyViewCharacteristics();
     }
 
