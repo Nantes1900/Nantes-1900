@@ -293,8 +293,6 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      * @return the node
      * @throws InvalidCaseException
      *             if the case in not valid (more than 8 or less than 0)
-     * @throws WeirdResultException
-     *             if the result is not coherent
      */
     public final DefaultMutableTreeNode returnNode()
             throws InvalidCaseException {

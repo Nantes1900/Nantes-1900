@@ -138,6 +138,8 @@ public class BuildingStep4 extends AbstractBuildingStep {
             throw new NullArgumentException();
         }
 
+        // Inits a computer of progress. Implemented, but not able to display
+        // for now.
         ProgressComputer.initStepsCounter();
         ProgressComputer.setStepsNumber(2);
 

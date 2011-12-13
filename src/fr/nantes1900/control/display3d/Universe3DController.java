@@ -588,31 +588,30 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         SurfaceView surfaceView = this.getSurfaceViewFromSurface(surface);
         // this.selectOrUnselectSurface(surfaceView);
 
-        if (this.lockMode == false)
+        if (!this.lockMode)
         {
             this.selectOrUnselectSurface(surfaceView);
         } else
         {
             if (this.surfaceLocked != surface)
             {
-
                 // If the surfacePicked is not the surface locked.
-                // if(this.u3DView.get)
-                // TODO
                 if (!this.surfaceLockedNeighbours.contains(surface))
                 {
+
                     this.fireSurfaceSelected(surface);
-                    // TODO : changes its color to make the user understand that
-                    // it
-                    // has been selected.
                     this.surfaceLockedNeighbours.add(surface);
                     surfaceView.setMaterial(SurfaceView.MATERIAL_NEIGHBOUR);
+
                 } else
                 {
+
                     this.fireSurfaceDeselected(surface);
                     this.surfaceLockedNeighbours.remove(surface);
+
                     if (surface.getPolygon() != null)
                     {
+
                         surfaceView.setMaterial(SurfaceView.MATERIAL_POLYGON);
                     } else
                     {

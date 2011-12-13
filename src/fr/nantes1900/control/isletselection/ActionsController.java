@@ -146,7 +146,7 @@ public class ActionsController {
     /**
      * Listener of the launch button. The performed action depends on the mode :
      * save the gravity normal or launch an islet process.
-     * @author Camille
+     * @author Camille Bouquet
      */
     public class LaunchActionListener implements ActionListener {
 

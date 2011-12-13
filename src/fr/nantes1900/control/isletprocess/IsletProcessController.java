@@ -143,7 +143,7 @@ public class IsletProcessController implements ElementsSelectedListener,
      * @param selectionMode
      *            the new selected selection mode
      */
-    public final void changeSelectionMode(final int selectionMode) {        
+    public final void changeSelectionMode(final int selectionMode) {
         if (selectionMode == Universe3DController.SELECTION_TRIANGLE_MODE) {
             this.u3DController
                     .changeSelectionMode(Universe3DController.SELECTION_TRIANGLE_MODE);
@@ -151,7 +151,7 @@ public class IsletProcessController implements ElementsSelectedListener,
             this.u3DController
                     .changeSelectionMode(Universe3DController.SELECTION_SURFACE_MODE);
         }
-        setDefaultCharacterisitcsPanel();
+        setDefaultCharacteristicsPanel();
     }
 
     /**
@@ -161,7 +161,7 @@ public class IsletProcessController implements ElementsSelectedListener,
      */
     public final void changeDisplayType(final int displayType) {
         this.u3DController.setDisplayMode(displayType);
-        this.setDefaultCharacterisitcsPanel();
+        this.setDefaultCharacteristicsPanel();
     }
 
     /**
@@ -198,7 +198,7 @@ public class IsletProcessController implements ElementsSelectedListener,
             throw new UnexistingStepException();
         }
         this.biController.getPreviousStep();
-        setDefaultCharacterisitcsPanel();
+        setDefaultCharacteristicsPanel();
         setToolbarButtons();
         refreshViews();
         this.pController.displayProcessingParameters(this.getProgression());
@@ -215,7 +215,7 @@ public class IsletProcessController implements ElementsSelectedListener,
             throw new UnexistingStepException();
         }
 
-        this.setDefaultCharacterisitcsPanel();
+        this.setDefaultCharacteristicsPanel();
         this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
 
         if (this.getProgression() == AbstractBuildingsIslet.FOURTH_STEP) {
@@ -263,7 +263,7 @@ public class IsletProcessController implements ElementsSelectedListener,
                             TextsKeys.MESSAGETYPE_TITLE),
                     JOptionPane.ERROR_MESSAGE);
         }
-        setDefaultCharacterisitcsPanel();
+        setDefaultCharacteristicsPanel();
     }
 
     /**
@@ -313,7 +313,7 @@ public class IsletProcessController implements ElementsSelectedListener,
     /**
      * Sets the default characteristics panel as current one.
      */
-    private void setDefaultCharacterisitcsPanel() {
+    private void setDefaultCharacteristicsPanel() {
         this.cController = new CharacteristicsController(this);
         this.ipView.setCharacteristicsView(this.cController.getView());
     }
@@ -325,7 +325,7 @@ public class IsletProcessController implements ElementsSelectedListener,
      */
     public final void setDisplayMode(final int displayMode) {
         this.u3DController.setDisplayMode(displayMode);
-        setDefaultCharacterisitcsPanel();
+        setDefaultCharacteristicsPanel();
     }
 
     /**
@@ -417,7 +417,7 @@ public class IsletProcessController implements ElementsSelectedListener,
                     this.ipView.setCharacteristicsView(this.cController
                             .getView());
                 } else {
-                    setDefaultCharacterisitcsPanel();
+                    setDefaultCharacteristicsPanel();
                 }
             }
         }
@@ -430,7 +430,7 @@ public class IsletProcessController implements ElementsSelectedListener,
                     .removeSurfaceSelected(surfaceSelected);
             if (this.u3DController.getSurfacesSelected().isEmpty()) {
                 // if the selection is now empty
-                setDefaultCharacterisitcsPanel();
+                setDefaultCharacteristicsPanel();
             }
         }
         if (this.u3DController.getSurfacesSelected().isEmpty()) {
@@ -450,13 +450,12 @@ public class IsletProcessController implements ElementsSelectedListener,
             } else {
                 if (this.u3DController.getSurfacesSelected().size() == 1) {
                     this.cController = new CharacteristicsStep6Controller(this,
-                            surfaceSelected,
-                            (ArrayList<Surface>) surfaceSelected
-                                    .getNeighbours());
+                            surfaceSelected, new ArrayList<>(
+                                    surfaceSelected.getNeighbours()));
                     this.ipView.setCharacteristicsView(this.cController
                             .getView());
                 } else {
-                    setDefaultCharacterisitcsPanel();
+                    setDefaultCharacteristicsPanel();
                 }
             }
         }
@@ -510,7 +509,7 @@ public class IsletProcessController implements ElementsSelectedListener,
         if ((step == 3 && this.f3DController.getSelectionMode() == Universe3DController.SELECTION_TRIANGLE_MODE)
                 || step == 2 || step == 4) {
             if (trianglesSelected.isEmpty()) {
-                setDefaultCharacterisitcsPanel();
+                setDefaultCharacteristicsPanel();
                 this.f3DController.setRotationCenterEnable(false);
             } else {
                 switch (step) {
