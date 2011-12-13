@@ -5,17 +5,16 @@ import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.Properties;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import fr.nantes1900.constants.TextsKeys;
-import fr.nantes1900.constants.coefficients.SeparationBuildings;
-import fr.nantes1900.constants.coefficients.SeparationGroundBuilding;
-import fr.nantes1900.constants.coefficients.SeparationWallRoof;
-import fr.nantes1900.constants.coefficients.SeparationWallsSeparationRoofs;
-import fr.nantes1900.constants.coefficients.SimplificationSurfaces;
+import fr.nantes1900.models.coefficients.SeparationBuildings;
+import fr.nantes1900.models.coefficients.SeparationGroundBuilding;
+import fr.nantes1900.models.coefficients.SeparationWallRoof;
+import fr.nantes1900.models.coefficients.SeparationWallsSeparationRoofs;
+import fr.nantes1900.models.coefficients.SimplificationSurfaces;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.ParametersView;
 
@@ -108,9 +107,9 @@ public class ParametersController {
             public void actionPerformed(final ActionEvent arg0) {
                 String parametersList = new String();
 
-                for (int i = 0; i < PARAMETERS_KEY.length; i++) {
-                    parametersList += PARAMETERS_KEY[i] + "       "
-                            + String.valueOf(pView.getValueProperty(i + 1))
+                for (int i = 1; i < ParametersController.this.pView.getLengthProperty(); i++) {
+                    parametersList += ParametersController.this.pView.getNameProperty(i)+ "       "
+                            + String.valueOf(pView.getValueProperty(i))
                             + "\n";
                 }
 

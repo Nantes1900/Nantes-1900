@@ -267,6 +267,11 @@ public final class TextsKeys {
     public static final String KEY_HELP_STEP6= "Step6";
     
     /**
+     * Key for slider description.
+     */
+    public static final String KEY_SLIDERDESCRIPTION = "SliderDescription";
+    
+    /**
      * Private constructor.
      */
     private TextsKeys() {

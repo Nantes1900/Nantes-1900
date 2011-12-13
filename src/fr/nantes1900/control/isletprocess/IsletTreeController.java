@@ -143,11 +143,6 @@ public class IsletTreeController implements ElementsSelectedListener {
         } catch (InvalidCaseException e) {
             System.out.println(FileTools.readInformationMessage(
                     TextsKeys.KEY_RETURNNODE, TextsKeys.MESSAGETYPE_MESSAGE));
-        } catch (WeirdResultException e) {
-            JOptionPane.showMessageDialog(null, e.getMessage(), FileTools
-                    .readInformationMessage(TextsKeys.KEY_ERROR_WEIRDRESULT,
-                            TextsKeys.MESSAGETYPE_TITLE),
-                    JOptionPane.ERROR_MESSAGE);
         }
     }
 

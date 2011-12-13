@@ -226,7 +226,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      *             initialized
      */
     public final void launchProcess1() throws NullArgumentException {
-        this.getBiStep1().setArguments(this.getGravityNormal());
+        this.getBiStep1().setArguments(this.getGroundNormal());
         this.biStep2 = this.getBiStep1().launchProcess();
     }
 
@@ -297,7 +297,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      *             if the result is not coherent
      */
     public final DefaultMutableTreeNode returnNode()
-            throws InvalidCaseException, WeirdResultException {
+            throws InvalidCaseException {
         switch (this.getProgression()) {
         case AbstractBuildingsIslet.ZERO_STEP:
             throw new InvalidCaseException();

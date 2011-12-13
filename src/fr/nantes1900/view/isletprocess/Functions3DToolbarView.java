@@ -11,7 +11,6 @@ import javax.swing.SwingConstants;
 
 import fr.nantes1900.constants.Icons;
 import fr.nantes1900.constants.TextsKeys;
-import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.utils.FileTools;
 
 /**
@@ -87,7 +86,8 @@ public class Functions3DToolbarView extends JToolBar {
         this.bSelectionModeMeshes.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_SELECTMESHES));
         this.lSelectionMode = new JLabel("");
-        this.sDistance = new JSlider(0, 200, 50);
+        this.sDistance = new JSlider(0, 100, 50);
+        this.sDistance.setToolTipText(FileTools.readElementText(TextsKeys.KEY_SLIDERDESCRIPTION));
 
         // Adds elements to the toolbar
         FlowLayout fl = new FlowLayout(FlowLayout.LEADING, 5, 5);

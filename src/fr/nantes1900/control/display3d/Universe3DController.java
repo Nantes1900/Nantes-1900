@@ -192,6 +192,11 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      *            the new selection mode
      */
     public final void changeSelectionMode(final int selectionModeIn) {
+
+        this.surfaceLocked = null;
+        this.surfaceLockedNeighbours = null;
+        this.lockMode = false;
+
         if (this.surfacesSelected != null)
         {
             this.deselectEverySurfaces();
@@ -203,13 +208,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         }
         this.selectionMode = selectionModeIn;
     }
-    
+
     /**
-     * Change the triangleSelectionDistance
-     * @param triangleSelectionDistance
+     * Change the triangleSelectionDistance.
+     * @param distance
      *            the new triangleSelectionDistance to set
      */
-    public final void changeTriangleSelectionDistance(final double distance) {
+    public final void setTriangleSelectionDistance(final double distance) {
         this.triangleSelectionDistance = distance;
     }
 
@@ -240,8 +245,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * TODO Siju has changed this function.Check it.
-     * Deselects every surfaces.
+     * TODO Siju has changed this function.Check it. Deselects every surfaces.
      */
     public final void deselectEverySurfaces() {
         // Copies the list to avoid ConcurrentModificationException of the list
@@ -675,15 +679,15 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         } else
         {
             // TODO
-            if(this.surfaceLockedNeighbours!=null){
+
+            if (this.surfaceLockedNeighbours != null)
+            {
                 for (Surface surfaceNeighbour : this.surfaceLockedNeighbours)
                 {
-                    this.getSurfaceViewFromSurface(surfaceNeighbour).setMaterial(
-                            SurfaceView.MATERIAL_NEIGHBOUR);
+                    this.getSurfaceViewFromSurface(surfaceNeighbour)
+                            .setMaterial(SurfaceView.MATERIAL_NEIGHBOUR);
                 }
-
             }
-            
         }
     }
 
