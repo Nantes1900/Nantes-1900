@@ -245,7 +245,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * TODO Siju has changed this function.Check it. Deselects every surfaces.
+     * Deselects every surfaces.
      */
     public final void deselectEverySurfaces() {
         // Copies the list to avoid ConcurrentModificationException of the list
@@ -677,8 +677,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             }
         } else
         {
-            // TODO
-
             if (this.surfaceLockedNeighbours != null)
             {
                 for (Surface surfaceNeighbour : this.surfaceLockedNeighbours)
@@ -755,7 +753,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      */
     public final void setSurfaceLocked(final Surface surface) {
         this.surfaceLocked = surface;
-        // TODO
         if (surface != null)
         {
             this.surfaceLockedNeighbours = new ArrayList<>(
@@ -851,7 +848,6 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             if (!e.isControlDown() && this.surfaceLocked != surfacePicked)
             {
                 // If the surfacePicked is not the surface locked.
-                // TODO
                 if (!this.surfaceLockedNeighbours.contains(surfacePicked))
                 {
                     this.fireSurfaceSelected(surfacePicked);
