@@ -94,7 +94,7 @@ public class BuildingsIsletController {
         } else if (type == ActionTypes.REMOVE) {
             // The user wants these triangles to be removed.
             this.islet.getBiStep2().getInitialBuildings().getMesh()
-                    .retainAll(trianglesSelected);
+                    .removeAll(trianglesSelected);
             this.islet.getBiStep2().getInitialGrounds().getMesh()
                     .removeAll(trianglesSelected);
         } else {
