@@ -256,7 +256,8 @@ public class BuildingsIsletController {
      */
     public final void action6(final Surface surfaceLocked,
             final List<Surface> newNeighbours) {
-        for (Surface s : surfaceLocked.getNeighbours()) {
+        List<Surface> oldNeigbhours = surfaceLocked.getNeighbours();
+        for (Surface s : oldNeigbhours) {
             s.getNeighbours().remove(surfaceLocked);
         }
 
