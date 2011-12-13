@@ -6,6 +6,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.models.extended.Roof;
+import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.Wall;
 
 /**
@@ -24,6 +25,11 @@ public class BuildingStep6 extends AbstractBuildingStep {
      * The list of roofs.
      */
     private List<Roof> roofs = new ArrayList<>();
+
+    /**
+     * The noise.
+     */
+    private Surface noise;
 
     /**
      * Constructor.
@@ -89,5 +95,13 @@ public class BuildingStep6 extends AbstractBuildingStep {
         }
 
         return root;
+    }
+
+    /**
+     * Getter.
+     * @return the noise
+     */
+    public final Surface getNoise() {
+        return this.noise;
     }
 }

@@ -57,6 +57,9 @@ public class BuildingStep5 extends AbstractBuildingStep {
      */
     private Ground ground;
 
+    /**
+     * List of points used when finding the edges.
+     */
     private Map<Point, Point> pointMap;
 
     /**

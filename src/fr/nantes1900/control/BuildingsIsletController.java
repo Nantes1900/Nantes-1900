@@ -72,7 +72,8 @@ public class BuildingsIsletController {
      * @param trianglesSelected
      *            the list of triangles
      * @param type
-     *            the new type of these triangles
+     *            the new type of these triangles (TURN_TO_BUILDING,
+     *            TURN_TO_GROUND), or REMOVE
      * @throws InvalidCaseException
      *             if the type of action is not possible in this method
      */
@@ -90,34 +91,12 @@ public class BuildingsIsletController {
                     .removeAll(trianglesSelected);
             this.islet.getBiStep2().getInitialGrounds().getMesh()
                     .addAll(trianglesSelected);
-        } else {
-            throw new InvalidCaseException();
-        }
-    }
-
-    /**
-     * Changes the type of a list of triangles (remove them or turn them to
-     * building). To call only during the third step.
-     * @param trianglesSelected
-     *            the list of triangles
-     * @param actionType
-     *            the new type of the triangles
-     * @throws InvalidCaseException
-     *             if the type of action is not possible in this method
-     */
-    public final void action3(final List<Triangle> trianglesSelected,
-            final int actionType) throws InvalidCaseException {
-
-        if (actionType == ActionTypes.REMOVE) {
+        } else if (type == ActionTypes.REMOVE) {
             // The user wants these triangles to be removed.
-            for (Building building : this.islet.getBiStep3().getBuildings()) {
-                building.getbStep3().getInitialTotalSurface().getMesh()
-                        .removeAll(trianglesSelected);
-            }
-
-            this.islet.getBiStep3().getGrounds().getMesh()
+            this.islet.getBiStep2().getInitialBuildings().getMesh()
+                    .retainAll(trianglesSelected);
+            this.islet.getBiStep2().getInitialGrounds().getMesh()
                     .removeAll(trianglesSelected);
-
         } else {
             throw new InvalidCaseException();
         }
@@ -129,7 +108,7 @@ public class BuildingsIsletController {
      * @param surface
      *            the surface
      * @param actionType
-     *            the new type of the mesh
+     *            the type of action, here : TURN_TO_NOISE
      * @throws InvalidCaseException
      *             if the type of action is not possible in this method
      */
@@ -142,17 +121,6 @@ public class BuildingsIsletController {
                         .remove(this.returnBuildingContaining3(surface));
                 this.islet.getBiStep3().getNoise().getMesh()
                         .addAll(surface.getMesh());
-
-            } else if (actionType == ActionTypes.TURN_TO_BUILDING) {
-                // The user wants the surface to turn to building.
-                this.islet
-                        .getBiStep3()
-                        .getBuildings()
-                        .add(new Building(new Surface(new Mesh(surface
-                                .getMesh()))));
-                this.islet.getBiStep3().getNoise().getMesh()
-                        .removeAll(surface.getMesh());
-
             } else {
                 throw new InvalidCaseException();
             }
@@ -248,7 +216,8 @@ public class BuildingsIsletController {
     }
 
     /**
-     * Changes the list of neighbours of one surface.
+     * Changes the list of neighbours of one surface. To call only durint the
+     * 6th step.
      * @param surfaceLocked
      *            the current surface
      * @param newNeighbours
@@ -269,6 +238,34 @@ public class BuildingsIsletController {
 
         Building building = this.searchForBuildingContaining6(surfaceLocked);
         building.getbStep5().determinateOneContour(surfaceLocked);
+    }
+
+    /**
+     * Changes the type of a surface. To call only durint the 6th step.
+     * @param surface
+     *            the surface
+     * @param actionType
+     *            the action, here : TURN_TO_NOISE
+     * @throws InvalidCaseException
+     *             if the type of action is not possible in this method
+     */
+    public final void action6(final Surface surface, final int actionType)
+            throws InvalidCaseException {
+        Building building = this.searchForBuildingContaining6(surface);
+
+        // If it is null, this means that the triangles selected are not
+        // coherent with the action asked. Then we do nothing.
+        if (building != null) {
+            BuildingStep6 buildingStep = building.getbStep6();
+
+            if (actionType == ActionTypes.TURN_TO_NOISE) {
+                buildingStep.getWalls().remove(surface);
+                buildingStep.getRoofs().remove(surface);
+                buildingStep.getNoise().getMesh().addAll(surface.getMesh());
+            } else {
+                throw new InvalidCaseException();
+            }
+        }
     }
 
     /**
@@ -862,7 +859,7 @@ public class BuildingsIsletController {
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
     }
 
-    public void saveFinalResults(String fileName) {
+    public final void saveFinalResults(final String fileName) {
         this.islet.saveFinalResults(fileName);
     }
 }
