@@ -104,6 +104,9 @@ public class IsletSelectionController {
                     + "/gravity_normal.stl");
             writer.setMesh(new Mesh(this.u3DController.getTrianglesSelected()));
             writer.write();
+            this.biController.getIslet().setGravityNormal(
+                    new Mesh(this.u3DController.getTrianglesSelected())
+                            .averageNormal());
             normalSaved = true;
         } else {
             JOptionPane.showMessageDialog(this.isView, FileTools
@@ -173,7 +176,7 @@ public class IsletSelectionController {
      *         ground normal are selected.
      */
     // TODO : why does this method return a boolean ? Shouldn't this be a void
-    // method throwing an exception when a problem happened ?
+    // method throwing an exception when a problem happens ?
     public final boolean launchIsletProcess() {
         boolean processLaunched = false;
 
@@ -224,6 +227,7 @@ public class IsletSelectionController {
                 // Reads the gravity normal in the file, and keeps it in memory.
                 this.biController.readGravityNormal(gravityNormal.getPath());
             } catch (IOException e) {
+                // TODO by Luc or Camille : pop-up.
                 // If the file can not be read or is not well built.
                 e.printStackTrace();
             }

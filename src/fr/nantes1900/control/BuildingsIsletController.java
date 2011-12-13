@@ -256,9 +256,18 @@ public class BuildingsIsletController {
      */
     public final void action6(final Surface surfaceLocked,
             final List<Surface> newNeighbours) {
+        for (Surface s : surfaceLocked.getNeighbours()) {
+            s.getNeighbours().remove(surfaceLocked);
+        }
+
         surfaceLocked.setNeighbours(newNeighbours);
+
+        for (Surface s : newNeighbours) {
+            s.getNeighbours().add(surfaceLocked);
+        }
+
         Building building = this.searchForBuildingContaining6(surfaceLocked);
-        building.getbStep5().orderNeighboursAndDeterminateContours();
+        building.getbStep5().determinateOneContour(surfaceLocked);
     }
 
     /**
@@ -536,6 +545,7 @@ public class BuildingsIsletController {
             this.incProgression();
             this.display();
         } catch (InvalidCaseException e) {
+            // It should never happen.
             e.printStackTrace();
         } catch (NullArgumentException e) {
             // It should never happen.

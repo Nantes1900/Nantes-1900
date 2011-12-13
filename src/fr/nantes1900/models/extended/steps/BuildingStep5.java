@@ -57,6 +57,8 @@ public class BuildingStep5 extends AbstractBuildingStep {
      */
     private Ground ground;
 
+    private Map<Point, Point> pointMap;
+
     /**
      * Constructor.
      * @param wallsIn
@@ -71,14 +73,19 @@ public class BuildingStep5 extends AbstractBuildingStep {
 
     /**
      * Determinates the neighbours of a surface.
+     * @param wallsIn
+     *            the walls
+     * @param roofsIn
+     *            the roofs
      */
-    public final void determinateNeighbours() {
+    public final void determinateNeighbours(final List<Wall> wallsIn,
+            final List<Roof> roofsIn) {
         final Polygon groundsBounds = this.ground.getMesh()
                 .returnUnsortedBounds();
 
         final List<Surface> wholeList = new ArrayList<>();
-        wholeList.addAll(this.walls);
-        wholeList.addAll(this.roofs);
+        wholeList.addAll(wallsIn);
+        wholeList.addAll(roofsIn);
 
         // To find every neighbours, we complete every holes between roofs
         // and walls by adding all the noise.
@@ -155,40 +162,45 @@ public class BuildingStep5 extends AbstractBuildingStep {
             throw new NullArgumentException();
         }
 
-        this.determinateNeighbours();
-
-        this.sortSurfaces();
-
-        this.orderNeighboursAndDeterminateContours();
-
         // Copies the walls and roofs to work on different versions.
         List<Wall> wallsCopy = new ArrayList<>();
         for (Wall w : this.walls) {
-            wallsCopy.add(w);
+            wallsCopy.add(new Wall(w));
         }
         List<Roof> roofsCopy = new ArrayList<>();
         for (Roof r : this.roofs) {
-            roofsCopy.add(r);
+            roofsCopy.add(new Roof(r));
         }
-        return new BuildingStep6(wallsCopy, roofsCopy);
 
+        this.determinateNeighbours(wallsCopy, roofsCopy);
+
+        BuildingStep5.sortSurfaces(wallsCopy, roofsCopy);
+
+        this.orderNeighboursAndDeterminateContours(wallsCopy, roofsCopy);
+
+        return new BuildingStep6(wallsCopy, roofsCopy);
     }
 
     /**
      * Orders the neighbours by calling the method orderNeighbours from the
      * class Surface and then computes the contour of the surface, using the
      * sorted neighbours.
+     * @param wallsIn
+     *            the walls
+     * @param roofsIn
+     *            the roofs
      */
-    public final void orderNeighboursAndDeterminateContours() {
+    public final void orderNeighboursAndDeterminateContours(
+            final List<Wall> wallsIn, final List<Roof> roofsIn) {
         // Creates the map where the points and edges will be put : if one
         // point is created a second time, it will be given the same
         // reference as the other one having the same values.
-        final Map<Point, Point> pointMap = new HashMap<>();
+        this.pointMap = new HashMap<>();
 
         // Adds all the surfaces
         final List<Surface> wholeList = new ArrayList<>();
-        wholeList.addAll(this.walls);
-        wholeList.addAll(this.roofs);
+        wholeList.addAll(wallsIn);
+        wholeList.addAll(roofsIn);
 
         for (final Surface surface : wholeList) {
             try {
@@ -199,7 +211,7 @@ public class BuildingStep5 extends AbstractBuildingStep {
 
                 // When the neighbours are sorted, finds the intersection of
                 // them to find the edges of this surface.
-                surface.setPolygon(surface.findEdges(this.walls, pointMap,
+                surface.setPolygon(surface.findEdges(wallsIn, this.pointMap,
                         this.groundNormal));
 
             } catch (final InvalidSurfaceException e) {
@@ -207,6 +219,20 @@ public class BuildingStep5 extends AbstractBuildingStep {
             } catch (final ImpossibleNeighboursOrderException e) {
                 // If there is a problem, the process cannot continue.
             }
+        }
+    }
+
+    /**
+     * Determinates the contour of only one surface.
+     * @param surface
+     *            the surface
+     */
+    public final void determinateOneContour(final Surface surface) {
+        try {
+            surface.setPolygon(surface.findEdges(this.walls, this.pointMap,
+                    this.groundNormal));
+        } catch (InvalidSurfaceException e) {
+            // If there is a problem, we cannot continue the process.
         }
     }
 
@@ -251,24 +277,29 @@ public class BuildingStep5 extends AbstractBuildingStep {
     /**
      * Removes every surfaces which have less than or equal 2 neighbours : it is
      * considered they are not really real surfaces.
+     * @param roofsIn
+     *            the roofs
+     * @param wallsIn
+     *            the walls
      */
-    private void sortSurfaces() {
-        for (int i = 0; i < this.walls.size(); i++) {
-            final Surface s = this.walls.get(i);
+    private static void
+            sortSurfaces(final List<Wall> wallsIn, final List<Roof> roofsIn) {
+        for (int i = 0; i < wallsIn.size(); i++) {
+            final Surface s = wallsIn.get(i);
 
             if (s.getNeighbours().size() < NUMBER_MIN_OF_NEIGHBOURS) {
-                this.walls.remove(s);
+                wallsIn.remove(s);
                 for (final Surface neighbour : s.getNeighbours()) {
                     neighbour.getNeighbours().remove(s);
                 }
             }
         }
 
-        for (int i = 0; i < this.roofs.size(); i++) {
-            final Surface s = this.roofs.get(i);
+        for (int i = 0; i < roofsIn.size(); i++) {
+            final Surface s = roofsIn.get(i);
 
             if (s.getNeighbours().size() < NUMBER_MIN_OF_NEIGHBOURS) {
-                this.roofs.remove(s);
+                roofsIn.remove(s);
                 for (final Surface neighbour : s.getNeighbours()) {
                     neighbour.getNeighbours().remove(s);
                 }
