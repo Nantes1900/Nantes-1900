@@ -282,8 +282,8 @@ public class BuildingStep5 extends AbstractBuildingStep {
      * @param wallsIn
      *            the walls
      */
-    private static void
-            sortSurfaces(final List<Wall> wallsIn, final List<Roof> roofsIn) {
+    private static void sortSurfaces(final List<Wall> wallsIn,
+            final List<Roof> roofsIn) {
         for (int i = 0; i < wallsIn.size(); i++) {
             final Surface s = wallsIn.get(i);
 

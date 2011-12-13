@@ -239,15 +239,20 @@ public class Surface {
 
         final int size = this.getNeighbours().size();
 
-        // We add the last missing edges which where not treated in the
-        // loop.
-        edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
-                .getNeighbours().get(size - 1), this.getNeighbours().get(0),
-                pointMap, wallList, normalGround));
+        try {
+            // We add the last missing edges which where not treated in the
+            // loop.
+            edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
+                    .getNeighbours().get(size - 1),
+                    this.getNeighbours().get(0), pointMap, wallList,
+                    normalGround));
 
-        edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
-                .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
-                wallList, normalGround));
+            edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
+                    .getNeighbours().get(0), this.getNeighbours().get(1),
+                    pointMap, wallList, normalGround));
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw new InvalidSurfaceException();
+        }
 
         edges.setNormal(this.getMesh().averageNormal());
 
