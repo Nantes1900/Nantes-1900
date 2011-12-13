@@ -83,7 +83,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      * A constant defining the orientation tolerance (in degrees) when getting
      * all the triangles oriented as a triangle input.
      */
-    public static final int ORIENTATION_TOLERANCE = 20;
+    public static final int ORIENTATION_TOLERANCE = 30;
     /**
      * A constant defining the max distance between the triangle picked and the
      * neighbours triangles to select.
@@ -671,9 +671,14 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      */
     public final void setNonNeighbourMaterial(
             final SurfaceView surfaceViewDisplayed) {
-        if (!this.surfacesSelected.contains(surfaceViewDisplayed.getSurface())) {
-            if (!this.checkNeighbour(surfaceViewDisplayed)) {
-                if (surfaceViewDisplayed.getPolygonView() != null) {
+
+        if (!this.surfacesSelected.contains(surfaceViewDisplayed.getSurface()))
+        {
+            if (!this.checkNeighbour(surfaceViewDisplayed))
+            {
+                if (surfaceViewDisplayed.getSurface().getPolygon() != null)
+                {
+
                     surfaceViewDisplayed
                             .setMaterial(SurfaceView.MATERIAL_POLYGON);
                 } else {
