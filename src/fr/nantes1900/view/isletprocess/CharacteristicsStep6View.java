@@ -80,7 +80,6 @@ public class CharacteristicsStep6View extends CharacteristicsView {
 
         this.bLock = new JButton(new ImageIcon(Icons.lock));
 
-        // TODO by Camille : modify with arrows
         this.upButton = new JButton(new ImageIcon(Icons.up));
         this.upButton.addActionListener(new ActionListener() {
 

@@ -98,7 +98,7 @@ public class CharacteristicsStep2View extends CharacteristicsView {
     public final String getTypeSelected() {
         return (String) this.cbType.getSelectedItem();
     }
-    
+
     /**
      * Tells if the delete check box is selected.
      * @return true - delete check box is selected\n false - delete check box is
@@ -106,6 +106,14 @@ public class CharacteristicsStep2View extends CharacteristicsView {
      */
     public final boolean isDeleteSelected() {
         return this.cbDelete.isSelected();
+    }
+
+    /**
+     * Gets the check box delete.
+     * @return the delete check box
+     */
+    public JCheckBox getDeleteCheckBox() {
+        return cbDelete;
     }
 
     /**
