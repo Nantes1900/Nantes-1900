@@ -721,7 +721,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         {
             if (!this.checkNeighbour(surfaceViewDisplayed))
             {
-                if (surfaceViewDisplayed.getPolygonView() != null)
+                if (surfaceViewDisplayed.getSurface().getPolygon() != null)
                 {
                     surfaceViewDisplayed
                             .setMaterial(SurfaceView.MATERIAL_POLYGON);
