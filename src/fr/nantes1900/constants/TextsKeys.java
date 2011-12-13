@@ -193,6 +193,10 @@ public final class TextsKeys {
      */
     public static final String KEY_FILEPARAMEXTENSION = "FileParamExtension";
     /**
+     * Key for parameters files extension.
+     */
+    public static final String KEY_FILESTLDESCRIPTION = "FileSTLDescription";
+    /**
      * Key for parameters files extension description.
      */
     public static final String KEY_FILEPARAMDESCRIPTION = "FileParamDescription";

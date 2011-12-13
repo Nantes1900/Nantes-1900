@@ -2,10 +2,17 @@ package fr.nantes1900.control.isletprocess;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
+import javax.swing.JFileChooser;
 import javax.swing.JToolBar;
+import javax.swing.filechooser.FileFilter;
 
+import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.isletprocess.IsletProcessController.UnexistingStepException;
+import fr.nantes1900.control.isletprocess.ParametersController.ParametersFileChooser;
+import fr.nantes1900.control.isletprocess.ParametersController.ParametersFileFilter;
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.NavigationBarView;
 
 /**
@@ -89,10 +96,18 @@ public class NavigationBarController extends JToolBar {
 
             @Override
             public void actionPerformed(final ActionEvent arg0) {
-                // FIXME by Camille : JFileChooser
-                String fileName = "test.stl";
-                NavigationBarController.this.getParentController()
-                        .getBiController().saveFinalResults(fileName);
+                ResultsFileChooser fileChooser = new ResultsFileChooser();
+                fileChooser.setFileFilter(new ResultsFileFilter());
+                fileChooser.setAcceptAllFileFilterUsed(false);
+
+                fileChooser.setDialogType(JFileChooser.SAVE_DIALOG);
+
+                if (fileChooser.showSaveDialog(NavigationBarController.this
+                        .getView()) == JFileChooser.APPROVE_OPTION) {
+                    String fileName = fileChooser.getSelectedFile().getPath();
+                    NavigationBarController.this.getParentController()
+                    .getBiController().saveFinalResults(fileName);
+                }
             }
         });
     }
@@ -111,6 +126,80 @@ public class NavigationBarController extends JToolBar {
      */
     public final NavigationBarView getView() {
         return this.nbView;
+    }
+    
+    /**
+     * File chooser for results files.
+     * @author Camille Bouquet
+     */
+    public class ResultsFileChooser extends JFileChooser {
+
+        /**
+         * Default serial UID.
+         */
+        private static final long serialVersionUID = 1L;
+
+        /*
+         * (non-Javadoc)
+         * @see javax.swing.JFileChooser#approveSelection()
+         */
+        @Override
+        public final void approveSelection() {
+            String absolutetPath = super.getSelectedFile().getAbsolutePath();
+
+            ResultsFileFilter filter = (ResultsFileFilter) super
+                    .getFileFilter();
+            if (!absolutetPath.endsWith(filter.getExtension())) {
+                absolutetPath += "." + filter.getExtension();
+            }
+            super.setSelectedFile(new File(absolutetPath));
+            super.approveSelection();
+        }
+    }
+
+    /**
+     * Filter for results files.
+     * @author Camille Bouquet
+     */
+    public class ResultsFileFilter extends FileFilter {
+
+        /**
+         * Stl files extension.
+         */
+        private String extension = "stl";
+        
+        /**
+         * Stl file description.
+         */
+        private String description = FileTools
+                .readElementText(TextsKeys.KEY_FILESTLDESCRIPTION);
+
+        /*
+         * (non-Javadoc)
+         * @see javax.swing.filechooser.FileFilter#accept(java.io.File)
+         */
+        @Override
+        public final boolean accept(final File file) {
+            return (file.isDirectory() || file.getName().endsWith(
+                    this.extension));
+        }
+
+        /*
+         * (non-Javadoc)
+         * @see javax.swing.filechooser.FileFilter#getDescription()
+         */
+        @Override
+        public final String getDescription() {
+            return "." + this.extension + " - " + this.description;
+        }
+
+        /**
+         * Gets the extension of the filer.
+         * @return the extension
+         */
+        public final String getExtension() {
+            return this.extension;
+        }
     }
 
 }

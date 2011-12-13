@@ -61,3 +61,4 @@ SaveParametersButton=Sauvegarder les paramètres
 LoadParametersButton=Charger les paramètres
 ShowParametersButton=Afficher tous les paramètres
 SliderDescription=Taille de la sélection
+FileSTLDescription=Fichiers STL
