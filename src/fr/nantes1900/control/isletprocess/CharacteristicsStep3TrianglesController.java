@@ -43,20 +43,21 @@ public class CharacteristicsStep3TrianglesController extends
             public void actionPerformed(final ActionEvent arg0) {
                 if (((CharacteristicsStep3TrianglesView) cView)
                         .isDeleteSelected()) {
-                    try {
-                        CharacteristicsStep3TrianglesController.this.parentController
-                                .getBiController().action3(trianglesList,
-                                        ActionTypes.REMOVE);
-                    } catch (InvalidCaseException e) {
-                        JOptionPane.showMessageDialog(cView, FileTools
-                                .readInformationMessage(
-                                        TextsKeys.KEY_ERROR_INCORRECTACTION,
-                                        TextsKeys.MESSAGETYPE_MESSAGE),
-                                FileTools.readInformationMessage(
-                                        TextsKeys.KEY_ERROR_INCORRECTACTION,
-                                        TextsKeys.MESSAGETYPE_TITLE),
-                                JOptionPane.ERROR_MESSAGE);
-                    }
+                    // try {
+                    // FIXME
+                    // CharacteristicsStep3TrianglesController.this.parentController
+                    // .getBiController().action3(trianglesList,
+                    // ActionTypes.REMOVE);
+                    // } catch (InvalidCaseException e) {
+                    // JOptionPane.showMessageDialog(cView, FileTools
+                    // .readInformationMessage(
+                    // TextsKeys.KEY_ERROR_INCORRECTACTION,
+                    // TextsKeys.MESSAGETYPE_MESSAGE),
+                    // FileTools.readInformationMessage(
+                    // TextsKeys.KEY_ERROR_INCORRECTACTION,
+                    // TextsKeys.MESSAGETYPE_TITLE),
+                    // JOptionPane.ERROR_MESSAGE);
+                    // }
                 }
                 CharacteristicsStep3TrianglesController.this.parentController
                         .refreshViews();
