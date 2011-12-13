@@ -92,10 +92,6 @@ public class IsletSelectionController {
      * @return true - the normal has been correctly saved\n false - the normal
      *         couldn't been stored because no file or triangles are selected.
      */
-    // TODO by Camille or Luc : correct this. This method should not return a
-    // boolean, but nothing.
-    // If an error happens (no file or triangles not selected, then throw an
-    // exception : it has been created for that case !
     public final boolean computeGravityNormal() {
         boolean normalSaved = false;
         if (this.selectedFile != null
@@ -175,8 +171,6 @@ public class IsletSelectionController {
      *         launched\n false - the process wasn't launch, because no islet or
      *         ground normal are selected.
      */
-    // TODO : why does this method return a boolean ? Shouldn't this be a void
-    // method throwing an exception when a problem happens ?
     public final boolean launchIsletProcess() {
         boolean processLaunched = false;
 

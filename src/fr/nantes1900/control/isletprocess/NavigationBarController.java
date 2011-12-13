@@ -68,7 +68,6 @@ public class NavigationBarController extends JToolBar {
                     NavigationBarController.this.getParentController()
                             .goToPreviousProcess();
                 } catch (UnexistingStepException e) {
-                    // TODO by Luc : pop-up.
                     e.printStackTrace();
                 }
             }
@@ -85,7 +84,6 @@ public class NavigationBarController extends JToolBar {
                     NavigationBarController.this.getParentController()
                             .launchProcess();
                 } catch (UnexistingStepException e) {
-                    // TODO by Luc : pop-up.
                     e.printStackTrace();
                 }
             }
@@ -106,7 +104,7 @@ public class NavigationBarController extends JToolBar {
                         .getView()) == JFileChooser.APPROVE_OPTION) {
                     String fileName = fileChooser.getSelectedFile().getPath();
                     NavigationBarController.this.getParentController()
-                    .getBiController().saveFinalResults(fileName);
+                            .getBiController().saveFinalResults(fileName);
                 }
             }
         });
@@ -127,7 +125,7 @@ public class NavigationBarController extends JToolBar {
     public final NavigationBarView getView() {
         return this.nbView;
     }
-    
+
     /**
      * File chooser for results files.
      * @author Camille Bouquet
@@ -164,12 +162,12 @@ public class NavigationBarController extends JToolBar {
     public class ResultsFileFilter extends FileFilter {
 
         /**
-         * Stl files extension.
+         * STL files extension.
          */
         private String extension = "stl";
-        
+
         /**
-         * Stl file description.
+         * STL file description.
          */
         private String description = FileTools
                 .readElementText(TextsKeys.KEY_FILESTLDESCRIPTION);
