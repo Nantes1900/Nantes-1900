@@ -65,15 +65,15 @@ public class ParametersView extends JPanel {
     private JButton bShow = new JButton(new ImageIcon(Icons.showProperties));
 
     /**
-     * TODO by Luc.
+     * The panel at the top.
      */
     private JPanel pTop;
     /**
-     * TODO by Luc.
+     * The panel in the center.
      */
     private JPanel pCenter;
     /**
-     * TODO by Luc.
+     * The panel at the bottom.
      */
     private JPanel pBottom;
 
@@ -91,7 +91,7 @@ public class ParametersView extends JPanel {
      */
     public ParametersView() {
 
-        // Init parameters
+        // Initiate parameters
         this.property = new JLabel[15];
         this.value = new ValueProperty[15];
         this.help = new HelpButton[15];
@@ -197,13 +197,13 @@ public class ParametersView extends JPanel {
     }
 
     /**
-     * TODO by Luc.
+     * Displays one parameter with its name, its text field and its help button.
      * @param x
-     *            TODO by Luc.
+     *            number of the column where it is displayed
      * @param y
-     *            TODO by Luc.
+     *            number of the line where it is displayed
      * @param n
-     *            TODO by Luc.
+     *            number of the parameter : starts from 1, to 14.
      */
     private void displayOneParameter(final int x, final int y, final int n) {
         this.pCenter.add(this.property[n], new GridBagConstraints(x, y, 1, 1,
