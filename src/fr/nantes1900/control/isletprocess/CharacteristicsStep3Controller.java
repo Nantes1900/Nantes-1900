@@ -49,7 +49,6 @@ public class CharacteristicsStep3Controller extends
                     {
                         try
                         {
-                            // TODO : use new action 3 put in noise
                             CharacteristicsStep3Controller.this.parentController
                                     .getBiController().action3(surface,
                                             ActionTypes.TURN_TO_NOISE);

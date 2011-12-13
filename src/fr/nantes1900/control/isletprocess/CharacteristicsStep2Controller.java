@@ -45,9 +45,8 @@ public class CharacteristicsStep2Controller extends
                 {
                     try
                     {
-                        // TODO : use new action 2 delete
                         CharacteristicsStep2Controller.this.parentController
-                                .getBiController().action3(trianglesList,
+                                .getBiController().action2(trianglesList,
                                         ActionTypes.REMOVE);
                     } catch (InvalidCaseException e)
                     {
