@@ -372,7 +372,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
         // Enabling / disabling specifics selection modes, beware of order of
         // methods call
-        if (step == 1 || step == 5 || step == 6) {
+        if (step == 1 || step == 3 || step == 5 || step == 6) {
             this.f3DController.setEnableSelectionMode(false,
                     Universe3DController.SELECTION_TRIANGLE_MODE);
             this.f3DController
@@ -467,7 +467,7 @@ public class IsletProcessController implements ElementsSelectedListener,
                     CharacteristicsController.class)) {
                 switch (this.getProgression()) {
                 case 3:
-                    this.cController = new CharacteristicsStep3ElementsController(
+                    this.cController = new CharacteristicsStep3Controller(
                             this, surfaceSelected);
                     break;
                 case 5:
@@ -506,8 +506,7 @@ public class IsletProcessController implements ElementsSelectedListener,
             final List<Triangle> trianglesSelected) {
         int step = this.getProgression();
 
-        if ((step == 3 && this.f3DController.getSelectionMode() == Universe3DController.SELECTION_TRIANGLE_MODE)
-                || step == 2 || step == 4) {
+        if (step == 2 || step == 4) {
             if (trianglesSelected.isEmpty()) {
                 setDefaultCharacteristicsPanel();
                 this.f3DController.setRotationCenterEnable(false);
@@ -516,10 +515,6 @@ public class IsletProcessController implements ElementsSelectedListener,
                 case 2:
                     this.cController = new CharacteristicsStep2Controller(this,
                             trianglesSelected);
-                    break;
-                case 3:
-                    this.cController = new CharacteristicsStep3TrianglesController(
-                            this, trianglesSelected);
                     break;
                 case 4:
                     this.cController = new CharacteristicsStep4Controller(this,

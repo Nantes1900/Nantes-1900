@@ -12,6 +12,7 @@ import java.util.List;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -63,6 +64,10 @@ public class CharacteristicsStep6View extends CharacteristicsView {
      * Button to lock a surface and modify the list of its neighbors.
      */
     private JButton bLock;
+    /**
+     * Check box to put surfaces into noise.
+     */
+    private JCheckBox cbNoise;
 
     /**
      * New step 6 characteristics panel with the list of neighbours of the
@@ -84,7 +89,8 @@ public class CharacteristicsStep6View extends CharacteristicsView {
                 int selectedIndex = lNeighbors.getSelectedIndex();
 
                 // if the selected index is in the list.
-                if (selectedIndex != -1) {
+                if (selectedIndex != -1)
+                {
                     Surface selectedSurface = lNeighbors.getSelectedValue();
 
                     dlm.removeElement(selectedSurface);
@@ -102,7 +108,8 @@ public class CharacteristicsStep6View extends CharacteristicsView {
                 int selectedIndex = lNeighbors.getSelectedIndex();
 
                 // if the selected index is in the list.
-                if (selectedIndex != -1) {
+                if (selectedIndex != -1)
+                {
                     Surface selectedSurface = lNeighbors.getSelectedValue();
 
                     dlm.removeElement(selectedSurface);
@@ -113,7 +120,8 @@ public class CharacteristicsStep6View extends CharacteristicsView {
         });
 
         // Creation of the list
-        for (Surface neighbour : neighbors) {
+        for (Surface neighbour : neighbors)
+        {
             this.dlm.addElement(neighbour);
         }
 
@@ -123,16 +131,20 @@ public class CharacteristicsStep6View extends CharacteristicsView {
 
             @Override
             public void valueChanged(final ListSelectionEvent arg0) {
-                if (lNeighbors.getSelectedIndex() == 0) {
+                if (lNeighbors.getSelectedIndex() == 0)
+                {
                     upButton.setEnabled(false);
-                } else if (!upButton.isEnabled()) {
+                } else if (!upButton.isEnabled())
+                {
                     upButton.setEnabled(true);
                 }
 
                 if (lNeighbors.getSelectedIndex() == CharacteristicsStep6View.this.dlm
-                        .getSize() - 1) {
+                        .getSize() - 1)
+                {
                     downButton.setEnabled(false);
-                } else if (!downButton.isEnabled()) {
+                } else if (!downButton.isEnabled())
+                {
                     downButton.setEnabled(true);
                 }
 
@@ -158,17 +170,31 @@ public class CharacteristicsStep6View extends CharacteristicsView {
                 new Insets(0, 10, 0, 10), 0, 0));
 
         this.helpButton = new HelpButton(FileTools.readHelpMessage(
-                TextsKeys.KEY_HELP_C_NEIGHBORS,
-                TextsKeys.MESSAGETYPE_TOOLTIP), FileTools
-                .readHelpMessage(TextsKeys.KEY_HELP_C_NEIGHBORS,
-                        TextsKeys.MESSAGETYPE_MESSAGE), FileTools
-                .readHelpMessage(TextsKeys.KEY_HELP_C_NEIGHBORS,
+                TextsKeys.KEY_HELP_C_NEIGHBORS, TextsKeys.MESSAGETYPE_TOOLTIP),
+                FileTools.readHelpMessage(TextsKeys.KEY_HELP_C_NEIGHBORS,
+                        TextsKeys.MESSAGETYPE_MESSAGE),
+                FileTools.readHelpMessage(TextsKeys.KEY_HELP_C_NEIGHBORS,
                         TextsKeys.MESSAGETYPE_TITLE));
 
         this.getPanelContent().add(bLock);
         this.addCaracteristic(createSimpleCaracteristic(sortPanel, new JLabel(
                 FileTools.readElementText(TextsKeys.KEY_SORTOUTNEIGHBOURS)),
                 this.helpButton));
+
+        // Puts in noise actions
+        this.cbNoise = new JCheckBox();
+
+        this.addCaracteristic(createSimpleCaracteristic(
+                this.cbNoise,
+                new JLabel(FileTools
+                        .readElementText(TextsKeys.KEY_PUTINNOISETEXT)),
+                new HelpButton(FileTools.readHelpMessage(
+                        TextsKeys.KEY_HELP_C_NOISE,
+                        TextsKeys.MESSAGETYPE_TOOLTIP), FileTools
+                        .readHelpMessage(TextsKeys.KEY_HELP_C_NOISE,
+                                TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                        .readHelpMessage(TextsKeys.KEY_HELP_C_NOISE,
+                                TextsKeys.MESSAGETYPE_TITLE))));
         this.bValidate.setEnabled(true);
     }
 
@@ -179,7 +205,8 @@ public class CharacteristicsStep6View extends CharacteristicsView {
      */
     public final void setList(final ArrayList<Surface> neighbors) {
         this.dlm.removeAllElements();
-        for (Surface neighbour : neighbors) {
+        for (Surface neighbour : neighbors)
+        {
             this.dlm.addElement(neighbour);
         }
         revalidate();
@@ -193,7 +220,8 @@ public class CharacteristicsStep6View extends CharacteristicsView {
     public final ArrayList<Surface> getList() {
         ArrayList<Surface> neighborsList = new ArrayList<>();
 
-        for (int i = 0; i < this.dlm.size(); i++) {
+        for (int i = 0; i < this.dlm.size(); i++)
+        {
             neighborsList.add(this.dlm.elementAt(i));
         }
         return neighborsList;
@@ -205,6 +233,15 @@ public class CharacteristicsStep6View extends CharacteristicsView {
      */
     public final JButton getLockButton() {
         return this.bLock;
+    }
+
+    /**
+     * Is the noise checkbox selected.
+     * @return true - the noise checkbox is selected\n false - the noise
+     *         checkbox is not selected
+     */
+    public final boolean isNoiseSelected() {
+        return this.cbNoise.isSelected();
     }
 
     /**

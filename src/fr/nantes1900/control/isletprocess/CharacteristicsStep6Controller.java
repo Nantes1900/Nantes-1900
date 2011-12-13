@@ -6,10 +6,13 @@ import java.util.ArrayList;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
+import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.constants.Icons;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.CharacteristicsStep6View;
 
@@ -55,18 +58,18 @@ public class CharacteristicsStep6Controller extends
 
                     @Override
                     public void actionPerformed(final ActionEvent arg0) {
-                        // TODO tell the parent controller that the surface is
-                        // locked
                         surfaceLocked = !surfaceLocked;
                         JButton source = ((JButton) arg0.getSource());
 
-                        if (surfaceLocked) {
+                        if (surfaceLocked)
+                        {
                             source.setIcon(new ImageIcon(Icons.unlock));
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_LOCKMESH));
                             parentController.lock(true);
-                            
-                        } else {
+
+                        } else
+                        {
                             source.setIcon(new ImageIcon(Icons.lock));
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_UNLOCKMESH));
@@ -83,10 +86,38 @@ public class CharacteristicsStep6Controller extends
 
             @Override
             public void actionPerformed(final ActionEvent arg0) {
-                surfacesList = ((CharacteristicsStep6View) cView).getList();
-                parentController.getBiController().action6(surfaceToCheck,
-                        surfacesList);
-                parentController.lock(false);
+                if (((CharacteristicsStep6View) cView).isNoiseSelected())
+                {
+                    for (Surface surface : CharacteristicsStep6Controller.this.surfacesList)
+                    {
+                        try
+                        {
+                            // TODO : use new action 6 put in noise
+                            CharacteristicsStep6Controller.this.parentController
+                                    .getBiController().action3(surface,
+                                            ActionTypes.TURN_TO_NOISE);
+                        } catch (InvalidCaseException e)
+                        {
+                            JOptionPane.showMessageDialog(
+                                    cView,
+                                    FileTools
+                                            .readInformationMessage(
+                                                    TextsKeys.KEY_ERROR_INCORRECTACTION,
+                                                    TextsKeys.MESSAGETYPE_MESSAGE),
+                                    FileTools
+                                            .readInformationMessage(
+                                                    TextsKeys.KEY_ERROR_INCORRECTACTION,
+                                                    TextsKeys.MESSAGETYPE_TITLE),
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                } else
+                {
+                    surfacesList = ((CharacteristicsStep6View) cView).getList();
+                    parentController.getBiController().action6(surfaceToCheck,
+                            surfacesList);
+                    parentController.lock(false);
+                }
                 parentController.refreshViews();
             }
         });
@@ -100,7 +131,8 @@ public class CharacteristicsStep6Controller extends
      */
     @Override
     public final void addSurfaceSelected(final Surface surfaceSelected) {
-        if (this.surfaceLocked) {
+        if (this.surfaceLocked)
+        {
             this.surfacesList.add(surfaceSelected);
             modifyViewCharacteristics();
         }
@@ -114,7 +146,8 @@ public class CharacteristicsStep6Controller extends
      */
     @Override
     public final void removeSurfaceSelected(final Surface surfaceSelected) {
-        if (this.surfaceLocked) {
+        if (this.surfaceLocked)
+        {
             this.surfacesList.remove(surfaceSelected);
             modifyViewCharacteristics();
         }

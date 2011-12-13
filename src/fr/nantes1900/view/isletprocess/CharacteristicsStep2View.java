@@ -3,6 +3,7 @@ package fr.nantes1900.view.isletprocess;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
@@ -28,6 +29,11 @@ public class CharacteristicsStep2View extends CharacteristicsView {
     private JComboBox<String> cbType;
 
     /**
+     * Check box to delete a list of triangles.
+     */
+    private JCheckBox cbDelete;
+
+    /**
      * Creates a new panel to display and modify characteristics for step 2.
      */
     public CharacteristicsStep2View() {
@@ -40,10 +46,29 @@ public class CharacteristicsStep2View extends CharacteristicsView {
 
             @Override
             public void itemStateChanged(final ItemEvent arg0) {
-                CharacteristicsStep2View.this.checkTypeSelected();
+                CharacteristicsStep2View.this.checkEnableValidateButton();
             }
 
         });
+
+        // Puts in noise actions
+        this.cbDelete = new JCheckBox();
+        this.cbDelete.addItemListener(new ItemListener() {
+
+            @Override
+            public void itemStateChanged(final ItemEvent arg0) {
+                if (((JCheckBox) arg0.getSource()).isSelected())
+                {
+                    CharacteristicsStep2View.this.cbType.setEnabled(false);
+                } else
+                {
+                    CharacteristicsStep2View.this.cbType.setEnabled(true);
+                }
+                CharacteristicsStep2View.this.checkEnableValidateButton();
+            }
+
+        });
+
         this.addCaracteristic(createSimpleCaracteristic(
                 this.cbType,
                 new JLabel(FileTools.readElementText(TextsKeys.KEY_TYPETEXT)),
@@ -54,19 +79,16 @@ public class CharacteristicsStep2View extends CharacteristicsView {
                                 TextsKeys.MESSAGETYPE_MESSAGE), FileTools
                         .readHelpMessage(TextsKeys.KEY_HELP_C_TYPE,
                                 TextsKeys.MESSAGETYPE_TITLE))));
-    }
-
-    /**
-     * Checks the selected type and enables or disables the validate button.
-     */
-    public final void checkTypeSelected() {
-        if (this.cbType.getSelectedItem().equals(""))
-        {
-            this.bValidate.setEnabled(false);
-        } else
-        {
-            this.bValidate.setEnabled(true);
-        }
+        this.addCaracteristic(createSimpleCaracteristic(
+                this.cbDelete,
+                new JLabel(FileTools.readElementText(TextsKeys.KEY_DELETETEXT)),
+                new HelpButton(FileTools.readHelpMessage(
+                        TextsKeys.KEY_HELP_C_DELETE,
+                        TextsKeys.MESSAGETYPE_TOOLTIP), FileTools
+                        .readHelpMessage(TextsKeys.KEY_HELP_C_DELETE,
+                                TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                        .readHelpMessage(TextsKeys.KEY_HELP_C_DELETE,
+                                TextsKeys.MESSAGETYPE_TITLE))));
     }
 
     /**
@@ -76,6 +98,15 @@ public class CharacteristicsStep2View extends CharacteristicsView {
     public final String getTypeSelected() {
         return (String) this.cbType.getSelectedItem();
     }
+    
+    /**
+     * Tells if the delete check box is selected.
+     * @return true - delete check box is selected\n false - delete check box is
+     *         not selected
+     */
+    public final boolean isDeleteSelected() {
+        return this.cbDelete.isSelected();
+    }
 
     /**
      * Selects the given type.
@@ -84,6 +115,20 @@ public class CharacteristicsStep2View extends CharacteristicsView {
      */
     public final void setType(final String string) {
         this.cbType.setSelectedItem(string);
-        checkTypeSelected();
+        checkEnableValidateButton();
+    }
+
+    /**
+     * Checks if the validate button should be enabled or not.
+     */
+    public final void checkEnableValidateButton() {
+        if (!this.cbType.getSelectedItem().equals("")
+                || this.cbDelete.isSelected())
+        {
+            this.bValidate.setEnabled(true);
+        } else
+        {
+            this.bValidate.setEnabled(false);
+        }
     }
 }
