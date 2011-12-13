@@ -97,7 +97,7 @@ public class Universe3DView extends JPanel {
     /**
      * Constant defining the sensitivity of the zoom transformation.
      */
-    public static final double TRANSLATION_FACTOR = 1.5;
+    public static final double TRANSLATION_FACTOR = 1.2;
 
     /**
      * Creates a new universe. Sets the Canvas3D and the panel size.
