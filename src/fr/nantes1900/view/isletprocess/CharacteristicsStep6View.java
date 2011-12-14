@@ -264,6 +264,15 @@ public class CharacteristicsStep6View extends CharacteristicsView {
             this.bValidate.setEnabled(false);
         }
     }
+    
+    /**
+     * Gets the list element.
+     * @return the list element
+     */
+    public JList<Surface> getJListNeighbors()
+    {
+        return this.lNeighbors;
+    }
 
     /**
      * Enables or disables all characteristics elements excepted lock button.

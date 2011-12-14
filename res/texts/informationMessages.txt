@@ -15,3 +15,7 @@ EmptyGroundMessage=Warning : initial grounds empty !
 NoGroundMessage=Warning : the process didn't find any ground. This must be an error. You should come back to the previous process and check.
 NoNoiseMessage=Warning : the process didn't find any noise. This must be an error. You should come back to the previous process and check.
 NoBuildingsMessage=Warning : the buildings are empty. This must be an error. You should come back to the previous process and check.
+InvalidCaseTypeMessage=Le type de l'élément est incorrect.
+InvalidCaseTypeTitle=Type incorrect
+IOExceptionMessage=Une erreur est survenue lors de l'accès au fichier.\nVérifiez qu'il n'est pas corrompu.
+IOExceptionTitle=Erreur lors de l'accès au fichier
