@@ -12,6 +12,7 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.PFrame;
 import fr.nantes1900.view.display3d.Universe3DView;
+import fr.nantes1900.view.isletprocess.characteristics.CharacteristicsView;
 
 /**
  * Window to launch process on an islet in order to simplify it.

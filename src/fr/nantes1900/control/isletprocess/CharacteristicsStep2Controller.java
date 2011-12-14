@@ -15,7 +15,7 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
-import fr.nantes1900.view.isletprocess.CharacteristicsStep2View;
+import fr.nantes1900.view.isletprocess.characteristics.CharacteristicsStep2View;
 
 /**
  * Characteristics panel for the second step of process of an islet. User can
