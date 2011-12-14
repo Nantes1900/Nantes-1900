@@ -510,7 +510,24 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     public void mouseReleased(final MouseEvent e) {
         // Not used.
     }
+    
 
+    /**Highlight  a neighbour of the surface locked.
+     * @param surface
+     *            The neighbour selected.
+     */
+    public void highlightSurface(Surface surface){
+        SurfaceView surfaceView=this.getSurfaceViewFromSurface(surface);
+        surfaceView.setMaterial(SurfaceView.MATERIAL_NEIGHBOUR_HIGHLIGHT);
+    }
+    /**Cancel the highlight of a neighbour of the surface locked.
+     * @param surface
+     *            The neighbour selected.
+     */
+    public void unHighlightSurface(Surface surface){
+        SurfaceView surfaceView=this.getSurfaceViewFromSurface(surface);
+        surfaceView.setMaterial(SurfaceView.MATERIAL_NEIGHBOUR);
+    }
     /**
      * Removes one of the ElementsSelectedListener.
      * @param listener

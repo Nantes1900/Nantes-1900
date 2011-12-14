@@ -131,7 +131,7 @@ public class Universe3DView extends JPanel {
         this.u3DController.setSurfaceLocked(null);
         this.u3DController.setSurfaceLockedNeighbours(null);
         this.u3DController.setLockMode(false);
-        
+
         if (this.u3DController.getDisplayMode() == Universe3DController.DISPLAY_MESH_MODE)
         {
             this.displayMeshes(surfaces);
@@ -302,22 +302,19 @@ public class Universe3DView extends JPanel {
      *            The list of surfaces containing the meshes to display.
      */
     private void displayMeshes(final List<Surface> surfacesList) {
-        
-        int triangleCount=0;
+
         for (Surface surface : surfacesList)
-        {   
-           
-            
+        {
+
             SurfaceView surfaceView = new SurfaceView(surface);
 
             MeshView meshView = new MeshView(surface.getMesh());
             surfaceView.setMeshView(meshView);
 
-
             surfaceView.showMeshView();
             this.surfaceViewList.add(surfaceView);
         }
-       
+
     }
 
     /**
@@ -328,22 +325,21 @@ public class Universe3DView extends JPanel {
      *            The list of surfaces containing the meshes to display.
      */
     private void displayPolygons(final List<Surface> surfacesList) {
-        
-        
+
         for (Surface surface : surfacesList)
         {
-           
+
             SurfaceView surfaceView = new SurfaceView(surface);
             if (surface.getPolygon() != null)
             {
                 PolygonView polygonView = new PolygonView(surface.getPolygon());
                 surfaceView.setPolygonView(polygonView);
-                
+
             }
             surfaceView.showPolygonView();
             this.surfaceViewList.add(surfaceView);
         }
-        
+
     }
 
     /**

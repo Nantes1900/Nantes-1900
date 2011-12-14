@@ -53,7 +53,13 @@ public class SurfaceView extends Shape3D {
     public static final Material MATERIAL_NEIGHBOUR = new Material(new Color3f(
             0.7f, 0.5f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.7f,
             0.5f, 0.0f), new Color3f(0.7f, 0.5f, 0.0f), 64);
-
+    
+    /**
+     * The material of a surface which is neighbour of the one selected and is highlighted.
+     */
+    public static final Material MATERIAL_NEIGHBOUR_HIGHLIGHT=new Material(new Color3f(
+            0.5f, 0.0f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.5f,
+            0.0f, 0.0f), new Color3f(0.5f, 0.0f, 0.0f), 64);
 
     /**
      * The surface linked to this view.
