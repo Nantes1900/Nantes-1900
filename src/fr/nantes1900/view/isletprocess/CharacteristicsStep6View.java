@@ -177,7 +177,7 @@ public class CharacteristicsStep6View extends CharacteristicsView {
 
         this.getPanelContent().add(bLock);
         this.addCaracteristic(createSimpleCaracteristic(sortPanel, new JLabel(
-                FileTools.readElementText(TextsKeys.KEY_SORTOUTNEIGHBOURS)),
+                FileTools.readElementText(TextsKeys.KEY_SORTOUTNEIGHBORS)),
                 this.helpButton));
 
         // Puts in noise actions

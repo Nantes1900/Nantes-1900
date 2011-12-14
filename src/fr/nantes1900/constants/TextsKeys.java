@@ -93,7 +93,7 @@ public final class TextsKeys {
     /**
      * Key for title of the sort neighbors characteristic.
      */
-    public static final String KEY_SORTOUTNEIGHBOURS = "CSortOutNeighbours";
+    public static final String KEY_SORTOUTNEIGHBORS = "CSortOutNeighbors";
 
     /**
      * To delete when checkbox deleted.
@@ -217,10 +217,6 @@ public final class TextsKeys {
     /**
      * Key for type characteristics help messages.
      */
-    public static final String KEY_HELP_C_TYPE_SURFACES = "CharacteristicsTypeSurfaces";
-    /**
-     * Key for type characteristics help messages.
-     */
     public static final String KEY_HELP_C_DELETE = "CharacteristicsDelete";
     /**
      * Key for type characteristics help messages.
@@ -229,11 +225,11 @@ public final class TextsKeys {
     /**
      * Key for type characteristics help messages.
      */
-    public static final String KEY_HELP_C_NOISE = "CharacteristicsNeighbors";
+    public static final String KEY_HELP_C_NOISE = "CharacteristicsNoise";
     /**
      * Key for type characteristics help messages.
      */
-    public static final String KEY_HELP_C_NEIGHBORS = "CharacteristicsType";
+    public static final String KEY_HELP_C_NEIGHBORS = "CharacteristicsNeighbors";
 
     /**
      * Keys for warning messages for long processes.
