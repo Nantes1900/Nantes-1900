@@ -578,10 +578,11 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
                 surfaceView.setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
             }
         }
-        SurfaceView surfaceViewLocked=this.getSurfaceViewFromSurface(this.surfaceLocked);
-        surfaceViewLocked.setMaterial(SurfaceView.MATERIAL_SELECTED);
-        this.showNeighbours(this.surfaceLocked);
-
+        if(this.surfaceLocked!=null){
+            SurfaceView surfaceViewLocked=this.getSurfaceViewFromSurface(this.surfaceLocked);
+            surfaceViewLocked.setMaterial(SurfaceView.MATERIAL_SELECTED);
+            this.showNeighbours(this.surfaceLocked);
+        }
     }
 
     /**
