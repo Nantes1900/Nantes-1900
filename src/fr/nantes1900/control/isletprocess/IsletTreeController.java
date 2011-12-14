@@ -345,7 +345,7 @@ public class IsletTreeController implements ElementsSelectedListener {
             IsletTreeController.this.getParentController().getU3DController()
                     .deselectEverySurfaces();
             IsletTreeController.this.getParentController().getU3DController()
-                .unhighlightEverySurfaces();
+                .unHighlightEverySurfaces();
 
             for (TreePath tp : IsletTreeController.this.itView.getTree()
                     .getSelectionPaths()) {
