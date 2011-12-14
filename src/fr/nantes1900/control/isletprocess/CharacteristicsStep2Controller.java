@@ -145,8 +145,14 @@ public class CharacteristicsStep2Controller extends
                                 .getCharacteristics2(this.trianglesList.get(0)));
             } catch (InvalidCaseException e)
             {
-                // TODO by Camille
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(cView, FileTools
+                        .readInformationMessage(
+                                TextsKeys.KEY_ERROR_INVALIDCASETYPE,
+                                TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                        .readInformationMessage(
+                                TextsKeys.KEY_ERROR_INVALIDCASETYPE,
+                                TextsKeys.MESSAGETYPE_TITLE),
+                        JOptionPane.ERROR_MESSAGE);
             }
         } else
         {

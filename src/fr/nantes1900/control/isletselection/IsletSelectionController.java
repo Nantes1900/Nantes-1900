@@ -221,9 +221,12 @@ public class IsletSelectionController {
                 // Reads the gravity normal in the file, and keeps it in memory.
                 this.biController.readGravityNormal(gravityNormal.getPath());
             } catch (IOException e) {
-                // TODO by Luc or Camille : pop-up.
-                // If the file can not be read or is not well built.
-                e.printStackTrace();
+                JOptionPane.showMessageDialog(this.isView, FileTools
+                        .readHelpMessage(TextsKeys.KEY_ERROR_IOEXCEPTION,
+                                TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                        .readHelpMessage(TextsKeys.KEY_ERROR_IOEXCEPTION,
+                                TextsKeys.MESSAGETYPE_TITLE),
+                        JOptionPane.ERROR_MESSAGE);
             }
             this.isView.setStatusBarText(FileTools.readHelpMessage(
                     TextsKeys.KEY_IS_LAUNCHPROCESS,

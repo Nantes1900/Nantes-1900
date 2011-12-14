@@ -81,15 +81,17 @@ public class PFrame extends JFrame {
     }
 
     /**
-     * TODO by Camille.
+     * Shows or hides the progress bar in the status bar.
      * @param show
-     *            TODO by Camille.
+     *            true - shows the progress bar\nfalse - hides the progress bar
      */
     public final void showProgressBar(final boolean show) {
-        if (show) {
+        if (show)
+        {
             this.progressBar = new JProgressBar(0, 100);
             this.statusBar.add(this.progressBar);
-        } else {
+        } else
+        {
             this.statusBar.remove(this.progressBar);
         }
         this.validate();
@@ -97,12 +99,13 @@ public class PFrame extends JFrame {
     }
 
     /**
-     * TODO by Camille.
+     * Updates the value of the progress bar.
      * @param progression
-     *            TODO by Camille.
+     *            the new value of the progress bar
      */
     public final void updatesProgressBar(final double progression) {
-        if (this.progressBar != null) {
+        if (this.progressBar != null)
+        {
             this.progressBar.setValue((int) Math.round(progression * 100));
         }
     }

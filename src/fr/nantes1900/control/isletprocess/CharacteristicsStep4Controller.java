@@ -45,26 +45,29 @@ public class CharacteristicsStep4Controller extends
 
                 // gets the seected type
                 int actionType = -1;
-                switch (typeChosen) {
+                switch (typeChosen)
+                {
 
-                case Characteristics.TYPE_WALL:
-                    actionType = ActionTypes.TURN_TO_WALL;
+                    case Characteristics.TYPE_WALL:
+                        actionType = ActionTypes.TURN_TO_WALL;
                     break;
 
-                case Characteristics.TYPE_ROOF:
-                    actionType = ActionTypes.TURN_TO_ROOF;
+                    case Characteristics.TYPE_ROOF:
+                        actionType = ActionTypes.TURN_TO_ROOF;
                     break;
 
-                default:
+                    default:
                     break;
                 }
 
                 // launches the action
-                try {
+                try
+                {
                     CharacteristicsStep4Controller.this.parentController
                             .getBiController().action4(trianglesList,
                                     actionType);
-                } catch (InvalidCaseException e) {
+                } catch (InvalidCaseException e)
+                {
                     JOptionPane.showMessageDialog(cView, FileTools
                             .readInformationMessage(
                                     TextsKeys.KEY_ERROR_INCORRECTTYPE,
@@ -84,16 +87,26 @@ public class CharacteristicsStep4Controller extends
 
     @Override
     public final void modifyViewCharacteristics() {
-        if (this.trianglesList.size() == 1) {
-            try {
+        if (this.trianglesList.size() == 1)
+        {
+            try
+            {
                 ((CharacteristicsStep4View) this.cView)
                         .setType(this.parentController.getBiController()
                                 .getCharacteristics4(this.trianglesList.get(0)));
-            } catch (InvalidCaseException e) {
-                // TODO by Camille
-                e.printStackTrace();
+            } catch (InvalidCaseException e)
+            {
+                JOptionPane.showMessageDialog(cView, FileTools
+                        .readInformationMessage(
+                                TextsKeys.KEY_ERROR_INVALIDCASETYPE,
+                                TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                        .readInformationMessage(
+                                TextsKeys.KEY_ERROR_INVALIDCASETYPE,
+                                TextsKeys.MESSAGETYPE_TITLE),
+                        JOptionPane.ERROR_MESSAGE);
             }
-        } else {
+        } else
+        {
             ((CharacteristicsStep4View) this.cView).setType("");
         }
     }

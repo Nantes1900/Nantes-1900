@@ -6,11 +6,14 @@ package fr.nantes1900.control.isletselection;
 import java.io.File;
 import java.io.IOException;
 
+import javax.swing.JOptionPane;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
+import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletselection.GlobalTreeView;
 
 /**
@@ -70,13 +73,20 @@ public class GlobalTreeController {
                     public void valueChanged(final TreeSelectionEvent e) {
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
                                 .getPath().getLastPathComponent();
-                        try {
+                        try
+                        {
                             GlobalTreeController.this.getParentController()
                                     .displayFile(node);
-                        } catch (WeirdResultException e1) {
-                            // TODO by Camille : pop-up
-                            e1.printStackTrace();
-                        } catch (IOException e2) {
+                        } catch (WeirdResultException e1)
+                        {
+                            JOptionPane.showMessageDialog(parentController
+                                    .getWindow(), e1.getMessage(), FileTools
+                                    .readInformationMessage(
+                                            TextsKeys.KEY_ERROR_WEIRDRESULT,
+                                            TextsKeys.MESSAGETYPE_TITLE),
+                                    JOptionPane.ERROR_MESSAGE);
+                        } catch (IOException e2)
+                        {
                             // TODO by Luc : pop-up error
                             e2.printStackTrace();
                         }

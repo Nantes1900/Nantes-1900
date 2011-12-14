@@ -56,6 +56,7 @@ public class Functions3DToolbarView extends JToolBar {
      * Slider to modify the distance in triangles selection mode.
      */
     private JSlider sDistance;
+
     /**
      * Constructor. Creates and adds every elements to the toolbar.
      */
@@ -87,7 +88,8 @@ public class Functions3DToolbarView extends JToolBar {
                 .readElementText(TextsKeys.KEY_SELECTMESHES));
         this.lSelectionMode = new JLabel("");
         this.sDistance = new JSlider(0, 100, 50);
-        this.sDistance.setToolTipText(FileTools.readElementText(TextsKeys.KEY_SLIDERDESCRIPTION));
+        this.sDistance.setToolTipText(FileTools
+                .readElementText(TextsKeys.KEY_SLIDERDESCRIPTION));
 
         // Adds elements to the toolbar
         FlowLayout fl = new FlowLayout(FlowLayout.LEADING, 5, 5);

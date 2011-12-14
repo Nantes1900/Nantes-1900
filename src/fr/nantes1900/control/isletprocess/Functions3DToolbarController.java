@@ -320,18 +320,18 @@ public class Functions3DToolbarController {
      * that one display type is selected.
      * @param enable
      *            true - enables the button\n false - disables the button
-     * @param displayTypeIn
-     *            TODO by Camille
+     * @param newDisplayType
+     *            the new dislay type
      */
     public final void setEnableDisplayType(final boolean enable,
-            final int displayTypeIn) {
+            final int newDisplayType) {
 
-        if (displayTypeIn == Universe3DController.DISPLAY_MESH_MODE)
+        if (newDisplayType == Universe3DController.DISPLAY_MESH_MODE)
         {
             this.toolbarView.getDisplayTypeMeshesButton().setEnabled(enable);
             this.displayTypeEnable[0] = enable;
 
-        } else if (displayTypeIn == Universe3DController.DISPLAY_POLYGON_MODE)
+        } else if (newDisplayType == Universe3DController.DISPLAY_POLYGON_MODE)
         {
             this.toolbarView.getDisplayTypePolygonsButton().setEnabled(enable);
             this.displayTypeEnable[1] = enable;
