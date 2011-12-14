@@ -274,6 +274,16 @@ public final class TextsKeys {
      * Key for slider description.
      */
     public static final String KEY_SLIDERDESCRIPTION = "SliderDescription";
+
+    /**
+     * Key for invalid case exception for elements types.
+     */
+    public static final String KEY_ERROR_INVALIDCASETYPE = "InvalidCaseType";
+
+    /**
+     * Key for IO exceptions.
+     */
+    public static final String KEY_ERROR_IOEXCEPTION = "IOException";
     
     /**
      * Private constructor.

@@ -182,6 +182,14 @@ public class CharacteristicsStep6View extends CharacteristicsView {
 
         // Puts in noise actions
         this.cbNoise = new JCheckBox();
+        this.cbNoise.addActionListener(new ActionListener(){
+
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                checkEnableValidateButton();
+            }
+            
+        });
 
         this.addCaracteristic(createSimpleCaracteristic(
                 this.cbNoise,
@@ -213,8 +221,8 @@ public class CharacteristicsStep6View extends CharacteristicsView {
     }
 
     /**
-     * TODO by Camille.
-     * @return TODO by Camille.
+     * Gets the neighbor list
+     * @return the neighbors list
      */
     public final ArrayList<Surface> getList() {
         ArrayList<Surface> neighborsList = new ArrayList<>();
@@ -242,6 +250,20 @@ public class CharacteristicsStep6View extends CharacteristicsView {
     public final boolean isNoiseSelected() {
         return this.cbNoise.isSelected();
     }
+    
+    /**
+     * Enables or disables validate button.
+     */
+    private void checkEnableValidateButton()
+    {
+        if (cbNoise.isSelected() || lNeighbors.isEnabled())
+        {
+            this.bValidate.setEnabled(true);
+        } else
+        {
+            this.bValidate.setEnabled(false);
+        }
+    }
 
     /**
      * Enables or disables all characteristics elements excepted lock button.
@@ -252,7 +274,7 @@ public class CharacteristicsStep6View extends CharacteristicsView {
         this.lNeighbors.setEnabled(enable);
         this.upButton.setEnabled(enable);
         this.downButton.setEnabled(enable);
-        this.bValidate.setEnabled(enable);
         this.helpButton.setEnabled(enable);
+        checkEnableValidateButton();
     }
 }
