@@ -83,7 +83,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      * A constant defining the orientation tolerance (in degrees) when getting
      * all the triangles oriented as a triangle input.
      */
-    public static final int ORIENTATION_TOLERANCE = 30;
+    private int orientationTolerance = 30;
     /**
      * A constant defining the max distance between the triangle picked and the
      * neighbours triangles to select.
@@ -206,6 +206,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      */
     public final void setTriangleSelectionDistance(final double distance) {
         this.triangleSelectionDistance = distance;
+    }
+    /**Change the orientationTolerance
+     * @param tolerance
+     *             the new orientationTolerance to set
+     */
+    public final void setOrientationTolerance(final int tolerance){
+        this.orientationTolerance=tolerance;
     }
 
     /**
@@ -858,7 +865,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
         // Computes the neighbours of the triangle picked.
         Mesh oriented = meshView.getMesh().orientedAs(
-                trianglePicked.getNormal(), ORIENTATION_TOLERANCE);
+                trianglePicked.getNormal(), this.orientationTolerance);
         Mesh neighbours = new Mesh();
         trianglePicked.returnNeighbours(neighbours, oriented);
 
