@@ -1,6 +1,7 @@
 package fr.nantes1900.control.isletprocess;
 
 import static java.awt.event.InputEvent.CTRL_DOWN_MASK;
+import static java.awt.event.InputEvent.SHIFT_DOWN_MASK;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -237,19 +238,37 @@ public class IsletTreeController implements ElementsSelectedListener {
                     event.getY());
 
             if (path != null) {
-                if (this.contains(path)) {
+                if (this.contains(path) && event.getButton() == MouseEvent.BUTTON1) {
                     // If the path has already been selected.
                     this.tree.removeSelectionPath(path);
                 } else {
-                    if (event.getModifiersEx() == CTRL_DOWN_MASK) {
-                        // If CTRL is down, adds the path selected.
-                        this.tree.addSelectionPath(path);
-                    } else {
-                        // If not, deselected every other paths, and selects
-                        // only the new one.
-                        this.tree.removeSelectionInterval(0,
-                                this.tree.getMaxSelectionRow());
-                        this.tree.addSelectionPath(path);
+                    if (!this.contains(path)){
+                        if ((event.getModifiersEx() & CTRL_DOWN_MASK) == CTRL_DOWN_MASK) {
+                            // If CTRL is down, adds the path selected.
+                            this.tree.addSelectionPath(path);
+                        } else {
+                            if (((event.getModifiersEx() & SHIFT_DOWN_MASK) == SHIFT_DOWN_MASK)
+                                & event.getButton() == MouseEvent.BUTTON1){
+                                int leadRow = this.tree.getLeadSelectionRow();
+                                if (leadRow != -1){
+                                    this.tree.addSelectionInterval(leadRow, this.tree.getRowForPath(path));
+                                }
+                                else {
+                                    // If not, deselected every other paths, and selects
+                                    // only the new one.
+                                    this.tree.removeSelectionInterval(0,
+                                            this.tree.getMaxSelectionRow());
+                                    this.tree.addSelectionPath(path);
+                                }
+                            }
+                            else {
+                            // If not, deselected every other paths, and selects
+                            // only the new one.
+                            this.tree.removeSelectionInterval(0,
+                                    this.tree.getMaxSelectionRow());
+                            this.tree.addSelectionPath(path);
+                            }
+                        }
                     }
                     // If the right button of the mouse have been pressed.
                     if (event.getButton() == MouseEvent.BUTTON3) {
