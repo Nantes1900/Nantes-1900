@@ -1,6 +1,6 @@
 package fr.nantes1900.control.isletprocess;
 
-import fr.nantes1900.view.isletprocess.CharacteristicsView;
+import fr.nantes1900.view.isletprocess.characteristics.CharacteristicsView;
 
 /**
  * Controller of basic characteristic controller.

@@ -10,7 +10,7 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
-import fr.nantes1900.view.isletprocess.CharacteristicsStep5View;
+import fr.nantes1900.view.isletprocess.characteristics.CharacteristicsStep5View;
 
 /**
  * Characteristics panel for the fifth step of process of an islet.

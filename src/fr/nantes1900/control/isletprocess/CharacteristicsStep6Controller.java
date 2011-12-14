@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 
 import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.constants.Icons;
@@ -14,7 +16,7 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
-import fr.nantes1900.view.isletprocess.CharacteristicsStep6View;
+import fr.nantes1900.view.isletprocess.characteristics.CharacteristicsStep6View;
 
 /**
  * Characteristics panel for the sixth step of process of an islet.
@@ -31,7 +33,12 @@ public class CharacteristicsStep6Controller extends
      * Surface to display neighbors from.
      */
     protected Surface surfaceToCheck;
-
+    
+    /**
+     * Higlighted surface.
+     */
+    private Surface highlightedSurface;
+    
     /**
      * Creates a new controller for the 6th step characteristics panel.
      * @param parentControllerIn
@@ -120,6 +127,22 @@ public class CharacteristicsStep6Controller extends
                 parentController.refreshViews();
             }
         });
+
+        ((CharacteristicsStep6View) cView).getJListNeighbors()
+                .addListSelectionListener(new ListSelectionListener() {
+
+                    @Override
+                    public void valueChanged(final ListSelectionEvent arg0) {
+                        Surface selectedSurface = ((CharacteristicsStep6View) cView)
+                                .getJListNeighbors().getSelectedValue();
+                        if (highlightedSurface != null)
+                        {
+                            CharacteristicsStep6Controller.this.parentController.getU3DController().unHighlightSurface(highlightedSurface);
+                        }
+                        highlightedSurface = selectedSurface;
+                        CharacteristicsStep6Controller.this.parentController.getU3DController().highlightSurface(highlightedSurface);
+                    }
+                });
     }
 
     /*

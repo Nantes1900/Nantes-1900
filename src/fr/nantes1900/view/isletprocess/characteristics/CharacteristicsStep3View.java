@@ -1,4 +1,4 @@
-package fr.nantes1900.view.isletprocess;
+package fr.nantes1900.view.isletprocess.characteristics;
 
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
