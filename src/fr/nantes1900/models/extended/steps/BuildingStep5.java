@@ -32,7 +32,7 @@ public class BuildingStep5 extends AbstractBuildingStep {
     /**
      * Number minimal of neighbours to be considered as a real surface.
      */
-    private static final int NUMBER_MIN_OF_NEIGHBOURS = 3;
+    public static final int NUMBER_MIN_OF_NEIGHBOURS = 3;
     /**
      * The mesh representing the noise.
      */

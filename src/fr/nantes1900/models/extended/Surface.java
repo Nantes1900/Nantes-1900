@@ -13,6 +13,7 @@ import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.coefficients.SimplificationSurfaces;
+import fr.nantes1900.models.extended.steps.BuildingStep5;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 /**
@@ -226,6 +227,10 @@ public class Surface {
             final Map<Point, Point> pointMap, final Vector3d normalGround)
             throws InvalidSurfaceException {
 
+        if (this.getNeighbours().size() < BuildingStep5.NUMBER_MIN_OF_NEIGHBOURS) {
+            throw new InvalidSurfaceException();
+        }
+
         final Polygon edges = new Polygon();
 
         // The neighbours are sorted, then it's easy to make the edges and
@@ -239,20 +244,15 @@ public class Surface {
 
         final int size = this.getNeighbours().size();
 
-        try {
-            // We add the last missing edges which where not treated in the
-            // loop.
-            edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
-                    .getNeighbours().get(size - 1),
-                    this.getNeighbours().get(0), pointMap, wallList,
-                    normalGround));
+        // We add the last missing edges which where not treated in the
+        // loop.
+        edges.add(this.createEdge(this.getNeighbours().get(size - 2), this
+                .getNeighbours().get(size - 1), this.getNeighbours().get(0),
+                pointMap, wallList, normalGround));
 
-            edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
-                    .getNeighbours().get(0), this.getNeighbours().get(1),
-                    pointMap, wallList, normalGround));
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw new InvalidSurfaceException();
-        }
+        edges.add(this.createEdge(this.getNeighbours().get(size - 1), this
+                .getNeighbours().get(0), this.getNeighbours().get(1), pointMap,
+                wallList, normalGround));
 
         edges.setNormal(this.getMesh().averageNormal());
 
@@ -542,7 +542,7 @@ public class Surface {
      * @see java.lang.Object#toString()
      */
     @Override
-    public String toString() {
+    public final String toString() {
         return this.nodeString;
     }
 
