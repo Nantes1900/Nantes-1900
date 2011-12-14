@@ -19,6 +19,7 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
 import fr.nantes1900.utils.FileTools;
@@ -331,8 +332,9 @@ public class IsletTreeController implements ElementsSelectedListener {
                 IsletTreeController.this.itView
                         .setShowListener(IsletTreeController.this.showActionListener);
                 IsletTreeController.this.itView.getJpm().show(
-                        IsletTreeController.this.itView, event.getX(),
-                        event.getY());
+                        IsletTreeController.this.itView, event.getX()
+                        -IsletTreeController.this.itView.getScrollPosition().x,
+                        event.getY()-IsletTreeController.this.itView.getScrollPosition().y);
             }
         }
 
@@ -342,6 +344,8 @@ public class IsletTreeController implements ElementsSelectedListener {
         public void refresh3DSelection() {
             IsletTreeController.this.getParentController().getU3DController()
                     .deselectEverySurfaces();
+            IsletTreeController.this.getParentController().getU3DController()
+                .unhighlightEverySurfaces();
 
             for (TreePath tp : IsletTreeController.this.itView.getTree()
                     .getSelectionPaths()) {
@@ -350,12 +354,22 @@ public class IsletTreeController implements ElementsSelectedListener {
                         .getLastPathComponent();
 
                 if (node.getUserObject() instanceof Surface) {
-
+                    
+                    if (IsletTreeController.this.getParentController().getProgression()
+                            == AbstractBuildingsIslet.SIXTH_STEP){
+                        IsletTreeController.this
+                        .getParentController()
+                        .getU3DController()
+                        .highlightSurface(
+                                (Surface) node.getUserObject());
+                    }
+                    else{    
                     IsletTreeController.this
                             .getParentController()
                             .getU3DController()
                             .selectOrUnselectSurfaceFromTree(
                                     (Surface) node.getUserObject());
+                    }
                 }
             }
         }

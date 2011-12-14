@@ -183,7 +183,7 @@ public class IsletProcessController implements ElementsSelectedListener,
      * Getter.
      * @return the progression of the process of the current islet.
      */
-    private int getProgression() {
+    public int getProgression() {
         return this.getBiController().getIslet().getProgression();
     }
 

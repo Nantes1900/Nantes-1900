@@ -1,6 +1,7 @@
 package fr.nantes1900.view.isletprocess;
 
 import java.awt.BorderLayout;
+import java.awt.Point;
 import java.awt.event.ActionListener;
 
 import javax.swing.JMenuItem;
@@ -133,5 +134,9 @@ public class IsletTreeView extends JPanel {
      */
     public final void disableShow() {
         this.mShow.setEnabled(false);
+    }
+    
+    public final Point getScrollPosition() {
+        return this.spTree.getViewport().getViewPosition();
     }
 }

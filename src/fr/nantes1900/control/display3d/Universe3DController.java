@@ -257,6 +257,10 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         }
 
     }
+    
+    public final void unhighlightEverySurfaces(){
+        
+    }
 
     /**
      * Notifies all the ElementsSelectedListeners that triangles have been
