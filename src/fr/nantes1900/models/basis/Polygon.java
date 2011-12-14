@@ -432,14 +432,19 @@ public class Polygon {
 
         final Point centroid = new Point(this.xAverage(), this.yAverage(),
                 this.zAverage());
-        final Vector3d normalVect = new Vector3d(0, 0, -1);
 
         Point before = this.pointList.get(this.pointSize() - 1);
 
         for (final Point p : this.pointList) {
-            ens.add(new Triangle(before, centroid, p,
-                    new Edge(centroid, before), new Edge(before, p), new Edge(
-                            p, centroid), normalVect));
+            Edge e1 = new Edge(centroid, before);
+            Edge e2 = new Edge(before, p);
+            Edge e3 = new Edge(p, centroid);
+
+            ens.add(new Triangle(before, centroid, p, e1, e2, e3, this.normal));
+            Vector3d normalTriangle = this.normal;
+            normalTriangle.negate();
+            ens.add(new Triangle(before, p, centroid, e1, e3, e2,
+                    normalTriangle));
             before = p;
         }
 

@@ -336,6 +336,8 @@ public class IsletProcessController implements ElementsSelectedListener,
     private void setDefaultCharacteristicsPanel() {
         this.cController = new CharacteristicsController(this);
         this.ipView.setCharacteristicsView(this.cController.getView());
+        this.ipView.getRootPane().getInputMap().clear();
+        this.ipView.getRootPane().getActionMap().clear();
     }
 
     /**

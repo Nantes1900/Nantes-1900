@@ -208,7 +208,6 @@ public class BuildingsIsletController {
                 for (Surface s : surfacesSelected) {
                     buildingStep.getNoise().getMesh().addAll(s.getMesh());
                 }
-
             } else {
                 throw new InvalidCaseException();
             }
