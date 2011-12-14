@@ -1,4 +1,4 @@
-package fr.nantes1900.control.isletprocess;
+package fr.nantes1900.control.isletprocess.characteristics;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +7,7 @@ import javax.swing.JOptionPane;
 
 import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.control.isletprocess.IsletProcessController;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
