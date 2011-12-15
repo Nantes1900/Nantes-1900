@@ -230,21 +230,24 @@ public class IsletProcessController implements ElementsSelectedListener,
         {
             throw new UnexistingStepException();
         }
-
-        this.setDefaultCharacteristicsPanel();
-        this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
-
+        
         if (this.getProgression() == AbstractBuildingsIslet.FOURTH_STEP)
         {
             // ipView.showProgressBar(true);
-            JOptionPane.showMessageDialog(ipView, FileTools
-                    .readInformationMessage(TextsKeys.KEY_WARNING_LONGPROCESS,
+            
+            // display the JOptionPane showConfirmDialog
+            int reply = JOptionPane.showConfirmDialog(ipView, 
+                    FileTools.readInformationMessage(TextsKeys.KEY_WARNING_LONGPROCESS,
                             TextsKeys.MESSAGETYPE_MESSAGE), FileTools
                     .readInformationMessage(TextsKeys.KEY_WARNING_LONGPROCESS,
-                            TextsKeys.MESSAGETYPE_TITLE),
-                    JOptionPane.WARNING_MESSAGE);
+                            TextsKeys.MESSAGETYPE_TITLE), JOptionPane.OK_CANCEL_OPTION,
+                            JOptionPane.WARNING_MESSAGE);
+            //if the answer is OK, then the process is launched, else it is aborted.
+            if (reply != JOptionPane.OK_OPTION){return;}
         }
 
+        this.setDefaultCharacteristicsPanel();
+        this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         try
         {
             this.biController.launchProcess();
