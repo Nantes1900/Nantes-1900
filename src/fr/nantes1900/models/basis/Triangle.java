@@ -198,8 +198,8 @@ public class Triangle {
 
     /**
      * Returns the neighbours of this triangle. Look in the edges to find the
-     * other triangles which share those edges.
-     * @return a list of the neighbours triangles
+     * other TRIANGLES which share those edges.
+     * @return a list of the neighbours TRIANGLES
      */
     public final List<Triangle> getNeighbours() {
         final List<Triangle> list = new ArrayList<>();
@@ -224,7 +224,7 @@ public class Triangle {
     }
 
     /**
-     * Returns the number of neighbours of this triangle. Two triangles are
+     * Returns the number of neighbours of this triangle. Two TRIANGLES are
      * neighbours if they share one edge.
      * @return the number of neighbours
      */
@@ -361,9 +361,9 @@ public class Triangle {
      * neighbours of these neighbours...) of this triangle which belong to the
      * container.
      * @param ret
-     *            the mesh in which are returned the triangles
+     *            the mesh in which are returned the TRIANGLES
      * @param container
-     *            the mesh which must contain all the triangles
+     *            the mesh which must contain all the TRIANGLES
      */
     public final void returnNeighbours(final Mesh ret, final Mesh container) {
 

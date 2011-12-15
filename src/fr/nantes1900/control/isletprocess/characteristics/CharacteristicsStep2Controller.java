@@ -14,13 +14,13 @@ import fr.nantes1900.constants.Characteristics;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.isletprocess.IsletProcessController;
 import fr.nantes1900.models.basis.Triangle;
-import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
+import fr.nantes1900.models.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.characteristics.CharacteristicsStep2View;
 
 /**
  * Characteristics panel for the second step of process of an islet. User can
- * select one or more triangles and modifies the type they belong to : building
+ * select one or more TRIANGLES and modifies the type they belong to : building
  * or ground.
  * @author Camille Bouquet, Luc Jallerat
  */
@@ -29,11 +29,11 @@ public class CharacteristicsStep2Controller extends
 
     /**
      * Creates a new step 2 characteristics controller which will create the
-     * panel and sets the action to perform when validate button is clicked.
+     * panel and sets the action to perform when VALIDATE button is clicked.
      * @param parentControllerIn
      *            the parent controller
      * @param trianglesSelected
-     *            the selected triangles
+     *            the selected TRIANGLES
      */
     public CharacteristicsStep2Controller(
             final IsletProcessController parentControllerIn,

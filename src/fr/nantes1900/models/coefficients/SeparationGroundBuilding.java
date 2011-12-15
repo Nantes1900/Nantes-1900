@@ -13,7 +13,7 @@ public final class SeparationGroundBuilding {
 
     /**
      * Coefficient used after the extraction of the grounds, to determine if a
-     * ground has enough triangles to be considered as a real one.
+     * ground has enough TRIANGLES to be considered as a real one.
      */
     private static double blockGroundsSizeError = BLOCK_GROUNDS_SIZE_ERROR_DEFAULT;
 
@@ -25,7 +25,7 @@ public final class SeparationGroundBuilding {
     /**
      * Error factor for the altitude check. If the difference of altitude
      * (considering the normal to the ground, and not the gravity) between a
-     * block of triangles and the totality of the grounds is higher than this
+     * block of TRIANGLES and the totality of the grounds is higher than this
      * error, the block is not taken as a ground. This error is in the scale
      * used in the files (if millimeters are used, it's in millimeters, etc.).
      */

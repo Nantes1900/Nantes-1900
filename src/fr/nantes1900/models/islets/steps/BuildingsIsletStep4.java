@@ -1,4 +1,4 @@
-package fr.nantes1900.models.islets.buildings.steps;
+package fr.nantes1900.models.islets.steps;
 
 import java.util.List;
 
@@ -6,12 +6,12 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.constants.WeirdResultMessages;
+import fr.nantes1900.models.exceptions.NullArgumentException;
+import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
-import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
-import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
-import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
+import fr.nantes1900.models.islets.AbstractBuildingsIslet;
 
 /**
  * Implements a step of the process. This step is after the separation between
@@ -79,7 +79,7 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #launchProcess()
      */
     @Override
@@ -106,7 +106,7 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #returnNode()
      */
     @Override
@@ -149,7 +149,7 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #toString()
      */
     @Override

@@ -7,7 +7,7 @@ import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Surface;
 
 /**
- * Listener of elements selected/deselected such as a list of triangles or
+ * Listener of elements selected/deselected such as a list of TRIANGLES or
  * surfaces.
  * @author Camille
  */
@@ -28,9 +28,9 @@ public interface ElementsSelectedListener extends EventListener {
     public void surfaceSelected(Surface surfaceSelected);
 
     /**
-     * Indicates that a new set of triangles has been selected.
+     * Indicates that a new set of TRIANGLES has been selected.
      * @param trianglesSelected
-     *            the new set of triangles selected
+     *            the new set of TRIANGLES selected
      */
     public void newTrianglesSelection(List<Triangle> trianglesSelected);
 }

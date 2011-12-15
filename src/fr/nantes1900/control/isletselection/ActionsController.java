@@ -13,14 +13,14 @@ import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletselection.ActionsView;
 
 /**
- * Controller of the action panel. Handles actions such as open a directory,
- * launch an islet or use the gravity normal as ground normal.
+ * Controller of the action panel. Handles actions such as OPEN a directory,
+ * LAUNCH an islet or use the gravity normal as ground normal.
  * @author Camille Bouquet
  */
 public class ActionsController {
 
     /**
-     * The panel containing buttons to launch the different actions.
+     * The panel containing buttons to LAUNCH the different actions.
      */
     private ActionsView aView;
 
@@ -30,12 +30,12 @@ public class ActionsController {
     private IsletSelectionController parentController;
 
     /**
-     * Action listener of the launch button.
+     * Action listener of the LAUNCH button.
      */
     private LaunchActionListener laListener;
 
     /**
-     * Creates a new controller to handle the panel containing buttons to launch
+     * Creates a new controller to handle the panel containing buttons to LAUNCH
      * the different actions.
      * @param isletSelectionController
      *            the parent controller
@@ -93,7 +93,7 @@ public class ActionsController {
         this.laListener.setComputeNormalMode(true);
 
         this.getActionsView().getLaunchButton()
-                .setIcon(new ImageIcon(Icons.save));
+                .setIcon(new ImageIcon(Icons.SAVE));
 
         this.getActionsView()
                 .getHelpButton()
@@ -115,14 +115,14 @@ public class ActionsController {
     }
 
     /**
-     * Sets the mode launch process.
+     * Sets the mode LAUNCH process.
      */
     public final void setLaunchMode() {
 
         this.laListener.setComputeNormalMode(false);
 
         this.getActionsView().getLaunchButton()
-                .setIcon(new ImageIcon(Icons.launch));
+                .setIcon(new ImageIcon(Icons.LAUNCH));
 
         this.getActionsView()
                 .getHelpButton()
@@ -144,19 +144,19 @@ public class ActionsController {
     }
 
     /**
-     * Listener of the launch button. The performed action depends on the mode :
-     * save the gravity normal or launch an islet process.
+     * Listener of the LAUNCH button. The performed action depends on the mode :
+     * SAVE the gravity normal or LAUNCH an islet process.
      * @author Camille Bouquet
      */
     public class LaunchActionListener implements ActionListener {
 
         /**
-         * Indicates if the mode is to save the gravity normal or not.
+         * Indicates if the mode is to SAVE the gravity normal or not.
          */
         private boolean computeNormal;
 
         /**
-         * Creates a new launch action listener with the current mode.
+         * Creates a new LAUNCH action listener with the current mode.
          * @param computeNormalIn
          *            The current mode.
          */

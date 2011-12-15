@@ -14,20 +14,20 @@ public final class WeirdResultMessages {
     }
 
     /**
-     * Key for a pop-up message when the matrix is not good.
+     * Key for a pop-UP message when the matrix is not good.
      */
     public static final String BAD_MATRIX = "BadMatrix";
     /**
-     * Key for a pop-up message when there is no ground and that there should
+     * Key for a pop-UP message when there is no ground and that there should
      * be.
      */
     public static final String NO_GROUND = "NoGround";
     /**
-     * Key for a pop-up message when there is no noise and that there should be.
+     * Key for a pop-UP message when there is no noise and that there should be.
      */
     public static final String NO_NOISE = "NoNoise";
     /**
-     * Key for a pop-up message when there is no buildings and that there should
+     * Key for a pop-UP message when there is no buildings and that there should
      * be.
      */
     public static final String NO_BUILDINGS = "NoBuildings";

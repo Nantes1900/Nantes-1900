@@ -1,4 +1,4 @@
-package fr.nantes1900.models.islets.buildings.steps;
+package fr.nantes1900.models.islets.steps;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
-import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
+import fr.nantes1900.models.islets.AbstractBuildingsIslet;
 
 /**
  * Implements a step of the process. This step is after the determination of the
@@ -56,7 +56,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #launchProcess()
      */
     @Override
@@ -68,7 +68,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #returnNode()
      */
     @Override
@@ -92,7 +92,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #toString()
      */
     @Override

@@ -48,11 +48,11 @@ public class CharacteristicsStep6View extends CharacteristicsView {
      */
     private DefaultListModel<Surface> dlm = new DefaultListModel<>();
     /**
-     * Button to move up a surface in the neighbors order.
+     * Button to move UP a surface in the neighbors order.
      */
     private JButton upButton;
     /**
-     * Button to move down a surface in the neighbors order.
+     * Button to move DOWN a surface in the neighbors order.
      */
     private JButton downButton;
     /**
@@ -61,7 +61,7 @@ public class CharacteristicsStep6View extends CharacteristicsView {
     private HelpButton helpButton;
 
     /**
-     * Button to lock a surface and modify the list of its neighbors.
+     * Button to LOCK a surface and modify the list of its neighbors.
      */
     private JButton bLock;
     /**
@@ -78,9 +78,9 @@ public class CharacteristicsStep6View extends CharacteristicsView {
     public CharacteristicsStep6View(final List<Surface> neighbors) {
         super();
 
-        this.bLock = new JButton(new ImageIcon(Icons.lock));
+        this.bLock = new JButton(new ImageIcon(Icons.LOCK));
 
-        this.upButton = new JButton(new ImageIcon(Icons.up));
+        this.upButton = new JButton(new ImageIcon(Icons.UP));
         this.upButton.addActionListener(new ActionListener() {
 
             @Override
@@ -99,7 +99,7 @@ public class CharacteristicsStep6View extends CharacteristicsView {
             }
         });
 
-        this.downButton = new JButton(new ImageIcon(Icons.down));
+        this.downButton = new JButton(new ImageIcon(Icons.DOWN));
         this.downButton.addActionListener(new ActionListener() {
 
             @Override
@@ -235,8 +235,8 @@ public class CharacteristicsStep6View extends CharacteristicsView {
     }
 
     /**
-     * Gets the lock button.
-     * @return the lock button
+     * Gets the LOCK button.
+     * @return the LOCK button
      */
     public final JButton getLockButton() {
         return this.bLock;
@@ -252,7 +252,7 @@ public class CharacteristicsStep6View extends CharacteristicsView {
     }
     
     /**
-     * Enables or disables validate button.
+     * Enables or disables VALIDATE button.
      */
     private void checkEnableValidateButton()
     {
@@ -275,7 +275,7 @@ public class CharacteristicsStep6View extends CharacteristicsView {
     }
 
     /**
-     * Enables or disables all characteristics elements excepted lock button.
+     * Enables or disables all characteristics elements excepted LOCK button.
      * @param enable
      *            true - enables\n false - disables
      */

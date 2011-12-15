@@ -14,8 +14,8 @@ import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.constants.Icons;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.isletprocess.IsletProcessController;
+import fr.nantes1900.models.exceptions.InvalidCaseException;
 import fr.nantes1900.models.extended.Surface;
-import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.characteristics.CharacteristicsStep6View;
 
@@ -71,14 +71,14 @@ public class CharacteristicsStep6Controller extends
 
                         if (surfaceLocked)
                         {
-                            source.setIcon(new ImageIcon(Icons.unlock));
+                            source.setIcon(new ImageIcon(Icons.UNLOCK));
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_LOCKMESH));
                             parentController.lock(true);
 
                         } else
                         {
-                            source.setIcon(new ImageIcon(Icons.lock));
+                            source.setIcon(new ImageIcon(Icons.LOCK));
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_UNLOCKMESH));
                             parentController.lock(false);

@@ -1,4 +1,4 @@
-package fr.nantes1900.models.islets.buildings.exceptions;
+package fr.nantes1900.models.exceptions;
 
 /**
  * Exception thrown when something is going wrong in the current step. The

@@ -419,7 +419,7 @@ public class Polygon {
     }
 
     /**
-     * Returns a mesh composed of the triangles formed by each edges and the
+     * Returns a mesh composed of the TRIANGLES formed by each edges and the
      * point centroid of the polyline. This is not really beautiful at the end,
      * but it's enough for debugging. Used for debugging.
      * @return a mesh representing the surface of the polyline
@@ -452,16 +452,16 @@ public class Polygon {
     }
 
     /**
-     * Returns the mesh composed all the triangles the edges belong to and which
+     * Returns the mesh composed all the TRIANGLES the edges belong to and which
      * belong to the mesh m. If one edge in this doesn't have one triangle to
      * return, this method returns the returnCentroidMesh()
      * @param m
      *            the mesh where all the edges are expected to belong
-     * @return the mesh composed all the triangles the edges belong to
+     * @return the mesh composed all the TRIANGLES the edges belong to
      */
     public final Mesh returnExistingMesh(final Mesh m) {
 
-        // If there is Edges which have not triangles associated, the method
+        // If there is Edges which have not TRIANGLES associated, the method
         // calls the returnCentroidMesh.
         for (final Edge e : this.edgeList) {
             if (e.getNumberTriangles() == 0) {
@@ -469,7 +469,7 @@ public class Polygon {
             }
         }
 
-        // Find every triangles which belong to the edges, and which belong to m
+        // Find every TRIANGLES which belong to the edges, and which belong to m
         // too.
         final Mesh ens = new Mesh();
         for (final Edge e : this.edgeList) {

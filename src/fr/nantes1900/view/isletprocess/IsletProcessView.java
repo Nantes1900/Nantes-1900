@@ -9,13 +9,14 @@ import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 
 import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.models.islets.AbstractBuildingsIslet;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.PFrame;
 import fr.nantes1900.view.display3d.Universe3DView;
 import fr.nantes1900.view.isletprocess.characteristics.CharacteristicsView;
 
 /**
- * Window to launch process on an islet in order to simplify it.
+ * Window to LAUNCH process on an islet in order to simplify it.
  * @author Camille Bouquet
  * @author Luc Jallerat
  */
@@ -115,7 +116,7 @@ public class IsletProcessView extends PFrame {
                 new Insets(5, 5, 10, 10), 0, 0));
 
         this.setStatusBarText(FileTools
-                .readElementText(TextsKeys.KEY_HELP_STEP1));
+                .readElementText(TextsKeys.KEY_HELP_STEP + AbstractBuildingsIslet.FIRST_STEP));
     }
 
     /**

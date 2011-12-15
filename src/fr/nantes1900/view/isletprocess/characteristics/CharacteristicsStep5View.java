@@ -100,7 +100,7 @@ public class CharacteristicsStep5View extends CharacteristicsView {
     }
 
     /**
-     * Checks if the validate button should be enabled or not.
+     * Checks if the VALIDATE button should be enabled or not.
      */
     public final void checkEnableValidateButton() {
         if (this.cbMerge.isSelected() || this.cbNoise.isSelected())

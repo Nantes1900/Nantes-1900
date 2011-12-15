@@ -248,7 +248,7 @@ public class WriterSTL {
             final byte[] header = new byte[headerSize];
             stream.write(header);
 
-            // Writes the number of triangles : must order the Int in the
+            // Writes the number of TRIANGLES : must order the Int in the
             // LITTLE_ENDIAN format.
             final ByteBuffer bBuf = ByteBuffer.allocate(Integer.SIZE);
             bBuf.order(ByteOrder.LITTLE_ENDIAN);

@@ -18,10 +18,10 @@ import javax.swing.tree.TreePath;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.exceptions.InvalidCaseException;
+import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.models.extended.Surface;
-import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
-import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
-import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
+import fr.nantes1900.models.islets.AbstractBuildingsIslet;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.IsletTreeView;
 
@@ -59,7 +59,7 @@ public class IsletTreeController implements ElementsSelectedListener {
     private ActionListener showActionListener;
 
     /**
-     * Constructor. Sets up the listeners.
+     * Constructor. Sets UP the listeners.
      * @param parentControllerIn
      *            the parent controller
      */
@@ -251,13 +251,14 @@ public class IsletTreeController implements ElementsSelectedListener {
                 {
                     // If the path has already been selected.
                     this.tree.removeSelectionPath(path);
+
                 } else
                 {
                     if (!this.contains(path))
                     {
                         if ((event.getModifiersEx() & CTRL_DOWN_MASK) == CTRL_DOWN_MASK)
                         {
-                            // If CTRL is down, adds the path selected.
+                            // If CTRL is DOWN, adds the path selected.
                             this.tree.addSelectionPath(path);
                         } else
                         {

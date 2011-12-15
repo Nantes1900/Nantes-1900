@@ -1,29 +1,28 @@
-package fr.nantes1900.models.islets.buildings;
+package fr.nantes1900.models.islets;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
 import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.exceptions.InvalidCaseException;
+import fr.nantes1900.models.exceptions.NullArgumentException;
+import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Wall;
-import fr.nantes1900.models.islets.AbstractIslet;
-import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
-import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
-import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
-import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep0;
-import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep1;
-import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep2;
-import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep3;
-import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep4;
-import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep5;
-import fr.nantes1900.models.islets.buildings.steps.BuildingsIsletStep6;
+import fr.nantes1900.models.islets.steps.BuildingsIsletStep0;
+import fr.nantes1900.models.islets.steps.BuildingsIsletStep1;
+import fr.nantes1900.models.islets.steps.BuildingsIsletStep2;
+import fr.nantes1900.models.islets.steps.BuildingsIsletStep3;
+import fr.nantes1900.models.islets.steps.BuildingsIsletStep4;
+import fr.nantes1900.models.islets.steps.BuildingsIsletStep5;
+import fr.nantes1900.models.islets.steps.BuildingsIsletStep6;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.WriterSTL;
 
 /**
  * Abstracts a building islet : residential or industrial. This class contains
- * all the methods to apply the processs on the meshes.
+ * all the methods to apply the processs on the MESHES.
  * @author Daniel Lefèvre
  */
 public abstract class AbstractBuildingsIslet extends AbstractIslet {
@@ -319,7 +318,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
     /**
      * Saves the results in the file (erase the file if it already exists).
      * Saves the polygons of the surface which have one (it means which have
-     * been simplified) or saves the meshes of the other surfaces.
+     * been simplified) or saves the MESHES of the other surfaces.
      * @param fileName
      *            the name of the file
      */

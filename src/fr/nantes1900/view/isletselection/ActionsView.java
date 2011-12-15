@@ -26,12 +26,12 @@ public class ActionsView extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /**
-     * Button used to open a mockup part.
+     * Button used to OPEN a mockup part.
      */
     private JButton bOpen;
 
     /**
-     * Button used to launch the process of an islet.
+     * Button used to LAUNCH the process of an islet.
      */
     private JButton bLaunch;
 
@@ -41,16 +41,16 @@ public class ActionsView extends JPanel {
     private HelpButton bHelp;
 
     /**
-     * Creates a new panel containing the open and launch buttons.
+     * Creates a new panel containing the OPEN and LAUNCH buttons.
      */
     public ActionsView() {
 
         // Definition of the buttons
-        this.bOpen = new JButton(new ImageIcon(Icons.open));
+        this.bOpen = new JButton(new ImageIcon(Icons.OPEN));
         this.bOpen.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_OPENBUTTON));
 
-        this.bLaunch = new JButton(new ImageIcon(Icons.launch));
+        this.bLaunch = new JButton(new ImageIcon(Icons.LAUNCH));
         this.bLaunch.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_LAUNCHBUTTON));
         this.bLaunch.setEnabled(false);
@@ -85,16 +85,16 @@ public class ActionsView extends JPanel {
     }
 
     /**
-     * Returns the launch islet process button.
-     * @return The launch button.
+     * Returns the LAUNCH islet process button.
+     * @return The LAUNCH button.
      */
     public final JButton getLaunchButton() {
         return this.bLaunch;
     }
 
     /**
-     * Returns the open folder button.
-     * @return The open button.
+     * Returns the OPEN folder button.
+     * @return The OPEN button.
      */
     public final JButton getOpenButton() {
         return this.bOpen;

@@ -1,4 +1,4 @@
-package fr.nantes1900.models.islets.buildings;
+package fr.nantes1900.models.islets;
 
 /**
  * Implements a residential islet as an abstract buildings islet.

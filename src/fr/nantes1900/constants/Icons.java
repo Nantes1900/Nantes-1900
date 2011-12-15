@@ -1,24 +1,79 @@
 package fr.nantes1900.constants;
 
+/**
+ * Locations of the icons.
+ * @author Luc Jallerat
+ */
 public final class Icons {
 
-    public static final String back = "res/icons/back.png";
-    public static final String launch = "res/icons/launch.png";
-    public static final String abort = "res/icons/abort.png";
-    public static final String open = "res/icons/open.png";
-    public static final String save = "res/icons/save.png";
-    public static final String showProperties = "res/icons/showProperties.png";
-    public static final String validate = "res/icons/validate.png";
-    public static final String up = "res/icons/up.png";
-    public static final String down = "res/icons/down.png";
-    public static final String lock = "res/icons/lock.png";
-    public static final String unlock = "res/icons/unlock.png";
-    public static final String triangles = "res/icons/triangles.png";
+    /**
+     * Icon "BACK".
+     */
+    public static final String BACK = "res/icons/BACK.png";
+    /**
+     * Icon "LAUNCH".
+     */
+    public static final String LAUNCH = "res/icons/LAUNCH.png";
+    /**
+     * Icon "abort".
+     */
+    public static final String ABORT = "res/icons/abort.png";
+    /**
+     * Icon "OPEN".
+     */
+    public static final String OPEN = "res/icons/OPEN.png";
+    /**
+     * Icon "SAVE".
+     */
+    public static final String SAVE = "res/icons/SAVE.png";
+    /**
+     * Icon "SHOW_PROPERTIES".
+     */
+    public static final String SHOW_PROPERTIES = "res/icons/SHOW_PROPERTIES.png";
+    /**
+     * Icon "VALIDATE".
+     */
+    public static final String VALIDATE = "res/icons/VALIDATE.png";
+    /**
+     * Icon "UP".
+     */
+    public static final String UP = "res/icons/UP.png";
+    /**
+     * Icon "DOWN".
+     */
+    public static final String DOWN = "res/icons/DOWN.png";
+    /**
+     * Icon "LOCK".
+     */
+    public static final String LOCK = "res/icons/LOCK.png";
+    /**
+     * Icon "UNLOCK".
+     */
+    public static final String UNLOCK = "res/icons/UNLOCK.png";
+    /**
+     * Icon "TRIANGLES".
+     */
+    public static final String TRIANGLES = "res/icons/TRIANGLES.png";
+    /**
+     * Icon "surface".
+     */
     public static final String surface = "res/icons/surface.png";
-    public static final String polygon = "res/icons/polygon.png";
-    public static final String rotation_center = "res/icons/rotation_center.png";
-    public static final String meshes = "res/icons/meshes.png";
+    /**
+     * Icon "POLYGON".
+     */
+    public static final String POLYGON = "res/icons/POLYGON.png";
+    /**
+     * Icon "ROTATION_CENTER".
+     */
+    public static final String ROTATION_CENTER = "res/icons/ROTATION_CENTER.png";
+    /**
+     * Icon "MESHES".
+     */
+    public static final String MESHES = "res/icons/MESHES.png";
 
-    public Icons() {
+    /**
+     * Private constructor.
+     */
+    private Icons() {
     }
 }

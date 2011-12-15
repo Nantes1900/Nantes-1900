@@ -20,8 +20,8 @@ import fr.nantes1900.view.isletprocess.ParametersView;
 
 /**
  * Implements the controller of the ParametersView. Displays the parameters for
- * each step and allow the user to modify it. Displays also a save and a load
- * button to sav or load parameters, and a button launching a pop-up showing
+ * each step and allow the user to modify it. Displays also a SAVE and a load
+ * button to sav or load parameters, and a button launching a pop-UP showing
  * every parameters.
  * @author Luc Jallerat, Camille Bouquet
  */
@@ -100,7 +100,7 @@ public class ParametersController {
             }
         });
 
-        // Opens a pop-up showing every parameters.
+        // Opens a pop-UP showing every parameters.
         this.pView.getShowButton().addActionListener(new ActionListener() {
 
             @Override

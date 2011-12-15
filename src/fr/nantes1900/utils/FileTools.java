@@ -126,9 +126,9 @@ public final class FileTools {
      * Saves or update new properties in the given file. If the file doesn't
      * exists, a new one is created.
      * @param file
-     *            The file to save data in.
+     *            The file to SAVE data in.
      * @param prop
-     *            Data to save.
+     *            Data to SAVE.
      * @return true - Data have been correctly saved.\n false - A problem has
      *         occurred during the saving process.
      */

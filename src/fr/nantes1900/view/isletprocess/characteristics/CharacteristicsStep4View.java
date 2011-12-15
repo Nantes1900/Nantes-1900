@@ -23,7 +23,7 @@ public class CharacteristicsStep4View extends CharacteristicsView {
      */
     private static final long serialVersionUID = 1L;
     /**
-     * Combo box to set the type of selected triangles. The two types are : roof
+     * Combo box to set the type of selected TRIANGLES. The two types are : roof
      * and wall.
      */
     private JComboBox<String> cbType;
@@ -67,7 +67,7 @@ public class CharacteristicsStep4View extends CharacteristicsView {
     }
 
     /**
-     * Checks the selected type and enables or disables the validate button.
+     * Checks the selected type and enables or disables the VALIDATE button.
      */
     public final void checkTypeSelected() {
         if (this.cbType.getSelectedItem().equals(""))

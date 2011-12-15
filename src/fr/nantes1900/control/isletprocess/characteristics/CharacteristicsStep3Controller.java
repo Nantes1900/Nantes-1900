@@ -8,14 +8,14 @@ import javax.swing.JOptionPane;
 import fr.nantes1900.constants.ActionTypes;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.isletprocess.IsletProcessController;
+import fr.nantes1900.models.exceptions.InvalidCaseException;
 import fr.nantes1900.models.extended.Surface;
-import fr.nantes1900.models.islets.buildings.exceptions.InvalidCaseException;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.characteristics.CharacteristicsStep3View;
 
 /**
  * Characteristics panel for the second step of process of an islet. User can
- * select one or more triangles and modifies the type they belong to : building
+ * select one or more TRIANGLES and modifies the type they belong to : building
  * or ground.
  * @author Camille Bouquet, Luc Jallerat
  */
@@ -24,7 +24,7 @@ public class CharacteristicsStep3Controller extends
 
     /**
      * Creates a new step 3 characteristics controller for surfaces selection
-     * which will create the panel and sets the action to perform when validate
+     * which will create the panel and sets the action to perform when VALIDATE
      * button is clicked.
      * @param parentControllerIn
      *            the parent controller

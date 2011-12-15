@@ -1,4 +1,4 @@
-package fr.nantes1900.models.islets.buildings.exceptions;
+package fr.nantes1900.models.exceptions;
 
 /**
  * Implements an exception used when an process is launched while some arguments

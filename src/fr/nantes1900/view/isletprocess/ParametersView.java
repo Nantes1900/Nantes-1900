@@ -21,7 +21,7 @@ import fr.nantes1900.models.coefficients.SeparationGroundBuilding;
 import fr.nantes1900.models.coefficients.SeparationWallRoof;
 import fr.nantes1900.models.coefficients.SeparationWallsSeparationRoofs;
 import fr.nantes1900.models.coefficients.SimplificationSurfaces;
-import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
+import fr.nantes1900.models.islets.AbstractBuildingsIslet;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.components.HelpButton;
 
@@ -52,17 +52,17 @@ public class ParametersView extends JPanel {
      */
     private HelpButton[] help;
     /**
-     * The button save.
+     * The button SAVE.
      */
-    private JButton bSave = new JButton(new ImageIcon(Icons.save));
+    private JButton bSave = new JButton(new ImageIcon(Icons.SAVE));
     /**
      * The button load.
      */
-    private JButton bLoad = new JButton(new ImageIcon(Icons.open));
+    private JButton bLoad = new JButton(new ImageIcon(Icons.OPEN));
     /**
      * The button show.
      */
-    private JButton bShow = new JButton(new ImageIcon(Icons.showProperties));
+    private JButton bShow = new JButton(new ImageIcon(Icons.SHOW_PROPERTIES));
 
     /**
      * The panel at the top.
@@ -305,7 +305,7 @@ public class ParametersView extends JPanel {
 
     /**
      * Getter.
-     * @return the save button
+     * @return the SAVE button
      */
     public final JButton getSaveButton() {
         return this.bSave;
