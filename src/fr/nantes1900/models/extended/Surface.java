@@ -45,7 +45,7 @@ public class Surface {
     private List<Surface> neighbours = new ArrayList<>();
 
     /**
-     * The polygon representing this surface (after simplification).
+     * The POLYGON representing this surface (after simplification).
      */
     private Polygon polygon;
 
@@ -73,7 +73,7 @@ public class Surface {
     /**
      * Constructor from a Polygon.
      * @param p
-     *            the polygon to build the surface
+     *            the POLYGON to build the surface
      */
     public Surface(final Polygon p) {
         this.setPolygon(p);
@@ -340,7 +340,7 @@ public class Surface {
 
     /**
      * Getter.
-     * @return the polygon contained in this
+     * @return the POLYGON contained in this
      */
     public final Polygon getPolygon() {
         return this.polygon;
@@ -437,7 +437,7 @@ public class Surface {
     }
 
     /**
-     * Returns the meshes belonging to the list contain which are neighbours of
+     * Returns the MESHES belonging to the list contain which are neighbours of
      * this in the list ret. Recursive method.
      * @param ret
      *            the list returned which contains the neighbours
@@ -531,7 +531,7 @@ public class Surface {
     /**
      * Setter.
      * @param polygoneIn
-     *            the new polygon
+     *            the new POLYGON
      */
     public final void setPolygon(final Polygon polygoneIn) {
         this.polygon = polygoneIn;

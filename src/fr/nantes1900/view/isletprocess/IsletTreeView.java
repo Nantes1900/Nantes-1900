@@ -59,7 +59,7 @@ public class IsletTreeView extends JPanel {
     }
 
     /**
-     * Sets up the JTree.
+     * Sets UP the JTree.
      * @param root
      *            the treeNode to build the JTree
      */

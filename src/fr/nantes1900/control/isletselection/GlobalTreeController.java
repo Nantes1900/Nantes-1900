@@ -12,7 +12,7 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.constants.TextsKeys;
-import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
+import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletselection.GlobalTreeView;
 
@@ -87,7 +87,7 @@ public class GlobalTreeController {
                                     JOptionPane.ERROR_MESSAGE);
                         } catch (IOException e2)
                         {
-                            // TODO by Luc : pop-up error
+                            // TODO by Luc : pop-UP error
                             e2.printStackTrace();
                         }
                     }

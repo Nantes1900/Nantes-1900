@@ -3,11 +3,11 @@ package fr.nantes1900.models.extended;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
+import fr.nantes1900.models.exceptions.NullArgumentException;
 import fr.nantes1900.models.extended.steps.BuildingStep3;
 import fr.nantes1900.models.extended.steps.BuildingStep4;
 import fr.nantes1900.models.extended.steps.BuildingStep5;
 import fr.nantes1900.models.extended.steps.BuildingStep6;
-import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
  * Implements a building as containing 6 steps representing the state of the

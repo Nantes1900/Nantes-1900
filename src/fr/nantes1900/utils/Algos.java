@@ -8,7 +8,7 @@ import java.util.Set;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Surface;
-import fr.nantes1900.models.islets.buildings.steps.ProgressComputer;
+import fr.nantes1900.models.islets.steps.ProgressComputer;
 
 /**
  * Contains some algorithms used in the other classes.
@@ -30,7 +30,7 @@ public final class Algos {
      * does not destroy the mesh in parameter.
      * @param m
      *            the mesh to divide
-     * @return an array of the blocks-meshes
+     * @return an array of the blocks-MESHES
      */
     public static List<Mesh> blockExtract(final Mesh m) {
         final Set<Mesh> thingsList = new HashSet<>();
@@ -50,7 +50,7 @@ public final class Algos {
     /**
      * Divides the mesh in block of neighbours depending on their orientations.
      * This method takes one triangle and use returnNeighbours to find the
-     * triangles which are oriented as the first one (with an error) finds into
+     * TRIANGLES which are oriented as the first one (with an error) finds into
      * them its neighbours, and puts it in a new mesh into the arraylist. Then
      * it takes another triangle and make again the same operation until there
      * is no more triangle. This method does not destroy the mesh in parameter.
@@ -100,10 +100,10 @@ public final class Algos {
      * This method tries to find a block of noise which completes the mesh (of
      * the list). It thus adds it to the mesh.
      * @param list
-     *            the list of meshes to complete with noise
+     *            the list of MESHES to complete with noise
      * @param noise
      *            the whole noise
-     * @return the sum of every meshes
+     * @return the sum of every MESHES
      */
     public static Mesh blockTreatNoise(final List<Mesh> list, final Mesh noise) {
         final List<Mesh> m = new ArrayList<>();
@@ -131,7 +131,7 @@ public final class Algos {
      * the list) and which have the same orientation. It thus adds it to the
      * mesh.
      * @param surfaceList
-     *            the list of meshes to complete with noise
+     *            the list of MESHES to complete with noise
      * @param noise
      *            the whole noise
      * @param largeAngleNormalErrorFactor
@@ -163,7 +163,7 @@ public final class Algos {
      * the list) and which is contained between two planes parallel to the mesh.
      * It thus adds it to the mesh.
      * @param list
-     *            the list of meshes to complete with noise
+     *            the list of MESHES to complete with noise
      * @param noise
      *            the whole noise
      * @param errorPlanes

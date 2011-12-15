@@ -13,7 +13,7 @@ import fr.nantes1900.control.BuildingsIsletController;
 import fr.nantes1900.control.GlobalController;
 import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.models.basis.Mesh;
-import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
+import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.utils.WriterSTL;
 import fr.nantes1900.view.isletselection.GlobalTreeView.FileNode;
@@ -49,7 +49,7 @@ public class IsletSelectionController {
     private BuildingsIsletController biController;
 
     /**
-     * View allowing to select an islet and launch a process.
+     * View allowing to select an islet and LAUNCH a process.
      */
     private IsletSelectionView isView;
 
@@ -90,7 +90,7 @@ public class IsletSelectionController {
      * Computes the gravity normal and stores it in a gravity_normal.stl file in
      * the opened directory.
      * @return true - the normal has been correctly saved\n false - the normal
-     *         couldn't been stored because no file or triangles are selected.
+     *         couldn't been stored because no file or TRIANGLES are selected.
      */
     public final boolean computeGravityNormal() {
         boolean normalSaved = false;
@@ -168,7 +168,7 @@ public class IsletSelectionController {
      * verification that the selected file is an islet file is made at the
      * selection in the tree.
      * @return true - the process of the selected islet has been correctly
-     *         launched\n false - the process wasn't launch, because no islet or
+     *         launched\n false - the process wasn't LAUNCH, because no islet or
      *         ground normal are selected.
      */
     public final boolean launchIsletProcess() {

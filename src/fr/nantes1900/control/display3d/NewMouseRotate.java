@@ -129,7 +129,7 @@ public class NewMouseRotate extends MouseRotate {
                         this.currXform.mul(this.transformY, this.currXform);
                     }
 
-                    // Set old translation back
+                    // Set old translation BACK
                     Vector3d translation = new Vector3d(mat.m03, mat.m13,
                             mat.m23);
                     this.currXform.setTranslation(translation);

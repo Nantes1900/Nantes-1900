@@ -43,12 +43,12 @@ public final class ActionTypes {
      */
     public static final int REMOVE_NEIGHBOURS = 8;
     /**
-     * To change the order of the neighbours of a surface : to make it move up.
+     * To change the order of the neighbours of a surface : to make it move UP.
      */
     public static final int UP_NEIGHBOUR = 9;
     /**
      * To change the order of the neighbours of a surface : to make it move
-     * down.
+     * DOWN.
      */
     public static final int DOWN_NEIGHBOUR = 10;
 

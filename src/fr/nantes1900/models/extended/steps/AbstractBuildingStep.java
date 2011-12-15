@@ -2,7 +2,7 @@ package fr.nantes1900.models.extended.steps;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
-import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+import fr.nantes1900.models.exceptions.NullArgumentException;
 
 /**
  * Abstract class describing each building step. Each of these steps must be

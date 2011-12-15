@@ -48,7 +48,7 @@ public class Universe3DView extends JPanel {
      */
     private static final long serialVersionUID = 1L;
     /**
-     * The list to save all the surfaceView.
+     * The list to SAVE all the surfaceView.
      */
     private ArrayList<SurfaceView> surfaceViewList = new ArrayList<>();
     /**
@@ -60,7 +60,7 @@ public class Universe3DView extends JPanel {
      */
     private SimpleUniverse simpleUniverse;
     /**
-     * Constant defining the drawing back of the camera when initializing the
+     * Constant defining the drawing BACK of the camera when initializing the
      * 3DView.
      */
     public static final double TRANSLATION_CAMERA_Z_DIRECTION = 300;
@@ -299,7 +299,7 @@ public class Universe3DView extends JPanel {
      * parameter. Also sets the meshView attributes in the surfaceViews just
      * created.
      * @param surfacesList
-     *            The list of surfaces containing the meshes to display.
+     *            The list of surfaces containing the MESHES to display.
      */
     private void displayMeshes(final List<Surface> surfacesList) {
        
@@ -324,7 +324,7 @@ public class Universe3DView extends JPanel {
      * parameter. Also sets the polygonView attributes in the surfaceViews just
      * created.
      * @param surfacesList
-     *            The list of surfaces containing the meshes to display.
+     *            The list of surfaces containing the MESHES to display.
      */
     private void displayPolygons(final List<Surface> surfacesList) {
         

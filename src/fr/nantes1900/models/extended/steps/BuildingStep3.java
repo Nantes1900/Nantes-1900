@@ -5,8 +5,8 @@ import javax.vecmath.Vector3d;
 
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.coefficients.SeparationWallRoof;
+import fr.nantes1900.models.exceptions.NullArgumentException;
 import fr.nantes1900.models.extended.Surface;
-import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
 
 /**
  * Implements a building step : a state of the building. This step is after the
@@ -54,7 +54,7 @@ public class BuildingStep3 extends AbstractBuildingStep {
             throw new NullArgumentException();
         }
 
-        // Selects the triangles which are oriented normal to normalGround.
+        // Selects the TRIANGLES which are oriented normal to normalGround.
         Surface initialWall = new Surface(this.initialTotalMesh.getMesh()
                 .orientedNormalTo(this.gravityNormal,
                         SeparationWallRoof.getNormalToError()));

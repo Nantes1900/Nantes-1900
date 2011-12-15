@@ -1,4 +1,4 @@
-package fr.nantes1900.models.islets.buildings.steps;
+package fr.nantes1900.models.islets.steps;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +10,10 @@ import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.coefficients.SeparationGroundBuilding;
+import fr.nantes1900.models.exceptions.NullArgumentException;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
-import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
-import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
+import fr.nantes1900.models.islets.AbstractBuildingsIslet;
 import fr.nantes1900.utils.Algos;
 
 /**
@@ -54,14 +54,14 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
      * @return the ground extracted
      */
     private Ground groundExtraction() {
-        // Searches for ground-oriented triangles with an error.
+        // Searches for ground-oriented TRIANGLES with an error.
         Mesh meshOriented = this.initialTotalSurfaceAfterBaseChange.getMesh()
                 .orientedAs(this.groundNormal,
                         SeparationGroundBuilding.getAngleGroundError());
 
         List<Mesh> thingsList;
         List<Mesh> groundsList = new ArrayList<>();
-        // Extracts the blocks in the oriented triangles.
+        // Extracts the blocks in the oriented TRIANGLES.
         thingsList = Algos.blockExtract(meshOriented);
 
         Mesh wholeGround = new Mesh();
@@ -108,7 +108,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
         }
 
         // Now that we found the real grounds, we extract the other
-        // triangles
+        // TRIANGLES
         // which are almost ground-oriented to add them.
         meshOriented = this.initialTotalSurfaceAfterBaseChange.getMesh()
                 .orientedAs(this.groundNormal,
@@ -138,7 +138,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #launchProcess()
      */
     @Override
@@ -178,7 +178,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #toString()
      */
     @Override

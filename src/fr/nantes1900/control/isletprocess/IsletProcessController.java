@@ -24,9 +24,9 @@ import fr.nantes1900.control.isletprocess.characteristics.CharacteristicsStep6Co
 import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.listener.ProgressListener;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.models.extended.Surface;
-import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
-import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
+import fr.nantes1900.models.islets.AbstractBuildingsIslet;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.IsletProcessView;
 
@@ -68,7 +68,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
     /**
      * Controller of the navigation bar which allows to abort the process of an
-     * islet and select a new one, launch a new process to go on a further step
+     * islet and select a new one, LAUNCH a new process to go on a further step
      * and so on.
      */
     private NavigationBarController nbController;
@@ -80,18 +80,18 @@ public class IsletProcessController implements ElementsSelectedListener,
     private ParametersController pController;
 
     /**
-     * Controller of the 3d View which displays meshes.
+     * Controller of the 3d View which displays MESHES.
      */
     private Universe3DController u3DController;
 
     /**
      * Controller of the building islet currently under process. This one makes
-     * the link with meshes data.
+     * the link with MESHES data.
      */
     private BuildingsIsletController biController;
 
     /**
-     * Creates a new islet process controller to launch different processes on
+     * Creates a new islet process controller to LAUNCH different processes on
      * an islet.
      * @param parentControllerIn
      *            The parent controller which makes the link with other windows.
@@ -143,7 +143,7 @@ public class IsletProcessController implements ElementsSelectedListener,
     }
 
     /**
-     * Resets all the processes and go back to the islet file selection.
+     * Resets all the processes and go BACK to the islet file selection.
      */
     public final void abortProcess() {
         this.parentController.launchIsletSelection();
@@ -203,7 +203,7 @@ public class IsletProcessController implements ElementsSelectedListener,
     }
 
     /**
-     * Go back to the previous process.
+     * Go BACK to the previous process.
      * @throws UnexistingStepException
      *             if the step does not exist (progression < 1)
      */
@@ -300,7 +300,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
     /**
      * Locks or unlocks a surface selected.
-     * @param lock
+     * @param LOCK
      *            true - locks the surface\n false - unlocks the surface
      */
     public final void lock(final boolean lock) {
@@ -311,12 +311,12 @@ public class IsletProcessController implements ElementsSelectedListener,
             {
                 this.u3DController.setSurfaceLocked(this.u3DController
                         .getSurfacesSelected().get(0));
-                // Changes to lock mode.
+                // Changes to LOCK mode.
                 this.u3DController.setLockMode(true);
             }
         } else
         {
-            // Changes to unlock mode.
+            // Changes to UNLOCK mode.
             this.u3DController.setLockMode(false);
             // Clears the surfaceLocked.
             this.u3DController.setSurfaceLocked(null);
@@ -484,7 +484,7 @@ public class IsletProcessController implements ElementsSelectedListener,
                 }
             }
         }
-        // step 3 in meshes selection mode or in step 5
+        // step 3 in MESHES selection mode or in step 5
 
         if ((step == 3 && this.f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
                 || step == 5)

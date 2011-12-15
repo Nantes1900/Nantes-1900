@@ -1,4 +1,4 @@
-package fr.nantes1900.models.islets.buildings.steps;
+package fr.nantes1900.models.islets.steps;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,11 +7,11 @@ import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.coefficients.SeparationBuildings;
+import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
-import fr.nantes1900.models.islets.buildings.AbstractBuildingsIslet;
-import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
+import fr.nantes1900.models.islets.AbstractBuildingsIslet;
 import fr.nantes1900.utils.Algos;
 
 /**
@@ -128,7 +128,7 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #returnNode()
      */
     @Override
@@ -157,7 +157,7 @@ public class BuildingsIsletStep2 extends AbstractBuildingsIsletStep {
     /*
      * (non-Javadoc)
      * @see
-     * fr.nantes1900.models.islets.buildings.steps.AbstractBuildingsIsletStep
+     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #toString()
      */
     @Override

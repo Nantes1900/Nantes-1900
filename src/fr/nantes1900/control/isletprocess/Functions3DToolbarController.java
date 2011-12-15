@@ -10,7 +10,7 @@ import javax.swing.event.ChangeListener;
 
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.display3d.Universe3DController;
-import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
+import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.Functions3DToolbarView;
 
@@ -30,7 +30,7 @@ public class Functions3DToolbarController {
      */
     private Functions3DToolbarView toolbarView;
     /**
-     * Selection mode : surfaces or triangles.
+     * Selection mode : surfaces or TRIANGLES.
      */
     private int selectionMode;
     /**
@@ -38,12 +38,12 @@ public class Functions3DToolbarController {
      */
     private int displayType;
     /**
-     * Is the selection mode button enabled. 0 : selection mode triangles; 1 :
-     * selection mode meshes
+     * Is the selection mode button enabled. 0 : selection mode TRIANGLES; 1 :
+     * selection mode MESHES
      */
     private boolean[] selectionModeEnable = {true, true};
     /**
-     * Is the display type button enabled. 0 : display type meshes; 1 : display
+     * Is the display type button enabled. 0 : display type MESHES; 1 : display
      * type polygons
      */
     private boolean[] displayTypeEnable = {true, true};
@@ -116,7 +116,7 @@ public class Functions3DToolbarController {
                     }
                 });
 
-        // selects the selection mode triangles
+        // selects the selection mode TRIANGLES
         this.toolbarView.getSelectionModeTrianglesButton().addActionListener(
                 new ActionListener() {
 
@@ -136,7 +136,7 @@ public class Functions3DToolbarController {
                     }
                 });
 
-        // modifies the distance used for triangles selection
+        // modifies the distance used for TRIANGLES selection
         this.toolbarView.getDistanceSlider().addChangeListener(
                 new ChangeListener() {
 

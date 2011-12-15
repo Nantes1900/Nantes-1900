@@ -16,8 +16,8 @@ import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.NavigationBarView;
 
 /**
- * Controller of the NavigationBarView : buttons to launch a new process, to
- * come back to the previous one, to abort the process, or to save the results.
+ * Controller of the NavigationBarView : buttons to LAUNCH a new process, to
+ * come BACK to the previous one, to abort the process, or to SAVE the results.
  * Some informations are also displayed concerning the current step and process.
  * @author Camille Bouquet, Luc Jallerat
  */
@@ -59,7 +59,7 @@ public class NavigationBarController extends JToolBar {
             }
         });
 
-        // Implements the back button.
+        // Implements the BACK button.
         this.nbView.getBackButton().addActionListener(new ActionListener() {
 
             @Override
@@ -73,7 +73,7 @@ public class NavigationBarController extends JToolBar {
             }
         });
 
-        // Implements the launch button.
+        // Implements the LAUNCH button.
         this.nbView.getLaunchButton().addActionListener(new ActionListener() {
 
             @Override
@@ -89,7 +89,7 @@ public class NavigationBarController extends JToolBar {
             }
         });
 
-        // Implements the save button.
+        // Implements the SAVE button.
         this.nbView.getSaveButton().addActionListener(new ActionListener() {
 
             @Override

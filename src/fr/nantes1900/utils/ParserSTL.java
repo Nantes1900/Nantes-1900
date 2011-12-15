@@ -27,7 +27,7 @@ import fr.nantes1900.models.basis.Triangle;
  * Implements a STL parser : detects if it is an ASCII or a binary file, and
  * parses it. During the parsing, it builds a mesh, giving to the same points
  * the same references (and to the edges), and avoiding to keep the bad-formed
- * triangles.
+ * TRIANGLES.
  * @author Eric Berthe, Valentin Roger, Daniel Lefevre
  */
 public class ParserSTL {
@@ -112,7 +112,7 @@ public class ParserSTL {
     /**
      * Reads one line of the file. If a point is out of bounds, it removes it.
      * If a triangle is flat, it removes it. It doesn't create double points for
-     * points which have the same values, but give to the two triangles the same
+     * points which have the same values, but give to the two TRIANGLES the same
      * reference to the point (and same work for the edges).
      * @param bBuf
      *            the bytebuffer to read in
@@ -120,7 +120,7 @@ public class ParserSTL {
      * @throws BadMeshException
      *             if the triangle is flat (two points equals) or if one point
      *             has a coordinate > 1e5 or if one edge of the new triangle
-     *             contains already two triangles
+     *             contains already two TRIANGLES
      */
     private Triangle processLineB(final ByteBuffer bBuf)
             throws BadMeshException {
@@ -176,7 +176,7 @@ public class ParserSTL {
 
     /**
      * Detects the format of the STL file, and reads it using the good method.
-     * @return a hashset of triangles to build a mesh with
+     * @return a hashset of TRIANGLES to build a mesh with
      * @throws IOException
      *             if the file is bad formed or if there is an error during the
      *             reading
@@ -213,10 +213,10 @@ public class ParserSTL {
     /**
      * Reads an ASCII STL file. Creates a HashSet of triangle to put them in. If
      * a point is found equals with another, only one point is created, and the
-     * same reference is given to the two triangles. This work is done to the
-     * edges too. Flat triangles (two points equals) are removed. Points out of
-     * bounds (containing coordinate > 1e5) are removed and their triangles too.
-     * @return the HashSet containing all the triangles
+     * same reference is given to the two TRIANGLES. This work is done to the
+     * edges too. Flat TRIANGLES (two points equals) are removed. Points out of
+     * bounds (containing coordinate > 1e5) are removed and their TRIANGLES too.
+     * @return the HashSet containing all the TRIANGLES
      * @throws IOException
      *             if the file is badformed or if the file doesn't exist
      */
@@ -252,7 +252,7 @@ public class ParserSTL {
                         final Edge e2 = this.treatEdge(new Edge(p2, p3));
                         final Edge e3 = this.treatEdge(new Edge(p3, p1));
 
-                        // Checks for the flat triangles.
+                        // Checks for the flat TRIANGLES.
                         if (e1 == e2 || e2 == e3 || e1 == e3) {
                             throw new FlatTriangleException();
                         }
@@ -267,7 +267,7 @@ public class ParserSTL {
                                 e3, currentVector));
 
                     } catch (final MoreThanTwoTrianglesPerEdgeException e) {
-                        // This triangle can't be add : three triangles per edge
+                        // This triangle can't be add : three TRIANGLES per edge
                         // will cause problems in the program.
                     } catch (final FlatTriangleException e) {
                         // If it is a flat Triangle : 2 identical Points, then 2
@@ -290,10 +290,10 @@ public class ParserSTL {
     /**
      * Reads a binary STL file. Creates a HashSet of triangle to put them in. If
      * a point is found equals with another, only one point is created, and the
-     * same reference is given to the two triangles. This work is done to the
-     * edges too. Flat triangles (two points equals) are removed. Points out of
-     * bounds (containing coordinate > 1e5) are removed and their triangles too.
-     * @return the HashSet containing all the triangles
+     * same reference is given to the two TRIANGLES. This work is done to the
+     * edges too. Flat TRIANGLES (two points equals) are removed. Points out of
+     * bounds (containing coordinate > 1e5) are removed and their TRIANGLES too.
+     * @return the HashSet containing all the TRIANGLES
      * @throws IOException
      *             if the file is badformed
      */
@@ -338,7 +338,7 @@ public class ParserSTL {
                 // is not added to the Mesh.
             } catch (final MoreThanTwoTrianglesPerEdgeException e) {
                 // If one edge of the new triangle contains already two
-                // triangles, then the new triangle is removed from the mesh.
+                // TRIANGLES, then the new triangle is removed from the mesh.
             } catch (BadMeshException e) {
                 // This execption is supposed to be treated in the three catch
                 // above.
@@ -442,7 +442,7 @@ public class ParserSTL {
     }
 
     /**
-     * Implements an exception when an edge has more than two triangles which
+     * Implements an exception when an edge has more than two TRIANGLES which
      * contain it.
      * @author Daniel Lefevre
      */

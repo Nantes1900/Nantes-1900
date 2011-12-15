@@ -51,12 +51,12 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
     /**
      * The attribute to know if the U3DView has to display the mesh or the
-     * polygon (a surface is compounded of a mesh and a polygon).
+     * POLYGON (a surface is compounded of a mesh and a POLYGON).
      */
     private int displayMode;
     /**
-     * The attribute to know that the surfaces should be displayed by meshes of
-     * triangles.
+     * The attribute to know that the surfaces should be displayed by MESHES of
+     * TRIANGLES.
      */
     public static final int DISPLAY_MESH_MODE = 3;
     /**
@@ -64,15 +64,15 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      */
     public static final int DISPLAY_POLYGON_MODE = 4;
     /**
-     * The attribute to know about the selection mode: triangles or surfaces.
+     * The attribute to know about the selection mode: TRIANGLES or surfaces.
      */
     private int selectionMode;
     /**
-     * The attribute to know about the lock mode: lock or unlock.
+     * The attribute to know about the LOCK mode: LOCK or UNLOCK.
      */
     private boolean lockMode;
     /**
-     * The attribute to know that mouse left click will pick triangles.
+     * The attribute to know that mouse left click will pick TRIANGLES.
      */
     public static final int SELECTION_TRIANGLE_MODE = 1;
     /**
@@ -81,21 +81,21 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     public static final int SELECTION_SURFACE_MODE = 2;
     /**
      * A constant defining the orientation tolerance (in degrees) when getting
-     * all the triangles oriented as a triangle input.
+     * all the TRIANGLES oriented as a triangle input.
      */
     private int orientationTolerance = 30;
     /**
      * A constant defining the max distance between the triangle picked and the
-     * neighbours triangles to select.
+     * neighbours TRIANGLES to select.
      */
     private double triangleSelectionDistance = 50;
     /**
-     * The list of the triangles currently selected.
+     * The list of the TRIANGLES currently selected.
      */
     private List<Triangle> trianglesSelected = new ArrayList<>();
     /**
-     * The list of the meshes selected. This list is used when deselecting a set
-     * of triangles.
+     * The list of the MESHES selected. This list is used when deselecting a set
+     * of TRIANGLES.
      */
     private List<Mesh> meshesSelected = new ArrayList<>();
     /**
@@ -134,7 +134,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     /**
      * Changes the rotation center. Called when clicking on the 'change rotation
      * center button' Sets the roation center to the center of the selected
-     * surfaces or triangles according to the case.
+     * surfaces or TRIANGLES according to the case.
      */
     public final void changeRotationCenter() {
         Point center = null;
@@ -274,7 +274,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Notifies all the ElementsSelectedListeners that triangles have been
+     * Notifies all the ElementsSelectedListeners that TRIANGLES have been
      * selected.
      */
     private void fireNewTrianglesSelection() {
@@ -323,11 +323,11 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Get the meshes from meshesSelected list not containing the input
+     * Get the MESHES from meshesSelected list not containing the input
      * triangle.
      * @param triangle
      *            The triangle to check.
-     * @return the meshes not containing the triangle.
+     * @return the MESHES not containing the triangle.
      */
     public final List<Mesh> getComplementaryMeshesSelected(
             final Triangle triangle) {
@@ -351,7 +351,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Returns the lock mode.
+     * Returns the LOCK mode.
      * @return true if the mode is locked, false if the mode is unlocked, or
      *         everything else if there was an error in the initialisation.
      */
@@ -360,8 +360,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Get the list of meshes selected.
-     * @return meshesSelected the list of the meshes selected.
+     * Get the list of MESHES selected.
+     * @return meshesSelected the list of the MESHES selected.
      */
     public final List<Mesh> getMeshesSelected() {
         return this.meshesSelected;
@@ -454,7 +454,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     /**
      * Returns the list of Triangle associated with the trianglesView contained
      * in trianglesViewSelected.
-     * @return the list of selected triangles
+     * @return the list of selected TRIANGLES
      */
     public final List<Triangle> getTrianglesSelected() {
         return this.trianglesSelected;
@@ -681,9 +681,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Selects a set of triangles.
+     * Selects a set of TRIANGLES.
      * @param meshViewPicked
-     *            The meshiew giving the possibility to modify the triangles
+     *            The meshiew giving the possibility to modify the TRIANGLES
      *            appearance (change the texture).
      * @param meshToSelect
      *            The mesh containing the list of triangle to picked.
@@ -719,8 +719,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
     /**
      * Setter.
-     * @param lock
-     *            the new lock mode
+     * @param LOCK
+     *            the new LOCK mode
      */
     public final void setLockMode(final boolean lock) {
         this.lockMode = lock;
@@ -809,7 +809,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     /**
      * Adds the neighbours to the surfaceLockedNeighbours list.
      * @param surface
-     *            the surface to lock
+     *            the surface to LOCK
      */
     public final void setSurfaceLocked(final Surface surface) {
         this.surfaceLocked = surface;
@@ -897,10 +897,10 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
                     && !(this.surfacesSelected.contains(surfacePicked) && this.surfacesSelected
                             .size() == 1))
             {
-                // Control up -> Unselect all the selected surfaces
+                // Control UP -> Unselect all the selected surfaces
                 this.deselectEverySurfaces();
             }
-            // Control up or down : selects the picked one.
+            // Control UP or DOWN : selects the picked one.
             this.selectOrUnselectSurface(surfaceViewPicked);
 
         } else
@@ -1000,13 +1000,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         {
             if (this.trianglesSelected.contains(trianglePicked))
             {
-                // Control down and triangle picked selected before click
+                // Control DOWN and triangle picked selected before click
                 // -> Unselect the area picked
                 this.unSelectTriangles(this.getMeshSelected(trianglePicked));
 
             } else
             {
-                // Control down and triangle picked not selected before click
+                // Control DOWN and triangle picked not selected before click
                 // -> select the area picked
                 this.selectTriangles(meshView, neighbours);
             }
@@ -1015,7 +1015,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
         {
             if (this.trianglesSelected.contains(trianglePicked))
             {
-                // Control up and triangle picked selected before click
+                // Control UP and triangle picked selected before click
                 // -> unselect the other areas
 
                 if (this.meshesSelected.size() == 1)
@@ -1029,7 +1029,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
             } else
             {
-                // Control up and triangle picked not selected before click
+                // Control UP and triangle picked not selected before click
                 // -> unselect the other areas and select the area picked
                 this.unSelectTriangles(this
                         .getComplementaryMeshesSelected(trianglePicked));
@@ -1041,9 +1041,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Unselects a list of meshes containing triangles.
+     * Unselects a list of MESHES containing TRIANGLES.
      * @param meshesToUnSelect
-     *            A list of meshes containing triangles to unselect.
+     *            A list of MESHES containing TRIANGLES to unselect.
      */
     public final void unSelectTriangles(final List<Mesh> meshesToUnSelect) {
         for (Mesh m : meshesToUnSelect)
@@ -1054,13 +1054,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Unselects a set of triangles.
+     * Unselects a set of TRIANGLES.
      * @param meshToUnselect
-     *            The mesh containing the triangles to unselect.
+     *            The mesh containing the TRIANGLES to unselect.
      */
     public final void unSelectTriangles(final Mesh meshToUnselect) {
 
-        // Gets the meshView containing the triangles to unselect to be able to
+        // Gets the meshView containing the TRIANGLES to unselect to be able to
         // modify their appearance.
         MeshView mV = this.getMeshViewFromTriangle(meshToUnselect.getOne());
 

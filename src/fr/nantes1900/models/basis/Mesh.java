@@ -51,7 +51,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Computes the average normal of all triangles composing this mesh.
+     * Computes the average normal of all TRIANGLES composing this mesh.
      * @return average The average Vector3d normal.
      */
     public final Vector3d averageNormal() {
@@ -152,8 +152,8 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Returns the triangles of this meshes which are contained in two meshes.
-     * The two meshes have the same normal : vect, and are spaced on each side
+     * Returns the TRIANGLES of this MESHES which are contained in two MESHES.
+     * The two MESHES have the same normal : vect, and are spaced on each side
      * of the point p, distants of the error from p.
      * @param vect
      *            the normal of the two planes
@@ -161,7 +161,7 @@ public class Mesh extends HashSet<Triangle> {
      *            the location in space for the two planes
      * @param error
      *            the distance between the two planes and p
-     * @return the triangles which are between those two planes
+     * @return the TRIANGLES which are between those two planes
      */
     public final Mesh inPlanes(final Vector3d vect, final Point p,
             final double error) {
@@ -195,7 +195,7 @@ public class Mesh extends HashSet<Triangle> {
         final Vector3d vect2 = m2.averageNormal();
         final Vector3d vect3 = m3.averageNormal();
 
-        // Creates three planes from the three meshes.
+        // Creates three planes from the three MESHES.
         final double a1 = vect1.x;
         final double b1 = vect1.y;
         final double c1 = vect1.z;
@@ -226,7 +226,7 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Checks if two meshes share an edge.
+     * Checks if two MESHES share an edge.
      * @param mesh
      *            the mesh to compare with
      * @return true if one edge at least is shared between this and mesh, and
@@ -245,12 +245,12 @@ public class Mesh extends HashSet<Triangle> {
 
     /**
      * Checks if this mesh is oriented as the other one, with an error. Compares
-     * the average normals of the two meshes.
+     * the average normals of the two MESHES.
      * @param w2
      *            the other mesh to compare with
      * @param littleAngleNormalErrorFactor
      *            the error in degrees
-     * @return the mesh composed of all the triangles
+     * @return the mesh composed of all the TRIANGLES
      */
     public final boolean isOrientedAs(final Mesh w2,
             final double littleAngleNormalErrorFactor) {
@@ -261,11 +261,11 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Returns the minimal distance between two meshes. Searches for all the
+     * Returns the minimal distance between two MESHES. Searches for all the
      * points the one which are the closest and returns their distance.
      * @param mesh
      *            the other mesh
-     * @return the minimal distance between those two meshes
+     * @return the minimal distance between those two MESHES
      */
     public final double minimalDistance(final Mesh mesh) {
 
@@ -291,13 +291,13 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Returns the triangles of this mesh which are oriented as normal, with an
+     * Returns the TRIANGLES of this mesh which are oriented as normal, with an
      * error.
      * @param normal
      *            the vector to compare with
      * @param error
      *            the orientation error in degrees
-     * @return a mesh containing all those triangles
+     * @return a mesh containing all those TRIANGLES
      */
     public final Mesh orientedAs(final Vector3d normal, final double error) {
         final Mesh ret = new Mesh();
@@ -310,14 +310,14 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Returns the triangles of this mesh which are normal to vect, with an
+     * Returns the TRIANGLES of this mesh which are normal to vect, with an
      * error. The error is compared with the result of a dot product (vectors
      * are normalized, then this result is between 0 and 1).
      * @param vect
      *            the vector to compare with
      * @param error
      *            the orientation error
-     * @return the mesh containing all those triangles
+     * @return the mesh containing all those TRIANGLES
      */
     public final Mesh orientedNormalTo(final Vector3d vect, final double error) {
         final Mesh ret = new Mesh();
@@ -330,9 +330,9 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Removes from this mesh the triangles contained in the mesh.
+     * Removes from this mesh the TRIANGLES contained in the mesh.
      * @param m
-     *            the mesh containing the triangles to remove
+     *            the mesh containing the TRIANGLES to remove
      */
     public final void remove(final Mesh m) {
         this.removeAll(m);
@@ -392,13 +392,13 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Returns a mesh containing only the triangles whose x is between m1 and
+     * Returns a mesh containing only the TRIANGLES whose x is between m1 and
      * m2.
      * @param m1
      *            the first bound
      * @param m2
      *            the second bound
-     * @return the mesh containing the triangles
+     * @return the mesh containing the TRIANGLES
      */
     public final Mesh xBetween(final double m1, final double m2) {
         final Mesh ens = new Mesh();
@@ -452,13 +452,13 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Returns a mesh containing only the triangles whose y is between m1 and
+     * Returns a mesh containing only the TRIANGLES whose y is between m1 and
      * m2.
      * @param m1
      *            the first bound
      * @param m2
      *            the second bound
-     * @return the mesh containing the triangles
+     * @return the mesh containing the TRIANGLES
      */
     public final Mesh yBetween(final double m1, final double m2) {
         final Mesh ens = new Mesh();
@@ -512,13 +512,13 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     /**
-     * Returns a mesh containing only the triangles whose z is between m1 and
+     * Returns a mesh containing only the TRIANGLES whose z is between m1 and
      * m2.
      * @param m1
      *            the first bound
      * @param m2
      *            the second bound
-     * @return the mesh containing the triangles
+     * @return the mesh containing the TRIANGLES
      */
     public final Mesh zBetween(final double m1, final double m2) {
         final Mesh ens = new Mesh();

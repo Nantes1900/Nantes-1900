@@ -29,15 +29,15 @@ public class Functions3DToolbarView extends JToolBar {
      */
     private JButton bDisplayTypePolygons;
     /**
-     * Buttons to set the display type meshes.
+     * Buttons to set the display type MESHES.
      */
     private JButton bDisplayTypeMeshes;
     /**
-     * Button to select the mode of selection triangles.
+     * Button to select the mode of selection TRIANGLES.
      */
     private JButton bSelectionModeTriangles;
     /**
-     * Button to select the selection mode meshes.
+     * Button to select the selection mode MESHES.
      */
     private JButton bSelectionModeMeshes;
     /**
@@ -53,7 +53,7 @@ public class Functions3DToolbarView extends JToolBar {
      */
     private static final long serialVersionUID = 1L;
     /**
-     * Slider to modify the distance in triangles selection mode.
+     * Slider to modify the distance in TRIANGLES selection mode.
      */
     private JSlider sDistance;
 
@@ -65,22 +65,22 @@ public class Functions3DToolbarView extends JToolBar {
         super(SwingConstants.HORIZONTAL);
         this.setFloatable(false);
 
-        this.bRotationCenter = new JButton(new ImageIcon(Icons.rotation_center));
+        this.bRotationCenter = new JButton(new ImageIcon(Icons.ROTATION_CENTER));
         this.bRotationCenter.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_ROTATIONCENTER));
 
         // Display type elements
-        this.bDisplayTypePolygons = new JButton(new ImageIcon(Icons.polygon));
+        this.bDisplayTypePolygons = new JButton(new ImageIcon(Icons.POLYGON));
         this.bDisplayTypePolygons.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_DISPLAYPOLYGONS));
-        this.bDisplayTypeMeshes = new JButton(new ImageIcon(Icons.meshes));
+        this.bDisplayTypeMeshes = new JButton(new ImageIcon(Icons.MESHES));
         this.bDisplayTypeMeshes.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_DISPLAYMESHES));
         this.lDisplayType = new JLabel("");
 
         // Selection mode elements
         this.bSelectionModeTriangles = new JButton(new ImageIcon(
-                Icons.triangles));
+                Icons.TRIANGLES));
         this.bSelectionModeTriangles.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_SELECTTRIANGLES));
         this.bSelectionModeMeshes = new JButton(new ImageIcon(Icons.surface));
@@ -116,8 +116,8 @@ public class Functions3DToolbarView extends JToolBar {
     }
 
     /**
-     * Gets the display type meshes button.
-     * @return the display type meshes button
+     * Gets the display type MESHES button.
+     * @return the display type MESHES button
      */
     public final JButton getDisplayTypeMeshesButton() {
         return this.bDisplayTypeMeshes;
@@ -132,16 +132,16 @@ public class Functions3DToolbarView extends JToolBar {
     }
 
     /**
-     * Gets selection mode meshes button.
-     * @return the selection mode meshes button
+     * Gets selection mode MESHES button.
+     * @return the selection mode MESHES button
      */
     public final JButton getSelectionModeMeshesButton() {
         return this.bSelectionModeMeshes;
     }
 
     /**
-     * Gets selection mode triangles button.
-     * @return the selection mode meshes button
+     * Gets selection mode TRIANGLES button.
+     * @return the selection mode MESHES button
      */
     public final JButton getSelectionModeTrianglesButton() {
         return this.bSelectionModeTriangles;

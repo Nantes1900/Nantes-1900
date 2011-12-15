@@ -50,12 +50,12 @@ public class HelpButton extends JButton implements MouseListener {
     private boolean pressed = false;
 
     /**
-     * Message to display in the pop-up.
+     * Message to display in the pop-UP.
      */
     private String helpMessage;
 
     /**
-     * Title of the pop-up.
+     * Title of the pop-UP.
      */
     private String title;
 
@@ -73,7 +73,7 @@ public class HelpButton extends JButton implements MouseListener {
 
     /**
      * Creates a new help button with the given tooltip. If no message is set,
-     * no pop-up is showed when the button is clicked.
+     * no pop-UP is showed when the button is clicked.
      * @param tooltip
      *            The tooltip to associate with this button.
      */
@@ -86,21 +86,21 @@ public class HelpButton extends JButton implements MouseListener {
      * @param tooltip
      *            The tooltip to associate with this button.
      * @param helpMessageIn
-     *            Message to show in a pop-up when the button is clicked.
+     *            Message to show in a pop-UP when the button is clicked.
      */
     public HelpButton(final String tooltip, final String helpMessageIn) {
         this(tooltip, helpMessageIn, "");
     }
 
     /**
-     * Creates a new help button with the given message, tooltip and pop-up
+     * Creates a new help button with the given message, tooltip and pop-UP
      * title.
      * @param tooltip
      *            The tooltip to associate with this button.
      * @param helpMessageIn
-     *            Message to show in a pop-up when the button is clicked.
+     *            Message to show in a pop-UP when the button is clicked.
      * @param titleIn
-     *            The title of the pop-up.
+     *            The title of the pop-UP.
      */
     public HelpButton(final String tooltip, final String helpMessageIn,
             final String titleIn) {
@@ -254,7 +254,7 @@ public class HelpButton extends JButton implements MouseListener {
     }
 
     /**
-     * Sets a new help message to show on a pop-up.
+     * Sets a new help message to show on a pop-UP.
      * @param message
      *            The new help message.
      */
@@ -263,7 +263,7 @@ public class HelpButton extends JButton implements MouseListener {
     }
 
     /**
-     * Sets a new help message to show on a pop-up with the new title.
+     * Sets a new help message to show on a pop-UP with the new title.
      * @param message
      *            The new help message.
      * @param titleIn

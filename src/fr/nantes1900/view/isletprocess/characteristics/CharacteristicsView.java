@@ -22,7 +22,7 @@ import fr.nantes1900.view.components.HelpButton;
 
 /**
  * Basic view of a characteristics panel with no elements inside and a disabled
- * validate button.
+ * VALIDATE button.
  * @author Camille Bouquet
  * @author Luc Jallerat
  */
@@ -44,16 +44,16 @@ public class CharacteristicsView extends JPanel {
 
     /**
      * Creates a new empty characteristics panel without any elements in it
-     * except a title and a disabled validate button.
+     * except a title and a disabled VALIDATE button.
      */
     public CharacteristicsView() {
         this.setBorder(new TitledBorder(BorderFactory
                 .createRaisedSoftBevelBorder(), FileTools
                 .readElementText(TextsKeys.KEY_CHARACTERISTICS)));
-        this.bValidate = new JButton(new ImageIcon(Icons.validate));
+        this.bValidate = new JButton(new ImageIcon(Icons.VALIDATE));
         this.bValidate.setToolTipText(TextsKeys.KEY_TOVALID);
 
-        // Disables the validate button for this empty characteristic panel
+        // Disables the VALIDATE button for this empty characteristic panel
         this.bValidate.setEnabled(false);
 
         this.setMinimumSize(new Dimension(0, 100));
@@ -111,8 +111,8 @@ public class CharacteristicsView extends JPanel {
     }
 
     /**
-     * Gets the validate button.
-     * @return the validate button
+     * Gets the VALIDATE button.
+     * @return the VALIDATE button
      */
     public final JButton getValidateButton() {
         return this.bValidate;

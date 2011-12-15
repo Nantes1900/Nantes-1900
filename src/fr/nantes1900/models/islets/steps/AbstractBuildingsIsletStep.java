@@ -1,14 +1,14 @@
-package fr.nantes1900.models.islets.buildings.steps;
+package fr.nantes1900.models.islets.steps;
 
 import javax.swing.tree.DefaultMutableTreeNode;
 
 import fr.nantes1900.constants.TextsKeys;
-import fr.nantes1900.models.islets.buildings.exceptions.NullArgumentException;
-import fr.nantes1900.models.islets.buildings.exceptions.WeirdResultException;
+import fr.nantes1900.models.exceptions.NullArgumentException;
+import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.utils.FileTools;
 
 /**
- * Abstract the steps of the islet process. Each step must be able to launch the
+ * Abstract the steps of the islet process. Each step must be able to LAUNCH the
  * next process and to return a TreeNode for the JTree.
  * @author Daniel Lefèvre
  */
