@@ -54,7 +54,7 @@ public class BuildingStep3 extends AbstractBuildingStep {
             throw new NullArgumentException();
         }
 
-        // Selects the TRIANGLES which are oriented normal to normalGround.
+        // Selects the triangles which are oriented normal to normalGround.
         Surface initialWall = new Surface(this.initialTotalMesh.getMesh()
                 .orientedNormalTo(this.gravityNormal,
                         SeparationWallRoof.getNormalToError()));

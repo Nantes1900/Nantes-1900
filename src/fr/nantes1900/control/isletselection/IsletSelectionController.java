@@ -90,7 +90,7 @@ public class IsletSelectionController {
      * Computes the gravity normal and stores it in a gravity_normal.stl file in
      * the opened directory.
      * @return true - the normal has been correctly saved\n false - the normal
-     *         couldn't been stored because no file or TRIANGLES are selected.
+     *         couldn't been stored because no file or triangles are selected.
      */
     public final boolean computeGravityNormal() {
         boolean normalSaved = false;

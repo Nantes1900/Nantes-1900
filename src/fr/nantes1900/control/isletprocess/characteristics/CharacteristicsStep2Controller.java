@@ -20,7 +20,7 @@ import fr.nantes1900.view.isletprocess.characteristics.CharacteristicsStep2View;
 
 /**
  * Characteristics panel for the second step of process of an islet. User can
- * select one or more TRIANGLES and modifies the type they belong to : building
+ * select one or more triangles and modifies the type they belong to : building
  * or ground.
  * @author Camille Bouquet, Luc Jallerat
  */
@@ -33,7 +33,7 @@ public class CharacteristicsStep2Controller extends
      * @param parentControllerIn
      *            the parent controller
      * @param trianglesSelected
-     *            the selected TRIANGLES
+     *            the selected triangles
      */
     public CharacteristicsStep2Controller(
             final IsletProcessController parentControllerIn,

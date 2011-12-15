@@ -23,13 +23,13 @@ public class CharacteristicsStep2View extends CharacteristicsView {
      */
     private static final long serialVersionUID = 1L;
     /**
-     * Combo box to set the type of selected TRIANGLES. The two types are :
+     * Combo box to set the type of selected triangles. The two types are :
      * buildings and ground.
      */
     private JComboBox<String> cbType;
 
     /**
-     * Check box to delete a list of TRIANGLES.
+     * Check box to delete a list of triangles.
      */
     private JCheckBox cbDelete;
 

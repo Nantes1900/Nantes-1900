@@ -29,15 +29,15 @@ public class Functions3DToolbarView extends JToolBar {
      */
     private JButton bDisplayTypePolygons;
     /**
-     * Buttons to set the display type MESHES.
+     * Buttons to set the display type meshes.
      */
     private JButton bDisplayTypeMeshes;
     /**
-     * Button to select the mode of selection TRIANGLES.
+     * Button to select the mode of selection triangles.
      */
     private JButton bSelectionModeTriangles;
     /**
-     * Button to select the selection mode MESHES.
+     * Button to select the selection mode meshes.
      */
     private JButton bSelectionModeMeshes;
     /**
@@ -53,7 +53,7 @@ public class Functions3DToolbarView extends JToolBar {
      */
     private static final long serialVersionUID = 1L;
     /**
-     * Slider to modify the distance in TRIANGLES selection mode.
+     * Slider to modify the distance in triangles selection mode.
      */
     private JSlider sDistance;
 
@@ -83,7 +83,7 @@ public class Functions3DToolbarView extends JToolBar {
                 Icons.TRIANGLES));
         this.bSelectionModeTriangles.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_SELECTTRIANGLES));
-        this.bSelectionModeMeshes = new JButton(new ImageIcon(Icons.surface));
+        this.bSelectionModeMeshes = new JButton(new ImageIcon(Icons.SURFACE));
         this.bSelectionModeMeshes.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_SELECTMESHES));
         this.lSelectionMode = new JLabel("");
@@ -116,8 +116,8 @@ public class Functions3DToolbarView extends JToolBar {
     }
 
     /**
-     * Gets the display type MESHES button.
-     * @return the display type MESHES button
+     * Gets the display type meshes button.
+     * @return the display type meshes button
      */
     public final JButton getDisplayTypeMeshesButton() {
         return this.bDisplayTypeMeshes;
@@ -132,16 +132,16 @@ public class Functions3DToolbarView extends JToolBar {
     }
 
     /**
-     * Gets selection mode MESHES button.
-     * @return the selection mode MESHES button
+     * Gets selection mode meshes button.
+     * @return the selection mode meshes button
      */
     public final JButton getSelectionModeMeshesButton() {
         return this.bSelectionModeMeshes;
     }
 
     /**
-     * Gets selection mode TRIANGLES button.
-     * @return the selection mode MESHES button
+     * Gets selection mode triangles button.
+     * @return the selection mode meshes button
      */
     public final JButton getSelectionModeTrianglesButton() {
         return this.bSelectionModeTriangles;

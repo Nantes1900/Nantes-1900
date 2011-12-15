@@ -10,14 +10,14 @@ import javax.vecmath.Vector3d;
 import fr.nantes1900.models.basis.Polygon.BadFormedPolylineException;
 
 /**
- * Implement an edge composed of two points, and the TRIANGLES containing this
+ * Implement an edge composed of two points, and the triangles containing this
  * edge.
  * @author Daniel Lefevre
  */
 public class Edge {
 
     /**
-     * List of TRIANGLES containing this edge. The can be two TRIANGLES maximum.
+     * List of triangles containing this edge. The can be two triangles maximum.
      */
     private List<Triangle> triangles = new ArrayList<>(2);
 
@@ -125,8 +125,8 @@ public class Edge {
     }
 
     /**
-     * Returns the number of TRIANGLES containing the edge.
-     * @return the number of TRIANGLES
+     * Returns the number of triangles containing the edge.
+     * @return the number of triangles
      */
     public final int getNumberTriangles() {
         return this.triangles.size();
@@ -135,7 +135,7 @@ public class Edge {
     /**
      * Returns the number of neighbours of the edge contained in the polyline p.
      * Two neighbours are two edges which share a point.
-     * @param POLYGON
+     * @param polygon
      *            the polyline which contains the edges
      * @return the number of neighbours
      */
@@ -178,7 +178,7 @@ public class Edge {
 
     /**
      * Getter.
-     * @return the list of TRIANGLES containing the edge
+     * @return the list of triangles containing the edge
      */
     public final List<Triangle> getTriangles() {
         return this.triangles;

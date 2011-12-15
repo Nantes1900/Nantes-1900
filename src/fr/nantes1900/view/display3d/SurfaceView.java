@@ -70,7 +70,7 @@ public class SurfaceView extends Shape3D {
      */
     private MeshView meshView = null;
     /**
-     * The POLYGON to be displayed.
+     * The polygon to be displayed.
      */
     private PolygonView polygonView = null;
 
@@ -139,7 +139,7 @@ public class SurfaceView extends Shape3D {
     }
 
     /**
-     * Gets the POLYGON in the surfaceView.
+     * Gets the polygon in the surfaceView.
      * @return this.polygonView
      */
 
@@ -167,9 +167,9 @@ public class SurfaceView extends Shape3D {
     }
 
     /**
-     * Sets the mesh of TRIANGLES in the surfaceView.
+     * Sets the mesh of triangles in the surfaceView.
      * @param meshViewIn
-     *            The mesh of TRIANGLES to be displayed.
+     *            The mesh of triangles to be displayed.
      */
 
     public final void setMeshView(final MeshView meshViewIn) {
@@ -177,9 +177,9 @@ public class SurfaceView extends Shape3D {
     }
 
     /**
-     * Sets the POLYGON in the surfaceView.
+     * Sets the polygon in the surfaceView.
      * @param polygonViewIn
-     *            The POLYGON to be displayed.
+     *            The polygon to be displayed.
      */
     public final void setPolygonView(final PolygonView polygonViewIn) {
         this.polygonView = polygonViewIn;

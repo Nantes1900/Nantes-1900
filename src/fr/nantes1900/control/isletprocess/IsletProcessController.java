@@ -80,13 +80,13 @@ public class IsletProcessController implements ElementsSelectedListener,
     private ParametersController pController;
 
     /**
-     * Controller of the 3d View which displays MESHES.
+     * Controller of the 3d View which displays meshes.
      */
     private Universe3DController u3DController;
 
     /**
      * Controller of the building islet currently under process. This one makes
-     * the link with MESHES data.
+     * the link with meshes data.
      */
     private BuildingsIsletController biController;
 
@@ -484,7 +484,7 @@ public class IsletProcessController implements ElementsSelectedListener,
                 }
             }
         }
-        // step 3 in MESHES selection mode or in step 5
+        // step 3 in meshes selection mode or in step 5
 
         if ((step == 3 && this.f3DController.getSelectionMode() == Universe3DController.SELECTION_SURFACE_MODE)
                 || step == 5)

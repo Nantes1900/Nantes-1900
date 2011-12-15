@@ -15,7 +15,7 @@ import fr.nantes1900.view.isletprocess.characteristics.CharacteristicsStep3View;
 
 /**
  * Characteristics panel for the second step of process of an islet. User can
- * select one or more TRIANGLES and modifies the type they belong to : building
+ * select one or more triangles and modifies the type they belong to : building
  * or ground.
  * @author Camille Bouquet, Luc Jallerat
  */

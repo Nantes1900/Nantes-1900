@@ -206,7 +206,7 @@ public class BuildingStep4 extends AbstractBuildingStep {
         }
 
         // Then we check every edge of the bounds to see if some are shared
-        // by two MESHES. If they do, they are neighbours.
+        // by two meshes. If they do, they are neighbours.
         for (int i = 0; i < wholeBoundsList.size(); i = i + 1) {
             final Polygon polygone1 = wholeBoundsList.get(i);
 

@@ -25,9 +25,9 @@ public class Roof extends Surface {
     }
 
     /**
-     * Constructor from a POLYGON.
+     * Constructor from a polygon.
      * @param p
-     *            the POLYGON representing the roof
+     *            the polygon representing the roof
      */
     public Roof(final Polygon p) {
         super(p);

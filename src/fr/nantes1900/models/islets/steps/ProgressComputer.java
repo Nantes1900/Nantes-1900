@@ -32,7 +32,7 @@ public final class ProgressComputer {
     private static int stepsNumber;
 
     /**
-     * The total number of TRIANGLES.
+     * The total number of triangles.
      */
     private static int trianglesNumber;
 
@@ -67,7 +67,7 @@ public final class ProgressComputer {
     }
 
     /**
-     * Computes the progress corresponding to the current numbers (TRIANGLES,
+     * Computes the progress corresponding to the current numbers (triangles,
      * steps, buildings).
      */
     public static void computeProgress() {
@@ -110,7 +110,7 @@ public final class ProgressComputer {
     }
 
     /**
-     * Increases the counter of TRIANGLES of a number.
+     * Increases the counter of triangles of a number.
      * @param size
      *            the number added
      */
@@ -134,7 +134,7 @@ public final class ProgressComputer {
     }
 
     /**
-     * Resets the counter of TRIANGLES.
+     * Resets the counter of triangles.
      */
     public static void initTrianglesCounter() {
         ProgressComputer.trianglesCounter = 0;
@@ -171,7 +171,7 @@ public final class ProgressComputer {
     /**
      * Setter.
      * @param trianglesNumberIn
-     *            the total number of TRIANGLES
+     *            the total number of triangles
      */
     public static void setTrianglesNumber(final int trianglesNumberIn) {
         ProgressComputer.trianglesNumber = trianglesNumberIn;
