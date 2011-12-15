@@ -399,6 +399,7 @@ public class IsletTreeController implements ElementsSelectedListener {
                                 .getU3DController()
                                 .highlightSurface(
                                         (Surface) node.getUserObject());
+                        //TODO setHighlighted surface
 
                     } else
                     {

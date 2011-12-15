@@ -29,7 +29,7 @@ public class CharacteristicsStep4Controller extends
      * @param parentControllerIn
      *            the parent controller
      * @param trianglesSelected
-     *            the selected TRIANGLES
+     *            the selected triangles
      */
     public CharacteristicsStep4Controller(
             final IsletProcessController parentControllerIn,

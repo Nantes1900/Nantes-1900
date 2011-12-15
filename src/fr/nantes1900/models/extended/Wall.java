@@ -28,9 +28,9 @@ public class Wall extends Surface {
     }
 
     /**
-     * Constructor from a POLYGON.
+     * Constructor from a polygon.
      * @param p
-     *            the POLYGON representing the wall
+     *            the polygon representing the wall
      */
     public Wall(final Polygon p) {
         super(p);

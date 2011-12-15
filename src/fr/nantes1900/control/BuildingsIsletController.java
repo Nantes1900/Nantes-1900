@@ -67,12 +67,12 @@ public class BuildingsIsletController {
     }
 
     /**
-     * Changes the type of a list of TRIANGLES. To call only during the second
+     * Changes the type of a list of triangles. To call only during the second
      * step.
      * @param trianglesSelected
-     *            the list of TRIANGLES
+     *            the list of triangles
      * @param type
-     *            the new type of these TRIANGLES (TURN_TO_BUILDING,
+     *            the new type of these triangles (TURN_TO_BUILDING,
      *            TURN_TO_GROUND), or REMOVE
      * @throws InvalidCaseException
      *             if the type of action is not possible in this method
@@ -80,19 +80,19 @@ public class BuildingsIsletController {
     public final void action2(final List<Triangle> trianglesSelected,
             final int type) throws InvalidCaseException {
         if (type == ActionTypes.TURN_TO_BUILDING) {
-            // The user wants these TRIANGLES to turn building.
+            // The user wants these triangles to turn building.
             this.islet.getBiStep2().getInitialGrounds().getMesh()
                     .removeAll(trianglesSelected);
             this.islet.getBiStep2().getInitialBuildings().getMesh()
                     .addAll(trianglesSelected);
         } else if (type == ActionTypes.TURN_TO_GROUND) {
-            // The user wants these TRIANGLES to turn ground.
+            // The user wants these triangles to turn ground.
             this.islet.getBiStep2().getInitialBuildings().getMesh()
                     .removeAll(trianglesSelected);
             this.islet.getBiStep2().getInitialGrounds().getMesh()
                     .addAll(trianglesSelected);
         } else if (type == ActionTypes.REMOVE) {
-            // The user wants these TRIANGLES to be removed.
+            // The user wants these triangles to be removed.
             this.islet.getBiStep2().getInitialBuildings().getMesh()
                     .removeAll(trianglesSelected);
             this.islet.getBiStep2().getInitialGrounds().getMesh()
@@ -128,12 +128,12 @@ public class BuildingsIsletController {
     }
 
     /**
-     * Changes the type of a list of TRIANGLES. To call only during the fourth
+     * Changes the type of a list of triangles. To call only during the fourth
      * step.
      * @param trianglesSelected
-     *            the list of TRIANGLES
+     *            the list of triangles
      * @param actionType
-     *            the new type of the TRIANGLES
+     *            the new type of the triangles
      * @throws InvalidCaseException
      *             if the type of action is not possible in this method
      */
@@ -144,14 +144,14 @@ public class BuildingsIsletController {
         BuildingStep4 buildingStep = building.getbStep4();
 
         if (actionType == ActionTypes.TURN_TO_WALL) {
-            // The user wants the TRIANGLES to turn to wall.
+            // The user wants the triangles to turn to wall.
             System.out.println(buildingStep.getInitialWallSurface().getMesh()
                     .addAll(trianglesSelected));
             System.out.println(buildingStep.getInitialRoofSurface().getMesh()
                     .removeAll(trianglesSelected));
 
         } else if (actionType == ActionTypes.TURN_TO_ROOF) {
-            // The user wants the TRIANGLES to turn to roof.
+            // The user wants the triangles to turn to roof.
             buildingStep.getInitialRoofSurface().getMesh()
                     .addAll(trianglesSelected);
             buildingStep.getInitialWallSurface().getMesh()
@@ -176,7 +176,7 @@ public class BuildingsIsletController {
             final int actionType) throws InvalidCaseException {
         Building building = this.searchForBuildingContaining5(surfacesSelected);
 
-        // If it is null, this means that the TRIANGLES selected are not
+        // If it is null, this means that the triangles selected are not
         // coherent with the action asked. Then we do nothing.
         if (building != null) {
 
@@ -184,7 +184,7 @@ public class BuildingsIsletController {
 
             if (actionType == ActionTypes.MERGE) {
                 if (buildingStep.getWalls().contains(surfacesSelected.get(0))) {
-                    // It means the MESHES selected belong to the walls.
+                    // It means the meshes selected belong to the walls.
                     buildingStep.getWalls().removeAll(surfacesSelected);
                     Wall sum = new Wall();
                     for (Surface s : surfacesSelected) {
@@ -193,7 +193,7 @@ public class BuildingsIsletController {
                     buildingStep.getWalls().add(sum);
 
                 } else {
-                    // It means the MESHES selected belong to the roofs.
+                    // It means the meshes selected belong to the roofs.
                     buildingStep.getRoofs().removeAll(surfacesSelected);
                     Roof sum = new Roof();
                     for (Surface s : surfacesSelected) {
@@ -215,7 +215,7 @@ public class BuildingsIsletController {
     }
 
     /**
-     * Changes the list of neighbours of one surface. To call only durint the
+     * Changes the list of neighbours of one surface. To call only during the
      * 6th step.
      * @param surfaceLocked
      *            the current surface
@@ -252,7 +252,7 @@ public class BuildingsIsletController {
             throws InvalidCaseException {
         Building building = this.searchForBuildingContaining6(surface);
 
-        // If it is null, this means that the TRIANGLES selected are not
+        // If it is null, this means that the triangles selected are not
         // coherent with the action asked. Then we do nothing.
         if (building != null) {
             BuildingStep6 buildingStep = building.getbStep6();
@@ -268,7 +268,7 @@ public class BuildingsIsletController {
     }
 
     /**
-     * Dsisplays the set of MESHES, considering the progression of the
+     * Dsisplays the set of meshes, considering the progression of the
      * treatement.
      * @throws WeirdResultException
      *             if the result is not coherent
@@ -614,10 +614,10 @@ public class BuildingsIsletController {
 
     /**
      * Searches in the list of buildings for the building which contains the
-     * TRIANGLES selected.
+     * triangles selected.
      * @param trianglesSelected
-     *            the TRIANGLES
-     * @return the building containing <strong>all</strong> the TRIANGLES
+     *            the triangles
+     * @return the building containing <strong>all</strong> the triangles
      */
     private Building searchForBuildingContaining4(
             final List<Triangle> trianglesSelected) {

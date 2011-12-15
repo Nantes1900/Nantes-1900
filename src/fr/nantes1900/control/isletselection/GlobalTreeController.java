@@ -85,8 +85,7 @@ public class GlobalTreeController {
                                             TextsKeys.KEY_ERROR_WEIRDRESULT,
                                             TextsKeys.MESSAGETYPE_TITLE),
                                     JOptionPane.ERROR_MESSAGE);
-                        } catch (IOException e2)
-                        {
+                        } catch (IOException e2) {
                             // TODO by Luc : pop-UP error
                             e2.printStackTrace();
                         }

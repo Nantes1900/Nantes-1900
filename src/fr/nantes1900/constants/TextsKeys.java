@@ -122,7 +122,7 @@ public final class TextsKeys {
      */
     public static final String KEY_ROTATIONCENTER = "RotationCenter";
     /**
-     * Key for tooltip text of the display MESHES button.
+     * Key for tooltip text of the display meshes button.
      */
     public static final String KEY_DISPLAYMESHES = "DisplayMeshes";
     /**
@@ -130,19 +130,19 @@ public final class TextsKeys {
      */
     public static final String KEY_DISPLAYPOLYGONS = "DisplayPolygons";
     /**
-     * Key for tooltip text of the select MESHES button.
+     * Key for tooltip text of the select meshes button.
      */
     public static final String KEY_SELECTMESHES = "SelectMeshes";
     /**
-     * Key for tooltip text of the select TRIANGLES button.
+     * Key for tooltip text of the select triangles button.
      */
     public static final String KEY_SELECTTRIANGLES = "SelectTriangles";
     /**
-     * Key for text for selection mode TRIANGLES.
+     * Key for text for selection mode triangles.
      */
     public static final String KEY_SELECTTRIANGLESLABEL = "SelectTrianglesLabel";
     /**
-     * Key for text for selection mode MESHES.
+     * Key for text for selection mode meshes.
      */
     public static final String KEY_SELECTMESHESLABEL = "SelectMeshesLabel";
     /**
@@ -158,7 +158,7 @@ public final class TextsKeys {
      */
     public static final String KEY_DISPLAYPOLYGONSLABEL = "DisplayPolygonsLabel";
     /**
-     * Key for text for display type MESHES.
+     * Key for text for display type meshes.
      */
     public static final String KEY_DISPLAYMESHESLABEL = "DisplayMeshesLabel";
     /**

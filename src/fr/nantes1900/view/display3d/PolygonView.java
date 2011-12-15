@@ -10,29 +10,29 @@ import fr.nantes1900.models.basis.Polygon;
 
 /**
  * PolygonView is a class extended of the class TriangleFanArray. It's used to
- * display the surface simplified as a POLYGON.
+ * display the surface simplified as a polygon.
  * @author Nicolas Bouillon Siju Wu
  */
 public class PolygonView extends TriangleFanArray {
 
     /**
-     * The POLYGON of the thing displayed.
+     * The polygon of the thing displayed.
      */
     private Polygon polygon;
     /**
-     * The center of the POLYGON.
+     * The center of the polygon.
      */
     private Point centroid;
 
     /**
-     * The number of faces in a POLYGON.
+     * The number of faces in a polygon.
      */
     public static final int POLYGON_FACES_COUNT = 2;
 
     /**
      * Constructor of the class PolygonView.
      * @param poly
-     *            The POLYGON of the thing displayed.
+     *            The polygon of the thing displayed.
      */
     public PolygonView(final Polygon poly) {
         super(poly.getPointList().size() * POLYGON_FACES_COUNT,
@@ -83,9 +83,9 @@ public class PolygonView extends TriangleFanArray {
     }
 
     /**
-     * Converts the normal of the POLYGON (Vector3d) in a Vector3f.
-     * @param POLYGON
-     *            the POLYGON to get the normal from.
+     * Converts the normal of the polygon (Vector3d) in a Vector3f.
+     * @param polygon
+     *            the polygon to get the normal from.
      * @return the normal as a Vector3d
      */
     public static Vector3f convertNormal(final Polygon polygon) {
@@ -96,10 +96,10 @@ public class PolygonView extends TriangleFanArray {
     }
 
     /**
-     * Converts the reverse of the normal of the POLYGON (Vector3d) in a
+     * Converts the reverse of the normal of the polygon (Vector3d) in a
      * Vector3f.
-     * @param POLYGON
-     *            the POLYGON to get the normal from.
+     * @param polygon
+     *            the polygon to get the normal from.
      * @return the reverse of the normal as a Vector3d
      */
     public static Vector3f reverseConvertNormal(final Polygon polygon) {
@@ -111,25 +111,25 @@ public class PolygonView extends TriangleFanArray {
     }
 
     /**
-     * Return the center of the POLYGON.
-     * @return centroid The center of the POLYGON.
+     * Return the center of the polygon.
+     * @return centroid The center of the polygon.
      */
     public final Point getCentroid() {
         return this.centroid;
     }
 
     /**
-     * Get the POLYGON displayed.
-     * @return POLYGON the POLYGON displayed.
+     * Get the polygon displayed.
+     * @return polygon the polygon displayed.
      */
     public final Polygon getPolygon() {
         return this.polygon;
     }
 
     /**
-     * Set the POLYGON to be displayed.
+     * Set the polygon to be displayed.
      * @param polygonIn
-     *            the POLYGON to set.
+     *            the polygon to set.
      */
     public final void setPolygon(final Polygon polygonIn) {
         this.polygon = polygonIn;

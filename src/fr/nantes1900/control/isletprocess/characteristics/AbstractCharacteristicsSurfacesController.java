@@ -29,7 +29,7 @@ public abstract class AbstractCharacteristicsSurfacesController extends
     }
 
     /**
-     * Creates a new basic controller with the list of selected TRIANGLES.
+     * Creates a new basic controller with the list of selected triangles.
      * @param parentControllerIn
      *            the parent controller
      * @param surfaceSelected

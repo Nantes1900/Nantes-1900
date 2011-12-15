@@ -7,23 +7,23 @@ import fr.nantes1900.control.isletprocess.IsletProcessController;
 import fr.nantes1900.models.basis.Triangle;
 
 /**
- * Abstract class for TRIANGLES selection conrollers.
+ * Abstract class for triangles selection conrollers.
  * @author Camille Bouquet
  */
 public abstract class AbstractCharacteristicsTrianglesController extends
         CharacteristicsController {
 
     /**
-     * List of selected TRIANGLES.
+     * List of selected triangles.
      */
     protected ArrayList<Triangle> trianglesList;
 
     /**
-     * Creates a new basic controller with the list of selected TRIANGLES.
+     * Creates a new basic controller with the list of selected triangles.
      * @param parentControllerIn
      *            the parent controller
      * @param trianglesSelected
-     *            the list of selected TRIANGLES
+     *            the list of selected triangles
      */
     public AbstractCharacteristicsTrianglesController(
             final IsletProcessController parentControllerIn,
@@ -38,8 +38,8 @@ public abstract class AbstractCharacteristicsTrianglesController extends
     public abstract void modifyViewCharacteristics();
 
     /**
-     * Gets the list of selected TRIANGLES.
-     * @return the list of selected TRIANGLES.
+     * Gets the list of selected triangles.
+     * @return the list of selected triangles.
      */
     public final ArrayList<Triangle> getTriangles() {
         return this.trianglesList;

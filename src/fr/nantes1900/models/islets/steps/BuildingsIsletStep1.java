@@ -54,14 +54,14 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
      * @return the ground extracted
      */
     private Ground groundExtraction() {
-        // Searches for ground-oriented TRIANGLES with an error.
+        // Searches for ground-oriented triangles with an error.
         Mesh meshOriented = this.initialTotalSurfaceAfterBaseChange.getMesh()
                 .orientedAs(this.groundNormal,
                         SeparationGroundBuilding.getAngleGroundError());
 
         List<Mesh> thingsList;
         List<Mesh> groundsList = new ArrayList<>();
-        // Extracts the blocks in the oriented TRIANGLES.
+        // Extracts the blocks in the oriented triangles.
         thingsList = Algos.blockExtract(meshOriented);
 
         Mesh wholeGround = new Mesh();
@@ -108,7 +108,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
         }
 
         // Now that we found the real grounds, we extract the other
-        // TRIANGLES
+        // triangles
         // which are almost ground-oriented to add them.
         meshOriented = this.initialTotalSurfaceAfterBaseChange.getMesh()
                 .orientedAs(this.groundNormal,

@@ -22,7 +22,7 @@ import fr.nantes1900.utils.WriterSTL;
 
 /**
  * Abstracts a building islet : residential or industrial. This class contains
- * all the methods to apply the processs on the MESHES.
+ * all the methods to apply the processs on the meshes.
  * @author Daniel Lefèvre
  */
 public abstract class AbstractBuildingsIslet extends AbstractIslet {
@@ -318,7 +318,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
     /**
      * Saves the results in the file (erase the file if it already exists).
      * Saves the polygons of the surface which have one (it means which have
-     * been simplified) or saves the MESHES of the other surfaces.
+     * been simplified) or saves the meshes of the other surfaces.
      * @param fileName
      *            the name of the file
      */

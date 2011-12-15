@@ -9,11 +9,11 @@ public final class Icons {
     /**
      * Icon "BACK".
      */
-    public static final String BACK = "res/icons/BACK.png";
+    public static final String BACK = "res/icons/back.png";
     /**
      * Icon "LAUNCH".
      */
-    public static final String LAUNCH = "res/icons/LAUNCH.png";
+    public static final String LAUNCH = "res/icons/launch.png";
     /**
      * Icon "abort".
      */
@@ -21,55 +21,55 @@ public final class Icons {
     /**
      * Icon "OPEN".
      */
-    public static final String OPEN = "res/icons/OPEN.png";
+    public static final String OPEN = "res/icons/open.png";
     /**
      * Icon "SAVE".
      */
-    public static final String SAVE = "res/icons/SAVE.png";
+    public static final String SAVE = "res/icons/save.png";
     /**
      * Icon "SHOW_PROPERTIES".
      */
-    public static final String SHOW_PROPERTIES = "res/icons/SHOW_PROPERTIES.png";
+    public static final String SHOW_PROPERTIES = "res/icons/showProperties.png";
     /**
      * Icon "VALIDATE".
      */
-    public static final String VALIDATE = "res/icons/VALIDATE.png";
+    public static final String VALIDATE = "res/icons/validate.png";
     /**
      * Icon "UP".
      */
-    public static final String UP = "res/icons/UP.png";
+    public static final String UP = "res/icons/up.png";
     /**
      * Icon "DOWN".
      */
-    public static final String DOWN = "res/icons/DOWN.png";
+    public static final String DOWN = "res/icons/down.png";
     /**
      * Icon "LOCK".
      */
-    public static final String LOCK = "res/icons/LOCK.png";
+    public static final String LOCK = "res/icons/lock.png";
     /**
      * Icon "UNLOCK".
      */
-    public static final String UNLOCK = "res/icons/UNLOCK.png";
+    public static final String UNLOCK = "res/icons/unlock.png";
     /**
-     * Icon "TRIANGLES".
+     * Icon "triangles".
      */
-    public static final String TRIANGLES = "res/icons/TRIANGLES.png";
+    public static final String TRIANGLES = "res/icons/triangles.png";
     /**
      * Icon "surface".
      */
-    public static final String surface = "res/icons/surface.png";
+    public static final String SURFACE = "res/icons/surface.png";
     /**
-     * Icon "POLYGON".
+     * Icon "polygon".
      */
-    public static final String POLYGON = "res/icons/POLYGON.png";
+    public static final String POLYGON = "res/icons/polygon.png";
     /**
      * Icon "ROTATION_CENTER".
      */
-    public static final String ROTATION_CENTER = "res/icons/ROTATION_CENTER.png";
+    public static final String ROTATION_CENTER = "res/icons/rotation_center.png";
     /**
-     * Icon "MESHES".
+     * Icon "meshes".
      */
-    public static final String MESHES = "res/icons/MESHES.png";
+    public static final String MESHES = "res/icons/meshes.png";
 
     /**
      * Private constructor.

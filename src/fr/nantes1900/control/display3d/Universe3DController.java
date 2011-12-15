@@ -51,12 +51,12 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
 
     /**
      * The attribute to know if the U3DView has to display the mesh or the
-     * POLYGON (a surface is compounded of a mesh and a POLYGON).
+     * polygon (a surface is compounded of a mesh and a polygon).
      */
     private int displayMode;
     /**
-     * The attribute to know that the surfaces should be displayed by MESHES of
-     * TRIANGLES.
+     * The attribute to know that the surfaces should be displayed by meshes of
+     * triangles.
      */
     public static final int DISPLAY_MESH_MODE = 3;
     /**
@@ -64,7 +64,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      */
     public static final int DISPLAY_POLYGON_MODE = 4;
     /**
-     * The attribute to know about the selection mode: TRIANGLES or surfaces.
+     * The attribute to know about the selection mode: triangles or surfaces.
      */
     private int selectionMode;
     /**
@@ -72,7 +72,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
      */
     private boolean lockMode;
     /**
-     * The attribute to know that mouse left click will pick TRIANGLES.
+     * The attribute to know that mouse left click will pick triangles.
      */
     public static final int SELECTION_TRIANGLE_MODE = 1;
     /**
@@ -81,21 +81,21 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     public static final int SELECTION_SURFACE_MODE = 2;
     /**
      * A constant defining the orientation tolerance (in degrees) when getting
-     * all the TRIANGLES oriented as a triangle input.
+     * all the triangles oriented as a triangle input.
      */
     private int orientationTolerance = 30;
     /**
      * A constant defining the max distance between the triangle picked and the
-     * neighbours TRIANGLES to select.
+     * neighbours triangles to select.
      */
     private double triangleSelectionDistance = 50;
     /**
-     * The list of the TRIANGLES currently selected.
+     * The list of the triangles currently selected.
      */
     private List<Triangle> trianglesSelected = new ArrayList<>();
     /**
-     * The list of the MESHES selected. This list is used when deselecting a set
-     * of TRIANGLES.
+     * The list of the meshes selected. This list is used when deselecting a set
+     * of triangles.
      */
     private List<Mesh> meshesSelected = new ArrayList<>();
     /**
@@ -134,7 +134,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     /**
      * Changes the rotation center. Called when clicking on the 'change rotation
      * center button' Sets the roation center to the center of the selected
-     * surfaces or TRIANGLES according to the case.
+     * surfaces or triangles according to the case.
      */
     public final void changeRotationCenter() {
         Point center = null;
@@ -274,7 +274,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Notifies all the ElementsSelectedListeners that TRIANGLES have been
+     * Notifies all the ElementsSelectedListeners that triangles have been
      * selected.
      */
     private void fireNewTrianglesSelection() {
@@ -323,11 +323,11 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Get the MESHES from meshesSelected list not containing the input
+     * Get the meshes from meshesSelected list not containing the input
      * triangle.
      * @param triangle
      *            The triangle to check.
-     * @return the MESHES not containing the triangle.
+     * @return the meshes not containing the triangle.
      */
     public final List<Mesh> getComplementaryMeshesSelected(
             final Triangle triangle) {
@@ -360,8 +360,8 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Get the list of MESHES selected.
-     * @return meshesSelected the list of the MESHES selected.
+     * Get the list of meshes selected.
+     * @return meshesSelected the list of the meshes selected.
      */
     public final List<Mesh> getMeshesSelected() {
         return this.meshesSelected;
@@ -454,7 +454,7 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     /**
      * Returns the list of Triangle associated with the trianglesView contained
      * in trianglesViewSelected.
-     * @return the list of selected TRIANGLES
+     * @return the list of selected triangles
      */
     public final List<Triangle> getTrianglesSelected() {
         return this.trianglesSelected;
@@ -681,9 +681,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Selects a set of TRIANGLES.
+     * Selects a set of triangles.
      * @param meshViewPicked
-     *            The meshiew giving the possibility to modify the TRIANGLES
+     *            The meshiew giving the possibility to modify the triangles
      *            appearance (change the texture).
      * @param meshToSelect
      *            The mesh containing the list of triangle to picked.
@@ -1051,9 +1051,9 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Unselects a list of MESHES containing TRIANGLES.
+     * Unselects a list of meshes containing triangles.
      * @param meshesToUnSelect
-     *            A list of MESHES containing TRIANGLES to unselect.
+     *            A list of meshes containing triangles to unselect.
      */
     public final void unSelectTriangles(final List<Mesh> meshesToUnSelect) {
         for (Mesh m : meshesToUnSelect)
@@ -1064,13 +1064,13 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
     }
 
     /**
-     * Unselects a set of TRIANGLES.
+     * Unselects a set of triangles.
      * @param meshToUnselect
-     *            The mesh containing the TRIANGLES to unselect.
+     *            The mesh containing the triangles to unselect.
      */
     public final void unSelectTriangles(final Mesh meshToUnselect) {
 
-        // Gets the meshView containing the TRIANGLES to unselect to be able to
+        // Gets the meshView containing the triangles to unselect to be able to
         // modify their appearance.
         MeshView mV = this.getMeshViewFromTriangle(meshToUnselect.getOne());
 
