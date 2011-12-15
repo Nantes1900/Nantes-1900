@@ -240,7 +240,7 @@ public class BuildingsIsletController {
     }
 
     /**
-     * Changes the type of a surface. To call only durint the 6th step.
+     * Changes the type of a surface. To call only during the 6th step.
      * @param surface
      *            the surface
      * @param actionType

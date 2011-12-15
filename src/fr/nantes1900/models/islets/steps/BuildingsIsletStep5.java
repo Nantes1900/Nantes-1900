@@ -86,8 +86,6 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
     public final BuildingsIsletStep6 launchProcess()
             throws NullArgumentException {
         for (Building b : this.buildings) {
-            b.getbStep5().setArguments(this.noise, this.grounds,
-                    this.groundNormal);
             b.launchProcess5();
         }
 
