@@ -153,6 +153,10 @@ public class CharacteristicsStep6Controller extends
                 });
     }
 
+  //TODO setHighlighted surface (go to isletprocessController
+    public void setHilightedSurface(final Surface surface){
+        ((CharacteristicsStep6View) cView).getJListNeighbors().setSelectedValue(surface, true);
+    }
     /*
      * (non-Javadoc)
      * @see
