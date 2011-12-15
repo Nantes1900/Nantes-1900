@@ -434,18 +434,44 @@ public class Polygon {
                 this.zAverage());
 
         Point before = this.pointList.get(this.pointSize() - 1);
+        Point first = this.pointList.get(0);
 
-        for (final Point p : this.pointList) {
-            Edge e1 = new Edge(centroid, before);
-            Edge e2 = new Edge(before, p);
-            Edge e3 = new Edge(p, centroid);
+        Vector3d vector1 = new Vector3d(before.getX() - centroid.getX(),
+                before.getY() - centroid.getY(), before.getZ()
+                        - centroid.getZ());
+        Vector3d vector2 = new Vector3d(first.getX() - centroid.getX(),
+                first.getY() - centroid.getY(), first.getZ() - centroid.getZ());
+        Vector3d cross = new Vector3d();
+        cross.cross(vector1, vector2);
 
-            ens.add(new Triangle(before, centroid, p, e1, e2, e3, this.normal));
-            Vector3d normalTriangle = this.normal;
-            normalTriangle.negate();
-            ens.add(new Triangle(before, p, centroid, e1, e3, e2,
-                    normalTriangle));
-            before = p;
+        if (cross.dot(this.normal) > 0) {
+            before = this.pointList.get(0);
+
+            for (int i = this.pointList.size() - 1; i >= 0; i--) {
+                Point p = this.pointList.get(i);
+
+                Edge e1 = new Edge(centroid, before);
+                Edge e2 = new Edge(before, p);
+                Edge e3 = new Edge(p, centroid);
+
+                ens.add(new Triangle(before, centroid, p, e1, e2, e3,
+                        this.normal));
+
+                before = p;
+            }
+        } else {
+            for (int i = 0; i < this.pointList.size(); i++) {
+                Point p = this.pointList.get(i);
+
+                Edge e1 = new Edge(centroid, before);
+                Edge e2 = new Edge(before, p);
+                Edge e3 = new Edge(p, centroid);
+
+                ens.add(new Triangle(before, centroid, p, e1, e2, e3,
+                        this.normal));
+
+                before = p;
+            }
         }
 
         return ens;
