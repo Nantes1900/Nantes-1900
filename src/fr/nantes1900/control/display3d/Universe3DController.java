@@ -735,13 +735,23 @@ public class Universe3DController implements MouseListener, MouseMotionListener 
             }
         } else
         {
+            for (SurfaceView surfaceView : this.u3DView.getSurfaceViewList())
+            {
+                if (surfaceView.getSurface().getPolygon() != null)
+                {
+                    surfaceView.setMaterial(SurfaceView.MATERIAL_POLYGON);
+                } else
+                {
+                    surfaceView.setMaterial(SurfaceView.MATERIAL_NON_POLYGON);
+                }
+
+            }
             if (this.surfaceLockedNeighbours != null)
             {
-                for (Surface surfaceNeighbour : this.surfaceLockedNeighbours)
-                {
-                    this.getSurfaceViewFromSurface(surfaceNeighbour)
-                            .setMaterial(SurfaceView.MATERIAL_NEIGHBOUR);
-                }
+                SurfaceView surfaceViewLocked = this
+                        .getSurfaceViewFromSurface(this.surfaceLocked);
+                surfaceViewLocked.setMaterial(SurfaceView.MATERIAL_SELECTED);
+                this.showNeighbours(surfaceLocked);
             }
         }
     }
