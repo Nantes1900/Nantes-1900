@@ -363,33 +363,8 @@ public class IsletProcessController implements ElementsSelectedListener,
     private void setStatusBarStep() {
         int step = getProgression();
         String text = "";
-        switch (step)
-        {
-            case 1:
-                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP1,
-                        TextsKeys.MESSAGETYPE_STATUSBAR);
-            break;
-            case 2:
-                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP2,
-                        TextsKeys.MESSAGETYPE_STATUSBAR);
-            break;
-            case 3:
-                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP3,
-                        TextsKeys.MESSAGETYPE_STATUSBAR);
-            break;
-            case 4:
-                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP4,
-                        TextsKeys.MESSAGETYPE_STATUSBAR);
-            break;
-            case 5:
-                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP5,
-                        TextsKeys.MESSAGETYPE_STATUSBAR);
-            break;
-            case 6:
-                text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP6,
-                        TextsKeys.MESSAGETYPE_STATUSBAR);
-            break;
-        }
+        text = FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP+step,
+                TextsKeys.MESSAGETYPE_STATUSBAR);
 
         this.ipView.setStatusBarText(text);
     }

@@ -242,29 +242,9 @@ public final class TextsKeys {
     public static final String KEY_ERROR_WEIRDRESULT = "ErrorWeirdResults";
     
     /**
-     * Key for step 1 explanations.
+     * Key for step explanations.
      */
-    public static final String KEY_HELP_STEP1= "Step1";
-    /**
-     * Key for step 1 explanations.
-     */
-    public static final String KEY_HELP_STEP2= "Step2";
-    /**
-     * Key for step 1 explanations.
-     */
-    public static final String KEY_HELP_STEP3= "Step3";
-    /**
-     * Key for step 1 explanations.
-     */
-    public static final String KEY_HELP_STEP4= "Step4";
-    /**
-     * Key for step 1 explanations.
-     */
-    public static final String KEY_HELP_STEP5= "Step5";
-    /**
-     * Key for step 1 explanations.
-     */
-    public static final String KEY_HELP_STEP6= "Step6";
+    public static final String KEY_HELP_STEP= "Step";
     
     /**
      * Key for slider description.
