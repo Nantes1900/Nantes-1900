@@ -305,7 +305,7 @@ public class Universe3DView extends JPanel {
        
         for (Surface surface : surfacesList)
         {   
-           
+            
             
             SurfaceView surfaceView = new SurfaceView(surface);
 
@@ -327,8 +327,7 @@ public class Universe3DView extends JPanel {
      *            The list of surfaces containing the meshes to display.
      */
     private void displayPolygons(final List<Surface> surfacesList) {
-        
-        
+       
         for (Surface surface : surfacesList)
         {
            
@@ -337,7 +336,7 @@ public class Universe3DView extends JPanel {
             {
                 PolygonView polygonView = new PolygonView(surface.getPolygon());
                 surfaceView.setPolygonView(polygonView);
-                
+               
             }
             surfaceView.showPolygonView();
             this.surfaceViewList.add(surfaceView);
