@@ -300,7 +300,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
     /**
      * Locks or unlocks a surface selected.
-     * @param LOCK
+     * @param lock
      *            true - locks the surface\n false - unlocks the surface
      */
     public final void lock(final boolean lock) {
@@ -591,6 +591,15 @@ public class IsletProcessController implements ElementsSelectedListener,
         // this.ipView.updatesProgressBar(progress);
     }
 
+    /**
+     * Adds a shortcut to the window.
+     * @param key
+     *          the shortcut key
+     * @param actionName
+     *          the name of the action
+     * @param action
+     *          the action to associate with this shortcut
+     */
     public void addShortcut(KeyStroke key, String actionName, AbstractAction action)
     {
         ipView.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(key, actionName);
