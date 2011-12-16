@@ -75,6 +75,39 @@ public class BuildingStep5 extends AbstractBuildingStep {
     }
 
     /**
+     * Removes every surfaces which have less than or equal 2 neighbours : it is
+     * considered they are not really real surfaces.
+     * @param roofsIn
+     *            the roofs
+     * @param wallsIn
+     *            the walls
+     */
+    private static void sortSurfaces(final List<Wall> wallsIn,
+            final List<Roof> roofsIn) {
+        for (int i = 0; i < wallsIn.size(); i++) {
+            final Surface s = wallsIn.get(i);
+
+            if (s.getNeighbours().size() < NUMBER_MIN_OF_NEIGHBOURS) {
+                wallsIn.remove(s);
+                for (final Surface neighbour : s.getNeighbours()) {
+                    neighbour.getNeighbours().remove(s);
+                }
+            }
+        }
+
+        for (int i = 0; i < roofsIn.size(); i++) {
+            final Surface s = roofsIn.get(i);
+
+            if (s.getNeighbours().size() < NUMBER_MIN_OF_NEIGHBOURS) {
+                roofsIn.remove(s);
+                for (final Surface neighbour : s.getNeighbours()) {
+                    neighbour.getNeighbours().remove(s);
+                }
+            }
+        }
+    }
+
+    /**
      * Determinates the neighbours of a surface.
      * @param wallsIn
      *            the walls
@@ -131,6 +164,20 @@ public class BuildingStep5 extends AbstractBuildingStep {
             if (polygone1.isNeighbour(groundsBounds)) {
                 wholeList.get(i).addNeighbour(this.ground);
             }
+        }
+    }
+
+    /**
+     * Determinates the contour of only one surface.
+     * @param surface
+     *            the surface
+     */
+    public final void determinateOneContour(final Surface surface) {
+        try {
+            surface.setPolygon(surface.findEdges(this.walls, this.pointMap,
+                    this.groundNormal));
+        } catch (InvalidSurfaceException e) {
+            // If there is a problem, we cannot continue the process.
         }
     }
 
@@ -225,20 +272,6 @@ public class BuildingStep5 extends AbstractBuildingStep {
         }
     }
 
-    /**
-     * Determinates the contour of only one surface.
-     * @param surface
-     *            the surface
-     */
-    public final void determinateOneContour(final Surface surface) {
-        try {
-            surface.setPolygon(surface.findEdges(this.walls, this.pointMap,
-                    this.groundNormal));
-        } catch (InvalidSurfaceException e) {
-            // If there is a problem, we cannot continue the process.
-        }
-    }
-
     @Override
     public final DefaultMutableTreeNode returnNode(final int counter) {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Bâtiment "
@@ -275,38 +308,5 @@ public class BuildingStep5 extends AbstractBuildingStep {
         this.noise = noiseIn;
         this.ground = groundIn;
         this.groundNormal = groundNormalIn;
-    }
-
-    /**
-     * Removes every surfaces which have less than or equal 2 neighbours : it is
-     * considered they are not really real surfaces.
-     * @param roofsIn
-     *            the roofs
-     * @param wallsIn
-     *            the walls
-     */
-    private static void sortSurfaces(final List<Wall> wallsIn,
-            final List<Roof> roofsIn) {
-        for (int i = 0; i < wallsIn.size(); i++) {
-            final Surface s = wallsIn.get(i);
-
-            if (s.getNeighbours().size() < NUMBER_MIN_OF_NEIGHBOURS) {
-                wallsIn.remove(s);
-                for (final Surface neighbour : s.getNeighbours()) {
-                    neighbour.getNeighbours().remove(s);
-                }
-            }
-        }
-
-        for (int i = 0; i < roofsIn.size(); i++) {
-            final Surface s = roofsIn.get(i);
-
-            if (s.getNeighbours().size() < NUMBER_MIN_OF_NEIGHBOURS) {
-                roofsIn.remove(s);
-                for (final Surface neighbour : s.getNeighbours()) {
-                    neighbour.getNeighbours().remove(s);
-                }
-            }
-        }
     }
 }

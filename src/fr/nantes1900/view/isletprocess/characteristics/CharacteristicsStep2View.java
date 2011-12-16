@@ -38,8 +38,9 @@ public class CharacteristicsStep2View extends CharacteristicsView {
      */
     public CharacteristicsStep2View() {
         super();
-        String[] types = {"", Characteristics.TYPE_BUILDING,
-                Characteristics.TYPE_GROUND};
+        String[] types = { "", Characteristics.TYPE_BUILDING,
+                Characteristics.TYPE_GROUND
+        };
 
         this.cbType = new JComboBox<>(types);
         this.cbType.addItemListener(new ItemListener() {
@@ -57,11 +58,9 @@ public class CharacteristicsStep2View extends CharacteristicsView {
 
             @Override
             public void itemStateChanged(final ItemEvent arg0) {
-                if (((JCheckBox) arg0.getSource()).isSelected())
-                {
+                if (((JCheckBox) arg0.getSource()).isSelected()) {
                     CharacteristicsStep2View.this.cbType.setEnabled(false);
-                } else
-                {
+                } else {
                     CharacteristicsStep2View.this.cbType.setEnabled(true);
                 }
                 CharacteristicsStep2View.this.checkEnableValidateButton();
@@ -92,6 +91,26 @@ public class CharacteristicsStep2View extends CharacteristicsView {
     }
 
     /**
+     * Checks if the VALIDATE button should be enabled or not.
+     */
+    public final void checkEnableValidateButton() {
+        if (!this.cbType.getSelectedItem().equals("")
+                || this.cbDelete.isSelected()) {
+            this.bValidate.setEnabled(true);
+        } else {
+            this.bValidate.setEnabled(false);
+        }
+    }
+
+    /**
+     * Gets the check box delete.
+     * @return the delete check box
+     */
+    public JCheckBox getDeleteCheckBox() {
+        return cbDelete;
+    }
+
+    /**
      * Gets the current selected type.
      * @return the current selected type
      */
@@ -109,14 +128,6 @@ public class CharacteristicsStep2View extends CharacteristicsView {
     }
 
     /**
-     * Gets the check box delete.
-     * @return the delete check box
-     */
-    public JCheckBox getDeleteCheckBox() {
-        return cbDelete;
-    }
-
-    /**
      * Selects the given type.
      * @param string
      *            the new type to select
@@ -124,19 +135,5 @@ public class CharacteristicsStep2View extends CharacteristicsView {
     public final void setType(final String string) {
         this.cbType.setSelectedItem(string);
         checkEnableValidateButton();
-    }
-
-    /**
-     * Checks if the VALIDATE button should be enabled or not.
-     */
-    public final void checkEnableValidateButton() {
-        if (!this.cbType.getSelectedItem().equals("")
-                || this.cbDelete.isSelected())
-        {
-            this.bValidate.setEnabled(true);
-        } else
-        {
-            this.bValidate.setEnabled(false);
-        }
     }
 }

@@ -45,6 +45,14 @@ public class BuildingStep6 extends AbstractBuildingStep {
 
     /**
      * Getter.
+     * @return the noise
+     */
+    public final Surface getNoise() {
+        return this.noise;
+    }
+
+    /**
+     * Getter.
      * @return the list of roofs
      */
     public final List<Roof> getRoofs() {
@@ -95,13 +103,5 @@ public class BuildingStep6 extends AbstractBuildingStep {
         }
 
         return root;
-    }
-
-    /**
-     * Getter.
-     * @return the noise
-     */
-    public final Surface getNoise() {
-        return this.noise;
     }
 }

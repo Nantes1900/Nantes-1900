@@ -50,6 +50,7 @@ public final class ProgressComputer {
      * The number of the current step.
      */
     private static int stepsCounter;
+
     /**
      * Private constructor.
      */

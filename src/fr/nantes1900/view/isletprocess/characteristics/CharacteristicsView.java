@@ -111,18 +111,18 @@ public class CharacteristicsView extends JPanel {
     }
 
     /**
-     * Gets the VALIDATE button.
-     * @return the VALIDATE button
-     */
-    public final JButton getValidateButton() {
-        return this.bValidate;
-    }
-
-    /**
      * Gets the content panel of this characteristics panel.
      * @return the content panel
      */
     protected final JPanel getPanelContent() {
         return this.pContent;
+    }
+
+    /**
+     * Gets the VALIDATE button.
+     * @return the VALIDATE button
+     */
+    public final JButton getValidateButton() {
+        return this.bValidate;
     }
 }

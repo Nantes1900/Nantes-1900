@@ -8,15 +8,10 @@ package fr.nantes1900.constants;
 public final class WeirdResultMessages {
 
     /**
-     * Private constructor.
-     */
-    private WeirdResultMessages() {
-    }
-
-    /**
      * Key for a pop-UP message when the matrix is not good.
      */
     public static final String BAD_MATRIX = "BadMatrix";
+
     /**
      * Key for a pop-UP message when there is no ground and that there should
      * be.
@@ -31,4 +26,9 @@ public final class WeirdResultMessages {
      * be.
      */
     public static final String NO_BUILDINGS = "NoBuildings";
+    /**
+     * Private constructor.
+     */
+    private WeirdResultMessages() {
+    }
 }

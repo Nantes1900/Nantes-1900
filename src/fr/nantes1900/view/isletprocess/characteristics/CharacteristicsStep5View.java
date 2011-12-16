@@ -48,8 +48,7 @@ public class CharacteristicsStep5View extends CharacteristicsView {
 
             @Override
             public void itemStateChanged(final ItemEvent arg0) {
-                if (((JCheckBox) arg0.getSource()).isSelected())
-                {
+                if (((JCheckBox) arg0.getSource()).isSelected()) {
                     CharacteristicsStep5View.this.bValidate.setEnabled(true);
                 }
                 CharacteristicsStep5View.this.checkEnableValidateButton();
@@ -76,8 +75,7 @@ public class CharacteristicsStep5View extends CharacteristicsView {
 
             @Override
             public void itemStateChanged(final ItemEvent arg0) {
-                if (((JCheckBox) arg0.getSource()).isSelected())
-                {
+                if (((JCheckBox) arg0.getSource()).isSelected()) {
                     CharacteristicsStep5View.this.getCBMerge().setSelected(
                             false);
                 }
@@ -103,11 +101,9 @@ public class CharacteristicsStep5View extends CharacteristicsView {
      * Checks if the VALIDATE button should be enabled or not.
      */
     public final void checkEnableValidateButton() {
-        if (this.cbMerge.isSelected() || this.cbNoise.isSelected())
-        {
+        if (this.cbMerge.isSelected() || this.cbNoise.isSelected()) {
             bValidate.setEnabled(true);
-        } else
-        {
+        } else {
             bValidate.setEnabled(false);
         }
     }

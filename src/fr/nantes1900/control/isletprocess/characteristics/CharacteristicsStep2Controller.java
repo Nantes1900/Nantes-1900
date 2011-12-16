@@ -45,15 +45,12 @@ public class CharacteristicsStep2Controller extends
 
             @Override
             public void actionPerformed(final ActionEvent arg0) {
-                if (((CharacteristicsStep2View) cView).isDeleteSelected())
-                {
-                    try
-                    {
+                if (((CharacteristicsStep2View) cView).isDeleteSelected()) {
+                    try {
                         CharacteristicsStep2Controller.this.parentController
                                 .getBiController().action2(trianglesList,
                                         ActionTypes.REMOVE);
-                    } catch (InvalidCaseException e)
-                    {
+                    } catch (InvalidCaseException e) {
                         JOptionPane.showMessageDialog(cView, FileTools
                                 .readInformationMessage(
                                         TextsKeys.KEY_ERROR_INCORRECTACTION,
@@ -63,37 +60,33 @@ public class CharacteristicsStep2Controller extends
                                         TextsKeys.MESSAGETYPE_TITLE),
                                 JOptionPane.ERROR_MESSAGE);
                     }
-                } else
-                {
+                } else {
                     String typeChosen = ((CharacteristicsStep2View) CharacteristicsStep2Controller.this.cView)
                             .getTypeSelected();
 
                     // Gets the selected type
                     int actionType = -1;
-                    switch (typeChosen)
-                    {
+                    switch (typeChosen) {
 
-                        case Characteristics.TYPE_GROUND:
-                            actionType = ActionTypes.TURN_TO_GROUND;
+                    case Characteristics.TYPE_GROUND:
+                        actionType = ActionTypes.TURN_TO_GROUND;
                         break;
 
-                        case Characteristics.TYPE_BUILDING:
-                            actionType = ActionTypes.TURN_TO_BUILDING;
+                    case Characteristics.TYPE_BUILDING:
+                        actionType = ActionTypes.TURN_TO_BUILDING;
                         break;
 
-                        default:
+                    default:
                         break;
                     }
 
-                    try
-                    {
+                    try {
                         CharacteristicsStep2Controller.this.parentController
                                 .getBiController()
                                 .action2(
                                         CharacteristicsStep2Controller.this.trianglesList,
                                         actionType);
-                    } catch (InvalidCaseException e)
-                    {
+                    } catch (InvalidCaseException e) {
                         JOptionPane.showMessageDialog(
                                 CharacteristicsStep2Controller.this.cView,
                                 FileTools.readInformationMessage(
@@ -123,8 +116,7 @@ public class CharacteristicsStep2Controller extends
                     public void actionPerformed(ActionEvent e) {
                         JCheckBox deleteCB = ((CharacteristicsStep2View) CharacteristicsStep2Controller.this.cView)
                                 .getDeleteCheckBox();
-                        if (!deleteCB.isSelected())
-                        {
+                        if (!deleteCB.isSelected()) {
                             deleteCB.doClick();
                         }
                         ((CharacteristicsStep2View) CharacteristicsStep2Controller.this.cView)
@@ -137,15 +129,12 @@ public class CharacteristicsStep2Controller extends
 
     @Override
     public final void modifyViewCharacteristics() {
-        if (this.trianglesList.size() == 1)
-        {
-            try
-            {
+        if (this.trianglesList.size() == 1) {
+            try {
                 ((CharacteristicsStep2View) this.cView)
                         .setType(this.parentController.getBiController()
                                 .getCharacteristics2(this.trianglesList.get(0)));
-            } catch (InvalidCaseException e)
-            {
+            } catch (InvalidCaseException e) {
                 JOptionPane.showMessageDialog(cView, FileTools
                         .readInformationMessage(
                                 TextsKeys.KEY_ERROR_INVALIDCASETYPE,
@@ -155,8 +144,7 @@ public class CharacteristicsStep2Controller extends
                                 TextsKeys.MESSAGETYPE_TITLE),
                         JOptionPane.ERROR_MESSAGE);
             }
-        } else
-        {
+        } else {
             ((CharacteristicsStep2View) this.cView).setType("");
         }
     }

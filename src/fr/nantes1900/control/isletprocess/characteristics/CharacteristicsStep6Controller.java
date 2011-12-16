@@ -69,15 +69,13 @@ public class CharacteristicsStep6Controller extends
                         surfaceLocked = !surfaceLocked;
                         JButton source = ((JButton) arg0.getSource());
 
-                        if (surfaceLocked)
-                        {
+                        if (surfaceLocked) {
                             source.setIcon(new ImageIcon(Icons.UNLOCK));
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_LOCKMESH));
                             parentController.lock(true);
 
-                        } else
-                        {
+                        } else {
                             source.setIcon(new ImageIcon(Icons.LOCK));
                             source.setToolTipText(FileTools
                                     .readElementText(TextsKeys.KEY_UNLOCKMESH));
@@ -94,17 +92,13 @@ public class CharacteristicsStep6Controller extends
 
             @Override
             public void actionPerformed(final ActionEvent arg0) {
-                if (((CharacteristicsStep6View) cView).isNoiseSelected())
-                {
-                    for (Surface surface : CharacteristicsStep6Controller.this.surfacesList)
-                    {
-                        try
-                        {
+                if (((CharacteristicsStep6View) cView).isNoiseSelected()) {
+                    for (Surface surface : CharacteristicsStep6Controller.this.surfacesList) {
+                        try {
                             CharacteristicsStep6Controller.this.parentController
                                     .getBiController().action6(surface,
                                             ActionTypes.TURN_TO_NOISE);
-                        } catch (InvalidCaseException e)
-                        {
+                        } catch (InvalidCaseException e) {
                             JOptionPane.showMessageDialog(
                                     cView,
                                     FileTools
@@ -118,8 +112,7 @@ public class CharacteristicsStep6Controller extends
                                     JOptionPane.ERROR_MESSAGE);
                         }
                     }
-                } else
-                {
+                } else {
                     surfacesList = ((CharacteristicsStep6View) cView).getList();
                     parentController.getBiController().action6(surfaceToCheck,
                             surfacesList);
@@ -136,15 +129,13 @@ public class CharacteristicsStep6Controller extends
                     public void valueChanged(final ListSelectionEvent arg0) {
                         Surface selectedSurface = ((CharacteristicsStep6View) cView)
                                 .getJListNeighbors().getSelectedValue();
-                        if (highlightedSurface != null)
-                        {
+                        if (highlightedSurface != null) {
                             CharacteristicsStep6Controller.this.parentController
                                     .getU3DController().unHighlightSurface(
                                             highlightedSurface);
                         }
                         highlightedSurface = selectedSurface;
-                        if (highlightedSurface != null)
-                        {
+                        if (highlightedSurface != null) {
                             CharacteristicsStep6Controller.this.parentController
                                     .getU3DController().highlightSurface(
                                             highlightedSurface);
@@ -153,10 +144,6 @@ public class CharacteristicsStep6Controller extends
                 });
     }
 
-  //TODO setHighlighted surface (go to isletprocessController
-    public void setHilightedSurface(final Surface surface){
-        ((CharacteristicsStep6View) cView).getJListNeighbors().setSelectedValue(surface, true);
-    }
     /*
      * (non-Javadoc)
      * @see
@@ -165,26 +152,18 @@ public class CharacteristicsStep6Controller extends
      */
     @Override
     public final void addSurfaceSelected(final Surface surfaceSelected) {
-        if (this.surfaceLocked)
-        {
+        if (this.surfaceLocked) {
             this.surfacesList.add(surfaceSelected);
             modifyViewCharacteristics();
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * fr.nantes1900.control.isletprocess.AbstractCharacteristicsSurfacesController
-     * #removeSurfaceSelected(fr.nantes1900.models.extended.Surface)
+    /**
+     * Tells if the surface is locked or not.
+     * @return true - the surface is locked\n false - the surface is not locked
      */
-    @Override
-    public final void removeSurfaceSelected(final Surface surfaceSelected) {
-        if (this.surfaceLocked)
-        {
-            this.surfacesList.remove(surfaceSelected);
-            modifyViewCharacteristics();
-        }
+    public final boolean isSurfaceLocked() {
+        return this.surfaceLocked;
     }
 
     /*
@@ -198,11 +177,23 @@ public class CharacteristicsStep6Controller extends
         ((CharacteristicsStep6View) this.cView).setList(this.surfacesList);
     }
 
-    /**
-     * Tells if the surface is locked or not.
-     * @return true - the surface is locked\n false - the surface is not locked
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.control.isletprocess.AbstractCharacteristicsSurfacesController
+     * #removeSurfaceSelected(fr.nantes1900.models.extended.Surface)
      */
-    public final boolean isSurfaceLocked() {
-        return this.surfaceLocked;
+    @Override
+    public final void removeSurfaceSelected(final Surface surfaceSelected) {
+        if (this.surfaceLocked) {
+            this.surfacesList.remove(surfaceSelected);
+            modifyViewCharacteristics();
+        }
+    }
+
+    // TODO setHighlighted surface (go to isletprocessController
+    public void setHilightedSurface(final Surface surface) {
+        ((CharacteristicsStep6View) cView).getJListNeighbors()
+                .setSelectedValue(surface, true);
     }
 }

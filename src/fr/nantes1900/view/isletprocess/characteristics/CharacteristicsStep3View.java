@@ -38,11 +38,9 @@ public class CharacteristicsStep3View extends CharacteristicsView {
 
             @Override
             public void itemStateChanged(final ItemEvent arg0) {
-                if (((JCheckBox) arg0.getSource()).isSelected())
-                {
+                if (((JCheckBox) arg0.getSource()).isSelected()) {
                     CharacteristicsStep3View.this.bValidate.setEnabled(true);
-                } else
-                {
+                } else {
                     CharacteristicsStep3View.this.bValidate.setEnabled(false);
                 }
             }
