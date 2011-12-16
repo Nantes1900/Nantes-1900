@@ -107,10 +107,12 @@ public class ParametersController {
             public void actionPerformed(final ActionEvent arg0) {
                 String parametersList = new String();
 
-                for (int i = 1; i < ParametersController.this.pView.getLengthProperty(); i++) {
-                    parametersList += ParametersController.this.pView.getNameProperty(i)+ "       "
-                            + String.valueOf(pView.getValueProperty(i))
-                            + "\n";
+                for (int i = 1; i < ParametersController.this.pView
+                        .getLengthProperty(); i++) {
+                    parametersList += ParametersController.this.pView
+                            .getNameProperty(i)
+                            + "       "
+                            + String.valueOf(pView.getValueProperty(i)) + "\n";
                 }
 
                 JOptionPane
@@ -119,47 +121,6 @@ public class ParametersController {
                                 JOptionPane.INFORMATION_MESSAGE);
             }
         });
-    }
-
-    /**
-     * Loads properties from a file.
-     * @param file
-     *            the file to load properties from.
-     */
-    public final void loadProperties(final File file) {
-        Properties parameters = FileTools.readProperties(file);
-
-        try {
-            for (int i = 0; i < PARAMETERS_KEY.length; i++) {
-                this.pView.setValueProperty(i + 1, Double
-                        .parseDouble(parameters.getProperty(PARAMETERS_KEY[i],
-                                String.valueOf(this.pView
-                                        .getValueProperty(i + 1)))));
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this.pView, FileTools
-                    .readInformationMessage(
-                            TextsKeys.KEY_ERROR_INCORRECTPARAMETER,
-                            TextsKeys.MESSAGETYPE_MESSAGE), FileTools
-                    .readInformationMessage(
-                            TextsKeys.KEY_ERROR_INCORRECTPARAMETER,
-                            TextsKeys.MESSAGETYPE_TITLE),
-                    JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    /**
-     * Saves parameters in the file.
-     * @param file
-     *            the file to store parameters in
-     */
-    public final void saveProperties(final File file) {
-        Properties parameters = new Properties();
-        for (int i = 0; i < PARAMETERS_KEY.length; i++) {
-            parameters.setProperty(PARAMETERS_KEY[i],
-                    String.valueOf(this.pView.getValueProperty(i + 1)));
-        }
-        FileTools.saveProperties(file, parameters);
     }
 
     /**
@@ -218,6 +179,47 @@ public class ParametersController {
                 .getValueProperty(13));
         SimplificationSurfaces.setIsOrientedFactor(this.pView
                 .getValueProperty(14));
+    }
+
+    /**
+     * Loads properties from a file.
+     * @param file
+     *            the file to load properties from.
+     */
+    public final void loadProperties(final File file) {
+        Properties parameters = FileTools.readProperties(file);
+
+        try {
+            for (int i = 0; i < PARAMETERS_KEY.length; i++) {
+                this.pView.setValueProperty(i + 1, Double
+                        .parseDouble(parameters.getProperty(PARAMETERS_KEY[i],
+                                String.valueOf(this.pView
+                                        .getValueProperty(i + 1)))));
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this.pView, FileTools
+                    .readInformationMessage(
+                            TextsKeys.KEY_ERROR_INCORRECTPARAMETER,
+                            TextsKeys.MESSAGETYPE_MESSAGE), FileTools
+                    .readInformationMessage(
+                            TextsKeys.KEY_ERROR_INCORRECTPARAMETER,
+                            TextsKeys.MESSAGETYPE_TITLE),
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Saves parameters in the file.
+     * @param file
+     *            the file to store parameters in
+     */
+    public final void saveProperties(final File file) {
+        Properties parameters = new Properties();
+        for (int i = 0; i < PARAMETERS_KEY.length; i++) {
+            parameters.setProperty(PARAMETERS_KEY[i],
+                    String.valueOf(this.pView.getValueProperty(i + 1)));
+        }
+        FileTools.saveProperties(file, parameters);
     }
 
     /**

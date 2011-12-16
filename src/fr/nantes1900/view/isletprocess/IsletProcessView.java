@@ -115,8 +115,8 @@ public class IsletProcessView extends PFrame {
                 0.60, 0.15, GridBagConstraints.CENTER, GridBagConstraints.BOTH,
                 new Insets(5, 5, 10, 10), 0, 0));
 
-        this.setStatusBarText(FileTools
-                .readElementText(TextsKeys.KEY_HELP_STEP + AbstractBuildingsIslet.FIRST_STEP));
+        this.setStatusBarText(FileTools.readElementText(TextsKeys.KEY_HELP_STEP
+                + AbstractBuildingsIslet.FIRST_STEP));
     }
 
     /**

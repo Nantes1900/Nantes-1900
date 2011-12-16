@@ -112,6 +112,7 @@ public class Building {
     public final void launchProcess4() throws NullArgumentException {
         this.bStep4.setArguments(this.groundNormal, this.grounds, this.noise);
         this.bStep5 = this.bStep4.launchProcess();
+        this.bStep5.setArguments(this.noise, this.grounds, this.groundNormal);
     }
 
     /**
@@ -121,7 +122,6 @@ public class Building {
      *             initialized
      */
     public final void launchProcess5() throws NullArgumentException {
-        this.bStep5.setArguments(this.noise, this.grounds, this.groundNormal);
         this.bStep6 = this.bStep5.launchProcess();
     }
 

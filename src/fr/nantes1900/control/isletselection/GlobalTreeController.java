@@ -73,12 +73,10 @@ public class GlobalTreeController {
                     public void valueChanged(final TreeSelectionEvent e) {
                         DefaultMutableTreeNode node = (DefaultMutableTreeNode) e
                                 .getPath().getLastPathComponent();
-                        try
-                        {
+                        try {
                             GlobalTreeController.this.getParentController()
                                     .displayFile(node);
-                        } catch (WeirdResultException e1)
-                        {
+                        } catch (WeirdResultException e1) {
                             JOptionPane.showMessageDialog(parentController
                                     .getWindow(), e1.getMessage(), FileTools
                                     .readInformationMessage(

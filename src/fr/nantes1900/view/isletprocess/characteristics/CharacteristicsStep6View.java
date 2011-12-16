@@ -88,8 +88,7 @@ public class CharacteristicsStep6View extends CharacteristicsView {
                 int selectedIndex = lNeighbors.getSelectedIndex();
 
                 // if the selected index is in the list.
-                if (selectedIndex != -1)
-                {
+                if (selectedIndex != -1) {
                     Surface selectedSurface = lNeighbors.getSelectedValue();
 
                     dlm.removeElement(selectedSurface);
@@ -107,8 +106,7 @@ public class CharacteristicsStep6View extends CharacteristicsView {
                 int selectedIndex = lNeighbors.getSelectedIndex();
 
                 // if the selected index is in the list.
-                if (selectedIndex != -1)
-                {
+                if (selectedIndex != -1) {
                     Surface selectedSurface = lNeighbors.getSelectedValue();
 
                     dlm.removeElement(selectedSurface);
@@ -119,8 +117,7 @@ public class CharacteristicsStep6View extends CharacteristicsView {
         });
 
         // Creation of the list
-        for (Surface neighbour : neighbors)
-        {
+        for (Surface neighbour : neighbors) {
             this.dlm.addElement(neighbour);
         }
 
@@ -130,20 +127,16 @@ public class CharacteristicsStep6View extends CharacteristicsView {
 
             @Override
             public void valueChanged(final ListSelectionEvent arg0) {
-                if (lNeighbors.getSelectedIndex() == 0)
-                {
+                if (lNeighbors.getSelectedIndex() == 0) {
                     upButton.setEnabled(false);
-                } else if (!upButton.isEnabled())
-                {
+                } else if (!upButton.isEnabled()) {
                     upButton.setEnabled(true);
                 }
 
                 if (lNeighbors.getSelectedIndex() == CharacteristicsStep6View.this.dlm
-                        .getSize() - 1)
-                {
+                        .getSize() - 1) {
                     downButton.setEnabled(false);
-                } else if (!downButton.isEnabled())
-                {
+                } else if (!downButton.isEnabled()) {
                     downButton.setEnabled(true);
                 }
 
@@ -182,13 +175,13 @@ public class CharacteristicsStep6View extends CharacteristicsView {
 
         // Puts in noise actions
         this.cbNoise = new JCheckBox();
-        this.cbNoise.addActionListener(new ActionListener(){
+        this.cbNoise.addActionListener(new ActionListener() {
 
             @Override
             public void actionPerformed(ActionEvent arg0) {
                 checkEnableValidateButton();
             }
-            
+
         });
 
         this.addCaracteristic(createSimpleCaracteristic(
@@ -206,18 +199,22 @@ public class CharacteristicsStep6View extends CharacteristicsView {
     }
 
     /**
-     * Modify the list of neighbors whith the new one.
-     * @param neighbors
-     *            the new list of neighbors
+     * Enables or disables VALIDATE button.
      */
-    public final void setList(final ArrayList<Surface> neighbors) {
-        this.dlm.removeAllElements();
-        for (Surface neighbour : neighbors)
-        {
-            this.dlm.addElement(neighbour);
+    private void checkEnableValidateButton() {
+        if (cbNoise.isSelected() || lNeighbors.isEnabled()) {
+            this.bValidate.setEnabled(true);
+        } else {
+            this.bValidate.setEnabled(false);
         }
-        revalidate();
-        repaint();
+    }
+
+    /**
+     * Gets the list element.
+     * @return the list element
+     */
+    public JList<Surface> getJListNeighbors() {
+        return this.lNeighbors;
     }
 
     /**
@@ -227,8 +224,7 @@ public class CharacteristicsStep6View extends CharacteristicsView {
     public final ArrayList<Surface> getList() {
         ArrayList<Surface> neighborsList = new ArrayList<>();
 
-        for (int i = 0; i < this.dlm.size(); i++)
-        {
+        for (int i = 0; i < this.dlm.size(); i++) {
             neighborsList.add(this.dlm.elementAt(i));
         }
         return neighborsList;
@@ -250,28 +246,19 @@ public class CharacteristicsStep6View extends CharacteristicsView {
     public final boolean isNoiseSelected() {
         return this.cbNoise.isSelected();
     }
-    
+
     /**
-     * Enables or disables VALIDATE button.
+     * Modify the list of neighbors whith the new one.
+     * @param neighbors
+     *            the new list of neighbors
      */
-    private void checkEnableValidateButton()
-    {
-        if (cbNoise.isSelected() || lNeighbors.isEnabled())
-        {
-            this.bValidate.setEnabled(true);
-        } else
-        {
-            this.bValidate.setEnabled(false);
+    public final void setList(final ArrayList<Surface> neighbors) {
+        this.dlm.removeAllElements();
+        for (Surface neighbour : neighbors) {
+            this.dlm.addElement(neighbour);
         }
-    }
-    
-    /**
-     * Gets the list element.
-     * @return the list element
-     */
-    public JList<Surface> getJListNeighbors()
-    {
-        return this.lNeighbors;
+        revalidate();
+        repaint();
     }
 
     /**

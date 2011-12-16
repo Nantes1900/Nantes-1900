@@ -215,32 +215,7 @@ public class BuildingsIsletController {
     }
 
     /**
-     * Changes the list of neighbours of one surface. To call only during the
-     * 6th step.
-     * @param surfaceLocked
-     *            the current surface
-     * @param newNeighbours
-     *            the new list of neighbours
-     */
-    public final void action6(final Surface surfaceLocked,
-            final List<Surface> newNeighbours) {
-        List<Surface> oldNeigbhours = surfaceLocked.getNeighbours();
-        for (Surface s : oldNeigbhours) {
-            s.getNeighbours().remove(surfaceLocked);
-        }
-
-        surfaceLocked.setNeighbours(newNeighbours);
-
-        for (Surface s : newNeighbours) {
-            s.getNeighbours().add(surfaceLocked);
-        }
-
-        Building building = this.searchForBuildingContaining6(surfaceLocked);
-        building.getbStep5().determinateOneContour(surfaceLocked);
-    }
-
-    /**
-     * Changes the type of a surface. To call only durint the 6th step.
+     * Changes the type of a surface. To call only during the 6th step.
      * @param surface
      *            the surface
      * @param actionType
@@ -265,6 +240,31 @@ public class BuildingsIsletController {
                 throw new InvalidCaseException();
             }
         }
+    }
+
+    /**
+     * Changes the list of neighbours of one surface. To call only during the
+     * 6th step.
+     * @param surfaceLocked
+     *            the current surface
+     * @param newNeighbours
+     *            the new list of neighbours
+     */
+    public final void action6(final Surface surfaceLocked,
+            final List<Surface> newNeighbours) {
+        List<Surface> oldNeigbhours = surfaceLocked.getNeighbours();
+        for (Surface s : oldNeigbhours) {
+            s.getNeighbours().remove(surfaceLocked);
+        }
+
+        surfaceLocked.setNeighbours(newNeighbours);
+
+        for (Surface s : newNeighbours) {
+            s.getNeighbours().add(surfaceLocked);
+        }
+
+        Building building = this.searchForBuildingContaining6(surfaceLocked);
+        building.getbStep5().determinateOneContour(surfaceLocked);
     }
 
     /**
@@ -612,6 +612,10 @@ public class BuildingsIsletController {
         return this.islet.returnNode();
     }
 
+    public final void saveFinalResults(final String fileName) {
+        this.islet.saveFinalResults(fileName);
+    }
+
     /**
      * Searches in the list of buildings for the building which contains the
      * triangles selected.
@@ -856,9 +860,5 @@ public class BuildingsIsletController {
         surfacesList.add(this.islet.getBiStep6().getGrounds());
 
         this.getU3DController().getUniverse3DView().addSurfaces(surfacesList);
-    }
-
-    public final void saveFinalResults(final String fileName) {
-        this.islet.saveFinalResults(fileName);
     }
 }

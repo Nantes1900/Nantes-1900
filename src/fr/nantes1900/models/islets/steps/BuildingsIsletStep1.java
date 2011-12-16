@@ -137,8 +137,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
 
     /*
      * (non-Javadoc)
-     * @see
-     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
+     * @see fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #launchProcess()
      */
     @Override
@@ -177,8 +176,7 @@ public class BuildingsIsletStep1 extends AbstractBuildingsIsletStep {
 
     /*
      * (non-Javadoc)
-     * @see
-     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
+     * @see fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #toString()
      */
     @Override

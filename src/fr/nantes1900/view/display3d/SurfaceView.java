@@ -53,13 +53,14 @@ public class SurfaceView extends Shape3D {
     public static final Material MATERIAL_NEIGHBOUR = new Material(new Color3f(
             0.7f, 0.5f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.7f,
             0.5f, 0.0f), new Color3f(0.7f, 0.5f, 0.0f), 64);
-    
+
     /**
-     * The material of a surface which is neighbour of the one selected and is highlighted.
+     * The material of a surface which is neighbour of the one selected and is
+     * highlighted.
      */
-    public static final Material MATERIAL_NEIGHBOUR_HIGHLIGHT=new Material(new Color3f(
-            0.5f, 0.0f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f), new Color3f(0.5f,
-            0.0f, 0.0f), new Color3f(0.5f, 0.0f, 0.0f), 64);
+    public static final Material MATERIAL_NEIGHBOUR_HIGHLIGHT = new Material(
+            new Color3f(0.5f, 0.0f, 0.0f), new Color3f(0.0f, 0.0f, 0.0f),
+            new Color3f(0.5f, 0.0f, 0.0f), new Color3f(0.5f, 0.0f, 0.0f), 64);
 
     /**
      * The surface linked to this view.
@@ -118,11 +119,9 @@ public class SurfaceView extends Shape3D {
         rendering.setIgnoreVertexColors(true);
         this.appearance.setRenderingAttributes(rendering);
 
-        if (this.surface.getPolygon() == null)
-        {
+        if (this.surface.getPolygon() == null) {
             this.setMaterial(MATERIAL_NON_POLYGON);
-        } else
-        {
+        } else {
             this.setMaterial(MATERIAL_POLYGON);
         }
 
@@ -203,13 +202,11 @@ public class SurfaceView extends Shape3D {
     }
 
     /**
-     * Sets the shape3D
-     * geometry with the PolygonView attribute of this SurfaceView (if it
-     * exists!).
+     * Sets the shape3D geometry with the PolygonView attribute of this
+     * SurfaceView (if it exists!).
      */
     public final void showPolygonView() {
-        if (this.polygonView != null)
-        {
+        if (this.polygonView != null) {
             this.setGeometry(this.polygonView);
         }
 

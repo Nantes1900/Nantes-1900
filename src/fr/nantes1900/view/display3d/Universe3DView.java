@@ -123,6 +123,33 @@ public class Universe3DView extends JPanel {
     }
 
     /**
+     * Generates the different lights to put in the universe. These lights
+     * combined to materials and textures of the objects to display make them
+     * visible.
+     * @param objRoot
+     *            The branchGroup to put the lights in.
+     */
+
+    private static void createLights(BranchGroup objRoot) {
+
+        // Light bound
+        BoundingSphere lightBounds = new BoundingSphere(new Point3d(0.0, 0.0,
+                0.0), LIGHT_BOUND_RADIUS);
+        // Ambient light
+        AmbientLight ambLight = new AmbientLight(true, new Color3f(1.0f, 1.0f,
+                1.0f));
+        ambLight.setInfluencingBounds(lightBounds);
+        // Directional light
+        DirectionalLight headLight = new DirectionalLight(new Color3f(
+                Color.white), new Vector3f(1.0f, -1.0f, -1.0f));
+        headLight.setInfluencingBounds(lightBounds);
+
+        objRoot.addChild(ambLight);
+        objRoot.addChild(headLight);
+
+    }
+
+    /**
      * Adds some surfaces to the surfaces already displayed.
      * @param surfaces
      *            the list of surfaces to add
@@ -191,33 +218,6 @@ public class Universe3DView extends JPanel {
 
         objRoot.compile();
         return objRoot;
-    }
-
-    /**
-     * Generates the different lights to put in the universe. These lights
-     * combined to materials and textures of the objects to display make them
-     * visible.
-     * @param objRoot
-     *            The branchGroup to put the lights in.
-     */
-
-    private static void createLights(BranchGroup objRoot) {
-
-        // Light bound
-        BoundingSphere lightBounds = new BoundingSphere(new Point3d(0.0, 0.0,
-                0.0), LIGHT_BOUND_RADIUS);
-        // Ambient light
-        AmbientLight ambLight = new AmbientLight(true, new Color3f(1.0f, 1.0f,
-                1.0f));
-        ambLight.setInfluencingBounds(lightBounds);
-        // Directional light
-        DirectionalLight headLight = new DirectionalLight(new Color3f(
-                Color.white), new Vector3f(1.0f, -1.0f, -1.0f));
-        headLight.setInfluencingBounds(lightBounds);
-
-        objRoot.addChild(ambLight);
-        objRoot.addChild(headLight);
-
     }
 
     /**

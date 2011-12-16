@@ -38,13 +38,13 @@ public class ParametersView extends JPanel {
     private static final long serialVersionUID = 1L;
 
     /**
-     * The list of labels displaying the names of the parameters.
-     * Caution : parameters begin to 1, not 0.
+     * The list of labels displaying the names of the parameters. Caution :
+     * parameters begin to 1, not 0.
      */
     private JLabel[] property;
     /**
-     * The list of values displaying the parameters.
-     * Caution : parameters begin to 1, not 0.
+     * The list of values displaying the parameters. Caution : parameters begin
+     * to 1, not 0.
      */
     private ValueProperty[] value;
     /**
@@ -256,59 +256,11 @@ public class ParametersView extends JPanel {
     }
 
     /**
-     * Computes the width.
-     * @return the preferred width
-     */
-    public final int getPreferredWidth() {
-        // width of each + little margin
-        return this.valueDimension.width + this.labelDimension.width + 10;
-    }
-
-    /**
      * Getter.
-     * @param i
-     *            the number of the parameter
-     * @return the value currently displayed
+     * @return the number of properties
      */
-    public final double getValueProperty(final int i) {
-        return ((Number) (this.value[i]).getValue()).doubleValue();
-    }
-    
-    /**
-     * Getter.
-     * @param i
-     *            the number of the parameter
-     * @return the name currently displayed
-     */
-    public final String getNameProperty(final int i) {
-        return (this.property[i]).getText();
-    }
-    
-/**
- * Getter.
- * @return the number of properties
- */
-    public final int getLengthProperty(){
+    public final int getLengthProperty() {
         return (this.property.length);
-    }
-    
-    /**
-     * Setter.
-     * @param i
-     *            the number of the parameter
-     * @param newValue
-     *            the new value to display
-     */
-    public final void setValueProperty(final int i, final double newValue) {
-        this.value[i].setValue(newValue);
-    }
-
-    /**
-     * Getter.
-     * @return the SAVE button
-     */
-    public final JButton getSaveButton() {
-        return this.bSave;
     }
 
     /**
@@ -321,10 +273,58 @@ public class ParametersView extends JPanel {
 
     /**
      * Getter.
+     * @param i
+     *            the number of the parameter
+     * @return the name currently displayed
+     */
+    public final String getNameProperty(final int i) {
+        return (this.property[i]).getText();
+    }
+
+    /**
+     * Computes the width.
+     * @return the preferred width
+     */
+    public final int getPreferredWidth() {
+        // width of each + little margin
+        return this.valueDimension.width + this.labelDimension.width + 10;
+    }
+
+    /**
+     * Getter.
+     * @return the SAVE button
+     */
+    public final JButton getSaveButton() {
+        return this.bSave;
+    }
+
+    /**
+     * Getter.
      * @return the show button
      */
     public final JButton getShowButton() {
         return this.bShow;
+    }
+
+    /**
+     * Getter.
+     * @param i
+     *            the number of the parameter
+     * @return the value currently displayed
+     */
+    public final double getValueProperty(final int i) {
+        return ((Number) (this.value[i]).getValue()).doubleValue();
+    }
+
+    /**
+     * Setter.
+     * @param i
+     *            the number of the parameter
+     * @param newValue
+     *            the new value to display
+     */
+    public final void setValueProperty(final int i, final double newValue) {
+        this.value[i].setValue(newValue);
     }
 
     /**

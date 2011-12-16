@@ -10,8 +10,6 @@ import javax.swing.filechooser.FileFilter;
 
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.isletprocess.IsletProcessController.UnexistingStepException;
-import fr.nantes1900.control.isletprocess.ParametersController.ParametersFileChooser;
-import fr.nantes1900.control.isletprocess.ParametersController.ParametersFileFilter;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.view.isletprocess.NavigationBarView;
 

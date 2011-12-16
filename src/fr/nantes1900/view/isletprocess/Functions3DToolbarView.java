@@ -108,11 +108,11 @@ public class Functions3DToolbarView extends JToolBar {
     }
 
     /**
-     * Gets the display type polygons button.
-     * @return the display type polygons button
+     * Gets display type label.
+     * @return the display type label
      */
-    public final JButton getDisplayTypePolygonsButton() {
-        return this.bDisplayTypePolygons;
+    public final JLabel getDisplayTypeLabel() {
+        return this.lDisplayType;
     }
 
     /**
@@ -124,11 +124,31 @@ public class Functions3DToolbarView extends JToolBar {
     }
 
     /**
+     * Gets the display type polygons button.
+     * @return the display type polygons button
+     */
+    public final JButton getDisplayTypePolygonsButton() {
+        return this.bDisplayTypePolygons;
+    }
+
+    public JSlider getDistanceSlider() {
+        return this.sDistance;
+    }
+
+    /**
      * Gets the rotation center button.
      * @return the rotation center button
      */
     public final JButton getRotationCenterButton() {
         return this.bRotationCenter;
+    }
+
+    /**
+     * Gets selection mode label.
+     * @return the selection mode label
+     */
+    public final JLabel getSelectionModeLabel() {
+        return this.lSelectionMode;
     }
 
     /**
@@ -145,25 +165,5 @@ public class Functions3DToolbarView extends JToolBar {
      */
     public final JButton getSelectionModeTrianglesButton() {
         return this.bSelectionModeTriangles;
-    }
-
-    /**
-     * Gets selection mode label.
-     * @return the selection mode label
-     */
-    public final JLabel getSelectionModeLabel() {
-        return this.lSelectionMode;
-    }
-
-    /**
-     * Gets display type label.
-     * @return the display type label
-     */
-    public final JLabel getDisplayTypeLabel() {
-        return this.lDisplayType;
-    }
-
-    public JSlider getDistanceSlider() {
-        return this.sDistance;
     }
 }

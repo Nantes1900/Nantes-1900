@@ -43,18 +43,13 @@ public class CharacteristicsStep3Controller extends
 
             @Override
             public void actionPerformed(final ActionEvent arg0) {
-                if (((CharacteristicsStep3View) cView)
-                        .isNoiseSelected())
-                {
-                    for (Surface surface : CharacteristicsStep3Controller.this.surfacesList)
-                    {
-                        try
-                        {
+                if (((CharacteristicsStep3View) cView).isNoiseSelected()) {
+                    for (Surface surface : CharacteristicsStep3Controller.this.surfacesList) {
+                        try {
                             CharacteristicsStep3Controller.this.parentController
                                     .getBiController().action3(surface,
                                             ActionTypes.TURN_TO_NOISE);
-                        } catch (InvalidCaseException e)
-                        {
+                        } catch (InvalidCaseException e) {
                             JOptionPane.showMessageDialog(
                                     cView,
                                     FileTools

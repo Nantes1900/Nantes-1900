@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.List;
 
-import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreePath;
@@ -19,7 +18,6 @@ import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.exceptions.InvalidCaseException;
-import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.AbstractBuildingsIslet;
 import fr.nantes1900.utils.FileTools;
@@ -78,12 +76,10 @@ public class IsletTreeController implements ElementsSelectedListener {
             public void actionPerformed(final ActionEvent arg0) {
                 DefaultMutableTreeNode node;
 
-                for (TreePath tp : itView.getTree().getSelectionPaths())
-                {
+                for (TreePath tp : itView.getTree().getSelectionPaths()) {
                     node = (DefaultMutableTreeNode) tp.getLastPathComponent();
 
-                    if (node.getUserObject() instanceof Surface)
-                    {
+                    if (node.getUserObject() instanceof Surface) {
                         parentController.getU3DController().hideSurface(
                                 (Surface) node.getUserObject());
                     }
@@ -103,13 +99,11 @@ public class IsletTreeController implements ElementsSelectedListener {
             public void actionPerformed(final ActionEvent arg0) {
                 DefaultMutableTreeNode node;
 
-                for (TreePath tp : itView.getTree().getSelectionPaths())
-                {
+                for (TreePath tp : itView.getTree().getSelectionPaths()) {
 
                     node = (DefaultMutableTreeNode) tp.getLastPathComponent();
 
-                    if (node.getUserObject() instanceof Surface)
-                    {
+                    if (node.getUserObject() instanceof Surface) {
                         parentController.getU3DController().showSurface(
                                 (Surface) node.getUserObject());
                     }
@@ -143,12 +137,10 @@ public class IsletTreeController implements ElementsSelectedListener {
      * BuildingIsletController.
      */
     private void buildTreeView() {
-        try
-        {
+        try {
             this.itView.buildTree(this.parentController.getBiController()
                     .returnNode());
-        } catch (InvalidCaseException e)
-        {
+        } catch (InvalidCaseException e) {
             System.out.println(FileTools.readInformationMessage(
                     TextsKeys.KEY_RETURNNODE, TextsKeys.MESSAGETYPE_MESSAGE));
         }
@@ -168,6 +160,17 @@ public class IsletTreeController implements ElementsSelectedListener {
      */
     public final IsletTreeView getView() {
         return this.itView;
+    }
+
+    /*
+     * (non-Javadoc)
+     * @see
+     * fr.nantes1900.listener.ElementsSelectedListener#newTrianglesSelection
+     * (java.util.List)
+     */
+    @Override
+    public void newTrianglesSelection(final List<Triangle> trianglesSelected) {
+        // Not used.
     }
 
     /**
@@ -201,17 +204,6 @@ public class IsletTreeController implements ElementsSelectedListener {
         // Not used.
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * fr.nantes1900.listener.ElementsSelectedListener#newTrianglesSelection
-     * (java.util.List)
-     */
-    @Override
-    public void newTrianglesSelection(final List<Triangle> trianglesSelected) {
-        // Not used.
-    }
-
     /**
      * Implements an improved tree listener : each clicks are listened to
      * manipulate the surfaces correctly.
@@ -233,95 +225,6 @@ public class IsletTreeController implements ElementsSelectedListener {
             this.tree = treeIn;
         }
 
-        /*
-         * (non-Javadoc)
-         * @see
-         * java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
-         */
-        @Override
-        public void mouseClicked(final MouseEvent event) {
-
-            TreePath path = this.tree.getPathForLocation(event.getX(),
-                    event.getY());
-
-            if (path != null)
-            {
-                if (this.contains(path)
-                        && event.getButton() == MouseEvent.BUTTON1)
-                {
-                    // If the path has already been selected.
-                    this.tree.removeSelectionPath(path);
-
-                } else
-                {
-                    if (!this.contains(path))
-                    {
-                        if ((event.getModifiersEx() & CTRL_DOWN_MASK) == CTRL_DOWN_MASK)
-                        {
-                            // If CTRL is DOWN, adds the path selected.
-                            this.tree.addSelectionPath(path);
-                        } else
-                        {
-                            if (((event.getModifiersEx() & SHIFT_DOWN_MASK) == SHIFT_DOWN_MASK)
-                                    & event.getButton() == MouseEvent.BUTTON1)
-                            {
-                                int leadRow = this.tree.getLeadSelectionRow();
-                                if (leadRow != -1)
-                                {
-                                    this.tree.addSelectionInterval(leadRow,
-                                            this.tree.getRowForPath(path));
-                                } else
-                                {
-                                    // If not, deselected every other paths, and
-                                    // selects
-                                    // only the new one.
-                                    this.tree.removeSelectionInterval(0,
-                                            this.tree.getMaxSelectionRow());
-                                    this.tree.addSelectionPath(path);
-                                }
-                            } else
-                            {
-                                // If not, deselected every other paths, and
-                                // selects
-                                // only the new one.
-                                this.tree.removeSelectionInterval(0,
-                                        this.tree.getMaxSelectionRow());
-                                this.tree.addSelectionPath(path);
-                            }
-                        }
-                    }
-                    // If the right button of the mouse have been pressed.
-                    if (event.getButton() == MouseEvent.BUTTON3)
-                    {
-                        this.manageCMenu(event);
-                    }
-                }
-            } else
-            {
-                // If nothing has been selected, deselected everything.
-                this.tree.removeSelectionInterval(0,
-                        this.tree.getMaxSelectionRow());
-            }
-
-            // If the node has children, expands it or collapses it
-            // depending on its state.
-            TreePath treepath = this.tree.getClosestPathForLocation(
-                    event.getX(), event.getY());
-            if (treepath != null)
-            {
-                if (this.tree.isCollapsed(treepath))
-                {
-                    this.tree.expandPath(treepath);
-                } else
-                {
-                    this.tree.collapsePath(treepath);
-                }
-            }
-
-            // Refresh the tree.
-            this.refresh3DSelection();
-        }
-
         /**
          * Checks if the tree contains the path.
          * @param path
@@ -332,10 +235,8 @@ public class IsletTreeController implements ElementsSelectedListener {
         private boolean contains(final TreePath path) {
             TreePath[] liste = this.tree.getSelectionPaths();
 
-            for (TreePath tp : liste)
-            {
-                if (tp == path)
-                {
+            for (TreePath tp : liste) {
+                if (tp == path) {
                     return true;
                 }
             }
@@ -350,11 +251,9 @@ public class IsletTreeController implements ElementsSelectedListener {
          *            contextual menu.
          */
         private void manageCMenu(final MouseEvent event) {
-            if (this.tree.isSelectionEmpty())
-            {
+            if (this.tree.isSelectionEmpty()) {
                 IsletTreeController.this.itView.disableHide();
-            } else
-            {
+            } else {
                 IsletTreeController.this.itView
                         .setHideListener(IsletTreeController.this.hideActionListener);
                 IsletTreeController.this.itView
@@ -370,6 +269,80 @@ public class IsletTreeController implements ElementsSelectedListener {
             }
         }
 
+        /*
+         * (non-Javadoc)
+         * @see
+         * java.awt.event.MouseAdapter#mouseClicked(java.awt.event.MouseEvent)
+         */
+        @Override
+        public void mouseClicked(final MouseEvent event) {
+
+            TreePath path = this.tree.getPathForLocation(event.getX(),
+                    event.getY());
+
+            if (path != null) {
+                if (this.contains(path)
+                        && event.getButton() == MouseEvent.BUTTON1) {
+                    // If the path has already been selected.
+                    this.tree.removeSelectionPath(path);
+
+                } else {
+                    if (!this.contains(path)) {
+                        if ((event.getModifiersEx() & CTRL_DOWN_MASK) == CTRL_DOWN_MASK) {
+                            // If CTRL is DOWN, adds the path selected.
+                            this.tree.addSelectionPath(path);
+                        } else {
+                            if (((event.getModifiersEx() & SHIFT_DOWN_MASK) == SHIFT_DOWN_MASK)
+                                    & event.getButton() == MouseEvent.BUTTON1) {
+                                int leadRow = this.tree.getLeadSelectionRow();
+                                if (leadRow != -1) {
+                                    this.tree.addSelectionInterval(leadRow,
+                                            this.tree.getRowForPath(path));
+                                } else {
+                                    // If not, deselected every other paths, and
+                                    // selects
+                                    // only the new one.
+                                    this.tree.removeSelectionInterval(0,
+                                            this.tree.getMaxSelectionRow());
+                                    this.tree.addSelectionPath(path);
+                                }
+                            } else {
+                                // If not, deselected every other paths, and
+                                // selects
+                                // only the new one.
+                                this.tree.removeSelectionInterval(0,
+                                        this.tree.getMaxSelectionRow());
+                                this.tree.addSelectionPath(path);
+                            }
+                        }
+                    }
+                    // If the right button of the mouse have been pressed.
+                    if (event.getButton() == MouseEvent.BUTTON3) {
+                        this.manageCMenu(event);
+                    }
+                }
+            } else {
+                // If nothing has been selected, deselected everything.
+                this.tree.removeSelectionInterval(0,
+                        this.tree.getMaxSelectionRow());
+            }
+
+            // If the node has children, expands it or collapses it
+            // depending on its state.
+            TreePath treepath = this.tree.getClosestPathForLocation(
+                    event.getX(), event.getY());
+            if (treepath != null) {
+                if (this.tree.isCollapsed(treepath)) {
+                    this.tree.expandPath(treepath);
+                } else {
+                    this.tree.collapsePath(treepath);
+                }
+            }
+
+            // Refresh the tree.
+            this.refresh3DSelection();
+        }
+
         /**
          * Refreshes the list of the selected objects in the 3D view.
          */
@@ -380,29 +353,25 @@ public class IsletTreeController implements ElementsSelectedListener {
                     .unHighlightEverySurfaces();
 
             for (TreePath tp : IsletTreeController.this.itView.getTree()
-                    .getSelectionPaths())
-            {
+                    .getSelectionPaths()) {
 
                 DefaultMutableTreeNode node = (DefaultMutableTreeNode) tp
                         .getLastPathComponent();
 
-                if (node.getUserObject() instanceof Surface)
-                {
+                if (node.getUserObject() instanceof Surface) {
 
                     if (IsletTreeController.this.getParentController()
                             .getProgression() == AbstractBuildingsIslet.SIXTH_STEP
                             && IsletTreeController.this.getParentController()
-                                    .getU3DController().isLocked())
-                    {
+                                    .getU3DController().isLocked()) {
                         IsletTreeController.this
                                 .getParentController()
                                 .getU3DController()
                                 .highlightSurface(
                                         (Surface) node.getUserObject());
-                        //TODO setHighlighted surface
+                        // TODO setHighlighted surface
 
-                    } else
-                    {
+                    } else {
                         IsletTreeController.this
                                 .getParentController()
                                 .getU3DController()

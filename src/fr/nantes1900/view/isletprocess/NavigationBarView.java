@@ -55,11 +55,12 @@ public class NavigationBarView extends JPanel {
      * The panel.
      */
     private JPanel pCentral = new JPanel();
-    
+
     /**
      * Help button to explain the current step.
      */
     private HelpButton bHelp = new HelpButton();
+
     /**
      * Constructor.
      */
@@ -75,9 +76,9 @@ public class NavigationBarView extends JPanel {
                 1, GridBagConstraints.CENTER, GridBagConstraints.NONE,
                 new Insets(8, 8, 8, 8), 0, 5));
 
-        this.pCentral.add(bHelp, new GridBagConstraints(2, 0, 1, 1, 0,
-                1, GridBagConstraints.CENTER, GridBagConstraints.NONE,
-                new Insets(8, 8, 8, 8), 0, 2));
+        this.pCentral.add(bHelp, new GridBagConstraints(2, 0, 1, 1, 0, 1,
+                GridBagConstraints.CENTER, GridBagConstraints.NONE, new Insets(
+                        8, 8, 8, 8), 0, 2));
 
         this.pCentral.add(this.bLaunch, new GridBagConstraints(3, 0, 1, 1, 0,
                 1, GridBagConstraints.PAGE_START, GridBagConstraints.NONE,
@@ -88,8 +89,6 @@ public class NavigationBarView extends JPanel {
         this.add(this.pCentral, BorderLayout.CENTER);
         this.add(this.bSave, BorderLayout.EAST);
         this.setMinimumSize(new Dimension(100, 50));
-        
-        
 
         // Tooltips
         this.bLaunch.setToolTipText(FileTools
@@ -124,6 +123,14 @@ public class NavigationBarView extends JPanel {
 
     /**
      * Getter.
+     * @return the help button
+     */
+    public final HelpButton getHelpButton() {
+        return this.bHelp;
+    }
+
+    /**
+     * Getter.
      * @return the LAUNCH button
      */
     public final JButton getLaunchButton() {
@@ -139,40 +146,29 @@ public class NavigationBarView extends JPanel {
     }
 
     /**
-     * Getter.
-     * @return the help button
-     */
-    public final HelpButton getHelpButton() {
-        return this.bHelp;
-    }
-
-    /**
      * Displays the current step title, depending on the current step.
      * @param i
      *            the number of the step
      */
     public final void refreshStepTitle(final int i) {
-        //HelpButton
-        this.bHelp.setHelpMessage(
-                FileTools.readHelpMessage(
-                        (TextsKeys.KEY_HELP_STEP+i),
-                        TextsKeys.MESSAGETYPE_MESSAGE),
-                FileTools.readHelpMessage(
-                        (TextsKeys.KEY_HELP_STEP+i),
+        // HelpButton
+        this.bHelp.setHelpMessage(FileTools.readHelpMessage(
+                (TextsKeys.KEY_HELP_STEP + i), TextsKeys.MESSAGETYPE_MESSAGE),
+                FileTools.readHelpMessage((TextsKeys.KEY_HELP_STEP + i),
                         TextsKeys.MESSAGETYPE_TITLE));
-        
-        //Tooltips
-        this.bHelp.setTooltip(FileTools.readHelpMessage(
-                TextsKeys.KEY_HELP_STEP+i, TextsKeys.MESSAGETYPE_TOOLTIP));
+
+        // Tooltips
+        this.bHelp.setTooltip(FileTools.readHelpMessage(TextsKeys.KEY_HELP_STEP
+                + i, TextsKeys.MESSAGETYPE_TOOLTIP));
         this.bLaunch.setToolTipText(FileTools
                 .readElementText(TextsKeys.KEY_PROCESSTITLE + i));
-        
-        //Title
+
+        // Title
         this.titleStep.setText(FileTools
                 .readElementText(TextsKeys.KEY_STEPTITLE + i));
         this.titleStep.repaint();
-        
-        //Enable or disable some buttons depending on the step
+
+        // Enable or disable some buttons depending on the step
         if (i == AbstractBuildingsIslet.FIRST_STEP) {
             this.bBack.setEnabled(false);
         } else {
@@ -185,6 +181,6 @@ public class NavigationBarView extends JPanel {
         } else {
             this.bLaunch.setEnabled(true);
             this.bSave.setEnabled(false);
-        } 
+        }
     }
 }

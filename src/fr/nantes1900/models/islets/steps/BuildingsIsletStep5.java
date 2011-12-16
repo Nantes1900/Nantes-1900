@@ -5,9 +5,7 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.constants.WeirdResultMessages;
 import fr.nantes1900.models.exceptions.NullArgumentException;
-import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Surface;
@@ -78,16 +76,13 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
 
     /*
      * (non-Javadoc)
-     * @see
-     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
+     * @see fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #launchProcess()
      */
     @Override
     public final BuildingsIsletStep6 launchProcess()
             throws NullArgumentException {
         for (Building b : this.buildings) {
-            b.getbStep5().setArguments(this.noise, this.grounds,
-                    this.groundNormal);
             b.launchProcess5();
         }
 
@@ -96,8 +91,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
 
     /*
      * (non-Javadoc)
-     * @see
-     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
+     * @see fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #returnNode()
      */
     @Override
@@ -143,8 +137,7 @@ public class BuildingsIsletStep5 extends AbstractBuildingsIsletStep {
 
     /*
      * (non-Javadoc)
-     * @see
-     * fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
+     * @see fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep
      * #toString()
      */
     @Override

@@ -33,15 +33,15 @@ public abstract class AbstractCharacteristicsTrianglesController extends
     }
 
     /**
-     * Modifies the characteristics panel when the list is updated.
-     */
-    public abstract void modifyViewCharacteristics();
-
-    /**
      * Gets the list of selected triangles.
      * @return the list of selected triangles.
      */
     public final ArrayList<Triangle> getTriangles() {
         return this.trianglesList;
     }
+
+    /**
+     * Modifies the characteristics panel when the list is updated.
+     */
+    public abstract void modifyViewCharacteristics();
 }

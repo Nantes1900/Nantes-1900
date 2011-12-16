@@ -32,11 +32,13 @@ public class IsletTreeView extends JPanel {
     /**
      * The item hide in the popup menu.
      */
-    private JMenuItem mHide = new JMenuItem(FileTools.readElementText(TextsKeys.KEY_HIDEITEM));
+    private JMenuItem mHide = new JMenuItem(
+            FileTools.readElementText(TextsKeys.KEY_HIDEITEM));
     /**
      * The item show in the popup menu.
      */
-    private JMenuItem mShow = new JMenuItem(FileTools.readElementText(TextsKeys.KEY_SHOWITEM));
+    private JMenuItem mShow = new JMenuItem(
+            FileTools.readElementText(TextsKeys.KEY_SHOWITEM));
 
     /**
      * The Jtree to display.
@@ -69,6 +71,46 @@ public class IsletTreeView extends JPanel {
     }
 
     /**
+     * Disable the hide button.
+     */
+    public final void disableHide() {
+        this.mHide.setEnabled(false);
+    }
+
+    /**
+     * Disable the show button.
+     */
+    public final void disableShow() {
+        this.mShow.setEnabled(false);
+    }
+
+    /**
+     * Enable the hide button.
+     */
+    public final void enableHide() {
+        this.mHide.setEnabled(true);
+    }
+
+    /**
+     * Enable the show button.
+     */
+    public final void enableShow() {
+        this.mShow.setEnabled(true);
+    }
+
+    /**
+     * Getter.
+     * @return the jPopupMenu
+     */
+    public final JPopupMenu getJpm() {
+        return this.jpm;
+    }
+
+    public final Point getScrollPosition() {
+        return this.spTree.getViewport().getViewPosition();
+    }
+
+    /**
      * Getter.
      * @return the JTree
      */
@@ -98,45 +140,5 @@ public class IsletTreeView extends JPanel {
             this.mShow.removeActionListener(this.mShow.getActionListeners()[0]);
         }
         this.mShow.addActionListener(al);
-    }
-
-    /**
-     * Getter.
-     * @return the jPopupMenu
-     */
-    public final JPopupMenu getJpm() {
-        return this.jpm;
-    }
-
-    /**
-     * Enable the hide button.
-     */
-    public final void enableHide() {
-        this.mHide.setEnabled(true);
-    }
-
-    /**
-     * Disable the hide button.
-     */
-    public final void disableHide() {
-        this.mHide.setEnabled(false);
-    }
-
-    /**
-     * Enable the show button.
-     */
-    public final void enableShow() {
-        this.mShow.setEnabled(true);
-    }
-
-    /**
-     * Disable the show button.
-     */
-    public final void disableShow() {
-        this.mShow.setEnabled(false);
-    }
-    
-    public final Point getScrollPosition() {
-        return this.spTree.getViewport().getViewPosition();
     }
 }

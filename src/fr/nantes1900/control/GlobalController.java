@@ -50,11 +50,9 @@ public class GlobalController {
     public final void launchIsletProcess(final File isletFile,
             final BuildingsIsletController biController) {
         // Launches the base change : the process 0.
-        try
-        {
+        try {
             biController.launchProcess();
-        } catch (WeirdResultException e)
-        {
+        } catch (WeirdResultException e) {
             JOptionPane.showMessageDialog(isletSelectionController.getWindow(),
                     e.getMessage(), FileTools.readInformationMessage(
                             TextsKeys.KEY_ERROR_WEIRDRESULT,

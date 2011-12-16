@@ -55,6 +55,14 @@ public abstract class AbstractCharacteristicsSurfacesController extends
     }
 
     /**
+     * Gets the surface list.
+     * @return the surface list
+     */
+    public final ArrayList<Surface> getSurfaces() {
+        return this.surfacesList;
+    }
+
+    /**
      * Updates the view when the list of selected surface is updated.
      */
     public abstract void modifyViewCharacteristics();
@@ -67,13 +75,5 @@ public abstract class AbstractCharacteristicsSurfacesController extends
     public void removeSurfaceSelected(final Surface surfaceSelected) {
         this.surfacesList.remove(surfaceSelected);
         modifyViewCharacteristics();
-    }
-
-    /**
-     * Gets the surface list.
-     * @return the surface list
-     */
-    public final ArrayList<Surface> getSurfaces() {
-        return this.surfacesList;
     }
 }
