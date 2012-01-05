@@ -1,10 +1,5 @@
 package test.fr.nantes1900.models.basis;
 
-import fr.nantes1900.models.Mesh;
-import fr.nantes1900.models.basis.Edge;
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.models.basis.Triangle;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,9 +10,13 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import fr.nantes1900.models.basis.Edge;
+import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.models.basis.Triangle;
+
 /**
  * A set of tests for the class Triangle.
- * 
  * @author Daniel Lefevre
  */
 public class TriangleTest extends TestCase {
@@ -59,9 +58,45 @@ public class TriangleTest extends TestCase {
      * Constructor.
      */
     public TriangleTest() {
-        this.t =
-            new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2, this.e3,
-                this.vect);
+        this.t = new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2,
+                this.e3, this.vect);
+    }
+
+    /**
+     * Test method for {@link nantes1900.models.basis.Triangle#getPoints()}.
+     */
+    public final static void testIsInPlanes() {
+        final Point p11 = new Point(0, 0, 0);
+        final Point p21 = new Point(0, 1, 0);
+        final Point p31 = new Point(1, 0, 0);
+        final Edge e11 = new Edge(p11, p21);
+        final Edge e21 = new Edge(p21, p31);
+        final Edge e31 = new Edge(p11, p31);
+        final Vector3d normal1 = new Vector3d(0, 0, 1);
+
+        final Point p4 = new Point(0, 0, 1);
+        final Point p5 = new Point(0, 1, 1);
+        final Point p6 = new Point(1, 0, 1);
+        final Edge e4 = new Edge(p11, p21);
+        final Edge e5 = new Edge(p21, p31);
+        final Edge e6 = new Edge(p11, p31);
+        final Vector3d normal2 = new Vector3d(0, 0, 1);
+
+        final Point p7 = new Point(0, 0, 2);
+        final Point p8 = new Point(0, 1, 2);
+        final Point p9 = new Point(1, 0, 2);
+        final Edge e7 = new Edge(p11, p21);
+        final Edge e8 = new Edge(p21, p31);
+        final Edge e9 = new Edge(p11, p31);
+        final Vector3d normal3 = new Vector3d(0, 0, 1);
+
+        final Triangle t1 = new Triangle(p11, p21, p31, e11, e21, e31, normal1);
+        final Triangle t2 = new Triangle(p4, p5, p6, e4, e5, e6, normal2);
+        final Triangle t3 = new Triangle(p7, p8, p9, e7, e8, e9, normal3);
+
+        Assert.assertTrue(t1.isInPlanes(t2.getNormal(), t2.getP1(), 1.1));
+        Assert.assertFalse(t1.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
+        Assert.assertTrue(t2.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
     }
 
     /**
@@ -70,15 +105,13 @@ public class TriangleTest extends TestCase {
      * . Test method for
      * {@link nantes1900.models.basis.Triangle#angularTolerance(nantes1900.models.basis.Triangle, double)}
      * .
-     * 
      * @throws MoreThanTwoTrianglesPerEdgeException
      */
     @Test
     public final void testAngularTolerance() {
         final Vector3d vector = new Vector3d(0, 1, 0);
-        final Triangle tBis =
-            new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2, this.e3,
-                vector);
+        final Triangle tBis = new Triangle(this.p1, this.p2, this.p3, this.e1,
+                this.e2, this.e3, vector);
 
         Assert.assertFalse(this.t.angularTolerance(vector, 60));
         Assert.assertFalse(this.t.angularTolerance(tBis, 60));
@@ -117,9 +150,8 @@ public class TriangleTest extends TestCase {
      */
     @Test
     public final void testEqualsObject() {
-        final Triangle tBis =
-            new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2, this.e3,
-                this.vect);
+        final Triangle tBis = new Triangle(this.p1, this.p2, this.p3, this.e1,
+                this.e2, this.e3, this.vect);
         Assert.assertTrue(this.t.equals(tBis));
         Assert.assertTrue(tBis.equals(this.t));
     }
@@ -139,12 +171,12 @@ public class TriangleTest extends TestCase {
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
 
-        final Triangle t2 =
-            new Triangle(this.p1, this.p2, p4, this.e1, e4, e5, this.vect);
-        final Triangle t3 =
-            new Triangle(this.p1, this.p3, p5, this.e3, e6, e7, this.vect);
-        final Triangle t4 =
-            new Triangle(this.p2, this.p3, p6, this.e2, e8, e9, this.vect);
+        final Triangle t2 = new Triangle(this.p1, this.p2, p4, this.e1, e4, e5,
+                this.vect);
+        final Triangle t3 = new Triangle(this.p1, this.p3, p5, this.e3, e6, e7,
+                this.vect);
+        final Triangle t4 = new Triangle(this.p2, this.p3, p6, this.e2, e8, e9,
+                this.vect);
 
         final List<Triangle> l = this.t.getNeighbours();
 
@@ -158,6 +190,7 @@ public class TriangleTest extends TestCase {
      * Test method for
      * {@link nantes1900.models.basis.Triangle#getNumNeighbours()}.
      */
+    @SuppressWarnings("unused")
     @Test
     public final void testGetNumNeighbours() {
         final Point p4 = new Point(3, 4, 5);
@@ -189,43 +222,6 @@ public class TriangleTest extends TestCase {
     }
 
     /**
-     * Test method for {@link nantes1900.models.basis.Triangle#getPoints()}.
-     */
-    public final void testIsInPlanes() {
-        final Point p1 = new Point(0, 0, 0);
-        final Point p2 = new Point(0, 1, 0);
-        final Point p3 = new Point(1, 0, 0);
-        final Edge e1 = new Edge(p1, p2);
-        final Edge e2 = new Edge(p2, p3);
-        final Edge e3 = new Edge(p1, p3);
-        final Vector3d normal1 = new Vector3d(0, 0, 1);
-
-        final Point p4 = new Point(0, 0, 1);
-        final Point p5 = new Point(0, 1, 1);
-        final Point p6 = new Point(1, 0, 1);
-        final Edge e4 = new Edge(p1, p2);
-        final Edge e5 = new Edge(p2, p3);
-        final Edge e6 = new Edge(p1, p3);
-        final Vector3d normal2 = new Vector3d(0, 0, 1);
-
-        final Point p7 = new Point(0, 0, 2);
-        final Point p8 = new Point(0, 1, 2);
-        final Point p9 = new Point(1, 0, 2);
-        final Edge e7 = new Edge(p1, p2);
-        final Edge e8 = new Edge(p2, p3);
-        final Edge e9 = new Edge(p1, p3);
-        final Vector3d normal3 = new Vector3d(0, 0, 1);
-
-        final Triangle t1 = new Triangle(p1, p2, p3, e1, e2, e3, normal1);
-        final Triangle t2 = new Triangle(p4, p5, p6, e4, e5, e6, normal2);
-        final Triangle t3 = new Triangle(p7, p8, p9, e7, e8, e9, normal3);
-
-        Assert.assertTrue(t1.isInPlanes(t2.getNormal(), t2.getP1(), 1.1));
-        Assert.assertFalse(t1.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
-        Assert.assertTrue(t2.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
-    }
-
-    /**
      * Test method for
      * {@link nantes1900.models.basis.Triangle#isNeighboor(nantes1900.models.basis.Triangle)}
      * .
@@ -241,12 +237,12 @@ public class TriangleTest extends TestCase {
         final Edge e7 = new Edge(this.p2, p5);
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
-        final Triangle t2 =
-            new Triangle(this.p1, this.p2, p4, this.e1, e4, e5, this.vect);
-        final Triangle t3 =
-            new Triangle(this.p1, this.p3, p5, this.e3, e6, e7, this.vect);
-        final Triangle t4 =
-            new Triangle(this.p2, this.p3, p6, this.e2, e8, e9, this.vect);
+        final Triangle t2 = new Triangle(this.p1, this.p2, p4, this.e1, e4, e5,
+                this.vect);
+        final Triangle t3 = new Triangle(this.p1, this.p3, p5, this.e3, e6, e7,
+                this.vect);
+        final Triangle t4 = new Triangle(this.p2, this.p3, p6, this.e2, e8, e9,
+                this.vect);
 
         Assert.assertFalse(this.t.isNeighboor(this.t));
         Assert.assertTrue(this.t.isNeighboor(t2));
@@ -270,9 +266,8 @@ public class TriangleTest extends TestCase {
 
     /**
      * Test method for
-     * {@link nantes1900.models.basis.Triangle#returnNeighbours(nantes1900.models.Mesh, nantes1900.models.Mesh)}
+     * {@link nantes1900.models.basis.Triangle#returnNeighbours(Mesh.models.Mesh, Mesh.models.Mesh)}
      * .
-     * 
      * @throws MoreThanTwoTrianglesPerEdgeException
      *             if an edge is bad formed
      */
@@ -288,14 +283,14 @@ public class TriangleTest extends TestCase {
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
         final Edge e10 = new Edge(p5, p6);
-        final Triangle t2 =
-            new Triangle(this.p1, this.p2, p4, this.e1, e4, e5, this.vect);
-        final Triangle t3 =
-            new Triangle(this.p1, this.p3, p5, this.e3, e6, e7, this.vect);
-        final Triangle t4 =
-            new Triangle(this.p2, this.p3, p6, this.e2, e8, e9, this.vect);
-        final Triangle t5 =
-            new Triangle(this.p1, p5, p6, e6, e8, e10, this.vect);
+        final Triangle t2 = new Triangle(this.p1, this.p2, p4, this.e1, e4, e5,
+                this.vect);
+        final Triangle t3 = new Triangle(this.p1, this.p3, p5, this.e3, e6, e7,
+                this.vect);
+        final Triangle t4 = new Triangle(this.p2, this.p3, p6, this.e2, e8, e9,
+                this.vect);
+        final Triangle t5 = new Triangle(this.p1, p5, p6, e6, e8, e10,
+                this.vect);
 
         final Mesh contain = new Mesh();
         contain.add(this.t);
@@ -304,13 +299,12 @@ public class TriangleTest extends TestCase {
         contain.add(t4);
         contain.add(t5);
 
-        final Triangle t6 =
-            new Triangle(new Point(0.05, 0.05, 0.05), new Point(0.05, 0.05,
-                0.05), new Point(0.05, 0.05, 0.05), new Edge(new Point(0.05,
-                0.05, 0.05), new Point(0.05, 0.05, 0.05)), new Edge(new Point(
-                0.05, 0.05, 0.05), new Point(0.05, 0.05, 0.05)), new Edge(
-                new Point(0.05, 0.05, 0.05), new Point(0.05, 0.05, 0.05)),
-                this.vect);
+        final Triangle t6 = new Triangle(new Point(0.05, 0.05, 0.05),
+                new Point(0.05, 0.05, 0.05), new Point(0.05, 0.05, 0.05),
+                new Edge(new Point(0.05, 0.05, 0.05), new Point(0.05, 0.05,
+                        0.05)), new Edge(new Point(0.05, 0.05, 0.05),
+                        new Point(0.05, 0.05, 0.05)), new Edge(new Point(0.05,
+                        0.05, 0.05), new Point(0.05, 0.05, 0.05)), this.vect);
 
         final Mesh ret = new Mesh();
         this.t.returnNeighbours(ret, contain);

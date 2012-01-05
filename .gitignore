@@ -1,6 +1,5 @@
 /lib
 /doc
-/files
 /*.xml
 /*.stl
 /*.cld
@@ -8,3 +7,5 @@
 /.project
 /.settings
 /.checkstyle
+/bin
+/.gitignore

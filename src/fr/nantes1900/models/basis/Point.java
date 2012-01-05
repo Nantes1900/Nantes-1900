@@ -4,7 +4,6 @@ import fr.nantes1900.utils.MatrixMethod;
 
 /**
  * Implements a point, composed of three double coordinates.
- * 
  * @author Daniel Lefèvre, Elsa Arroud-Vignod
  */
 public class Point {
@@ -26,7 +25,6 @@ public class Point {
 
     /**
      * Constructor.
-     * 
      * @param xNew
      *            coordinate
      * @param yNew
@@ -43,7 +41,6 @@ public class Point {
     /**
      * Copy constructor. To use very cautiously : it can create two Points with
      * equal values and different references !
-     * 
      * @param point
      *            the point to copy
      */
@@ -56,25 +53,24 @@ public class Point {
     /**
      * Operates a change base on the point. Be careful : the point doesn't have
      * the same hashCode after this operation...
-     * 
      * @param matrix
      *            of base change
      */
     public final void changeBase(final double[][] matrix) {
-        final double[] coords = {this.x, this.y, this.z, };
+        final double[] coords = { this.x, this.y, this.z,
+        };
         this.set(MatrixMethod.changeBase(coords, matrix));
     }
 
     /**
      * Calculates the distance between two points.
-     * 
      * @param p
      *            the other point
      * @return the distance
      */
     public final double distance(final Point p) {
         return Math.sqrt(Math.pow(p.x - this.x, 2) + Math.pow(p.y - this.y, 2)
-            + Math.pow(p.z - this.z, 2));
+                + Math.pow(p.z - this.z, 2));
     }
 
     /*
@@ -94,15 +90,15 @@ public class Point {
         }
         final Point other = (Point) obj;
         if (Double.doubleToLongBits((float) this.x) != Double
-            .doubleToLongBits((float) other.x)) {
+                .doubleToLongBits((float) other.x)) {
             return false;
         }
         if (Double.doubleToLongBits((float) this.y) != Double
-            .doubleToLongBits((float) other.y)) {
+                .doubleToLongBits((float) other.y)) {
             return false;
         }
         if (Double.doubleToLongBits((float) this.z) != Double
-            .doubleToLongBits((float) other.z)) {
+                .doubleToLongBits((float) other.z)) {
             return false;
         }
         return true;
@@ -110,16 +106,15 @@ public class Point {
 
     /**
      * Getter of the coordinates of the point.
-     * 
      * @return an array of doubles
      */
     public final double[] getPointAsCoordinates() {
-        return new double[] {this.x, this.y, this.z, };
+        return new double[] { this.x, this.y, this.z,
+        };
     }
 
     /**
      * Getter.
-     * 
      * @return the x coordinate
      */
     public final double getX() {
@@ -128,7 +123,6 @@ public class Point {
 
     /**
      * Getter.
-     * 
      * @return the y coordinate
      */
     public final double getY() {
@@ -137,7 +131,6 @@ public class Point {
 
     /**
      * Getter.
-     * 
      * @return the z coordinate
      */
     public final double getZ() {
@@ -165,7 +158,6 @@ public class Point {
 
     /**
      * Setter.
-     * 
      * @param xNew
      *            the new x coordinate
      * @param yNew
@@ -174,7 +166,7 @@ public class Point {
      *            the new z coordinate
      */
     public final void set(final double xNew, final double yNew,
-        final double zNew) {
+            final double zNew) {
         this.x = xNew;
         this.y = yNew;
         this.z = zNew;
@@ -182,7 +174,6 @@ public class Point {
 
     /**
      * Setter.
-     * 
      * @param coords
      *            the three coordinates
      */
@@ -194,7 +185,6 @@ public class Point {
 
     /**
      * Setter.
-     * 
      * @param xNew
      *            : the x coordinate
      */
@@ -204,7 +194,6 @@ public class Point {
 
     /**
      * Setter.
-     * 
      * @param yNew
      *            coordinate
      */
@@ -214,7 +203,6 @@ public class Point {
 
     /**
      * Setter.
-     * 
      * @param zNew
      *            coordinate
      */

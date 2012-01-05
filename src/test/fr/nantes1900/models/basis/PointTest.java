@@ -1,9 +1,5 @@
 package test.fr.nantes1900.models.basis;
 
-import fr.nantes1900.models.basis.Point;
-import fr.nantes1900.utils.MatrixMethod;
-import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
-
 import javax.vecmath.Vector3d;
 
 import junit.framework.Assert;
@@ -11,9 +7,12 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import fr.nantes1900.models.basis.Point;
+import fr.nantes1900.utils.MatrixMethod;
+import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
+
 /**
  * A set of tests for the class Point.
- * 
  * @author Daniel Lefevre
  */
 public final class PointTest extends TestCase {
@@ -29,7 +28,7 @@ public final class PointTest extends TestCase {
      * {@link fr.nantes1900.models.basis.Point#changeBase(double[][])}.
      */
     @Test
-    public void testChangeBase() {
+    public static void testChangeBase() {
         final Vector3d vect = new Vector3d(0, 0, 1);
 
         try {
@@ -44,7 +43,8 @@ public final class PointTest extends TestCase {
             p.changeBase(matrix);
 
             final Point pChanged = new Point(0, 0, 0);
-            final double[] coords = {x, y, z };
+            final double[] coords = { x, y, z
+            };
             pChanged.set(MatrixMethod.changeBase(coords, matrix));
 
             Assert.assertTrue(p.equals(pChanged));
@@ -60,16 +60,16 @@ public final class PointTest extends TestCase {
      * .
      */
     @Test
-    public void testDistance() {
+    public static void testDistance() {
         final Point p1 = new Point(0, 0, 0);
         final double x = 1.2366646772;
         final double y = 435.23134144;
         final double z = -210.35681944;
         final Point p2 = new Point(x, y, z);
-        Assert.assertTrue(p1.distance(p2) == Math.sqrt(Math.pow(p2.getX()
-            - p1.getX(), 2)
-            + Math.pow(p2.getY() - p1.getY(), 2)
-            + Math.pow(p2.getZ() - p1.getZ(), 2)));
+        Assert.assertTrue(p1.distance(p2) == Math.sqrt(Math.pow(
+                p2.getX() - p1.getX(), 2)
+                + Math.pow(p2.getY() - p1.getY(), 2)
+                + Math.pow(p2.getZ() - p1.getZ(), 2)));
     }
 
     /**
@@ -77,7 +77,7 @@ public final class PointTest extends TestCase {
      * {@link fr.nantes1900.models.basis.Point#equals(java.lang.Object)}.
      */
     @Test
-    public void testEquals() {
+    public static void testEquals() {
         final Point p1 = new Point(0, 0, 0);
         Point p2 = p1;
         Assert.assertTrue(p2.equals(p1));
@@ -94,7 +94,7 @@ public final class PointTest extends TestCase {
      * {@link fr.nantes1900.models.basis.Point#equals(java.lang.Object)}.
      */
     @Test
-    public void testEqualsObject() {
+    public static void testEqualsObject() {
         final Point p1 = new Point(0, 0, 0);
         final Point p2 = new Point(0, 0, 0);
 
@@ -106,18 +106,18 @@ public final class PointTest extends TestCase {
      * {@link fr.nantes1900.models.basis.Point#getPointAsCoordinates()}.
      */
     @Test
-    public void testGetPointAsCoordinates() {
+    public static void testGetPointAsCoordinates() {
         final Point p1 = new Point(0.5, 0.5, 0.5);
         final double[] coords = p1.getPointAsCoordinates();
         Assert.assertTrue(coords[0] == 0.5 && coords[1] == 0.5
-            && coords[2] == 0.5);
+                && coords[2] == 0.5);
     }
 
     /**
      * Test method for {@link fr.nantes1900.models.basis.Point#hashCode()}.
      */
     @Test
-    public void testHashCode() {
+    public static void testHashCode() {
         final Point p1 = new Point(0.0242515242412, 0, 0);
         final Point p2 = new Point(0.0242515244450, 0, 0);
         Assert.assertTrue(p1.hashCode() == p2.hashCode());
@@ -127,8 +127,9 @@ public final class PointTest extends TestCase {
      * Test method for {@link fr.nantes1900.models.basis.Point#set(double[])}.
      */
     @Test
-    public void testSetDoubleArray() {
-        final double[] a = {0.1, 0.2, 0.4 };
+    public static void testSetDoubleArray() {
+        final double[] a = { 0.1, 0.2, 0.4
+        };
         final Point p1 = new Point(0, 0, 0);
         p1.set(a);
 
@@ -142,7 +143,7 @@ public final class PointTest extends TestCase {
      * {@link fr.nantes1900.models.basis.Point#set(double, double, double)}.
      */
     @Test
-    public void testSetDoubleDoubleDouble() {
+    public static void testSetDoubleDoubleDouble() {
         final double a = 0.1;
         final double b = 0.2;
         final double c = 0.4;

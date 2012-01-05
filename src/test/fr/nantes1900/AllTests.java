@@ -14,14 +14,13 @@ import test.fr.nantes1900.utils.ParserSTLTest;
 
 /**
  * Class to test every class tests of the project.
- * 
  * @author Daniel Lefevre
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = {EdgeTest.class, PointTest.class, TriangleTest.class,
-    PolylineTest.class, MeshTest.class,
-
-    MatrixMethodTest.class, ParserSTLTest.class })
+@SuiteClasses(value = { EdgeTest.class, PointTest.class, TriangleTest.class,
+        PolylineTest.class, MeshTest.class, MatrixMethodTest.class,
+        ParserSTLTest.class
+})
 public final class AllTests {
 
     /**

@@ -1,8 +1,5 @@
 package test.fr.nantes1900.utils;
 
-import fr.nantes1900.utils.MatrixMethod;
-import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
-
 import javax.vecmath.Vector3d;
 
 import junit.framework.Assert;
@@ -10,9 +7,11 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
+import fr.nantes1900.utils.MatrixMethod;
+import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
+
 /**
  * A set of tests for the class MatrixMethod.
- * 
  * @author Daniel Lefevre
  */
 public final class MatrixMethodTest extends TestCase {
@@ -29,8 +28,9 @@ public final class MatrixMethodTest extends TestCase {
      * .
      */
     @Test
-    public void testChangeBaseDoubleArrayDoubleArrayArray() {
-        final double[] coord = {0, 1, 0 };
+    public static void testChangeBaseDoubleArrayDoubleArrayArray() {
+        final double[] coord = { 0, 1, 0
+        };
         final Vector3d vect = new Vector3d(0, 0, 1);
         try {
             final double[][] matrix = MatrixMethod.createOrthoBase(vect);
@@ -49,7 +49,7 @@ public final class MatrixMethodTest extends TestCase {
      * .
      */
     @Test
-    public void testChangeBaseVector3dDoubleArrayArray() {
+    public static void testChangeBaseVector3dDoubleArrayArray() {
         final Vector3d vect = new Vector3d(0, 1, 0);
         final Vector3d norm = new Vector3d(0, 0, 1);
         try {
@@ -69,7 +69,7 @@ public final class MatrixMethodTest extends TestCase {
      * .
      */
     @Test
-    public void testCreateOrthoBaseVector3d() {
+    public static void testCreateOrthoBaseVector3d() {
         Vector3d vect = new Vector3d(0, 0, 1);
         try {
             final double[][] matrix = MatrixMethod.createOrthoBase(vect);
@@ -109,13 +109,13 @@ public final class MatrixMethodTest extends TestCase {
      * .
      */
     @Test
-    public void testCreateOrthoBaseVector3dVector3dVector3d() {
+    public static void testCreateOrthoBaseVector3dVector3dVector3d() {
         final Vector3d vect1 = new Vector3d(0, 0, 1);
         final Vector3d vect2 = new Vector3d(1, 0, 0);
         final Vector3d vect3 = new Vector3d(0, 1, 0);
         try {
-            final double[][] matrix =
-                MatrixMethod.createOrthoBase(vect1, vect2, vect3);
+            final double[][] matrix = MatrixMethod.createOrthoBase(vect1,
+                    vect2, vect3);
             Assert.assertTrue(matrix[0][0] == 0);
             Assert.assertTrue(matrix[0][1] == 0);
             Assert.assertTrue(matrix[0][2] == 1);
@@ -135,7 +135,7 @@ public final class MatrixMethodTest extends TestCase {
      * {@link fr.nantes1900.utils.MatrixMethod#determinant(double[][])}.
      */
     @Test
-    public void testDeterminant() {
+    public static void testDeterminant() {
         final Vector3d vect = new Vector3d(0, 0, 1);
         try {
             final double[][] matrix = MatrixMethod.createOrthoBase(vect);
@@ -150,7 +150,7 @@ public final class MatrixMethodTest extends TestCase {
      * {@link fr.nantes1900.utils.MatrixMethod#getInversMatrix(double[][])}.
      */
     @Test
-    public void testGetInversMatrix() {
+    public static void testGetInversMatrix() {
         final Vector3d vect = new Vector3d(0, 0, 1);
         try {
             final double[][] matrix = MatrixMethod.createOrthoBase(vect);
