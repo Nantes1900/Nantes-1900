@@ -1,9 +1,5 @@
 package fr.nantes1900.models.basis;
 
-import fr.nantes1900.models.Mesh;
-import fr.nantes1900.models.Polyline;
-import fr.nantes1900.models.Polyline.BadFormedPolylineException;
-
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,10 +7,11 @@ import java.util.List;
 
 import javax.vecmath.Vector3d;
 
+import fr.nantes1900.models.basis.Polygon.BadFormedPolylineException;
+
 /**
  * Implement an edge composed of two points, and the triangles containing this
  * edge.
- * 
  * @author Daniel Lefevre
  */
 public class Edge {
@@ -22,7 +19,7 @@ public class Edge {
     /**
      * List of triangles containing this edge. The can be two triangles maximum.
      */
-    private List<Triangle> triangles = new ArrayList<Triangle>(2);
+    private List<Triangle> triangles = new ArrayList<>(2);
 
     /**
      * Array of two points describing the edge.
@@ -30,21 +27,29 @@ public class Edge {
     private final Point[] points = new Point[2];
 
     /**
+     * The coefficient pi in degrees.
+     */
+    public static final double PI_DEGREES = 180;
+    /**
+     * The coefficients to convert pi to degrees.
+     */
+    public static final double CONVERSION_PI_DEGREES = Edge.PI_DEGREES
+            / Math.PI;
+
+    /**
      * Copy constructor. Caution : use it very cautiously, because it creates
      * new Edges with same values and not the same references.
-     * 
      * @param edge
      *            the polyline to copy
      */
     public Edge(final Edge edge) {
         this.points[0] = edge.getP1();
         this.points[1] = edge.getP2();
-        this.triangles = new ArrayList<Triangle>(edge.triangles);
+        this.triangles = new ArrayList<>(edge.triangles);
     }
 
     /**
      * Constructor.
-     * 
      * @param point1
      *            the first point
      * @param point2
@@ -57,7 +62,6 @@ public class Edge {
 
     /**
      * Adds a triangle to the edge.
-     * 
      * @param triangle
      *            the triangle to add
      */
@@ -71,18 +75,16 @@ public class Edge {
 
     /**
      * Calculates the middle point of the edge.
-     * 
      * @return the middle point
      */
     public final Point computeMiddle() {
         return new Point((this.getP1().getX() + this.getP2().getX()) / 2, (this
-            .getP1().getY() + this.getP2().getY()) / 2,
-            (this.getP1().getZ() + this.getP2().getZ()) / 2);
+                .getP1().getY() + this.getP2().getY()) / 2, (this.getP1()
+                .getZ() + this.getP2().getZ()) / 2);
     }
 
     /**
      * Check if the edge contains that point.
-     * 
      * @param point
      *            the point to check
      * @return true if p is contained, and false otherwise
@@ -95,13 +97,12 @@ public class Edge {
      * Converts the edge in a Vector3d. The coordinates of this vector are made
      * by substracting the coordinates of the second point by those of the first
      * point.
-     * 
      * @return the vector
      */
     public final Vector3d convertToVector3d() {
         return new Vector3d(this.getP2().getX() - this.getP1().getX(), this
-            .getP2().getY()
-            - this.getP1().getY(), this.getP2().getZ() - this.getP1().getZ());
+                .getP2().getY() - this.getP1().getY(), this.getP2().getZ()
+                - this.getP1().getZ());
     }
 
     /*
@@ -120,12 +121,11 @@ public class Edge {
             return false;
         }
         return ((Edge) obj).contains(this.points[0])
-            && ((Edge) obj).contains(this.points[1]);
+                && ((Edge) obj).contains(this.points[1]);
     }
 
     /**
      * Returns the number of triangles containing the edge.
-     * 
      * @return the number of triangles
      */
     public final int getNumberTriangles() {
@@ -135,17 +135,16 @@ public class Edge {
     /**
      * Returns the number of neighbours of the edge contained in the polyline p.
      * Two neighbours are two edges which share a point.
-     * 
-     * @param polyline
+     * @param polygon
      *            the polyline which contains the edges
      * @return the number of neighbours
      */
-    public final int getNumNeighbours(final Polyline polyline) {
-        if (!polyline.contains(this)) {
+    public final int getNumNeighbours(final Polygon polygon) {
+        if (!polygon.contains(this)) {
             throw new InvalidParameterException();
         }
         int counter = 0;
-        for (final Edge e : polyline.getEdgeList()) {
+        for (final Edge e : polygon.getEdgeList()) {
             if (this.isNeighboor(e)) {
                 counter = counter + 1;
             }
@@ -155,7 +154,6 @@ public class Edge {
 
     /**
      * Getter.
-     * 
      * @return the first point
      */
     public final Point getP1() {
@@ -164,7 +162,6 @@ public class Edge {
 
     /**
      * Getter.
-     * 
      * @return the second point
      */
     public final Point getP2() {
@@ -173,7 +170,6 @@ public class Edge {
 
     /**
      * Getter.
-     * 
      * @return a list of points containing the two points of the edge
      */
     public final List<Point> getPoints() {
@@ -182,7 +178,6 @@ public class Edge {
 
     /**
      * Getter.
-     * 
      * @return the list of triangles containing the edge
      */
     public final List<Triangle> getTriangles() {
@@ -200,7 +195,6 @@ public class Edge {
 
     /**
      * Checks if this edge is part of the bound of the mesh m.
-     * 
      * @param m
      *            the mesh
      * @return true if this edge contains only one triangle belonging to m,
@@ -220,7 +214,6 @@ public class Edge {
      * Checks if the point is contained in the cylinder which axis is this edge,
      * which bounds are the two points of this edge, and which radius is the
      * error.
-     * 
      * @param point
      *            the point to check
      * @param error
@@ -242,25 +235,23 @@ public class Edge {
         final double z2 = this.getP2().getZ();
         final double z3 = point.getZ();
 
-        final double lambda =
-            ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
+        final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
                 * (z2 - z1))
                 / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
-                    * (z2 - z1));
+                        * (z2 - z1));
 
         final double x4 = lambda * (x2 - x1) + x1;
         final double y4 = lambda * (y2 - y1) + y1;
         final double z4 = lambda * (z2 - z1) + z1;
 
         return lambda >= 0 && lambda <= 1
-            && point.distance(new Point(x4, y4, z4)) <= error;
+                && point.distance(new Point(x4, y4, z4)) <= error;
     }
 
     /**
      * Checks if p is contained in the frame 2D formed by two segments parallels
      * to this edge with a coefficient. Caution : this method expects to be in
      * the plane (x,y).
-     * 
      * @param point
      *            the point to check
      * @param error
@@ -269,7 +260,7 @@ public class Edge {
      *         otherwise
      */
     public final boolean isInInfiniteCylinder2D(final Point point,
-        final double error) {
+            final double error) {
 
         double a;
         double b;
@@ -291,13 +282,12 @@ public class Edge {
         }
 
         return a * point.getX() + b * point.getY() < -c + error
-            && a * point.getX() + b * point.getY() > -c - error;
+                && a * point.getX() + b * point.getY() > -c - error;
     }
 
     /**
      * Checks if p is contained in the infinite cylinder which axis is this
      * edge, and which radius is error.
-     * 
      * @param point
      *            the point to check
      * @param error
@@ -306,7 +296,7 @@ public class Edge {
      *         otherwise
      */
     public final boolean isInInfiniteCylinder3D(final Point point,
-        final double error) {
+            final double error) {
 
         final double x1 = this.getP1().getX();
         final double x2 = this.getP2().getX();
@@ -320,11 +310,10 @@ public class Edge {
         final double z2 = this.getP2().getZ();
         final double z3 = point.getZ();
 
-        final double lambda =
-            ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
+        final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
                 * (z2 - z1))
                 / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
-                    * (z2 - z1));
+                        * (z2 - z1));
 
         final double x4 = lambda * (x2 - x1) + x1;
         final double y4 = lambda * (y2 - y1) + y1;
@@ -337,7 +326,6 @@ public class Edge {
 
     /**
      * Checks if an edge is a neighboor of this edge.
-     * 
      * @param e
      *            the edge to check
      * @return true if e shares one point with this edge, false if e is this
@@ -346,14 +334,12 @@ public class Edge {
     public final boolean isNeighboor(final Edge e) {
         if (this == e) {
             return false;
-        } else {
-            return this.contains(e.points[0]) || this.contains(e.points[1]);
         }
+        return this.contains(e.points[0]) || this.contains(e.points[1]);
     }
 
     /**
      * Calculates the length of the edge.
-     * 
      * @return the distance between the two points of the edge
      */
     public final double length() {
@@ -363,7 +349,6 @@ public class Edge {
     /**
      * Checks if this edge is oriented as another edge, with an orientation
      * error.
-     * 
      * @param e
      *            the other edge
      * @param error
@@ -373,27 +358,25 @@ public class Edge {
     public final boolean orientedAs(final Edge e, final double error) {
 
         // Builds two vectors and normalize them.
-        final Vector3d vect1 =
-            new Vector3d(e.getP2().getX() - e.getP1().getX(), e.getP2().getY()
-                - e.getP1().getY(), e.getP2().getZ() - e.getP1().getZ());
+        final Vector3d vect1 = new Vector3d(
+                e.getP2().getX() - e.getP1().getX(), e.getP2().getY()
+                        - e.getP1().getY(), e.getP2().getZ() - e.getP1().getZ());
         vect1.normalize();
 
-        final Vector3d vect2 =
-            new Vector3d(this.getP2().getX() - this.getP1().getX(), this
-                .getP2().getY()
+        final Vector3d vect2 = new Vector3d(this.getP2().getX()
+                - this.getP1().getX(), this.getP2().getY()
                 - this.getP1().getY(), this.getP2().getZ()
                 - this.getP1().getZ());
         vect2.normalize();
 
         // Then calls the angle function to check their orientation.
-        final double convertDegreeRadian = 180 / Math.PI;
+        final double convertDegreeRadian = Edge.CONVERSION_PI_DEGREES;
         return (vect1.angle(vect2) < (error / convertDegreeRadian))
-            || vect1.angle(vect2) > (((180 - error) / convertDegreeRadian));
+                || vect1.angle(vect2) > (((Edge.PI_DEGREES - error) / convertDegreeRadian));
     }
 
     /**
      * Returns the projection of a point on the edge.
-     * 
      * @param point
      *            the point to project
      * @return the point projected
@@ -417,11 +400,10 @@ public class Edge {
         final double z2 = p2.getZ();
         final double z3 = p3.getZ();
 
-        final double lambda =
-            ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
+        final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
                 * (z2 - z1))
                 / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
-                    * (z2 - z1));
+                        * (z2 - z1));
 
         final double x4 = lambda * (x2 - x1) + x1;
         final double y4 = lambda * (y2 - y1) + y1;
@@ -434,7 +416,6 @@ public class Edge {
      * Returns the edge neighbour of this which contains p and which belongs to
      * b. If there is a point which does not belong to 2 edges, throw a
      * BadFormedPolyline exception.
-     * 
      * @param p
      *            the point shared by the two edges
      * @param b
@@ -443,22 +424,20 @@ public class Edge {
      * @throws BadFormedPolylineException
      *             if a point in the polyline does not belong to the two edges
      */
-    public final Edge returnNeighbour(final Polyline b, final Point p)
-        throws BadFormedPolylineException {
+    public final Edge returnNeighbour(final Polygon b, final Point p)
+            throws BadFormedPolylineException {
 
         final List<Edge> list = b.getNeighbours(p);
 
         if (list.size() == 2) {
             list.remove(this);
             return list.get(0);
-        } else {
-            throw new BadFormedPolylineException();
         }
+        throw new BadFormedPolylineException();
     }
 
     /**
      * Returns the other point of the edge.
-     * 
      * @param p
      *            one point of the edge
      * @return the other point which forms the edge
@@ -475,7 +454,6 @@ public class Edge {
 
     /**
      * Returns the other triangle which contains this edge.
-     * 
      * @param t
      *            one triangle which contains the edge
      * @return the other triangle which contains the edge
@@ -498,7 +476,6 @@ public class Edge {
 
     /**
      * Setter.
-     * 
      * @param point
      *            the first point
      */
@@ -509,7 +486,6 @@ public class Edge {
 
     /**
      * Setter.
-     * 
      * @param point
      *            the second point
      */
@@ -520,7 +496,6 @@ public class Edge {
     /**
      * Returns the point shared by the two edges. Return null if the two edges
      * don't share any point.
-     * 
      * @param e
      *            the edge to search in
      * @return the point shared by this edge and the other
