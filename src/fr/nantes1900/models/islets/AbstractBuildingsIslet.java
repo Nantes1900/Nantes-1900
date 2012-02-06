@@ -3,13 +3,16 @@ package fr.nantes1900.models.islets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
+import fr.nantes1900.constants.WeirdResultMessages;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.exceptions.InvalidCaseException;
 import fr.nantes1900.models.exceptions.NullArgumentException;
+import fr.nantes1900.models.exceptions.WeirdPreviousResultsException;
 import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Wall;
+import fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep0;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep1;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep2;
@@ -57,6 +60,11 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
     private BuildingsIsletStep6 biStep6;
 
     /**
+     * The sixth building islet step.
+     */
+    private BuildingsIsletStep6 biStep7;
+
+    /**
      * The number of the step 0.
      */
     public static final int ZERO_STEP = 0;
@@ -84,6 +92,10 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      * The number of the step 6.
      */
     public static final int SIXTH_STEP = 6;
+    /**
+     * The number of the step 7.
+     */
+    public static final int SEVENTH_STEP = 7;
     /**
      * The number of the current step.
      */
@@ -277,6 +289,30 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
         this.biStep5.setArguments(this.biStep4.getGrounds(), this.groundNormal);
         this.biStep5.setArguments(this.biStep4.getNoise());
         this.biStep6 = this.getBiStep5().launchProcess();
+    }
+    
+    /**
+     * Launches the sixth process.
+     * @throws NullArgumentException
+     *             if an argument needed for the process has not been
+     *             initialized
+     */
+    public final void launchProcess6() throws NullArgumentException, WeirdPreviousResultsException {
+    	// before lanching process, checks if all buildings have been simplified
+    	
+    	for (Building b : this.biStep6.getBuildings())
+    	{
+    		for (Wall w : b.getbStep6().getWalls())
+    		{
+    			if (w.getPolygon().isEmpty())
+    			{
+    				throw new WeirdPreviousResultsException(WeirdResultMessages.NOT_EVERY_WALL_SIMPL);
+    			}
+    		}
+    	}
+    	
+        // TODO and fix types.
+        //this.biStep7 = this.getBiStep6().launchProcess();
     }
 
     /**

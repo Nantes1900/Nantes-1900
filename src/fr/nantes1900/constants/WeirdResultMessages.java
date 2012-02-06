@@ -26,6 +26,12 @@ public final class WeirdResultMessages {
      * be.
      */
     public static final String NO_BUILDINGS = "NoBuildings";
+    
+    /**
+     * Key for a pop-up message when not every wall have been simplified before ground simplification.
+     */
+    public static final String NOT_EVERY_WALL_SIMPL = "NotEveryWallSimpl";
+
     /**
      * Private constructor.
      */

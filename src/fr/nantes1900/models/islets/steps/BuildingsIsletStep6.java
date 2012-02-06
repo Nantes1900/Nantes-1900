@@ -60,7 +60,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
      */
     @Override
     public final AbstractBuildingsIsletStep launchProcess() {
-        // There is no more process for now.
+        // TODO : and fix return type
         return null;
     }
 

@@ -19,3 +19,4 @@ InvalidCaseTypeMessage=Le type de l'élément est incorrect.
 InvalidCaseTypeTitle=Type incorrect
 IOExceptionMessage=Une erreur est survenue lors de l'accès au fichier.\nVérifiez qu'il n'est pas corrompu.
 IOExceptionTitle=Erreur lors de l'accès au fichier
+NotEveryWallSimpl=Tous les murs n'ont pas été simplifiés.\nVeuillez corriger ce problème avant de poursuivre avec la simplification des sols.
