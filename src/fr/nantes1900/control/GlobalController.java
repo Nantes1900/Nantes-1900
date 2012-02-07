@@ -8,6 +8,7 @@ import javax.swing.ToolTipManager;
 import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.isletprocess.IsletProcessController;
 import fr.nantes1900.control.isletselection.IsletSelectionController;
+import fr.nantes1900.models.exceptions.WeirdPreviousResultsException;
 import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.utils.FileTools;
 
@@ -52,7 +53,7 @@ public class GlobalController {
         // Launches the base change : the process 0.
         try {
             biController.launchProcess();
-        } catch (WeirdResultException e) {
+        } catch (WeirdResultException | WeirdPreviousResultsException e) {
             JOptionPane.showMessageDialog(isletSelectionController.getWindow(),
                     e.getMessage(), FileTools.readInformationMessage(
                             TextsKeys.KEY_ERROR_WEIRDRESULT,

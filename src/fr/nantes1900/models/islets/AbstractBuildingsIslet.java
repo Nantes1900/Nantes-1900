@@ -3,6 +3,7 @@ package fr.nantes1900.models.islets;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
+import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.constants.WeirdResultMessages;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.exceptions.InvalidCaseException;
@@ -20,6 +21,7 @@ import fr.nantes1900.models.islets.steps.BuildingsIsletStep3;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep4;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep5;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep6;
+import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.WriterSTL;
 
@@ -296,6 +298,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
      * @throws NullArgumentException
      *             if an argument needed for the process has not been
      *             initialized
+     * @throws WeirdPreviousResultsException
+     * 				if the previous step results are not what the current process expects.
      */
     public final void launchProcess6() throws NullArgumentException, WeirdPreviousResultsException {
     	// before lanching process, checks if all buildings have been simplified
@@ -304,9 +308,11 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
     	{
     		for (Wall w : b.getbStep6().getWalls())
     		{
-    			if (w.getPolygon().isEmpty())
+    			if (w.getPolygon() == null || w.getPolygon().isEmpty())
     			{
-    				throw new WeirdPreviousResultsException(WeirdResultMessages.NOT_EVERY_WALL_SIMPL);
+    				throw new WeirdPreviousResultsException(FileTools.readInformationMessage(
+    						WeirdResultMessages.NOT_EVERY_WALL_SIMPL,
+    						TextsKeys.MESSAGETYPE_MESSAGE));
     			}
     		}
     	}

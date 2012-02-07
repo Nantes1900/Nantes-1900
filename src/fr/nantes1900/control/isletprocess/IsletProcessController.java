@@ -24,6 +24,7 @@ import fr.nantes1900.control.isletprocess.characteristics.CharacteristicsStep6Co
 import fr.nantes1900.listener.ElementsSelectedListener;
 import fr.nantes1900.listener.ProgressListener;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.exceptions.WeirdPreviousResultsException;
 import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.islets.AbstractBuildingsIslet;
@@ -229,7 +230,7 @@ public class IsletProcessController implements ElementsSelectedListener,
      */
     public final void launchProcess() throws UnexistingStepException {
 
-        if (this.getProgression() >= AbstractBuildingsIslet.SIXTH_STEP) {
+        if (this.getProgression() >= AbstractBuildingsIslet.SEVENTH_STEP) {
             throw new UnexistingStepException();
         }
 
@@ -254,7 +255,7 @@ public class IsletProcessController implements ElementsSelectedListener,
         this.ipView.setCursor(new Cursor(Cursor.WAIT_CURSOR));
         try {
             this.biController.launchProcess();
-        } catch (WeirdResultException e) {
+        } catch (WeirdResultException | WeirdPreviousResultsException e) {
             JOptionPane.showMessageDialog(ipView, e.getMessage(), FileTools
                     .readInformationMessage(TextsKeys.KEY_ERROR_WEIRDRESULT,
                             TextsKeys.MESSAGETYPE_TITLE),
