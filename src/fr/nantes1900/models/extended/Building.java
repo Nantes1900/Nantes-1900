@@ -1,5 +1,8 @@
 package fr.nantes1900.models.extended;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
@@ -14,7 +17,7 @@ import fr.nantes1900.models.extended.steps.BuildingStep6;
  * building during the processs 3 to 8.
  * @author Daniel Lefevre
  */
-public class Building {
+public class Building implements BuildingAccess {
 
     /**
      * The third building step.
@@ -32,6 +35,12 @@ public class Building {
      * The sixth building step.
      */
     private BuildingStep6 bStep6;
+    
+    /**
+     * The seventh building step.
+     * TODO : create a real BuildingStep7 ?
+     */
+    private BuildingStep6 bStep7;
 
     /**
      * The gravity normal.
@@ -184,4 +193,48 @@ public class Building {
         this.grounds = groundsIn;
         this.noise = noiseIn;
     }
+
+	@Override
+	public List<Wall> getWalls(int step) {
+		List<Wall> walls = new ArrayList<Wall>();
+		
+		switch (step)
+		{
+			case 5 :
+				walls.addAll(bStep5.getWalls());
+				break;
+			case 6 :
+				walls.addAll(bStep6.getWalls());
+				break;
+			case 7 :
+				walls.addAll(bStep7.getWalls());
+				break;
+			default :
+				break;
+		}
+		
+		return walls;
+	}
+
+	@Override
+	public List<Roof> getRoofs(int step) {
+		List<Roof> roofs = new ArrayList<Roof>();
+		
+		switch (step)
+		{
+			case 5 :
+				roofs.addAll(bStep5.getRoofs());
+				break;
+			case 6 :
+				roofs.addAll(bStep6.getRoofs());
+				break;
+			case 7 :
+				roofs.addAll(bStep7.getRoofs());
+				break;
+			default :
+				break;
+		}
+		
+		return roofs;
+	}
 }

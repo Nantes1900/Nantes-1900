@@ -1,5 +1,8 @@
 package fr.nantes1900.models.islets;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
@@ -11,9 +14,9 @@ import fr.nantes1900.models.exceptions.NullArgumentException;
 import fr.nantes1900.models.exceptions.WeirdPreviousResultsException;
 import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.models.extended.Building;
+import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Wall;
-import fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep0;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep1;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep2;
@@ -30,7 +33,7 @@ import fr.nantes1900.utils.WriterSTL;
  * all the methods to apply the processs on the meshes.
  * @author Daniel Lefèvre
  */
-public abstract class AbstractBuildingsIslet extends AbstractIslet {
+public abstract class AbstractBuildingsIslet extends AbstractIslet implements BuildingIsletAccess {
 
     /**
      * The zero building islet step.
@@ -419,4 +422,60 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet {
     public final void setGroundNormal(final Vector3d groundNormalIn) {
         this.groundNormal = groundNormalIn;
     }
+    
+
+	@Override
+	public List<Building> getBuildings() {
+		List<Building> buildings = new ArrayList<Building>();
+		
+		switch (this.getProgression())
+		{
+			case 3 :
+				buildings.addAll(this.biStep3.getBuildings());
+				break;
+			case 4 :
+				buildings.addAll(this.biStep4.getBuildings());
+				break;
+			case 5 :
+				buildings.addAll(this.biStep5.getBuildings());
+				break;
+			case 6 :
+				buildings.addAll(this.biStep6.getBuildings());
+				break;
+			case 7 :
+				buildings.addAll(this.biStep7.getBuildings());
+				break;
+				
+		}
+		
+		return buildings;
+	}
+
+	@Override
+	public Ground getGround() {
+		Ground ground = null;
+		switch (this.getProgression())
+		{
+			case 2 :
+				ground = this.biStep2.getInitialGrounds();
+				break;
+			case 3 :
+				ground = this.biStep3.getGrounds();
+				break;
+			case 4 :
+				ground = this.biStep3.getGrounds();
+				break;
+			case 5 :
+				ground = this.biStep3.getGrounds();
+				break;
+			case 6 :
+				ground = this.biStep3.getGrounds();
+				break;
+			case 7 :
+				ground = this.biStep3.getGrounds();
+				break;
+				
+		}
+		return ground;
+	}
 }
