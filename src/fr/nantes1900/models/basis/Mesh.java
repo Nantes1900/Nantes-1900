@@ -349,7 +349,7 @@ public class Mesh extends HashSet<Triangle> {
         // Select every edges of the mesh.
         for (final Triangle tri : this) {
             for (final Edge edge : tri.getEdges()) {
-                if (edge.isBound(this)) {
+                if (edge.isBorder(this)) {
                     bounds.add(edge);
                 }
             }
