@@ -184,8 +184,8 @@ public class BuildingStep4 extends AbstractBuildingStep {
      * surface : then they are neighbours.
      */
     private void searchForNeighbours() {
-        final Polygon groundsBounds = this.grounds.getMesh()
-                .returnUnsortedBounds();
+        final Polygon groundsBounds = new Polygon(this.grounds.getMesh()
+                .returnUnsortedBorders());
 
         final List<Surface> wholeList = new ArrayList<>();
         wholeList.addAll(this.walls);
@@ -202,7 +202,7 @@ public class BuildingStep4 extends AbstractBuildingStep {
 
         // We compute the bounds to check if they share a common edge.
         for (final Surface m : wholeList) {
-            wholeBoundsList.add(m.getMesh().returnUnsortedBounds());
+            wholeBoundsList.add(new Polygon(m.getMesh().returnUnsortedBorders()));
         }
 
         // Then we check every edge of the bounds to see if some are shared

@@ -116,8 +116,8 @@ public class BuildingStep5 extends AbstractBuildingStep {
      */
     public final void determinateNeighbours(final List<Wall> wallsIn,
             final List<Roof> roofsIn) {
-        final Polygon groundsBounds = this.ground.getMesh()
-                .returnUnsortedBounds();
+        final Polygon groundsBounds = new Polygon(this.ground.getMesh()
+                .returnUnsortedBorders());
 
         final List<Surface> wholeList = new ArrayList<>();
         wholeList.addAll(wallsIn);
@@ -145,7 +145,7 @@ public class BuildingStep5 extends AbstractBuildingStep {
         // We compute the bounds to check if they share a common edge.
         final List<Polygon> wholeBoundsList = new ArrayList<>();
         for (final Mesh m : wholeListFakes) {
-            wholeBoundsList.add(m.returnUnsortedBounds());
+            wholeBoundsList.add(new Polygon(m.returnUnsortedBorders()));
         }
 
         // Then we check every edge of the bounds to see if some are shared by

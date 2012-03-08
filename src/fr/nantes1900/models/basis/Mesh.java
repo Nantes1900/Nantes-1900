@@ -1,8 +1,10 @@
 package fr.nantes1900.models.basis;
 
 import java.security.InvalidParameterException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.vecmath.Vector3d;
@@ -46,7 +48,10 @@ public class Mesh extends HashSet<Triangle> {
      *            the collection
      */
     public Mesh(final Collection<? extends Triangle> c) {
-        super(c);
+        for (Triangle t : c) {
+            t.add(this);
+            this.add(t);
+        }
         this.iD = ++Mesh.currentID;
     }
 
@@ -79,10 +84,10 @@ public class Mesh extends HashSet<Triangle> {
         final Set<Triangle> mesh = new HashSet<>();
 
         // Make a list of all the points, and base change them.
-        for (final Triangle f : this) {
-            set.addAll(f.getPoints());
-            MatrixMethod.changeBase(f.getNormal(), matrix);
-            mesh.add(f);
+        for (final Triangle t : this) {
+            set.addAll(t.getPoints());
+            MatrixMethod.changeBase(t.getNormal(), matrix);
+            mesh.add(t);
         }
 
         for (final Point p : set) {
@@ -219,8 +224,7 @@ public class Mesh extends HashSet<Triangle> {
                 vect3);
         final double[][] matrixInv = MatrixMethod.getInversMatrix(matrix);
 
-        final double[] ds = { -d1, -d2, -d3
-        };
+        final double[] ds = {-d1, -d2, -d3};
         final double[] p = MatrixMethod.changeBase(ds, matrixInv);
         return new Point(p[0], p[1], p[2]);
     }
@@ -234,7 +238,7 @@ public class Mesh extends HashSet<Triangle> {
      */
     public final boolean isNeighbour(final Mesh mesh) {
         if (mesh != this) {
-            for (final Edge e : this.returnUnsortedBounds().getEdgeList()) {
+            for (final Edge e : this.returnUnsortedBorders()) {
                 if (mesh.contains(e)) {
                     return true;
                 }
@@ -270,11 +274,11 @@ public class Mesh extends HashSet<Triangle> {
     public final double minimalDistance(final Mesh mesh) {
 
         final Set<Point> hash1 = new HashSet<>();
-        final Polygon poly1 = this.returnUnsortedBounds();
+        final Polygon poly1 = new Polygon(this.returnUnsortedBorders());
         hash1.addAll(poly1.getPointList());
 
         final Set<Point> hash2 = new HashSet<>();
-        final Polygon poly2 = mesh.returnUnsortedBounds();
+        final Polygon poly2 = new Polygon(mesh.returnUnsortedBorders());
         hash2.addAll(poly2.getPointList());
 
         double minDistance = Double.POSITIVE_INFINITY;
@@ -335,27 +339,29 @@ public class Mesh extends HashSet<Triangle> {
      *            the mesh containing the triangles to remove
      */
     public final void remove(final Mesh m) {
-        this.removeAll(m);
+        for (Triangle t : m) {
+            this.remove(t);
+        }
     }
 
     /**
-     * Searches for all the edges which belong to the bounds. If an edge
-     * contains only one triangle in this mesh, then it is part of the bounds.
-     * @return the polyline containing these edges
+     * Searches for all the edges which belong to borders. If an edge contains
+     * only one triangle in this mesh, then it is part of a border.
+     * @return list of every border edges
      */
-    public final Polygon returnUnsortedBounds() {
-        final Polygon bounds = new Polygon();
+    public final List<Edge> returnUnsortedBorders() {
+        final List<Edge> edges = new ArrayList<>();
 
         // Select every edges of the mesh.
         for (final Triangle tri : this) {
             for (final Edge edge : tri.getEdges()) {
                 if (edge.isBorder(this)) {
-                    bounds.add(edge);
+                    edges.add(edge);
                 }
             }
         }
 
-        return bounds;
+        return edges;
     }
 
     /*
@@ -575,5 +581,82 @@ public class Mesh extends HashSet<Triangle> {
             }
         }
         return t;
+    }
+
+    public List<Edge> getEdges() {
+        Set<Edge> list = new HashSet<>();
+        for (Triangle t : this) {
+            list.addAll(t.getEdges());
+        }
+        return new ArrayList<>(list);
+    }
+
+    public List<Point> getPoints() {
+        List<Point> list = new ArrayList<>();
+        for (Triangle t : this) {
+            for (Edge e : t.getEdges()) {
+                for (Point p : e.getPoints()) {
+                    if (!list.contains(p)) {
+                        list.add(p);
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
+    // FIXME : describe it very well. (refers to
+    // synchronizeBeginning and End).
+    public void refresh() {
+        Mesh copy = new Mesh(this);
+        this.clear();
+        this.addAll(copy);
+    }
+
+    // FIXME : put this in Mesh... Avoid the static thing...
+    /**
+     * TODO
+     * @param list
+     *            list of edges which belongs to borders
+     * @return list of polygon representing borders
+     */
+    public List<Polygon> returnSortedBorders() {
+        List<Edge> list = this.returnUnsortedBorders();
+
+        List<Polygon> borders = new ArrayList<>();
+
+        while (!list.isEmpty()) {
+            List<Edge> borderEdges = new ArrayList<>();
+            Edge e = list.get(0);
+            Mesh.returnNeighbours(list, borderEdges, e);
+            list.removeAll(borderEdges);
+
+            borders.add(new Polygon(borderEdges));
+        }
+
+        return borders;
+    }
+
+    // FIXME : put this in Polygon ?
+    /**
+     * Finds every edges that are connected with the given edge from the edge
+     * list. This function adds recursively neighbours to the neighboursEdges.
+     * @param edgeList
+     *            list of edges to find neighbours into
+     * @param neighboursEdges
+     *            list of edges where founded neighbours are stored
+     * @param edge
+     *            edge to find neighbours of
+     * @return polygon formed by all found neighbours
+     */
+    public static void returnNeighbours(List<Edge> edgeList,
+            List<Edge> neighboursEdges, Edge edge) {
+        for (Edge e : edgeList) {
+            if (edge.isNeighboor(e) && !neighboursEdges.contains(e)) {
+                neighboursEdges.add(e);
+                returnNeighbours(edgeList, neighboursEdges, e);
+                break;
+            }
+        }
     }
 }
