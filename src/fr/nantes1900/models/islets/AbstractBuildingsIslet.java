@@ -33,7 +33,8 @@ import fr.nantes1900.utils.WriterSTL;
  * all the methods to apply the processs on the meshes.
  * @author Daniel Lefèvre
  */
-public abstract class AbstractBuildingsIslet extends AbstractIslet implements BuildingIsletAccess {
+public abstract class AbstractBuildingsIslet extends AbstractIslet implements
+        BuildingIsletAccess {
 
     /**
      * The zero building islet step.
@@ -295,33 +296,33 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements Bu
         this.biStep5.setArguments(this.biStep4.getNoise());
         this.biStep6 = this.getBiStep5().launchProcess();
     }
-    
+
     /**
      * Launches the sixth process.
      * @throws NullArgumentException
      *             if an argument needed for the process has not been
      *             initialized
      * @throws WeirdPreviousResultsException
-     * 				if the previous step results are not what the current process expects.
+     *             if the previous step results are not what the current process
+     *             expects.
      */
-    public final void launchProcess6() throws NullArgumentException, WeirdPreviousResultsException {
-    	// before lanching process, checks if all buildings have been simplified
-    	
-    	for (Building b : this.biStep6.getBuildings())
-    	{
-    		for (Wall w : b.getbStep6().getWalls())
-    		{
-    			if (w.getPolygon() == null || w.getPolygon().isEmpty())
-    			{
-    				throw new WeirdPreviousResultsException(FileTools.readInformationMessage(
-    						WeirdResultMessages.NOT_EVERY_WALL_SIMPL,
-    						TextsKeys.MESSAGETYPE_MESSAGE));
-    			}
-    		}
-    	}
-    	
+    public final void launchProcess6() throws NullArgumentException,
+            WeirdPreviousResultsException {
+        // before lanching process, checks if all buildings have been simplified
+
+        for (Building b : this.biStep6.getBuildings()) {
+            for (Wall w : b.getbStep6().getWalls()) {
+                if (w.getPolygon() == null || w.getPolygon().isEmpty()) {
+                    throw new WeirdPreviousResultsException(
+                            FileTools.readInformationMessage(
+                                    WeirdResultMessages.NOT_EVERY_WALL_SIMPL,
+                                    TextsKeys.MESSAGETYPE_MESSAGE));
+                }
+            }
+        }
+
         // TODO and fix types.
-        //this.biStep7 = this.getBiStep6().launchProcess();
+        // this.biStep7 = this.getBiStep6().launchProcess();
     }
 
     /**
@@ -422,60 +423,61 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements Bu
     public final void setGroundNormal(final Vector3d groundNormalIn) {
         this.groundNormal = groundNormalIn;
     }
-    
 
-	@Override
-	public List<Building> getBuildings() {
-		List<Building> buildings = new ArrayList<Building>();
-		
-		switch (this.getProgression())
-		{
-			case 3 :
-				buildings.addAll(this.biStep3.getBuildings());
-				break;
-			case 4 :
-				buildings.addAll(this.biStep4.getBuildings());
-				break;
-			case 5 :
-				buildings.addAll(this.biStep5.getBuildings());
-				break;
-			case 6 :
-				buildings.addAll(this.biStep6.getBuildings());
-				break;
-			case 7 :
-				buildings.addAll(this.biStep7.getBuildings());
-				break;
-				
-		}
-		
-		return buildings;
-	}
+    @Override
+    public final List<Building> getBuildings() {
+        List<Building> buildings = new ArrayList<Building>();
 
-	@Override
-	public Ground getGround() {
-		Ground ground = null;
-		switch (this.getProgression())
-		{
-			case 2 :
-				ground = this.biStep2.getInitialGrounds();
-				break;
-			case 3 :
-				ground = this.biStep3.getGrounds();
-				break;
-			case 4 :
-				ground = this.biStep3.getGrounds();
-				break;
-			case 5 :
-				ground = this.biStep3.getGrounds();
-				break;
-			case 6 :
-				ground = this.biStep3.getGrounds();
-				break;
-			case 7 :
-				ground = this.biStep3.getGrounds();
-				break;
-				
-		}
-		return ground;
-	}
+        switch (this.getProgression()) {
+        case 3:
+            buildings.addAll(this.biStep3.getBuildings());
+            break;
+        case 4:
+            buildings.addAll(this.biStep4.getBuildings());
+            break;
+        case 5:
+            buildings.addAll(this.biStep5.getBuildings());
+            break;
+        case 6:
+            buildings.addAll(this.biStep6.getBuildings());
+            break;
+        case 7:
+            buildings.addAll(this.biStep7.getBuildings());
+            break;
+        default:
+            // TODO : default... If progression is < 3.
+            break;
+        }
+
+        return buildings;
+    }
+
+    @Override
+    public final Ground getGround() {
+        Ground ground = null;
+        switch (this.getProgression()) {
+        case 2:
+            ground = this.biStep2.getInitialGrounds();
+            break;
+        case 3:
+            ground = this.biStep3.getGrounds();
+            break;
+        case 4:
+            ground = this.biStep3.getGrounds();
+            break;
+        case 5:
+            ground = this.biStep3.getGrounds();
+            break;
+        case 6:
+            ground = this.biStep3.getGrounds();
+            break;
+        case 7:
+            ground = this.biStep3.getGrounds();
+            break;
+        default:
+            // TODO : default... If progression is < 3.
+            break;
+        }
+        return ground;
+    }
 }
