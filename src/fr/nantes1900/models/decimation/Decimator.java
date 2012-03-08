@@ -43,7 +43,7 @@ public class Decimator {
 
         while (this.mesh.getEdgeNumber() != 0) {
             // TODO : remove that thing...
-            System.out.println(this.mesh.getEdgeNumber());
+            //System.out.println(this.mesh.getEdgeNumber());
             // 4. Sort valid pairs.
             Edge edge = this.mesh.selectMinimalErrorPair();
 

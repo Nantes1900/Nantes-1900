@@ -105,4 +105,5 @@ public class BuildingsIsletStep7 extends AbstractBuildingsIsletStep {
 	public final String toString() {
 		return super.toString() + AbstractBuildingsIslet.SIXTH_STEP;
 	}
+
 }

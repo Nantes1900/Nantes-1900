@@ -6,7 +6,7 @@ import java.util.List;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Polygon;
-import fr.nantes1900.recollage.Recollage;
+import fr.nantes1900.models.decimation.Recollage;
 
 public class TestRecollage {
 

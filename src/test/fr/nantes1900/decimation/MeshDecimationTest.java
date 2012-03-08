@@ -10,11 +10,11 @@ import junit.framework.TestCase;
 
 import org.junit.Test;
 
-import fr.nantes1900.decimation.MeshDecimation;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
+import fr.nantes1900.models.decimation.MeshDecimation;
 import fr.nantes1900.utils.ParserSTL;
 
 public class MeshDecimationTest extends TestCase {
