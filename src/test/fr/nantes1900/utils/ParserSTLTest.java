@@ -48,7 +48,7 @@ public final class ParserSTLTest extends TestCase {
             final Edge e2 = new Edge(p2, p3);
             final Edge e3 = new Edge(p3, p1);
             Triangle t1;
-            t1 = new Triangle(p1, p2, p3, e1, e2, e3, vect1);
+            t1 = new Triangle(e1, e2, e3, vect1);
 
             final Point p4 = new Point(4, 5, 4);
             final Point p5 = new Point(2, -3, -3);
@@ -57,7 +57,7 @@ public final class ParserSTLTest extends TestCase {
             final Edge e4 = new Edge(p4, p5);
             final Edge e5 = new Edge(p5, p6);
             final Edge e6 = new Edge(p6, p4);
-            final Triangle t2 = new Triangle(p4, p5, p6, e4, e5, e6, vect2);
+            final Triangle t2 = new Triangle(e4, e5, e6, vect2);
 
             final Mesh write = new Mesh();
             write.add(t1);
@@ -76,7 +76,7 @@ public final class ParserSTLTest extends TestCase {
             final ParserSTL parserA = new ParserSTL("WriterTestA.stl");
             final Mesh readA = parserA.read();
             Assert.assertTrue(readA.size() == 2);
-            final List<Triangle> readListA = new ArrayList<Triangle>(readA);
+            final List<Triangle> readListA = new ArrayList<>(readA);
             Assert.assertTrue(readListA.get(0).equals(t1)
                     || readListA.get(0).equals(t2));
             Assert.assertTrue(readListA.get(1).equals(t1)
@@ -85,7 +85,7 @@ public final class ParserSTLTest extends TestCase {
             final ParserSTL parserB = new ParserSTL("WriterTestB.stl");
             final Mesh readB = parserB.read();
             Assert.assertTrue(readB.size() == 2);
-            final List<Triangle> readListB = new ArrayList<Triangle>(readB);
+            final List<Triangle> readListB = new ArrayList<>(readB);
             Assert.assertTrue(readListB.get(0).equals(t1)
                     || readListB.get(0).equals(t2));
             Assert.assertTrue(readListB.get(1).equals(t1)

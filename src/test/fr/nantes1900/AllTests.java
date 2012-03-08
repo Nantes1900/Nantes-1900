@@ -4,11 +4,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
 
+import test.fr.nantes1900.decimation.MeshDecimationTest;
+import test.fr.nantes1900.models.EdgeTest;
 import test.fr.nantes1900.models.MeshTest;
+import test.fr.nantes1900.models.PointTest;
 import test.fr.nantes1900.models.PolylineTest;
-import test.fr.nantes1900.models.basis.EdgeTest;
-import test.fr.nantes1900.models.basis.PointTest;
-import test.fr.nantes1900.models.basis.TriangleTest;
+import test.fr.nantes1900.models.TriangleTest;
 import test.fr.nantes1900.utils.MatrixMethodTest;
 import test.fr.nantes1900.utils.ParserSTLTest;
 
@@ -17,10 +18,11 @@ import test.fr.nantes1900.utils.ParserSTLTest;
  * @author Daniel Lefevre
  */
 @RunWith(Suite.class)
-@SuiteClasses(value = { EdgeTest.class, PointTest.class, TriangleTest.class,
+@SuiteClasses(value = {EdgeTest.class, PointTest.class, TriangleTest.class,
         PolylineTest.class, MeshTest.class, MatrixMethodTest.class,
-        ParserSTLTest.class
-})
+        ParserSTLTest.class, MeshDecimationTest.class}
+)
+
 public final class AllTests {
 
     /**
