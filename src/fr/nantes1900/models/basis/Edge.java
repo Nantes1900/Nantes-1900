@@ -353,13 +353,13 @@ public class Edge {
 
     public final void synchronizeBeginning() {
         for (Triangle t : this.triangles) {
-            //t.synchronizeBeginning();
+            t.synchronizeBeginning();
         }
     }
 
     public final void synchronizeEnd() {
         for (Triangle t : this.triangles) {
-            //t.synchronizeEnd();
+            t.synchronizeEnd();
         }
     }
 

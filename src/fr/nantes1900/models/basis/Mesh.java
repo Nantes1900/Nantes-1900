@@ -302,7 +302,7 @@ public class Mesh extends HashSet<Triangle> {
     public final Mesh orientedAs(final Vector3d normal, final double error) {
         final Mesh ret = new Mesh();
         for (final Triangle f : this) {
-            if (f.angularTolerance(normal, error)) {
+            if (f.angle(normal, error)) {
                 ret.add(f);
             }
         }

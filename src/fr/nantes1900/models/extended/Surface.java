@@ -496,7 +496,7 @@ public class Surface {
         vect.cross(normalGround, e2.convertToVector3d());
 
         computedWallPlane.getMesh().add(
-                new Triangle(p1, p1, p3, e1, e2, e2, vect));
+                new Triangle(e1, e2, e2, vect));
 
         return computedWallPlane;
     }
