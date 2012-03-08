@@ -2,9 +2,13 @@ package fr.nantes1900.models.basis;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.vecmath.Vector3d;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * Implements a polyline : a suite of edges.
@@ -46,11 +50,11 @@ public class Polygon {
 
     /**
      * Constructor from a list of edges.
-     * @param a
+     * @param collection
      *            the list of edges
      */
-    public Polygon(final List<Edge> a) {
-        for (final Edge e : a) {
+    public Polygon(final Collection<Edge> collection) {
+        for (final Edge e : collection) {
             // Checks if the objects added are not already contained in the
             // list.
             if (!this.edgeList.contains(e)) {
@@ -454,8 +458,7 @@ public class Polygon {
                 Edge e2 = new Edge(before, p);
                 Edge e3 = new Edge(p, centroid);
 
-                ens.add(new Triangle(before, centroid, p, e1, e2, e3,
-                        this.normal));
+                ens.add(new Triangle(e1, e2, e3, this.normal));
 
                 before = p;
             }
@@ -467,8 +470,7 @@ public class Polygon {
                 Edge e2 = new Edge(before, p);
                 Edge e3 = new Edge(p, centroid);
 
-                ens.add(new Triangle(before, centroid, p, e1, e2, e3,
-                        this.normal));
+                ens.add(new Triangle(e1, e2, e3, this.normal));
 
                 before = p;
             }
@@ -774,6 +776,78 @@ public class Polygon {
         for (final Point p : this.pointList) {
             p.setZ(z);
         }
+    }
+
+    // FIXME : put this in polygon
+    public boolean containsAllWithJts(List<Polygon> borders) {
+        for (Polygon otherBorder : borders) {
+            if (otherBorder != this
+                    && !this.containsWithJts(otherBorder.convertPolygonToJts())) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Gets the lowest edge of a wall.
+     * @param w
+     *            the wall
+     * @return the lowest edge of the wall null if no edge is found
+     */
+    // FIXME : put this method in Polygon.
+    // FIXME : this method bring bugs...
+    public Edge getDownEdge() {
+        // Finds the lowest edge of the polygon.
+        Edge edge = this.edgeList.get(0);
+        Point p1 = edge.getP1();
+        Point p2 = edge.getP2();
+
+        for (Edge e : this.edgeList) {
+            if ((e.getP1().getZ() <= p1.getZ() && e.getP2().getZ() <= p2.getZ())
+                    || (e.getP1().getZ() <= p2.getZ() && e.getP2().getZ() <= p1
+                            .getZ())) {
+                edge = e;
+                p1 = edge.getP1();
+                p2 = edge.getP2();
+            }
+        }
+
+        return edge;
+    }
+
+    // FIXME : put this in Polygon.
+    public boolean containsWithJts(
+            com.vividsolutions.jts.geom.Polygon containedJts) {
+        com.vividsolutions.jts.geom.Polygon containerJts = this
+                .convertPolygonToJts();
+
+        return containerJts.contains(containedJts);
+    }
+
+    // FIXME : put this in Polygon.
+    public boolean containsWithJts(Polygon contained) {
+        com.vividsolutions.jts.geom.Polygon containerJts = this
+                .convertPolygonToJts();
+
+        return containerJts.contains(contained.convertPolygonToJts());
+    }
+
+    // FIXME : put this in Polygon.
+    public com.vividsolutions.jts.geom.Polygon convertPolygonToJts() {
+        List<Coordinate> coords = new ArrayList<>();
+        for (Point p : this.getPointList()) {
+            coords.add(new Coordinate(p.getX(), p.getY()));
+        }
+
+        GeometryFactory geom = new GeometryFactory();
+        // A linear ring coordinates first and last point should be the same
+        Coordinate[] coordsJts = new Coordinate[coords.size() + 1];
+        coords.toArray(coordsJts);
+        coordsJts[coords.size()] = coordsJts[0];
+
+        return new com.vividsolutions.jts.geom.Polygon(
+                geom.createLinearRing(coordsJts), null, geom);
     }
 
     /**

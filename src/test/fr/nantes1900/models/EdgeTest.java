@@ -1,6 +1,5 @@
-package test.fr.nantes1900.models.basis;
+package test.fr.nantes1900.models;
 
-import java.security.InvalidParameterException;
 import java.util.List;
 
 import javax.vecmath.Vector3d;
@@ -13,7 +12,6 @@ import org.junit.Test;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Polygon;
-import fr.nantes1900.models.basis.Polygon.BadFormedPolylineException;
 import fr.nantes1900.models.basis.Triangle;
 
 /**
@@ -61,10 +59,10 @@ public class EdgeTest extends TestCase {
      */
     public EdgeTest() {
 
-        this.triangle1 = new Triangle(this.point1, this.point2, this.point3,
-                this.edge1, this.edge2, this.edge3, this.vect);
-        this.triangle2 = new Triangle(this.point1, this.point2, this.point4,
-                this.edge1, this.edge4, this.edge5, this.vect);
+        this.triangle1 = new Triangle(this.edge1, this.edge2, this.edge3,
+                this.vect);
+        this.triangle2 = new Triangle(this.edge1, this.edge4, this.edge5,
+                this.vect);
         this.polygon.add(this.edge1);
         this.polygon.add(this.edge2);
         this.polygon.add(this.edge4);
@@ -89,46 +87,6 @@ public class EdgeTest extends TestCase {
         final Point pointTest5 = new Point(1, 3, 1);
         Assert.assertFalse(e.isInCylinder3D(pointTest4, 1));
         Assert.assertFalse(e.isInCylinder3D(pointTest5, 1));
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#isInInfiniteCylinder2D(fr.nantes1900.models.basis.Point, double)}
-     * .
-     */
-    @Test
-    public final static void testIsInInfiniteCylinder2D() {
-        final Point pointTest1 = new Point(-1, -1, 0);
-        final Point pointTest2 = new Point(1, 1, 0);
-        final Edge e = new Edge(pointTest1, pointTest2);
-
-        final Point pointTest3 = new Point(0, 0.7, 0);
-        Assert.assertTrue(e.isInInfiniteCylinder2D(pointTest3, 1));
-
-        final Point pointTest4 = new Point(-0.5, 1, 0);
-        final Point pointTest5 = new Point(1.6, 1.5, 0);
-        Assert.assertFalse(e.isInInfiniteCylinder2D(pointTest4, 1));
-        Assert.assertTrue(e.isInInfiniteCylinder2D(pointTest5, 1));
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#isInInfiniteCylinder3D(fr.nantes1900.models.basis.Point, double)}
-     * .
-     */
-    @Test
-    public final static void testIsInInfiniteCylinder3D() {
-        final Point pointTest1 = new Point(0, 0, 0);
-        final Point pointTest2 = new Point(1, 1, 1);
-        final Edge e = new Edge(pointTest1, pointTest2);
-
-        final Point pointTest3 = new Point(0, 0.5, 0.5);
-        Assert.assertTrue(e.isInInfiniteCylinder3D(pointTest3, 1));
-
-        final Point pointTest4 = new Point(1.5, 1.5, 1.5);
-        final Point pointTest5 = new Point(1, 3, 1);
-        Assert.assertTrue(e.isInInfiniteCylinder3D(pointTest4, 1));
-        Assert.assertFalse(e.isInInfiniteCylinder3D(pointTest5, 1));
     }
 
     /**
@@ -163,57 +121,6 @@ public class EdgeTest extends TestCase {
         final Edge e1 = new Edge(pointTest0, pointTest1);
 
         Assert.assertTrue(e1.project(pointTest2).equals(new Point(0.9, 0, 0)));
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#returnNeighbour(fr.nantes1900.models.basis.Polygon, fr.nantes1900.models.basis.Point)}
-     * .
-     */
-    @Test
-    public final static void testReturnNeighbour() {
-        final Point p1 = new Point(0, 0, 0);
-        final Point p2 = new Point(0, 1, 0);
-        final Point p3 = new Point(-1, 2, 0);
-
-        final Edge e1 = new Edge(p1, p2);
-        final Edge e2 = new Edge(p1, p3);
-
-        final Polygon b = new Polygon();
-        b.add(e1);
-        b.add(e2);
-
-        try {
-            Assert.assertTrue(e1.returnNeighbour(b, p1) == e2);
-        } catch (final BadFormedPolylineException e) {
-            Assert.fail();
-        }
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#sharedPoint(fr.nantes1900.models.basis.Edge)}
-     * .
-     */
-    @Test
-    public final static void testSharedPoint() {
-        final Point p1 = new Point(0, 0, 0);
-        final Point p2 = new Point(0, 1, 0);
-        final Point p3 = new Point(-1, 2, 0);
-
-        final Edge e1 = new Edge(p1, p2);
-        final Edge e2 = new Edge(p1, p3);
-
-        Assert.assertTrue(e1.sharedPoint(e2) == p1);
-    }
-
-    /**
-     * Test method for {@link fr.nantes1900.models.basis.Edge#computeMiddle()} .
-     */
-    @Test
-    public final void testComputeMiddle() {
-        Assert.assertTrue(this.edge5.computeMiddle().equals(
-                new Point(1, 1.5, 1)));
     }
 
     /**
@@ -257,28 +164,6 @@ public class EdgeTest extends TestCase {
     public final void testGetNumberTriangles() {
         Assert.assertTrue(this.edge1.getNumberTriangles() == 2);
         Assert.assertTrue(this.edge5.getNumberTriangles() == 1);
-    }
-
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.basis.Edge#getNumNeighbours(fr.nantes1900.models.basis.Polygon)}
-     * .
-     */
-    @Test
-    public final void testGetNumNeighbours() {
-        final Polygon p = new Polygon();
-        p.add(this.edge1);
-        p.add(this.edge2);
-        p.add(this.edge3);
-        p.add(this.edge4);
-        Assert.assertTrue(this.edge1.getNumNeighbours(p) == 3);
-        Assert.assertTrue(this.edge2.getNumNeighbours(p) == 2);
-        try {
-            this.edge5.getNumNeighbours(p);
-            Assert.fail();
-        } catch (final InvalidParameterException e) {
-            // If it comes here, it's good.
-        }
     }
 
     /**

@@ -1,6 +1,5 @@
-package test.fr.nantes1900.models.basis;
+package test.fr.nantes1900.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.vecmath.Vector3d;
@@ -58,8 +57,7 @@ public class TriangleTest extends TestCase {
      * Constructor.
      */
     public TriangleTest() {
-        this.t = new Triangle(this.p1, this.p2, this.p3, this.e1, this.e2,
-                this.e3, this.vect);
+        this.t = new Triangle(this.e1, this.e2, this.e3, this.vect);
     }
 
     /**
@@ -74,25 +72,19 @@ public class TriangleTest extends TestCase {
         final Edge e31 = new Edge(p11, p31);
         final Vector3d normal1 = new Vector3d(0, 0, 1);
 
-        final Point p4 = new Point(0, 0, 1);
-        final Point p5 = new Point(0, 1, 1);
-        final Point p6 = new Point(1, 0, 1);
         final Edge e4 = new Edge(p11, p21);
         final Edge e5 = new Edge(p21, p31);
         final Edge e6 = new Edge(p11, p31);
         final Vector3d normal2 = new Vector3d(0, 0, 1);
 
-        final Point p7 = new Point(0, 0, 2);
-        final Point p8 = new Point(0, 1, 2);
-        final Point p9 = new Point(1, 0, 2);
         final Edge e7 = new Edge(p11, p21);
         final Edge e8 = new Edge(p21, p31);
         final Edge e9 = new Edge(p11, p31);
         final Vector3d normal3 = new Vector3d(0, 0, 1);
 
-        final Triangle t1 = new Triangle(p11, p21, p31, e11, e21, e31, normal1);
-        final Triangle t2 = new Triangle(p4, p5, p6, e4, e5, e6, normal2);
-        final Triangle t3 = new Triangle(p7, p8, p9, e7, e8, e9, normal3);
+        final Triangle t1 = new Triangle(e11, e21, e31, normal1);
+        final Triangle t2 = new Triangle(e4, e5, e6, normal2);
+        final Triangle t3 = new Triangle(e7, e8, e9, normal3);
 
         Assert.assertTrue(t1.isInPlanes(t2.getNormal(), t2.getP1(), 1.1));
         Assert.assertFalse(t1.isInPlanes(t3.getNormal(), t3.getP1(), 1.1));
@@ -101,23 +93,22 @@ public class TriangleTest extends TestCase {
 
     /**
      * Test method for
-     * {@link nantes1900.models.basis.Triangle#angularTolerance(javax.vecmath.Vector3d, double)}
+     * {@link nantes1900.models.basis.Triangle#angle(javax.vecmath.Vector3d, double)}
      * . Test method for
-     * {@link nantes1900.models.basis.Triangle#angularTolerance(nantes1900.models.basis.Triangle, double)}
+     * {@link nantes1900.models.basis.Triangle#angle(nantes1900.models.basis.Triangle, double)}
      * .
      * @throws MoreThanTwoTrianglesPerEdgeException
      */
     @Test
     public final void testAngularTolerance() {
         final Vector3d vector = new Vector3d(0, 1, 0);
-        final Triangle tBis = new Triangle(this.p1, this.p2, this.p3, this.e1,
-                this.e2, this.e3, vector);
+        final Triangle tBis = new Triangle(this.e1, this.e2, this.e3, vector);
 
-        Assert.assertFalse(this.t.angularTolerance(vector, 60));
-        Assert.assertFalse(this.t.angularTolerance(tBis, 60));
+        Assert.assertFalse(this.t.angle(vector, 60));
+        Assert.assertFalse(this.t.angle(tBis, 60));
 
-        Assert.assertTrue(this.t.angularTolerance(vector, 100));
-        Assert.assertTrue(this.t.angularTolerance(tBis, 100));
+        Assert.assertTrue(this.t.angle(vector, 100));
+        Assert.assertTrue(this.t.angle(tBis, 100));
     }
 
     /**
@@ -150,8 +141,7 @@ public class TriangleTest extends TestCase {
      */
     @Test
     public final void testEqualsObject() {
-        final Triangle tBis = new Triangle(this.p1, this.p2, this.p3, this.e1,
-                this.e2, this.e3, this.vect);
+        final Triangle tBis = new Triangle(this.e1, this.e2, this.e3, this.vect);
         Assert.assertTrue(this.t.equals(tBis));
         Assert.assertTrue(tBis.equals(this.t));
     }
@@ -171,12 +161,9 @@ public class TriangleTest extends TestCase {
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
 
-        final Triangle t2 = new Triangle(this.p1, this.p2, p4, this.e1, e4, e5,
-                this.vect);
-        final Triangle t3 = new Triangle(this.p1, this.p3, p5, this.e3, e6, e7,
-                this.vect);
-        final Triangle t4 = new Triangle(this.p2, this.p3, p6, this.e2, e8, e9,
-                this.vect);
+        final Triangle t2 = new Triangle(this.e1, e4, e5, this.vect);
+        final Triangle t3 = new Triangle(this.e3, e6, e7, this.vect);
+        final Triangle t4 = new Triangle(this.e2, e8, e9, this.vect);
 
         final List<Triangle> l = this.t.getNeighbours();
 
@@ -203,9 +190,9 @@ public class TriangleTest extends TestCase {
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
 
-        new Triangle(this.p1, this.p2, p4, this.e1, e4, e5, this.vect);
-        new Triangle(this.p1, this.p3, p5, this.e3, e6, e7, this.vect);
-        new Triangle(this.p2, this.p3, p6, this.e2, e8, e9, this.vect);
+        new Triangle(this.e1, e4, e5, this.vect);
+        new Triangle(this.e3, e6, e7, this.vect);
+        new Triangle(this.e2, e8, e9, this.vect);
 
         Assert.assertTrue(this.t.getNumNeighbours() == 3);
     }
@@ -215,7 +202,7 @@ public class TriangleTest extends TestCase {
      */
     @Test
     public final void testGetPoints() {
-        final List<Point> pointList = new ArrayList<Point>(this.t.getPoints());
+        final List<Point> pointList = this.t.getPoints();
         Assert.assertTrue(pointList.get(0) == this.p1);
         Assert.assertTrue(pointList.get(1) == this.p2);
         Assert.assertTrue(pointList.get(2) == this.p3);
@@ -237,12 +224,9 @@ public class TriangleTest extends TestCase {
         final Edge e7 = new Edge(this.p2, p5);
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
-        final Triangle t2 = new Triangle(this.p1, this.p2, p4, this.e1, e4, e5,
-                this.vect);
-        final Triangle t3 = new Triangle(this.p1, this.p3, p5, this.e3, e6, e7,
-                this.vect);
-        final Triangle t4 = new Triangle(this.p2, this.p3, p6, this.e2, e8, e9,
-                this.vect);
+        final Triangle t2 = new Triangle(this.e1, e4, e5, this.vect);
+        final Triangle t3 = new Triangle(this.e3, e6, e7, this.vect);
+        final Triangle t4 = new Triangle(this.e2, e8, e9, this.vect);
 
         Assert.assertFalse(this.t.isNeighboor(this.t));
         Assert.assertTrue(this.t.isNeighboor(t2));
@@ -283,14 +267,10 @@ public class TriangleTest extends TestCase {
         final Edge e8 = new Edge(this.p1, p6);
         final Edge e9 = new Edge(this.p2, p6);
         final Edge e10 = new Edge(p5, p6);
-        final Triangle t2 = new Triangle(this.p1, this.p2, p4, this.e1, e4, e5,
-                this.vect);
-        final Triangle t3 = new Triangle(this.p1, this.p3, p5, this.e3, e6, e7,
-                this.vect);
-        final Triangle t4 = new Triangle(this.p2, this.p3, p6, this.e2, e8, e9,
-                this.vect);
-        final Triangle t5 = new Triangle(this.p1, p5, p6, e6, e8, e10,
-                this.vect);
+        final Triangle t2 = new Triangle(this.e1, e4, e5, this.vect);
+        final Triangle t3 = new Triangle(this.e3, e6, e7, this.vect);
+        final Triangle t4 = new Triangle(this.e2, e8, e9, this.vect);
+        final Triangle t5 = new Triangle(e6, e8, e10, this.vect);
 
         final Mesh contain = new Mesh();
         contain.add(this.t);
@@ -299,12 +279,10 @@ public class TriangleTest extends TestCase {
         contain.add(t4);
         contain.add(t5);
 
-        final Triangle t6 = new Triangle(new Point(0.05, 0.05, 0.05),
-                new Point(0.05, 0.05, 0.05), new Point(0.05, 0.05, 0.05),
-                new Edge(new Point(0.05, 0.05, 0.05), new Point(0.05, 0.05,
-                        0.05)), new Edge(new Point(0.05, 0.05, 0.05),
-                        new Point(0.05, 0.05, 0.05)), new Edge(new Point(0.05,
-                        0.05, 0.05), new Point(0.05, 0.05, 0.05)), this.vect);
+        final Triangle t6 = new Triangle(new Edge(new Point(0.05, 0.05, 0.05),
+                new Point(0.05, 0.05, 0.05)), new Edge(new Point(0.05, 0.05,
+                0.05), new Point(0.05, 0.05, 0.05)), new Edge(new Point(0.05,
+                0.05, 0.05), new Point(0.05, 0.05, 0.05)), this.vect);
 
         final Mesh ret = new Mesh();
         this.t.returnNeighbours(ret, contain);
@@ -435,5 +413,54 @@ public class TriangleTest extends TestCase {
     @Test
     public final void testZMinPoint() {
         Assert.assertTrue(this.t.zMinPoint() == this.p1);
+    }
+
+    /**
+     * Test method for {@link nantes1900.models.basis.Triangle#project()}.
+     */
+    @Test
+    public void testProject() {
+        Point proj = this.t.project(new Point(4, 5, 1));
+        Assert.assertTrue(proj.getX() == 4 && proj.getY() == 3.5
+                && proj.getZ() == 2.5);
+    }
+
+    @Test
+    public static void testComputeArea() {
+        final Point point1 = new Point(0, 0, 0);
+        final Point point2 = new Point(4, 0, 0);
+        final Point point3 = new Point(0, 3, 0);
+
+        final Vector3d vector = new Vector3d(0, 0, 1);
+
+        final Edge edge1 = new Edge(point1, point2);
+        final Edge edge2 = new Edge(point2, point3);
+        final Edge edge3 = new Edge(point3, point1);
+
+        Triangle triangle = new Triangle(edge1, edge2, edge3, vector);
+
+        Assert.assertTrue(triangle.computeArea() == 6);
+    }
+
+    @Test
+    public static void testIsInside() {
+        final Point point1 = new Point(0, 0, 0);
+        final Point point2 = new Point(4, 0, 0);
+        final Point point3 = new Point(0, 3, 0);
+
+        final Vector3d vector = new Vector3d(0, 0, 1);
+
+        final Edge edge1 = new Edge(point1, point2);
+        final Edge edge2 = new Edge(point2, point3);
+        final Edge edge3 = new Edge(point3, point1);
+
+        Triangle triangle = new Triangle(edge1, edge2, edge3, vector);
+
+        Assert.assertTrue(triangle.isInside(new Point(1, 1, 0)));
+        Assert.assertTrue(triangle.isInside(new Point(4, 0, 0)));
+
+        Assert.assertFalse(triangle.isInside(new Point(-1, 1, 0)));
+        Assert.assertFalse(triangle.isInside(new Point(1, -1, 0)));
+        Assert.assertFalse(triangle.isInside(new Point(2, 1.6, 0)));
     }
 }

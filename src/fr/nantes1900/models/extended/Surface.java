@@ -491,12 +491,12 @@ public class Surface {
 
         final Edge e1 = new Edge(p1, p1);
         final Edge e2 = new Edge(p1, p3);
+        final Edge e3 = new Edge(p3, p1);
 
         final Vector3d vect = new Vector3d();
         vect.cross(normalGround, e2.convertToVector3d());
 
-        computedWallPlane.getMesh().add(
-                new Triangle(p1, p1, p3, e1, e2, e2, vect));
+        computedWallPlane.getMesh().add(new Triangle(e1, e2, e3, vect));
 
         return computedWallPlane;
     }

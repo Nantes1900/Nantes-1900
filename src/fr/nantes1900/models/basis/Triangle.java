@@ -20,11 +20,6 @@ public class Triangle {
     private static final int NB_VERTICES = 3;
 
     /**
-     * Array of three points of the triangle.
-     */
-    private final Point[] points = new Point[NB_VERTICES];
-
-    /**
      * Normal of the triangle.
      */
     private final Vector3d normal = new Vector3d();
@@ -34,14 +29,10 @@ public class Triangle {
      */
     private final Edge[] edges = new Edge[NB_VERTICES];
 
+    private final List<Mesh> meshes = new ArrayList<>();
+
     /**
      * Constructor of the triangle.
-     * @param point0
-     *            one point
-     * @param point1
-     *            one point
-     * @param point2
-     *            one point
      * @param edge1
      *            one edge composed by two of the three points
      * @param edge2
@@ -51,13 +42,9 @@ public class Triangle {
      * @param normalNew
      *            the normal of the triangle
      */
-    public Triangle(final Point point0, final Point point1, final Point point2,
-            final Edge edge1, final Edge edge2, final Edge edge3,
+    public Triangle(final Edge edge1, final Edge edge2, final Edge edge3,
             final Vector3d normalNew) {
 
-        this.points[0] = point0;
-        this.points[1] = point1;
-        this.points[2] = point2;
         this.normal.set(normalNew);
         this.edges[0] = edge1;
         this.edges[1] = edge2;
@@ -75,13 +62,10 @@ public class Triangle {
      *            the triangle to copy
      */
     public Triangle(final Triangle triangle) {
-        this.points[0] = new Point(triangle.points[0]);
-        this.points[1] = new Point(triangle.points[1]);
-        this.points[2] = new Point(triangle.points[2]);
         this.normal.set(new Vector3d(triangle.normal));
-        this.edges[0] = new Edge(this.points[0], this.points[1]);
-        this.edges[1] = new Edge(this.points[1], this.points[2]);
-        this.edges[2] = new Edge(this.points[2], this.points[0]);
+        this.edges[0] = triangle.getE1();
+        this.edges[1] = triangle.getE2();
+        this.edges[2] = triangle.getE3();
         this.edges[0].addTriangle(this);
         this.edges[1].addTriangle(this);
         this.edges[2].addTriangle(this);
@@ -96,9 +80,19 @@ public class Triangle {
      *            the angle error
      * @return true if they have the same orientation, false otherwise
      */
-    public final boolean angularTolerance(final Triangle face,
-            final double error) {
-        return this.angularTolerance(face.normal, error);
+    public final boolean angle(final Triangle face, final double error) {
+        return this.angle(face.normal, error);
+    }
+
+    public boolean add(Mesh mesh) {
+        if (!this.meshes.contains(mesh)) {
+            return this.meshes.add(mesh);
+        }
+        return false;
+    }
+
+    public final List<Mesh> getMeshes() {
+        return this.meshes;
     }
 
     /**
@@ -111,8 +105,7 @@ public class Triangle {
      * @return true if its normal and the vector have the same orientation,
      *         false otherwise
      */
-    public final boolean angularTolerance(final Vector3d vector,
-            final double error) {
+    public final boolean angle(final Vector3d vector, final double error) {
         return this.normal.angle(vector) * Edge.CONVERSION_PI_DEGREES < error;
     }
 
@@ -123,8 +116,13 @@ public class Triangle {
      * @return true if the edge e is one of the edges of this triangle, false
      *         otherwise.
      */
-    public final boolean contains(final Edge e) {
-        return this.getEdges().contains(e);
+    public final boolean contains(final Edge edge) {
+        for (Edge e : this.edges) {
+            if (edge == e) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -135,12 +133,31 @@ public class Triangle {
      * @return true is one point is equal with p
      */
     public final boolean contains(final Point point) {
-        for (final Point point2 : this.points) {
-            if (point.equals(point2)) {
+        for (final Edge edge : this.edges) {
+            if (edge.contains(point)) {
                 return true;
             }
         }
         return false;
+    }
+
+    // FIXME : try to fix the bugs contained here...
+    public final List<Point> getPoints() {
+        List<Point> points = new ArrayList<>();
+        for (Edge e : this.edges) {
+            if (!points.contains(e.getP1())) {
+                points.add(e.getP1());
+            }
+            if (!points.contains(e.getP2())) {
+                points.add(e.getP2());
+            }
+        }
+        
+        // For bad formed triangles...
+        if (points.size() < 3) {
+            points.add(points.get(0));
+        }
+        return points;
     }
 
     /*
@@ -160,8 +177,8 @@ public class Triangle {
         }
         final Triangle other = (Triangle) obj;
 
-        return this.contains(other.points[0]) && this.contains(other.points[1])
-                && this.contains(other.points[2]);
+        return this.contains(other.getE1()) && this.contains(other.getE2())
+                && this.contains(other.getE3());
     }
 
     /**
@@ -243,7 +260,7 @@ public class Triangle {
      * @return the first point
      */
     public final Point getP1() {
-        return this.points[0];
+        return this.getPoints().get(0);
     }
 
     /**
@@ -251,7 +268,7 @@ public class Triangle {
      * @return the second point
      */
     public final Point getP2() {
-        return this.points[1];
+        return this.getPoints().get(1);
     }
 
     /**
@@ -259,15 +276,7 @@ public class Triangle {
      * @return the third point
      */
     public final Point getP3() {
-        return this.points[2];
-    }
-
-    /**
-     * Getter.
-     * @return a collection containing the three points
-     */
-    public final Collection<Point> getPoints() {
-        return Arrays.asList(this.points);
+        return this.getPoints().get(2);
     }
 
     /**
@@ -277,7 +286,7 @@ public class Triangle {
     @SuppressWarnings("boxing")
     public final List<Double> getPointsAsCoordinates() {
         final List<Double> list = new ArrayList<>();
-        for (final Point p : this.points) {
+        for (final Point p : this.getPoints()) {
             for (final double d : p.getPointAsCoordinates()) {
                 list.add(d);
             }
@@ -291,8 +300,9 @@ public class Triangle {
      */
     @Override
     public final int hashCode() {
-        return this.points[0].hashCode() + this.points[1].hashCode()
-                + this.points[2].hashCode();
+        List<Point> points = this.getPoints();
+        return points.get(0).hashCode() + points.get(1).hashCode()
+                + points.get(2).hashCode();
     }
 
     /**
@@ -391,8 +401,9 @@ public class Triangle {
      */
     @Override
     public final String toString() {
-        return this.points[0].toString() + "\n" + this.points[1].toString()
-                + "\n" + this.points[2].toString() + "\n"
+        List<Point> points = this.getPoints();
+        return points.get(0).toString() + "\n" + points.get(1).toString()
+                + "\n" + points.get(2).toString() + "\n"
                 + this.normal.toString();
     }
 
@@ -401,7 +412,8 @@ public class Triangle {
      * @return the average x-coordinate of the three points
      */
     public final double xAverage() {
-        return (this.points[0].getX() + this.points[1].getX() + this.points[2]
+        List<Point> points = this.getPoints();
+        return (points.get(0).getX() + points.get(1).getX() + points.get(2)
                 .getX()) / Triangle.NB_VERTICES;
     }
 
@@ -410,8 +422,9 @@ public class Triangle {
      * @return the x-maximum of the three points
      */
     public final double xMax() {
-        return Math.max(this.points[0].getX(),
-                Math.max(this.points[1].getX(), this.points[2].getX()));
+        List<Point> points = this.getPoints();
+        return Math.max(points.get(0).getX(),
+                Math.max(points.get(1).getX(), points.get(2).getX()));
     }
 
     /**
@@ -420,7 +433,7 @@ public class Triangle {
      */
     public final Point xMaxPoint() {
         final double xMax = this.xMax();
-        for (final Point p : this.points) {
+        for (final Point p : this.getPoints()) {
             if (p.getX() == xMax) {
                 return p;
             }
@@ -433,8 +446,9 @@ public class Triangle {
      * @return the x-minimum of the three points
      */
     public final double xMin() {
-        return Math.min(this.points[0].getX(),
-                Math.min(this.points[1].getX(), this.points[2].getX()));
+        List<Point> points = this.getPoints();
+        return Math.min(points.get(0).getX(),
+                Math.min(points.get(1).getX(), points.get(2).getX()));
     }
 
     /**
@@ -443,7 +457,7 @@ public class Triangle {
      */
     public final Point xMinPoint() {
         final double xMin = this.xMin();
-        for (final Point p : this.points) {
+        for (final Point p : this.getPoints()) {
             if (p.getX() == xMin) {
                 return p;
             }
@@ -456,7 +470,8 @@ public class Triangle {
      * @return the average y-coordinate of the three points
      */
     public final double yAverage() {
-        return (this.points[0].getY() + this.points[1].getY() + this.points[2]
+        List<Point> points = this.getPoints();
+        return (points.get(0).getY() + points.get(1).getY() + points.get(2)
                 .getY()) / Triangle.NB_VERTICES;
     }
 
@@ -465,8 +480,9 @@ public class Triangle {
      * @return the y-maximum of the three points
      */
     public final double yMax() {
-        return Math.max(this.points[0].getY(),
-                Math.max(this.points[1].getY(), this.points[2].getY()));
+        List<Point> points = this.getPoints();
+        return Math.max(points.get(0).getY(),
+                Math.max(points.get(1).getY(), points.get(2).getY()));
     }
 
     /**
@@ -475,7 +491,7 @@ public class Triangle {
      */
     public final Point yMaxPoint() {
         final double yMax = this.yMax();
-        for (final Point p : this.points) {
+        for (final Point p : this.getPoints()) {
             if (p.getY() == yMax) {
                 return p;
             }
@@ -488,8 +504,9 @@ public class Triangle {
      * @return the y-minimum of the three points
      */
     public final double yMin() {
-        return Math.min(this.points[0].getY(),
-                Math.min(this.points[1].getY(), this.points[2].getY()));
+        List<Point> points = this.getPoints();
+        return Math.min(points.get(0).getY(),
+                Math.min(points.get(1).getY(), points.get(2).getY()));
     }
 
     /**
@@ -498,7 +515,7 @@ public class Triangle {
      */
     public final Point yMinPoint() {
         final double yMin = this.yMin();
-        for (final Point p : this.points) {
+        for (final Point p : this.getPoints()) {
             if (p.getY() == yMin) {
                 return p;
             }
@@ -511,8 +528,9 @@ public class Triangle {
      * @return the average z-coordinate of the three points
      */
     public final double zAverage() {
-        final double zAverage = this.points[0].getZ() + this.points[1].getZ()
-                + this.points[2].getZ();
+        List<Point> points = this.getPoints();
+        final double zAverage = points.get(0).getZ() + points.get(1).getZ()
+                + points.get(2).getZ();
         return zAverage / Triangle.NB_VERTICES;
     }
 
@@ -521,8 +539,9 @@ public class Triangle {
      * @return the z-maximum of the three points
      */
     public final double zMax() {
-        return Math.max(this.points[0].getZ(),
-                Math.max(this.points[1].getZ(), this.points[2].getZ()));
+        List<Point> points = this.getPoints();
+        return Math.max(points.get(0).getZ(),
+                Math.max(points.get(1).getZ(), points.get(2).getZ()));
     }
 
     /**
@@ -531,7 +550,7 @@ public class Triangle {
      */
     public final Point zMaxPoint() {
         final double zMax = this.zMax();
-        for (final Point p : this.points) {
+        for (final Point p : this.getPoints()) {
             if (p.getZ() == zMax) {
                 return p;
             }
@@ -544,8 +563,9 @@ public class Triangle {
      * @return the z-minimum of the three points
      */
     public final double zMin() {
-        return Math.min(this.points[0].getZ(),
-                Math.min(this.points[1].getZ(), this.points[2].getZ()));
+        List<Point> points = this.getPoints();
+        return Math.min(points.get(0).getZ(),
+                Math.min(points.get(1).getZ(), points.get(2).getZ()));
     }
 
     /**
@@ -554,11 +574,149 @@ public class Triangle {
      */
     public final Point zMinPoint() {
         final double zMin = this.zMin();
-        for (final Point p : this.points) {
+        for (final Point p : this.getPoints()) {
             if (p.getZ() == zMin) {
                 return p;
             }
         }
         return null;
+    }
+
+    public void setE1(Edge e) {
+        this.synchronizeBeginning();
+        this.edges[0] = e;
+        this.synchronizeEnd();
+    }
+
+    public void setE2(Edge e) {
+        this.synchronizeBeginning();
+        this.edges[1] = e;
+        this.synchronizeEnd();
+    }
+
+    public void setE3(Edge e) {
+        this.synchronizeBeginning();
+        this.edges[2] = e;
+        this.synchronizeEnd();
+    }
+
+    public void replace(Edge eOld, Edge eNew) {
+        if (this.edges[0] == eOld) {
+            this.synchronizeBeginning();
+
+            eOld.removeTriangle(this);
+            eNew.addTriangle(this);
+
+            this.edges[0] = eNew;
+
+            this.synchronizeEnd();
+
+        } else if (this.edges[1] == eOld) {
+            this.synchronizeBeginning();
+
+            eOld.removeTriangle(this);
+            eNew.addTriangle(this);
+
+            this.edges[1] = eNew;
+
+            this.synchronizeEnd();
+
+        } else if (this.edges[2] == eOld) {
+            this.synchronizeBeginning();
+
+            eOld.removeTriangle(this);
+            eNew.addTriangle(this);
+
+            this.edges[2] = eNew;
+
+            this.synchronizeEnd();
+        }
+    }
+
+    public final void synchronizeBeginning() {
+        for (Mesh m : this.meshes) {
+            m.remove(this);
+        }
+    }
+
+    public final void synchronizeEnd() {
+        for (Mesh m : this.meshes) {
+            m.add(this);
+        }
+    }
+
+    public boolean remove(Mesh mesh) {
+        return this.meshes.remove(mesh);
+    }
+
+    // FIXME : think about this... or remove it...
+    public void recomputeNormal() {
+        Vector3d norm = new Vector3d();
+        norm.cross(this.edges[0].convertToVector3d(),
+                this.edges[1].convertToVector3d());
+        if (norm.dot(this.normal) < 0) {
+            norm.negate();
+        }
+        this.normal.set(norm);
+    }
+
+    public double computeArea() {
+        // Héron formula.
+        double a = this.edges[0].length();
+        double b = this.edges[1].length();
+        double c = this.edges[2].length();
+        double s = 0.5 * (a + b + c);
+        return Math.sqrt(s * (s - a) * (s - b) * (s - c));
+    }
+
+    public Point project(Point p) {
+        double a = this.normal.getX();
+        double b = this.normal.getY();
+        double c = this.normal.getZ();
+        double k1 = (p.getX() - this.getP1().getX()) * a
+                + (p.getY() - this.getP1().getY()) * b
+                + (p.getZ() - this.getP1().getZ()) * c;
+        double k = -k1 / (a * a + b * b + c * c);
+
+        return new Point(p.getX() + a * k, p.getY() + b * k, p.getZ() + c * k);
+    }
+
+    public boolean isInside(Point d) {
+        Point a = this.getP1();
+        Point b = this.getP2();
+        Point c = this.getP3();
+
+        if (d.equals(a) || d.equals(b) || d.equals(c)) {
+            return true;
+        }
+
+        Vector3d ab = new Vector3d(b.getX() - a.getX(), b.getY() - a.getY(),
+                b.getZ() - a.getZ());
+        Vector3d bc = new Vector3d(c.getX() - b.getX(), c.getY() - b.getY(),
+                c.getZ() - b.getZ());
+        Vector3d ca = new Vector3d(a.getX() - c.getX(), a.getY() - c.getY(),
+                a.getZ() - c.getZ());
+
+        Vector3d ad = new Vector3d(d.getX() - a.getX(), d.getY() - a.getY(),
+                d.getZ() - a.getZ());
+        Vector3d bd = new Vector3d(d.getX() - b.getX(), d.getY() - b.getY(),
+                d.getZ() - b.getZ());
+        Vector3d cd = new Vector3d(d.getX() - c.getX(), d.getY() - c.getY(),
+                d.getZ() - c.getZ());
+
+        Vector3d cross1 = new Vector3d();
+        Vector3d cross2 = new Vector3d();
+        Vector3d cross3 = new Vector3d();
+
+        cross1.cross(ad, ab);
+        cross2.cross(bd, bc);
+        cross3.cross(cd, ca);
+
+        double dot1 = cross1.dot(cross2);
+        double dot2 = cross1.dot(cross3);
+        double dot3 = cross2.dot(cross3);
+
+        return (dot1 > 0 && dot2 > 0 && dot3 > 0)
+                || (dot1 < 0 && dot2 < 0 && dot3 < 0);
     }
 }

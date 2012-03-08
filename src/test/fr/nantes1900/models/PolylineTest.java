@@ -136,23 +136,26 @@ public class PolylineTest extends TestCase {
         Assert.assertFalse(list.contains(point5));
     }
 
-    /**
-     * Test method for
-     * {@link fr.nantes1900.models.basis.Polygon#isInCylinder2D(fr.nantes1900.models.basis.Point, fr.nantes1900.models.basis.Point, fr.nantes1900.models.basis.Point, double)}
-     * .
-     */
-    @Test
-    public final static void testIsInCylinder2D() {
-        final Point point1 = new Point(0, 0, 0);
-        final Point point2 = new Point(1, 1, 0);
-        final Point point3 = new Point(2.2, 2, 0);
-        final Edge e = new Edge(point1, point2);
-        final double error = 0.3;
-        Assert.assertTrue(e.isInInfiniteCylinder2D(point3, error));
-
-        final Point point4 = new Point(3, 2, 0);
-        Assert.assertFalse(e.isInInfiniteCylinder2D(point4, error));
-    }
+    // /**
+    // * Test method for
+    // * {@link
+    // fr.nantes1900.models.basis.Polygon#isInCylinder2D(fr.nantes1900.models.basis.Point,
+    // fr.nantes1900.models.basis.Point, fr.nantes1900.models.basis.Point,
+    // double)}
+    // * .
+    // */
+    // @Test
+    // public final static void testIsInCylinder2D() {
+    // final Point point1 = new Point(0, 0, 0);
+    // final Point point2 = new Point(1, 1, 0);
+    // final Point point3 = new Point(2.2, 2, 0);
+    // final Edge e = new Edge(point1, point2);
+    // final double error = 0.3;
+    // Assert.assertTrue(e.isInInfiniteCylinder2D(point3, error));
+    //
+    // final Point point4 = new Point(3, 2, 0);
+    // Assert.assertFalse(e.isInInfiniteCylinder2D(point4, error));
+    // }
 
     /**
      * Test method for
@@ -199,13 +202,13 @@ public class PolylineTest extends TestCase {
         final Edge edge1 = new Edge(point1, point2);
         final Edge edge2 = new Edge(point2, point3);
         final Edge edge3 = new Edge(point3, point1);
-        final Triangle t1 = new Triangle(point1, point2, point3, edge1, edge2,
-                edge3, new Vector3d(0, 0, 0));
+        final Triangle t1 = new Triangle(edge1, edge2, edge3, new Vector3d(0,
+                0, 0));
 
         final Edge edge4 = new Edge(point1, point4);
         final Edge edge5 = new Edge(point2, point4);
-        final Triangle t2 = new Triangle(point1, point2, point4, edge1, edge4,
-                edge5, new Vector3d(0, 0, 1));
+        final Triangle t2 = new Triangle(edge1, edge4, edge5, new Vector3d(0,
+                0, 1));
 
         final Polygon polygon = new Polygon();
         polygon.add(edge1);

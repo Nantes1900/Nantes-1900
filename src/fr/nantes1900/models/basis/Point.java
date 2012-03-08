@@ -1,5 +1,7 @@
 package fr.nantes1900.models.basis;
 
+import java.util.List;
+
 import fr.nantes1900.utils.MatrixMethod;
 
 /**
@@ -57,8 +59,7 @@ public class Point {
      *            of base change
      */
     public final void changeBase(final double[][] matrix) {
-        final double[] coords = { this.x, this.y, this.z,
-        };
+        final double[] coords = {this.x, this.y, this.z,};
         this.set(MatrixMethod.changeBase(coords, matrix));
     }
 
@@ -109,8 +110,7 @@ public class Point {
      * @return an array of doubles
      */
     public final double[] getPointAsCoordinates() {
-        return new double[] { this.x, this.y, this.z,
-        };
+        return new double[]{this.x, this.y, this.z,};
     }
 
     /**
@@ -217,5 +217,33 @@ public class Point {
     @Override
     public final String toString() {
         return new String("(" + this.x + ", " + this.y + ", " + this.z + ")");
+    }
+
+    public Point closest(List<Point> points) {
+        double distance = points.get(0).distance(this);
+        Point closest = points.get(0);
+
+        for (Point p : points) {
+            if (p.distance(this) < distance) {
+                distance = p.distance(this);
+                closest = p;
+            }
+        }
+
+        return closest;
+    }
+
+    // FIXME : put in Polygon, or in Point.
+    public Point getCloser(List<Point> points) {
+        Point pClose = points.get(0);
+        double distance = this.distance(pClose);
+        for (Point point : points) {
+            if (point != this && this.distance(point) < distance) {
+                distance = this.distance(point);
+                pClose = point;
+            }
+        }
+
+        return pClose;
     }
 }

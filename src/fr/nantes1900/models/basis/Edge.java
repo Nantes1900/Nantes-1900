@@ -7,8 +7,6 @@ import java.util.List;
 
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.models.basis.Polygon.BadFormedPolylineException;
-
 /**
  * Implement an edge composed of two points, and the triangles containing this
  * edge.
@@ -17,14 +15,14 @@ import fr.nantes1900.models.basis.Polygon.BadFormedPolylineException;
 public class Edge {
 
     /**
-     * List of triangles containing this edge. The can be two triangles maximum.
-     */
-    private List<Triangle> triangles = new ArrayList<>(2);
-
-    /**
      * Array of two points describing the edge.
      */
     private final Point[] points = new Point[2];
+
+    /**
+     * List of triangles containing this edge. The can be two triangles maximum.
+     */
+    private List<Triangle> triangles = new ArrayList<>(2);
 
     /**
      * The coefficient pi in degrees.
@@ -35,18 +33,6 @@ public class Edge {
      */
     public static final double CONVERSION_PI_DEGREES = Edge.PI_DEGREES
             / Math.PI;
-
-    /**
-     * Copy constructor. Caution : use it very cautiously, because it creates
-     * new Edges with same values and not the same references.
-     * @param edge
-     *            the polyline to copy
-     */
-    public Edge(final Edge edge) {
-        this.points[0] = edge.getP1();
-        this.points[1] = edge.getP2();
-        this.triangles = new ArrayList<>(edge.triangles);
-    }
 
     /**
      * Constructor.
@@ -60,6 +46,11 @@ public class Edge {
         this.points[1] = point2;
     }
 
+    public Edge(final Edge edge) {
+        this.points[0] = edge.points[0];
+        this.points[1] = edge.points[1];
+    }
+
     /**
      * Adds a triangle to the edge.
      * @param triangle
@@ -71,16 +62,6 @@ public class Edge {
                 this.triangles.add(triangle);
             }
         }
-    }
-
-    /**
-     * Calculates the middle point of the edge.
-     * @return the middle point
-     */
-    public final Point computeMiddle() {
-        return new Point((this.getP1().getX() + this.getP2().getX()) / 2, (this
-                .getP1().getY() + this.getP2().getY()) / 2, (this.getP1()
-                .getZ() + this.getP2().getZ()) / 2);
     }
 
     /**
@@ -133,26 +114,6 @@ public class Edge {
     }
 
     /**
-     * Returns the number of neighbours of the edge contained in the polyline p.
-     * Two neighbours are two edges which share a point.
-     * @param polygon
-     *            the polyline which contains the edges
-     * @return the number of neighbours
-     */
-    public final int getNumNeighbours(final Polygon polygon) {
-        if (!polygon.contains(this)) {
-            throw new InvalidParameterException();
-        }
-        int counter = 0;
-        for (final Edge e : polygon.getEdgeList()) {
-            if (this.isNeighboor(e)) {
-                counter = counter + 1;
-            }
-        }
-        return counter;
-    }
-
-    /**
      * Getter.
      * @return the first point
      */
@@ -194,13 +155,13 @@ public class Edge {
     }
 
     /**
-     * Checks if this edge is part of the bound of the mesh m.
+     * Checks if this edge is part of the border of the mesh m.
      * @param m
      *            the mesh
      * @return true if this edge contains only one triangle belonging to m,
      *         false otherwise.
      */
-    public final boolean isBound(final Mesh m) {
+    public final boolean isBorder(final Mesh m) {
         int counter = 0;
         for (final Triangle triangle : this.triangles) {
             if (m.contains(triangle)) {
@@ -249,82 +210,6 @@ public class Edge {
     }
 
     /**
-     * Checks if p is contained in the frame 2D formed by two segments parallels
-     * to this edge with a coefficient. Caution : this method expects to be in
-     * the plane (x,y).
-     * @param point
-     *            the point to check
-     * @param error
-     *            the distance between this edge and its two parallel segments
-     * @return true if p is contained between the two segments and false
-     *         otherwise
-     */
-    public final boolean isInInfiniteCylinder2D(final Point point,
-            final double error) {
-
-        double a;
-        double b;
-        double c;
-
-        final Point p1 = this.getP1();
-        final Point p2 = this.getP2();
-
-        // We calculate the equation of the segment, and of the two lines
-        // parallels to it and which frame the line
-        if (p1.getX() == p2.getX()) {
-            a = 1;
-            b = 0;
-            c = -p1.getX();
-        } else {
-            a = -(p2.getY() - p1.getY()) / (p2.getX() - p1.getX());
-            b = 1;
-            c = -p1.getY() - a * p1.getX();
-        }
-
-        return a * point.getX() + b * point.getY() < -c + error
-                && a * point.getX() + b * point.getY() > -c - error;
-    }
-
-    /**
-     * Checks if p is contained in the infinite cylinder which axis is this
-     * edge, and which radius is error.
-     * @param point
-     *            the point to check
-     * @param error
-     *            the radius of the cylinder
-     * @return true if p is contained in the infinite cylinder and false
-     *         otherwise
-     */
-    public final boolean isInInfiniteCylinder3D(final Point point,
-            final double error) {
-
-        final double x1 = this.getP1().getX();
-        final double x2 = this.getP2().getX();
-        final double x3 = point.getX();
-
-        final double y1 = this.getP1().getY();
-        final double y2 = this.getP2().getY();
-        final double y3 = point.getY();
-
-        final double z1 = this.getP1().getZ();
-        final double z2 = this.getP2().getZ();
-        final double z3 = point.getZ();
-
-        final double lambda = ((x3 - x1) * (x2 - x1) + (y3 - y1) * (y2 - y1) + (z3 - z1)
-                * (z2 - z1))
-                / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
-                        * (z2 - z1));
-
-        final double x4 = lambda * (x2 - x1) + x1;
-        final double y4 = lambda * (y2 - y1) + y1;
-        final double z4 = lambda * (z2 - z1) + z1;
-
-        final Point p4 = new Point(x4, y4, z4);
-
-        return point.distance(p4) <= error;
-    }
-
-    /**
      * Checks if an edge is a neighboor of this edge.
      * @param e
      *            the edge to check
@@ -332,10 +217,8 @@ public class Edge {
      *         edge, or if they are not neighboor
      */
     public final boolean isNeighboor(final Edge e) {
-        if (this == e) {
-            return false;
-        }
-        return this.contains(e.points[0]) || this.contains(e.points[1]);
+        return this != e
+                && (this.contains(e.points[0]) || this.contains(e.points[1]));
     }
 
     /**
@@ -376,7 +259,8 @@ public class Edge {
     }
 
     /**
-     * Returns the projection of a point on the edge.
+     * Returns the projection of a point on the edge. //FIXME : updates this
+     * description.
      * @param point
      *            the point to project
      * @return the point projected
@@ -405,35 +289,17 @@ public class Edge {
                 / ((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1) + (z2 - z1)
                         * (z2 - z1));
 
+        if (lambda >= 1) {
+            return new Point(p2);
+        } else if (lambda <= 0) {
+            return new Point(p1);
+        }
+
         final double x4 = lambda * (x2 - x1) + x1;
         final double y4 = lambda * (y2 - y1) + y1;
         final double z4 = lambda * (z2 - z1) + z1;
 
         return new Point(x4, y4, z4);
-    }
-
-    /**
-     * Returns the edge neighbour of this which contains p and which belongs to
-     * b. If there is a point which does not belong to 2 edges, throw a
-     * BadFormedPolyline exception.
-     * @param p
-     *            the point shared by the two edges
-     * @param b
-     *            the polyline in which must be the edge returned
-     * @return the edge belonging to b which contains p
-     * @throws BadFormedPolylineException
-     *             if a point in the polyline does not belong to the two edges
-     */
-    public final Edge returnNeighbour(final Polygon b, final Point p)
-            throws BadFormedPolylineException {
-
-        final List<Edge> list = b.getNeighbours(p);
-
-        if (list.size() == 2) {
-            list.remove(this);
-            return list.get(0);
-        }
-        throw new BadFormedPolylineException();
     }
 
     /**
@@ -480,8 +346,21 @@ public class Edge {
      *            the first point
      */
     public final void setP1(final Point point) {
+        this.synchronizeBeginning();
         this.points[0] = point;
+        this.synchronizeEnd();
+    }
 
+    public final void synchronizeBeginning() {
+        for (Triangle t : this.triangles) {
+            t.synchronizeBeginning();
+        }
+    }
+
+    public final void synchronizeEnd() {
+        for (Triangle t : this.triangles) {
+            t.synchronizeEnd();
+        }
     }
 
     /**
@@ -490,26 +369,9 @@ public class Edge {
      *            the second point
      */
     public final void setP2(final Point point) {
+        this.synchronizeBeginning();
         this.points[1] = point;
-    }
-
-    /**
-     * Returns the point shared by the two edges. Return null if the two edges
-     * don't share any point.
-     * @param e
-     *            the edge to search in
-     * @return the point shared by this edge and the other
-     */
-    public final Point sharedPoint(final Edge e) {
-
-        Point point = null;
-        if (this.contains(e.getP1())) {
-            point = e.getP1();
-        }
-        if (this.contains(e.getP2())) {
-            point = e.getP2();
-        }
-        return point;
+        this.synchronizeEnd();
     }
 
     /*
@@ -519,5 +381,27 @@ public class Edge {
     @Override
     public final String toString() {
         return new String("(" + this.getP1() + ", " + this.getP2() + ")");
+    }
+
+    public boolean removeTriangle(Triangle triangle) {
+        return this.triangles.remove(triangle);
+    }
+
+    public void replace(Point pOld, Point pNew) {
+        if (this.points[0] == pOld) {
+            this.synchronizeBeginning();
+            this.points[0] = pNew;
+            this.synchronizeEnd();
+        } else if (this.points[1] == pOld) {
+            this.synchronizeBeginning();
+            this.points[1] = pNew;
+            this.synchronizeEnd();
+        }
+    }
+
+    public void removeTriangles(List<Triangle> list) {
+        for (Triangle t : list) {
+            this.removeTriangle(t);
+        }
     }
 }

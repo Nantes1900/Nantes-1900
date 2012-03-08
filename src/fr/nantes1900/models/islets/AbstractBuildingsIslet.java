@@ -24,6 +24,7 @@ import fr.nantes1900.models.islets.steps.BuildingsIsletStep3;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep4;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep5;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep6;
+import fr.nantes1900.models.islets.steps.BuildingsIsletStep7;
 import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.WriterSTL;
@@ -40,26 +41,32 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
      * The zero building islet step.
      */
     private BuildingsIsletStep0 biStep0;
+
     /**
      * The first building islet step.
      */
     private BuildingsIsletStep1 biStep1;
+
     /**
      * The second building islet step.
      */
     private BuildingsIsletStep2 biStep2;
+
     /**
      * The third building islet step.
      */
     private BuildingsIsletStep3 biStep3;
+
     /**
      * The fourth building islet step.
      */
     private BuildingsIsletStep4 biStep4;
+
     /**
      * The fifth building islet step.
      */
     private BuildingsIsletStep5 biStep5;
+
     /**
      * The sixth building islet step.
      */
@@ -68,40 +75,48 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
     /**
      * The sixth building islet step.
      */
-    private BuildingsIsletStep6 biStep7;
+    private BuildingsIsletStep7 biStep7;
 
     /**
      * The number of the step 0.
      */
     public static final int ZERO_STEP = 0;
+
     /**
      * The number of the step 1.
      */
     public static final int FIRST_STEP = 1;
+
     /**
      * The number of the step 2.
      */
     public static final int SECOND_STEP = 2;
+
     /**
      * The number of the step 3.
      */
     public static final int THIRD_STEP = 3;
+
     /**
      * The number of the step 4.
      */
     public static final int FOURTH_STEP = 4;
+
     /**
      * The number of the step 5.
      */
     public static final int FIFTH_STEP = 5;
+
     /**
      * The number of the step 6.
      */
     public static final int SIXTH_STEP = 6;
+
     /**
      * The number of the step 7.
      */
     public static final int SEVENTH_STEP = 7;
+
     /**
      * The number of the current step.
      */
@@ -118,7 +133,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
     private Vector3d gravityNormal;
 
     /**
-     * Constructor. Stocks the mesh in the initialTotalMesh variable.
+     * Constructor. Saves the mesh in the initialTotalMesh variable.
      */
     public AbstractBuildingsIslet() {
     }
@@ -186,12 +201,68 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
         return this.biStep6;
     }
 
+    @Override
+    public final List<Building> getBuildings() {
+        List<Building> buildings = new ArrayList<>();
+        switch (this.getProgression()) {
+        case AbstractBuildingsIslet.THIRD_STEP:
+            buildings.addAll(this.biStep3.getBuildings());
+            break;
+        case AbstractBuildingsIslet.FOURTH_STEP:
+            buildings.addAll(this.biStep4.getBuildings());
+            break;
+        case AbstractBuildingsIslet.FIFTH_STEP:
+            buildings.addAll(this.biStep5.getBuildings());
+            break;
+        case AbstractBuildingsIslet.SIXTH_STEP:
+            buildings.addAll(this.biStep6.getBuildings());
+            break;
+        case AbstractBuildingsIslet.SEVENTH_STEP:
+            buildings.addAll(this.biStep7.getBuildings());
+            break;
+        default:
+            // TODO : default... If progression is < 3.
+            break;
+        }
+
+        return buildings;
+    }
+
     /**
      * Getter.
      * @return the gravity normal
      */
     public final Vector3d getGravityNormal() {
         return this.gravityNormal;
+    }
+
+    @Override
+    public final Ground getGround() {
+        Ground ground = null;
+        switch (this.getProgression()) {
+        case AbstractBuildingsIslet.SECOND_STEP:
+            ground = this.biStep2.getInitialGrounds();
+            break;
+        case AbstractBuildingsIslet.THIRD_STEP:
+            ground = this.biStep3.getGrounds();
+            break;
+        case AbstractBuildingsIslet.FOURTH_STEP:
+            ground = this.biStep4.getGrounds();
+            break;
+        case AbstractBuildingsIslet.FIFTH_STEP:
+            ground = this.biStep5.getGrounds();
+            break;
+        case AbstractBuildingsIslet.SIXTH_STEP:
+            ground = this.biStep6.getGrounds();
+            break;
+        case AbstractBuildingsIslet.SEVENTH_STEP:
+            ground = this.biStep7.getGrounds();
+            break;
+        default:
+            // TODO : default... If progression is < 3.
+            break;
+        }
+        return ground;
     }
 
     /**
@@ -322,7 +393,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
         }
 
         // TODO and fix types.
-        // this.biStep7 = this.getBiStep6().launchProcess();
+        this.biStep7 = this.getBiStep6().launchProcess();
     }
 
     /**
@@ -422,62 +493,5 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
      */
     public final void setGroundNormal(final Vector3d groundNormalIn) {
         this.groundNormal = groundNormalIn;
-    }
-
-    @Override
-    public final List<Building> getBuildings() {
-        List<Building> buildings = new ArrayList<Building>();
-
-        switch (this.getProgression()) {
-        case 3:
-            buildings.addAll(this.biStep3.getBuildings());
-            break;
-        case 4:
-            buildings.addAll(this.biStep4.getBuildings());
-            break;
-        case 5:
-            buildings.addAll(this.biStep5.getBuildings());
-            break;
-        case 6:
-            buildings.addAll(this.biStep6.getBuildings());
-            break;
-        case 7:
-            buildings.addAll(this.biStep7.getBuildings());
-            break;
-        default:
-            // TODO : default... If progression is < 3.
-            break;
-        }
-
-        return buildings;
-    }
-
-    @Override
-    public final Ground getGround() {
-        Ground ground = null;
-        switch (this.getProgression()) {
-        case 2:
-            ground = this.biStep2.getInitialGrounds();
-            break;
-        case 3:
-            ground = this.biStep3.getGrounds();
-            break;
-        case 4:
-            ground = this.biStep3.getGrounds();
-            break;
-        case 5:
-            ground = this.biStep3.getGrounds();
-            break;
-        case 6:
-            ground = this.biStep3.getGrounds();
-            break;
-        case 7:
-            ground = this.biStep3.getGrounds();
-            break;
-        default:
-            // TODO : default... If progression is < 3.
-            break;
-        }
-        return ground;
     }
 }

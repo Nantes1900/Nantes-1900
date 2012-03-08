@@ -1,4 +1,4 @@
-package test.fr.nantes1900.models.basis;
+package test.fr.nantes1900.models;
 
 import javax.vecmath.Vector3d;
 
