@@ -15,6 +15,7 @@ import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Triangle;
 
 /**
+ * @deprecated 
  * Implements a STL writer. This writer uses the ASCII or the binary format,
  * depending on the static attribute MODE.
  * @author Eric Berthe, Valentin Roger, Daniel Lefevre

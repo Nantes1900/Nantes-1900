@@ -20,6 +20,8 @@ import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Wall;
 import fr.nantes1900.models.islets.AbstractBuildingsIslet;
+import fr.nantes1900.utils.AbstractWriter;
+import fr.nantes1900.utils.STLWriter;
 
 /**
  * Implements a step of the process. This step is after the determination of the
@@ -27,7 +29,7 @@ import fr.nantes1900.models.islets.AbstractBuildingsIslet;
  * 
  * @author Daniel Lefèvre
  */
-public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
+public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep implements Writable {
 
 	/**
 	 * The list of buildings.
@@ -107,26 +109,12 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
 		System.out.println(this.grounds.getMesh().size());
 
 		// FIXME : make a method.
-		Mesh totalSurface = new Mesh();
-		for (Building b : this.buildings) {
-			for (Wall w : b.getbStep6().getWalls()) {
-				if (w.getPolygon() != null) {
-					totalSurface.addAll(w.getPolygon().returnCentroidMesh());
-				} else {
-					totalSurface.addAll(w.getMesh());
-				}
-			}
-			for (Roof r : b.getbStep6().getRoofs()) {
-				if (r.getPolygon() != null) {
-					totalSurface.addAll(r.getPolygon().returnCentroidMesh());
-				} else {
-					totalSurface.addAll(r.getMesh());
-				}
-			}
-		}
-		totalSurface.writeSTL("files/resultBuildings.stl");
-		totalSurface.addAll(this.grounds.getMesh());
-		totalSurface.writeSTL("files/resultTotal.stl");
+        // I have changed this part to use the AbstractWriter. Is the problem fixed ?
+        AbstractWriter writer = new STLWriter(this);
+        writer.setGroundSetting(AbstractWriter.GROUND_DISABLED);
+        writer.setFileName("files/resultBuildings.stl");
+        writer.setGroundSetting(AbstractWriter.GROUND_ENABLED);
+        writer.setFileName("files/resultTotal.stl");
 
 		System.out.println("Written !");
 
