@@ -3,7 +3,9 @@ package fr.nantes1900.models.basis;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.vecmath.Vector3d;
 
@@ -141,23 +143,12 @@ public class Triangle {
         return false;
     }
 
-    // FIXME : try to fix the bugs contained here...
     public final List<Point> getPoints() {
-        List<Point> points = new ArrayList<>();
+        Set<Point> points = new HashSet<>();
         for (Edge e : this.edges) {
-            if (!points.contains(e.getP1())) {
-                points.add(e.getP1());
-            }
-            if (!points.contains(e.getP2())) {
-                points.add(e.getP2());
-            }
+            points.addAll(e.getPoints());
         }
-        
-        // For bad formed triangles...
-        if (points.size() < 3) {
-            points.add(points.get(0));
-        }
-        return points;
+        return new ArrayList<>(points);
     }
 
     /*

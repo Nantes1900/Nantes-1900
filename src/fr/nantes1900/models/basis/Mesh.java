@@ -49,8 +49,12 @@ public class Mesh extends HashSet<Triangle> {
      */
     public Mesh(final Collection<? extends Triangle> c) {
         for (Triangle t : c) {
-            t.add(this);
-            this.add(t);
+            try {
+                t.add(this);
+                this.add(t);
+            } catch (IndexOutOfBoundsException e) {
+                System.out.println("weird");
+            }
         }
         this.iD = ++Mesh.currentID;
     }
@@ -627,36 +631,13 @@ public class Mesh extends HashSet<Triangle> {
 
         while (!list.isEmpty()) {
             List<Edge> borderEdges = new ArrayList<>();
-            Edge e = list.get(0);
-            Mesh.returnNeighbours(list, borderEdges, e);
+            Edge e = list.iterator().next();
+            e.returnNeighbours(list, borderEdges);
             list.removeAll(borderEdges);
 
             borders.add(new Polygon(borderEdges));
         }
 
         return borders;
-    }
-
-    // FIXME : put this in Polygon ?
-    /**
-     * Finds every edges that are connected with the given edge from the edge
-     * list. This function adds recursively neighbours to the neighboursEdges.
-     * @param edgeList
-     *            list of edges to find neighbours into
-     * @param neighboursEdges
-     *            list of edges where founded neighbours are stored
-     * @param edge
-     *            edge to find neighbours of
-     * @return polygon formed by all found neighbours
-     */
-    public static void returnNeighbours(List<Edge> edgeList,
-            List<Edge> neighboursEdges, Edge edge) {
-        for (Edge e : edgeList) {
-            if (edge.isNeighboor(e) && !neighboursEdges.contains(e)) {
-                neighboursEdges.add(e);
-                returnNeighbours(edgeList, neighboursEdges, e);
-                break;
-            }
-        }
     }
 }

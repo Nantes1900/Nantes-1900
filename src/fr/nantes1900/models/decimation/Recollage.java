@@ -13,7 +13,6 @@ import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.exceptions.ImpossibleProjectionException;
 import fr.nantes1900.models.extended.Building;
-import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Wall;
 import fr.nantes1900.models.islets.AbstractBuildingsIslet;
 
@@ -30,52 +29,24 @@ public final class Recollage {
     public Recollage(AbstractBuildingsIslet isletIn) {
         this.islet = isletIn;
         this.ground = this.islet.getBiStep6().getGrounds().getMesh();
+        this.buildings = this.islet.getBiStep6().getBuildings();
     }
 
     public void launchProcess() {
 
-        this.buildings = this.islet.getBiStep6().getBuildings();
         try {
             rmvTrianglesInsideBuildings();
-
             findBordersToRestick();
+
         } catch (ImpossibleProjectionException e) {
             // TODO handle in final integration
             System.err.println("Buildings not well simplified");
             e.printStackTrace();
         }
 
-        System.out.println(this.ground.size());
         projectBordersOnWalls();
-        System.out.println(this.ground.size());
-        System.out.println(this.ground.size());
 
         this.ground.refresh();
-        System.out.println(this.ground.size());
-
-        // FIXME : make a method.
-        Mesh totalSurface = new Mesh();
-        for (Building b : this.buildings) {
-            for (Wall w : b.getbStep6().getWalls()) {
-                if (w.getPolygon() != null) {
-                    totalSurface.addAll(w.getPolygon().returnCentroidMesh());
-                } else {
-                    totalSurface.addAll(w.getMesh());
-                }
-            }
-            for (Roof r : b.getbStep6().getRoofs()) {
-                if (r.getPolygon() != null) {
-                    totalSurface.addAll(r.getPolygon().returnCentroidMesh());
-                } else {
-                    totalSurface.addAll(r.getMesh());
-                }
-            }
-        }
-        totalSurface.writeSTL("files/resultBuildings.stl");
-        totalSurface.addAll(this.ground);
-        totalSurface.writeSTL("files/resultTotal.stl");
-
-        System.out.println("Written !");
     }
 
     /**
@@ -162,12 +133,26 @@ public final class Recollage {
                 if (!map.get(edge).isEmpty()) {
                     Point pClose = wallPoint.getCloser(map.get(edge));
                     System.out.println(pClose + " set in " + wallPoint);
-                    pClose.set(wallPoint.getPointAsCoordinates());
+                    List<Triangle> list = pClose.getTriangles();
+
+                    if (!testAlreadyContainingSamePoint(list, wallPoint)) {
+                        pClose.set(wallPoint.getPointAsCoordinates());
+                    }
                 }
             }
         }
 
         System.out.println("Step 3 of resticking done (projection)");
+    }
+
+    public static boolean testAlreadyContainingSamePoint(List<Triangle> list,
+            Point point) {
+        for (Triangle t : list) {
+            if (t.contains(point)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public static Map<Edge, List<Point>> getEdgePointsMap(List<Point> points,
@@ -191,7 +176,7 @@ public final class Recollage {
         return map;
     }
 
-    // FIXME : put in Polygon, or in Point.
+    // FIXME : put in Polygon, or in Point ?
     public static Point
             getCloserProjectedPointOnEdge(Point p, List<Edge> edges) {
         Point pProj = edges.get(0).getP1();
@@ -235,9 +220,11 @@ public final class Recollage {
             poly.add(wallEdge);
         }
 
+        // FIXME : si tu tombes sur un mur qui est tout seul (un mur en hauteur
+        // par exemple) ?
         List<Edge> orderedPoly = new ArrayList<>();
         Edge e = poly.getOne();
-        Mesh.returnNeighbours(poly.getEdgeList(), orderedPoly, e);
+        e.returnNeighbours(poly.getEdgeList(), orderedPoly);
         poly = new Polygon(orderedPoly);
 
         // Transforms into jts structure
@@ -252,11 +239,11 @@ public final class Recollage {
             throws ImpossibleProjectionException {
         Mesh toRemove = new Mesh();
 
-        this.ground.writeSTL("files/debug_groundprojbeforeremove.stl");
-
         for (Building b : this.buildings) {
             com.vividsolutions.jts.geom.Polygon polygon = getGroundProjection(b
                     .getbStep6().getWalls());
+
+            System.out.println(polygon);
 
             // Looks for each triangle of the ground.
             for (Triangle tri : this.ground) {
@@ -270,6 +257,7 @@ public final class Recollage {
         System.out.println("nombres de triangles à supprimer : "
                 + toRemove.size());
         this.ground.remove(toRemove);
+        toRemove.writeSTL("lol.stl");
 
         System.out.println("Step 1 of resticking done (triangles inside)");
         System.out.println(this.ground.size() + " triangles restants");

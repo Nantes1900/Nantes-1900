@@ -1,6 +1,9 @@
 package fr.nantes1900.models.basis;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import fr.nantes1900.utils.MatrixMethod;
 
@@ -24,6 +27,8 @@ public class Point {
      * z coordinate.
      */
     private double z;
+
+    private List<Edge> edges = new ArrayList<>();
 
     /**
      * Constructor.
@@ -50,6 +55,7 @@ public class Point {
         this.x = point.x;
         this.y = point.y;
         this.z = point.z;
+        this.edges = new ArrayList<>(point.edges);
     }
 
     /**
@@ -245,5 +251,21 @@ public class Point {
         }
 
         return pClose;
+    }
+
+    public void addEdge(Edge edge) {
+        this.edges.add(edge);
+    }
+
+    public List<Edge> getEdges() {
+        return this.edges;
+    }
+
+    public List<Triangle> getTriangles() {
+        Set<Triangle> triangles = new HashSet<>();
+        for (Edge e : this.edges) {
+            triangles.addAll(e.getTriangles());
+        }
+        return new ArrayList<>(triangles);
     }
 }

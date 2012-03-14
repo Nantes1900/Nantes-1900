@@ -169,12 +169,11 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
             throws ImpossibleProjectionException {
         Mesh toRemove = new Mesh();
 
-        // this.grounds.getMesh().writeSTL(
-        // "files/debug_groundprojbeforeremove.stl");
-
         for (Building b : this.buildings) {
             com.vividsolutions.jts.geom.Polygon polygon = getGroundProjection(b
                     .getbStep6().getWalls());
+
+            System.out.println(polygon);
 
             // Looks for each triangle of the ground.
             for (Triangle tri : this.grounds.getMesh()) {
@@ -274,6 +273,16 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
         }
     }
 
+    public static boolean testAlreadyContainingSamePoint(List<Triangle> list,
+            Point point) {
+        for (Triangle t : list) {
+            if (t.contains(point)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Gets the ground projection of a list of walls which make a building.
      * @param walls
@@ -300,9 +309,12 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
             poly.add(wallEdge);
         }
 
+        // FIXME : si tu tombes sur un mur qui est tout seul (un mur en hauteur
+        // par exemple) ?
         List<Edge> orderedPoly = new ArrayList<>();
         Edge e = poly.getOne();
-        Mesh.returnNeighbours(poly.getEdgeList(), orderedPoly, e);
+        e.returnNeighbours(poly.getEdgeList(), orderedPoly);
+
         poly = new Polygon(orderedPoly);
 
         // Transforms into jts structure
