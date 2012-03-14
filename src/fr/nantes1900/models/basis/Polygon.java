@@ -280,8 +280,8 @@ public class Polygon {
     }
 
     /**
-     * Returns one edge of the list.
-     * @return one edge of the list Use iterator().next()
+     * Returns one edge of the list. Use iterator().next().
+     * @return one edge of the list.
      */
     public final Edge getOne() {
         return this.edgeList.iterator().next();

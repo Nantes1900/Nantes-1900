@@ -4,6 +4,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 import javax.vecmath.Vector3d;
 
@@ -71,7 +72,7 @@ public class Edge {
      * @return true if p is contained, and false otherwise
      */
     public final boolean contains(final Point point) {
-        return this.points[0] == point || this.points[1] == point;
+        return this.points[0].equals(point) || this.points[1].equals(point);
     }
 
     /**
@@ -402,6 +403,27 @@ public class Edge {
     public void removeTriangles(List<Triangle> list) {
         for (Triangle t : list) {
             this.removeTriangle(t);
+        }
+    }
+
+    /**
+     * Finds every edges that are connected with the given edge from the edge
+     * list. This function adds recursively neighbours to the neighboursEdges.
+     * @param edgeList
+     *            list of edges to find neighbours into
+     * @param neighboursEdges
+     *            list of edges where founded neighbours are stored
+     * @param edge
+     *            edge to find neighbours of
+     * @return polygon formed by all found neighbours
+     */
+    public void returnNeighbours(List<Edge> edgeList, List<Edge> neighboursEdges) {
+        neighboursEdges.add(this);
+        for (Edge e : edgeList) {
+            if (this.isNeighboor(e) && !neighboursEdges.contains(e)) {
+                e.returnNeighbours(edgeList, neighboursEdges);
+                break;
+            }
         }
     }
 }
