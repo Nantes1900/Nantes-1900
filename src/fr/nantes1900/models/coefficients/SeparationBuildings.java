@@ -39,5 +39,4 @@ public final class SeparationBuildings {
     public static void setBlockBuildingSize(final double blockBuildingSizeIn) {
         SeparationBuildings.blockBuildingSize = blockBuildingSizeIn;
     }
-
 }

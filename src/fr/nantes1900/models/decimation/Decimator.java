@@ -4,6 +4,7 @@ import java.util.List;
 
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Mesh;
+import fr.nantes1900.models.coefficients.Decimation;
 
 /**
  * Implements a decimator, following the Quadric Error Metrics algorithm, to
@@ -32,6 +33,9 @@ public class Decimator {
      *         decimated.
      */
     public final Mesh launchDecimation() {
+
+        int size = this.mesh.size();
+
         // 1. Compute the Qi matrices for each vi.
         this.mesh.computeQiMatrices();
 
@@ -41,7 +45,9 @@ public class Decimator {
         // 3. Compute errors for all valid pairs.
         this.mesh.computeErrors();
 
-        while (this.mesh.getEdgeNumber() != 0) {
+        while (this.mesh.getEdgeNumber() != 0
+                && this.mesh.size() > Decimation.getPercentDecimation() * size) {
+
             // 4. Sort valid pairs.
             Edge edge = this.mesh.selectMinimalErrorPair();
 

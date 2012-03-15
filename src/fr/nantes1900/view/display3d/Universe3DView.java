@@ -130,7 +130,7 @@ public class Universe3DView extends JPanel {
      *            The branchGroup to put the lights in.
      */
 
-    private static void createLights(BranchGroup objRoot) {
+    private static void createLights(final BranchGroup objRoot) {
 
         // Light bound
         BoundingSphere lightBounds = new BoundingSphere(new Point3d(0.0, 0.0,

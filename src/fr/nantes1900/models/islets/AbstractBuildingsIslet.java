@@ -78,6 +78,14 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
     private BuildingsIsletStep7 biStep7;
 
     /**
+     * Getter.
+     * @return the seventh step
+     */
+    public final BuildingsIsletStep7 getBiStep7() {
+        return this.biStep7;
+    }
+
+    /**
      * The number of the step 0.
      */
     public static final int ZERO_STEP = 0;
@@ -392,11 +400,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
             }
         }
 
-        // TODO and fix types.
         this.biStep7 = this.getBiStep6().launchProcess();
-
-        // FIXME : remove that.
-        this.saveFinalResults("result.stl");
     }
 
     /**
@@ -430,6 +434,8 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
             return this.biStep5.returnNode();
         case AbstractBuildingsIslet.SIXTH_STEP:
             return this.biStep6.returnNode();
+        case AbstractBuildingsIslet.SEVENTH_STEP:
+            return this.biStep7.returnNode();
         default:
             return null;
         }
@@ -445,9 +451,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
     public final void saveFinalResults(final String fileName) {
         Mesh totalSurface = new Mesh();
 
-        for (Building b : this.getBiStep6().getBuildings()) {
+        for (Building b : this.getBiStep7().getBuildings()) {
 
-            for (Wall w : b.getbStep6().getWalls()) {
+            for (Wall w : b.getbStep7().getWalls()) {
                 if (w.getPolygon() != null) {
                     totalSurface.addAll(w.getPolygon().returnCentroidMesh());
                 } else {
@@ -455,7 +461,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
                 }
             }
 
-            for (Roof r : b.getbStep6().getRoofs()) {
+            for (Roof r : b.getbStep7().getRoofs()) {
                 if (r.getPolygon() != null) {
                     totalSurface.addAll(r.getPolygon().returnCentroidMesh());
                 } else {
@@ -464,7 +470,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
             }
         }
 
-        totalSurface.addAll(this.getBiStep6().getGrounds().getMesh());
+        totalSurface.addAll(this.getBiStep7().getGrounds().getMesh());
 
         WriterSTL writer = new WriterSTL(fileName);
         writer.setMesh(totalSurface);

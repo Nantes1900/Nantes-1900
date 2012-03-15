@@ -62,7 +62,7 @@ public class BuildingsIsletStep7 extends AbstractBuildingsIsletStep {
      */
     @Override
     public final AbstractBuildingsIsletStep launchProcess() {
-        // TODO : and fix return type
+        // There is no more process.
         return null;
     }
 
@@ -77,7 +77,7 @@ public class BuildingsIsletStep7 extends AbstractBuildingsIsletStep {
 
         int counter = 0;
         for (Building b : this.buildings) {
-            root.add(b.returnNode6(counter));
+            root.add(b.returnNode7(counter));
             counter++;
         }
 
@@ -96,7 +96,7 @@ public class BuildingsIsletStep7 extends AbstractBuildingsIsletStep {
      */
     @Override
     public final String toString() {
-        return super.toString() + AbstractBuildingsIslet.SIXTH_STEP;
+        return super.toString() + AbstractBuildingsIslet.SEVENTH_STEP;
     }
 
 }

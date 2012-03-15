@@ -596,17 +596,13 @@ public class Mesh extends HashSet<Triangle> {
     }
 
     public final List<Point> getPoints() {
-        List<Point> list = new ArrayList<>();
+        Set<Point> list = new HashSet<>();
         for (Triangle t : this) {
             for (Edge e : t.getEdges()) {
-                for (Point p : e.getPoints()) {
-                    if (!list.contains(p)) {
-                        list.add(p);
-                    }
-                }
+                list.addAll(e.getPoints());
             }
         }
-        return list;
+        return new ArrayList<>(list);
     }
 
     // FIXME : describe it very well. (refers to

@@ -74,7 +74,7 @@ public class BuildingStep7 extends AbstractBuildingStep {
      */
     @Override
     public final AbstractBuildingStep launchProcess() {
-        // No more processs for now : this method do nothing.
+        // No more processs for now : this method does nothing.
         return null;
     }
 
