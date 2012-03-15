@@ -6,7 +6,7 @@ import java.util.List;
 import fr.nantes1900.models.basis.Edge;
 import fr.nantes1900.models.basis.Point;
 import fr.nantes1900.models.basis.Polygon;
-import fr.nantes1900.models.decimation.Recollage;
+import fr.nantes1900.models.islets.steps.BuildingsIsletStep6;
 
 public class TestRecollage {
 
@@ -59,7 +59,8 @@ public class TestRecollage {
             Point p = new Point(-1, 0.5, 0);
 
             System.out.println("Second test : \n"
-                    + Recollage.getCloserProjectedPointOnEdge(p, edges));
+                    + BuildingsIsletStep6
+                            .getCloserProjectedPointOnEdge(p, edges));
             System.out.println("Should display 0, 0.5, 0");
         }
 

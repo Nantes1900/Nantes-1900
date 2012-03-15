@@ -779,7 +779,7 @@ public class Polygon {
     }
 
     // FIXME : put this in polygon
-    public boolean containsAllWithJts(List<Polygon> borders) {
+    public final boolean containsAllWithJts(final List<Polygon> borders) {
         for (Polygon otherBorder : borders) {
             if (otherBorder != this
                     && !this.containsWithJts(otherBorder.convertPolygonToJts())) {
@@ -817,8 +817,8 @@ public class Polygon {
     }
 
     // FIXME : put this in Polygon.
-    public boolean containsWithJts(
-            com.vividsolutions.jts.geom.Polygon containedJts) {
+    public final boolean containsWithJts(
+            final com.vividsolutions.jts.geom.Polygon containedJts) {
         com.vividsolutions.jts.geom.Polygon containerJts = this
                 .convertPolygonToJts();
 
@@ -826,7 +826,7 @@ public class Polygon {
     }
 
     // FIXME : put this in Polygon.
-    public boolean containsWithJts(Polygon contained) {
+    public final boolean containsWithJts(final Polygon contained) {
         com.vividsolutions.jts.geom.Polygon containerJts = this
                 .convertPolygonToJts();
 
@@ -834,7 +834,7 @@ public class Polygon {
     }
 
     // FIXME : put this in Polygon.
-    public com.vividsolutions.jts.geom.Polygon convertPolygonToJts() {
+    public final com.vividsolutions.jts.geom.Polygon convertPolygonToJts() {
         List<Coordinate> coords = new ArrayList<>();
         for (Point p : this.getPointList()) {
             coords.add(new Coordinate(p.getX(), p.getY()));

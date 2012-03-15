@@ -225,7 +225,7 @@ public class Point {
         return new String("(" + this.x + ", " + this.y + ", " + this.z + ")");
     }
 
-    public Point closest(List<Point> points) {
+    public final Point closest(final List<Point> points) {
         double distance = points.get(0).distance(this);
         Point closest = points.get(0);
 
@@ -240,7 +240,7 @@ public class Point {
     }
 
     // FIXME : put in Polygon, or in Point.
-    public Point getCloser(List<Point> points) {
+    public final Point getCloser(final List<Point> points) {
         Point pClose = points.get(0);
         double distance = this.distance(pClose);
         for (Point point : points) {
@@ -253,15 +253,15 @@ public class Point {
         return pClose;
     }
 
-    public void addEdge(Edge edge) {
+    public final void addEdge(final Edge edge) {
         this.edges.add(edge);
     }
 
-    public List<Edge> getEdges() {
+    public final List<Edge> getEdges() {
         return this.edges;
     }
 
-    public List<Triangle> getTriangles() {
+    public final List<Triangle> getTriangles() {
         Set<Triangle> triangles = new HashSet<>();
         for (Edge e : this.edges) {
             triangles.addAll(e.getTriangles());

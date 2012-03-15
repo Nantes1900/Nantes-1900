@@ -17,7 +17,6 @@ import fr.nantes1900.models.decimation.Decimator;
 import fr.nantes1900.models.exceptions.ImpossibleProjectionException;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Ground;
-import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Wall;
 import fr.nantes1900.models.islets.AbstractBuildingsIslet;
 
@@ -78,52 +77,20 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
      */
     @Override
     public final BuildingsIsletStep7 launchProcess() {
-        // decimation
-        Decimator decim = new Decimator(grounds.getMesh());
-        decim.launchDecimation();
-        System.out.println("Decimation finished.");
+        // Decimation
+        Decimator decim = new Decimator(this.grounds.getMesh());
+        this.grounds.setMesh(decim.launchDecimation());
 
         try {
-            rmvTrianglesInsideBuildings();
+            this.rmvTrianglesInsideBuildings();
+            this.findBordersToRestick();
+            this.projectBordersOnWalls();
+            this.grounds.getMesh().refresh();
 
-            findBordersToRestick();
         } catch (ImpossibleProjectionException e) {
             // TODO handle in final integration
-            System.err.println("Buildings not well simplified");
             e.printStackTrace();
         }
-
-        System.out.println(this.grounds.getMesh().size());
-        projectBordersOnWalls();
-        System.out.println(this.grounds.getMesh().size());
-        System.out.println(this.grounds.getMesh().size());
-
-        this.grounds.getMesh().refresh();
-        System.out.println(this.grounds.getMesh().size());
-
-        // FIXME : make a method.
-        Mesh totalSurface = new Mesh();
-        for (Building b : this.buildings) {
-            for (Wall w : b.getbStep6().getWalls()) {
-                if (w.getPolygon() != null) {
-                    totalSurface.addAll(w.getPolygon().returnCentroidMesh());
-                } else {
-                    totalSurface.addAll(w.getMesh());
-                }
-            }
-            for (Roof r : b.getbStep6().getRoofs()) {
-                if (r.getPolygon() != null) {
-                    totalSurface.addAll(r.getPolygon().returnCentroidMesh());
-                } else {
-                    totalSurface.addAll(r.getMesh());
-                }
-            }
-        }
-        totalSurface.writeSTL("files/resultBuildings.stl");
-        totalSurface.addAll(this.grounds.getMesh());
-        totalSurface.writeSTL("files/resultTotal.stl");
-
-        System.out.println("Written !");
 
         return new BuildingsIsletStep7(this.buildings, this.grounds);
     }
@@ -162,8 +129,9 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
     }
 
     /**
-     * Removes triangles from the ground that have a point inside the building
+     * Removes triangles from the ground that have a point inside the building.
      * @throws ImpossibleProjectionException
+     *             if one surface has not been simplified
      */
     private void rmvTrianglesInsideBuildings()
             throws ImpossibleProjectionException {
@@ -173,8 +141,6 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
             com.vividsolutions.jts.geom.Polygon polygon = getGroundProjection(b
                     .getbStep6().getWalls());
 
-            System.out.println(polygon);
-
             // Looks for each triangle of the ground.
             for (Triangle tri : this.grounds.getMesh()) {
                 if (polygon.intersects(new Polygon(tri.getEdges())
@@ -183,21 +149,13 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
                 }
             }
         }
-
-        System.out.println("nombres de triangles à supprimer : "
-                + toRemove.size());
-        this.grounds.getMesh().remove(toRemove);
-
-        System.out.println("Step 1 of resticking done (triangles inside)");
-        System.out.println(this.grounds.getMesh().size()
-                + " triangles restants");
     }
 
     /**
      * Associates each building with a border and stores them into the borders
      * to restick map.
-     * @return Mesh = border Polygon = building associated with the border
      * @throws ImpossibleProjectionException
+     *             if one surface has not been simplified
      */
     private void findBordersToRestick() throws ImpossibleProjectionException {
         this.bordersToRestick = new HashMap<>();
@@ -205,7 +163,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
         // Gets ground borders
         List<Polygon> borders = this.grounds.getMesh().returnSortedBorders();
 
-        removeExternalBorder(borders);
+        BuildingsIsletStep6.removeExternalBorder(borders);
 
         // Matches buildings with borders
         for (Polygon border : borders) {
@@ -223,11 +181,8 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
             // If the border contains only one building, we can associate them
             if (counter == 1) {
                 this.bordersToRestick.put(border, matchingBuilding);
-                System.out.println("one more border found");
             }
         }
-        System.out.println(this.bordersToRestick.size()
-                + " frontières à recoller trouvées");
     }
 
     /**
@@ -255,7 +210,6 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
             // FIXME : et les triangles qui vont être inversés ??? Peut être
             // supprimer le triangle qui va être inversé, car l'autre va le
             // recouvrir, et ça sera bon quand même, non ?
-
             Map<Edge, List<Point>> map = getEdgePointsMap(
                     border.getPointList(), downEdges);
 
@@ -266,21 +220,10 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
                 // touching the ground.
                 if (!map.get(edge).isEmpty()) {
                     Point pClose = wallPoint.getCloser(map.get(edge));
-                    System.out.println(pClose + " set in " + wallPoint);
                     pClose.set(wallPoint.getPointAsCoordinates());
                 }
             }
         }
-    }
-
-    public static boolean testAlreadyContainingSamePoint(List<Triangle> list,
-            Point point) {
-        for (Triangle t : list) {
-            if (t.contains(point)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /**
@@ -289,9 +232,10 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
      *            the list of a building's walls
      * @return polygon of the ground projection of walls
      * @throws ImpossibleProjectionException
+     *             if one surface (wall or roof) has not been simplified
      */
-    private com.vividsolutions.jts.geom.Polygon getGroundProjection(
-            List<Wall> walls) throws ImpossibleProjectionException {
+    private static com.vividsolutions.jts.geom.Polygon getGroundProjection(
+            final List<Wall> walls) throws ImpossibleProjectionException {
         Polygon poly = new Polygon();
         for (Wall w : walls) {
             // Checks if the wall is well simplified
@@ -321,7 +265,13 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
         return poly.convertPolygonToJts();
     }
 
-    private void removeExternalBorder(List<Polygon> borders) {
+    /**
+     * Searches for the external border of the ground : the border which
+     * contains all the others. Then removes it.
+     * @param borders
+     *            the list of borders
+     */
+    private static void removeExternalBorder(final List<Polygon> borders) {
         Polygon externalBorder = null;
         for (Polygon border : borders) {
             if (border.containsAllWithJts(borders)) {
@@ -331,9 +281,16 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
         borders.remove(externalBorder);
     }
 
-    // FIXME : put in Polygon, or in Point.
-    public static Point
-            getCloserProjectedPointOnEdge(Point p, List<Edge> edges) {
+    /**
+     * Find the closest projection of the point on the edges.
+     * @param p
+     *            the point
+     * @param edges
+     *            the list of edges
+     * @return the projected point, closest to p
+     */
+    public static Point getCloserProjectedPointOnEdge(final Point p,
+            final List<Edge> edges) {
         Point pProj = edges.get(0).getP1();
         Point pProjCurrent;
         double distance = edges.get(0).getP1().distance(p);
@@ -349,8 +306,17 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
         return pProj;
     }
 
-    private static Map<Edge, List<Point>> getEdgePointsMap(List<Point> points,
-            List<Edge> edges) {
+    /**
+     * Builds a map associating the edges and the points which can will be
+     * projected on these edges.
+     * @param points
+     *            the list of all points
+     * @param edges
+     *            the list of all edges
+     * @return the map
+     */
+    private static Map<Edge, List<Point>> getEdgePointsMap(
+            final List<Point> points, final List<Edge> edges) {
 
         Map<Edge, List<Point>> map = new HashMap<>();
         for (Edge edge : edges) {

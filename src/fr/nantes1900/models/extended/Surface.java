@@ -486,11 +486,12 @@ public class Surface {
 
         final Point p1 = new Point(centroid.getX() + 1, centroid.getY()
                 - averageNormal.getX() / averageNormal.getY(), centroid.getZ());
+        final Point p2 = new Point(p1.getX(), p1.getY(), p1.getZ() + 1);
 
         final Point p3 = centroid;
 
-        final Edge e1 = new Edge(p1, p1);
-        final Edge e2 = new Edge(p1, p3);
+        final Edge e1 = new Edge(p1, p2);
+        final Edge e2 = new Edge(p2, p3);
         final Edge e3 = new Edge(p3, p1);
 
         final Vector3d vect = new Vector3d();

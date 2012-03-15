@@ -587,7 +587,7 @@ public class Mesh extends HashSet<Triangle> {
         return t;
     }
 
-    public List<Edge> getEdges() {
+    public final List<Edge> getEdges() {
         Set<Edge> list = new HashSet<>();
         for (Triangle t : this) {
             list.addAll(t.getEdges());
@@ -595,7 +595,7 @@ public class Mesh extends HashSet<Triangle> {
         return new ArrayList<>(list);
     }
 
-    public List<Point> getPoints() {
+    public final List<Point> getPoints() {
         List<Point> list = new ArrayList<>();
         for (Triangle t : this) {
             for (Edge e : t.getEdges()) {
@@ -611,7 +611,7 @@ public class Mesh extends HashSet<Triangle> {
 
     // FIXME : describe it very well. (refers to
     // synchronizeBeginning and End).
-    public void refresh() {
+    public final void refresh() {
         Mesh copy = new Mesh(this);
         this.clear();
         this.addAll(copy);
@@ -624,7 +624,7 @@ public class Mesh extends HashSet<Triangle> {
      *            list of edges which belongs to borders
      * @return list of polygon representing borders
      */
-    public List<Polygon> returnSortedBorders() {
+    public final List<Polygon> returnSortedBorders() {
         List<Edge> list = this.returnUnsortedBorders();
 
         List<Polygon> borders = new ArrayList<>();
@@ -635,7 +635,9 @@ public class Mesh extends HashSet<Triangle> {
             e.returnNeighbours(list, borderEdges);
             list.removeAll(borderEdges);
 
-            borders.add(new Polygon(borderEdges));
+            if (borderEdges.size() > 2) {
+                borders.add(new Polygon(borderEdges));
+            }
         }
 
         return borders;

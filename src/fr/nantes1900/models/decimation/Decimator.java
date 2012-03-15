@@ -22,7 +22,7 @@ public class Decimator {
      * @param initialMesh
      *            the mesh to decimate.
      */
-    public Decimator(Mesh initialMesh) {
+    public Decimator(final Mesh initialMesh) {
         this.mesh = new MeshDecimation(initialMesh);
     }
 
@@ -31,7 +31,7 @@ public class Decimator {
      * @return the reference to the mesh (the same as the initial one)
      *         decimated.
      */
-    public Mesh launchDecimation() {
+    public final Mesh launchDecimation() {
         // 1. Compute the Qi matrices for each vi.
         this.mesh.computeQiMatrices();
 
@@ -42,8 +42,6 @@ public class Decimator {
         this.mesh.computeErrors();
 
         while (this.mesh.getEdgeNumber() != 0) {
-            // TODO : remove that thing...
-            //System.out.println(this.mesh.getEdgeNumber());
             // 4. Sort valid pairs.
             Edge edge = this.mesh.selectMinimalErrorPair();
 

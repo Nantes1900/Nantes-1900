@@ -4,7 +4,6 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 import javax.vecmath.Vector3d;
 
@@ -222,6 +221,19 @@ public class Edge {
                 && (this.contains(e.points[0]) || this.contains(e.points[1]));
     }
 
+    public final Point sharedPoint(final Edge e) {
+        if (this == e) {
+            return null;
+        }
+        if (this.contains(e.getP1())) {
+            return e.getP1();
+        } else if (this.contains(e.getP2())) {
+            return e.getP2();
+        } else {
+            return null;
+        }
+    }
+
     /**
      * Calculates the length of the edge.
      * @return the distance between the two points of the edge
@@ -384,11 +396,11 @@ public class Edge {
         return new String("(" + this.getP1() + ", " + this.getP2() + ")");
     }
 
-    public boolean removeTriangle(Triangle triangle) {
+    public final boolean removeTriangle(final Triangle triangle) {
         return this.triangles.remove(triangle);
     }
 
-    public void replace(Point pOld, Point pNew) {
+    public final void replace(final Point pOld, final Point pNew) {
         if (this.points[0] == pOld) {
             this.synchronizeBeginning();
             this.points[0] = pNew;
@@ -400,7 +412,7 @@ public class Edge {
         }
     }
 
-    public void removeTriangles(List<Triangle> list) {
+    public final void removeTriangles(final List<Triangle> list) {
         for (Triangle t : list) {
             this.removeTriangle(t);
         }
@@ -417,7 +429,8 @@ public class Edge {
      *            edge to find neighbours of
      * @return polygon formed by all found neighbours
      */
-    public void returnNeighbours(List<Edge> edgeList, List<Edge> neighboursEdges) {
+    public final void returnNeighbours(final List<Edge> edgeList,
+            final List<Edge> neighboursEdges) {
         neighboursEdges.add(this);
         for (Edge e : edgeList) {
             if (this.isNeighboor(e) && !neighboursEdges.contains(e)) {

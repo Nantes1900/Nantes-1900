@@ -3,9 +3,7 @@ package fr.nantes1900.models.basis;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.vecmath.Vector3d;
 
@@ -86,7 +84,7 @@ public class Triangle {
         return this.angle(face.normal, error);
     }
 
-    public boolean add(Mesh mesh) {
+    public final boolean add(final Mesh mesh) {
         if (!this.meshes.contains(mesh)) {
             return this.meshes.add(mesh);
         }
@@ -113,7 +111,7 @@ public class Triangle {
 
     /**
      * Checks if this triangle contains the edge e.
-     * @param e
+     * @param edge
      *            the edge to check
      * @return true if the edge e is one of the edges of this triangle, false
      *         otherwise.
@@ -144,11 +142,43 @@ public class Triangle {
     }
 
     public final List<Point> getPoints() {
-        Set<Point> points = new HashSet<>();
-        for (Edge e : this.edges) {
-            points.addAll(e.getPoints());
+        List<Point> points = new ArrayList<>();
+
+        Point p1 = this.edges[0].getP1();
+        Point p2 = this.edges[0].getP2();
+        Vector3d edge0 = this.edges[0].convertToVector3d();
+        Point p3 = null;
+        try {
+            if (this.edges[1].contains(p1)) {
+                p3 = this.edges[1].returnOther(p1);
+            } else {
+                p3 = this.edges[2].returnOther(p1);
+            }
+        } catch (Exception exc) {
+            if (this.edges[2].getP1() != p1 && this.edges[2].getP1() != p2) {
+                p3 = this.edges[2].getP1();
+            } else if (this.edges[2].getP2() != p1
+                    && this.edges[2].getP2() != p2) {
+                p3 = this.edges[2].getP2();
+            }
         }
-        return new ArrayList<>(points);
+        Vector3d edge1 = new Vector3d(p3.getX() - p1.getX(), p3.getY()
+                - p1.getY(), p3.getZ() - p1.getZ());
+
+        Vector3d vect = new Vector3d();
+        vect.cross(edge0, edge1);
+
+        points.add(p1);
+
+        if (vect.dot(this.normal) > 0) {
+            points.add(p2);
+            points.add(p3);
+        } else {
+            points.add(p3);
+            points.add(p2);
+        }
+
+        return points;
     }
 
     /*
@@ -573,25 +603,25 @@ public class Triangle {
         return null;
     }
 
-    public void setE1(Edge e) {
+    public final void setE1(final Edge e) {
         this.synchronizeBeginning();
         this.edges[0] = e;
         this.synchronizeEnd();
     }
 
-    public void setE2(Edge e) {
+    public final void setE2(final Edge e) {
         this.synchronizeBeginning();
         this.edges[1] = e;
         this.synchronizeEnd();
     }
 
-    public void setE3(Edge e) {
+    public final void setE3(final Edge e) {
         this.synchronizeBeginning();
         this.edges[2] = e;
         this.synchronizeEnd();
     }
 
-    public void replace(Edge eOld, Edge eNew) {
+    public final void replace(final Edge eOld, final Edge eNew) {
         if (this.edges[0] == eOld) {
             this.synchronizeBeginning();
 
@@ -636,12 +666,12 @@ public class Triangle {
         }
     }
 
-    public boolean remove(Mesh mesh) {
+    public final boolean remove(final Mesh mesh) {
         return this.meshes.remove(mesh);
     }
 
     // FIXME : think about this... or remove it...
-    public void recomputeNormal() {
+    public final void recomputeNormal() {
         Vector3d norm = new Vector3d();
         norm.cross(this.edges[0].convertToVector3d(),
                 this.edges[1].convertToVector3d());
@@ -651,7 +681,7 @@ public class Triangle {
         this.normal.set(norm);
     }
 
-    public double computeArea() {
+    public final double computeArea() {
         // Héron formula.
         double a = this.edges[0].length();
         double b = this.edges[1].length();
@@ -660,7 +690,7 @@ public class Triangle {
         return Math.sqrt(s * (s - a) * (s - b) * (s - c));
     }
 
-    public Point project(Point p) {
+    public final Point project(final Point p) {
         double a = this.normal.getX();
         double b = this.normal.getY();
         double c = this.normal.getZ();
@@ -672,7 +702,7 @@ public class Triangle {
         return new Point(p.getX() + a * k, p.getY() + b * k, p.getZ() + c * k);
     }
 
-    public boolean isInside(Point d) {
+    public final boolean isInside(final Point d) {
         Point a = this.getP1();
         Point b = this.getP2();
         Point c = this.getP3();

@@ -20,8 +20,6 @@ import fr.nantes1900.models.basis.Triangle;
  * Extends a Mesh, with new methods to decimate the mesh. It follows the rules
  * of the algorithm Quadric Error Metrics.
  * @author Daniel Lefèvre
- * @bug There is a problem in the algorithm if too many points of the mesh are
- *      in the same plane.
  */
 public class MeshDecimation extends Mesh {
 
@@ -84,7 +82,8 @@ public class MeshDecimation extends Mesh {
      *            the point which will replace the edge.
      * @return the list of edges wich have been modified
      */
-    public List<Edge> collapseMinusCostPair(Edge e, Point pNew) {
+    public final List<Edge>
+            collapseMinusCostPair(final Edge e, final Point pNew) {
 
         Point p1 = e.getP1();
         Point p2 = e.getP2();
@@ -226,7 +225,7 @@ public class MeshDecimation extends Mesh {
      * @param edge
      *            the edge to compute error to
      */
-    public void computeError(Edge edge) {
+    public final void computeError(final Edge edge) {
         Point p1 = edge.getP1();
         Point p2 = edge.getP2();
 
@@ -255,7 +254,7 @@ public class MeshDecimation extends Mesh {
      *            the edge to collapse
      * @return the point representing the new vertex
      */
-    public Point computeNewVertex(Edge edge) {
+    public final Point computeNewVertex(final Edge edge) {
         Point p1 = edge.getP1();
         Point p2 = edge.getP2();
 
@@ -278,7 +277,7 @@ public class MeshDecimation extends Mesh {
     /**
      * Computes all the qi matrices for every point.
      */
-    public void computeQiMatrices() {
+    public final void computeQiMatrices() {
         for (Triangle t : this) {
             for (Point p : t.getPoints()) {
                 this.computeQiMatrix(p);
@@ -292,7 +291,7 @@ public class MeshDecimation extends Mesh {
      * @param point
      *            the point to compute matrix to.
      */
-    public void computeQiMatrix(Point point) {
+    public final void computeQiMatrix(final Point point) {
         Matrix qi = new Matrix(4, 4);
 
         for (Triangle tri : this.mapPLT.get(point)) {
@@ -316,7 +315,7 @@ public class MeshDecimation extends Mesh {
      * Returns the number of edges which can be collapsed.
      * @return the size of the attribute currentEdges.
      */
-    public int getEdgeNumber() {
+    public final int getEdgeNumber() {
         return this.currentEdges.size();
     }
 
@@ -325,7 +324,7 @@ public class MeshDecimation extends Mesh {
      * will be collapsed.
      * @return the edge to collapse.
      */
-    public Edge selectMinimalErrorPair() {
+    public final Edge selectMinimalErrorPair() {
         Collections.sort(this.currentEdges, new Comp());
         return this.currentEdges.get(0);
     }
@@ -335,7 +334,7 @@ public class MeshDecimation extends Mesh {
      * contains a point of the border). It puts those in the attribute
      * currentEdges.
      */
-    public void selectValidPairs() {
+    public final void selectValidPairs() {
         List<Edge> bounds = this.returnUnsortedBorders();
 
         for (Triangle t : this) {
@@ -350,7 +349,7 @@ public class MeshDecimation extends Mesh {
     /**
      * For each edges which can be collapsed, compute the error associated.
      */
-    public void computeErrors() {
+    public final void computeErrors() {
         for (Edge e : this.currentEdges) {
             this.computeError(e);
         }
@@ -362,7 +361,7 @@ public class MeshDecimation extends Mesh {
      *            the list of edges previously modified, which need to be
      *            updated.
      */
-    public void updateMatricesAndErrors(List<Edge> edges) {
+    public final void updateMatricesAndErrors(final List<Edge> edges) {
         for (Edge e : edges) {
             this.computeQiMatrix(e.getP1());
             this.computeQiMatrix(e.getP2());
@@ -388,7 +387,7 @@ public class MeshDecimation extends Mesh {
          */
         @SuppressWarnings("boxing")
         @Override
-        public int compare(Edge o1, Edge o2) {
+        public int compare(final Edge o1, final Edge o2) {
             if (MeshDecimation.this.mapED.get(o1) > MeshDecimation.this.mapED
                     .get(o2)) {
                 return 1;

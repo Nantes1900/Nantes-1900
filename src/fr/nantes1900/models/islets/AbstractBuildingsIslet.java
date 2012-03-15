@@ -394,6 +394,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
 
         // TODO and fix types.
         this.biStep7 = this.getBiStep6().launchProcess();
+
+        // FIXME : remove that.
+        this.saveFinalResults("result.stl");
     }
 
     /**
