@@ -133,6 +133,13 @@ public class Building implements BuildingAccess {
     public final void launchProcess5() throws NullArgumentException {
         this.bStep6 = this.bStep5.launchProcess();
     }
+    
+    /**
+     * Launches the sixth process.
+     */
+    public final void launchProcess6() {
+        this.bStep7 = new BuildingStep7(this.bStep6.getWalls(), this.bStep6.getRoofs());
+    }
 
     /**
      * Creates a tree node for the third step.
