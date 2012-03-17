@@ -91,6 +91,10 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
             // TODO handle in final integration
             e.printStackTrace();
         }
+        
+        for (Building b : this.buildings) {
+            b.launchProcess6();
+        }
 
         for (Building b : this.buildings) {
             b.launchProcess6(); // Does nothing, but creates the BuildingStep7.

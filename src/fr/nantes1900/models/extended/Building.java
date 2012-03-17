@@ -133,7 +133,7 @@ public class Building implements BuildingAccess {
     public final void launchProcess5() throws NullArgumentException {
         this.bStep6 = this.bStep5.launchProcess();
     }
-    
+
     public final void launchProcess6() {
         this.bStep7 = this.bStep6.launchProcess();
     }
