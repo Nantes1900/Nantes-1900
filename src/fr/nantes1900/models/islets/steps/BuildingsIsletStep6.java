@@ -92,6 +92,10 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
             e.printStackTrace();
         }
 
+        for (Building b : this.buildings) {
+            b.launchProcess6(); // Does nothing, but creates the BuildingStep7.
+        }
+
         return new BuildingsIsletStep7(this.buildings, this.grounds);
     }
 
