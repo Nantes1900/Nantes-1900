@@ -410,7 +410,7 @@ public class IsletProcessController implements ElementsSelectedListener,
 
         // Enabling / disabling specifics selection modes, beware of order of
         // methods call
-        if (step == 1 || step == 3 || step == 5 || step == 6) {
+        if (step == 1 || step == 3 || step == 5 || step == 6 || step == 7) {
             this.f3DController.setEnableSelectionMode(false,
                     Universe3DController.SELECTION_TRIANGLE_MODE);
             this.f3DController
@@ -423,7 +423,7 @@ public class IsletProcessController implements ElementsSelectedListener,
         }
 
         // Enabling / disabling specifics display types
-        if (step == 6) {
+        if (step == 6 || step == 7) {
             this.f3DController.setEnableDisplayType(true,
                     Universe3DController.DISPLAY_POLYGON_MODE);
             this.f3DController
