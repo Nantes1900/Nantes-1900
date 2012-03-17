@@ -73,9 +73,8 @@ public class BuildingStep6 extends AbstractBuildingStep {
      * fr.nantes1900.models.extended.steps.AbstractBuildingStep#launchProcess ()
      */
     @Override
-    public final AbstractBuildingStep launchProcess() {
-        // No more processs for now : this method do nothing.
-        return null;
+    public final BuildingStep7 launchProcess() {
+        return new BuildingStep7(this.walls, this.roofs);
     }
 
     /*

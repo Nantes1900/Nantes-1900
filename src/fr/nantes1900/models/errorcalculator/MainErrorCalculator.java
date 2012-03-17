@@ -8,10 +8,11 @@ import fr.nantes1900.utils.ParserSTL;
 public class MainErrorCalculator {
 
     public static void main(String[] args) throws IOException {
-        ParserSTL parser = new ParserSTL(args[0]);
+        //FIXME : change it to : args[0] et args[1].
+        ParserSTL parser = new ParserSTL("files/adecimer1.stl");
         Mesh mesh = parser.read();
 
-        parser = new ParserSTL(args[1]);
+        parser = new ParserSTL("files/adecimer1Decim.stl");
         Mesh meshDecim = parser.read();
 
         ErrorCalculator eC = new ErrorCalculator(mesh, meshDecim);
