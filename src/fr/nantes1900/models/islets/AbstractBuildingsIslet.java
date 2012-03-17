@@ -389,16 +389,16 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
             WeirdPreviousResultsException {
         // before lanching process, checks if all buildings have been simplified
 
-        for (Building b : this.biStep6.getBuildings()) {
-            for (Wall w : b.getbStep6().getWalls()) {
-                if (w.getPolygon() == null || w.getPolygon().isEmpty()) {
-                    throw new WeirdPreviousResultsException(
-                            FileTools.readInformationMessage(
-                                    WeirdResultMessages.NOT_EVERY_WALL_SIMPL,
-                                    TextsKeys.MESSAGETYPE_MESSAGE));
-                }
-            }
-        }
+//        for (Building b : this.biStep6.getBuildings()) {
+//            for (Wall w : b.getbStep6().getWalls()) {
+//                if (w.getPolygon() == null || w.getPolygon().isEmpty()) {
+//                    throw new WeirdPreviousResultsException(
+//                            FileTools.readInformationMessage(
+//                                    WeirdResultMessages.NOT_EVERY_WALL_SIMPL,
+//                                    TextsKeys.MESSAGETYPE_MESSAGE));
+//                }
+//            }
+//        }
 
         this.biStep7 = this.getBiStep6().launchProcess();
     }
