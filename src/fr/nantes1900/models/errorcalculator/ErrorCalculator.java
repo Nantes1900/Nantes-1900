@@ -51,7 +51,7 @@ public class ErrorCalculator {
      */
     public final Point
             findClosestPoint(final Point p, final List<Point> points) {
-        Point s1 = p.closest(points);
+        Point s1 = p.getCloser(points);
 
         List<Point> list = new ArrayList<>();
 
@@ -66,7 +66,7 @@ public class ErrorCalculator {
             return s1;
         }
 
-        return p.closest(list);
+        return p.getCloser(list);
     }
 
     /**

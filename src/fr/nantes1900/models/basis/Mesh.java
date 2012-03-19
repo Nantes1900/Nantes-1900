@@ -587,6 +587,10 @@ public class Mesh extends HashSet<Triangle> {
         return t;
     }
 
+    /**
+     * Searches for all the edges contained in the mesh.
+     * @return the list of all edges, without double
+     */
     public final List<Edge> getEdges() {
         Set<Edge> list = new HashSet<>();
         for (Triangle t : this) {
@@ -595,6 +599,10 @@ public class Mesh extends HashSet<Triangle> {
         return new ArrayList<>(list);
     }
 
+    /**
+     * Searches for all the points contained in the mesh.
+     * @return the list of all points, without double
+     */
     public final List<Point> getPoints() {
         Set<Point> list = new HashSet<>();
         for (Triangle t : this) {
@@ -605,19 +613,20 @@ public class Mesh extends HashSet<Triangle> {
         return new ArrayList<>(list);
     }
 
-    // FIXME : describe it very well. (refers to
-    // synchronizeBeginning and End).
+    /**
+     * Refreshes the set of triangles : useful when a point has been modified,
+     * and that the set doesn't recognize it anymore. It takes time, and it
+     * should not be necessary because of synchronizeBeginning and
+     * synchronizeEnd.
+     */
     public final void refresh() {
         Mesh copy = new Mesh(this);
         this.clear();
         this.addAll(copy);
     }
 
-    // FIXME : put this in Mesh... Avoid the static thing...
     /**
-     * TODO
-     * @param list
-     *            list of edges which belongs to borders
+     * Returns the list of the borders which contains at least 2 edges.
      * @return list of polygon representing borders
      */
     public final List<Polygon> returnSortedBorders() {

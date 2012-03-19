@@ -12,6 +12,9 @@ import javax.vecmath.Vector3d;
  * as a normal.
  * @author Daniel Lefevre, Eric Berthe, Valentin Roger, Elsa Arroud-Vignod
  */
+/**
+ * @author Daniel
+ */
 public class Triangle {
 
     /**
@@ -29,6 +32,9 @@ public class Triangle {
      */
     private final Edge[] edges = new Edge[NB_VERTICES];
 
+    /**
+     * The list of the meshes which contain this triangle.
+     */
     private final List<Mesh> meshes = new ArrayList<>();
 
     /**
@@ -84,6 +90,12 @@ public class Triangle {
         return this.angle(face.normal, error);
     }
 
+    /**
+     * Adds a mesh to the attribute list of the meshes containing this triangle.
+     * @param mesh
+     *            the mesh to add
+     * @return true if it was correctly added
+     */
     public final boolean add(final Mesh mesh) {
         if (!this.meshes.contains(mesh)) {
             return this.meshes.add(mesh);
@@ -91,6 +103,10 @@ public class Triangle {
         return false;
     }
 
+    /**
+     * Returns the attribute list of the meshes containing this triangle.
+     * @return the attribute list of the meshes containing this triangle.
+     */
     public final List<Mesh> getMeshes() {
         return this.meshes;
     }
@@ -141,6 +157,11 @@ public class Triangle {
         return false;
     }
 
+    /**
+     * Returns the list of the points of this. Computes it from the list of
+     * edges, ordering it from the direction of the normal
+     * @return the list of points
+     */
     public final List<Point> getPoints() {
         List<Point> points = new ArrayList<>();
 
@@ -603,24 +624,46 @@ public class Triangle {
         return null;
     }
 
+    /**
+     * Setter.
+     * @param e
+     *            the new edge
+     */
     public final void setE1(final Edge e) {
         this.synchronizeBeginning();
         this.edges[0] = e;
         this.synchronizeEnd();
     }
 
+    /**
+     * Setter.
+     * @param e
+     *            the new edge
+     */
     public final void setE2(final Edge e) {
         this.synchronizeBeginning();
         this.edges[1] = e;
         this.synchronizeEnd();
     }
 
+    /**
+     * Setter.
+     * @param e
+     *            the new edge
+     */
     public final void setE3(final Edge e) {
         this.synchronizeBeginning();
         this.edges[2] = e;
         this.synchronizeEnd();
     }
 
+    /**
+     * Replaces an old edge by a new one.
+     * @param eOld
+     *            the old edge
+     * @param eNew
+     *            the new one
+     */
     public final void replace(final Edge eOld, final Edge eNew) {
         if (this.edges[0] == eOld) {
             this.synchronizeBeginning();
@@ -654,23 +697,39 @@ public class Triangle {
         }
     }
 
+    /**
+     * Begins the synchronization by removing this triangle from all the meshes
+     * which contain it.
+     */
     public final void synchronizeBeginning() {
         for (Mesh m : this.meshes) {
             m.remove(this);
         }
     }
 
+    /**
+     * Ends the synchronization by adding this triangle from all the meshes
+     * which have to contain it.
+     */
     public final void synchronizeEnd() {
         for (Mesh m : this.meshes) {
             m.add(this);
         }
     }
 
+    /**
+     * Removes a mesh from the attribute list of meshes.
+     * @param mesh
+     *            the mesh
+     * @return true if it was done correctly, false otherwise
+     */
     public final boolean remove(final Mesh mesh) {
         return this.meshes.remove(mesh);
     }
 
-    // FIXME : think about this... or remove it...
+    /**
+     * Computes the normal from the order of the points.
+     */
     public final void recomputeNormal() {
         Vector3d norm = new Vector3d();
         norm.cross(this.edges[0].convertToVector3d(),
@@ -681,6 +740,10 @@ public class Triangle {
         this.normal.set(norm);
     }
 
+    /**
+     * Computes the area of the triangle, using the Héron formula.
+     * @return the area of the triangle
+     */
     public final double computeArea() {
         // Héron formula.
         double a = this.edges[0].length();
@@ -690,6 +753,12 @@ public class Triangle {
         return Math.sqrt(s * (s - a) * (s - b) * (s - c));
     }
 
+    /**
+     * Projects a point on the triangle, and returns the projection.
+     * @param p
+     *            the point to project
+     * @return the projected point
+     */
     public final Point project(final Point p) {
         double a = this.normal.getX();
         double b = this.normal.getY();
@@ -702,6 +771,12 @@ public class Triangle {
         return new Point(p.getX() + a * k, p.getY() + b * k, p.getZ() + c * k);
     }
 
+    /**
+     * Checks if the point is inside this.
+     * @param d
+     *            the point
+     * @return true if it is, false if not
+     */
     public final boolean isInside(final Point d) {
         Point a = this.getP1();
         Point b = this.getP2();

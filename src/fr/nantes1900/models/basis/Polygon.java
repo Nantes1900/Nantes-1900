@@ -778,7 +778,12 @@ public class Polygon {
         }
     }
 
-    // FIXME : put this in polygon
+    /**
+     * Checks if all polygons are contained in this.
+     * @param borders
+     *            the list of polygons
+     * @return true if all are contained in this, false otherwise
+     */
     public final boolean containsAllWithJts(final List<Polygon> borders) {
         for (Polygon otherBorder : borders) {
             if (otherBorder != this
@@ -790,14 +795,10 @@ public class Polygon {
     }
 
     /**
-     * Gets the lowest edge of a wall.
-     * @param w
-     *            the wall
-     * @return the lowest edge of the wall null if no edge is found
+     * Gets the lowest edge of a polygon.
+     * @return the lowest edge of the polygon, or null if no edge is found
      */
-    // FIXME : put this method in Polygon.
-    // FIXME : this method bring bugs...
-    public Edge getDownEdge() {
+    public final Edge getDownEdge() {
         // Finds the lowest edge of the polygon.
         Edge edge = this.edgeList.get(0);
         Point p1 = edge.getP1();
@@ -816,7 +817,12 @@ public class Polygon {
         return edge;
     }
 
-    // FIXME : put this in Polygon.
+    /**
+     * Check if the this contains the polygon.
+     * @param containedJts
+     *            the polygon
+     * @return true if this contains, false otherwise
+     */
     public final boolean containsWithJts(
             final com.vividsolutions.jts.geom.Polygon containedJts) {
         com.vividsolutions.jts.geom.Polygon containerJts = this
@@ -825,7 +831,12 @@ public class Polygon {
         return containerJts.contains(containedJts);
     }
 
-    // FIXME : put this in Polygon.
+    /**
+     * Check if the this contains the polygon.
+     * @param contained
+     *            the polygon
+     * @return true if this contains, false otherwise
+     */
     public final boolean containsWithJts(final Polygon contained) {
         com.vividsolutions.jts.geom.Polygon containerJts = this
                 .convertPolygonToJts();
@@ -833,7 +844,10 @@ public class Polygon {
         return containerJts.contains(contained.convertPolygonToJts());
     }
 
-    // FIXME : put this in Polygon.
+    /**
+     * Convert the polygon to a polygon in JTS.
+     * @return a JTS Polygon
+     */
     public final com.vividsolutions.jts.geom.Polygon convertPolygonToJts() {
         List<Coordinate> coords = new ArrayList<>();
         for (Point p : this.getPointList()) {

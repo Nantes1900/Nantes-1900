@@ -14,7 +14,6 @@ import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Surface;
 import fr.nantes1900.models.extended.Wall;
-import fr.nantes1900.models.islets.steps.ProgressComputer;
 import fr.nantes1900.utils.Algos;
 
 /**
@@ -140,16 +139,9 @@ public class BuildingStep4 extends AbstractBuildingStep {
 
         // Inits a computer of progress. Implemented, but not able to display
         // for now.
-        ProgressComputer.initStepsCounter();
-        ProgressComputer.setStepsNumber(2);
-
         this.cutWalls();
 
-        ProgressComputer.incStepsCounter();
-
         this.cutRoofs();
-
-        ProgressComputer.incStepsCounter();
 
         this.treatNoise();
 
@@ -202,7 +194,8 @@ public class BuildingStep4 extends AbstractBuildingStep {
 
         // We compute the bounds to check if they share a common edge.
         for (final Surface m : wholeList) {
-            wholeBoundsList.add(new Polygon(m.getMesh().returnUnsortedBorders()));
+            wholeBoundsList
+                    .add(new Polygon(m.getMesh().returnUnsortedBorders()));
         }
 
         // Then we check every edge of the bounds to see if some are shared

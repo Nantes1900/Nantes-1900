@@ -28,6 +28,9 @@ public class Point {
      */
     private double z;
 
+    /**
+     * The list of the edges which contain this point.
+     */
     private List<Edge> edges = new ArrayList<>();
 
     /**
@@ -225,21 +228,12 @@ public class Point {
         return new String("(" + this.x + ", " + this.y + ", " + this.z + ")");
     }
 
-    public final Point closest(final List<Point> points) {
-        double distance = points.get(0).distance(this);
-        Point closest = points.get(0);
-
-        for (Point p : points) {
-            if (p.distance(this) < distance) {
-                distance = p.distance(this);
-                closest = p;
-            }
-        }
-
-        return closest;
-    }
-
-    // FIXME : put in Polygon, or in Point.
+    /**
+     * Searches the closest point of this in the list points.
+     * @param points
+     *            the list of points
+     * @return the point from the list points which is the closest
+     */
     public final Point getCloser(final List<Point> points) {
         Point pClose = points.get(0);
         double distance = this.distance(pClose);
@@ -253,14 +247,27 @@ public class Point {
         return pClose;
     }
 
+    /**
+     * Adds an edge to the attribute list.
+     * @param edge
+     *            the edge
+     */
     public final void addEdge(final Edge edge) {
         this.edges.add(edge);
     }
 
+    /**
+     * Returns the list of the edges.
+     * @return the list of the edges
+     */
     public final List<Edge> getEdges() {
         return this.edges;
     }
 
+    /**
+     * Returns the list of all the triangles which contains this point.
+     * @return the list of all triangles which contains the edges of this point
+     */
     public final List<Triangle> getTriangles() {
         Set<Triangle> triangles = new HashSet<>();
         for (Edge e : this.edges) {

@@ -229,8 +229,6 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
             buildings.addAll(this.biStep7.getBuildings());
             break;
         default:
-            // TODO : default... If progression is < 3.
-            break;
         }
 
         return buildings;
@@ -267,8 +265,6 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
             ground = this.biStep7.getGrounds();
             break;
         default:
-            // TODO : default... If progression is < 3.
-            break;
         }
         return ground;
     }

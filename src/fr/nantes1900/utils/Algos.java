@@ -8,7 +8,6 @@ import java.util.Set;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Surface;
-import fr.nantes1900.models.islets.steps.ProgressComputer;
 
 /**
  * Contains some algorithms used in the other classes.
@@ -70,9 +69,6 @@ public final class Algos {
             counter += mesh.size();
         }
 
-        ProgressComputer.initTrianglesCounter();
-        ProgressComputer.setTrianglesNumber(counter);
-
         for (final Mesh mesh : meshList) {
 
             while (!mesh.isEmpty()) {
@@ -87,8 +83,6 @@ public final class Algos {
 
                 mesh.remove(e);
                 thingsList.add(e);
-
-                ProgressComputer.incTrianglesCounter(e.size());
             }
         }
 
