@@ -8,7 +8,7 @@ import test.fr.nantes1900.decimation.MeshDecimationTest;
 import test.fr.nantes1900.models.EdgeTest;
 import test.fr.nantes1900.models.MeshTest;
 import test.fr.nantes1900.models.PointTest;
-import test.fr.nantes1900.models.PolylineTest;
+import test.fr.nantes1900.models.PolygonTest;
 import test.fr.nantes1900.models.TriangleTest;
 import test.fr.nantes1900.utils.MatrixMethodTest;
 import test.fr.nantes1900.utils.ParserSTLTest;
@@ -19,7 +19,7 @@ import test.fr.nantes1900.utils.ParserSTLTest;
  */
 @RunWith(Suite.class)
 @SuiteClasses(value = {EdgeTest.class, PointTest.class, TriangleTest.class,
-        PolylineTest.class, MeshTest.class, MatrixMethodTest.class,
+        PolygonTest.class, MeshTest.class, MatrixMethodTest.class,
         ParserSTLTest.class, MeshDecimationTest.class}
 )
 

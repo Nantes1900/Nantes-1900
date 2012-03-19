@@ -1,5 +1,8 @@
 package test.fr.nantes1900.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.vecmath.Vector3d;
 
 import junit.framework.Assert;
@@ -43,8 +46,7 @@ public final class PointTest extends TestCase {
             p.changeBase(matrix);
 
             final Point pChanged = new Point(0, 0, 0);
-            final double[] coords = { x, y, z
-            };
+            final double[] coords = {x, y, z};
             pChanged.set(MatrixMethod.changeBase(coords, matrix));
 
             Assert.assertTrue(p.equals(pChanged));
@@ -128,8 +130,7 @@ public final class PointTest extends TestCase {
      */
     @Test
     public static void testSetDoubleArray() {
-        final double[] a = { 0.1, 0.2, 0.4
-        };
+        final double[] a = {0.1, 0.2, 0.4};
         final Point p1 = new Point(0, 0, 0);
         p1.set(a);
 
@@ -153,5 +154,22 @@ public final class PointTest extends TestCase {
         Assert.assertTrue(p1.getX() == 0.1);
         Assert.assertTrue(p1.getY() == 0.2);
         Assert.assertTrue(p1.getZ() == 0.4);
+    }
+
+    @Test
+    public static void testGetCloser() {
+        Point p = new Point(0, 0, 0);
+        Point p1 = new Point(1.45, 1, 0);
+        Point p2 = new Point(1.95, -1.5, 0);
+        Point p3 = new Point(-0.441, 1.001, 0);
+        Point p4 = new Point(2.5, 0, 0);
+
+        List<Point> list = new ArrayList<>();
+        list.add(p1);
+        list.add(p2);
+        list.add(p3);
+        list.add(p4);
+
+        Assert.assertTrue(p.getCloser(list).equals(p3));
     }
 }
