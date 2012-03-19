@@ -1,5 +1,6 @@
 package test.fr.nantes1900.models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.vecmath.Vector3d;
@@ -21,7 +22,7 @@ import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
  * A set of tests for the class Polyline.
  * @author Daniel Lefevre
  */
-public class PolylineTest extends TestCase {
+public class PolygonTest extends TestCase {
 
     /**
      * Test attribute.
@@ -70,7 +71,7 @@ public class PolylineTest extends TestCase {
      * Constructor of the PolylineTest object : create a polyline by adding 3
      * edges.
      */
-    public PolylineTest() {
+    public PolygonTest() {
         this.p.add(this.e1);
         this.p.add(this.e2);
         this.p.add(this.e3);
@@ -565,5 +566,35 @@ public class PolylineTest extends TestCase {
     @Test
     public final void testZMin() {
         Assert.assertTrue(this.p.zMin() == -1);
+    }
+
+    @Test
+    public final void testGetDownEdge() {
+        Point p1 = new Point(0, 0, 0);
+        Point p2 = new Point(0, 1, 0);
+        Point p3 = new Point(0.5, 1, 0);
+        Point p4 = new Point(0.5, 0.5, 0);
+        Point p5 = new Point(1, 0.5, 0);
+        Point p6 = new Point(1, 0, 0);
+
+        Edge e1 = new Edge(p1, p2);
+        Edge e2 = new Edge(p2, p3);
+        Edge e3 = new Edge(p3, p4);
+        Edge e4 = new Edge(p4, p5);
+        Edge e5 = new Edge(p5, p6);
+        Edge e6 = new Edge(p6, p1);
+
+        List<Edge> edges = new ArrayList<>();
+        edges.add(e1);
+        edges.add(e2);
+        edges.add(e3);
+        edges.add(e4);
+        edges.add(e5);
+        edges.add(e6);
+
+        Polygon polygon = new Polygon(edges);
+
+        Assert.assertTrue(polygon.getDownEdge().equals(
+                new Edge(new Point(0, 0, 0), new Point(1, 0, 0))));
     }
 }

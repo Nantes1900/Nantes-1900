@@ -5,14 +5,31 @@ import java.io.IOException;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.utils.ParserSTL;
 
-public class MainErrorCalculator {
+/**
+ * Tool to use the ErrorCalculator in command line.
+ * @author Daniel Lefevre
+ */
+public final class MainErrorCalculator {
 
-    public static void main(String[] args) throws IOException {
-        //FIXME : change it to : args[0] et args[1].
-        ParserSTL parser = new ParserSTL("files/adecimer1.stl");
+    /**
+     * Private constructor.
+     */
+    private MainErrorCalculator() {
+        // Nothing.
+    }
+
+    /**
+     * @param args
+     *            the files containing the two meshes : the mesh before
+     *            simplification first, and the simplified after
+     * @throws IOException
+     *             if something wrong happened in the parsing.
+     */
+    public static void main(final String[] args) throws IOException {
+        ParserSTL parser = new ParserSTL(args[0]);
         Mesh mesh = parser.read();
 
-        parser = new ParserSTL("files/adecimer1Decim.stl");
+        parser = new ParserSTL(args[1]);
         Mesh meshDecim = parser.read();
 
         ErrorCalculator eC = new ErrorCalculator(mesh, meshDecim);
