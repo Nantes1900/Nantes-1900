@@ -211,7 +211,6 @@ public class MeshDecimation extends Mesh {
         }
 
         // Recompute normals.
-        // FIXME : I think the normals are not correct...
         for (Triangle t : triangles) {
             t.recomputeNormal();
         }

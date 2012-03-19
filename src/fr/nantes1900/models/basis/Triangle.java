@@ -731,13 +731,19 @@ public class Triangle {
      * Computes the normal from the order of the points.
      */
     public final void recomputeNormal() {
-        Vector3d norm = new Vector3d();
-        norm.cross(this.edges[0].convertToVector3d(),
-                this.edges[1].convertToVector3d());
-        if (norm.dot(this.normal) < 0) {
-            norm.negate();
-        }
-        this.normal.set(norm);
+        List<Point> points = this.getPoints();
+
+        Vector3d edge0 = new Vector3d(points.get(1).getX()
+                - points.get(0).getX(), points.get(1).getY()
+                - points.get(0).getY(), points.get(1).getZ()
+                - points.get(0).getZ());
+        Vector3d edge1 = new Vector3d(points.get(2).getX()
+                - points.get(0).getX(), points.get(2).getY()
+                - points.get(0).getY(), points.get(2).getZ()
+                - points.get(0).getZ());
+
+        this.normal.cross(edge0, edge1);
+        this.normal.normalize();
     }
 
     /**
