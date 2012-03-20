@@ -46,6 +46,11 @@ public class Edge {
         this.points[1] = point2;
     }
 
+    /**
+     * Copy constructor.
+     * @param edge
+     *            the edge to copy
+     */
     public Edge(final Edge edge) {
         this.points[0] = edge.points[0];
         this.points[1] = edge.points[1];
@@ -221,6 +226,12 @@ public class Edge {
                 && (this.contains(e.points[0]) || this.contains(e.points[1]));
     }
 
+    /**
+     * Returns the point shared by the two edges
+     * @param e
+     *            the other edge
+     * @return the point belonging either to e, either to this, null otherwise
+     */
     public final Point sharedPoint(final Edge e) {
         if (this == e) {
             return null;
@@ -272,8 +283,9 @@ public class Edge {
     }
 
     /**
-     * Returns the projection of a point on the edge. //FIXME : updates this
-     * description.
+     * Returns the projection of a point on the edge. If the projected point
+     * doesn't belong to the edge, returns the point of the edge (one of the
+     * boundary) which is the closest.
      * @param point
      *            the point to project
      * @return the point projected
@@ -364,12 +376,20 @@ public class Edge {
         this.synchronizeEnd();
     }
 
+    /**
+     * Begins the synchronization by removing the triangles containing this edge
+     * from the meshes.
+     */
     public final void synchronizeBeginning() {
         for (Triangle t : this.triangles) {
             t.synchronizeBeginning();
         }
     }
 
+    /**
+     * Ends the synchronization by adding the triangles containing this edge
+     * from the meshes.
+     */
     public final void synchronizeEnd() {
         for (Triangle t : this.triangles) {
             t.synchronizeEnd();
@@ -396,10 +416,23 @@ public class Edge {
         return new String("(" + this.getP1() + ", " + this.getP2() + ")");
     }
 
+    /**
+     * Removes the triangle from the attribute list of triangles.
+     * @param triangle
+     *            the triangle to remove
+     * @return true if it has been removed, false otherwise
+     */
     public final boolean removeTriangle(final Triangle triangle) {
         return this.triangles.remove(triangle);
     }
 
+    /**
+     * Replaces a point by another.
+     * @param pOld
+     *            the old point
+     * @param pNew
+     *            the new one
+     */
     public final void replace(final Point pOld, final Point pNew) {
         if (this.points[0] == pOld) {
             this.synchronizeBeginning();
@@ -412,6 +445,11 @@ public class Edge {
         }
     }
 
+    /**
+     * Removes the list of triangles from the attribute list of triangles.
+     * @param list
+     *            the list of triangles to remove
+     */
     public final void removeTriangles(final List<Triangle> list) {
         for (Triangle t : list) {
             this.removeTriangle(t);
@@ -425,9 +463,6 @@ public class Edge {
      *            list of edges to find neighbours into
      * @param neighboursEdges
      *            list of edges where founded neighbours are stored
-     * @param edge
-     *            edge to find neighbours of
-     * @return polygon formed by all found neighbours
      */
     public final void returnNeighbours(final List<Edge> edgeList,
             final List<Edge> neighboursEdges) {

@@ -58,8 +58,6 @@ public class MeshDecimationTest extends TestCase {
         } catch (IOException e) {
             Assert.fail();
         }
-
-        // FIXME : make some tests here...
     }
 
     @Test

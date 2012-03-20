@@ -83,15 +83,10 @@ public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
     public final BuildingsIsletStep5 launchProcess()
             throws NullArgumentException {
 
-        ProgressComputer.initBuildingsCounter();
-        ProgressComputer.setBuildingsNumber(this.buildings.size());
-
         for (Building b : this.buildings) {
             b.getbStep4().setArguments(this.groundNormal, this.grounds,
                     this.noise);
             b.launchProcess4();
-
-            ProgressComputer.incBuildingsCounter();
         }
 
         BuildingsIsletStep5 biStep = new BuildingsIsletStep5(this.buildings,
