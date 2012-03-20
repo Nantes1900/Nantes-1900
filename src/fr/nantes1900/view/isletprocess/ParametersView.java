@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 
 import fr.nantes1900.constants.Icons;
 import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.models.coefficients.Decimation;
 import fr.nantes1900.models.coefficients.SeparationBuildings;
 import fr.nantes1900.models.coefficients.SeparationGroundBuilding;
 import fr.nantes1900.models.coefficients.SeparationWallRoof;
@@ -36,6 +37,11 @@ public class ParametersView extends JPanel {
      * Serial version UID.
      */
     private static final long serialVersionUID = 1L;
+    
+    /**
+     * Total number of parameters used in the different steps.
+     */
+    private static final int PARAMETERS_NUMBER = 16;
 
     /**
      * The list of labels displaying the names of the parameters. Caution :
@@ -92,9 +98,9 @@ public class ParametersView extends JPanel {
     public ParametersView() {
 
         // Initiate parameters
-        this.property = new JLabel[15];
-        this.value = new ValueProperty[15];
-        this.help = new HelpButton[15];
+        this.property = new JLabel[PARAMETERS_NUMBER];
+        this.value = new ValueProperty[PARAMETERS_NUMBER];
+        this.help = new HelpButton[PARAMETERS_NUMBER];
         this.property[1] = new JLabel(
                 FileTools.readElementText(TextsKeys.KEY_ALTITUDEERROR));
         this.value[1] = new ValueProperty(
@@ -149,6 +155,12 @@ public class ParametersView extends JPanel {
         this.property[14] = new JLabel(
                 FileTools.readElementText(TextsKeys.KEY_ISORIENTEDFACTOR));
         this.value[14] = new ValueProperty(
+                Decimation.getPercentDecimation());
+        
+        // 6th step
+        this.property[15] = new JLabel(
+                FileTools.readElementText(TextsKeys.KEY_DECIMATIONFACTOR));
+        this.value[15] = new ValueProperty(
                 SimplificationSurfaces.getIsOrientedFactor());
 
         // Dimensions of the formatted text fields
@@ -249,6 +261,9 @@ public class ParametersView extends JPanel {
             break;
         case 5:
             this.displayOneParameter(0, 0, 14);
+            break;
+        case 6:
+            this.displayOneParameter(0, 0, 15);
             break;
         default:
             break;

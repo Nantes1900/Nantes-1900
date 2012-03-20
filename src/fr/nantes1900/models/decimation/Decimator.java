@@ -46,7 +46,7 @@ public class Decimator {
         this.mesh.computeErrors();
 
         while (this.mesh.getEdgeNumber() != 0
-                && this.mesh.size() > Decimation.getPercentDecimation() * size) {
+                && this.mesh.size() > Decimation.getPercentDecimation()/100 * size) {
 
             // 4. Sort valid pairs.
             Edge edge = this.mesh.selectMinimalErrorPair();

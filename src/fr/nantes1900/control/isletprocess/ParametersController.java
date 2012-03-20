@@ -10,6 +10,7 @@ import javax.swing.JOptionPane;
 import javax.swing.filechooser.FileFilter;
 
 import fr.nantes1900.constants.TextsKeys;
+import fr.nantes1900.models.coefficients.Decimation;
 import fr.nantes1900.models.coefficients.SeparationBuildings;
 import fr.nantes1900.models.coefficients.SeparationGroundBuilding;
 import fr.nantes1900.models.coefficients.SeparationWallRoof;
@@ -46,7 +47,8 @@ public class ParametersController {
             TextsKeys.KEY_LARGEANGLEERROR, TextsKeys.KEY_MIDDLEANGLEERROR,
             TextsKeys.KEY_PLANESERROR, TextsKeys.KEY_ROOFANGLEERROR,
             TextsKeys.KEY_ROOFSIZEERROR, TextsKeys.KEY_WALLANGLEERROR,
-            TextsKeys.KEY_WALLSIZEERROR, TextsKeys.KEY_ISORIENTEDFACTOR
+            TextsKeys.KEY_WALLSIZEERROR, TextsKeys.KEY_ISORIENTEDFACTOR,
+            TextsKeys.KEY_DECIMATIONFACTOR
     };
 
     /**
@@ -179,6 +181,8 @@ public class ParametersController {
                 .getValueProperty(13));
         SimplificationSurfaces.setIsOrientedFactor(this.pView
                 .getValueProperty(14));
+        Decimation.setPercentDecimation(this.pView
+        		.getValueProperty(15));
     }
 
     /**

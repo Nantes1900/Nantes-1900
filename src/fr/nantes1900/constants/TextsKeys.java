@@ -234,6 +234,10 @@ public final class TextsKeys {
      */
     public static final String KEY_ISORIENTEDFACTOR = "IsOrientedFactor";
     /**
+     * Key for the coefficient is oriented error.
+     */
+    public static final String KEY_DECIMATIONFACTOR = "DecimationFactor";
+    /**
      * Key for the tip parameters.
      */
     public static final String KEY_PARAMETERSTIP = "ParametersTip";
