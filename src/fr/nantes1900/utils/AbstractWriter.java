@@ -14,16 +14,26 @@ public abstract class AbstractWriter {
     /**
      * The name of the file to write
      */
-    String fileName;
+    protected String fileName;
     /**
      * The data source to be written. Takes a BuildingIsletStep with step>=4
      */
-    Writable writable;
+    protected Writable writable;
+    
+    /**
+     * Type of writer to use to write final data in file
+     */
+    public static final int STL_WRITER = 1;
+    
+    /**
+     * Type of writer to use to write final data in file
+     */
+    public static final int CITYGML_WRITER = 1;
 
     /**
      * Generate the file content. Necessary to call it before write()
      */
-    public abstract void makeFile();
+    public abstract void makeFileFromWritable();
 
     /**
      * Write the content in the file
