@@ -28,7 +28,7 @@ import fr.nantes1900.models.islets.AbstractBuildingsIslet;
  * 
  * @author Daniel Lefèvre
  */
-public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep {
+public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep implements Writable {
 
 	/**
 	 * The list of buildings.

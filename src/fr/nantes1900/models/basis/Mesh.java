@@ -379,6 +379,7 @@ public class Mesh extends HashSet<Triangle> {
 
     /**
      * Writes the mesh in a STL file using the ParserSTL class.
+     * USED FOR TESTING
      * @param fileName
      *            the name of the file
      */
