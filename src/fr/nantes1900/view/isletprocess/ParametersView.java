@@ -159,7 +159,7 @@ public class ParametersView extends JPanel {
         
         // 6th step
         this.property[15] = new JLabel(
-                FileTools.readElementText(TextsKeys.KEY_DECIMATIONFACTOR));
+                FileTools.readElementText(TextsKeys.KEY_DECIMATIONPERCENTAGE));
         this.value[15] = new ValueProperty(
                 SimplificationSurfaces.getIsOrientedFactor());
 

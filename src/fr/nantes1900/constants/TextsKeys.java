@@ -236,7 +236,7 @@ public final class TextsKeys {
     /**
      * Key for the coefficient is oriented error.
      */
-    public static final String KEY_DECIMATIONFACTOR = "DecimationFactor";
+    public static final String KEY_DECIMATIONPERCENTAGE = "DecimationPercentage";
     /**
      * Key for the tip parameters.
      */

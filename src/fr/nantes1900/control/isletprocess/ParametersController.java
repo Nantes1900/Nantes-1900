@@ -48,7 +48,7 @@ public class ParametersController {
             TextsKeys.KEY_PLANESERROR, TextsKeys.KEY_ROOFANGLEERROR,
             TextsKeys.KEY_ROOFSIZEERROR, TextsKeys.KEY_WALLANGLEERROR,
             TextsKeys.KEY_WALLSIZEERROR, TextsKeys.KEY_ISORIENTEDFACTOR,
-            TextsKeys.KEY_DECIMATIONFACTOR
+            TextsKeys.KEY_DECIMATIONPERCENTAGE
     };
 
     /**
