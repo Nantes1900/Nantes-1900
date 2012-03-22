@@ -104,7 +104,7 @@ public class CityGMLWriter extends AbstractWriter {
         final List<SurfaceProperty> surfaceMember = new ArrayList<SurfaceProperty>();
 
         // Initialisation
-        this.initAddItem(null, null);
+        this.initAddItem(building, surfaceMember);
 
         // Thematic boundary surfaces
         final List<BoundarySurfaceProperty> boundedBy =
@@ -137,7 +137,7 @@ public class CityGMLWriter extends AbstractWriter {
         final List<SurfaceProperty> surfaceMember = new ArrayList<SurfaceProperty>();
 
         // Initialisation
-        this.initAddItem(null, null);
+        this.initAddItem(building, surfaceMember);
 
         // Thematic boundary surfaces
         final List<BoundarySurfaceProperty> boundedBy =
