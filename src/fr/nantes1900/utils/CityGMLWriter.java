@@ -13,6 +13,8 @@ import fr.nantes1900.models.islets.steps.Writable;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.JAXBException;
+import org.citygml4j.CityGMLContext;
 import org.citygml4j.builder.jaxb.JAXBBuilder;
 import org.citygml4j.factory.CityGMLFactory;
 import org.citygml4j.factory.GMLFactory;
@@ -88,6 +90,13 @@ public class CityGMLWriter extends AbstractWriter {
     public CityGMLWriter(String fileName, Writable writable) {
         this.fileName = fileName;
         this.writable = writable;
+        
+        try {
+            final CityGMLContext ctx = new CityGMLContext();
+            this.builder = ctx.createJAXBBuilder();
+        } catch (final JAXBException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -190,7 +199,7 @@ public class CityGMLWriter extends AbstractWriter {
         if (surface.getPolygon() != null) {
             this.pointsAsCoordinatesToCityGML(surface.getPolygon(), surfaceMember, boundedBy, itemType);
         } else {
-            for (Triangle item : (List<Triangle>) surface.getMesh()) {
+            for (Triangle item : surface.getMesh()) {
                 this.pointsAsCoordinatesToCityGML(item, surfaceMember, boundedBy, itemType);
             }
         }
