@@ -14,6 +14,7 @@ import fr.nantes1900.models.basis.Polygon;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.coefficients.SimplificationSurfaces;
 import fr.nantes1900.models.extended.steps.BuildingStep5;
+import fr.nantes1900.utils.IPointsAsCoordinates;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
 
 /**
@@ -288,6 +289,14 @@ public class Surface {
         }
 
         return possible;
+    }
+    
+    /**
+      * Converts the list of points in a list of coordinates as doubles.
+      * @return a list of double as coordinates.
+      */
+    public final List<Double> getPointsAsCoordinates() {
+        return this.polygon.getPointsAsCoordinates();
     }
 
     /**

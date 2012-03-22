@@ -1,5 +1,6 @@
 package fr.nantes1900.models.basis;
 
+import fr.nantes1900.utils.IPointsAsCoordinates;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -15,7 +16,7 @@ import javax.vecmath.Vector3d;
 /**
  * @author Daniel
  */
-public class Triangle {
+public class Triangle implements IPointsAsCoordinates {
 
     /**
      * Number of vertices of a triangle.
@@ -326,6 +327,7 @@ public class Triangle {
      * @return a collection of the coordinates of the points
      */
     @SuppressWarnings("boxing")
+    @Override
     public final List<Double> getPointsAsCoordinates() {
         final List<Double> list = new ArrayList<>();
         for (final Point p : this.getPoints()) {

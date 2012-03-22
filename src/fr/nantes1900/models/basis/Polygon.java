@@ -9,12 +9,13 @@ import javax.vecmath.Vector3d;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
+import fr.nantes1900.utils.IPointsAsCoordinates;
 
 /**
  * Implements a polyline : a suite of edges.
  * @author Daniel Lefevre
  */
-public class Polygon {
+public class Polygon implements IPointsAsCoordinates {
 
     /**
      * ID counter.
@@ -299,6 +300,7 @@ public class Polygon {
      * Converts the list of points in a list of coordinates as doubles.
      * @return a list of double as coordinates.
      */
+    @Override
     public final List<Double> getPointsAsCoordinates() {
         final List<Double> list = new ArrayList<>();
         for (final Point p : this.pointList) {

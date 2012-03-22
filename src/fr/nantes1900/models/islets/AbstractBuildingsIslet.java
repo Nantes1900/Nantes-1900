@@ -6,8 +6,6 @@ import java.util.List;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.vecmath.Vector3d;
 
-import fr.nantes1900.constants.TextsKeys;
-import fr.nantes1900.constants.WeirdResultMessages;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.exceptions.InvalidCaseException;
 import fr.nantes1900.models.exceptions.NullArgumentException;
@@ -25,9 +23,7 @@ import fr.nantes1900.models.islets.steps.BuildingsIsletStep4;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep5;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep6;
 import fr.nantes1900.models.islets.steps.BuildingsIsletStep7;
-import fr.nantes1900.utils.FileTools;
-import fr.nantes1900.utils.MatrixMethod;
-import fr.nantes1900.utils.WriterSTL;
+import fr.nantes1900.utils.*;
 
 /**
  * Abstracts a building islet : residential or industrial. This class contains
@@ -139,6 +135,11 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
      * The normal to the gravity.
      */
     private Vector3d gravityNormal;
+    
+    /**
+     * Type of writer to use to write final data in file
+     */
+    private int writerType = AbstractWriter.CITYGML_WRITER;
 
     /**
      * Constructor. Saves the mesh in the initialTotalMesh variable.
@@ -445,31 +446,16 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
      *            the name of the file
      */
     public final void saveFinalResults(final String fileName) {
-        Mesh totalSurface = new Mesh();
-
-        for (Building b : this.getBiStep7().getBuildings()) {
-
-            for (Wall w : b.getbStep7().getWalls()) {
-                if (w.getPolygon() != null) {
-                    totalSurface.addAll(w.getPolygon().returnCentroidMesh());
-                } else {
-                    totalSurface.addAll(w.getMesh());
-                }
-            }
-
-            for (Roof r : b.getbStep7().getRoofs()) {
-                if (r.getPolygon() != null) {
-                    totalSurface.addAll(r.getPolygon().returnCentroidMesh());
-                } else {
-                    totalSurface.addAll(r.getMesh());
-                }
-            }
+        AbstractWriter writer = null;
+        
+        if (this.writerType == AbstractWriter.CITYGML_WRITER) {
+            writer = new CityGMLWriter(fileName, this.getBiStep7());
+        } else if (this.writerType == AbstractWriter.STL_WRITER) {
+            writer = new STLWriter(fileName, this.getBiStep7());
         }
-
-        totalSurface.addAll(this.getBiStep7().getGrounds().getMesh());
-
-        WriterSTL writer = new WriterSTL(fileName);
-        writer.setMesh(totalSurface);
+        
+        writer.makeFileFromWritable();
+        
         writer.write();
     }
 
@@ -498,5 +484,14 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
      */
     public final void setGroundNormal(final Vector3d groundNormalIn) {
         this.groundNormal = groundNormalIn;
+    }
+    
+    /**
+     * Setter
+     * @param writerType Type of writer to use to write final data in file
+     * Possible choices : CITYGML_WRITER or STL_WRITER
+     */
+    public void setWriterType(final int writerType) {
+        this.writerType = writerType;
     }
 }

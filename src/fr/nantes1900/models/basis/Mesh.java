@@ -11,7 +11,7 @@ import javax.vecmath.Vector3d;
 
 import fr.nantes1900.utils.MatrixMethod;
 import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
-import fr.nantes1900.utils.WriterSTL;
+import fr.nantes1900.utils.STLWriter;
 
 /**
  * Implements a mesh as extending a HashSet of Triangle.
@@ -379,11 +379,12 @@ public class Mesh extends HashSet<Triangle> {
 
     /**
      * Writes the mesh in a STL file using the ParserSTL class.
+     * USED FOR TESTING
      * @param fileName
      *            the name of the file
      */
     public final void writeSTL(final String fileName) {
-        final WriterSTL writer = new WriterSTL(fileName);
+        final STLWriter writer = new STLWriter(fileName);
         writer.setMesh(this);
         writer.write();
     }

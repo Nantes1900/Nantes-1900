@@ -17,7 +17,7 @@ import fr.nantes1900.models.islets.AbstractBuildingsIslet;
  * between roofs.
  * @author Daniel Lefèvre
  */
-public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep {
+public class BuildingsIsletStep4 extends AbstractBuildingsIsletStep implements Writable {
 
     /**
      * The list of buildings.

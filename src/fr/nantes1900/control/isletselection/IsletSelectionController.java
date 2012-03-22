@@ -15,7 +15,7 @@ import fr.nantes1900.control.display3d.Universe3DController;
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.exceptions.WeirdResultException;
 import fr.nantes1900.utils.FileTools;
-import fr.nantes1900.utils.WriterSTL;
+import fr.nantes1900.utils.STLWriter;
 import fr.nantes1900.view.isletselection.GlobalTreeView.FileNode;
 import fr.nantes1900.view.isletselection.IsletSelectionView;
 
@@ -96,7 +96,7 @@ public class IsletSelectionController {
         boolean normalSaved = false;
         if (this.selectedFile != null
                 && !this.u3DController.getTrianglesSelected().isEmpty()) {
-            WriterSTL writer = new WriterSTL(this.openedDirectory.getPath()
+            STLWriter writer = new STLWriter(this.openedDirectory.getPath()
                     + "/gravity_normal.stl");
             writer.setMesh(new Mesh(this.u3DController.getTrianglesSelected()));
             writer.write();
