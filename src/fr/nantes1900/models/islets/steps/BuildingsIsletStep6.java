@@ -46,11 +46,6 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep implements W
 	 * Association of borders and building they sould be resticked with.
 	 */
 	private HashMap<Polygon, Building> bordersToRestick;
-    
-    /**
-     * Type of writer to use to write final data in file
-     */
-    private int writerType = AbstractWriter.CITYGML_WRITER;
 
 	/**
 	 * Constructor.
@@ -117,13 +112,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep implements W
 	private void writesResult() {
         String fileName = new String(FileSystemView.getFileSystemView().getDefaultDirectory() + "/lastResult.stl");
         
-        AbstractWriter writer = null;
-        
-        if (this.writerType == AbstractWriter.CITYGML_WRITER) {
-            writer = new CityGMLWriter(fileName, this);
-        } else if (this.writerType == AbstractWriter.STL_WRITER) {
-            writer = new STLWriter(fileName, this);
-        }
+        STLWriter writer = new STLWriter(fileName, this);
         
         writer.makeFileFromWritable();
         
@@ -380,13 +369,4 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep implements W
 
 		return map;
 	}
-    
-    /**
-     * Setter
-     * @param writerType Type of writer to use to write final data in file
-     * Possible choices : CITYGML_WRITER or STL_WRITER
-     */
-    public void setWriterType(final int writerType) {
-        this.writerType = writerType;
-    }
 }

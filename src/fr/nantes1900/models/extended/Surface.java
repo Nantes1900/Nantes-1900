@@ -23,7 +23,7 @@ import fr.nantes1900.utils.MatrixMethod.SingularMatrixException;
  * roofs.
  * @author Daniel Lefevre
  */
-public class Surface implements IPointsAsCoordinates {
+public class Surface {
 
     /**
      * ID counter.
@@ -295,7 +295,6 @@ public class Surface implements IPointsAsCoordinates {
       * Converts the list of points in a list of coordinates as doubles.
       * @return a list of double as coordinates.
       */
-     @Override
     public final List<Double> getPointsAsCoordinates() {
         return this.polygon.getPointsAsCoordinates();
     }

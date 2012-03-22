@@ -4,7 +4,11 @@
  */
 package fr.nantes1900.utils;
 
+import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Ground;
+import fr.nantes1900.models.extended.Roof;
+import fr.nantes1900.models.extended.Surface;
+import fr.nantes1900.models.extended.Wall;
 import fr.nantes1900.models.islets.steps.Writable;
 import java.io.File;
 import java.util.ArrayList;
@@ -107,8 +111,12 @@ public class CityGMLWriter extends AbstractWriter {
                 new ArrayList<BoundarySurfaceProperty>();
 
         try {
-            this.itemListToCityGML(buildingToAdd.getbStep6().getWalls(), surfaceMember, boundedBy, ITEM_TYPE_WALL);
-            this.itemListToCityGML(buildingToAdd.getbStep6().getRoofs(), surfaceMember, boundedBy, ITEM_TYPE_ROOF);
+            for (Wall wall : buildingToAdd.getbStep6().getWalls()) {
+                this.surfaceToCityGML(wall, surfaceMember, boundedBy, ITEM_TYPE_WALL);
+            }
+            for (Roof roof : buildingToAdd.getbStep6().getRoofs()) {
+                this.surfaceToCityGML(roof, surfaceMember, boundedBy, ITEM_TYPE_ROOF);
+            }
         } catch (final DimensionMismatchException e) {
             e.printStackTrace();
         }
@@ -136,7 +144,7 @@ public class CityGMLWriter extends AbstractWriter {
                 new ArrayList<BoundarySurfaceProperty>();
 
         try {
-            this.itemListToCityGML((List) ground.getMesh(), surfaceMember, boundedBy, ITEM_TYPE_GROUND);
+            this.surfaceToCityGML(ground, surfaceMember, boundedBy, ITEM_TYPE_GROUND);
         } catch (final DimensionMismatchException e) {
             e.printStackTrace();
         }
@@ -162,52 +170,75 @@ public class CityGMLWriter extends AbstractWriter {
 
         building.setLod2Solid(this.gml.createSolidProperty(solid));
     }
-
+    
     /**
-     * Take a list of item implementing IPointsAsCoordinates, and turn it to
-     * CityGML
+     * Take a Surface and turn it to CityGML
      *
-     * @param itemList The list of item we want to turn to CityGML
+     * @param surface The surface we want to turn to CityGML
      * @param surfaceMember List of SurfaceProperty
      * @param boundedBy List of BoundarySurfaceProperty
      * @param itemType Choice between Roof, Wall and Ground
      *
      * @throws DimensionMismatchException
      */
-    private void itemListToCityGML(
-            List itemList,
+    private void surfaceToCityGML(
+            Surface surface,
             List<SurfaceProperty> surfaceMember,
             List<BoundarySurfaceProperty> boundedBy,
             int itemType) throws DimensionMismatchException {
-
-        for (final IPointsAsCoordinates surface : (List<IPointsAsCoordinates>) itemList) {
-            // Creates the geometry as a suite of coordinates.
-            final Polygon geometry =
-                    this.geom.createLinearPolygon(surface.getPointsAsCoordinates(), 3);
-
-            // Adds an ID.
-            geometry.setId(this.gmlIdManager.generateGmlId());
-            surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry.getId()));
-
-            // Creates a surface.
-            AbstractBoundarySurface boundarySurface = null;
-            switch (itemType) {
-                case ITEM_TYPE_ROOF:
-                    boundarySurface = this.citygml.createRoofSurface();
-                    break;
-                case ITEM_TYPE_WALL:
-                    boundarySurface = this.citygml.createWallSurface();
-                    break;
-                case ITEM_TYPE_GROUND:
-                    boundarySurface = this.citygml.createGroundSurface();
-                    break;
+        
+        if (surface.getPolygon() != null) {
+            this.pointsAsCoordinatesToCityGML(surface.getPolygon(), surfaceMember, boundedBy, itemType);
+        } else {
+            for (Triangle item : (List<Triangle>) surface.getMesh()) {
+                this.pointsAsCoordinatesToCityGML(item, surfaceMember, boundedBy, itemType);
             }
-
-            // Adds the polygon as a surface.
-            boundarySurface.setLod2MultiSurface(this.gml.createMultiSurfaceProperty(this.gml.createMultiSurface(geometry)));
-
-            boundedBy.add(this.citygml.createBoundarySurfaceProperty(boundarySurface));
         }
+    }
+    
+    /**
+     * Take an item implementing IPointsAsCoordinates, and turn it to
+     * CityGML
+     *
+     * @param item The item we want to turn to CityGML
+     * @param surfaceMember List of SurfaceProperty
+     * @param boundedBy List of BoundarySurfaceProperty
+     * @param itemType Choice between Roof, Wall and Ground
+     *
+     * @throws DimensionMismatchException
+     */
+    private void pointsAsCoordinatesToCityGML(
+            IPointsAsCoordinates item,
+            List<SurfaceProperty> surfaceMember,
+            List<BoundarySurfaceProperty> boundedBy,
+            int itemType) throws DimensionMismatchException {
+        
+        // Creates the geometry as a suite of coordinates.
+        final Polygon geometry =
+                this.geom.createLinearPolygon(item.getPointsAsCoordinates(), 3);
+
+        // Adds an ID.
+        geometry.setId(this.gmlIdManager.generateGmlId());
+        surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry.getId()));
+
+        // Creates a surface.
+        AbstractBoundarySurface boundarySurface = null;
+        switch (itemType) {
+            case ITEM_TYPE_ROOF:
+                boundarySurface = this.citygml.createRoofSurface();
+                break;
+            case ITEM_TYPE_WALL:
+                boundarySurface = this.citygml.createWallSurface();
+                break;
+            case ITEM_TYPE_GROUND:
+                boundarySurface = this.citygml.createGroundSurface();
+                break;
+        }
+
+        // Adds the polygon as a surface.
+        boundarySurface.setLod2MultiSurface(this.gml.createMultiSurfaceProperty(this.gml.createMultiSurface(geometry)));
+
+        boundedBy.add(this.citygml.createBoundarySurfaceProperty(boundarySurface));
     }
 
     /**
