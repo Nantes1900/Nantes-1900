@@ -623,8 +623,8 @@ public class BuildingsIsletController {
         return this.islet.returnNode();
     }
 
-    public final void saveFinalResults(final String fileName) {
-        this.islet.saveFinalResults(fileName);
+    public final void saveFinalResults(final String fileName, int writerType) {
+        this.islet.saveFinalResults(fileName, writerType);
     }
 
     /**

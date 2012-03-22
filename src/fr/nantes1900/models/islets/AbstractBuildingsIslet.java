@@ -445,7 +445,7 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
      * @param fileName
      *            the name of the file
      */
-    public final void saveFinalResults(final String fileName) {
+    public final void saveFinalResults(final String fileName, int writerType) {
         AbstractWriter writer = null;
         
         if (this.writerType == AbstractWriter.CITYGML_WRITER) {

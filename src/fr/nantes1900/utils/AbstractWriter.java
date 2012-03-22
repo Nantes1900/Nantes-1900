@@ -23,7 +23,7 @@ public abstract class AbstractWriter {
     /**
      * Type of writer to use to write final data in file
      */
-    public static final int STL_WRITER = 1;
+    public static final int STL_WRITER = 0;
     
     /**
      * Type of writer to use to write final data in file

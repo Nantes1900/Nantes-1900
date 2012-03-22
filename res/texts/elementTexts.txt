@@ -65,3 +65,4 @@ LoadParametersButton=Charger les paramètres
 ShowParametersButton=Afficher tous les paramètres
 SliderDescription=Taille de la sélection
 FileSTLDescription=Fichiers STL
+FileCityGMLDescription=Fichiers CityGML
