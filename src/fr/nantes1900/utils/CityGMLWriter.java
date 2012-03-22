@@ -108,7 +108,7 @@ public class CityGMLWriter extends AbstractWriter {
 
         try {
             this.itemListToCityGML(buildingToAdd.getbStep6().getWalls(), surfaceMember, boundedBy, ITEM_TYPE_WALL);
-            this.itemListToCityGML(buildingToAdd.getbStep6().getWalls(), surfaceMember, boundedBy, ITEM_TYPE_ROOF);
+            this.itemListToCityGML(buildingToAdd.getbStep6().getRoofs(), surfaceMember, boundedBy, ITEM_TYPE_ROOF);
         } catch (final DimensionMismatchException e) {
             e.printStackTrace();
         }
@@ -136,8 +136,7 @@ public class CityGMLWriter extends AbstractWriter {
                 new ArrayList<BoundarySurfaceProperty>();
 
         try {
-            this.itemListToCityGML((List) ground.getMesh(), surfaceMember, boundedBy, ITEM_TYPE_WALL);
-            this.itemListToCityGML((List) ground.getMesh(), surfaceMember, boundedBy, ITEM_TYPE_ROOF);
+            this.itemListToCityGML((List) ground.getMesh(), surfaceMember, boundedBy, ITEM_TYPE_GROUND);
         } catch (final DimensionMismatchException e) {
             e.printStackTrace();
         }
@@ -193,13 +192,13 @@ public class CityGMLWriter extends AbstractWriter {
             // Creates a surface.
             AbstractBoundarySurface boundarySurface = null;
             switch (itemType) {
-                case 1:
+                case ITEM_TYPE_ROOF:
                     boundarySurface = this.citygml.createRoofSurface();
                     break;
-                case 2:
+                case ITEM_TYPE_WALL:
                     boundarySurface = this.citygml.createWallSurface();
                     break;
-                case 3:
+                case ITEM_TYPE_GROUND:
                     boundarySurface = this.citygml.createGroundSurface();
                     break;
             }
@@ -227,7 +226,7 @@ public class CityGMLWriter extends AbstractWriter {
     /**
      * Make the CityGML XML
      */
-    public void makeFile() {
+    public void makeFileFromWritable() {
         for (fr.nantes1900.models.extended.Building building : this.writable.getBuildings()) {
             this.addBuilding(building);
         }

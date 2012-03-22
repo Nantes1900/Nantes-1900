@@ -54,9 +54,19 @@ public class STLWriter extends AbstractWriter {
 
     /**
      * Constructor
+     * @param writable An AbstractBuildingsIsletStep implementation that
+     * implements Writable. Only accepts steps >= 4.
      */
     public STLWriter(Writable writable) {
         this.writable = writable;
+    }
+    
+    /**
+     * Constructor
+     * @param fileName The name of the file to save the data
+     */
+    public STLWriter(String fileName) {
+        this.fileName = fileName;
     }
 
     /**
@@ -251,7 +261,8 @@ public class STLWriter extends AbstractWriter {
     /**
      * Extract the mesh from the AbstractBuildingsIsletStep
      */
-    public void makeFile() {
+    @Override
+    public void makeFileFromWritable() {
         Mesh totalSurface = new Mesh();
 
         for (Building b : this.writable.getBuildings()) {
@@ -276,6 +287,13 @@ public class STLWriter extends AbstractWriter {
         totalSurface.addAll(this.writable.getGrounds().getMesh());
         
         this.mesh = totalSurface;
+    }
+    
+    /**
+     * Setter
+     */
+    public void setMesh(Mesh mesh) {
+        this.mesh = mesh;
     }
 
     /**

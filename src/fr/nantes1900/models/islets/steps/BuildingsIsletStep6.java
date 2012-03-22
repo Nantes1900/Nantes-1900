@@ -21,6 +21,9 @@ import fr.nantes1900.models.extended.Ground;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Wall;
 import fr.nantes1900.models.islets.AbstractBuildingsIslet;
+import fr.nantes1900.utils.AbstractWriter;
+import fr.nantes1900.utils.CityGMLWriter;
+import fr.nantes1900.utils.STLWriter;
 
 /**
  * Implements a step of the process. This step is after the determination of the
@@ -43,6 +46,11 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep implements W
 	 * Association of borders and building they sould be resticked with.
 	 */
 	private HashMap<Polygon, Building> bordersToRestick;
+    
+    /**
+     * Type of writer to use to write final data in file
+     */
+    private int writerType = AbstractWriter.CITYGML_WRITER;
 
 	/**
 	 * Constructor.
@@ -107,19 +115,19 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep implements W
 	 * file in order to watch results with the program.
 	 */
 	private void writesResult() {
-		Mesh result = new Mesh(this.grounds.getMesh());
-
-		for (Building b : buildings) {
-			for (Wall w : b.getWalls(6)) {
-				result.addAll(w.getPolygon().returnCentroidMesh());
-			}
-
-			for (Roof r : b.getRoofs(6)) {
-				result.addAll(r.getPolygon().returnCentroidMesh());
-			}
-		}
-		
-		result.writeSTL(FileSystemView.getFileSystemView().getDefaultDirectory() + "/lastResult.stl");
+        String fileName = new String(FileSystemView.getFileSystemView().getDefaultDirectory() + "/lastResult.stl");
+        
+        AbstractWriter writer = null;
+        
+        if (this.writerType == AbstractWriter.CITYGML_WRITER) {
+            writer = new CityGMLWriter(fileName, this);
+        } else if (this.writerType == AbstractWriter.STL_WRITER) {
+            writer = new STLWriter(fileName, this);
+        }
+        
+        writer.makeFileFromWritable();
+        
+        writer.write();
 	}
 
 	/*
@@ -372,4 +380,13 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep implements W
 
 		return map;
 	}
+    
+    /**
+     * Setter
+     * @param writerType Type of writer to use to write final data in file
+     * Possible choices : CITYGML_WRITER or STL_WRITER
+     */
+    public void setWriterType(final int writerType) {
+        this.writerType = writerType;
+    }
 }
