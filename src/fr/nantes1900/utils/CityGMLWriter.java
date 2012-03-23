@@ -76,17 +76,14 @@ public class CityGMLWriter extends AbstractWriter {
      * The JAXB building.
      */
     private JAXBBuilder builder;
-    /**
-     * The name of the file to write in.
-     */
-    private final String fileName; // FIXME by Nicolas
-
+    
     /**
      * Constructor.
      * @param fileNameIn
      *            Name of the file to write
      * @param writableIn
-     *            TODO by Nicolas : Javadoc
+     *            An object implementing the Writable interface.
+     *            Possible choices : BuildingIsletStep4-7
      */
     public CityGMLWriter(final String fileNameIn, final Writable writableIn) {
         this.fileName = fileNameIn;
@@ -195,7 +192,8 @@ public class CityGMLWriter extends AbstractWriter {
      * @param itemType
      *            Choice between Roof, Wall and Ground
      * @throws DimensionMismatchException
-     *             TODO by Nicolas : Javadoc
+     *             Exception sent by this.geom.createLinearPolygon(). This is an
+     *             exception from the citygml4j library.
      */
     private void surfaceToCityGML(final Surface surface,
             final List<SurfaceProperty> surfaceMember,
@@ -224,7 +222,8 @@ public class CityGMLWriter extends AbstractWriter {
      * @param itemType
      *            Choice between Roof, Wall and Ground
      * @throws DimensionMismatchException
-     *             TODO by Nicolas : Javadoc
+     *             Exception sent by this.geom.createLinearPolygon(). This is an
+     *             exception from the citygml4j library.
      */
     private void pointsAsCoordinatesToCityGML(final IPointsAsCoordinates item,
             final List<SurfaceProperty> surfaceMember,
