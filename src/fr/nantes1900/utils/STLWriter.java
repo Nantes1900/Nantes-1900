@@ -1,8 +1,18 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * To change this template, choose Tools | Templates and open the template in
+ * the editor.
  */
 package fr.nantes1900.utils;
+
+import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 
 import fr.nantes1900.models.basis.Mesh;
 import fr.nantes1900.models.basis.Point;
@@ -10,15 +20,10 @@ import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.extended.Building;
 import fr.nantes1900.models.extended.Roof;
 import fr.nantes1900.models.extended.Wall;
-import fr.nantes1900.models.islets.steps.AbstractBuildingsIsletStep;
 import fr.nantes1900.models.islets.steps.Writable;
-import java.io.*;
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 
 /**
  * Implementation of the AbstractWriter. Writes the data in a STL file.
- *
  * @author tagazok
  */
 public class STLWriter extends AbstractWriter {
@@ -41,39 +46,43 @@ public class STLWriter extends AbstractWriter {
     private Mesh mesh;
 
     /**
-     * Constructor
-     *
-     * @param fileName The name of the file to save the data
-     * @param writable An AbstractBuildingsIsletStep implementation that
-     * implements Writable. Only accepts steps >= 4.
+     * Constructor.
+     * @param fileNameIn
+     *            The name of the file to save the data
+     * @param writableIn
+     *            An AbstractBuildingsIsletStep implementation that implements
+     *            Writable. Only accepts steps >= 4.
      */
-    public STLWriter(final String fileName, Writable writable) {
-        this.fileName = fileName;
-        this.writable = writable;
+    public STLWriter(final String fileNameIn, final Writable writableIn) {
+        this.fileName = fileNameIn;
+        this.writable = writableIn;
     }
 
     /**
-     * Constructor
-     * @param writable An AbstractBuildingsIsletStep implementation that
-     * implements Writable. Only accepts steps >= 4.
+     * Constructor.
+     * @param writableIn
+     *            An AbstractBuildingsIsletStep implementation that implements
+     *            Writable. Only accepts steps >= 4.
      */
-    public STLWriter(Writable writable) {
-        this.writable = writable;
+    public STLWriter(final Writable writableIn) {
+        this.writable = writableIn;
     }
-    
+
     /**
-     * Constructor
-     * @param fileName The name of the file to save the data
+     * Constructor.
+     * @param fileNameIn
+     *            The name of the file to save the data
      */
-    public STLWriter(String fileName) {
-        this.fileName = fileName;
+    public STLWriter(final String fileNameIn) {
+        this.fileName = fileNameIn;
     }
 
     /**
      * Writes a triangle in ASCII.
-     *
-     * @param writer The file we want to write in.
-     * @param triangle The triangle to write.
+     * @param writer
+     *            The file we want to write in.
+     * @param triangle
+     *            The triangle to write.
      */
     private static void writeASCIITriangle(final BufferedWriter writer,
             final Triangle triangle) {
@@ -101,10 +110,12 @@ public class STLWriter extends AbstractWriter {
 
     /**
      * Writes a triangle in the binary format.
-     *
-     * @param writer the writer which writes in the file
-     * @param triangle the triangle to write
-     * @throws IOException if the writer throws an error
+     * @param writer
+     *            the writer which writes in the file
+     * @param triangle
+     *            the triangle to write
+     * @throws IOException
+     *             if the writer throws an error
      */
     private static void writeBinaryTriangle(final OutputStream writer,
             final Triangle triangle) throws IOException {
@@ -132,10 +143,12 @@ public class STLWriter extends AbstractWriter {
 
     /**
      * Writes a double in the good byte order (LITTLE_ENDIAN) in the writer.
-     *
-     * @param writer the writer which writes in the file
-     * @param a the double to write
-     * @throws IOException if the writer throws an error
+     * @param writer
+     *            the writer which writes in the file
+     * @param a
+     *            the double to write
+     * @throws IOException
+     *             if the writer throws an error
      */
     private static void writeInGoodOrder(final OutputStream writer,
             final double a) throws IOException {
@@ -151,7 +164,6 @@ public class STLWriter extends AbstractWriter {
 
     /**
      * Returns the value of the attribute MODE.
-     *
      * @return the attribute MODE
      */
     public final int getWriteMode() {
@@ -160,8 +172,8 @@ public class STLWriter extends AbstractWriter {
 
     /**
      * Changes the writing mode attribute : MODE.
-     *
-     * @param mode the new mode
+     * @param mode
+     *            the new mode
      */
     public final void setWriteMode(final int mode) {
         this.writingMode = mode;
@@ -170,7 +182,8 @@ public class STLWriter extends AbstractWriter {
     /**
      * Writes a mesh, the format depending on the attribute MODE.
      */
-    public void write() {
+    @Override
+    public final void write() {
         try {
             if (this.mesh == null) {
                 throw new STLWriter.NoMeshException();
@@ -191,9 +204,8 @@ public class STLWriter extends AbstractWriter {
 
     /**
      * Writes a mesh in an ASCII file.
-     *
-     * @throws IOException if there is a problem in the opening or the closing
-     * operation
+     * @throws IOException
+     *             if there is a problem in the opening or the closing operation
      */
     private void writeSTLA() throws IOException {
         BufferedWriter writer = null;
@@ -222,9 +234,8 @@ public class STLWriter extends AbstractWriter {
 
     /**
      * Writes a mesh in an binary file.
-     *
-     * @throws IOException if there is a problem in the opening or the closing
-     * operation
+     * @throws IOException
+     *             if there is a problem in the opening or the closing operation
      */
     private void writeSTLB() throws IOException {
         BufferedOutputStream stream = null;
@@ -259,10 +270,10 @@ public class STLWriter extends AbstractWriter {
     }
 
     /**
-     * Extract the mesh from the AbstractBuildingsIsletStep
+     * Extract the mesh from the AbstractBuildingsIsletStep.
      */
     @Override
-    public void makeFileFromWritable() {
+    public final void makeFileFromWritable() {
         Mesh totalSurface = new Mesh();
 
         for (Building b : this.writable.getBuildings()) {
@@ -283,22 +294,23 @@ public class STLWriter extends AbstractWriter {
                 }
             }
         }
-        
+
         totalSurface.addAll(this.writable.getGrounds().getMesh());
-        
+
         this.mesh = totalSurface;
     }
-    
+
     /**
-     * Setter
+     * Setter.
+     * @param meshIn
+     *            TODO by Nicolas : Javadoc.
      */
-    public void setMesh(Mesh mesh) {
-        this.mesh = mesh;
+    public final void setMesh(final Mesh meshIn) {
+        this.mesh = meshIn;
     }
 
     /**
      * Implements an exception when no mesh is found on the writer.
-     *
      * @author Daniel Lefevre
      */
     public final class NoMeshException extends Exception {

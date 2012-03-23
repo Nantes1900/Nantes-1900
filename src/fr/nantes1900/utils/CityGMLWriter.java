@@ -1,6 +1,6 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * To change this template, choose Tools | Templates and open the template in
+ * the editor.
  */
 package fr.nantes1900.utils;
 
@@ -36,21 +36,20 @@ import org.citygml4j.xml.io.reader.CityGMLReadException;
 import org.citygml4j.xml.io.writer.CityGMLWriteException;
 
 /**
- *
  * @author JunkieLand
  */
 public class CityGMLWriter extends AbstractWriter {
 
     /**
-     * The type of an element we can work on
+     * The type of an element we can work on.
      */
     public static final int ITEM_TYPE_ROOF = 1;
     /**
-     * The type of an element we can work on
+     * The type of an element we can work on.
      */
     public static final int ITEM_TYPE_WALL = 2;
     /**
-     * The type of an element we can work on
+     * The type of an element we can work on.
      */
     public static final int ITEM_TYPE_GROUND = 3;
     /**
@@ -80,17 +79,19 @@ public class CityGMLWriter extends AbstractWriter {
     /**
      * The name of the file to write in.
      */
-    private final String fileName;
+    private final String fileName; // FIXME by Nicolas
 
     /**
-     * Constructor
-     *
-     * @param fileName Name of the file to write
+     * Constructor.
+     * @param fileNameIn
+     *            Name of the file to write
+     * @param writableIn
+     *            TODO by Nicolas : Javadoc
      */
-    public CityGMLWriter(String fileName, Writable writable) {
-        this.fileName = fileName;
-        this.writable = writable;
-        
+    public CityGMLWriter(final String fileNameIn, final Writable writableIn) {
+        this.fileName = fileNameIn;
+        this.writable = writableIn;
+
         try {
             final CityGMLContext ctx = new CityGMLContext();
             this.builder = ctx.createJAXBBuilder();
@@ -101,8 +102,8 @@ public class CityGMLWriter extends AbstractWriter {
 
     /**
      * Adds a building to the CityGMLFactory.
-     *
-     * @param buildingToAdd the building to write
+     * @param buildingToAdd
+     *            the building to write
      */
     public final void addBuilding(
             final fr.nantes1900.models.extended.Building buildingToAdd) {
@@ -110,21 +111,22 @@ public class CityGMLWriter extends AbstractWriter {
         final Building building = this.citygml.createBuilding();
 
         // LOD2 solid
-        final List<SurfaceProperty> surfaceMember = new ArrayList<SurfaceProperty>();
+        final List<SurfaceProperty> surfaceMember = new ArrayList<>();
 
         // Initialisation
         this.initAddItem(building, surfaceMember);
 
         // Thematic boundary surfaces
-        final List<BoundarySurfaceProperty> boundedBy =
-                new ArrayList<BoundarySurfaceProperty>();
+        final List<BoundarySurfaceProperty> boundedBy = new ArrayList<>();
 
         try {
             for (Wall wall : buildingToAdd.getbStep6().getWalls()) {
-                this.surfaceToCityGML(wall, surfaceMember, boundedBy, ITEM_TYPE_WALL);
+                this.surfaceToCityGML(wall, surfaceMember, boundedBy,
+                        ITEM_TYPE_WALL);
             }
             for (Roof roof : buildingToAdd.getbStep6().getRoofs()) {
-                this.surfaceToCityGML(roof, surfaceMember, boundedBy, ITEM_TYPE_ROOF);
+                this.surfaceToCityGML(roof, surfaceMember, boundedBy,
+                        ITEM_TYPE_ROOF);
             }
         } catch (final DimensionMismatchException e) {
             e.printStackTrace();
@@ -136,24 +138,24 @@ public class CityGMLWriter extends AbstractWriter {
 
     /**
      * Adds a ground to the CityGMLFactory.
-     *
-     * @param ground the ground to add
+     * @param ground
+     *            the ground to add
      */
     public final void addGround(final Ground ground) {
         final Building building = this.citygml.createBuilding();
 
         // LOD2 solid
-        final List<SurfaceProperty> surfaceMember = new ArrayList<SurfaceProperty>();
+        final List<SurfaceProperty> surfaceMember = new ArrayList<>();
 
         // Initialisation
         this.initAddItem(building, surfaceMember);
 
         // Thematic boundary surfaces
-        final List<BoundarySurfaceProperty> boundedBy =
-                new ArrayList<BoundarySurfaceProperty>();
+        final List<BoundarySurfaceProperty> boundedBy = new ArrayList<>();
 
         try {
-            this.surfaceToCityGML(ground, surfaceMember, boundedBy, ITEM_TYPE_GROUND);
+            this.surfaceToCityGML(ground, surfaceMember, boundedBy,
+                    ITEM_TYPE_GROUND);
         } catch (final DimensionMismatchException e) {
             e.printStackTrace();
         }
@@ -164,113 +166,131 @@ public class CityGMLWriter extends AbstractWriter {
 
     /**
      * Initialize instanciations in addBuilding, addGround, addSpecialBuilding
-     * methods
-     *
-     * @param building The CityGML building
-     * @param surfaceMember List of SurfaceProperty
+     * methods.
+     * @param building
+     *            The CityGML building
+     * @param surfaceMember
+     *            List of SurfaceProperty
      */
-    private void initAddItem(Building building, List<SurfaceProperty> surfaceMember) {
+    private void initAddItem(final Building building,
+            final List<SurfaceProperty> surfaceMember) {
         // Creates the surface object.
-        final CompositeSurface compositeSurface =
-                this.gml.createCompositeSurface();
+        final CompositeSurface compositeSurface = this.gml
+                .createCompositeSurface();
         compositeSurface.setSurfaceMember(surfaceMember);
         final Solid solid = this.gml.createSolid();
         solid.setExterior(this.gml.createSurfaceProperty(compositeSurface));
 
         building.setLod2Solid(this.gml.createSolidProperty(solid));
     }
-    
+
     /**
-     * Take a Surface and turn it to CityGML
-     *
-     * @param surface The surface we want to turn to CityGML
-     * @param surfaceMember List of SurfaceProperty
-     * @param boundedBy List of BoundarySurfaceProperty
-     * @param itemType Choice between Roof, Wall and Ground
-     *
+     * Take a Surface and turn it to CityGML.
+     * @param surface
+     *            The surface we want to turn to CityGML
+     * @param surfaceMember
+     *            List of SurfaceProperty
+     * @param boundedBy
+     *            List of BoundarySurfaceProperty
+     * @param itemType
+     *            Choice between Roof, Wall and Ground
      * @throws DimensionMismatchException
+     *             TODO by Nicolas : Javadoc
      */
-    private void surfaceToCityGML(
-            Surface surface,
-            List<SurfaceProperty> surfaceMember,
-            List<BoundarySurfaceProperty> boundedBy,
-            int itemType) throws DimensionMismatchException {
-        
+    private void surfaceToCityGML(final Surface surface,
+            final List<SurfaceProperty> surfaceMember,
+            final List<BoundarySurfaceProperty> boundedBy, final int itemType)
+            throws DimensionMismatchException {
+
         if (surface.getPolygon() != null) {
-            this.pointsAsCoordinatesToCityGML(surface.getPolygon(), surfaceMember, boundedBy, itemType);
+            this.pointsAsCoordinatesToCityGML(surface.getPolygon(),
+                    surfaceMember, boundedBy, itemType);
         } else {
             for (Triangle item : surface.getMesh()) {
-                this.pointsAsCoordinatesToCityGML(item, surfaceMember, boundedBy, itemType);
+                this.pointsAsCoordinatesToCityGML(item, surfaceMember,
+                        boundedBy, itemType);
             }
         }
     }
-    
+
     /**
-     * Take an item implementing IPointsAsCoordinates, and turn it to
-     * CityGML
-     *
-     * @param item The item we want to turn to CityGML
-     * @param surfaceMember List of SurfaceProperty
-     * @param boundedBy List of BoundarySurfaceProperty
-     * @param itemType Choice between Roof, Wall and Ground
-     *
+     * Take an item implementing IPointsAsCoordinates, and turn it to CityGML.
+     * @param item
+     *            The item we want to turn to CityGML
+     * @param surfaceMember
+     *            List of SurfaceProperty
+     * @param boundedBy
+     *            List of BoundarySurfaceProperty
+     * @param itemType
+     *            Choice between Roof, Wall and Ground
      * @throws DimensionMismatchException
+     *             TODO by Nicolas : Javadoc
      */
-    private void pointsAsCoordinatesToCityGML(
-            IPointsAsCoordinates item,
-            List<SurfaceProperty> surfaceMember,
-            List<BoundarySurfaceProperty> boundedBy,
-            int itemType) throws DimensionMismatchException {
-        
+    private void pointsAsCoordinatesToCityGML(final IPointsAsCoordinates item,
+            final List<SurfaceProperty> surfaceMember,
+            final List<BoundarySurfaceProperty> boundedBy, final int itemType)
+            throws DimensionMismatchException {
+
         // Creates the geometry as a suite of coordinates.
-        final Polygon geometry =
-                this.geom.createLinearPolygon(item.getPointsAsCoordinates(), 3);
+        final Polygon geometry = this.geom.createLinearPolygon(
+                item.getPointsAsCoordinates(), 3);
 
         // Adds an ID.
         geometry.setId(this.gmlIdManager.generateGmlId());
-        surfaceMember.add(this.gml.createSurfaceProperty('#' + geometry.getId()));
+        surfaceMember
+                .add(this.gml.createSurfaceProperty('#' + geometry.getId()));
 
         // Creates a surface.
         AbstractBoundarySurface boundarySurface = null;
         switch (itemType) {
-            case ITEM_TYPE_ROOF:
-                boundarySurface = this.citygml.createRoofSurface();
-                break;
-            case ITEM_TYPE_WALL:
-                boundarySurface = this.citygml.createWallSurface();
-                break;
-            case ITEM_TYPE_GROUND:
-                boundarySurface = this.citygml.createGroundSurface();
-                break;
+        case ITEM_TYPE_ROOF:
+            boundarySurface = this.citygml.createRoofSurface();
+            break;
+        case ITEM_TYPE_WALL:
+            boundarySurface = this.citygml.createWallSurface();
+            break;
+        case ITEM_TYPE_GROUND:
+            boundarySurface = this.citygml.createGroundSurface();
+            break;
+        default:
+            break;
         }
 
         // Adds the polygon as a surface.
-        boundarySurface.setLod2MultiSurface(this.gml.createMultiSurfaceProperty(this.gml.createMultiSurface(geometry)));
+        boundarySurface.setLod2MultiSurface(this.gml
+                .createMultiSurfaceProperty(this.gml
+                        .createMultiSurface(geometry)));
 
-        boundedBy.add(this.citygml.createBoundarySurfaceProperty(boundarySurface));
+        boundedBy.add(this.citygml
+                .createBoundarySurfaceProperty(boundarySurface));
     }
 
     /**
-     * Finalize addBuilding, addGround, addSpecialBuilding
-     *
-     * @param building The CityGML building
-     * @param boundedBy List of BoundarySurfaceProperty
+     * Finalize addBuilding, addGround, addSpecialBuilding.
+     * @param building
+     *            The CityGML building
+     * @param boundedBy
+     *            List of BoundarySurfaceProperty
      */
-    private void finalizeItemAdd(Building building, List<BoundarySurfaceProperty> boundedBy) {
+    private void finalizeItemAdd(final Building building,
+            final List<BoundarySurfaceProperty> boundedBy) {
         building.setBoundedBySurface(boundedBy);
 
         this.cityModel.setBoundedBy(building.calcBoundedBy(false));
-        this.cityModel.addCityObjectMember(this.citygml.createCityObjectMember(building));
+        this.cityModel.addCityObjectMember(this.citygml
+                .createCityObjectMember(building));
     }
 
     /**
-     * Make the CityGML XML
+     * Make the CityGML XML.
      */
-    public void makeFileFromWritable() {
-        for (fr.nantes1900.models.extended.Building building : this.writable.getBuildings()) {
+    @Override
+    public final void makeFileFromWritable() {
+        for (fr.nantes1900.models.extended.Building building : this.writable
+                .getBuildings()) {
             this.addBuilding(building);
         }
-        
+
         this.addGround(this.writable.getGrounds());
     }
 
@@ -282,10 +302,10 @@ public class CityGMLWriter extends AbstractWriter {
 
         CityGMLOutputFactory out;
         try {
-            out =
-                    this.builder.createCityGMLOutputFactory(CityGMLVersion.v1_0_0);
-            final org.citygml4j.xml.io.writer.CityGMLWriter writer =
-                    out.createCityGMLWriter(new File(this.fileName));
+            out = this.builder
+                    .createCityGMLOutputFactory(CityGMLVersion.v1_0_0);
+            final org.citygml4j.xml.io.writer.CityGMLWriter writer = out
+                    .createCityGMLWriter(new File(this.fileName));
 
             writer.setPrefixes(CityGMLVersion.v1_0_0);
             writer.setSchemaLocations(CityGMLVersion.v1_0_0);
