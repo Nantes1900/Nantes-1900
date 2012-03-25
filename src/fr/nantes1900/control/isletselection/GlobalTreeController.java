@@ -1,6 +1,3 @@
-/**
- * 
- */
 package fr.nantes1900.control.isletselection;
 
 import java.io.File;

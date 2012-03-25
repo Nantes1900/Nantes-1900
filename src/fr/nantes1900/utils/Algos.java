@@ -64,11 +64,6 @@ public final class Algos {
         final List<Mesh> thingsList = new ArrayList<>();
         final List<Mesh> meshList = Algos.blockExtract(m);
 
-        int counter = 0;
-        for (final Mesh mesh : meshList) {
-            counter += mesh.size();
-        }
-
         for (final Mesh mesh : meshList) {
 
             while (!mesh.isEmpty()) {

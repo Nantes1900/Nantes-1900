@@ -22,7 +22,6 @@ import fr.nantes1900.control.isletprocess.characteristics.CharacteristicsStep4Co
 import fr.nantes1900.control.isletprocess.characteristics.CharacteristicsStep5Controller;
 import fr.nantes1900.control.isletprocess.characteristics.CharacteristicsStep6Controller;
 import fr.nantes1900.listener.ElementsSelectedListener;
-import fr.nantes1900.listener.ProgressListener;
 import fr.nantes1900.models.basis.Triangle;
 import fr.nantes1900.models.exceptions.WeirdPreviousResultsException;
 import fr.nantes1900.models.exceptions.WeirdResultException;
@@ -37,8 +36,7 @@ import fr.nantes1900.view.isletprocess.IsletProcessView;
  * @author Camille Bouquet,
  * @author Luc Jallerat
  */
-public class IsletProcessController implements ElementsSelectedListener,
-        ProgressListener {
+public class IsletProcessController implements ElementsSelectedListener {
 
     /**
      * Parent controller of this one.
@@ -195,7 +193,7 @@ public class IsletProcessController implements ElementsSelectedListener,
      * Getter.
      * @return the progression of the process of the current islet.
      */
-    public int getProgression() {
+    public final int getProgression() {
         return this.getBiController().getIslet().getProgression();
     }
 
@@ -544,27 +542,19 @@ public class IsletProcessController implements ElementsSelectedListener,
         }
     }
 
-    /*
-     * (non-Javadoc)
-     * @see fr.nantes1900.listener.ProgressListener#updateProgress(double)
-     */
-    @Override
-    public void updateProgress(final double progress) {
-        // this.ipView.updatesProgressBar(progress);
-    }
-
     /**
      * Adds a shortcut to the window.
      * @param key
-     *          the shortcut key
+     *            the shortcut key
      * @param actionName
-     *          the name of the action
+     *            the name of the action
      * @param action
-     *          the action to associate with this shortcut
+     *            the action to associate with this shortcut
      */
-    public void addShortcut(KeyStroke key, String actionName, AbstractAction action)
-    {
-        ipView.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(key, actionName);
+    public final void addShortcut(final KeyStroke key, final String actionName,
+            final AbstractAction action) {
+        ipView.getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(key, actionName);
         ipView.getRootPane().getActionMap().put(actionName, action);
     }
 }

@@ -252,13 +252,13 @@ public class CharacteristicsStep6View extends CharacteristicsView {
      * @param neighbors
      *            the new list of neighbors
      */
-    public final void setList(final ArrayList<Surface> neighbors) {
+    public final void setList(final List<Surface> neighbors) {
         this.dlm.removeAllElements();
         for (Surface neighbour : neighbors) {
             this.dlm.addElement(neighbour);
         }
-        revalidate();
-        repaint();
+        this.revalidate();
+        this.repaint();
     }
 
     /**

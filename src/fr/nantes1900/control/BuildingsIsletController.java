@@ -36,7 +36,7 @@ import fr.nantes1900.utils.ParserSTL;
 /**
  * Implements the controller of a building islet. Used to visualize the islets,
  * to LAUNCH the processs.
- * @author Daniel
+ * @author Daniel Lefèvre
  */
 public class BuildingsIsletController {
 
@@ -623,7 +623,7 @@ public class BuildingsIsletController {
         return this.islet.returnNode();
     }
 
-    public final void saveFinalResults(final String fileName, int writerType) {
+    public final void saveFinalResults(final String fileName, final int writerType) {
         this.islet.saveFinalResults(fileName, writerType);
     }
 

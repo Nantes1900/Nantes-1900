@@ -12,8 +12,8 @@ import javax.swing.JProgressBar;
 
 /**
  * Personnalized JFrame with a status bar on the bottom and a different look.
- * @author Camille
- * @author Daniel
+ * @author Camille Bouquet
+ * @author Daniel Lefevre
  */
 public class PFrame extends JFrame {
 
@@ -34,7 +34,7 @@ public class PFrame extends JFrame {
     protected JPanel pComponents;
 
     /**
-     * Progress bar
+     * Progress bar.
      */
     protected JProgressBar progressBar;
 

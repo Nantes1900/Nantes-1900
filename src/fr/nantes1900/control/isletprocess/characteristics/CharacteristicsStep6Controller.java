@@ -2,7 +2,7 @@ package fr.nantes1900.control.isletprocess.characteristics;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -51,7 +51,7 @@ public class CharacteristicsStep6Controller extends
      */
     public CharacteristicsStep6Controller(
             final IsletProcessController parentControllerIn,
-            final Surface newSurface, final ArrayList<Surface> neighbors) {
+            final Surface newSurface, final List<Surface> neighbors) {
         super(parentControllerIn);
 
         this.surfaceToCheck = newSurface;

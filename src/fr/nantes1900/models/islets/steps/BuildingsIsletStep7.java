@@ -12,10 +12,10 @@ import fr.nantes1900.models.islets.AbstractBuildingsIslet;
  * Implements a step of the process. This step is after the determination of the
  * neighbours and the sort of the neighbours. This step simplifies the ground
  * and resticks it to the simplified buildings.
- * @author Daniel Lefèvre
- * @author Camille Bouquet
+ * @author Daniel Lefèvre, Camille Bouquet
  */
-public class BuildingsIsletStep7 extends AbstractBuildingsIsletStep implements Writable {
+public class BuildingsIsletStep7 extends AbstractBuildingsIsletStep implements
+        Writable {
 
     /**
      * The list of buildings.

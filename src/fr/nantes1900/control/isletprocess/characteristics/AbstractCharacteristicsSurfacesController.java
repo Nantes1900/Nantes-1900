@@ -1,6 +1,7 @@
 package fr.nantes1900.control.isletprocess.characteristics;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import fr.nantes1900.control.isletprocess.IsletProcessController;
 import fr.nantes1900.models.extended.Surface;
@@ -15,7 +16,7 @@ public abstract class AbstractCharacteristicsSurfacesController extends
     /**
      * List of selected surfaces.
      */
-    protected ArrayList<Surface> surfacesList;
+    protected List<Surface> surfacesList;
 
     /**
      * Creates a new basic controller with the list of selected surfaces.
@@ -58,7 +59,7 @@ public abstract class AbstractCharacteristicsSurfacesController extends
      * Gets the surface list.
      * @return the surface list
      */
-    public final ArrayList<Surface> getSurfaces() {
+    public final List<Surface> getSurfaces() {
         return this.surfacesList;
     }
 

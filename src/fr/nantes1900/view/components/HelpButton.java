@@ -132,8 +132,7 @@ public class HelpButton extends JButton implements MouseListener {
                 - amount;
         int blue = (color.getBlue() - amount < 0) ? 0 : color.getBlue()
                 - amount;
-        Color colorLightened = new Color(red, green, blue);
-        return colorLightened;
+        return new Color(red, green, blue);
     }
 
     /**
@@ -151,8 +150,7 @@ public class HelpButton extends JButton implements MouseListener {
                 + amount;
         int blue = (color.getBlue() + amount > 255) ? 255 : color.getBlue()
                 + amount;
-        Color colorLightened = new Color(red, green, blue);
-        return colorLightened;
+        return new Color(red, green, blue);
     }
 
     /*

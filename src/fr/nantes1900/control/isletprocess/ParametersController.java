@@ -39,8 +39,8 @@ public class ParametersController {
     /**
      * An array containing all the names of the parameters.
      */
-    public static final String[] PARAMETERS_KEY = {
-            TextsKeys.KEY_ALTITUDEERROR, TextsKeys.KEY_ANGLEGROUNDERROR,
+    public static final String[] PARAMETERS_KEY = {TextsKeys.KEY_ALTITUDEERROR,
+            TextsKeys.KEY_ANGLEGROUNDERROR,
             TextsKeys.KEY_LARGEANGLEGROUNDERROR,
             TextsKeys.KEY_BLOCKGROUNDSSIZEERROR,
             TextsKeys.KEY_BLOCKBUILDINGSIZE, TextsKeys.KEY_NORMALTOERROR,
@@ -48,8 +48,7 @@ public class ParametersController {
             TextsKeys.KEY_PLANESERROR, TextsKeys.KEY_ROOFANGLEERROR,
             TextsKeys.KEY_ROOFSIZEERROR, TextsKeys.KEY_WALLANGLEERROR,
             TextsKeys.KEY_WALLSIZEERROR, TextsKeys.KEY_ISORIENTEDFACTOR,
-            TextsKeys.KEY_DECIMATIONPERCENTAGE
-    };
+            TextsKeys.KEY_DECIMATIONPERCENTAGE};
 
     /**
      * Constructor.
@@ -114,7 +113,7 @@ public class ParametersController {
                     parametersList += ParametersController.this.pView
                             .getNameProperty(i)
                             + "       "
-                            + String.valueOf(pView.getValueProperty(i)) + "\n";
+                            + pView.getValueProperty(i) + "\n";
                 }
 
                 JOptionPane
@@ -181,8 +180,7 @@ public class ParametersController {
                 .getValueProperty(13));
         SimplificationSurfaces.setIsOrientedFactor(this.pView
                 .getValueProperty(14));
-        Decimation.setPercentDecimation(this.pView
-        		.getValueProperty(15));
+        Decimation.setPercentDecimation(this.pView.getValueProperty(15));
     }
 
     /**

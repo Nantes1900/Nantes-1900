@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates and open the template in
- * the editor.
- */
 package fr.nantes1900.utils;
 
 import java.io.BufferedOutputStream;
@@ -24,7 +20,8 @@ import fr.nantes1900.models.islets.steps.Writable;
 
 /**
  * Implementation of the AbstractWriter. Writes the data in a STL file.
- * @author tagazok
+ * @author tagazok FIXME by Nicolas Rey : what do you do with the WriterSTL
+ *         class ? TODO by Nicolas Rey : please keep our names in it.
  */
 public class STLWriter extends AbstractWriter {
 

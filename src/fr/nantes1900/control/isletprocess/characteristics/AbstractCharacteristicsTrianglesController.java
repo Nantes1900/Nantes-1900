@@ -1,6 +1,5 @@
 package fr.nantes1900.control.isletprocess.characteristics;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fr.nantes1900.control.isletprocess.IsletProcessController;
@@ -16,7 +15,7 @@ public abstract class AbstractCharacteristicsTrianglesController extends
     /**
      * List of selected triangles.
      */
-    protected ArrayList<Triangle> trianglesList;
+    protected List<Triangle> trianglesList;
 
     /**
      * Creates a new basic controller with the list of selected triangles.
@@ -29,14 +28,14 @@ public abstract class AbstractCharacteristicsTrianglesController extends
             final IsletProcessController parentControllerIn,
             final List<Triangle> trianglesSelected) {
         super(parentControllerIn);
-        this.trianglesList = (ArrayList<Triangle>) trianglesSelected;
+        this.trianglesList = trianglesSelected;
     }
 
     /**
      * Gets the list of selected triangles.
      * @return the list of selected triangles.
      */
-    public final ArrayList<Triangle> getTriangles() {
+    public final List<Triangle> getTriangles() {
         return this.trianglesList;
     }
 

@@ -7,10 +7,8 @@ import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JToolBar;
 
-import fr.nantes1900.constants.TextsKeys;
 import fr.nantes1900.control.isletprocess.IsletProcessController.UnexistingStepException;
 import fr.nantes1900.utils.AbstractWriter;
-import fr.nantes1900.utils.FileTools;
 import fr.nantes1900.utils.ResultsFileFilter;
 import fr.nantes1900.view.isletprocess.NavigationBarView;
 

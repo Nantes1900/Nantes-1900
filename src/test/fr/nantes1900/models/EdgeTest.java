@@ -113,7 +113,7 @@ public class EdgeTest extends TestCase {
      * .
      */
     @Test
-    public final static void testProject() {
+    public static final void testProject() {
         final Point pointTest0 = new Point(0, 0, 0);
         final Point pointTest1 = new Point(1, 0, 0);
         final Point pointTest2 = new Point(0.9, 0.1, 0);

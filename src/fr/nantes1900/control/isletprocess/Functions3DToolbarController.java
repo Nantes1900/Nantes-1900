@@ -41,14 +41,12 @@ public class Functions3DToolbarController {
      * Is the selection mode button enabled. 0 : selection mode triangles; 1 :
      * selection mode meshes
      */
-    private boolean[] selectionModeEnable = { true, true
-    };
+    private boolean[] selectionModeEnable = {true, true};
     /**
      * Is the display type button enabled. 0 : display type meshes; 1 : display
      * type polygons
      */
-    private boolean[] displayTypeEnable = { true, true
-    };
+    private boolean[] displayTypeEnable = {true, true};
 
     /**
      * Creates a new toolbar controller which creates the view and sets actions
@@ -141,7 +139,7 @@ public class Functions3DToolbarController {
                 new ChangeListener() {
 
                     @Override
-                    public void stateChanged(ChangeEvent event) {
+                    public void stateChanged(final ChangeEvent event) {
                         double newValue = new Double(((JSlider) event
                                 .getSource()).getValue());
                         newValue = (newValue < 1.0) ? 1.0 : newValue;

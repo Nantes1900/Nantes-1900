@@ -1,22 +1,29 @@
 /*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
+ * To change this template, choose Tools | Templates and open the template in
+ * the editor.
  */
 package fr.nantes1900.models.islets.steps;
 
-import fr.nantes1900.models.extended.Building;
-import fr.nantes1900.models.extended.Ground;
-import fr.nantes1900.models.extended.Roof;
-import fr.nantes1900.models.extended.Wall;
 import java.util.List;
 
+import fr.nantes1900.models.extended.Building;
+import fr.nantes1900.models.extended.Ground;
+
 /**
- *
- * @author tagazok
+ * TODO : Javadoc by Nicolas Rey.
+ * @author Nicolas Rey
  */
 public interface Writable {
 
-    public List<Building> getBuildings();
+    /**
+     * TODO : Javadoc by Nicolas Rey.
+     * @return TODO : Javadoc by Nicolas Rey.
+     */
+    List<Building> getBuildings();
 
-    public Ground getGrounds();
+    /**
+     * TODO : Javadoc by Nicolas Rey.
+     * @return TODO : Javadoc by Nicolas Rey.
+     */
+    Ground getGrounds();
 }

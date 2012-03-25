@@ -7,6 +7,12 @@ package fr.nantes1900.constants;
 public abstract class Characteristics {
 
     /**
+     * Private constructor.
+     */
+    private Characteristics() {
+    }
+
+    /**
      * Selection mode triangle.
      */
     public static final int SELECTION_TYPE_TRIANGLE = 0;
@@ -39,10 +45,4 @@ public abstract class Characteristics {
      * Type roof.
      */
     public static final String TYPE_ROOF = "Toit";
-
-    /**
-     * Constructor.
-     */
-    public Characteristics() {
-    }
 }
