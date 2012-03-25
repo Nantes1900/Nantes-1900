@@ -80,8 +80,11 @@ public class ResultsFileFilter extends FileFilter {
     }
 
     /**
-     * TODO by Nicolas : Javadoc.
-     * @return TODO by Nicolas : Javadoc.
+     * Return the type of writer chosen to save the data in a file.
+     * Possible choices : AbstractWriter.STL_WRITER or AbstractWriter.CITYGML_WRITER
+     * 
+     * @return An integer linking to the writer type. The meaning of the value
+     * is in the AbstractWriter class.
      */
     public final int getWriterType() {
         return this.writerType;
