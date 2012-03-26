@@ -61,6 +61,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep implements
      * Getter.
      * @return the list of buildings
      */
+    @Override
     public final List<Building> getBuildings() {
         return this.buildings;
     }
@@ -69,6 +70,7 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep implements
      * Getter.
      * @return the grounds
      */
+    @Override
     public final Ground getGrounds() {
         return this.grounds;
     }
@@ -83,7 +85,8 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep implements
         // Decimation
         Decimator decim = new Decimator(this.grounds.getMesh());
         this.grounds.setMesh(decim.launchDecimation());
-        System.out.println("Decimation finie");
+
+        // resticking to buildings
         this.rmvTrianglesInsideBuildings();
         this.findBordersToRestick();
         this.projectBordersOnWalls();

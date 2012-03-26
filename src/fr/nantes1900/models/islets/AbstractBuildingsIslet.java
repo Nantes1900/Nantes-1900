@@ -137,11 +137,6 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
     private Vector3d gravityNormal;
     
     /**
-     * Type of writer to use to write final data in file
-     */
-    private int writerType = AbstractWriter.CITYGML_WRITER;
-
-    /**
      * Constructor. Saves the mesh in the initialTotalMesh variable.
      */
     public AbstractBuildingsIslet() {
@@ -448,9 +443,9 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
     public final void saveFinalResults(final String fileName, int writerType) {
         AbstractWriter writer = null;
         
-        if (this.writerType == AbstractWriter.CITYGML_WRITER) {
+        if (writerType == AbstractWriter.CITYGML_WRITER) {
             writer = new CityGMLWriter(fileName, this.getBiStep7());
-        } else if (this.writerType == AbstractWriter.STL_WRITER) {
+        } else if (writerType == AbstractWriter.STL_WRITER) {
             writer = new STLWriter(fileName, this.getBiStep7());
         }
         
@@ -484,14 +479,5 @@ public abstract class AbstractBuildingsIslet extends AbstractIslet implements
      */
     public final void setGroundNormal(final Vector3d groundNormalIn) {
         this.groundNormal = groundNormalIn;
-    }
-    
-    /**
-     * Setter
-     * @param writerType Type of writer to use to write final data in file
-     * Possible choices : CITYGML_WRITER or STL_WRITER
-     */
-    public void setWriterType(final int writerType) {
-        this.writerType = writerType;
     }
 }
