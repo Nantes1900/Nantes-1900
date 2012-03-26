@@ -3,8 +3,11 @@ package fr.nantes1900.utils;
 import fr.nantes1900.models.islets.steps.Writable;
 
 /**
- * TODO by Nicolas : Javadoc.
- * @author tagazok
+ * The abstract writer used to save data in a file. Enables the possibility to
+ * add new writers without changing the rest of the code.
+ * Implemented writers have to inherit the AbstractWriter.
+ * 
+ * @author Nicolas REY
  */
 public abstract class AbstractWriter {
 
@@ -38,6 +41,7 @@ public abstract class AbstractWriter {
     public abstract void write();
 
     /**
+     * Getter
      * @return The name of file file to be written
      */
     public final String getFileName() {
@@ -45,9 +49,10 @@ public abstract class AbstractWriter {
     }
 
     /**
+     * Setter
      * Set the name of the file to be written.
      * @param fileNameIn
-     *            TODO by Nicolas : Javadoc
+     *            The name of file file to be written
      */
     public final void setFileName(final String fileNameIn) {
         this.fileName = fileNameIn;
