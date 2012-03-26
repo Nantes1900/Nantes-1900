@@ -300,7 +300,7 @@ public class STLWriter extends AbstractWriter {
     /**
      * Setter.
      * @param meshIn
-     *            TODO by Nicolas : Javadoc.
+     *            Set the mesh to be writen in the STL file.
      */
     public final void setMesh(final Mesh meshIn) {
         this.mesh = meshIn;
