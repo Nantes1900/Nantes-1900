@@ -90,7 +90,8 @@ public class BuildingsIsletStep6 extends AbstractBuildingsIsletStep implements W
 		// Decimation
 		Decimator decim = new Decimator(this.grounds.getMesh());
 		this.grounds.setMesh(decim.launchDecimation());
-		System.out.println("Decimation finie");
+		
+		// resticking to buildings
 		this.rmvTrianglesInsideBuildings();
 		this.findBordersToRestick();
 		this.projectBordersOnWalls();
